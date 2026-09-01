@@ -1,7 +1,4 @@
- = 0;
-        let currentQuestion = null;
-
-        // --- Initialization ---<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -402,7 +399,10 @@
         let currentOp = '+';
         let currentVisualMode = 'counters'; // 'counters' or 'numberline'
         
-        let practiceScore
+        let practiceScore = 0;
+        let currentQuestion = null;
+
+        // --- Initialization ---
         window.onload = function() {
             updateExplorer();
             generateNumberLineTicks();
@@ -882,4 +882,3 @@
     </script>
 </body>
 </html>
-
