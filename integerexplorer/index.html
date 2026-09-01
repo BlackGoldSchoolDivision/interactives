@@ -1,0 +1,885 @@
+ = 0;
+        let currentQuestion = null;
+
+        // --- Initialization ---<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integer Operations Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap');
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f0fdf4;
+        }
+
+        h1, h2, h3, .font-heading {
+            font-family: 'Fredoka', cursive;
+        }
+
+        .chip {
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            user-select: none;
+        }
+
+        .chip:hover {
+            transform: scale(1.1);
+        }
+
+        .chip-pos {
+            background: linear-gradient(135deg, #4ade80, #16a34a);
+            box-shadow: 0 4px 6px -1px rgba(22, 163, 74, 0.3);
+        }
+
+        .chip-neg {
+            background: linear-gradient(135deg, #f87171, #dc2626);
+            box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.3);
+        }
+
+        .zero-pair-container {
+            border: 2px dashed #94a3b8;
+            background-color: rgba(241, 245, 249, 0.6);
+        }
+
+        /* Number Line Animations */
+        .character {
+            transition: left 0.8s ease-in-out, transform 0.3s ease;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-emerald-600 text-white shadow-lg p-4 sticky top-0 z-50">
+        <div class="max-w-6xl mx-mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-white text-emerald-600 p-2.5 rounded-2xl shadow-inner text-2xl">
+                    <i class="fa-solid fa-calculator"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold tracking-wide">Integer Explorer</h1>
+                    <p class="text-xs text-emerald-100 font-medium">Grade 7 Interactive Math Tool</p>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <nav class="flex bg-emerald-700/60 p-1.5 rounded-2xl gap-1 border border-emerald-500/30">
+                <button onclick="switchTab('explore')" id="tab-explore" class="tab-btn px-4 py-2 rounded-xl text-sm font-bold transition-all bg-white text-emerald-700 shadow-md">
+                    <i class="fa-solid fa-compass mr-1.5"></i> Explore & Visualize
+                </button>
+                <button onclick="switchTab('practice')" id="tab-practice" class="tab-btn px-4 py-2 rounded-xl text-sm font-bold transition-all text-white hover:bg-emerald-600/50">
+                    <i class="fa-solid fa-gamepad mr-1.5"></i> Practice
+                </button>
+                <button onclick="switchTab('rules')" id="tab-rules" class="tab-btn px-4 py-2 rounded-xl text-sm font-bold transition-all text-white hover:bg-emerald-600/50">
+                    <i class="fa-solid fa-book-open mr-1.5"></i> Rules & Cheat Sheet
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-6xl w-full mx-auto p-4 md:p-6 flex flex-col gap-6">
+
+        <!-- ================= EXPLORE TAB ================= -->
+        <div id="view-explore" class="space-y-6">
+            
+            <!-- Equation Builder Controls -->
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                <h2 class="text-lg font-bold text-slate-700 mb-4 flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm">1</span>
+                    Build Your Equation
+                </h2>
+
+                <div class="flex flex-wrap items-center justify-center gap-3 md:gap-6 text-xl md:text-2xl font-bold">
+                    <!-- First Number -->
+                    <div class="flex flex-col items-center">
+                        <label class="text-xs text-slate-400 font-normal mb-1">First Integer</label>
+                        <div class="flex items-center gap-1 bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
+                            <button onclick="adjustVal('num1', -1)" class="w-10 h-10 rounded-xl bg-white text-slate-600 hover:bg-slate-200 shadow-sm flex items-center justify-center active:scale-95 transition">-</button>
+                            <span id="display-num1" class="w-12 text-center font-mono font-bold text-slate-800">5</span>
+                            <button onclick="adjustVal('num1', 1)" class="w-10 h-10 rounded-xl bg-white text-slate-600 hover:bg-slate-200 shadow-sm flex items-center justify-center active:scale-95 transition">+</button>
+                        </div>
+                    </div>
+
+                    <!-- Operation -->
+                    <div class="flex flex-col items-center">
+                        <label class="text-xs text-slate-400 font-normal mb-1">Operation</label>
+                        <div class="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200 gap-1">
+                            <button onclick="setOp('+')" id="op-plus" class="op-btn w-10 h-10 rounded-xl bg-emerald-500 text-white shadow-md font-bold text-xl flex items-center justify-center transition">+</button>
+                            <button onclick="setOp('-')" id="op-minus" class="op-btn w-10 h-10 rounded-xl bg-white text-slate-600 hover:bg-slate-200 font-bold text-xl flex items-center justify-center transition">−</button>
+                            <button onclick="setOp('×')" id="op-mult" class="op-btn w-10 h-10 rounded-xl bg-white text-slate-600 hover:bg-slate-200 font-bold text-xl flex items-center justify-center transition">×</button>
+                            <button onclick="setOp('÷')" id="op-div" class="op-btn w-10 h-10 rounded-xl bg-white text-slate-600 hover:bg-slate-200 font-bold text-xl flex items-center justify-center transition">÷</button>
+                        </div>
+                    </div>
+
+                    <!-- Second Number -->
+                    <div class="flex flex-col items-center">
+                        <label class="text-xs text-slate-400 font-normal mb-1">Second Integer</label>
+                        <div class="flex items-center gap-1 bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
+                            <button onclick="adjustVal('num2', -1)" class="w-10 h-10 rounded-xl bg-white text-slate-600 hover:bg-slate-200 shadow-sm flex items-center justify-center active:scale-95 transition">-</button>
+                            <span id="display-num2" class="w-12 text-center font-mono font-bold text-slate-800">-3</span>
+                            <button onclick="adjustVal('num2', 1)" class="w-10 h-10 rounded-xl bg-white text-slate-600 hover:bg-slate-200 shadow-sm flex items-center justify-center active:scale-95 transition">+</button>
+                        </div>
+                    </div>
+
+                    <span class="text-slate-400 mt-5">=</span>
+
+                    <!-- Result Box -->
+                    <div class="flex flex-col items-center mt-5">
+                        <div id="display-result" class="bg-emerald-100 text-emerald-800 border-2 border-emerald-300 px-5 py-2 rounded-2xl font-mono font-extrabold text-3xl shadow-inner min-w-[80px] text-center">
+                            2
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Preset Examples -->
+                <div class="mt-6 pt-4 border-t border-slate-100 flex flex-wrap items-center justify-center gap-2 text-xs text-slate-500">
+                    <span class="font-bold">Try preset examples:</span>
+                    <button onclick="setPreset(5, '+', -3)" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-slate-700 font-semibold transition">5 + (-3)</button>
+                    <button onclick="setPreset(-4, '-', 2)" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-slate-700 font-semibold transition">-4 - 2</button>
+                    <button onclick="setPreset(-3, '-', -5)" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-slate-700 font-semibold transition">-3 - (-5)</button>
+                    <button onclick="setPreset(-4, '×', 2)" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-slate-700 font-semibold transition">-4 × 2</button>
+                    <button onclick="setPreset(-6, '×', -2)" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-slate-700 font-semibold transition">-6 × (-2)</button>
+                </div>
+            </div>
+
+            <!-- Visualization Mode Selector -->
+            <div class="flex justify-between items-center bg-slate-200/60 p-1.5 rounded-2xl max-w-md mx-auto">
+                <button onclick="setVisualMode('counters')" id="mode-counters" class="flex-1 py-2 rounded-xl text-sm font-bold transition-all bg-white text-slate-800 shadow-sm flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-circle-dot text-emerald-500"></i> Counter Chips Model
+                </button>
+                <button onclick="setVisualMode('numberline')" id="mode-numberline" class="flex-1 py-2 rounded-xl text-sm font-bold transition-all text-slate-600 hover:text-slate-900 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-ruler-horizontal text-blue-500"></i> Number Line Model
+                </button>
+            </div>
+
+            <!-- VISUALIZATION CANVAS AREA -->
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 min-h-[380px] flex flex-col justify-between">
+                
+                <!-- 1. COUNTERS MODEL -->
+                <div id="vis-counters" class="space-y-6">
+                    <div class="flex justify-between items-center text-xs font-bold text-slate-400 uppercase tracking-wider">
+                        <span>Visual Representation (Chips)</span>
+                        <div class="flex gap-4">
+                            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span> +1 (Positive)</span>
+                            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span> -1 (Negative)</span>
+                        </div>
+                    </div>
+
+                    <!-- Chips display container -->
+                    <div id="counters-container" class="space-y-6 min-h-[200px] flex flex-col justify-center">
+                        <!-- Dynamic content injected here -->
+                    </div>
+
+                    <!-- Zero pair interactivity tip -->
+                    <div id="zero-pair-tip" class="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-xs md:text-sm text-amber-800 flex items-start gap-3">
+                        <i class="fa-solid fa-lightbulb text-amber-500 text-lg mt-0.5"></i>
+                        <div>
+                            <span class="font-bold block">Key Concept: Zero Pairs</span>
+                            One positive chip (+1) and one negative chip (-1) cancel each other out to equal zero!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. NUMBER LINE MODEL -->
+                <div id="vis-numberline" class="hidden space-y-6">
+                    <div class="flex justify-between items-center text-xs font-bold text-slate-400 uppercase tracking-wider">
+                        <span>Number Line Visualizer</span>
+                        <span id="nl-step-desc" class="text-blue-600 font-bold text-sm">Start at 0</span>
+                    </div>
+
+                    <!-- Number Line Canvas Container -->
+                    <div class="relative py-12 px-4 overflow-x-auto select-none">
+                        <!-- Line -->
+                        <div class="h-2 bg-slate-300 rounded-full w-full min-w-[700px] relative top-6"></div>
+
+                        <!-- Ticks & Numbers -->
+                        <div id="number-line-ticks" class="relative w-full min-w-[700px] flex justify-between">
+                            <!-- Populated by JS -->
+                        </div>
+
+                        <!-- Character Avatar -->
+                        <div id="nl-character" class="character absolute -top-2 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none z-10">
+                            <div class="bg-blue-600 text-white font-bold text-xs px-2.5 py-1 rounded-full shadow-md mb-1 whitespace-nowrap" id="char-label">
+                                Start
+                            </div>
+                            <div class="text-3xl text-blue-600 filter drop-shadow">
+                                <i class="fa-solid fa-child-walking" id="char-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step explanation -->
+                    <div id="nl-explanation" class="bg-blue-50 border border-blue-200 rounded-2xl p-4 text-sm text-blue-900 leading-relaxed">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Explanation Box -->
+                <div id="text-explanation" class="mt-4 pt-4 border-t border-slate-100 text-sm md:text-base text-slate-700 font-medium leading-relaxed bg-slate-50 p-4 rounded-2xl">
+                    <!-- Text explanation injected here -->
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ================= PRACTICE TAB ================= -->
+        <div id="view-practice" class="hidden space-y-6">
+            <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-200 max-w-2xl mx-auto">
+                <!-- Mode Selector (Flashcard vs Quiz) -->
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800">Integer Practice</h2>
+                        <p class="text-xs text-slate-500">Test your skills and earn stars!</p>
+                    </div>
+                    <div class="flex items-center gap-2 bg-emerald-50 px-4 py-2 rounded-2xl border border-emerald-200 text-emerald-700 font-bold">
+                        <i class="fa-solid fa-star text-amber-400 text-lg"></i>
+                        <span>Score: <span id="practice-score">0</span></span>
+                    </div>
+                </div>
+
+                <!-- Question Card -->
+                <div class="bg-slate-50 border-2 border-slate-200 rounded-3xl p-8 text-center space-y-6 relative overflow-hidden">
+                    <div class="text-xs font-bold uppercase tracking-wider text-slate-400" id="question-type-label font-bold">
+                        Solve the expression
+                    </div>
+
+                    <div id="practice-question" class="text-4xl md:text-5xl font-mono font-extrabold text-slate-800 py-4">
+                        -7 + 4 = ?
+                    </div>
+
+                    <!-- Input / Answer Area -->
+                    <div class="flex justify-center items-center gap-3 max-w-xs mx-auto">
+                        <input type="number" id="practice-answer" placeholder="Ans" class="w-28 text-center text-2xl font-mono font-bold py-3 px-4 rounded-2xl border-2 border-slate-300 focus:border-emerald-500 focus:outline-none shadow-inner" onkeydown="if(event.key==='Enter') checkPracticeAnswer()">
+                        <button onclick="checkPracticeAnswer()" class="bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-bold px-6 py-3 rounded-2xl shadow-md transition flex items-center gap-2 text-lg">
+                            Check
+                        </button>
+                    </div>
+
+                    <!-- Feedback Box -->
+                    <div id="practice-feedback" class="hidden rounded-2xl p-4 text-sm font-bold text-center animate-bounce-short">
+                        <!-- Feedback text -->
+                    </div>
+                </div>
+
+                <!-- Action buttons -->
+                <div class="mt-6 flex justify-between items-center">
+                    <button onclick="showPracticeHint()" class="text-slate-500 hover:text-emerald-600 text-sm font-bold flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-lightbulb"></i> Need a Hint?
+                    </button>
+                    <button onclick="nextPracticeQuestion()" class="bg-slate-800 hover:bg-slate-900 text-white text-sm font-bold px-5 py-2.5 rounded-xl transition flex items-center gap-2">
+                        Next Problem <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Hint Container -->
+                <div id="practice-hint-box" class="hidden mt-4 bg-amber-50 border border-amber-200 rounded-2xl p-4 text-xs md:text-sm text-amber-800">
+                    <!-- Hint text -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= RULES TAB ================= -->
+        <div id="view-rules" class="hidden space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Addition & Subtraction Rules -->
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 space-y-4">
+                    <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
+                        <div class="w-10 h-10 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xl">+ / −</div>
+                        <h3 class="text-xl font-bold text-slate-800">Addition & Subtraction</h3>
+                    </div>
+
+                    <div class="space-y-3 text-sm">
+                        <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                            <span class="font-bold text-emerald-600 block mb-1">Same Signs: Add & Keep Sign</span>
+                            <p class="text-slate-600">Add the absolute values together and keep the common sign.</p>
+                            <div class="mt-2 font-mono text-xs bg-white p-2 rounded-xl border text-slate-700">
+                                3 + 5 = 8 <br>
+                                -3 + (-5) = -8
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                            <span class="font-bold text-blue-600 block mb-1">Different Signs: Subtract & Keep Larger</span>
+                            <p class="text-slate-600">Subtract the smaller number from the larger number. Take the sign of the number with the larger absolute value.</p>
+                            <div class="mt-2 font-mono text-xs bg-white p-2 rounded-xl border text-slate-700">
+                                -7 + 4 = -3 &nbsp;<em>(7 is bigger, answer is negative)</em><br>
+                                8 + (-2) = 6 &nbsp;&nbsp;<em>(8 is bigger, answer is positive)</em>
+                            </div>
+                        </div>
+
+                        <div class="bg-amber-50 p-3.5 rounded-2xl border border-amber-200 text-amber-900">
+                            <span class="font-bold block mb-1">Subtracting a Negative?</span>
+                            <p class="text-xs">Two minuses side-by-side turn into a positive! (Add the opposite)</p>
+                            <div class="mt-1 font-mono text-xs font-bold text-amber-800">
+                                5 - (-3) &nbsp;➔&nbsp; 5 + 3 = 8
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Multiplication & Division Rules -->
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 space-y-4">
+                    <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
+                        <div class="w-10 h-10 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center font-bold text-xl">× / ÷</div>
+                        <h3 class="text-xl font-bold text-slate-800">Multiplication & Division</h3>
+                    </div>
+
+                    <div class="space-y-3 text-sm">
+                        <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                            <span class="font-bold text-purple-600 block mb-1">Same Signs = Positive Answer</span>
+                            <p class="text-slate-600">Multiplying or dividing two numbers with the SAME sign always gives a POSITIVE result.</p>
+                            <div class="mt-2 font-mono text-xs bg-white p-2 rounded-xl border text-slate-700">
+                                (+4) × (+3) = +12 <br>
+                                (-4) × (-3) = +12 <br>
+                                (-10) ÷ (-2) = +5
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                            <span class="font-bold text-red-500 block mb-1">Different Signs = Negative Answer</span>
+                            <p class="text-slate-600">Multiplying or dividing two numbers with DIFFERENT signs always gives a NEGATIVE result.</p>
+                            <div class="mt-2 font-mono text-xs bg-white p-2 rounded-xl border text-slate-700">
+                                (+4) × (-3) = -12 <br>
+                                (-4) × (+3) = -12 <br>
+                                (-10) ÷ (+2) = -5
+                            </div>
+                        </div>
+
+                        <!-- Handy Tic-Tac-Toe Trick -->
+                        <div class="bg-emerald-50 p-3.5 rounded-2xl border border-emerald-200 text-emerald-900 flex items-center gap-4">
+                            <div class="grid grid-cols-3 gap-1 bg-white p-2 rounded-xl border text-center font-bold font-mono text-xs">
+                                <span class="text-emerald-600">+</span><span class="text-red-500">-</span><span class="text-red-500">-</span>
+                                <span class="text-red-500">-</span><span class="text-emerald-600">+</span><span class="text-red-500">-</span>
+                                <span class="text-red-500">-</span><span class="text-red-500">-</span><span class="text-emerald-600">+</span>
+                            </div>
+                            <div class="text-xs">
+                                <span class="font-bold block text-emerald-800">Tic-Tac-Toe Method:</span>
+                                Cover any two signs in a line to find the sign of the product or quotient!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto py-4 text-center text-xs text-slate-400 border-t border-slate-200">
+        Created for Grade 7 Mathematics • Interactive Visual Learning
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- State Management ---
+        let currentNum1 = 5;
+        let currentNum2 = -3;
+        let currentOp = '+';
+        let currentVisualMode = 'counters'; // 'counters' or 'numberline'
+        
+        let practiceScore
+        window.onload = function() {
+            updateExplorer();
+            generateNumberLineTicks();
+            nextPracticeQuestion();
+        };
+
+        // --- Tab Navigation ---
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-white', 'text-emerald-700', 'shadow-md');
+                btn.classList.add('text-white', 'hover:bg-emerald-600/50');
+            });
+            
+            const activeBtn = document.getElementById(`tab-${tab}`);
+            activeBtn.classList.add('bg-white', 'text-emerald-700', 'shadow-md');
+            activeBtn.classList.remove('text-white', 'hover:bg-emerald-600/50');
+
+            document.getElementById('view-explore').classList.add('hidden');
+            document.getElementById('view-practice').classList.add('hidden');
+            document.getElementById('view-rules').classList.add('hidden');
+
+            document.getElementById(`view-${tab}`).classList.remove('hidden');
+
+            if (tab === 'explore') {
+                updateExplorer();
+            }
+        }
+
+        // --- Explorer Controls ---
+        function adjustVal(varName, delta) {
+            if (varName === 'num1') {
+                currentNum1 = Math.min(10, Math.max(-10, currentNum1 + delta));
+                document.getElementById('display-num1').innerText = currentNum1;
+            } else {
+                currentNum2 = Math.min(10, Math.max(-10, currentNum2 + delta));
+                // Prevent division by 0
+                if (currentOp === '÷' && currentNum2 === 0) {
+                    currentNum2 = delta > 0 ? 1 : -1;
+                }
+                document.getElementById('display-num2').innerText = currentNum2;
+            }
+            updateExplorer();
+        }
+
+        function setOp(op) {
+            currentOp = op;
+            document.querySelectorAll('.op-btn').forEach(btn => {
+                btn.classList.remove('bg-emerald-500', 'text-white', 'shadow-md');
+                btn.classList.add('bg-white', 'text-slate-600', 'hover:bg-slate-200');
+            });
+
+            let activeId = 'op-plus';
+            if (op === '-') activeId = 'op-minus';
+            if (op === '×') activeId = 'op-mult';
+            if (op === '÷') activeId = 'op-div';
+
+            const activeBtn = document.getElementById(activeId);
+            activeBtn.classList.add('bg-emerald-500', 'text-white', 'shadow-md');
+            activeBtn.classList.remove('bg-white', 'text-slate-600', 'hover:bg-slate-200');
+
+            if (op === '÷' && currentNum2 === 0) {
+                currentNum2 = 1;
+                document.getElementById('display-num2').innerText = currentNum2;
+            }
+
+            updateExplorer();
+        }
+
+        function setPreset(n1, op, n2) {
+            currentNum1 = n1;
+            currentNum2 = n2;
+            document.getElementById('display-num1').innerText = currentNum1;
+            document.getElementById('display-num2').innerText = currentNum2;
+            setOp(op);
+        }
+
+        function setVisualMode(mode) {
+            currentVisualMode = mode;
+            const btnCounters = document.getElementById('mode-counters');
+            const btnNL = document.getElementById('mode-numberline');
+
+            if (mode === 'counters') {
+                btnCounters.classList.add('bg-white', 'text-slate-800', 'shadow-sm');
+                btnCounters.classList.remove('text-slate-600');
+                btnNL.classList.remove('bg-white', 'text-slate-800', 'shadow-sm');
+                btnNL.classList.add('text-slate-600');
+
+                document.getElementById('vis-counters').classList.remove('hidden');
+                document.getElementById('vis-numberline').classList.add('hidden');
+            } else {
+                btnNL.classList.add('bg-white', 'text-slate-800', 'shadow-sm');
+                btnNL.classList.remove('text-slate-600');
+                btnCounters.classList.remove('bg-white', 'text-slate-800', 'shadow-sm');
+                btnCounters.classList.add('text-slate-600');
+
+                document.getElementById('vis-numberline').classList.remove('hidden');
+                document.getElementById('vis-counters').classList.add('hidden');
+            }
+
+            updateExplorer();
+        }
+
+        // --- Core Calculator & Visualizer Logic ---
+        function calculate(n1, op, n2) {
+            switch(op) {
+                case '+': return n1 + n2;
+                case '-': return n1 - n2;
+                case '×': return n1 * n2;
+                case '÷': 
+                    if (n2 === 0) return 'Undefined';
+                    return Math.round((n1 / n2) * 100) / 100;
+            }
+        }
+
+        function updateExplorer() {
+            const res = calculate(currentNum1, currentOp, currentNum2);
+            document.getElementById('display-result').innerText = res;
+
+            // Render visualizations
+            renderCounters(currentNum1, currentOp, currentNum2, res);
+            renderNumberLine(currentNum1, currentOp, currentNum2, res);
+            renderTextExplanation(currentNum1, currentOp, currentNum2, res);
+        }
+
+        // --- Render Chips / Counters Model ---
+        function renderCounters(n1, op, n2, res) {
+            const container = document.getElementById('counters-container');
+            container.innerHTML = '';
+
+            if (op === '+' || op === '-') {
+                // Show Zero Pairs logic for Addition / Subtraction
+                let firstGroupPos = n1 > 0 ? n1 : 0;
+                let firstGroupNeg = n1 < 0 ? Math.abs(n1) : 0;
+
+                let secondGroupPos = 0;
+                let secondGroupNeg = 0;
+
+                if (op === '+') {
+                    secondGroupPos = n2 > 0 ? n2 : 0;
+                    secondGroupNeg = n2 < 0 ? Math.abs(n2) : 0;
+                } else {
+                    // Subtraction: Adding zero pairs if needed to take away
+                    secondGroupPos = n2 < 0 ? Math.abs(n2) : 0; // Subtracting negative is adding positive
+                    secondGroupNeg = n2 > 0 ? n2 : 0; // Subtracting positive is adding negative
+                }
+
+                const totalPos = firstGroupPos + secondGroupPos;
+                const totalNeg = firstGroupNeg + secondGroupNeg;
+
+                const pairs = Math.min(totalPos, totalNeg);
+                const remainingPos = totalPos - pairs;
+                const remainingNeg = totalNeg - pairs;
+
+                let html = `<div class="flex flex-col md:flex-row items-center justify-around gap-6">`;
+
+                // Starting Chips
+                html += `
+                    <div class="flex flex-col items-center">
+                        <span class="text-xs font-bold text-slate-400 mb-2">First Value (${n1})</span>
+                        <div class="flex flex-wrap max-w-[180px] gap-2 justify-center p-3 bg-slate-50 rounded-2xl border border-slate-200 min-h-[70px] items-center">
+                            ${renderChipSet(n1)}
+                        </div>
+                    </div>
+                `;
+
+                // Action Operator
+                html += `
+                    <div class="text-slate-300 font-bold text-2xl">
+                        ${op === '+' ? '+' : '−'}
+                    </div>
+                `;
+
+                // Second Group Chips
+                html += `
+                    <div class="flex flex-col items-center">
+                        <span class="text-xs font-bold text-slate-400 mb-2">Second Value (${n2})</span>
+                        <div class="flex flex-wrap max-w-[180px] gap-2 justify-center p-3 bg-slate-50 rounded-2xl border border-slate-200 min-h-[70px] items-center">
+                            ${renderChipSet(n2)}
+                        </div>
+                    </div>
+                `;
+
+                html += `<div class="text-slate-300 font-bold text-2xl">=</div>`;
+
+                // Combined & Zero Pairs Result
+                html += `
+                    <div class="flex flex-col items-center">
+                        <span class="text-xs font-bold text-emerald-600 mb-2">Result (${res})</span>
+                        <div class="p-4 bg-emerald-50 border-2 border-emerald-200 rounded-2xl flex flex-col items-center gap-3 min-w-[200px]">
+                `;
+
+                if (pairs > 0) {
+                    html += `
+                        <div class="zero-pair-container p-2 rounded-xl text-center w-full">
+                            <span class="text-[10px] uppercase font-bold text-slate-400 block mb-1">${pairs} Zero Pair(s) Cancel Out</span>
+                            <div class="flex flex-wrap justify-center gap-1.5 opacity-40">
+                                ${'<div class="w-6 h-6 rounded-full chip-pos flex items-center justify-center text-white text-xs font-bold">+</div>'.repeat(pairs)}
+                                ${'<div class="w-6 h-6 rounded-full chip-neg flex items-center justify-center text-white text-xs font-bold">-</div>'.repeat(pairs)}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                html += `
+                    <div class="text-xs font-bold text-slate-500">Remaining Chips:</div>
+                    <div class="flex flex-wrap justify-center gap-2">
+                `;
+
+                if (remainingPos > 0) {
+                    html += renderChipSet(remainingPos);
+                } else if (remainingNeg > 0) {
+                    html += renderChipSet(-remainingNeg);
+                } else {
+                    html += `<span class="text-slate-400 font-bold text-lg">0 (All cancelled!)</span>`;
+                }
+
+                html += `</div></div></div></div>`;
+
+                container.innerHTML = html;
+
+            } else if (op === '×') {
+                // Multiplication Model (Groups of items)
+                let html = `<div class="text-center space-y-4">`;
+                const groups = Math.abs(n1);
+                const itemsPerGroup = Math.abs(n2);
+
+                html += `<div class="text-sm font-bold text-slate-600">
+                    Think of this as: <span class="text-purple-600">${groups} group(s)</span> of <span class="text-blue-600">${n2}</span>
+                </div>`;
+
+                html += `<div class="flex flex-wrap justify-center gap-4 max-w-2xl mx-auto">`;
+
+                for (let i = 0; i < groups; i++) {
+                    html += `
+                        <div class="bg-slate-50 border-2 border-dashed border-slate-300 p-3 rounded-2xl flex flex-col items-center gap-2">
+                            <span class="text-[10px] font-bold text-slate-400">Group ${i+1}</span>
+                            <div class="flex gap-1.5">
+                                ${renderChipSet(n2)}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                html += `</div>`;
+
+                if ((n1 < 0 && n2 > 0) || (n1 > 0 && n2 < 0)) {
+                    html += `<div class="text-xs text-red-500 font-bold">Different signs lead to a negative result!</div>`;
+                } else if (n1 < 0 && n2 < 0) {
+                    html += `<div class="text-xs text-emerald-600 font-bold">Multiplying two negatives flips the sign to positive!</div>`;
+                }
+
+                html += `</div>`;
+                container.innerHTML = html;
+
+            } else if (op === '÷') {
+                // Division Model (Splitting into equal groups)
+                let html = `<div class="text-center space-y-4">`;
+
+                if (Math.abs(n1) < Math.abs(n2)) {
+                    html += `<div class="text-sm text-slate-500 font-bold">${n1} divided into ${n2} parts = ${res}</div>`;
+                } else {
+                    const groupCount = Math.floor(Math.abs(n1) / Math.abs(n2));
+                    const itemsPerGroup = Math.abs(n2);
+
+                    html += `<div class="text-sm font-bold text-slate-600">
+                        Splitting <span class="text-emerald-600">${n1}</span> into equal groups of <span class="text-purple-600">${n2}</span>:
+                    </div>`;
+
+                    html += `<div class="flex flex-wrap justify-center gap-4 max-w-2xl mx-auto">`;
+
+                    for (let i = 0; i < groupCount; i++) {
+                        html += `
+                            <div class="bg-slate-50 border-2 border-emerald-200 p-3 rounded-2xl flex flex-col items-center gap-2">
+                                <span class="text-[10px] font-bold text-slate-400">Group ${i+1}</span>
+                                <div class="flex gap-1.5">
+                                    ${renderChipSet(n1 < 0 ? -itemsPerGroup : itemsPerGroup)}
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    html += `</div>`;
+                }
+
+                html += `</div>`;
+                container.innerHTML = html;
+            }
+        }
+
+        function renderChipSet(val) {
+            let html = '';
+            const isPos = val > 0;
+            const count = Math.abs(val);
+
+            for (let i = 0; i < count; i++) {
+                if (isPos) {
+                    html += `<div class="w-8 h-8 rounded-full chip-pos text-white font-bold flex items-center justify-center text-sm shadow-sm chip" title="+1">+</div>`;
+                } else {
+                    html += `<div class="w-8 h-8 rounded-full chip-neg text-white font-bold flex items-center justify-center text-sm shadow-sm chip" title="-1">−</div>`;
+                }
+            }
+            return html;
+        }
+
+        // --- Render Number Line Model ---
+        function generateNumberLineTicks() {
+            const container = document.getElementById('number-line-ticks');
+            container.innerHTML = '';
+
+            for (let i = -10; i <= 10; i++) {
+                const tick = document.createElement('div');
+                tick.className = 'flex flex-col items-center min-w-[28px]';
+                
+                const isZero = i === 0;
+                tick.innerHTML = `
+                    <div class="w-0.5 ${isZero ? 'h-6 bg-slate-800 w-1' : 'h-3 bg-slate-400'}"></div>
+                    <span class="text-xs font-mono mt-1 ${isZero ? 'font-bold text-slate-900 text-sm' : 'text-slate-500'}">${i}</span>
+                `;
+                container.appendChild(tick);
+            }
+        }
+
+        function renderNumberLine(n1, op, n2, res) {
+            const char = document.getElementById('nl-character');
+            const charLabel = document.getElementById('char-label');
+            const charIcon = document.getElementById('char-icon');
+            const stepDesc = document.getElementById('nl-step-desc');
+            const expBox = document.getElementById('nl-explanation');
+
+            // Map -10 to +10 into percentage positions (0% to 100%)
+            const min = -10;
+            const max = 10;
+            const range = max - min;
+
+            // Constrain value display to range
+            const clampedResult = Math.max(-10, Math.min(10, typeof res === 'number' ? res : 0));
+            const targetPosPercent = ((clampedResult - min) / range) * 100;
+
+            // Update character position
+            char.style.left = `${targetPosPercent}%`;
+
+            // Setup explanation & steps
+            if (op === '+') {
+                charLabel.innerText = `Landed on ${res}`;
+                stepDesc.innerText = `Start at ${n1}, move ${n2 >= 0 ? 'RIGHT' : 'LEFT'} ${Math.abs(n2)} steps`;
+                expBox.innerHTML = `
+                    <ol class="list-decimal list-inside space-y-1">
+                        <li>Start at <strong>${n1}</strong> on the number line.</li>
+                        <li>Addition means face the positive (right) direction.</li>
+                        <li>Because the second integer is <strong>${n2}</strong>, move ${n2 >= 0 ? 'forward (right)' : 'backward (left)'} <strong>${Math.abs(n2)}</strong> steps.</li>
+                        <li>You end up at <strong class="text-emerald-600 text-base">${res}</strong>!</li>
+                    </ol>
+                `;
+            } else if (op === '-') {
+                charLabel.innerText = `Landed on ${res}`;
+                stepDesc.innerText = `Start at ${n1}, subtract ${n2}`;
+                expBox.innerHTML = `
+                    <ol class="list-decimal list-inside space-y-1">
+                        <li>Start at <strong>${n1}</strong> on the number line.</li>
+                        <li>Subtraction means turn around towards the negative (left) direction.</li>
+                        <li>Moving ${n2 < 0 ? 'backward (right)' : 'forward (left)'} <strong>${Math.abs(n2)}</strong> steps.</li>
+                        <li>You end up at <strong class="text-emerald-600 text-base">${res}</strong>!</li>
+                    </ol>
+                `;
+            } else {
+                charLabel.innerText = `Result: ${res}`;
+                stepDesc.innerText = `Multiplication / Division Step`;
+                expBox.innerHTML = `
+                    <p>On a number line, <strong>${n1} ${op} ${n2}</strong> represents repeated movement or scaling:</p>
+                    <p class="mt-1 font-bold text-slate-700">Final Position: <span class="text-emerald-600 text-lg">${res}</span></p>
+                `;
+            }
+        }
+
+        // --- Render Text Explanation ---
+        function renderTextExplanation(n1, op, n2, res) {
+            const container = document.getElementById('text-explanation');
+            let text = '';
+
+            if (op === '+') {
+                if ((n1 >= 0 && n2 >= 0) || (n1 < 0 && n2 < 0)) {
+                    text = `💡 <strong>Same Signs Rule:</strong> Both numbers are ${n1 >= 0 ? 'positive' : 'negative'}. Add their values (${Math.abs(n1)} + ${Math.abs(n2)} = ${Math.abs(res)}) and keep the <strong>${n1 >= 0 ? 'positive' : 'negative'}</strong> sign.`;
+                } else {
+                    text = `💡 <strong>Different Signs Rule:</strong> One is positive and one is negative. Subtract the smaller absolute value from the larger (${Math.max(Math.abs(n1), Math.abs(n2))} - ${Math.min(Math.abs(n1), Math.abs(n2))} = ${Math.abs(res)}). Take the sign of the larger number (${Math.abs(n1) > Math.abs(n2) ? n1 : n2}), giving <strong>${res}</strong>.`;
+                }
+            } else if (op === '-') {
+                text = `💡 <strong>Subtraction Tip:</strong> Change subtraction to adding the opposite! <br><span class="font-mono text-emerald-700">${n1} - (${n2})</span> becomes <span class="font-mono text-emerald-700">${n1} + (${-n2}) = ${res}</span>.`;
+            } else if (op === '×' || op === '÷') {
+                const sameSign = (n1 >= 0 && n2 >= 0) || (n1 < 0 && n2 < 0);
+                if (sameSign) {
+                    text = `💡 <strong>Same Signs Rule:</strong> When ${op === '×' ? 'multiplying' : 'dividing'} two numbers with the <strong>SAME sign</strong>, the answer is always <strong>POSITIVE (+)</strong>.`;
+                } else {
+                    text = `💡 <strong>Different Signs Rule:</strong> When ${op === '×' ? 'multiplying' : 'dividing'} two numbers with <strong>DIFFERENT signs</strong>, the answer is always <strong>NEGATIVE (-)</strong>.`;
+                }
+            }
+
+            container.innerHTML = text;
+        }
+
+        // --- Practice Mode Logic ---
+        function generateRandomQuestion() {
+            const ops = ['+', '-', '×', '÷'];
+            const op = ops[Math.floor(Math.random() * ops.length)];
+            let n1 = Math.floor(Math.random() * 19) - 9; // -9 to 9
+            let n2 = Math.floor(Math.random() * 19) - 9;
+
+            // Clean up zeros for nicer problems
+            if (n1 === 0) n1 = 3;
+            if (n2 === 0) n2 = -2;
+
+            if (op === '÷') {
+                // Ensure clean integer division
+                const answer = Math.floor(Math.random() * 13) - 6; // -6 to 6
+                if (answer === 0) answer = 1;
+                n1 = answer * n2;
+            }
+
+            const expected = calculate(n1, op, n2);
+
+            return { n1, op, n2, expected };
+        }
+
+        function nextPracticeQuestion() {
+            currentQuestion = generateRandomQuestion();
+            
+            const qStr = `${currentQuestion.n1} ${currentQuestion.op} (${currentQuestion.n2}) = ?`.replace('(-', '(-').replace('(', '').replace(')', '');
+            document.getElementById('practice-question').innerText = `${currentQuestion.n1} ${currentQuestion.op} ${currentQuestion.n2 < 0 ? `(${currentQuestion.n2})` : currentQuestion.n2} = ?`;
+            
+            document.getElementById('practice-answer').value = '';
+            document.getElementById('practice-answer').focus();
+
+            const feedback = document.getElementById('practice-feedback');
+            feedback.classList.add('hidden');
+
+            document.getElementById('practice-hint-box').classList.add('hidden');
+        }
+
+        function checkPracticeAnswer() {
+            const userAns = parseFloat(document.getElementById('practice-answer').value);
+            const feedback = document.getElementById('practice-feedback');
+
+            if (isNaN(userAns)) return;
+
+            feedback.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-800', 'bg-red-100', 'text-red-800');
+
+            if (userAns === currentQuestion.expected) {
+                practiceScore += 10;
+                document.getElementById('practice-score').innerText = practiceScore;
+
+                feedback.classList.add('bg-emerald-100', 'text-emerald-800');
+                feedback.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 text-lg mr-1"></i> Correct! Great job! (+10 pts)`;
+                
+                setTimeout(() => {
+                    nextPracticeQuestion();
+                }, 1500);
+            } else {
+                feedback.classList.add('bg-red-100', 'text-red-800');
+                feedback.innerHTML = `<i class="fa-solid fa-circle-xmark text-red-600 text-lg mr-1"></i> Not quite! Check your signs and try again.`;
+            }
+        }
+
+        function showPracticeHint() {
+            const hintBox = document.getElementById('practice-hint-box');
+            const { n1, op, n2 } = currentQuestion;
+
+            let hintText = '';
+            if (op === '+' || op === '-') {
+                hintText = `<strong>Hint:</strong> Think of chip counters or the number line. Start at ${n1} and ${op === '+' ? 'add' : 'subtract'} ${n2}.`;
+            } else {
+                const same = (n1 > 0 && n2 > 0) || (n1 < 0 && n2 < 0);
+                hintText = `<strong>Hint:</strong> The signs are <strong>${same ? 'SAME' : 'DIFFERENT'}</strong>, so your answer will be <strong>${same ? 'POSITIVE (+)' : 'NEGATIVE (-)'}</strong>.`;
+            }
+
+            hintBox.innerHTML = hintText;
+            hintBox.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
+
