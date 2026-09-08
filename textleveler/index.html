@@ -1,0 +1,247 @@
+import React, { useState } from 'react';
+import { BookOpen, SlidersHorizontal, Layers, ListFilter, ArrowRight, Wand2, AlertCircle, Loader2 } from 'lucide-react';
+
+const DEFAULT_TEXT = "Cellular respiration is a complex metabolic pathway that breaks down glucose and produces adenosine triphosphate (ATP). The stages of aerobic cellular respiration include glycolysis, pyruvate oxidation, the citric acid cycle, and oxidative phosphorylation.";
+
+export default function TextRelevelingApp() {
+  const [inputText, setInputText] = useState(DEFAULT_TEXT);
+  const [gradeLevel, setGradeLevel] = useState(12);
+  const [focusMode, setFocusMode] = useState('vocabulary');
+  const [adaptedText, setAdaptedText] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const generateAdaptedText = async () => {
+    if (!inputText.trim()) {
+      setError("Please enter some text to adapt.");
+      return;
+    }
+
+    setIsLoading(true);
+    setError('');
+
+    try {
+      // We construct a specific prompt forcing the LLM to return HTML with our Tailwind classes
+      let modeInstructions = "";
+      if (focusMode === 'vocabulary') {
+        modeInstructions = "Simplify complex words. Highlight changed/simplified words using this exact HTML tag: <span class='bg-amber-100 text-amber-900 px-1 rounded font-medium'>simplified word</span>";
+      } else if (focusMode === 'structure') {
+        modeInstructions = "Use shorter, simpler sentences. Highlight significantly changed sentences using this exact HTML tag: <span class='bg-emerald-100 text-emerald-900 px-1 rounded font-medium'>simplified sentence</span>";
+      } else if (focusMode === 'summary') {
+        modeInstructions = "Output an HTML unordered list summarizing the text. Format it as: <ul class='list-disc pl-5 space-y-2'><li>point 1</li></ul>. You can highlight simplified terms using the <span class='bg-amber-100 text-amber-900 px-1 rounded font-medium'> class.";
+      }
+
+      const prompt = `
+        You are an expert reading intervention specialist. Rewrite the following text to a Grade ${gradeLevel} reading level.
+        
+        CRITICAL RULES:
+        1. Output ONLY raw HTML. Do not include markdown formatting (do NOT wrap in \`\`\`html).
+        2. ${modeInstructions}
+        
+        Original Text:
+        "${inputText}"
+      `;
+
+      const apiKey = ""; // Canvas injects the API key at runtime
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+      const payload = {
+        contents: [{ parts: [{ text: prompt }] }],
+      };
+
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status}`);
+      }
+
+      const result = await response.json();
+      const candidate = result.candidates?.[0];
+
+      if (candidate && candidate.content?.parts?.[0]?.text) {
+        let textResult = candidate.content.parts[0].text;
+        // Clean up any potential markdown fences the LLM might have included despite instructions
+        textResult = textResult.replace(/```html/g, '').replace(/```/g, '');
+        setAdaptedText(textResult);
+      } else {
+        throw new Error("Unexpected API response structure.");
+      }
+
+    } catch (err) {
+      console.error(err);
+      setError("Failed to generate adapted text. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-800 p-4 md:p-8 font-sans">
+      <div className="max-w-5xl mx-auto space-y-6">
+        
+        {/* Header */}
+        <header className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex items-center gap-4">
+          <div className="bg-blue-600 p-3 rounded-xl text-white shadow-inner">
+            <BookOpen size={28} />
+          </div>
+          <div className="flex-grow">
+            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">AI Text Releveling</h1>
+            <p className="text-slate-500 font-medium mt-1">Paste any text and adapt its readability dynamically.</p>
+          </div>
+        </header>
+
+        {/* Controls Section */}
+        <section className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+          <h2 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-6 flex items-center gap-2">
+            <SlidersHorizontal size={16} /> Configuration Parameters
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
+            {/* Grade Level Slider */}
+            <div className="space-y-4">
+              <div className="flex justify-between items-end">
+                <label htmlFor="gradeLevel" className="font-semibold text-slate-700 flex items-center gap-2">
+                  <Layers size={18} className="text-blue-500"/> Target Reading Level
+                </label>
+                <span className="text-2xl font-black text-blue-600">Grade {gradeLevel}</span>
+              </div>
+              <input
+                type="range"
+                id="gradeLevel"
+                min="3"
+                max="12"
+                step="1"
+                value={gradeLevel}
+                onChange={(e) => setGradeLevel(parseInt(e.target.value))}
+                className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+              />
+              <div className="flex justify-between text-xs font-semibold text-slate-400 px-1">
+                <span>Elementary (3)</span>
+                <span>Middle (8)</span>
+                <span>High School (12)</span>
+              </div>
+            </div>
+
+            {/* Focus Mode Selector */}
+            <div className="space-y-4">
+              <label htmlFor="focusMode" className="font-semibold text-slate-700 flex items-center gap-2">
+                <ListFilter size={18} className="text-blue-500"/> Differentiation Focus
+              </label>
+              <div className="relative">
+                <select
+                  id="focusMode"
+                  value={focusMode}
+                  onChange={(e) => setFocusMode(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block p-3 pr-10 appearance-none font-medium shadow-sm transition-all"
+                >
+                  <option value="vocabulary">Simplify Vocabulary</option>
+                  <option value="structure">Adapt Sentence Structure</option>
+                  <option value="summary">Bullet Point Summary</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
+                  <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-end border-t border-slate-100 pt-6">
+             <button 
+                onClick={generateAdaptedText}
+                disabled={isLoading || !inputText.trim()}
+                className="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-xl shadow-md transition-all flex items-center gap-2"
+              >
+                {isLoading ? (
+                  <><Loader2 size={20} className="animate-spin" /> Adapting Text...</>
+                ) : (
+                  <><Wand2 size={20} /> Transform Text</>
+                )}
+              </button>
+          </div>
+        </section>
+
+        {/* Error Message Display */}
+        {error && (
+          <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl flex items-start gap-3">
+            <AlertCircle className="text-red-500 flex-shrink-0 mt-0.5" size={20} />
+            <p className="text-red-700 font-medium">{error}</p>
+          </div>
+        )}
+
+        {}
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+          
+          {/* Original Text Input Panel */}
+          <div className="bg-white border border-slate-200 rounded-2xl shadow-sm flex flex-col overflow-hidden">
+            <div className="bg-slate-100 border-b border-slate-200 p-4 px-6">
+              <h3 className="font-bold text-slate-700">Source Text</h3>
+              <p className="text-xs text-slate-500 font-medium">Paste your text here</p>
+            </div>
+            <div className="p-0 flex-grow relative">
+              <textarea
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                placeholder="Paste the text you want to adapt here..."
+                className="w-full h-full min-h-[300px] p-6 text-lg text-slate-700 leading-relaxed resize-none focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+              />
+            </div>
+          </div>
+
+          {/* Adapted Text Panel */}
+          <div className="bg-white border-2 border-blue-100 rounded-2xl shadow-md flex flex-col overflow-hidden relative min-h-[300px]">
+            <div className="absolute top-4 right-4 text-blue-200 opacity-50 pointer-events-none">
+              <ArrowRight size={48} />
+            </div>
+            <div className="bg-blue-50 border-b border-blue-100 p-4 px-6 flex justify-between items-center z-10">
+              <div>
+                <h3 className="font-bold text-blue-900">Adapted Output</h3>
+                <p className="text-xs text-blue-600 font-bold uppercase tracking-wider mt-1">Target: Grade {gradeLevel}</p>
+              </div>
+              <span className="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                {focusMode.charAt(0).toUpperCase() + focusMode.slice(1)} Mode
+              </span>
+            </div>
+            
+            <div className="p-6 text-lg text-slate-800 leading-relaxed flex-grow z-10">
+              {isLoading ? (
+                <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 space-y-4">
+                  <Loader2 size={48} className="animate-spin text-blue-500" />
+                  <p className="font-medium animate-pulse">AI is rewriting text...</p>
+                </div>
+              ) : adaptedText ? (
+                 <div 
+                  className="transition-opacity duration-300"
+                  dangerouslySetInnerHTML={{ __html: adaptedText }}
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-slate-400 italic">
+                  Output will appear here after clicking "Transform Text".
+                </div>
+              )}
+            </div>
+            
+            {/* Legend for highlights */}
+            <div className="bg-slate-50 border-t border-slate-200 p-3 px-6 text-xs flex flex-wrap gap-4 z-10 text-slate-600">
+              <strong className="text-slate-800">Legend:</strong>
+              <div className="flex items-center gap-1.5">
+                <span className="w-3 h-3 rounded-full bg-amber-200 border border-amber-300 inline-block"></span>
+                <span>Vocabulary changes</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-3 h-3 rounded-full bg-emerald-200 border border-emerald-300 inline-block"></span>
+                <span>Structural changes</span>
+              </div>
+            </div>
+          </div>
+
+        </section>
+      </div>
+    </div>
+  );
+}
