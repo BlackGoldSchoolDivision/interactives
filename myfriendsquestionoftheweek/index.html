@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Learn About My Friends! — Landscape Interactive</title>
+<title>Learn About My Friends! — Landscape Interactive v4</title>
 <style>
 :root{
   --cream:#F8E7C9;--cloud:#FFF4E3;--green:#0C7A46;--green2:#075C38;--green3:#064C32;
@@ -16,10 +16,21 @@ html,body{margin:0;min-height:100%;font-family:Arial,"Trebuchet MS",sans-serif;b
 button,input,select{font:inherit}
 button{cursor:pointer}
 .app{
-  display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;
-  align-items:start;padding:16px;min-height:100vh;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  gap:8px;
+  padding:16px;
+  min-height:100vh;
 }
-.board-wrap{min-width:0;display:flex;justify-content:center;align-items:flex-start}
+.board-wrap{
+  flex:0 1 1280px;
+  width:min(1280px,calc(100vw - 340px));
+  min-width:0;
+  display:flex;
+  justify-content:flex-start;
+  align-items:flex-start;
+}
 .board{
   position:relative;
   width:100%;
@@ -84,8 +95,8 @@ button{cursor:pointer}
 .person{background:rgba(255,255,255,.96);border:3px solid white;border-radius:18px;padding:9px;min-height:138px;box-shadow:var(--soft);display:flex;flex-direction:column;align-items:stretch;transition:.15s}
 .person.drag-over{outline:5px solid var(--yellow);transform:scale(1.02)}
 .person-main{width:100%;min-height:72px;display:flex;align-items:center;justify-content:center;gap:12px;padding:5px 8px;border-radius:13px;background:linear-gradient(145deg,#fffaf0,#f4f9f5)}
-.avatar{width:58px;height:58px;flex:0 0 58px;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:var(--titlegreen);color:white;font-weight:900;font-size:25px;box-shadow:0 3px 10px rgba(31,41,51,.12)}
-.avatar img{width:100%;height:100%;object-fit:cover;object-position:center;display:none}
+.avatar{width:68px;height:68px;flex:0 0 68px;border-radius:16px;overflow:hidden;display:grid;place-items:center;background:var(--titlegreen);color:white;font-weight:900;font-size:25px;box-shadow:0 3px 10px rgba(31,41,51,.12)}
+.avatar img{width:100%;height:100%;object-fit:cover;object-position:50% 60%;display:none}
 .avatar.photo-mode img{display:block}
 .avatar.photo-mode .initial{display:none}
 .initial{display:block}
@@ -101,29 +112,32 @@ button{cursor:pointer}
 .ghost .gicon{font-size:45px} .ghost .glabel{font-size:15px}
 
 /* Control panel */
-.panel{position:sticky;top:16px;background:white;border-radius:20px;box-shadow:var(--soft);padding:16px;max-height:calc(100vh - 32px);overflow:auto}
+.panel{flex:0 0 300px;position:sticky;top:16px;width:300px;max-width:300px;background:white;border-radius:20px;box-shadow:var(--soft);padding:14px;max-height:calc(100vh - 32px);overflow-y:auto;overflow-x:hidden}
 .panel h2{margin:0 0 4px;font-size:20px} .panel p{margin:0 0 12px;color:#66717d;font-size:13px;line-height:1.35}
 .controls{display:grid;gap:9px} .row{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.controls button,.controls select{min-height:40px;border:1px solid #dde4e8;background:#f8fafb;border-radius:11px;padding:8px 9px;font-weight:800;color:var(--ink)}
+.controls button,.controls select{min-width:0;width:100%;min-height:40px;border:1px solid #dde4e8;background:#f8fafb;border-radius:11px;padding:8px 9px;font-weight:800;color:var(--ink)}
 .controls .accent{background:var(--titlegreen);color:white;border-color:var(--titlegreen)} .controls .warn{color:#9b3e35}
 .setup{margin:14px 0;padding-top:12px;border-top:1px solid #e5eaee}
 .setup h3{margin:0 0 5px;font-size:16px} .setup .setup-help{font-size:12px;color:#68737f;line-height:1.35;margin-bottom:9px}
 .person-setup{border:1px solid #e2e7eb;border-radius:12px;padding:9px;margin-bottom:8px;background:#fbfcfd}
 .person-setup label{display:block;font-size:11px;font-weight:900;color:#65717c;margin-bottom:4px}
-.person-setup input[type=text]{width:100%;border:1px solid #dce3e8;border-radius:9px;padding:8px;font-weight:800;margin-bottom:7px}
+.person-setup input[type=text]{min-width:0;width:100%;border:1px solid #dce3e8;border-radius:9px;padding:8px;font-weight:800;margin-bottom:7px}
 .setup-buttons{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .setup-buttons button{min-height:34px;padding:6px;font-size:11px}
+.photo-position-controls{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px}
+.photo-position-controls button{min-height:30px;border:1px solid #e0e6ea;background:#fff;border-radius:8px;padding:5px;font-size:10px;font-weight:800;color:#5d6975}
+.photo-position-controls.hidden{display:none}
 .status{margin-top:11px;padding:9px 10px;border-radius:11px;background:#f5f7f8;color:#586572;font-size:12px;line-height:1.35}
 dialog{border:0;border-radius:20px;width:min(620px,90vw);box-shadow:var(--shadow);padding:0}dialog::backdrop{background:rgba(20,30,40,.5)}.modal{padding:22px}.modal h2{margin-top:0}.modal li{margin:.45em 0;line-height:1.35}.close{float:right;border:0;border-radius:50%;width:36px;height:36px;font-weight:900}
 
-@media(max-width:980px){
- .app{grid-template-columns:1fr} .panel{position:static;max-height:none} .board{max-width:100%}
+@media(max-width:1100px){
+ .app{display:block;padding:10px} .board-wrap{width:100%;max-width:100%;margin:0 auto} .panel{position:static;width:100%;max-width:none;max-height:none;margin:10px auto 0} .board{max-width:100%}
 }
 @media(max-width:650px){
  .app{padding:7px;gap:8px} .board{border-radius:16px}
  .choice{width:21%;height:34%;top:8%;border-radius:12px} .choice.left{left:19%} .choice.right{right:19%}
  .people{left:4%;right:4%;bottom:7%;gap:2%} .person{min-height:82px;padding:4px;border-radius:10px}
- .person-main{min-height:42px;padding:3px 4px;gap:6px;border-radius:8px} .avatar{width:32px;height:32px;flex-basis:32px;font-size:15px} .card-name{font-size:9px}
+ .person-main{min-height:42px;padding:3px 4px;gap:6px;border-radius:8px} .avatar{width:36px;height:36px;flex-basis:36px;font-size:15px;border-radius:9px} .card-name{font-size:9px}
  .answer{min-height:22px;font-size:8px;padding:2px} .answer .ai{font-size:13px} .chip{bottom:1%;font-size:7px;padding:3px 7px}
  .meta{font-size:7px;padding:3px 6px} .or{width:25px;height:25px;font-size:8px}
 }
@@ -195,7 +209,7 @@ dialog{border:0;border-radius:20px;width:min(620px,90vw);box-shadow:var(--shadow
 
   <div class="setup">
    <h3>People Cards</h3>
-   <div class="setup-help">Type a name for a reusable card, or add a photo. Photos appear as a small face/avatar so portrait pictures do not get stretched or heavily cropped. You can switch back to name-only anytime.</div>
+   <div class="setup-help">Type a name for a reusable card, or add a photo. Photos appear as a small profile card beside the name. If the face is too high or low, use Photo ↑ / Photo ↓ to reposition it. You can switch back to name-only anytime.</div>
 
    <div class="person-setup" data-setup="peer1">
     <label>Friend 1</label>
@@ -203,6 +217,10 @@ dialog{border:0;border-radius:20px;width:min(620px,90vw);box-shadow:var(--shadow
     <div class="setup-buttons">
      <button data-photo="peer1">📷 Add photo</button>
      <button data-nameonly="peer1">Name only</button>
+    </div>
+    <div class="photo-position-controls" data-pos-controls="peer1">
+     <button data-photo-up="peer1" title="Move visible photo area upward">Photo ↑</button>
+     <button data-photo-down="peer1" title="Move visible photo area downward">Photo ↓</button>
     </div>
     <input type="file" data-file="peer1" accept="image/*" hidden>
    </div>
@@ -214,6 +232,10 @@ dialog{border:0;border-radius:20px;width:min(620px,90vw);box-shadow:var(--shadow
      <button data-photo="target">📷 Add photo</button>
      <button data-nameonly="target">Name only</button>
     </div>
+    <div class="photo-position-controls" data-pos-controls="target">
+     <button data-photo-up="target" title="Move visible photo area upward">Photo ↑</button>
+     <button data-photo-down="target" title="Move visible photo area downward">Photo ↓</button>
+    </div>
     <input type="file" data-file="target" accept="image/*" hidden>
    </div>
 
@@ -223,6 +245,10 @@ dialog{border:0;border-radius:20px;width:min(620px,90vw);box-shadow:var(--shadow
     <div class="setup-buttons">
      <button data-photo="peer2">📷 Add photo</button>
      <button data-nameonly="peer2">Name only</button>
+    </div>
+    <div class="photo-position-controls" data-pos-controls="peer2">
+     <button data-photo-up="peer2" title="Move visible photo area upward">Photo ↑</button>
+     <button data-photo-down="peer2" title="Move visible photo area downward">Photo ↓</button>
     </div>
     <input type="file" data-file="peer2" accept="image/*" hidden>
    </div>
@@ -257,13 +283,13 @@ dialog{border:0;border-radius:20px;width:min(620px,90vw);box-shadow:var(--shadow
 
 <script>
 const Q=[{"left": "vanilla", "right": "chocolate", "leftIcon": "🍦", "rightIcon": "🍦", "originalSlide": 3}, {"left": "vanilla", "right": "chocolate", "leftIcon": "🍦", "rightIcon": "🍦", "originalSlide": 4}, {"left": "french fries", "right": "popcorn", "leftIcon": "🍟", "rightIcon": "🍿", "originalSlide": 5}, {"left": "dogs", "right": "cats", "leftIcon": "🐶", "rightIcon": "🐱", "originalSlide": 6}, {"left": "green", "right": "blue", "leftIcon": "🟢", "rightIcon": "🔵", "originalSlide": 7}, {"left": "cake", "right": "pie", "leftIcon": "🎂", "rightIcon": "🥧", "originalSlide": 8}, {"left": "bananas", "right": "apples", "leftIcon": "🍌", "rightIcon": "🍎", "originalSlide": 9}, {"left": "purple", "right": "yellow", "leftIcon": "🟣", "rightIcon": "🟡", "originalSlide": 10}, {"left": "whales", "right": "turtles", "leftIcon": "🐋", "rightIcon": "🐢", "originalSlide": 11}, {"left": "bikes", "right": "cars", "leftIcon": "🚲", "rightIcon": "🚗", "originalSlide": 12}, {"left": "soda pop", "right": "water", "leftIcon": "🥤", "rightIcon": "💧", "originalSlide": 13}, {"left": "cake", "right": "pie", "leftIcon": "🎂", "rightIcon": "🥧", "originalSlide": 14}, {"left": "t-shirts", "right": "sweatshirts", "leftIcon": "👕", "rightIcon": "🧥", "originalSlide": 15}, {"left": "sun", "right": "clouds", "leftIcon": "☀️", "rightIcon": "☁️", "originalSlide": 16}, {"left": "balloons", "right": "teddy bears", "leftIcon": "🎈", "rightIcon": "🧸", "originalSlide": 17}, {"left": "red", "right": "orange", "leftIcon": "🔴", "rightIcon": "🟠", "originalSlide": 18}, {"left": "cars", "right": "airplanes", "leftIcon": "🚗", "rightIcon": "✈️", "originalSlide": 19}, {"left": "ghosts", "right": "pumpkins", "leftIcon": "👻", "rightIcon": "🎃", "originalSlide": 20}, {"left": "frogs", "right": "fish", "leftIcon": "🐸", "rightIcon": "🐟", "originalSlide": 21}, {"left": "elephants", "right": "giraffes", "leftIcon": "🐘", "rightIcon": "🦒", "originalSlide": 22}, {"left": "pool", "right": "zoo", "leftIcon": "🏊", "rightIcon": "🦁", "originalSlide": 23}, {"left": "forest", "right": "beach", "leftIcon": "🌲", "rightIcon": "🏖️", "originalSlide": 24}, {"left": "mountains", "right": "ocean", "leftIcon": "🏔️", "rightIcon": "🌊", "originalSlide": 25}, {"left": "park", "right": "store", "leftIcon": "🌳", "rightIcon": "🏪", "originalSlide": 26}, {"left": "donut", "right": "cookie", "leftIcon": "🍩", "rightIcon": "🍪", "originalSlide": 27}, {"left": "snow", "right": "rain", "leftIcon": "❄️", "rightIcon": "🌧️", "originalSlide": 28}, {"left": "cards", "right": "flowers", "leftIcon": "💌", "rightIcon": "🌷", "originalSlide": 29}, {"left": "cheese", "right": "pepperoni", "leftIcon": "🧀", "rightIcon": "🍕", "originalSlide": 30}, {"left": "broccoli", "right": "potatoes", "leftIcon": "🥦", "rightIcon": "🥔", "originalSlide": 31}, {"left": "turtles", "right": "snakes", "leftIcon": "🐢", "rightIcon": "🐍", "originalSlide": 32}, {"left": "school", "right": "church", "leftIcon": "🏫", "rightIcon": "⛪", "originalSlide": 33}, {"left": "shorts", "right": "pants", "leftIcon": "🩳", "rightIcon": "👖", "originalSlide": 34}, {"left": "t-shirts", "right": "sweatshirts", "leftIcon": "👕", "rightIcon": "🧥", "originalSlide": 35}];
-const KEY='myFriendsQOTW_landscape_v4';
+const KEY='myFriendsQOTW_landscape_v5';
 const DEFAULT={
  question:0,
  profiles:{
-  peer1:{name:'Friend 1',photo:''},
-  target:{name:'Me',photo:''},
-  peer2:{name:'Friend 2',photo:''}
+  peer1:{name:'Friend 1',photo:'',posY:60},
+  target:{name:'Me',photo:'',posY:60},
+  peer2:{name:'Friend 2',photo:'',posY:60}
  },
  answers:{}
 };
@@ -306,8 +332,16 @@ function renderProfiles(){
   const avatar=card.querySelector('.avatar'),img=card.querySelector('img');
   card.querySelector('.card-name').textContent=name;
   card.querySelector('.initial').textContent=initials(name);
-  if(p.photo){img.src=p.photo;avatar.classList.add('photo-mode')}
-  else{img.removeAttribute('src');avatar.classList.remove('photo-mode')}
+  if(p.photo){
+   img.src=p.photo;
+   img.style.objectPosition=`50% ${p.posY ?? 60}%`;
+   avatar.classList.add('photo-mode');
+  } else {
+   img.removeAttribute('src');
+   avatar.classList.remove('photo-mode');
+  }
+  const controls=document.querySelector(`[data-pos-controls="${id}"]`);
+  if(controls) controls.classList.toggle('hidden',!p.photo);
   const a=answers()[id], box=card.querySelector('.answer');
   if(a){
    box.classList.remove('empty');
@@ -383,6 +417,20 @@ $$('[data-nameonly]').forEach(btn=>btn.onclick=()=>{
  save();renderProfiles();
  status.textContent=`${S.profiles[id].name||'This person'} is now using a reusable name-only card.`;
 });
+$$('[data-photo-up]').forEach(btn=>btn.onclick=()=>{
+ const id=btn.dataset.photoUp;
+ if(!S.profiles[id].photo)return;
+ S.profiles[id].posY=Math.max(0,(S.profiles[id].posY ?? 60)-10);
+ save();renderProfiles();
+ status.textContent='Photo moved up.';
+});
+$$('[data-photo-down]').forEach(btn=>btn.onclick=()=>{
+ const id=btn.dataset.photoDown;
+ if(!S.profiles[id].photo)return;
+ S.profiles[id].posY=Math.min(100,(S.profiles[id].posY ?? 60)+10);
+ save();renderProfiles();
+ status.textContent='Photo moved down.';
+});
 $$('[data-file]').forEach(inp=>{
  inp.onchange=async e=>{
   const id=e.target.dataset.file,file=e.target.files?.[0];
@@ -390,6 +438,7 @@ $$('[data-file]').forEach(inp=>{
   status.textContent='Adding photo…';
   try{
    S.profiles[id].photo=await imageData(file);
+   S.profiles[id].posY=60;
    save();renderProfiles();status.textContent='Photo added. The same card will be reused on every question.';
   }catch{status.textContent='That photo could not be added.'}
   e.target.value='';
