@@ -181,12 +181,6 @@
             <section id="section-practice" class="hidden">
                 <div class="max-w-2xl mx-auto flex flex-col items-center">
                     
-                    <!-- Student Name Input (Added for Tracking) -->
-                    <div class="w-full bg-white border border-gray-200 rounded-lg p-4 mb-4 flex items-center justify-between shadow-sm">
-                        <label for="student-name" class="font-bold text-gray-700">Student Name:</label>
-                        <input type="text" id="student-name" placeholder="Enter name to record score..." class="flex-1 ml-4 p-2 border border-gray-300 rounded focus:border-blue-500 focus:outline-none">
-                    </div>
-
                     <div class="w-full flex justify-between items-center mb-6">
                         <div class="text-lg font-semibold text-gray-700">Score: <span id="score" class="text-blue-600">0</span></div>
                         <div class="flex gap-2">
@@ -589,26 +583,11 @@
 
             const inputElement = document.getElementById('answer-input');
             const userAnswer = parseInt(inputElement.value);
-            const studentName = document.getElementById('student-name').value.trim() || 'Anonymous';
 
             if (isNaN(userAnswer)) return;
 
             const container = document.getElementById('question-container');
             const isCorrect = (userAnswer === currentQuestion.answer);
-
-            // Send data back to Google Sheets silently
-            if (typeof google !== 'undefined' && google.script) {
-                const data = {
-                    studentName: studentName,
-                    category: currentQuestion.type, 
-                    question: currentQuestion.text, // The actual text of the question
-                    userAnswer: userAnswer,
-                    correctAnswer: currentQuestion.answer,
-                    isCorrect: isCorrect
-                };
-                // Call the recordStudentAnswer function in Code.gs
-                google.script.run.recordStudentAnswer(data);
-            }
 
             if (isCorrect) {
                 // Correct
