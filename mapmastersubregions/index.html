@@ -285,7 +285,7 @@ button, select { font:inherit; }
 
 .region-grid {
   display:grid;
-  grid-template-columns:repeat(5, 1fr);
+  grid-template-columns:repeat(6, 1fr);
   gap:7px;
   padding:6px;
   margin-bottom:18px;
@@ -655,13 +655,13 @@ button, select { font:inherit; }
       <div class="setup-head">
         <div class="setup-title-wrap">
           <h1>World Subregion Challenge</h1>
-          <p>Choose a continent or focus on a smaller subregion, then identify every country on the map.</p>
+          <p>Choose a world region or smaller subregion, then identify every country on the map.</p>
         </div>
         <div class="logo-badge">🌍</div>
       </div>
 
       <div class="setup-body">
-        <span class="setup-label">Choose a continent</span>
+        <span class="setup-label">Choose a world region</span>
         <div class="region-grid" id="regionGrid"></div>
 
         <span class="setup-label subregion-label">Choose a subregion</span>
@@ -711,9 +711,41 @@ const REGION_META = {
   "Americas": { label:"Americas", icon:"🌎" },
   "Europe": { label:"Europe", icon:"🌍" },
   "Africa": { label:"Africa", icon:"🌍" },
+  "Middle East": { label:"Middle East", icon:"🧭" },
   "Asia": { label:"Asia", icon:"🌏" },
   "Oceania": { label:"Oceania", icon:"🌏" }
 };
+
+// For this social-studies version, the Middle East is treated as its own
+// classroom region rather than being folded into Asia/Africa.
+// Definitions vary; this grouping is intentionally focused on the countries
+// most commonly studied together in contemporary global issues.
+const MIDDLE_EAST_COUNTRIES = new Set([
+  "Bahrain",
+  "Egypt",
+  "Iran",
+  "Iraq",
+  "Israel",
+  "Jordan",
+  "Kuwait",
+  "Lebanon",
+  "Oman",
+  "Qatar",
+  "Saudi Arabia",
+  "Syria",
+  "Turkey",
+  "United Arab Emirates",
+  "Yemen",
+  "West Bank"
+]);
+
+// Once the Middle East is separated out, the remaining countries that the
+// source data calls "Western Asia" are best presented to students as the Caucasus.
+const CAUCASUS_COUNTRIES = new Set([
+  "Armenia",
+  "Azerbaijan",
+  "Georgia"
+]);
 
 const SUBREGION_META = {
   "Americas": [
@@ -743,13 +775,17 @@ const SUBREGION_META = {
     { value:"Southern Africa", label:"Southern Africa" }
   ],
 
+  "Middle East": [
+    { value:"All", label:"Middle East" }
+  ],
+
   "Asia": [
     { value:"All", label:"All Asia" },
-    { value:"Western Asia", label:"Western Asia" },
+    { value:"Caucasus", label:"Caucasus" },
     { value:"Central Asia", label:"Central Asia" },
-    { value:"Southern Asia", label:"Southern Asia" },
+    { value:"Southern Asia", label:"South Asia" },
     { value:"South-Eastern Asia", label:"Southeast Asia" },
-    { value:"Eastern Asia", label:"Eastern Asia" }
+    { value:"Eastern Asia", label:"East Asia" }
   ],
 
   "Oceania": [
@@ -761,8 +797,7 @@ const SUBREGION_META = {
   ]
 };
 
-// Stable views avoid awkward dateline wrapping in Oceania and keep each
-// subregion framed like a deliberate classroom map rather than a random zoom.
+// Stable views keep each classroom region framed deliberately.
 const AREA_VIEWS = {
   "Americas|All": [[56,-168],[-58,-30]],
   "Americas|North America": [[84,-175],[5,-48]],
@@ -785,8 +820,10 @@ const AREA_VIEWS = {
   "Africa|Eastern Africa": [[22,20],[-18,53]],
   "Africa|Southern Africa": [[-8,10],[-37,42]],
 
+  "Middle East|All": [[42,20],[11,66]],
+
   "Asia|All": [[75,25],[-12,155]],
-  "Asia|Western Asia": [[47,22],[10,66]],
+  "Asia|Caucasus": [[45,37],[37,52]],
   "Asia|Central Asia": [[57,43],[32,91]],
   "Asia|Southern Asia": [[39,58],[3,101]],
   "Asia|South-Eastern Asia": [[30,89],[-13,143]],
@@ -896,8 +933,30 @@ function showMessage(text, ms=1100) {
 
 function areaCountries(region=currentRegion, subregion=currentSubregion) {
   return Object.values(countriesData).filter(country => {
-    if (country.region !== region) return false;
-    if (subregion !== "All" && country.subregion !== subregion) return false;
+    const name = country.name;
+
+    // Middle East is its own classroom region and is excluded from all
+    // continent-based pools so students never see the same country twice.
+    if (region === "Middle East") {
+      return MIDDLE_EAST_COUNTRIES.has(name);
+    }
+
+    if (MIDDLE_EAST_COUNTRIES.has(name)) {
+      return false;
+    }
+
+    if (country.region !== region) {
+      return false;
+    }
+
+    if (region === "Asia" && subregion === "Caucasus") {
+      return CAUCASUS_COUNTRIES.has(name);
+    }
+
+    if (subregion !== "All") {
+      return country.subregion === subregion;
+    }
+
     return true;
   });
 }
@@ -927,6 +986,13 @@ function setAreaView() {
 
 function updateSelectionNote() {
   const count = areaCountries().length;
+
+  if (currentRegion === "Middle East") {
+    els.selectionNote.textContent =
+      `Middle East · ${count} places in this challenge · classroom grouping for contemporary global studies`;
+    return;
+  }
+
   els.selectionNote.textContent =
     `${currentAreaLabel()} · ${count} countr${count === 1 ? "y" : "ies"} in this challenge`;
 }
@@ -1179,12 +1245,7 @@ function skipCurrent() {
 }
 
 function buildQuestionSet(region, subregion, onlyNames=null) {
-  let list = Object.values(countriesData)
-    .filter(c => c.region === region);
-
-  if (subregion !== "All") {
-    list = list.filter(c => c.subregion === subregion);
-  }
+  let list = areaCountries(region, subregion);
 
   if (onlyNames) {
     list = list.filter(c => onlyNames.has(c.name));
