@@ -273,6 +273,293 @@ button, select { font:inherit; }
   padding:24px 30px 28px;
 }
 
+
+/* ---------- STUDY / GAME MODE ---------- */
+
+.mode-switch {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px;
+  padding:6px;
+  margin-bottom:20px;
+  border-radius:17px;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.07);
+}
+
+.mode-btn {
+  min-height:52px;
+  border:0;
+  border-radius:12px;
+  background:transparent;
+  color:#aebed2;
+  font-weight:900;
+  cursor:pointer;
+  transition:.16s ease;
+}
+
+.mode-btn span {
+  display:block;
+  font-size:15px;
+}
+
+.mode-btn small {
+  display:block;
+  margin-top:2px;
+  color:#7f94ae;
+  font-size:10px;
+  font-weight:800;
+}
+
+.mode-btn.active {
+  background:#4f62df;
+  color:#fff;
+  box-shadow:0 8px 22px rgba(50,72,190,.25);
+}
+
+.mode-btn.active small {
+  color:#dfe5ff;
+}
+
+.study-controls {
+  position:absolute;
+  z-index:460;
+  left:14px;
+  top:96px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:8px;
+  border-radius:15px;
+  background:rgba(19,35,58,.94);
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 12px 32px rgba(0,0,0,.18);
+  backdrop-filter:blur(10px);
+}
+
+.study-controls.hidden {
+  display:none;
+}
+
+.study-controls-label {
+  padding:0 4px;
+  color:#f4cf58;
+  font-size:11px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+}
+
+.study-select {
+  height:38px;
+  max-width:210px;
+  padding:0 30px 0 10px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.12);
+  background:#142844;
+  color:#fff;
+  font-family:inherit;
+  font-weight:900;
+  outline:none;
+}
+
+.study-card {
+  position:absolute;
+  z-index:470;
+  right:16px;
+  bottom:16px;
+  width:min(365px, calc(100vw - 32px));
+  padding:18px;
+  border-radius:22px;
+  background:linear-gradient(180deg,rgba(18,37,61,.97),rgba(10,23,40,.97));
+  color:#fff;
+  border:1px solid rgba(255,255,255,.13);
+  box-shadow:0 18px 55px rgba(0,0,0,.3);
+  backdrop-filter:blur(14px);
+}
+
+.study-card.hidden {
+  display:none;
+}
+
+.study-card-head {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding-bottom:13px;
+  margin-bottom:13px;
+  border-bottom:1px solid rgba(255,255,255,.09);
+}
+
+.study-flag {
+  flex:0 0 auto;
+  width:54px;
+  height:54px;
+  display:grid;
+  place-items:center;
+  border-radius:16px;
+  background:rgba(255,255,255,.07);
+  font-size:34px;
+}
+
+.study-country-name {
+  margin:0;
+  font-size:24px;
+  line-height:1.05;
+  letter-spacing:-.025em;
+}
+
+.study-area-name {
+  margin-top:4px;
+  color:#9fb3ca;
+  font-size:11px;
+  font-weight:900;
+}
+
+.study-facts {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.study-fact {
+  min-height:66px;
+  padding:10px 11px;
+  border-radius:13px;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.07);
+}
+
+.study-fact.wide {
+  grid-column:1 / -1;
+}
+
+.study-fact small {
+  display:block;
+  margin-bottom:3px;
+  color:#8fa5bf;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.study-fact strong {
+  font-size:13px;
+  line-height:1.3;
+}
+
+.study-tip {
+  position:absolute;
+  z-index:455;
+  left:50%;
+  top:96px;
+  transform:translateX(-50%);
+  max-width:calc(100vw - 550px);
+  padding:9px 13px;
+  border-radius:999px;
+  color:#eef5ff;
+  background:rgba(18,33,54,.88);
+  border:1px solid rgba(255,255,255,.12);
+  font-size:11px;
+  font-weight:900;
+  white-space:nowrap;
+  pointer-events:none;
+}
+
+.study-tip.hidden {
+  display:none;
+}
+
+.topbar.study-mode .stats,
+.topbar.study-mode .skip-btn,
+.topbar.study-mode .flag,
+.topbar.study-mode .timer {
+  display:none;
+}
+
+.topbar.study-mode {
+  grid-template-columns:1fr auto;
+}
+
+.topbar.study-mode .prompt {
+  justify-self:start;
+}
+
+.topbar.study-mode .prompt-prefix {
+  color:#f4cf58;
+}
+
+.topbar.study-mode .country-chip {
+  max-width:420px;
+}
+
+#shuffleRow.mode-hidden {
+  display:none;
+}
+
+@media (max-width:760px) {
+  .study-controls {
+    left:8px;
+    right:8px;
+    top:80px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+
+  .study-controls-label {
+    display:none;
+  }
+
+  .study-select {
+    width:100%;
+    max-width:none;
+    font-size:11px;
+  }
+
+  .study-tip {
+    display:none;
+  }
+
+  .study-card {
+    left:8px;
+    right:8px;
+    bottom:8px;
+    width:auto;
+    padding:14px;
+    border-radius:18px;
+  }
+
+  .study-card-head {
+    padding-bottom:10px;
+    margin-bottom:10px;
+  }
+
+  .study-flag {
+    width:44px;
+    height:44px;
+    font-size:28px;
+    border-radius:13px;
+  }
+
+  .study-country-name {
+    font-size:20px;
+  }
+
+  .study-fact {
+    min-height:56px;
+    padding:8px 9px;
+  }
+
+  .topbar.study-mode {
+    grid-template-columns:1fr auto;
+  }
+
+  .topbar.study-mode .country-chip {
+    max-width:58vw;
+  }
+}
+
 .setup-label {
   display:block;
   margin-bottom:10px;
@@ -650,6 +937,51 @@ button, select { font:inherit; }
   <div id="map"></div>
   <div class="map-message" id="mapMessage"></div>
 
+  <div class="study-controls hidden" id="studyControls">
+    <span class="study-controls-label">Study area</span>
+    <select class="study-select" id="studyRegionSelect" aria-label="Study world region"></select>
+    <select class="study-select" id="studySubregionSelect" aria-label="Study subregion"></select>
+  </div>
+
+  <div class="study-tip hidden" id="studyTip">Click any highlighted country to see its name and facts.</div>
+
+  <aside class="study-card hidden" id="studyCard">
+    <div class="study-card-head">
+      <div class="study-flag" id="studyFlag">🌍</div>
+      <div>
+        <h2 class="study-country-name" id="studyCountryName">Country</h2>
+        <div class="study-area-name" id="studyAreaName"></div>
+      </div>
+    </div>
+
+    <div class="study-facts">
+      <div class="study-fact">
+        <small>Capital</small>
+        <strong id="studyCapital">—</strong>
+      </div>
+
+      <div class="study-fact">
+        <small>Population</small>
+        <strong id="studyPopulation">—</strong>
+      </div>
+
+      <div class="study-fact">
+        <small>Subregion</small>
+        <strong id="studySubregionFact">—</strong>
+      </div>
+
+      <div class="study-fact">
+        <small>Land borders</small>
+        <strong id="studyBorderCount">—</strong>
+      </div>
+
+      <div class="study-fact wide">
+        <small>Neighbouring countries</small>
+        <strong id="studyNeighbours">—</strong>
+      </div>
+    </div>
+  </aside>
+
   <section class="setup" id="setup">
     <div class="setup-card">
       <div class="setup-head">
@@ -661,6 +993,18 @@ button, select { font:inherit; }
       </div>
 
       <div class="setup-body">
+        <span class="setup-label">Choose a mode</span>
+        <div class="mode-switch" id="modeSwitch">
+          <button class="mode-btn active" data-mode="study">
+            <span>📚 Study</span>
+            <small>Click countries to learn</small>
+          </button>
+          <button class="mode-btn" data-mode="game">
+            <span>🎯 Game</span>
+            <small>Find the country</small>
+          </button>
+        </div>
+
         <span class="setup-label">Choose a world region</span>
         <div class="region-grid" id="regionGrid"></div>
 
@@ -668,7 +1012,7 @@ button, select { font:inherit; }
         <div class="subregion-grid" id="subregionGrid"></div>
         <div class="selection-note" id="selectionNote"></div>
 
-        <div class="setup-row">
+        <div class="setup-row" id="shuffleRow">
           <div>
             <strong>Shuffle questions</strong>
             <span>Countries appear in a random order each game.</span>
@@ -676,7 +1020,7 @@ button, select { font:inherit; }
           <button class="toggle on" id="shuffleToggle" aria-label="Toggle shuffle"></button>
         </div>
 
-        <button class="start-btn" id="startBtn">Start Challenge →</button>
+        <button class="start-btn" id="startBtn">Start Studying →</button>
       </div>
     </div>
   </section>
@@ -857,6 +1201,8 @@ L.control.attribution({prefix:false}).addAttribution("Country boundaries: Natura
 
 const els = {
   setup:document.getElementById("setup"),
+  modeSwitch:document.getElementById("modeSwitch"),
+  shuffleRow:document.getElementById("shuffleRow"),
   regionGrid:document.getElementById("regionGrid"),
   subregionGrid:document.getElementById("subregionGrid"),
   selectionNote:document.getElementById("selectionNote"),
@@ -878,7 +1224,22 @@ const els = {
   summaryAccuracy:document.getElementById("summaryAccuracy"),
   summaryTime:document.getElementById("summaryTime"),
   practiceBtn:document.getElementById("practiceBtn"),
-  playAgainBtn:document.getElementById("playAgainBtn")
+  playAgainBtn:document.getElementById("playAgainBtn"),
+  topbar:document.querySelector(".topbar"),
+  promptPrefix:document.querySelector(".prompt-prefix"),
+  studyControls:document.getElementById("studyControls"),
+  studyRegionSelect:document.getElementById("studyRegionSelect"),
+  studySubregionSelect:document.getElementById("studySubregionSelect"),
+  studyTip:document.getElementById("studyTip"),
+  studyCard:document.getElementById("studyCard"),
+  studyFlag:document.getElementById("studyFlag"),
+  studyCountryName:document.getElementById("studyCountryName"),
+  studyAreaName:document.getElementById("studyAreaName"),
+  studyCapital:document.getElementById("studyCapital"),
+  studyPopulation:document.getElementById("studyPopulation"),
+  studySubregionFact:document.getElementById("studySubregionFact"),
+  studyBorderCount:document.getElementById("studyBorderCount"),
+  studyNeighbours:document.getElementById("studyNeighbours")
 };
 
 let countriesData = {};
@@ -888,6 +1249,9 @@ let layerByName = new Map();
 
 let currentRegion = "Americas";
 let currentSubregion = "All";
+let selectedMode = "study";
+let studyRunning = false;
+let studySelectedCountry = null;
 let shuffleQuestions = true;
 let questions = [];
 let current = null;
@@ -930,6 +1294,193 @@ function showMessage(text, ms=1100) {
   clearTimeout(showMessage._t);
   showMessage._t=setTimeout(()=>els.mapMessage.classList.remove("show"),ms);
 }
+
+
+const factsByCca3 = new Map(
+  countryFacts
+    .filter(country => country.cca3)
+    .map(country => [country.cca3, country])
+);
+
+function setupModeUI() {
+  [...els.modeSwitch.querySelectorAll(".mode-btn")].forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.mode === selectedMode);
+  });
+
+  const isStudy = selectedMode === "study";
+  els.shuffleRow.classList.toggle("mode-hidden", isStudy);
+  els.startBtn.textContent = isStudy
+    ? "Start Studying →"
+    : "Start Challenge →";
+}
+
+function populateStudySelectors() {
+  els.studyRegionSelect.innerHTML = "";
+
+  Object.entries(REGION_META).forEach(([key, meta]) => {
+    const option = document.createElement("option");
+    option.value = key;
+    option.textContent = meta.label;
+    option.selected = key === currentRegion;
+    els.studyRegionSelect.appendChild(option);
+  });
+
+  populateStudySubregions();
+}
+
+function populateStudySubregions() {
+  els.studySubregionSelect.innerHTML = "";
+
+  (SUBREGION_META[currentRegion] || []).forEach(item => {
+    const count = areaCountries(currentRegion, item.value).length;
+    const option = document.createElement("option");
+    option.value = item.value;
+    option.textContent = `${item.label} (${count})`;
+    option.selected = item.value === currentSubregion;
+    els.studySubregionSelect.appendChild(option);
+  });
+}
+
+function studyAreaNames() {
+  return new Set(
+    areaCountries(currentRegion, currentSubregion)
+      .map(country => country.name)
+  );
+}
+
+function getCountryNameByCode(code) {
+  const fact = factsByCca3.get(code);
+  return fact ? fact.name.common : null;
+}
+
+function studyRegionLabelFor(country) {
+  if (MIDDLE_EAST_COUNTRIES.has(country.name)) {
+    return "Middle East";
+  }
+
+  if (CAUCAS_COUNTRIES_SAFE.has(country.name)) {
+    return "Caucasus";
+  }
+
+  return country.subregion || country.region;
+}
+
+// Alias keeps this helper resilient if the underlying constant name changes.
+const CAUCAS_COUNTRIES_SAFE =
+  typeof CAUCASUS_COUNTRIES !== "undefined"
+    ? CAUCASUS_COUNTRIES
+    : new Set();
+
+function clearStudySelection() {
+  studySelectedCountry = null;
+  els.studyCard.classList.add("hidden");
+  resetAllStyles();
+}
+
+function showStudyCountry(name) {
+  if (!studyRunning) return;
+
+  const allowed = studyAreaNames();
+
+  if (!allowed.has(name)) {
+    showMessage(`Choose a country in ${currentAreaLabel()}.`, 900);
+    return;
+  }
+
+  const country = countriesData[name];
+  if (!country) return;
+
+  studySelectedCountry = name;
+
+  const neighbours = (country.borders || [])
+    .map(getCountryNameByCode)
+    .filter(Boolean);
+
+  els.studyFlag.textContent = flagEmoji(country.cca2);
+  els.studyCountryName.textContent = country.name;
+  els.studyAreaName.textContent = currentAreaLabel();
+  els.studyCapital.textContent = country.capital?.[0] || "—";
+  els.studyPopulation.textContent = country.population
+    ? Number(country.population).toLocaleString()
+    : "—";
+  els.studySubregionFact.textContent = studyRegionLabelFor(country);
+  els.studyBorderCount.textContent = String(neighbours.length);
+  els.studyNeighbours.textContent = neighbours.length
+    ? neighbours.join(", ")
+    : "No land borders";
+
+  els.studyCard.classList.remove("hidden");
+  resetAllStyles();
+
+  const layer = layerByName.get(name);
+  if (layer) {
+    layer.setStyle({
+      fillColor:"#f4cf58",
+      fillOpacity:1,
+      color:"#ffffff",
+      weight:2.5
+    });
+    layer.bringToFront();
+  }
+}
+
+function updateStudyHUD() {
+  els.topbar.classList.add("study-mode");
+  els.promptPrefix.textContent = "Study";
+  els.countryName.textContent = currentAreaLabel();
+  els.flag.textContent = "🌍";
+  els.progressText.textContent = "STUDY";
+  els.accuracyText.textContent = `${areaCountries().length}`;
+}
+
+function startStudy() {
+  clearInterval(timerId);
+  timerId = null;
+
+  gameRunning = false;
+  studyRunning = true;
+  studySelectedCountry = null;
+  current = null;
+  correctCountries = new Set();
+
+  els.setup.classList.add("hidden");
+  els.summary.classList.add("hidden");
+  els.studyControls.classList.remove("hidden");
+  els.studyTip.classList.remove("hidden");
+  els.studyCard.classList.add("hidden");
+
+  populateStudySelectors();
+  setAreaView();
+  updateStudyHUD();
+  resetAllStyles();
+
+  setTimeout(() => map.invalidateSize(), 50);
+}
+
+function changeStudyArea(region, subregion) {
+  currentRegion = region;
+  currentSubregion = subregion;
+
+  renderRegionButtons();
+  populateStudySelectors();
+  setAreaView();
+  clearStudySelection();
+  updateStudyHUD();
+}
+
+function leaveStudyMode() {
+  studyRunning = false;
+  studySelectedCountry = null;
+
+  els.studyControls.classList.add("hidden");
+  els.studyTip.classList.add("hidden");
+  els.studyCard.classList.add("hidden");
+  els.topbar.classList.remove("study-mode");
+
+  renderRegionButtons();
+  resetAllStyles();
+}
+
 
 function areaCountries(region=currentRegion, subregion=currentSubregion) {
   return Object.values(countriesData).filter(country => {
@@ -1076,6 +1627,24 @@ function countryFeatures() {
 
 function baseStyle(feature) {
   const name = feature?.properties?.name;
+
+  if (studyRunning) {
+    const inArea = studyAreaNames().has(name);
+    const selected = studySelectedCountry === name;
+
+    return {
+      fillColor: selected
+        ? "#f4cf58"
+        : (inArea ? "#228947" : "#8297a6"),
+      fillOpacity: inArea ? 1 : 0.34,
+      color: selected
+        ? "#ffffff"
+        : (inArea ? "#b8e0e5" : "#c9d6de"),
+      weight: selected ? 2.5 : (inArea ? 1 : 0.55),
+      opacity: 1
+    };
+  }
+
   const isCorrect = correctCountries.has(name);
 
   return {
@@ -1114,12 +1683,25 @@ function addTinyMarkers() {
 }
 
 function syncTinyCountryStyles() {
+  const studyNames = studyRunning ? studyAreaNames() : null;
+
   document.querySelectorAll(".tiny-hitbox").forEach(hitbox => {
     const name = hitbox.dataset.country;
     const dot = hitbox.querySelector(".tiny-dot");
     if(!dot) return;
-    dot.classList.toggle("correct", correctCountries.has(name));
+
     dot.classList.remove("wrong");
+
+    if (studyRunning) {
+      const inArea = studyNames.has(name);
+      dot.classList.toggle("correct", studySelectedCountry === name);
+      hitbox.style.opacity = inArea ? "1" : ".22";
+      hitbox.style.pointerEvents = inArea ? "auto" : "none";
+    } else {
+      dot.classList.toggle("correct", correctCountries.has(name));
+      hitbox.style.opacity = "1";
+      hitbox.style.pointerEvents = "auto";
+    }
   });
 }
 
@@ -1211,6 +1793,11 @@ function nextQuestion() {
 }
 
 function handleCountryClick(name, clickedLayer=null) {
+  if (studyRunning) {
+    showStudyCountry(name);
+    return;
+  }
+
   if(!gameRunning || questionLocked || !current) return;
 
   attempts++;
@@ -1257,6 +1844,8 @@ function buildQuestionSet(region, subregion, onlyNames=null) {
 }
 
 function startGame(onlyMissed=false) {
+  leaveStudyMode();
+
   const missedCopy = new Set(missed);
 
   correctCountries = new Set();
@@ -1331,12 +1920,26 @@ function finishGame() {
 }
 
 function endGame() {
-  gameRunning=false;
+  gameRunning = false;
+  studyRunning = false;
   clearInterval(timerId);
-  current=null;
+  timerId = null;
+  current = null;
+
+  els.studyControls.classList.add("hidden");
+  els.studyTip.classList.add("hidden");
+  els.studyCard.classList.add("hidden");
+  els.topbar.classList.remove("study-mode");
+  els.promptPrefix.textContent = "Click on";
+
   updateHUD();
+  renderRegionButtons();
+  resetAllStyles();
+
   els.summary.classList.add("hidden");
   els.setup.classList.remove("hidden");
+  setupModeUI();
+
   setTimeout(()=>map.invalidateSize(),50);
 }
 
@@ -1345,12 +1948,35 @@ els.shuffleToggle.addEventListener("click",()=>{
   els.shuffleToggle.classList.toggle("on",shuffleQuestions);
 });
 
-els.startBtn.addEventListener("click",()=>startGame(false));
+els.modeSwitch.addEventListener("click", e => {
+  const btn = e.target.closest(".mode-btn");
+  if (!btn) return;
+
+  selectedMode = btn.dataset.mode;
+  setupModeUI();
+});
+
+els.startBtn.addEventListener("click",()=>{
+  if (selectedMode === "study") {
+    startStudy();
+  } else {
+    startGame(false);
+  }
+});
+
+els.studyRegionSelect.addEventListener("change", () => {
+  changeStudyArea(els.studyRegionSelect.value, "All");
+});
+
+els.studySubregionSelect.addEventListener("change", () => {
+  changeStudyArea(currentRegion, els.studySubregionSelect.value);
+});
 els.skipBtn.addEventListener("click",skipCurrent);
 els.closeBtn.addEventListener("click",endGame);
 els.playAgainBtn.addEventListener("click",()=>{
   els.summary.classList.add("hidden");
   els.setup.classList.remove("hidden");
+  setupModeUI();
 });
 els.practiceBtn.addEventListener("click",()=>{
   if(missed.size) startGame(true);
@@ -1640,10 +2266,21 @@ Promise.all([
       layerByName.set(name,layer);
       layer.on({
         mouseover:()=>{
-          if(gameRunning && !questionLocked) layer.setStyle({fillColor:"#18783d",weight:1.4,color:"#d8f2f4"});
+          if (studyRunning && studyAreaNames().has(name)) {
+            layer.setStyle({
+              fillColor: studySelectedCountry === name ? "#f4cf58" : "#18783d",
+              fillOpacity:1,
+              weight:2,
+              color:"#ffffff"
+            });
+          } else if(gameRunning && !questionLocked) {
+            layer.setStyle({fillColor:"#18783d",weight:1.4,color:"#d8f2f4"});
+          }
         },
         mouseout:()=>{
-          if(geojson && gameRunning) geojson.resetStyle(layer);
+          if(geojson && (gameRunning || studyRunning)) {
+            geojson.resetStyle(layer);
+          }
         },
         click:()=>handleCountryClick(name,layer)
       });
@@ -1652,6 +2289,7 @@ Promise.all([
 
   addTinyMarkers();
   renderRegionButtons();
+  setupModeUI();
   setAreaView();
   updateHUD();
 
