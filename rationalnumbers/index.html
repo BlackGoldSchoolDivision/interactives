@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rational Numbers Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0ea5e9', // Sky 500
+                        primaryDark: '#0369a1', // Sky 700
+                        natural: '#22c55e', // Green 500
+                        integer: '#f59e0b', // Amber 500
+                        rational: '#3b82f6', // Blue 500
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .math-font { font-family: 'Fira Code', monospace; }
+        .tab-content { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Number line canvas specific styles */
+        #numberLineCanvas {
+            width: 100%;
+            height: 160px;
+            border-radius: 0.5rem;
+            background: #ffffff;
+            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        /* Draggable elements */
+        .draggable-item {
+            cursor: grab;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+        .draggable-item:active {
+            cursor: grabbing;
+            transform: scale(1.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .drop-zone {
+            transition: all 0.2s;
+        }
+        .drag-over-natural { background-color: #dcfce7; border-color: #22c55e; }
+        .drag-over-integer { background-color: #fef3c7; border-color: #f59e0b; }
+        .drag-over-rational { background-color: #eff6ff; border-color: #3b82f6; }
+
+        .feedback-pop {
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Nested Sets Visual */
+        .set-container {
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <header class="bg-primaryDark text-white p-6 shadow-md">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-3xl font-bold">Rational Numbers Explorer</h1>
+                <p class="text-sm opacity-90 mt-1">Grade 8 Math: Fractions, Decimals, Integers, and the Space Between</p>
+            </div>
+            <nav class="flex flex-wrap gap-2 justify-center">
+                <button onclick="switchTab('learn')" id="tab-learn" class="nav-btn px-4 py-2 rounded-md bg-white/20 hover:bg-white/30 transition font-medium active-tab bg-white text-primaryDark">Learn</button>
+                <button onclick="switchTab('classify')" id="tab-classify" class="nav-btn px-4 py-2 rounded-md bg-white/20 hover:bg-white/30 transition font-medium text-white">Classify</button>
+                <button onclick="switchTab('in-between')" id="tab-in-between" class="nav-btn px-4 py-2 rounded-md bg-white/20 hover:bg-white/30 transition font-medium text-white">The In-Between Game</button>
+                <button onclick="switchTab('word-problems')" id="tab-word-problems" class="nav-btn px-4 py-2 rounded-md bg-white/20 hover:bg-white/30 transition font-medium text-white">Word Problems</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-6xl mx-auto w-full p-4 md:p-6 lg:p-8">
+
+        <!-- SECTION 1: Learn Rational Numbers -->
+        <section id="learn" class="tab-content active">
+            <div class="bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6 border-t-4 border-primary">
+                <h2 class="text-2xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-lg italic font-serif">Q</span>
+                    What is a Rational Number?
+                </h2>
+                <p class="mb-4 text-slate-600 leading-relaxed">
+                    A <strong>rational number</strong> is any number that can be expressed as the quotient or fraction 
+                    <span class="math-font font-bold text-primary">a/b</span>, where <em>a</em> and <em>b</em> are integers, and <em>b</em> is not equal to zero. 
+                    Because they are fractions, all rational numbers can be written as decimals that either <strong>terminate</strong> (end) or <strong>repeat</strong> in a pattern.
+                </p>
+                
+                <div class="grid md:grid-cols-2 gap-6 mt-8">
+                    <!-- Properties -->
+                    <div class="bg-sky-50 p-5 rounded-lg border border-sky-100">
+                        <h3 class="font-semibold text-sky-900 mb-3 text-lg">Subsets of Rational Numbers</h3>
+                        <ul class="space-y-4 text-slate-700 text-sm">
+                            <li class="flex items-start gap-2">
+                                <div class="w-3 h-3 rounded-full bg-natural mt-1 flex-shrink-0"></div>
+                                <div><strong>Natural Numbers:</strong> Counting numbers like 1, 2, 3, 4... (Can be written as 1/1, 2/1).</div>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <div class="w-3 h-3 rounded-full bg-integer mt-1 flex-shrink-0"></div>
+                                <div><strong>Integers:</strong> Natural numbers, their negatives, and zero (..., -2, -1, 0, 1, 2...).</div>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <div class="w-3 h-3 rounded-full bg-rational mt-1 flex-shrink-0"></div>
+                                <div><strong>Other Rationals:</strong> Fractions and decimals that fall between integers (like 1/2, -0.75, 0.333...).</div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Fraction to Decimal Explorer -->
+                    <div class="bg-white p-5 rounded-lg shadow-sm border border-slate-200 flex flex-col justify-center">
+                        <h3 class="font-semibold text-slate-800 mb-3 text-lg">Fraction to Decimal Converter</h3>
+                        <p class="text-xs text-slate-500 mb-4">Enter an integer for the numerator (top) and denominator (bottom) to see its decimal form.</p>
+                        
+                        <div class="flex items-center justify-center gap-4 text-2xl math-font bg-slate-50 p-4 rounded border border-slate-100">
+                            <div class="flex flex-col gap-1 items-center">
+                                <input type="number" id="frac-num" value="3" class="w-16 text-center border-b-2 border-slate-400 bg-transparent outline-none p-1 text-primaryDark font-bold" oninput="calculateDecimal()">
+                                <input type="number" id="frac-den" value="8" class="w-16 text-center bg-transparent outline-none p-1 text-primaryDark font-bold" oninput="calculateDecimal()">
+                            </div>
+                            <div class="text-slate-400">=</div>
+                            <div id="frac-result" class="font-bold text-slate-800 min-w-[120px] text-center text-xl">0.375</div>
+                        </div>
+                        
+                        <div id="frac-explanation" class="text-center mt-6 text-sm font-medium p-3 rounded-md bg-green-100 text-green-800 border border-green-200 transition-colors duration-300">
+                            <strong>Terminating Decimal</strong><br>The division ends perfectly.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Classify (Nested Sets) -->
+        <section id="classify" class="tab-content">
+            <div class="bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6 border-t-4 border-natural">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">Classify: Find the Most Specific Set</h2>
+                <p class="text-slate-600 mb-6 text-sm">Drag the numbers into their <strong>most specific</strong> category. For example, '5' is a rational number, but it's more specifically a Natural Number. Watch out for fractions that simplify to integers!</p>
+
+                <div class="flex flex-col lg:flex-row gap-6">
+                    <!-- Numbers Pool -->
+                    <div class="w-full lg:w-1/4 bg-slate-50 rounded-lg p-4 border border-slate-200">
+                        <h3 class="font-semibold text-center mb-4 text-slate-700">Numbers to Sort</h3>
+                        <div id="numbers-pool" class="flex flex-wrap gap-2 justify-center min-h-[100px]">
+                            <!-- Generated via JS -->
+                        </div>
+                        <button onclick="resetSortGame()" class="mt-6 w-full py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded transition text-sm font-medium">Reset Game</button>
+                    </div>
+
+                    <!-- Drop Zones (Nested conceptually, but distinct boxes for UI ease) -->
+                    <div class="w-full lg:w-3/4 flex flex-col gap-4">
+                        
+                        <!-- Rational -->
+                        <div id="zone-rational" class="drop-zone border-2 border-dashed border-blue-300 rounded-lg p-4 bg-blue-50/50 min-h-[120px]" ondragover="allowDrop(event)" ondrop="drop(event, 'rational')" ondragenter="dragEnter(event, 'rational')" ondragleave="dragLeave(event, 'rational')">
+                            <h3 class="font-bold text-blue-700 mb-1">Rational Numbers Only</h3>
+                            <p class="text-[11px] text-blue-600 mb-2">Fractions and decimals that cannot be simplified to an integer.</p>
+                            <div class="flex flex-wrap gap-2 items-start" id="container-rational"></div>
+                        </div>
+
+                        <!-- Integer -->
+                        <div id="zone-integer" class="drop-zone border-2 border-dashed border-amber-300 rounded-lg p-4 bg-amber-50/50 min-h-[120px]" ondragover="allowDrop(event)" ondrop="drop(event, 'integer')" ondragenter="dragEnter(event, 'integer')" ondragleave="dragLeave(event, 'integer')">
+                            <h3 class="font-bold text-amber-700 mb-1">Integers</h3>
+                            <p class="text-[11px] text-amber-600 mb-2">Whole numbers and their negatives (..., -2, -1, 0). <em>Must not be a Natural number.</em></p>
+                            <div class="flex flex-wrap gap-2 items-start" id="container-integer"></div>
+                        </div>
+                        
+                        <!-- Natural -->
+                        <div id="zone-natural" class="drop-zone border-2 border-dashed border-green-300 rounded-lg p-4 bg-green-50/50 min-h-[120px]" ondragover="allowDrop(event)" ondrop="drop(event, 'natural')" ondragenter="dragEnter(event, 'natural')" ondragleave="dragLeave(event, 'natural')">
+                            <h3 class="font-bold text-green-700 mb-1">Natural Numbers</h3>
+                            <p class="text-[11px] text-green-600 mb-2">Positive counting numbers (1, 2, 3...).</p>
+                            <div class="flex flex-wrap gap-2 items-start" id="container-natural"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="sort-feedback" class="mt-4 text-center font-bold h-6 text-lg"></div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: Interactive Number Line (The In-Between Game) -->
+        <section id="in-between" class="tab-content">
+            <div class="bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6 border-t-4 border-teal-500">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-4 gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800">The In-Between Game</h2>
+                        <p class="text-slate-600 text-sm mt-1">Because rational numbers are infinitely dense, there is ALWAYS another rational number between any two rational numbers! Prove it.</p>
+                    </div>
+                    <button onclick="newBetweenChallenge()" class="w-full md:w-auto px-4 py-2 bg-teal-100 hover:bg-teal-200 text-teal-800 font-semibold rounded text-sm transition shadow-sm border border-teal-200 whitespace-nowrap">Next Challenge</button>
+                </div>
+
+                <!-- Challenge Header -->
+                <div class="bg-slate-50 border border-slate-200 p-6 rounded-lg mb-4 text-center shadow-inner">
+                    <p class="text-slate-700 font-medium text-lg mb-2">Find a rational number that sits exactly between:</p>
+                    <div class="flex justify-center items-center gap-4">
+                        <span id="bound-A" class="font-bold text-2xl text-teal-700 math-font bg-teal-50 px-4 py-2 rounded border border-teal-200 shadow-sm">?</span>
+                        <span class="text-slate-500 font-bold text-xl">and</span>
+                        <span id="bound-B" class="font-bold text-2xl text-teal-700 math-font bg-teal-50 px-4 py-2 rounded border border-teal-200 shadow-sm">?</span>
+                    </div>
+                </div>
+
+                <!-- Input area -->
+                <div class="flex flex-col sm:flex-row gap-4 items-center bg-sky-50 p-4 rounded-lg border border-sky-200 mb-4">
+                    <span class="font-medium text-sm text-sky-900 whitespace-nowrap">Your Number:</span>
+                    <input type="text" id="nl-input" placeholder="Enter a fraction (e.g. 1/3) or decimal (e.g. 0.35)" class="flex-grow p-3 border border-sky-300 rounded math-font text-base focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white w-full">
+                    <button onclick="submitBetweenGuess()" class="bg-sky-600 hover:bg-sky-700 text-white px-8 py-3 rounded transition text-sm font-bold whitespace-nowrap shadow-sm w-full sm:w-auto">Plot It!</button>
+                </div>
+
+                <!-- Canvas -->
+                <div class="relative border border-slate-300 rounded-lg overflow-hidden bg-slate-50 shadow-sm pt-4">
+                    <canvas id="numberLineCanvas"></canvas>
+                </div>
+                
+                <div id="nl-feedback" class="mt-4 text-center font-medium text-base h-12 flex flex-col justify-center"></div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: Word Problems -->
+        <section id="word-problems" class="tab-content">
+            <div class="bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6 border-t-4 border-slate-800">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">Rational Real-World Problems</h2>
+                <p class="text-slate-600 mb-6 text-sm">Apply your knowledge of adding, subtracting, multiplying, and dividing rational numbers (fractions and decimals) to solve these problems.</p>
+
+                <div class="space-y-6" id="problems-container">
+                    <!-- Problems will be injected here via JS -->
+                </div>
+
+                <div class="mt-8 text-center">
+                    <button onclick="loadNewProblem()" class="bg-slate-800 hover:bg-slate-700 text-white px-6 py-2 rounded-lg font-bold transition shadow-sm">Load New Problem</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // --- Navigation Logic ---
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-white', 'text-primaryDark');
+                btn.classList.add('text-white');
+            });
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            activeBtn.classList.remove('text-white');
+            activeBtn.classList.add('bg-white', 'text-primaryDark');
+
+            if(tabId === 'in-between') {
+                resizeCanvas();
+                if(!currentChallenge) newBetweenChallenge();
+                else drawNumberLine();
+            }
+        }
+
+        // --- Tab 1: Learn - Fraction to Decimal Converter ---
+        function calculateDecimal() {
+            const numEl = document.getElementById('frac-num');
+            const denEl = document.getElementById('frac-den');
+            const resEl = document.getElementById('frac-result');
+            const expEl = document.getElementById('frac-explanation');
+            
+            const n = parseInt(numEl.value);
+            const d = parseInt(denEl.value);
+
+            if (isNaN(n) || isNaN(d)) {
+                resEl.textContent = "...";
+                expEl.innerHTML = "Enter valid integers.";
+                expEl.className = "text-center mt-6 text-sm font-medium p-3 rounded-md bg-slate-100 text-slate-800 border border-slate-200";
+                return;
+            }
+
+            if (d === 0) {
+                resEl.textContent = "Undefined";
+                expEl.innerHTML = "<strong>Error</strong><br>You cannot divide by zero! The denominator must be non-zero.";
+                expEl.className = "text-center mt-6 text-sm font-medium p-3 rounded-md bg-red-100 text-red-800 border border-red-200";
+                return;
+            }
+
+            const decimal = n / d;
+            
+            // Check if terminating or repeating
+            // Simple check: reduce fraction, then check if prime factors of denom are only 2 and 5.
+            function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
+            let reducedD = Math.abs(d) / gcd(Math.abs(n), Math.abs(d));
+            
+            // Remove factors of 2 and 5
+            while (reducedD % 2 === 0) reducedD /= 2;
+            while (reducedD % 5 === 0) reducedD /= 5;
+
+            const isTerminating = (reducedD === 1);
+            
+            // Format result
+            let displayRes = decimal.toString();
+            // If the string representation is very long, it's likely repeating (JS precision limits)
+            if(displayRes.length > 12 && !isTerminating) {
+                 displayRes = displayRes.substring(0, 12) + "...";
+            }
+
+            resEl.textContent = displayRes;
+            
+            if (isTerminating) {
+                expEl.innerHTML = "<strong>Terminating Decimal</strong><br>The division results in a decimal that ends.";
+                expEl.className = "text-center mt-6 text-sm font-medium p-3 rounded-md bg-green-100 text-green-800 border border-green-200 transition-colors duration-300";
+            } else {
+                expEl.innerHTML = "<strong>Repeating Decimal</strong><br>The decimal contains a pattern of digits that repeats endlessly.";
+                expEl.className = "text-center mt-6 text-sm font-medium p-3 rounded-md bg-amber-100 text-amber-800 border border-amber-200 transition-colors duration-300";
+            }
+        }
+
+        // --- STREAMING_CHUNK:Javascript for Classify Game... ---
+        // --- Tab 2: Classification Game ---
+        const gameItems = [
+            { id: 'i1', type: 'natural', display: '8' },
+            { id: 'i2', type: 'integer', display: '-5' },
+            { id: 'i3', type: 'rational', display: '3/4' },
+            { id: 'i4', type: 'integer', display: '0' }, // 0 is integer (not natural counting number)
+            { id: 'i5', type: 'rational', display: '-4.25' },
+            { id: 'i6', type: 'natural', display: '10/2' }, // evaluates to 5 (natural)
+            { id: 'i7', type: 'rational', display: '0.333...' },
+            { id: 'i8', type: 'rational', display: '1/3' },
+            { id: 'i9', type: 'integer', display: '-12/4' } // evaluates to -3 (integer)
+        ];
+
+        let draggedItem = null;
+
+        function initSortGame() {
+            const pool = document.getElementById('numbers-pool');
+            pool.innerHTML = '';
+            document.getElementById('container-natural').innerHTML = '';
+            document.getElementById('container-integer').innerHTML = '';
+            document.getElementById('container-rational').innerHTML = '';
+            document.getElementById('sort-feedback').textContent = '';
+            
+            const shuffled = [...gameItems].sort(() => 0.5 - Math.random());
+
+            shuffled.forEach(item => {
+                const el = document.createElement('div');
+                el.id = item.id;
+                el.className = 'draggable-item bg-white border border-slate-300 rounded shadow-sm px-3 py-2 text-lg font-bold math-font select-none text-slate-700';
+                el.draggable = true;
+                el.innerHTML = item.display;
+                el.dataset.type = item.type;
+                
+                el.addEventListener('dragstart', (e) => {
+                    draggedItem = e.target;
+                    e.dataTransfer.setData('text/plain', e.target.id);
+                    setTimeout(() => e.target.classList.add('opacity-50'), 0);
+                });
+                
+                el.addEventListener('dragend', (e) => {
+                    e.target.classList.remove('opacity-50');
+                    document.querySelectorAll('.drop-zone').forEach(z => {
+                        z.classList.remove('drag-over-natural', 'drag-over-integer', 'drag-over-rational');
+                    });
+                });
+
+                pool.appendChild(el);
+            });
+        }
+
+        function allowDrop(e) { e.preventDefault(); }
+        function dragEnter(e, type) { e.preventDefault(); e.currentTarget.classList.add(`drag-over-${type}`); }
+        function dragLeave(e, type) { e.currentTarget.classList.remove(`drag-over-${type}`); }
+
+        function drop(e, targetType) {
+            e.preventDefault();
+            const zone = e.currentTarget;
+            zone.classList.remove(`drag-over-${targetType}`);
+            
+            const id = e.dataTransfer.getData('text/plain');
+            const draggableElement = document.getElementById(id);
+            const container = zone.querySelector('div.flex');
+            
+            if (draggableElement) {
+                const itemType = draggableElement.dataset.type;
+                const feedbackEl = document.getElementById('sort-feedback');
+                
+                if (itemType === targetType) {
+                    container.appendChild(draggableElement);
+                    draggableElement.classList.add('border-slate-300', 'bg-white', 'text-slate-800', 'shadow-none');
+                    draggableElement.draggable = false; 
+                    draggableElement.classList.remove('cursor-grab', 'draggable-item');
+                    draggableElement.style.cursor = 'default';
+                    
+                    feedbackEl.textContent = 'Correct!';
+                    feedbackEl.className = 'mt-4 text-center font-bold h-6 text-lg text-green-600 feedback-pop';
+                    
+                    if (document.getElementById('numbers-pool').children.length === 0) {
+                        feedbackEl.textContent = '🎉 All sorted perfectly!';
+                        feedbackEl.className = 'mt-4 text-center font-bold h-6 text-lg text-primaryDark feedback-pop';
+                    }
+                } else {
+                    let hint = "Not quite.";
+                    if(itemType === 'natural' && targetType === 'rational') hint = "That's rational, but there is a MORE specific set for it!";
+                    if(itemType === 'natural' && targetType === 'integer') hint = "That's an integer, but there is a MORE specific set for it!";
+                    if(itemType === 'integer' && targetType === 'natural') hint = "Careful! Natural numbers are positive counting numbers only.";
+                    if(itemType === 'rational' && (targetType === 'natural' || targetType === 'integer')) hint = "Does that evaluate to a whole number? If not, it stays in the general rational pool.";
+
+                    feedbackEl.textContent = hint;
+                    feedbackEl.className = 'mt-4 text-center font-bold h-6 text-sm text-red-500 feedback-pop';
+                    draggableElement.classList.add('animate-bounce');
+                    setTimeout(() => draggableElement.classList.remove('animate-bounce'), 500);
+                }
+                setTimeout(() => feedbackEl.classList.remove('feedback-pop'), 300);
+            }
+        }
+        function resetSortGame() { initSortGame(); }
+
+        // --- STREAMING_CHUNK:Javascript for The In-Between Game... ---
+        // --- Tab 3: The In-Between Game (Number Line) ---
+        const canvas = document.getElementById('numberLineCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let currentChallenge = null;
+        let studentPlot = null;
+        
+        const betweenChallenges = [
+            { aStr: "0", bStr: "1", aVal: 0, bVal: 1 },
+            { aStr: "-2", bStr: "-1", aVal: -2, bVal: -1 },
+            { aStr: "1/4", bStr: "1/2", aVal: 0.25, bVal: 0.5 },
+            { aStr: "-0.5", bStr: "0", aVal: -0.5, bVal: 0 },
+            { aStr: "1.2", bStr: "1.3", aVal: 1.2, bVal: 1.3 },
+            { aStr: "-3/4", bStr: "-1/4", aVal: -0.75, bVal: -0.25 },
+            { aStr: "9.9", bStr: "10", aVal: 9.9, bVal: 10 }
+        ];
+
+        function newBetweenChallenge() {
+            const idx = Math.floor(Math.random() * betweenChallenges.length);
+            currentChallenge = betweenChallenges[idx];
+            
+            document.getElementById('bound-A').textContent = currentChallenge.aStr;
+            document.getElementById('bound-B').textContent = currentChallenge.bStr;
+            document.getElementById('nl-input').value = '';
+            studentPlot = null;
+            
+            const feedback = document.getElementById('nl-feedback');
+            feedback.innerHTML = '';
+            
+            drawNumberLine();
+        }
+
+        // Helper to parse string "3/4" or "0.75" or "-2"
+        function parseRationalInput(str) {
+            str = str.trim();
+            if (str === "") return NaN;
+            
+            // Check if fraction format
+            if (str.includes('/')) {
+                const parts = str.split('/');
+                if (parts.length === 2) {
+                    const n = parseFloat(parts[0]);
+                    const d = parseFloat(parts[1]);
+                    if (!isNaN(n) && !isNaN(d) && d !== 0) {
+                        return n / d;
+                    }
+                }
+                return NaN;
+            }
+            
+            // Else try normal float
+            return parseFloat(str);
+        }
+
+        function submitBetweenGuess() {
+            if (!currentChallenge) return;
+            const inputStr = document.getElementById('nl-input').value;
+            const inputVal = parseRationalInput(inputStr);
+            const feedback = document.getElementById('nl-feedback');
+
+            if (isNaN(inputVal)) {
+                feedback.innerHTML = "<span class='text-red-500 font-bold'>Please enter a valid fraction (e.g., 1/2) or decimal.</span>";
+                return;
+            }
+
+            studentPlot = { val: inputVal, str: inputStr };
+            
+            const minBound = Math.min(currentChallenge.aVal, currentChallenge.bVal);
+            const maxBound = Math.max(currentChallenge.aVal, currentChallenge.bVal);
+
+            let fbHTML = "";
+            if (inputVal > minBound && inputVal < maxBound) {
+                fbHTML = `<span class='text-green-600 font-bold text-lg'>Perfect! 🎉</span><br><span class='text-sm text-slate-600'>${inputStr} (${inputVal}) is exactly between the bounds.</span>`;
+            } else if (inputVal === minBound || inputVal === maxBound) {
+                fbHTML = `<span class='text-amber-500 font-bold text-lg'>Almost!</span><br><span class='text-sm text-slate-600'>You picked one of the boundaries. Try a number <em>strictly between</em> them.</span>`;
+            } else {
+                fbHTML = `<span class='text-red-500 font-bold text-lg'>Outside the bounds!</span><br><span class='text-sm text-slate-600'>Your number plotted outside the target area. Try again.</span>`;
+            }
+            
+            feedback.innerHTML = fbHTML;
+            feedback.className = "mt-4 text-center h-12 flex flex-col justify-center feedback-pop";
+            
+            drawNumberLine();
+            setTimeout(() => feedback.classList.remove('feedback-pop'), 300);
+        }
+
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            // Height is set via CSS, update internal height to match
+            canvas.height = 160; 
+            drawNumberLine();
+        }
+
+        function valToX(val, minScale, maxScale, width, padding) {
+            const range = maxScale - minScale;
+            if (range === 0) return width / 2;
+            const drawableWidth = width - (padding * 2);
+            return padding + ((val - minScale) / range) * drawableWidth;
+        }
+
+        function drawNumberLine() {
+            if (!ctx || !canvas.width || !currentChallenge) return;
+            const w = canvas.width;
+            const h = canvas.height;
+            const centerY = h / 2 + 10; 
+            const padding = 60;
+            
+            ctx.clearRect(0, 0, w, h);
+            
+            // Determine Scale Bounds (give 20% padding around the challenge bounds)
+            let minC = Math.min(currentChallenge.aVal, currentChallenge.bVal);
+            let maxC = Math.max(currentChallenge.aVal, currentChallenge.bVal);
+            let range = maxC - minC;
+            
+            // If student plot is way outside, zoom out to show it
+            let viewMin = minC - (range * 0.3);
+            let viewMax = maxC + (range * 0.3);
+            
+            if (studentPlot) {
+                if (studentPlot.val < viewMin) viewMin = studentPlot.val - Math.abs(studentPlot.val - minC)*0.2;
+                if (studentPlot.val > viewMax) viewMax = studentPlot.val + Math.abs(studentPlot.val - maxC)*0.2;
+            }
+
+            // Draw main axis line
+            ctx.beginPath();
+            ctx.moveTo(padding/2, centerY);
+            ctx.lineTo(w - padding/2, centerY);
+            ctx.strokeStyle = '#94a3b8'; // slate-400
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Draw arrows on ends
+            ctx.beginPath(); ctx.moveTo(padding/2 + 10, centerY - 5); ctx.lineTo(padding/2, centerY); ctx.lineTo(padding/2 + 10, centerY + 5); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(w - padding/2 - 10, centerY - 5); ctx.lineTo(w - padding/2, centerY); ctx.lineTo(w - padding/2 - 10, centerY + 5); ctx.stroke();
+
+            // Highlight the valid region
+            const ax = valToX(currentChallenge.aVal, viewMin, viewMax, w, padding);
+            const bx = valToX(currentChallenge.bVal, viewMin, viewMax, w, padding);
+            
+            ctx.fillStyle = 'rgba(14, 165, 233, 0.15)'; // Sky 500 low opacity
+            ctx.fillRect(Math.min(ax, bx), centerY - 15, Math.abs(ax - bx), 30);
+
+            // Draw Bound A
+            drawTickMark(ax, centerY, currentChallenge.aStr, '#0369a1');
+            // Draw Bound B
+            drawTickMark(bx, centerY, currentChallenge.bStr, '#0369a1');
+
+            // Draw Student Plot
+            if (studentPlot !== null) {
+                const estX = valToX(studentPlot.val, viewMin, viewMax, w, padding);
+                
+                // Draw point
+                ctx.beginPath();
+                ctx.arc(estX, centerY, 7, 0, 2 * Math.PI);
+                
+                // Color based on correctness
+                let pColor = '#f43f5e'; // Rose 500 (wrong)
+                if (studentPlot.val > minC && studentPlot.val < maxC) pColor = '#22c55e'; // Green (correct)
+                else if (studentPlot.val === minC || studentPlot.val === maxC) pColor = '#f59e0b'; // Amber (edge)
+                
+                ctx.fillStyle = pColor;
+                ctx.fill();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#ffffff';
+                ctx.stroke();
+                
+                // Draw label above
+                ctx.font = 'bold 14px "Inter", sans-serif';
+                ctx.textAlign = 'center';
+                const labelY = centerY - 25;
+                
+                const textWidth = ctx.measureText(studentPlot.str).width;
+                ctx.fillStyle = 'rgba(255,255,255,0.9)';
+                ctx.fillRect(estX - textWidth/2 - 4, labelY - 14, textWidth + 8, 20);
+                
+                ctx.fillStyle = pColor;
+                ctx.fillText(studentPlot.str, estX, labelY);
+            }
+        }
+
+        function drawTickMark(x, y, label, color) {
+            ctx.beginPath();
+            ctx.moveTo(x, y - 10);
+            ctx.lineTo(x, y + 10);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            ctx.font = 'bold 16px "Fira Code", monospace';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            ctx.fillStyle = color;
+            
+            // bg box for text readability
+            const tw = ctx.measureText(label).width;
+            ctx.fillStyle = 'rgba(255,255,255,0.8)';
+            ctx.fillRect(x - tw/2 - 2, y + 15 - 2, tw + 4, 20);
+            
+            ctx.fillStyle = color;
+            ctx.fillText(label, x, y + 15);
+        }
+
+        window.addEventListener('resize', () => {
+            if(document.getElementById('in-between').classList.contains('active')) resizeCanvas();
+        });
+
+
+        // --- STREAMING_CHUNK:Javascript for Word Problems Section... ---
+        // --- Tab 4: Word Problems (Rational Numbers) ---
+        const wordProblems = [
+            {
+                q: "A recipe calls for 3/4 cup of sugar. If you want to make half of the recipe, how much sugar do you need?",
+                options: ["3/8 cup", "1.5 cups", "3/2 cups", "1/4 cup"],
+                correctIndex: 0,
+                explanation: "To find half of a fraction, multiply it by 1/2. (3/4) &times; (1/2) = 3/8."
+            },
+            {
+                q: "The temperature in Edmonton was -12.5 &deg;C in the morning. By afternoon, it dropped another 4.2 &deg;C. What is the new temperature?",
+                options: ["-8.3 &deg;C", "-16.7 &deg;C", "8.3 &deg;C", "16.7 &deg;C"],
+                correctIndex: 1,
+                explanation: "Dropping means subtracting or adding a negative. -12.5 - 4.2 = -16.7 &deg;C."
+            },
+            {
+                q: "You have a piece of wood that is 8.4 meters long. You need to cut it into 4 equal pieces. How long is each piece?",
+                options: ["33.6 m", "4.2 m", "2.1 m", "2.4 m"],
+                correctIndex: 2,
+                explanation: "Divide the total length by the number of pieces. 8.4 &divide; 4 = 2.1 meters."
+            },
+            {
+                q: "Your bank account has a balance of -$35.50 (you are overdrawn). You deposit a check for $100.00. What is your new rational balance?",
+                options: ["-$135.50", "$64.50", "$135.50", "$65.50"],
+                correctIndex: 1,
+                explanation: "Adding a positive number to a negative number: -35.50 + 100.00 = 64.50."
+            },
+            {
+                q: "A scuba diver descends at a rate of 2.5 meters per minute. What is her depth (as a rational number) relative to the surface after 6 minutes?",
+                options: ["-15 meters", "15 meters", "-8.5 meters", "-12 meters"],
+                correctIndex: 0,
+                explanation: "Descending is represented by a negative rate (-2.5). Multiply by time: -2.5 &times; 6 = -15 meters."
+            }
+        ];
+
+        let currentProblemIndex = 0;
+
+        function loadNewProblem() {
+            let newIdx;
+            do {
+                newIdx = Math.floor(Math.random() * wordProblems.length);
+            } while(newIdx === currentProblemIndex && wordProblems.length > 1);
+            
+            currentProblemIndex = newIdx;
+            
+            const container = document.getElementById('problems-container');
+            const p = wordProblems[currentProblemIndex];
+            
+            let html = `
+                <div class="bg-slate-50 p-6 rounded-lg border border-slate-200 shadow-sm transition-all">
+                    <p class="text-lg font-medium text-slate-800 mb-6">${p.q}</p>
+                    <div class="grid sm:grid-cols-2 gap-3 mb-4">
+            `;
+            
+            p.options.forEach((opt, idx) => {
+                html += `
+                    <button onclick="checkAnswer(${idx}, this)" class="w-full text-left p-4 rounded border border-slate-300 bg-white hover:bg-slate-100 hover:border-primary transition font-medium text-slate-700 shadow-sm">
+                        ${opt}
+                    </button>
+                `;
+            });
+
+            html += `
+                    </div>
+                    <div id="prob-feedback" class="hidden mt-4 p-4 rounded-lg"></div>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+        }
+
+        function checkAnswer(selectedIndex, btnElement) {
+            const p = wordProblems[currentProblemIndex];
+            const feedbackEl = document.getElementById('prob-feedback');
+            const buttons = btnElement.parentElement.querySelectorAll('button');
+            
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                btn.classList.add('cursor-not-allowed', 'opacity-70');
+            });
+
+            feedbackEl.classList.remove('hidden');
+
+            if (selectedIndex === p.correctIndex) {
+                btnElement.classList.replace('border-slate-300', 'border-green-500');
+                btnElement.classList.replace('hover:border-primary', 'border-green-500');
+                btnElement.classList.add('bg-green-50', 'text-green-800');
+                
+                feedbackEl.classList.add('bg-green-100', 'text-green-800', 'border', 'border-green-300');
+                feedbackEl.innerHTML = `<strong>Correct! 🎉</strong> <p class="text-sm mt-1">${p.explanation}</p>`;
+            } else {
+                btnElement.classList.replace('border-slate-300', 'border-red-500');
+                btnElement.classList.replace('hover:border-primary', 'border-red-500');
+                btnElement.classList.add('bg-red-50', 'text-red-800');
+                
+                const correctBtn = buttons[p.correctIndex];
+                correctBtn.classList.replace('border-slate-300', 'border-green-500');
+                correctBtn.classList.add('bg-green-50', 'border-green-500');
+
+                feedbackEl.classList.add('bg-red-100', 'text-red-800', 'border', 'border-red-300');
+                feedbackEl.innerHTML = `<strong>Not quite.</strong> <p class="text-sm mt-1">${p.explanation}</p>`;
+            }
+        }
+
+        // --- Init ---
+        window.onload = () => {
+            initSortGame();
+            calculateDecimal();
+            loadNewProblem();
+            
+            // Ensure resize canvas runs accurately on load if tab is active
+            setTimeout(() => {
+                if(document.getElementById('in-between').classList.contains('active')) resizeCanvas();
+            }, 100);
+        };
+    </script>
+</body>
+</html>
