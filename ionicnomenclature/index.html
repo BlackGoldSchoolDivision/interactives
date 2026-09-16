@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chem 20: Ionic Nomenclature</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+        }
+        
+        /* Custom Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.95); }
+            40% { transform: scale(1.02); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .animate-pop-in {
+            animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        
+        /* Hide elements by default for JS toggling */
+        .hidden-view {
+            display: none !important;
+        }
+    </style>
+</head>
+<body class="text-gray-800 selection:bg-indigo-100 selection:text-indigo-900 pb-12">
+
+    <header class="bg-white border-b border-gray-200 shadow-sm">
+        <div class="max-w-5xl mx-auto px-6 py-8">
+            <h1 class="text-3xl font-black text-gray-900 tracking-tight">Chem 20: Ionic Nomenclature</h1>
+            <p class="text-gray-500 mt-2 font-medium">Master the language of ionic compounds.</p>
+        </div>
+    </header>
+
+    <div class="max-w-5xl mx-auto px-6 py-6">
+        <div class="flex flex-wrap gap-2 p-1.5 bg-gray-100 rounded-xl shadow-inner max-w-fit">
+            <button id="btn-guide" class="nav-btn px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 bg-white text-indigo-700 shadow-sm ring-1 ring-black/5" onclick="switchTab('guide')">
+                Reference Guide
+            </button>
+            <button id="btn-f2n" class="nav-btn px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 text-gray-600 hover:text-gray-900 hover:bg-gray-200/50" onclick="switchTab('f2n')">
+                Quiz: Formula ➔ Name
+            </button>
+            <button id="btn-n2f" class="nav-btn px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 text-gray-600 hover:text-gray-900 hover:bg-gray-200/50" onclick="switchTab('n2f')">
+                Quiz: Name ➔ Formula
+            </button>
+        </div>
+    </div>
+
+    <main class="max-w-5xl mx-auto px-6 relative">
+        <div id="view-guide" class="space-y-6 animate-fade-in">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <h3 class="text-xl font-bold text-indigo-700 mb-3 flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600">1</div>
+                    Binary Ionic Compounds
+                </h3>
+                <p class="mb-2">Compounds containing exactly two elements: a metal and a non-metal.</p>
+                <ul class="list-disc pl-5 space-y-1 text-gray-600">
+                    <li><strong>Cation (Metal):</strong> Write the full name of the metal.</li>
+                    <li><strong>Anion (Non-metal):</strong> Write the root name of the non-metal and change the ending to <strong>-ide</strong>.</li>
+                </ul>
+                <div class="mt-3 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                    <span class="font-semibold text-gray-700">Example:</span> NaCl ➔ Sodium + Chlor(ine) ➔ <strong>Sodium chloride</strong>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <h3 class="text-xl font-bold text-indigo-700 mb-3 flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600">2</div>
+                    Multivalent Metals
+                </h3>
+                <p class="mb-2">Transition metals (and some others like Pb, Sn) that can have more than one possible charge.</p>
+                <ul class="list-disc pl-5 space-y-1 text-gray-600">
+                    <li>Determine the charge of the metal based on the non-metal's known charge.</li>
+                    <li>Indicate the charge of the metal using a <strong>Roman numeral</strong> in parentheses immediately after the metal's name (no space).</li>
+                </ul>
+                <div class="mt-3 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                    <span class="font-semibold text-gray-700">Example:</span> Fe<sub class="text-xs">2</sub>O<sub class="text-xs">3</sub> ➔ O is -2 (total -6), so Fe must be +3 (total +6). ➔ <strong>Iron(III) oxide</strong>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <h3 class="text-xl font-bold text-indigo-700 mb-3 flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600">3</div>
+                    Polyatomic Ions
+                </h3>
+                <p class="mb-2">Ions composed of more than one atom acting as a single charged unit.</p>
+                <ul class="list-disc pl-5 space-y-1 text-gray-600">
+                    <li>Do <strong>not</strong> change the ending to -ide if the anion is polyatomic (e.g., use "sulfate", not "sulfide").</li>
+                    <li>If more than one polyatomic ion is needed to balance the charge, place it in parentheses with the subscript outside.</li>
+                </ul>
+                <div class="mt-3 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                    <span class="font-semibold text-gray-700">Example:</span> Ca(NO<sub class="text-xs">3</sub>)<sub class="text-xs">2</sub> ➔ Calcium + Nitrate ➔ <strong>Calcium nitrate</strong>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-quiz" class="hidden-view max-w-2xl mx-auto animate-fade-in">
+            <div class="flex justify-between items-center mb-6 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                <h2 id="quiz-header-title" class="text-xl font-bold text-gray-800">Quiz</h2>
+                <div class="text-lg font-semibold bg-indigo-50 text-indigo-700 px-4 py-2 rounded-lg">
+                    Score: <span id="score-correct">0</span> / <span id="score-total">0</span>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden">
+                <div class="p-8 text-center bg-gradient-to-b from-indigo-50 to-white">
+                    <p id="quiz-prompt-label" class="text-sm text-indigo-600 font-semibold mb-2 uppercase tracking-wide">
+                        Translate the following:
+                    </p>
+                    <div id="quiz-prompt-text" class="text-5xl font-black text-gray-900 my-6 tracking-tight">
+                        <!-- Content inserted via JS -->
+                    </div>
+                </div>
+
+                <div class="p-8 border-t border-gray-100">
+                    <form id="quiz-form" class="flex flex-col sm:flex-row gap-3">
+                        <input
+                            type="text"
+                            id="quiz-input"
+                            placeholder=""
+                            class="flex-1 px-4 py-3 text-lg border-2 border-gray-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all font-mono"
+                            autocomplete="off"
+                            spellcheck="false"
+                        />
+                        <button type="submit" class="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-sm transition-colors">
+                            Check
+                        </button>
+                    </form>
+
+                    <div id="quiz-feedback" class="hidden-view p-6 rounded-xl border-2 animate-pop-in mt-2">
+                        <div class="flex items-start gap-3">
+                            <div class="mt-1" id="feedback-icon">
+                                <!-- Icon inserted via JS -->
+                            </div>
+                            <div class="flex-1">
+                                <h4 id="feedback-title" class="text-lg font-bold"></h4>
+                                <div id="feedback-details" class="mt-2 text-gray-700 hidden-view">
+                                    <p>You answered: <strong id="feedback-user" class="font-mono bg-white px-2 py-1 rounded border"></strong></p>
+                                    <p class="mt-2">Correct answer: <strong id="feedback-correct" class="font-mono bg-white px-2 py-1 rounded border"></strong></p>
+                                </div>
+                                <button type="button" id="next-btn" class="mt-4 px-6 py-2 rounded-lg font-bold text-white transition-colors" onclick="nextQuestion()">
+                                    Next Question ➔
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 flex items-start gap-2 text-sm text-gray-500 px-4">
+                <svg class="w-5 h-5 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <p id="quiz-hint-text"></p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Question Bank incorporating user's requested examples and a mix of others
+        const QUESTION_BANK = [
+            { formula: 'NaCl', name: 'sodium chloride', type: 'binary' },
+            { formula: 'FeCl3', name: 'iron(III) chloride', type: 'multivalent' },
+            { formula: 'Cu2O', name: 'copper(I) oxide', type: 'multivalent' },
+            { formula: 'CaCO3', name: 'calcium carbonate', type: 'polyatomic' },
+            { formula: 'NH4NO3', name: 'ammonium nitrate', type: 'polyatomic' },
+            { formula: 'Mg(OH)2', name: 'magnesium hydroxide', type: 'polyatomic' },
+            { formula: 'Al2O3', name: 'aluminum oxide', type: 'binary' },
+            { formula: 'KI', name: 'potassium iodide', type: 'binary' },
+            { formula: 'PbO2', name: 'lead(IV) oxide', type: 'multivalent' },
+            { formula: 'CuSO4', name: 'copper(II) sulfate', type: 'polyatomic' },
+            { formula: 'K3PO4', name: 'potassium phosphate', type: 'polyatomic' }
+        ];
+
+        // SVGs for feedback
+        const iconCheck = `<svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`;
+        const iconX = `<svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>`;
+
+        // State Variables
+        let currentMode = 'guide'; // 'guide', 'f2n', 'n2f'
+        let currentQuestions = [];
+        let currentIndex = 0;
+        let scoreCorrect = 0;
+        let scoreTotal = 0;
+
+        // Formats formula by replacing digits with <sub> tags
+        function formatFormula(formula) {
+            return formula.replace(/(\d+)/g, '<sub class="text-sm font-bold">$1</sub>');
+        }
+
+        // Normalizes name: lowercases, removes spaces, removes parentheses for highly tolerant checking
+        // E.g., "Iron (III) Chloride" -> "ironiiichloride"
+        function normalizeName(name) {
+            return name.toLowerCase().replace(/[\s()]/g, '');
+        }
+
+        // Normalizes formula: removes spaces. Case remains sensitive!
+        function normalizeFormula(formula) {
+            return formula.replace(/\s+/g, '');
+        }
+
+        // Shuffle array (Fisher-Yates)
+        function shuffle(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        function switchTab(tabId) {
+            currentMode = tabId;
+            
+            // Reset nav styles
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.className = 'nav-btn px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 text-gray-600 hover:text-gray-900 hover:bg-gray-200/50';
+            });
+            
+            // Set active nav style
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            activeBtn.className = 'nav-btn px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 bg-white text-indigo-700 shadow-sm ring-1 ring-black/5';
+
+            // Toggle views
+            const viewGuide = document.getElementById('view-guide');
+            const viewQuiz = document.getElementById('view-quiz');
+
+            if (tabId === 'guide') {
+                viewGuide.classList.remove('hidden-view');
+                viewQuiz.classList.add('hidden-view');
+            } else {
+                viewGuide.classList.add('hidden-view');
+                viewQuiz.classList.remove('hidden-view');
+                initQuiz(tabId);
+            }
+        }
+
+        function initQuiz(mode) {
+            currentQuestions = shuffle([...QUESTION_BANK]);
+            currentIndex = 0;
+            scoreCorrect = 0;
+            scoreTotal = 0;
+            updateScoreDisplay();
+            
+            const headerTitle = document.getElementById('quiz-header-title');
+            const promptLabel = document.getElementById('quiz-prompt-label');
+            const inputElement = document.getElementById('quiz-input');
+            const hintText = document.getElementById('quiz-hint-text');
+
+            if (mode === 'f2n') {
+                headerTitle.textContent = 'Formula ➔ Name';
+                promptLabel.textContent = 'Translate the following formula:';
+                inputElement.placeholder = 'e.g., sodium chloride';
+                hintText.innerHTML = "Don't worry about spaces around Roman numerals (e.g., 'iron(II)' and 'iron (II)' both work). Spelling matters.";
+            } else {
+                headerTitle.textContent = 'Name ➔ Formula';
+                promptLabel.textContent = 'Translate the following name:';
+                inputElement.placeholder = 'e.g., NaCl (case-sensitive)';
+                hintText.innerHTML = "Chemical symbols are <strong>case-sensitive</strong>! Type numbers normally for subscripts (e.g., Fe2O3).";
+            }
+
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const currentQ = currentQuestions[currentIndex];
+            const promptText = document.getElementById('quiz-prompt-text');
+            const form = document.getElementById('quiz-form');
+            const feedback = document.getElementById('quiz-feedback');
+            const input = document.getElementById('quiz-input');
+
+            // Reset UI
+            input.value = '';
+            form.classList.remove('hidden-view');
+            feedback.classList.add('hidden-view');
+            input.focus();
+
+            if (currentMode === 'f2n') {
+                promptText.innerHTML = formatFormula(currentQ.formula);
+            } else {
+                promptText.innerHTML = currentQ.name;
+            }
+        }
+
+        function updateScoreDisplay() {
+            document.getElementById('score-correct').textContent = scoreCorrect;
+            document.getElementById('score-total').textContent = scoreTotal;
+        }
+
+        document.getElementById('quiz-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const inputElement = document.getElementById('quiz-input');
+            const userInput = inputElement.value.trim();
+            if (!userInput) return;
+
+            const currentQ = currentQuestions[currentIndex];
+            let isCorrect = false;
+            let expectedOutput = '';
+            let formattedExpected = '';
+
+            if (currentMode === 'f2n') {
+                isCorrect = normalizeName(userInput) === normalizeName(currentQ.name);
+                expectedOutput = currentQ.name;
+                formattedExpected = currentQ.name; // Name doesn't need HTML formatting
+            } else {
+                isCorrect = normalizeFormula(userInput) === normalizeFormula(currentQ.formula);
+                expectedOutput = currentQ.formula;
+                formattedExpected = formatFormula(currentQ.formula);
+            }
+
+            // Update Score
+            scoreTotal++;
+            if (isCorrect) scoreCorrect++;
+            updateScoreDisplay();
+
+            // Show Feedback
+            const form = document.getElementById('quiz-form');
+            const feedback = document.getElementById('quiz-feedback');
+            const fbIcon = document.getElementById('feedback-icon');
+            const fbTitle = document.getElementById('feedback-title');
+            const fbDetails = document.getElementById('feedback-details');
+            const nextBtn = document.getElementById('next-btn');
+            
+            form.classList.add('hidden-view');
+            feedback.classList.remove('hidden-view');
+            
+            // Style based on correctness
+            feedback.className = `p-6 rounded-xl border-2 animate-pop-in mt-2 ${isCorrect ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`;
+            fbIcon.innerHTML = isCorrect ? iconCheck : iconX;
+            fbTitle.textContent = isCorrect ? 'Correct!' : 'Not quite.';
+            fbTitle.className = `text-lg font-bold ${isCorrect ? 'text-green-800' : 'text-red-800'}`;
+            
+            if (!isCorrect) {
+                fbDetails.classList.remove('hidden-view');
+                document.getElementById('feedback-user').textContent = userInput;
+                document.getElementById('feedback-correct').innerHTML = formattedExpected;
+                nextBtn.className = 'mt-4 px-6 py-2 rounded-lg font-bold text-white transition-colors bg-red-600 hover:bg-red-700';
+            } else {
+                fbDetails.classList.add('hidden-view');
+                nextBtn.className = 'mt-4 px-6 py-2 rounded-lg font-bold text-white transition-colors bg-green-600 hover:bg-green-700';
+            }
+            
+            nextBtn.focus();
+        });
+
+        function nextQuestion() {
+            currentIndex = (currentIndex + 1) % currentQuestions.length;
+            renderQuestion();
+        }
+    </script>
+</body>
+</html>
