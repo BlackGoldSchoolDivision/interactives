@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rational vs Irrational Number Sort</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow: hidden; /* Prevent scrolling */
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            touch-action: none; /* Prevent default touch actions like pinch-zoom */
+        }
+
+        #game-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* Limit width for playability */
+            height: 100%;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #header {
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        #score-display, #lives-display {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        #play-area {
+            position: relative;
+            flex-grow: 1;
+            overflow: hidden;
+            /* Subtly delineate the drop zones in the background */
+            background: linear-gradient(to right, rgba(16, 185, 129, 0.1) 50%, rgba(239, 68, 68, 0.1) 50%);
+        }
+
+        .number-drop {
+            position: absolute;
+            background-color: white;
+            color: #1e3a8a;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            cursor: grab;
+            user-select: none;
+            /* Transition for horizontal movement only, vertical handled by JS */
+            transition: left 0.1s ease-out; 
+            transform: translateX(-50%); /* Center based on left property */
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 80px;
+        }
+
+        .number-drop:active {
+            cursor: grabbing;
+            transform: translateX(-50%) scale(1.1);
+        }
+
+        #bottom-zones {
+            display: flex;
+            height: 120px;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .zone {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border-top: 4px solid white;
+            transition: background-color 0.2s;
+        }
+
+        #rational-zone {
+            background-color: rgba(16, 185, 129, 0.8); /* Emerald */
+            border-right: 2px solid white;
+        }
+
+        #irrational-zone {
+            background-color: rgba(239, 68, 68, 0.8); /* Red */
+            border-left: 2px solid white;
+        }
+
+        /* Highlight zones during drag */
+        .zone-highlight {
+            background-color: rgba(255, 255, 255, 0.4) !important;
+        }
+
+        /* Screens */
+        .overlay-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .btn {
+            background-color: #3b82f6;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-top: 20px;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.1s, background-color 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Level Selection Buttons */
+        .level-btn {
+            background-color: #4b5563; /* Gray */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin: 0 10px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .level-btn:hover {
+            background-color: #6b7280;
+        }
+
+        .level-btn.selected {
+            background-color: #3b82f6; /* Blue */
+            border-color: #bfdbfe;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+
+        /* Feedback animations */
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translate(-50%, 0); }
+            100% { opacity: 0; transform: translate(-50%, -50px); }
+        }
+
+        .feedback-msg {
+            position: absolute;
+            font-size: 2rem;
+            font-weight: bold;
+            transform: translateX(-50%);
+            animation: floatUp 1s ease-out forwards;
+            pointer-events: none;
+            z-index: 20;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .correct { color: #4ade80; } /* Green */
+        .incorrect { color: #f87171; } /* Red */
+        
+        /* Math rendering helpers */
+        .sqrt {
+            white-space: nowrap;
+        }
+        .sqrt::before {
+            content: '\221A'; /* Square root symbol */
+            margin-right: 2px;
+        }
+        .overbar {
+            text-decoration: overline;
+        }
+        .frac {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            vertical-align: middle;
+            font-size: 1.1rem;
+            line-height: 1;
+        }
+        .frac span:first-child {
+            border-bottom: 2px solid #1e3a8a;
+            padding: 0 2px;
+        }
+        .frac span:last-child {
+            padding: 0 2px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <!-- Header: Score and Lives -->
+        <div id="header">
+            <div id="score-display">Score: 0</div>
+            <div id="lives-display">
+                <i class="fa-solid fa-heart text-red-500"></i>
+                <i class="fa-solid fa-heart text-red-500"></i>
+                <i class="fa-solid fa-heart text-red-500"></i>
+            </div>
+        </div>
+
+        <!-- Play Area: Where numbers fall -->
+        <div id="play-area">
+            <!-- Numbers will be injected here via JS -->
+        </div>
+
+        <!-- Drop Zones -->
+        <div id="bottom-zones">
+            <div id="rational-zone" class="zone">
+                <div class="flex flex-col items-center">
+                    <i class="fa-solid fa-arrow-down mb-1"></i>
+                    <span>Rational</span>
+                </div>
+            </div>
+            <div id="irrational-zone" class="zone">
+                <div class="flex flex-col items-center">
+                    <i class="fa-solid fa-arrow-down mb-1"></i>
+                    <span>Irrational</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screens -->
+        <div id="start-screen" class="overlay-screen">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4 text-yellow-300">Number Sorter</h1>
+            <h2 class="text-2xl mb-6 font-semibold">Rational vs Irrational</h2>
+            <div class="text-left bg-white bg-opacity-10 p-6 rounded-xl max-w-md mb-6">
+                <p class="mb-3 text-lg"><i class="fa-solid fa-info-circle mr-2 text-blue-300"></i>Drag the falling numbers into the correct zone!</p>
+                <ul class="list-disc pl-6 space-y-2 text-sm md:text-base">
+                    <li><strong class="text-green-300">Rational:</strong> Can be written as a fraction (e.g., 5, 1/2, 0.75, 0.333..., √16). Terminating or repeating decimals.</li>
+                    <li><strong class="text-red-300">Irrational:</strong> Cannot be written as a simple fraction (e.g., π, √2). Non-terminating, non-repeating decimals.</li>
+                </ul>
+                <p class="mt-4 text-center font-bold text-yellow-200">Speed increases as you get streaks of correct answers!</p>
+            </div>
+            
+            <div class="mb-6">
+                <p class="mb-2 font-bold text-lg">Select Difficulty:</p>
+                <div class="flex justify-center">
+                    <button class="level-btn selected" data-level="A">Level A<br><span class="text-sm font-normal">Intro</span></button>
+                    <button class="level-btn" data-level="B">Level B<br><span class="text-sm font-normal">Standard</span></button>
+                    <button class="level-btn" data-level="C">Level C<br><span class="text-sm font-normal">Challenge</span></button>
+                </div>
+            </div>
+
+            <button id="start-btn" class="btn text-xl px-8 py-3 bg-green-500 hover:bg-green-600">Start Game</button>
+        </div>
+
+        <div id="game-over-screen" class="overlay-screen hidden">
+            <h1 class="text-5xl font-extrabold mb-2 text-red-400">Game Over!</h1>
+            <p class="text-2xl mb-6">Final Score: <span id="final-score" class="font-bold text-yellow-300">0</span></p>
+            
+            <div class="bg-white bg-opacity-10 p-6 rounded-xl max-w-md w-full mb-6 max-h-[50vh] overflow-y-auto">
+                <h3 class="text-xl font-bold mb-3 border-b border-gray-400 pb-2">Review Your Mistakes:</h3>
+                <ul id="mistakes-list" class="text-left space-y-2 text-sm">
+                    <!-- Mistakes injected here -->
+                </ul>
+                <p id="no-mistakes-msg" class="hidden text-green-300 italic">Perfect run! No mistakes made.</p>
+            </div>
+
+            <button id="restart-btn" class="btn bg-blue-500 hover:bg-blue-600">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Data Pools by Level ---
+
+        // Level A: Introductory (Integers, simple fractions, simple terminating decimals, simple perfect squares, pi)
+        const poolA = [
+            { display: "4", type: "rational", reason: "Integer" },
+            { display: "-2", type: "rational", reason: "Integer" },
+            { display: "0", type: "rational", reason: "Integer" },
+            { display: "10", type: "rational", reason: "Integer" },
+            { display: "<div class='frac'><span>1</span><span>2</span></div>", value: "1/2", type: "rational", reason: "Simple fraction" },
+            { display: "<div class='frac'><span>1</span><span>4</span></div>", value: "1/4", type: "rational", reason: "Simple fraction" },
+            { display: "0.5", type: "rational", reason: "Terminating decimal" },
+            { display: "<span class='sqrt'>4</span>", value: "√4", type: "rational", reason: "Perfect square (2)" },
+            { display: "<span class='sqrt'>9</span>", value: "√9", type: "rational", reason: "Perfect square (3)" },
+            { display: "&pi;", value: "π", type: "irrational", reason: "Famous irrational number" },
+            { display: "<span class='sqrt'>2</span>", value: "√2", type: "irrational", reason: "Not a perfect square" },
+            { display: "<span class='sqrt'>3</span>", value: "√3", type: "irrational", reason: "Not a perfect square" }
+        ];
+
+        // Level B: Standard (Negative fractions, repeating decimals, larger perfect squares, mixed decimals)
+        const poolB = [
+            { display: "-15", type: "rational", reason: "Integer" },
+            { display: "<div class='frac'><span>-3</span><span>4</span></div>", value: "-3/4", type: "rational", reason: "Fraction" },
+            { display: "0.75", type: "rational", reason: "Terminating decimal" },
+            { display: "0.<span class='overbar'>3</span>", value: "0.333...", type: "rational", reason: "Repeating decimal" },
+            { display: "<span class='sqrt'>16</span>", value: "√16", type: "rational", reason: "Perfect square (4)" },
+            { display: "<span class='sqrt'>25</span>", value: "√25", type: "rational", reason: "Perfect square (5)" },
+            { display: "-<span class='sqrt'>36</span>", value: "-√36", type: "rational", reason: "Perfect square (-6)" },
+            { display: "<span class='sqrt'>5</span>", value: "√5", type: "irrational", reason: "Not a perfect square" },
+            { display: "<span class='sqrt'>10</span>", value: "√10", type: "irrational", reason: "Not a perfect square" },
+            { display: "-<span class='sqrt'>7</span>", value: "-√7", type: "irrational", reason: "Not a perfect square" },
+            { display: "0.121221222...", type: "irrational", reason: "Non-repeating pattern" },
+            { display: "2&pi;", value: "2π", type: "irrational", reason: "Multiple of pi" }
+        ];
+
+        // Level C: Challenge (Tricky fractions, large roots, e, evaluating expressions)
+        const poolC = [
+            { display: "1.<span class='overbar'>45</span>", value: "1.4545...", type: "rational", reason: "Repeating decimal" },
+            { display: "<span class='sqrt'>144</span>", value: "√144", type: "rational", reason: "Perfect square (12)" },
+            { display: "<div class='frac'><span>22</span><span>7</span></div>", value: "22/7", type: "rational", reason: "Fraction (approx of pi, but a fraction)" },
+            { display: "<span class='sqrt'>0.25</span>", value: "√0.25", type: "rational", reason: "Evaluates to 0.5 (rational)" },
+            { display: "<div class='frac'><span>&pi;</span><span>&pi;</span></div>", value: "π/π", type: "rational", reason: "Evaluates to 1" },
+            { display: "3.14159", type: "rational", reason: "Terminating decimal (it stops!)" },
+            { display: "<span class='sqrt'>50</span>", value: "√50", type: "irrational", reason: "Not a perfect square" },
+            { display: "e", type: "irrational", reason: "Euler's number" },
+            { display: "<span class='sqrt'>8</span>", value: "√8", type: "irrational", reason: "Not a perfect square" },
+            { display: "&pi; + 1", value: "π + 1", type: "irrational", reason: "Irrational + Rational is Irrational" },
+            { display: "<div class='frac'><span><span class='sqrt'>2</span></span><span>2</span></div>", value: "√2/2", type: "irrational", reason: "Irrational divided by rational" }
+        ];
+
+        let currentPool = poolA;
+        let selectedLevel = 'A';
+
+        // --- Game State Variables ---
+        let score = 0;
+        let lives = 3;
+        let gameActive = false;
+        let baseFallSpeed = 0.5; // Starts very slow
+        let currentFallSpeed = baseFallSpeed;
+        let baseSpawnRate = 4000; // Slower spawn rate initially
+        let currentSpawnRate = baseSpawnRate;
+        
+        let activeNumbers = [];
+        let animationId;
+        let spawnIntervalId;
+        let mistakes = []; // Store mistakes for review
+        
+        let streak = 0; // Track consecutive correct answers
+
+        // DOM Elements
+        const playArea = document.getElementById('play-area');
+        const scoreDisplay = document.getElementById('score-display');
+        const livesDisplay = document.getElementById('lives-display');
+        const startScreen = document.getElementById('start-screen');
+        const gameOverScreen = document.getElementById('game-over-screen');
+        const finalScoreDisplay = document.getElementById('final-score');
+        const mistakesList = document.getElementById('mistakes-list');
+        const noMistakesMsg = document.getElementById('no-mistakes-msg');
+        const rationalZone = document.getElementById('rational-zone');
+        const irrationalZone = document.getElementById('irrational-zone');
+        const gameContainer = document.getElementById('game-container');
+        const levelButtons = document.querySelectorAll('.level-btn');
+
+        // --- Setup Level Selection ---
+        levelButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // Remove selected from all
+                levelButtons.forEach(b => b.classList.remove('selected'));
+                // Add to clicked
+                const target = e.currentTarget;
+                target.classList.add('selected');
+                selectedLevel = target.dataset.level;
+                
+                if (selectedLevel === 'A') currentPool = poolA;
+                if (selectedLevel === 'B') currentPool = poolB;
+                if (selectedLevel === 'C') currentPool = poolC;
+            });
+        });
+
+        // --- Core Functions ---
+
+        function initGame() {
+            score = 0;
+            lives = 3;
+            streak = 0;
+            
+            // Reset speeds based on level (optional: make higher levels start slightly faster)
+            baseFallSpeed = 0.5; 
+            currentFallSpeed = baseFallSpeed;
+            baseSpawnRate = 4000;
+            currentSpawnRate = baseSpawnRate;
+            
+            mistakes = [];
+            
+            updateScoreDisplay();
+            updateLivesDisplay();
+            
+            // Clear play area
+            playArea.innerHTML = '';
+            activeNumbers = [];
+            
+            // Hide screens
+            startScreen.classList.add('hidden');
+            gameOverScreen.classList.add('hidden');
+            
+            gameActive = true;
+            
+            // Start loops
+            spawnIntervalId = setInterval(spawnNumber, currentSpawnRate);
+            lastFrameTime = performance.now();
+            animationId = requestAnimationFrame(gameLoop);
+        }
+
+        let lastFrameTime = 0;
+        function gameLoop(currentTime) {
+            if (!gameActive) return;
+
+            const deltaTime = currentTime - lastFrameTime;
+            // Cap delta time to prevent massive jumps if tab is inactive
+            const dt = Math.min(deltaTime, 50); 
+            lastFrameTime = currentTime;
+
+            // Move numbers down
+            for (let i = activeNumbers.length - 1; i >= 0; i--) {
+                const item = activeNumbers[i];
+                
+                // Only fall if not being dragged
+                if (!item.isDragging) {
+                    // Base movement on time elapsed for smoother frame-rate independent movement
+                    item.y += currentFallSpeed * (dt / 16); 
+                    item.element.style.top = `${item.y}px`;
+
+                    // Check if hit bottom
+                    const playAreaHeight = playArea.offsetHeight;
+                    if (item.y > playAreaHeight - 40) { // offset for height of number
+                        handleMiss(item);
+                        activeNumbers.splice(i, 1);
+                        item.element.remove();
+                    }
+                }
+            }
+
+            animationId = requestAnimationFrame(gameLoop);
+        }
+
+        function spawnNumber() {
+            if (!gameActive) return;
+
+            // Pick random number from the selected pool
+            const numData = currentPool[Math.floor(Math.random() * currentPool.length)];
+            
+            // Create DOM element
+            const el = document.createElement('div');
+            el.className = 'number-drop';
+            el.innerHTML = numData.display;
+            
+            playArea.appendChild(el);
+
+            // Determine safe starting X position
+            const width = el.offsetWidth;
+            const maxX = playArea.offsetWidth - (width / 2) - 10;
+            const minX = (width / 2) + 10;
+            const startX = Math.random() * (maxX - minX) + minX;
+
+            const item = {
+                element: el,
+                data: numData,
+                x: startX,
+                y: -50, // Start above screen
+                isDragging: false,
+                offsetX: 0,
+                offsetY: 0
+            };
+
+            // Set initial position
+            el.style.left = `${item.x}px`;
+            el.style.top = `${item.y}px`;
+
+            // Add interaction listeners
+            setupInteractions(item);
+
+            activeNumbers.push(item);
+        }
+
+        function increaseSpeed() {
+            // Max speed cap
+            if (currentFallSpeed >= 3.5) return;
+            
+            currentFallSpeed += 0.2;
+            
+            // Faster spawn rate, capped at 1200ms
+            currentSpawnRate = Math.max(currentSpawnRate - 300, 1200); 
+            
+            // Update interval
+            clearInterval(spawnIntervalId);
+            spawnIntervalId = setInterval(spawnNumber, currentSpawnRate);
+            
+            // Visual indicator of speed increase
+            const speedMsg = document.createElement('div');
+            speedMsg.className = 'feedback-msg text-yellow-300';
+            speedMsg.textContent = "Speed Up!";
+            speedMsg.style.left = '50%';
+            speedMsg.style.top = '30%';
+            playArea.appendChild(speedMsg);
+            setTimeout(() => speedMsg.remove(), 1000);
+        }
+
+        function setupInteractions(item) {
+            const el = item.element;
+
+            // --- Mouse Events ---
+            el.addEventListener('mousedown', (e) => startDrag(e, item));
+            
+            // --- Touch Events ---
+            el.addEventListener('touchstart', (e) => {
+                e.preventDefault(); // Prevent scrolling while dragging
+                startDrag(e.touches[0], item);
+            }, { passive: false });
+        }
+
+        function startDrag(e, item) {
+            if (!gameActive) return;
+            
+            item.isDragging = true;
+            const rect = item.element.getBoundingClientRect();
+            const containerRect = gameContainer.getBoundingClientRect();
+            
+            // Calculate offset of pointer relative to center of element
+            // e.clientX is viewport relative. We need it relative to playArea.
+            item.offsetX = 0; // Center drag visually
+            
+            item.element.style.zIndex = 100; // Bring to front
+
+            const moveHandler = (moveEvent) => drag(moveEvent, item);
+            const moveTouchHandler = (moveEvent) => {
+                moveEvent.preventDefault();
+                drag(moveEvent.touches[0], item);
+            };
+
+            const endHandler = (endEvent) => stopDrag(endEvent, item, moveHandler, endHandler);
+            const endTouchHandler = (endEvent) => stopDrag(endEvent.changedTouches[0], item, moveTouchHandler, endTouchHandler);
+
+            // Listen on document to keep tracking if mouse leaves element
+            document.addEventListener('mousemove', moveHandler);
+            document.addEventListener('mouseup', endHandler);
+            
+            document.addEventListener('touchmove', moveTouchHandler, { passive: false });
+            document.addEventListener('touchend', endTouchHandler);
+        }
+
+        function drag(e, item) {
+            if (!item.isDragging) return;
+
+            const containerRect = gameContainer.getBoundingClientRect();
+            
+            // Calculate new X based on pointer position relative to container
+            let newX = e.clientX - containerRect.left;
+            
+            // Constrain to play area width
+            const playAreaWidth = playArea.offsetWidth;
+            newX = Math.max(0, Math.min(newX, playAreaWidth));
+
+            item.x = newX;
+            item.element.style.left = `${item.x}px`;
+
+            // Highlight zone based on position
+            if (newX < playAreaWidth / 2) {
+                rationalZone.classList.add('zone-highlight');
+                irrationalZone.classList.remove('zone-highlight');
+            } else {
+                irrationalZone.classList.add('zone-highlight');
+                rationalZone.classList.remove('zone-highlight');
+            }
+        }
+
+        function stopDrag(e, item, moveHandler, endHandler) {
+            if (!item.isDragging) return;
+            
+            item.isDragging = false;
+            item.element.style.zIndex = 5;
+            
+            document.removeEventListener('mousemove', moveHandler);
+            document.removeEventListener('mouseup', endHandler);
+            document.removeEventListener('touchmove', moveHandler); // Assuming named similarly in caller
+            document.removeEventListener('touchend', endHandler);
+
+            rationalZone.classList.remove('zone-highlight');
+            irrationalZone.classList.remove('zone-highlight');
+
+            // Determine which zone it was dropped in based on current X position
+            const playAreaWidth = playArea.offsetWidth;
+            const droppedZone = (item.x < playAreaWidth / 2) ? 'rational' : 'irrational';
+
+            // Only process drop if it's in the lower portion of the screen
+            const playAreaHeight = playArea.offsetHeight;
+            if (item.y > playAreaHeight * 0.5) {
+               checkAnswer(item, droppedZone);
+            }
+        }
+
+        function checkAnswer(item, droppedZone) {
+            const isCorrect = item.data.type === droppedZone;
+            
+            if (isCorrect) {
+                score += 10;
+                streak++;
+                updateScoreDisplay();
+                showFeedback(item.x, item.y, "+10", "correct");
+                
+                // Increase difficulty after 4 consecutive correct answers
+                if (streak > 0 && streak % 4 === 0) {
+                    increaseSpeed();
+                }
+                
+            } else {
+                streak = 0; // Reset streak on mistake
+                loseLife();
+                showFeedback(item.x, item.y, "X", "incorrect");
+                recordMistake(item.data, droppedZone);
+            }
+
+            // Remove item
+            const index = activeNumbers.indexOf(item);
+            if (index > -1) {
+                activeNumbers.splice(index, 1);
+            }
+            item.element.remove();
+        }
+
+        function handleMiss(item) {
+            streak = 0; // Reset streak on miss
+            loseLife();
+            showFeedback(item.x, item.y - 20, "Missed!", "incorrect");
+            recordMistake(item.data, "missed");
+        }
+
+        function loseLife() {
+            lives--;
+            updateLivesDisplay();
+            
+            // Visual shake effect
+            gameContainer.classList.add('animate-shake');
+            setTimeout(() => gameContainer.classList.remove('animate-shake'), 500);
+
+            if (lives <= 0) {
+                endGame();
+            }
+        }
+
+        function updateScoreDisplay() {
+            scoreDisplay.textContent = `Score: ${score}`;
+        }
+
+        function updateLivesDisplay() {
+            livesDisplay.innerHTML = '';
+            for (let i = 0; i < 3; i++) {
+                if (i < lives) {
+                    livesDisplay.innerHTML += '<i class="fa-solid fa-heart text-red-500 mr-1"></i>';
+                } else {
+                    livesDisplay.innerHTML += '<i class="fa-regular fa-heart text-gray-400 mr-1"></i>';
+                }
+            }
+        }
+
+        function showFeedback(x, y, text, typeClass) {
+            const el = document.createElement('div');
+            el.className = `feedback-msg ${typeClass}`;
+            el.textContent = text;
+            el.style.left = `${x}px`;
+            el.style.top = `${y}px`;
+            playArea.appendChild(el);
+
+            setTimeout(() => el.remove(), 1000);
+        }
+
+        function recordMistake(data, action) {
+            const val = data.value || data.display.replace(/<[^>]*>?/gm, ''); // Strip html for text
+            let msg = '';
+            if (action === 'missed') {
+                msg = `Missed sorting <strong>${data.value || data.display}</strong> (It is ${data.type})`;
+            } else {
+                msg = `Sorted <strong>${data.value || data.display}</strong> as ${action}. It is ${data.type} because: <em>${data.reason}</em>`;
+            }
+            mistakes.push(msg);
+        }
+
+        function endGame() {
+            gameActive = false;
+            cancelAnimationFrame(animationId);
+            clearInterval(spawnIntervalId);
+            
+            finalScoreDisplay.textContent = score;
+            
+            // Populate mistakes
+            mistakesList.innerHTML = '';
+            if (mistakes.length === 0) {
+                mistakesList.classList.add('hidden');
+                noMistakesMsg.classList.remove('hidden');
+            } else {
+                mistakesList.classList.remove('hidden');
+                noMistakesMsg.classList.add('hidden');
+                // De-duplicate mistakes for cleaner review
+                const uniqueMistakes = [...new Set(mistakes)];
+                uniqueMistakes.forEach(mistake => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<i class="fa-solid fa-circle-xmark text-red-400 mr-2"></i> ${mistake}`;
+                    mistakesList.appendChild(li);
+                });
+            }
+
+            gameOverScreen.classList.remove('hidden');
+        }
+
+        // --- Event Listeners ---
+        document.getElementById('start-btn').addEventListener('click', initGame);
+        document.getElementById('restart-btn').addEventListener('click', initGame);
+
+        // Add a simple shake animation class via CSS dynamically
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                20%, 40%, 60%, 80% { transform: translateX(5px); }
+            }
+            .animate-shake {
+                animation: shake 0.4s;
+            }
+        `;
+        document.head.appendChild(style);
+
+    </script>
+</body>
+</html>
