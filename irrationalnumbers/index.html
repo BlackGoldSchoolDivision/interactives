@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade 8: Irrational Numbers Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#7c3aed', // Violet 600
+                        secondary: '#db2777', // Pink 600
+                        background: '#f3f4f6', 
+                        card: '#ffffff',
+                        textMain: '#1f2937', 
+                        rational: '#3b82f6', // Blue 500
+                        exact: '#8b5cf6', // Violet 500
+                        approx: '#ec4899', // Pink 500
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; color: #1f2937; }
+        .math-font { font-family: 'Fira Code', monospace; }
+        .tab-content { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Radical formatting */
+        .radical { white-space: nowrap; }
+        .radical-symbol { font-size: 1.2em; vertical-align: middle; }
+        .radical-content { border-top: 2px solid currentColor; padding: 0 2px; }
+
+        /* Number line canvas specific styles */
+        #numberLineCanvas {
+            width: 100%;
+            height: 140px;
+            cursor: grab;
+            border-radius: 0.5rem;
+            background: linear-gradient(to bottom, #ffffff, #f8fafc);
+            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+        }
+        #numberLineCanvas:active { cursor: grabbing; }
+
+        /* Draggable elements */
+        .draggable-item {
+            cursor: grab;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+        .draggable-item:active {
+            cursor: grabbing;
+            transform: scale(1.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .drop-zone {
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .drop-zone.drag-over-rational { background-color: #eff6ff; border-color: #3b82f6; }
+        .drop-zone.drag-over-exact { background-color: #f5f3ff; border-color: #8b5cf6; }
+        .drop-zone.drag-over-approx { background-color: #fdf2f8; border-color: #ec4899; }
+
+        .feedback-pop {
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <header class="bg-primary text-white p-6 shadow-md">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-3xl font-bold">Irrational Numbers Explorer</h1>
+                <p class="text-sm opacity-90 mt-1">Grade 8 Math: Discovering Exact and Approximate Values</p>
+            </div>
+            <nav class="flex flex-wrap gap-2 justify-center">
+                <button onclick="switchTab('learn')" id="tab-learn" class="nav-btn px-4 py-2 rounded-md bg-white/20 hover:bg-white/30 transition font-medium active-tab bg-white text-primary">Learn</button>
+                <button onclick="switchTab('classify')" id="tab-classify" class="nav-btn px-4 py-2 rounded-md bg-white/20 hover:bg-white/30 transition font-medium">Classify</button>
+                <button onclick="switchTab('number-line')" id="tab-number-line" class="nav-btn px-4 py-2 rounded-md bg-white/20 hover:bg-white/30 transition font-medium">Number Line</button>
+                <button onclick="switchTab('word-problems')" id="tab-word-problems" class="nav-btn px-4 py-2 rounded-md bg-white/20 hover:bg-white/30 transition font-medium">Word Problems</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-6xl mx-auto w-full p-4 md:p-6 lg:p-8">
+
+        <!-- SECTION 1: Learn Irrational Numbers -->
+        <section id="learn" class="tab-content active">
+            <div class="bg-card rounded-xl shadow-sm p-6 md:p-8 mb-6 border-t-4 border-primary">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-lg italic font-serif">I</span>
+                    What is an Irrational Number?
+                </h2>
+                <p class="mb-4 text-gray-600">
+                    An <strong>irrational number</strong> is a real number that <em>cannot</em> be expressed as a simple fraction (the quotient of two integers). 
+                    When written as a decimal, it goes on forever without ever repeating in a pattern.
+                </p>
+                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-purple-50 p-5 rounded-lg border border-purple-100">
+                        <h3 class="font-semibold text-purple-900 mb-2">Key Properties</h3>
+                        <ul class="list-disc pl-5 space-y-3 text-gray-700 text-sm">
+                            <li><strong>Non-Terminating, Non-Repeating:</strong> The decimal expansion never ends and never forms a repeating block (unlike 1/3 = 0.333...).</li>
+                            <li><strong>Exact vs. Approximate:</strong> Because the decimal is infinite, writing <span class="math-font text-purple-700 font-bold">&pi;</span> or <span class="math-font text-purple-700 font-bold">&radic;2</span> gives the <em>exact value</em>. Writing <span class="math-font font-bold">3.14</span> or <span class="math-font font-bold">1.414</span> is an <em>approximation</em> (a rounded decimal).</li>
+                            <li><strong>Filling the Gaps:</strong> Irrational numbers fill in the spaces between rational numbers, completing the Real Number line.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-100 flex flex-col justify-center">
+                        <h3 class="font-semibold text-gray-800 mb-3">Square Root Explorer</h3>
+                        <p class="text-xs text-gray-500 mb-4">Calculate a square root to see if it's a perfect square (Rational) or not (Irrational).</p>
+                        
+                        <div class="flex items-center justify-center gap-4 text-2xl math-font">
+                            <div class="flex items-center text-primary font-bold">
+                                <span class="radical-symbol">&radic;</span>
+                                <span class="radical-content">
+                                    <input type="number" id="sqrt-input" value="10" min="0" class="w-16 text-center border-none bg-purple-50 rounded outline-none p-1" onchange="calculateRoot()" onkeyup="calculateRoot()">
+                                </span>
+                            </div>
+                            <div class="text-gray-400">=</div>
+                            <div id="sqrt-result" class="font-bold text-gray-800 min-w-[120px] text-center text-lg overflow-hidden text-ellipsis">3.162277...</div>
+                        </div>
+                        
+                        <div id="sqrt-explanation" class="text-center mt-6 text-sm font-medium p-3 rounded-md bg-purple-100 text-purple-800 border border-purple-200">
+                            <strong>Irrational</strong><br>Not a perfect square. The decimal is non-terminating and non-repeating.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Classify (Exact vs Approximate) -->
+        <section id="classify" class="tab-content">
+            <div class="bg-card rounded-xl shadow-sm p-6 md:p-8 mb-6 border-t-4 border-exact">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Number Sorter: Exact, Approximate, or Rational?</h2>
+                <p class="text-gray-600 mb-6 text-sm">Sort the numbers into their correct categories. Pay close attention to whether an irrational number is written in its <strong>exact</strong> mathematical form or as a <strong>rounded decimal</strong> approximation.</p>
+
+                <div class="flex flex-col md:flex-row gap-6">
+                    <!-- Numbers Pool -->
+                    <div class="w-full md:w-1/4 bg-gray-50 rounded-lg p-4 border border-gray-200">
+                        <h3 class="font-semibold text-center mb-4 text-gray-700">Numbers to Sort</h3>
+                        <div id="numbers-pool" class="flex flex-wrap gap-2 justify-center min-h-[100px]">
+                            <!-- Generated via JS -->
+                        </div>
+                        <button onclick="resetSortGame()" class="mt-6 w-full py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded transition text-sm font-medium">Reset Game</button>
+                    </div>
+
+                    <!-- Drop Zones -->
+                    <div class="w-full md:w-3/4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <!-- Rational Distractors -->
+                        <div id="zone-rational" class="drop-zone border-2 border-dashed border-blue-300 rounded-lg p-4 flex flex-col h-72 bg-blue-50/30" ondragover="allowDrop(event)" ondrop="drop(event, 'rational')" ondragenter="dragEnter(event, 'rational')" ondragleave="dragLeave(event, 'rational')">
+                            <h3 class="font-bold text-center text-blue-700 mb-1">Rational Numbers</h3>
+                            <p class="text-[11px] text-center text-blue-600 mb-2 pb-2 border-b border-blue-200">Terminating or repeating decimals, exact fractions, perfect square roots.</p>
+                            <div class="flex-grow flex flex-wrap gap-2 items-start align-start content-start" id="container-rational"></div>
+                        </div>
+                        
+                        <!-- Exact Irrationals -->
+                        <div id="zone-exact" class="drop-zone border-2 border-dashed border-violet-300 rounded-lg p-4 flex flex-col h-72 bg-violet-50/30" ondragover="allowDrop(event)" ondrop="drop(event, 'exact')" ondragenter="dragEnter(event, 'exact')" ondragleave="dragLeave(event, 'exact')">
+                            <h3 class="font-bold text-center text-violet-700 mb-1">Exact Irrational</h3>
+                            <p class="text-[11px] text-center text-violet-600 mb-2 pb-2 border-b border-violet-200">The true, unrounded value (e.g., symbols like &pi;, or non-perfect roots).</p>
+                            <div class="flex-grow flex flex-wrap gap-2 items-start align-start content-start" id="container-exact"></div>
+                        </div>
+                        
+                        <!-- Approximate Irrationals -->
+                        <div id="zone-approx" class="drop-zone border-2 border-dashed border-pink-300 rounded-lg p-4 flex flex-col h-72 bg-pink-50/30" ondragover="allowDrop(event)" ondrop="drop(event, 'approx')" ondragenter="dragEnter(event, 'approx')" ondragleave="dragLeave(event, 'approx')">
+                            <h3 class="font-bold text-center text-pink-700 mb-1">Approximate Irrational</h3>
+                            <p class="text-[11px] text-center text-pink-600 mb-2 pb-2 border-b border-pink-200">A rounded decimal value used to represent an irrational number.</p>
+                            <div class="flex-grow flex flex-wrap gap-2 items-start align-start content-start" id="container-approx"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="sort-feedback" class="mt-4 text-center font-bold h-6 text-lg"></div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: Interactive Number Line (Estimation Game) -->
+        <section id="number-line" class="tab-content">
+            <div class="bg-card rounded-xl shadow-sm p-6 md:p-8 mb-6 border-t-4 border-pink-500">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-4 gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">Irrational Estimation Challenge</h2>
+                        <p class="text-gray-600 text-sm mt-1">Estimate the decimal value of the exact irrational number to figure out its spot on the number line.</p>
+                    </div>
+                    <div class="flex gap-2 w-full md:w-auto">
+                         <button onclick="newEstimationChallenge()" class="w-full md:w-auto px-4 py-2 bg-pink-100 hover:bg-pink-200 text-pink-800 font-semibold rounded text-sm transition shadow-sm border border-pink-200">New Challenge</button>
+                    </div>
+                </div>
+
+                <!-- Challenge Header -->
+                <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg mb-4 text-center shadow-inner">
+                    <span class="text-gray-700 font-medium">Estimate the approximate value of </span>
+                    <span id="nl-target-label" class="font-bold text-xl text-primary math-font mx-2 bg-purple-100 px-3 py-1 rounded shadow-sm border border-purple-200">?</span>
+                    <span class="text-gray-700 font-medium text-sm block mt-2">(Enter a decimal rounded to 1 or 2 decimal places)</span>
+                </div>
+
+                <!-- Canvas -->
+                <div class="relative border border-gray-300 rounded-lg overflow-hidden bg-white mb-4 shadow-sm">
+                    <canvas id="numberLineCanvas"></canvas>
+                </div>
+
+                <!-- Input area -->
+                <div class="flex flex-col sm:flex-row gap-4 items-center bg-pink-50 p-4 rounded-lg border border-pink-200">
+                    <span class="font-medium text-sm text-pink-900 whitespace-nowrap">Your Estimate:</span>
+                    <input type="number" step="0.01" id="nl-input" placeholder="e.g. 2.64" class="flex-grow p-2 border border-pink-300 rounded math-font text-base focus:outline-none focus:ring-2 focus:ring-pink-500 bg-white">
+                    <button onclick="submitEstimation()" class="bg-pink-600 hover:bg-pink-700 text-white px-6 py-2 rounded transition text-sm font-bold whitespace-nowrap shadow-sm">Plot & Check</button>
+                </div>
+                
+                <div id="nl-feedback" class="mt-4 text-center font-medium text-base h-12 flex flex-col justify-center"></div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: Word Problems -->
+        <section id="word-problems" class="tab-content">
+            <div class="bg-card rounded-xl shadow-sm p-6 md:p-8 mb-6 border-t-4 border-gray-800">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Real-World Irrationals</h2>
+                <p class="text-gray-600 mb-6 text-sm">Apply your knowledge of exact vs. approximate values and irrational numbers to these problems.</p>
+
+                <div class="space-y-6" id="problems-container">
+                    <!-- Problems will be injected here via JS -->
+                </div>
+
+                <div class="mt-8 text-center">
+                    <button onclick="loadNewProblem()" class="bg-gray-800 hover:bg-gray-700 text-white px-6 py-2 rounded-lg font-bold transition shadow-sm">Load New Problem</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // --- Navigation Logic ---
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-white', 'text-primary');
+                btn.classList.add('text-white');
+            });
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            activeBtn.classList.remove('text-white');
+            activeBtn.classList.add('bg-white', 'text-primary');
+
+            if(tabId === 'number-line') {
+                resizeCanvas();
+                if(!currentChallenge) newEstimationChallenge();
+                else drawNumberLine();
+            }
+        }
+
+        // --- Tab 1: Learn - Square Root Explorer ---
+        function calculateRoot() {
+            const inputEl = document.getElementById('sqrt-input');
+            const resEl = document.getElementById('sqrt-result');
+            const expEl = document.getElementById('sqrt-explanation');
+            
+            const val = parseFloat(inputEl.value);
+
+            if (isNaN(val) || val < 0) {
+                resEl.textContent = "Error";
+                expEl.innerHTML = "Please enter a positive number.";
+                expEl.className = "text-center mt-6 text-sm font-medium p-3 rounded-md bg-red-100 text-red-800 border border-red-200";
+                return;
+            }
+
+            const root = Math.sqrt(val);
+            const isPerfect = Number.isInteger(root);
+            
+            if (isPerfect) {
+                resEl.textContent = root.toString();
+                expEl.innerHTML = "<strong>Rational Number</strong><br>This is a perfect square. The result is an integer (which is a type of rational number).";
+                expEl.className = "text-center mt-6 text-sm font-medium p-3 rounded-md bg-blue-100 text-blue-800 border border-blue-200";
+            } else {
+                // Show a truncated version simulating an infinite decimal
+                resEl.textContent = root.toFixed(7) + "...";
+                expEl.innerHTML = "<strong>Irrational Number</strong><br>Not a perfect square. The decimal is non-terminating and non-repeating. To write it exactly, leave it as <span class='radical'>&radic;<span class='radical-content'>" + val + "</span></span>.";
+                expEl.className = "text-center mt-6 text-sm font-medium p-3 rounded-md bg-purple-100 text-purple-800 border border-purple-200";
+            }
+        }
+
+        // --- STREAMING_CHUNK:Javascript for Classify Game ---
+        // --- Tab 2: Classification Game ---
+        const gameItems = [
+            { id: 'i1', type: 'exact', display: '&pi;' },
+            { id: 'i2', type: 'approx', display: '3.14' },
+            { id: 'i3', type: 'approx', display: '3.14159' },
+            { id: 'i4', type: 'rational', display: '<span class="radical">&radic;<span class="radical-content">25</span></span>' },
+            { id: 'i5', type: 'exact', display: '<span class="radical">&radic;<span class="radical-content">2</span></span>' },
+            { id: 'i6', type: 'approx', display: '1.414' },
+            { id: 'i7', type: 'rational', display: '0.333...' },
+            { id: 'i8', type: 'exact', display: '<span class="radical">&radic;<span class="radical-content">10</span></span>' },
+            { id: 'i9', type: 'rational', display: '3/4' }
+        ];
+
+        let draggedItem = null;
+
+        function initSortGame() {
+            const pool = document.getElementById('numbers-pool');
+            pool.innerHTML = '';
+            document.getElementById('container-rational').innerHTML = '';
+            document.getElementById('container-exact').innerHTML = '';
+            document.getElementById('container-approx').innerHTML = '';
+            document.getElementById('sort-feedback').textContent = '';
+            
+            const shuffled = [...gameItems].sort(() => 0.5 - Math.random());
+
+            shuffled.forEach(item => {
+                const el = document.createElement('div');
+                el.id = item.id;
+                el.className = 'draggable-item bg-white border border-gray-300 rounded shadow-sm px-3 py-2 text-lg font-bold math-font select-none';
+                el.draggable = true;
+                el.innerHTML = item.display;
+                el.dataset.type = item.type;
+                
+                el.addEventListener('dragstart', (e) => {
+                    draggedItem = e.target;
+                    e.dataTransfer.setData('text/plain', e.target.id);
+                    setTimeout(() => e.target.classList.add('opacity-50'), 0);
+                });
+                
+                el.addEventListener('dragend', (e) => {
+                    e.target.classList.remove('opacity-50');
+                    document.querySelectorAll('.drop-zone').forEach(z => {
+                        z.classList.remove('drag-over-rational', 'drag-over-exact', 'drag-over-approx');
+                    });
+                });
+
+                pool.appendChild(el);
+            });
+        }
+
+        function allowDrop(e) { e.preventDefault(); }
+        function dragEnter(e, type) { e.preventDefault(); e.currentTarget.classList.add(`drag-over-${type}`); }
+        function dragLeave(e, type) { e.currentTarget.classList.remove(`drag-over-${type}`); }
+
+        function drop(e, targetType) {
+            e.preventDefault();
+            const zone = e.currentTarget;
+            zone.classList.remove(`drag-over-${targetType}`);
+            
+            const id = e.dataTransfer.getData('text/plain');
+            const draggableElement = document.getElementById(id);
+            const container = zone.querySelector('div');
+            
+            if (draggableElement) {
+                const itemType = draggableElement.dataset.type;
+                const feedbackEl = document.getElementById('sort-feedback');
+                
+                if (itemType === targetType) {
+                    container.appendChild(draggableElement);
+                    draggableElement.classList.add('border-green-500', 'text-green-700', 'bg-green-50');
+                    draggableElement.draggable = false; 
+                    draggableElement.classList.remove('cursor-grab');
+                    draggableElement.style.cursor = 'default';
+                    
+                    feedbackEl.textContent = 'Correct!';
+                    feedbackEl.className = 'mt-4 text-center font-bold h-6 text-lg text-green-600 feedback-pop';
+                    
+                    if (document.getElementById('numbers-pool').children.length === 0) {
+                        feedbackEl.textContent = '🎉 All sorted perfectly!';
+                        feedbackEl.className = 'mt-4 text-center font-bold h-6 text-lg text-primary feedback-pop';
+                    }
+                } else {
+                    feedbackEl.textContent = 'Not quite! Is it an exact mathematical expression, or a rounded approximation?';
+                    feedbackEl.className = 'mt-4 text-center font-bold h-6 text-sm text-red-500 feedback-pop';
+                    draggableElement.classList.add('animate-bounce');
+                    setTimeout(() => draggableElement.classList.remove('animate-bounce'), 500);
+                }
+                setTimeout(() => feedbackEl.classList.remove('feedback-pop'), 300);
+            }
+        }
+        function resetSortGame() { initSortGame(); }
+
+        // --- STREAMING_CHUNK:Javascript for Number Line Estimation Game ---
+        // --- Tab 3: Number Line Estimation Game ---
+        const canvas = document.getElementById('numberLineCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let viewOffset = 0; 
+        let scale = 150; 
+        let isDragging = false;
+        let dragStartX = 0;
+        let initialOffset = 0;
+        
+        let currentChallenge = null;
+        let studentEstimate = null;
+        let showExact = false;
+
+        const estimationChallenges = [
+            { label: '&pi;', val: Math.PI, bounds: [2, 5], precision: 2 },
+            { label: '<span class="radical">&radic;<span class="radical-content">2</span></span>', val: Math.sqrt(2), bounds: [0, 3], precision: 2 },
+            { label: '<span class="radical">&radic;<span class="radical-content">5</span></span>', val: Math.sqrt(5), bounds: [1, 4], precision: 2 },
+            { label: '<span class="radical">&radic;<span class="radical-content">10</span></span>', val: Math.sqrt(10), bounds: [2, 5], precision: 1 },
+            { label: '<span class="radical">&radic;<span class="radical-content">20</span></span>', val: Math.sqrt(20), bounds: [3, 6], precision: 1 },
+            { label: '<span class="radical">&radic;<span class="radical-content">50</span></span>', val: Math.sqrt(50), bounds: [5, 9], precision: 1 },
+            { label: '2&pi;', val: 2 * Math.PI, bounds: [5, 8], precision: 1 }
+        ];
+
+        function newEstimationChallenge() {
+            // Pick a challenge
+            const idx = Math.floor(Math.random() * estimationChallenges.length);
+            currentChallenge = estimationChallenges[idx];
+            
+            document.getElementById('nl-target-label').innerHTML = currentChallenge.label;
+            document.getElementById('nl-input').value = '';
+            studentEstimate = null;
+            showExact = false;
+            
+            const feedback = document.getElementById('nl-feedback');
+            feedback.innerHTML = '';
+            
+            // Set view bounds to frame the context
+            viewOffset = (currentChallenge.bounds[0] + currentChallenge.bounds[1]) / 2;
+            const dist = currentChallenge.bounds[1] - currentChallenge.bounds[0];
+            if (canvas.width > 0) {
+                scale = (canvas.width * 0.8) / dist; 
+            }
+
+            drawNumberLine();
+        }
+
+        function submitEstimation() {
+            if (!currentChallenge) return;
+            const inputVal = parseFloat(document.getElementById('nl-input').value);
+            const feedback = document.getElementById('nl-feedback');
+
+            if (isNaN(inputVal)) {
+                feedback.innerHTML = "<span class='text-red-500 font-bold'>Please enter a valid decimal number.</span>";
+                return;
+            }
+
+            studentEstimate = inputVal;
+            showExact = true; // Reveal the true location
+
+            const exactVal = currentChallenge.val;
+            const diff = Math.abs(studentEstimate - exactVal);
+            const allowableError = currentChallenge.precision === 1 ? 0.15 : 0.05;
+
+            // Pan to show both points if necessary
+            viewOffset = exactVal;
+            // Zoom in closer
+            scale = 300;
+
+            let fbHTML = "";
+            if (diff <= allowableError) {
+                fbHTML = `<span class='text-green-600 font-bold text-lg'>Great estimation! 🎉</span><br>`;
+            } else {
+                fbHTML = `<span class='text-red-500 font-bold text-lg'>Not quite!</span><br>`;
+            }
+            
+            fbHTML += `<span class='text-sm text-gray-700'>The exact value is approx <strong>${exactVal.toFixed(4)}...</strong> You guessed <strong>${studentEstimate}</strong>. (Error: ${diff.toFixed(3)})</span>`;
+            
+            feedback.innerHTML = fbHTML;
+            feedback.className = "mt-4 text-center h-12 flex flex-col justify-center feedback-pop";
+            
+            drawNumberLine();
+            setTimeout(() => feedback.classList.remove('feedback-pop'), 300);
+        }
+
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = canvas.clientHeight; 
+            drawNumberLine();
+        }
+
+        // --- STREAMING_CHUNK:Javascript for Canvas Rendering ---
+        function drawNumberLine() {
+            if (!ctx || !canvas.width) return;
+            const w = canvas.width;
+            const h = canvas.height;
+            const centerY = h / 2 + 10; 
+            
+            ctx.clearRect(0, 0, w, h);
+            
+            // Draw main line
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(w, centerY);
+            ctx.strokeStyle = '#9ca3af';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            const startVal = viewOffset - (w / 2) / scale;
+            const endVal = viewOffset + (w / 2) / scale;
+            
+            // Dynamic ticking
+            let step = 1;
+            if (scale > 100) step = 0.5;
+            if (scale > 250) step = 0.1;
+            if (scale > 800) step = 0.05;
+
+            const firstTick = Math.floor(startVal / step) * step;
+
+            ctx.font = '12px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            ctx.fillStyle = '#6b7280';
+
+            // Draw ticks
+            for (let v = firstTick; v <= endVal; v += step) {
+                let val = Math.round(v * 1000) / 1000; 
+                const x = (val - viewOffset) * scale + w / 2;
+                
+                ctx.beginPath();
+                ctx.moveTo(x, centerY - 6);
+                ctx.lineTo(x, centerY + 6);
+                ctx.strokeStyle = '#d1d5db';
+                ctx.stroke();
+                
+                // Labels
+                if (Math.abs(x - w/2) < w && (step >= 0.1 || Math.abs(val % (step*5)) < 0.0001)) {
+                    ctx.fillText(val.toString(), x, centerY + 12);
+                }
+            }
+
+            // Draw Exact Target (if revealed)
+            if (currentChallenge && showExact) {
+                const exX = (currentChallenge.val - viewOffset) * scale + w / 2;
+                
+                // Draw target line
+                ctx.beginPath();
+                ctx.moveTo(exX, centerY - 30);
+                ctx.lineTo(exX, centerY + 30);
+                ctx.strokeStyle = 'rgba(139, 92, 246, 0.4)'; // Violet tint
+                ctx.lineWidth = 2;
+                ctx.setLineDash([4, 2]);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Draw exact marker (Star/Diamond)
+                ctx.fillStyle = '#8b5cf6';
+                ctx.beginPath();
+                ctx.moveTo(exX, centerY - 8);
+                ctx.lineTo(exX + 6, centerY);
+                ctx.lineTo(exX, centerY + 8);
+                ctx.lineTo(exX - 6, centerY);
+                ctx.fill();
+
+                // Label
+                ctx.font = 'bold 16px "Fira Code", monospace';
+                ctx.fillStyle = '#5b21b6';
+                const textWidth = 30; // Approx width for html symbol
+                ctx.fillStyle = 'rgba(255,255,255,0.8)';
+                ctx.fillRect(exX - 20, centerY - 50, 40, 20);
+                ctx.fillStyle = '#5b21b6';
+                
+                // Simple text rendering since canvas can't parse HTML innerHTML easily
+                let lbl = currentChallenge.label.includes('radic') ? '√' + currentChallenge.val.toFixed(0) : 'π';
+                if(currentChallenge.label === '2&pi;') lbl = '2π';
+                
+                ctx.fillText("Exact", exX, centerY - 46);
+            }
+
+            // Draw Student Estimate
+            if (studentEstimate !== null) {
+                const estX = (studentEstimate - viewOffset) * scale + w / 2;
+                
+                ctx.beginPath();
+                ctx.arc(estX, centerY, 6, 0, 2 * Math.PI);
+                ctx.fillStyle = '#ec4899'; // Pink
+                ctx.fill();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#ffffff';
+                ctx.stroke();
+                
+                ctx.font = 'bold 12px "Inter", sans-serif';
+                const labelY = centerY - 22;
+                
+                const textWidth = ctx.measureText("You").width;
+                ctx.fillStyle = 'rgba(255,255,255,0.8)';
+                ctx.fillRect(estX - textWidth/2 - 4, labelY - 2, textWidth + 8, 16);
+                
+                ctx.fillStyle = '#be185d';
+                ctx.fillText("You", estX, labelY);
+            }
+        }
+
+        // Canvas interactions for panning and zooming
+        window.addEventListener('resize', () => {
+            if(document.getElementById('number-line').classList.contains('active')) resizeCanvas();
+        });
+
+        canvas.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            dragStartX = e.clientX;
+            initialOffset = viewOffset;
+            canvas.style.cursor = 'grabbing';
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+            canvas.style.cursor = 'grab';
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const dx = e.clientX - dragStartX;
+            viewOffset = initialOffset - (dx / scale);
+            drawNumberLine();
+        });
+
+        canvas.addEventListener('touchstart', (e) => {
+            if(e.touches.length === 1) {
+                isDragging = true;
+                dragStartX = e.touches[0].clientX;
+                initialOffset = viewOffset;
+                e.preventDefault(); 
+            }
+        }, {passive: false});
+        
+        canvas.addEventListener('touchmove', (e) => {
+            if (!isDragging || e.touches.length !== 1) return;
+            const dx = e.touches[0].clientX - dragStartX;
+            viewOffset = initialOffset - (dx / scale);
+            drawNumberLine();
+            e.preventDefault();
+        }, {passive: false});
+
+        canvas.addEventListener('touchend', () => { isDragging = false; });
+
+        canvas.addEventListener('wheel', (e) => {
+            e.preventDefault(); 
+            const zoom = Math.exp(-e.deltaY * 0.005);
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const w = canvas.width;
+            
+            const valAtMouse = viewOffset + (mouseX - w/2) / scale;
+            let newScale = Math.max(10, Math.min(scale * zoom, 3000));
+            
+            if(newScale !== scale) {
+                scale = newScale;
+                viewOffset = valAtMouse - (mouseX - w/2) / scale;
+                drawNumberLine();
+            }
+        }, {passive: false});
+
+
+        // --- STREAMING_CHUNK:Javascript for Word Problems ---
+        // --- Tab 4: Word Problems (Irrational Numbers) ---
+        const wordProblems = [
+            {
+                q: "A circular pizza has a diameter of 14 inches. Which of the following represents the <strong>exact</strong> circumference of the pizza? (Circumference = &pi; &times; diameter)",
+                options: ["43.96 inches", "14&pi; inches", "44 inches", "7&pi; inches"],
+                correctIndex: 1,
+                explanation: "The exact formula leaves &pi; as a symbol. C = &pi;d = 14&pi;. Using 3.14 gives an approximation of 43.96."
+            },
+            {
+                q: "A square garden has an area of 30 square meters. You need to find the side length of the garden to buy fencing. Which statement is true?",
+                options: [
+                    "The exact side length is a rational number.",
+                    "The side length is exactly 5.5 meters.",
+                    "The side length is an irrational number (&radic;30).",
+                    "The side length is exactly 15 meters."
+                ],
+                correctIndex: 2,
+                explanation: "Side length is the square root of the area. &radic;30 is not a perfect square, so it is an irrational number."
+            },
+            {
+                q: "You are cutting a diagonal brace for a square gate that is 2 meters wide and 2 meters tall. The length of the brace is exactly &radic;8 meters. To measure and cut the wood, what is the best decimal approximation to use?",
+                options: ["2.4 meters", "2.83 meters", "3.1 meters", "4.0 meters"],
+                correctIndex: 1,
+                explanation: "&radic;8 is between &radic;4 (2) and &radic;9 (3). It is very close to 3. Using a calculator, &radic;8 &approx; 2.828..., which rounds to 2.83 meters."
+            },
+            {
+                q: "Which of these real numbers will completely fill a calculator screen with digits and show absolutely no repeating pattern?",
+                options: ["1/3", "&radic;25", "3.14", "&radic;15"],
+                correctIndex: 3,
+                explanation: "1/3 repeats (0.333...), &radic;25 is exactly 5 (terminating), 3.14 is a terminating decimal. &radic;15 is irrational, so its decimal is non-terminating and non-repeating."
+            },
+            {
+                q: "In a physics formula, a student calculates a time of '2&pi;' seconds. The teacher asks for the answer to the nearest tenth. What should the student report?",
+                options: ["3.1 seconds", "6.2 seconds", "6.3 seconds", "2.0 seconds"],
+                correctIndex: 2,
+                explanation: "2 &times; &pi; &approx; 2 &times; 3.14159... = 6.28318... Rounded to the nearest tenth, this is 6.3."
+            }
+        ];
+
+        let currentProblemIndex = 0;
+
+        function loadNewProblem() {
+            let newIdx;
+            do {
+                newIdx = Math.floor(Math.random() * wordProblems.length);
+            } while(newIdx === currentProblemIndex && wordProblems.length > 1);
+            
+            currentProblemIndex = newIdx;
+            
+            const container = document.getElementById('problems-container');
+            const p = wordProblems[currentProblemIndex];
+            
+            let html = `
+                <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm transition-all">
+                    <p class="text-lg font-medium text-gray-800 mb-6">${p.q}</p>
+                    <div class="grid sm:grid-cols-2 gap-3 mb-4">
+            `;
+            
+            p.options.forEach((opt, idx) => {
+                html += `
+                    <button onclick="checkAnswer(${idx}, this)" class="w-full text-left p-4 rounded border border-gray-300 hover:bg-gray-50 hover:border-primary transition font-medium text-gray-700">
+                        ${opt}
+                    </button>
+                `;
+            });
+
+            html += `
+                    </div>
+                    <div id="prob-feedback" class="hidden mt-4 p-4 rounded-lg"></div>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+        }
+
+        function checkAnswer(selectedIndex, btnElement) {
+            const p = wordProblems[currentProblemIndex];
+            const feedbackEl = document.getElementById('prob-feedback');
+            const buttons = btnElement.parentElement.querySelectorAll('button');
+            
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                btn.classList.add('cursor-not-allowed', 'opacity-70');
+            });
+
+            feedbackEl.classList.remove('hidden');
+
+            if (selectedIndex === p.correctIndex) {
+                btnElement.classList.replace('border-gray-300', 'border-green-500');
+                btnElement.classList.replace('hover:border-primary', 'border-green-500');
+                btnElement.classList.add('bg-green-50', 'text-green-800');
+                
+                feedbackEl.classList.add('bg-green-100', 'text-green-800', 'border', 'border-green-300');
+                feedbackEl.innerHTML = `<strong>Correct! 🎉</strong> <p class="text-sm mt-1">${p.explanation}</p>`;
+            } else {
+                btnElement.classList.replace('border-gray-300', 'border-red-500');
+                btnElement.classList.replace('hover:border-primary', 'border-red-500');
+                btnElement.classList.add('bg-red-50', 'text-red-800');
+                
+                const correctBtn = buttons[p.correctIndex];
+                correctBtn.classList.replace('border-gray-300', 'border-green-500');
+                correctBtn.classList.add('bg-green-50');
+
+                feedbackEl.classList.add('bg-red-100', 'text-red-800', 'border', 'border-red-300');
+                feedbackEl.innerHTML = `<strong>Not quite.</strong> <p class="text-sm mt-1">${p.explanation}</p>`;
+            }
+        }
+
+        // --- Init ---
+        window.onload = () => {
+            initSortGame();
+            calculateRoot();
+            loadNewProblem();
+        };
+    </script>
+</body>
+</html>
