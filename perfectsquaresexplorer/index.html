@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade 8 Math: Squares & Rational Numbers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Slate 50 */
+            color: #334155; /* Slate 700 */
+        }
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 1 / 1;
+            margin: 0 auto;
+            background-image: 
+                linear-gradient(to right, #e2e8f0 1px, transparent 1px),
+                linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
+            background-size: 20px 20px;
+            border: 2px solid #cbd5e1;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        #square-viz {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background-color: rgba(59, 130, 246, 0.5); /* Blue 500 w/ opacity */
+            border: 2px solid #2563eb; /* Blue 600 */
+            border-bottom: none;
+            border-left: none;
+            transition: all 0.3s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .area-label {
+            font-weight: bold;
+            color: #1e3a8a; /* Blue 900 */
+            font-size: 1.25rem;
+            text-shadow: 0 0 5px white;
+        }
+        .dimension-label {
+            position: absolute;
+            font-weight: 600;
+            color: #1e40af;
+            background: rgba(255,255,255,0.8);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .bottom-label { bottom: -28px; left: 50%; transform: translateX(-50%); }
+        .left-label { left: -45px; top: 50%; transform: translateY(-50%); }
+
+        /* Custom Range Slider Styling */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #2563eb;
+            cursor: pointer;
+            margin-top: -8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            cursor: pointer;
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            color: #2563eb;
+            border-bottom-color: #2563eb;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <header class="bg-white shadow-sm sticky top-0 z-10">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center">
+            <h1 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M9 3v18"/><path d="M15 3v18"/><path d="M3 9h18"/><path d="M3 15h18"/></svg>
+                Math 8: Squares & Numbers
+            </h1>
+            <nav class="flex mt-4 sm:mt-0 gap-2 border-b sm:border-none border-slate-200 w-full sm:w-auto overflow-x-auto">
+                <button onclick="switchTab('explorer')" id="tab-explorer" class="tab-btn active whitespace-nowrap text-slate-600 hover:text-slate-900">Area Explorer</button>
+                <button onclick="switchTab('classifier')" id="tab-classifier" class="tab-btn whitespace-nowrap text-slate-600 hover:text-slate-900">Number Types</button>
+                <button onclick="switchTab('problems')" id="tab-problems" class="tab-btn whitespace-nowrap text-slate-600 hover:text-slate-900">Word Problems</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow p-4 md:p-8 max-w-5xl mx-auto w-full">
+
+        <section id="content-explorer" class="tab-content active fade-in">
+            <div class="bg-white rounded-xl shadow-md p-6 md:p-8 mb-8">
+                <h2 class="text-xl font-bold mb-4 text-slate-800">Perfect vs. Non-Perfect Squares</h2>
+                <p class="mb-6 text-slate-600 leading-relaxed">
+                    Use the slider to change the <strong>Area</strong> of the square. Notice how the side length changes.
+                    A <strong class="text-blue-600">perfect square</strong> has an area that results in a rational side length (like an integer).
+                    A <strong class="text-red-500">non-perfect square</strong> results in an irrational side length (a decimal that goes on forever without repeating).
+                </p>
+
+                <div class="flex flex-col md:flex-row gap-8 items-center justify-center">
+                    <!-- Visualization -->
+                    <div class="w-full md:w-1/2 flex flex-col items-center">
+                        <div class="relative pl-12 pb-8 w-full max-w-[400px]">
+                            <!-- Y-axis Label -->
+                            <div class="absolute left-0 top-1/2 -translate-y-1/2 -rotate-90 origin-center text-slate-500 font-semibold text-sm whitespace-nowrap">Side Length = <span id="y-side-val">1</span></div>
+                            
+                            <div class="canvas-container bg-slate-50 relative">
+                                <div id="square-viz" style="width: 25%; height: 25%;">
+                                    <span class="area-label">Area = <span id="viz-area">1</span></span>
+                                </div>
+                            </div>
+                            
+                            <!-- X-axis Label -->
+                            <div class="absolute bottom-0 left-1/2 -translate-x-1/2 text-slate-500 font-semibold text-sm w-full text-center pl-12">Side Length = <span id="x-side-val">1</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Controls & Stats -->
+                    <div class="w-full md:w-1/2 flex flex-col gap-6">
+                        <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
+                            <label for="areaSlider" class="block text-sm font-semibold text-slate-700 mb-2">
+                                Set Area: <span id="sliderValue" class="text-blue-600 text-lg">1</span> square units
+                            </label>
+                            <input type="range" id="areaSlider" min="1" max="100" value="1" step="1" oninput="updateSquare()">
+                            
+                            <div class="flex justify-between text-xs text-slate-400 mt-2">
+                                <span>1</span>
+                                <span>25</span>
+                                <span>50</span>
+                                <span>75</span>
+                                <span>100</span>
+                            </div>
+                        </div>
+
+                        <div id="statsCard" class="bg-blue-50 p-6 rounded-lg border-2 border-blue-200 transition-colors duration-300">
+                            <h3 class="font-bold text-lg mb-4 text-slate-800 border-b border-blue-200 pb-2">Mathematical Breakdown</h3>
+                            
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-slate-600">Given Area:</span>
+                                    <strong class="text-lg" id="stat-area">1</strong>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-slate-600">Side Length (&radic;Area):</span>
+                                    <strong class="text-lg font-mono" id="stat-side">1</strong>
+                                </div>
+                                <div class="flex justify-between items-center pt-2 border-t border-blue-100">
+                                    <span class="text-slate-600">Square Type:</span>
+                                    <span id="stat-type" class="px-3 py-1 rounded-full bg-blue-100 text-blue-800 font-bold text-sm">Perfect Square</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-slate-600">Side Length is:</span>
+                                    <span id="stat-rational" class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 font-bold text-sm">Rational Number</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 text-sm text-slate-500 italic bg-white/50 p-3 rounded">
+                                <p id="stat-explanation">Because 1 &times; 1 = 1. The side length is an integer.</p>
+                            </div>
+                            
+                            <div class="mt-4 pt-3 border-t border-blue-100">
+                                <p class="text-xs text-slate-500">Every positive real number has exactly two square roots. For Area = <span id="note-area">1</span>, they are <span id="note-pos">1</span> and <span id="note-neg">-1</span>. (Side lengths are always positive).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="content-classifier" class="tab-content fade-in">
+            <div class="bg-white rounded-xl shadow-md p-6 md:p-8">
+                <h2 class="text-xl font-bold mb-2 text-slate-800">Classify Numbers</h2>
+                <p class="mb-6 text-slate-600">
+                    Sort the numbers into their correct sets. Remember: Rational numbers include integers and natural numbers.
+                    They can be written as fractions (a/b where b&ne;0) and are terminating or repeating decimals.
+                </p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Draggable Items -->
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <h3 class="font-bold text-slate-700 mb-4 text-center border-b pb-2">Numbers to Sort</h3>
+                        <div id="number-pool" class="flex flex-wrap gap-2 justify-center min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)">
+                            <!-- Numbers generated via JS -->
+                        </div>
+                        <button onclick="generateNumbers()" class="mt-4 w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium py-2 rounded transition">
+                            Get New Numbers
+                        </button>
+                    </div>
+
+                    <!-- Drop Zones -->
+                    <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Nested Sets visualization -->
+                        <div class="relative p-4 rounded-lg border-2 border-dashed border-emerald-300 bg-emerald-50 min-h-[150px] drop-zone group" ondrop="drop(event, 'rational')" ondragover="allowDrop(event)">
+                            <h4 class="font-bold text-emerald-800 mb-2">Rational Numbers (Q)</h4>
+                            <p class="text-xs text-emerald-600 mb-2">Terminating/repeating decimals, fractions.</p>
+                            <div id="zone-rational" class="flex flex-wrap gap-2 min-h-[40px] p-2 bg-white/50 rounded"></div>
+                            
+                            <!-- Integers within Rational -->
+                            <div class="mt-4 p-4 border-2 border-dashed border-blue-300 bg-blue-50/50 rounded drop-zone" ondrop="drop(event, 'integer')" ondragover="allowDrop(event)">
+                                <h4 class="font-bold text-blue-800 mb-2">Integers (Z)</h4>
+                                <p class="text-xs text-blue-600 mb-2">Whole numbers and their negatives.</p>
+                                <div id="zone-integer" class="flex flex-wrap gap-2 min-h-[40px] p-2 bg-white/50 rounded"></div>
+                                
+                                <!-- Natural within Integers -->
+                                <div class="mt-4 p-3 border-2 border-dashed border-purple-300 bg-purple-50/50 rounded drop-zone" ondrop="drop(event, 'natural')" ondragover="allowDrop(event)">
+                                    <h4 class="font-bold text-purple-800 mb-2">Natural (N)</h4>
+                                    <p class="text-xs text-purple-600 mb-2">Counting numbers (1, 2, 3...)</p>
+                                    <div id="zone-natural" class="flex flex-wrap gap-2 min-h-[40px] p-2 bg-white/50 rounded"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Irrational Set -->
+                        <div class="p-4 rounded-lg border-2 border-dashed border-red-300 bg-red-50 min-h-[150px] drop-zone group" ondrop="drop(event, 'irrational')" ondragover="allowDrop(event)">
+                            <h4 class="font-bold text-red-800 mb-2">Irrational Numbers</h4>
+                            <p class="text-xs text-red-600 mb-2">Non-terminating, non-repeating decimals (e.g. &radic;non-perfect square).</p>
+                            <div id="zone-irrational" class="flex flex-wrap gap-2 min-h-[200px] p-2 bg-white/50 rounded items-start content-start"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="feedback-msg" class="mt-4 p-3 rounded hidden text-center font-medium"></div>
+            </div>
+            
+            <div class="mt-6 bg-white rounded-xl shadow-md p-6">
+                <h3 class="font-bold text-lg mb-2">Did you know?</h3>
+                <ul class="list-disc pl-5 space-y-2 text-slate-700">
+                    <li>Zero (0) is the <strong>only</strong> real number that has exactly one square root (&radic;0 = 0).</li>
+                    <li>A rational number can always be written as a fraction <em>a/b</em>, where <em>a</em> and <em>b</em> are integers, and <em>b &ne; 0</em>.</li>
+                    <li>Fractions like 1/3 result in repeating decimals (0.333...) which are written with a bar: 0.&#773;3. These are rational!</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="content-problems" class="tab-content fade-in">
+            <div class="bg-white rounded-xl shadow-md p-6 md:p-8 max-w-3xl mx-auto">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-slate-800">Solve Problems</h2>
+                    <button onclick="generateProblem()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition text-sm flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
+                        New Problem
+                    </button>
+                </div>
+
+                <div class="bg-slate-50 p-6 rounded-lg border border-slate-200 mb-6">
+                    <p id="problem-text" class="text-lg text-slate-700 leading-relaxed font-medium min-h-[80px]">
+                        Click "New Problem" to begin.
+                    </p>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label for="answer-input" class="block text-sm font-bold text-slate-700 mb-1">Your Answer:</label>
+                        <div class="flex gap-2">
+                            <input type="number" id="answer-input" step="0.01" class="flex-grow p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-lg" placeholder="Enter number...">
+                            <button onclick="checkAnswer()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-lg font-bold transition">Check</button>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">If the answer is a decimal, round to two decimal places.</p>
+                    </div>
+
+                    <div id="problem-feedback" class="hidden p-4 rounded-lg font-medium text-center"></div>
+                    
+                    <button id="show-hint-btn" onclick="showHint()" class="text-blue-600 hover:text-blue-800 text-sm font-medium underline hidden">Need a hint?</button>
+                    <div id="problem-hint" class="hidden bg-yellow-50 text-yellow-800 p-4 rounded-lg border border-yellow-200 text-sm"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-800 text-slate-400 py-6 text-center text-sm">
+        <p>Grade 8 Mathematics &bull; Perfect & Non-Perfect Squares &bull; Rational Numbers</p>
+    </footer>
+
+    <script>
+        // --- Tab Switching Logic ---
+        function switchTab(tabId) {
+            // Update buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            
+            // Update content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(`content-${tabId}`).classList.add('active');
+        }
+
+        // --- Area Explorer Logic ---
+        const perfectSquares = [1, 4, 9, 16, 25, 36, 49, 64, 81, 100];
+        
+        function updateSquare() {
+            const area = parseInt(document.getElementById('areaSlider').value);
+            const side = Math.sqrt(area);
+            const isPerfect = perfectSquares.includes(area);
+            const maxArea = 100;
+            const percentage = (side / Math.sqrt(maxArea)) * 100;
+
+            // Update UI elements
+            document.getElementById('sliderValue').innerText = area;
+            document.getElementById('viz-area').innerText = area;
+            
+            // Format side length for display
+            const displaySide = isPerfect ? side : side.toFixed(2) + '...';
+            document.getElementById('y-side-val').innerText = displaySide;
+            document.getElementById('x-side-val').innerText = displaySide;
+            
+            // Update visualization box size
+            const viz = document.getElementById('square-viz');
+            viz.style.width = `${percentage}%`;
+            viz.style.height = `${percentage}%`;
+
+            // Update Stats Card
+            document.getElementById('stat-area').innerText = area;
+            document.getElementById('stat-side').innerText = isPerfect ? side : `\u221A${area} \u2248 ${side.toFixed(4)}`;
+            
+            document.getElementById('note-area').innerText = area;
+            document.getElementById('note-pos').innerText = displaySide;
+            document.getElementById('note-neg').innerText = isPerfect ? `-${side}` : `-${side.toFixed(2)}...`;
+
+            const typeBadge = document.getElementById('stat-type');
+            const rationalBadge = document.getElementById('stat-rational');
+            const explanation = document.getElementById('stat-explanation');
+            const statsCard = document.getElementById('statsCard');
+            
+            if (isPerfect) {
+                typeBadge.innerText = "Perfect Square";
+                typeBadge.className = "px-3 py-1 rounded-full bg-blue-100 text-blue-800 font-bold text-sm";
+                
+                rationalBadge.innerText = "Rational Number (Integer)";
+                rationalBadge.className = "px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 font-bold text-sm";
+                
+                explanation.innerHTML = `Because <strong>${side} &times; ${side} = ${area}</strong> exactly. The side length is a terminating integer.`;
+                
+                statsCard.className = "bg-blue-50 p-6 rounded-lg border-2 border-blue-200 transition-colors duration-300";
+                viz.style.backgroundColor = "rgba(59, 130, 246, 0.5)";
+                viz.style.borderColor = "#2563eb";
+            } else {
+                typeBadge.innerText = "Non-Perfect Square";
+                typeBadge.className = "px-3 py-1 rounded-full bg-red-100 text-red-800 font-bold text-sm";
+                
+                rationalBadge.innerText = "Irrational Number";
+                rationalBadge.className = "px-3 py-1 rounded-full bg-red-100 text-red-800 font-bold text-sm";
+                
+                // Find closest perfect squares for explanation
+                let lowerBound = 0, upperBound = 0;
+                for(let i=0; i<perfectSquares.length; i++) {
+                    if (perfectSquares[i] > area) {
+                        upperBound = perfectSquares[i];
+                        lowerBound = perfectSquares[i-1];
+                        break;
+                    }
+                }
+                
+                explanation.innerHTML = `The side length is an irrational number because it is a product of two identical irrational numbers. The decimal goes on forever without repeating. <br><em>Hint: ${area} is between perfect squares ${lowerBound} (&radic;=${Math.sqrt(lowerBound)}) and ${upperBound} (&radic;=${Math.sqrt(upperBound)}).</em>`;
+                
+                statsCard.className = "bg-red-50 p-6 rounded-lg border-2 border-red-200 transition-colors duration-300";
+                viz.style.backgroundColor = "rgba(239, 68, 68, 0.4)";
+                viz.style.borderColor = "#dc2626";
+            }
+        }
+
+        // --- STREAMING_CHUNK:Number Classifier Logic ---
+        const numberData = [
+            { val: "3", type: "natural", display: "3" },
+            { val: "15", type: "natural", display: "15" },
+            { val: "-5", type: "integer", display: "-5" },
+            { val: "0", type: "integer", display: "0" }, // 0 is integer, not strictly natural depending on definition, but safe here.
+            { val: "0.5", type: "rational", display: "0.5" },
+            { val: "-1.75", type: "rational", display: "-1.75" },
+            { val: "1/3", type: "rational", display: "1/3 (0.3\u0305)" },
+            { val: "4/2", type: "natural", display: "4/2" }, // Evaluates to 2
+            { val: "sqrt(4)", type: "natural", display: "\u221A4" },
+            { val: "sqrt(10)", type: "irrational", display: "\u221A10" },
+            { val: "sqrt(25)", type: "natural", display: "\u221A25" },
+            { val: "sqrt(3)", type: "irrational", display: "\u221A3" },
+            { val: "pi", type: "irrational", display: "\u03C0" },
+            { val: "-sqrt(9)", type: "integer", display: "-\u221A9" },
+            { val: "2.555...", type: "rational", display: "2.555..." } // repeating
+        ];
+
+        let draggedItem = null;
+
+        function generateNumbers() {
+            const pool = document.getElementById('number-pool');
+            pool.innerHTML = '';
+            // Reset drop zones
+            ['natural', 'integer', 'rational', 'irrational'].forEach(id => {
+                document.getElementById(`zone-${id}`).innerHTML = '';
+            });
+            document.getElementById('feedback-msg').classList.add('hidden');
+
+            // Pick 6 random items
+            const shuffled = [...numberData].sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, 6);
+
+            selected.forEach((num, index) => {
+                const el = document.createElement('div');
+                el.className = "bg-white border border-slate-300 px-3 py-1.5 rounded shadow-sm cursor-grab font-mono text-slate-800 hover:bg-slate-50 transition-colors";
+                el.draggable = true;
+                el.id = `num-${index}`;
+                el.dataset.type = num.type;
+                el.innerText = num.display;
+                
+                el.addEventListener('dragstart', (e) => {
+                    draggedItem = el;
+                    setTimeout(() => el.classList.add('opacity-50'), 0);
+                });
+                
+                el.addEventListener('dragend', () => {
+                    el.classList.remove('opacity-50');
+                    draggedItem = null;
+                });
+
+                pool.appendChild(el);
+            });
+        }
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drop(ev, targetZoneType) {
+            ev.preventDefault();
+            if (!draggedItem) return;
+
+            // Handle dropping back to pool
+            if (!targetZoneType) {
+                document.getElementById('number-pool').appendChild(draggedItem);
+                checkAllSorted();
+                return;
+            }
+
+            // Find closest valid drop zone container
+            let dropTarget = ev.target;
+            while(dropTarget && !dropTarget.id.startsWith('zone-')) {
+                // If we dropped on the outer container, find its inner zone
+                if(dropTarget.classList && dropTarget.classList.contains('drop-zone')) {
+                   const h4 = dropTarget.querySelector('h4');
+                   if(h4 && h4.innerText.includes('Rational')) dropTarget = document.getElementById('zone-rational');
+                   else if(h4 && h4.innerText.includes('Integers')) dropTarget = document.getElementById('zone-integer');
+                   else if(h4 && h4.innerText.includes('Natural')) dropTarget = document.getElementById('zone-natural');
+                   else if(h4 && h4.innerText.includes('Irrational')) dropTarget = document.getElementById('zone-irrational');
+                   break;
+                }
+                dropTarget = dropTarget.parentNode;
+            }
+
+            if(dropTarget && dropTarget.id.startsWith('zone-')) {
+                 dropTarget.appendChild(draggedItem);
+            }
+            
+            checkAllSorted();
+            // Stop event from bubbling up to parent drop zones (since they are nested)
+            ev.stopPropagation(); 
+        }
+
+        function checkAllSorted() {
+            const pool = document.getElementById('number-pool');
+            const msg = document.getElementById('feedback-msg');
+            
+            if (pool.children.length > 0) {
+                msg.classList.add('hidden');
+                return;
+            }
+
+            let allCorrect = true;
+            
+            // Define hierarchy for checking logic
+            // A Natural number is correct in Natural, Integer, or Rational.
+            // But for this exercise, we want them in the MOST SPECIFIC set.
+            const checkZone = (zoneId, expectedTypes) => {
+                const zone = document.getElementById(`zone-${zoneId}`);
+                Array.from(zone.children).forEach(child => {
+                    const type = child.dataset.type;
+                    if (!expectedTypes.includes(type)) {
+                        allCorrect = false;
+                        child.classList.add('bg-red-100', 'border-red-400', 'text-red-800');
+                        child.classList.remove('bg-white');
+                    } else {
+                        child.classList.remove('bg-red-100', 'border-red-400', 'text-red-800');
+                        child.classList.add('bg-green-100', 'border-green-400', 'text-green-800');
+                    }
+                });
+            };
+
+            // Strictest sorting: must be in the most specific container
+            checkZone('natural', ['natural']);
+            checkZone('integer', ['integer']); // Assuming users should put naturals in natural
+            checkZone('rational', ['rational']);
+            checkZone('irrational', ['irrational']);
+
+            msg.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-800', 'bg-red-100', 'text-red-800');
+            if (allCorrect) {
+                msg.innerText = "Excellent! All numbers are in their most specific sets.";
+                msg.classList.add('bg-emerald-100', 'text-emerald-800');
+            } else {
+                msg.innerText = "Not quite. Check the highlighted numbers. Remember to put them in the most specific set (e.g., 3 is rational, but it belongs in Natural).";
+                msg.classList.add('bg-red-100', 'text-red-800');
+            }
+        }
+
+
+        // --- STREAMING_CHUNK:Word Problems Logic ---
+        let currentProblem = {};
+
+        function generateProblem() {
+            document.getElementById('answer-input').value = '';
+            document.getElementById('problem-feedback').classList.add('hidden');
+            document.getElementById('problem-hint').classList.add('hidden');
+            document.getElementById('show-hint-btn').classList.remove('hidden');
+
+            const types = ['area_to_side', 'perimeter_to_area', 'area_to_perimeter', 'non_perfect_side'];
+            const type = types[Math.floor(Math.random() * types.length)];
+
+            let text = "";
+            let answer = 0;
+            let hint = "";
+
+            switch(type) {
+                case 'area_to_side':
+                    const side1 = Math.floor(Math.random() * 12) + 2;
+                    const area1 = side1 * side1;
+                    text = `A square garden has an area of ${area1} square meters. What is the length of one side of the garden?`;
+                    answer = side1;
+                    hint = `To find the side length when you know the area, you need to calculate the square root of the area. &radic;${area1} = ?`;
+                    break;
+                
+                case 'perimeter_to_area':
+                    const side2 = Math.floor(Math.random() * 10) + 3;
+                    const perimeter = side2 * 4;
+                    text = `A square picture frame has a total perimeter of ${perimeter} cm. What is the area of the picture inside the frame?`;
+                    answer = side2 * side2;
+                    hint = `First, find the side length by dividing the perimeter by 4. Then, square that side length to find the area.`;
+                    break;
+                
+                case 'area_to_perimeter':
+                    const side3 = Math.floor(Math.random() * 10) + 4;
+                    const area3 = side3 * side3;
+                    text = `A farmer wants to build a fence around a square field that has an area of ${area3} m&sup2;. How many meters of fencing does he need? (Find the perimeter)`;
+                    answer = side3 * 4;
+                    hint = `First, find the side length by taking the square root of the area. Then, multiply that side length by 4 to get the perimeter.`;
+                    break;
+                    
+                case 'non_perfect_side':
+                    // Choose an area that is NOT a perfect square
+                    let area4;
+                    do {
+                        area4 = Math.floor(Math.random() * 80) + 10;
+                    } while (perfectSquares.includes(area4));
+                    
+                    text = `A square tile has an area of ${area4} cm&sup2;. What is the approximate length of one side? Round your answer to two decimal places.`;
+                    answer = parseFloat(Math.sqrt(area4).toFixed(2));
+                    hint = `${area4} is a non-perfect square, so its side length is an irrational number. Use a calculator to find &radic;${area4} and round to two decimal places.`;
+                    break;
+            }
+
+            currentProblem = { answer: answer, type: type };
+            document.getElementById('problem-text').innerHTML = text;
+            document.getElementById('problem-hint').innerHTML = hint;
+        }
+
+        function showHint() {
+            document.getElementById('problem-hint').classList.remove('hidden');
+            document.getElementById('show-hint-btn').classList.add('hidden');
+        }
+
+        function checkAnswer() {
+            const userInput = document.getElementById('answer-input').value;
+            const feedback = document.getElementById('problem-feedback');
+            
+            if (userInput === '') {
+                alert("Please enter an answer first.");
+                return;
+            }
+
+            const parsedInput = parseFloat(userInput);
+            // Allow small floating point margin of error for non-perfect square rounding
+            const isCorrect = Math.abs(parsedInput - currentProblem.answer) < 0.02;
+
+            feedback.classList.remove('hidden', 'bg-red-100', 'text-red-800', 'bg-emerald-100', 'text-emerald-800');
+            
+            if (isCorrect) {
+                feedback.innerHTML = `<strong>Correct!</strong> The answer is ${currentProblem.answer}.`;
+                feedback.classList.add('bg-emerald-100', 'text-emerald-800');
+            } else {
+                feedback.innerHTML = `<strong>Not quite.</strong> Try again!`;
+                feedback.classList.add('bg-red-100', 'text-red-800');
+            }
+        }
+
+        // Initialize everything on load
+        window.onload = () => {
+            updateSquare();
+            generateNumbers();
+            generateProblem();
+            
+            // Allow Enter key in problem input
+            document.getElementById('answer-input').addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') checkAnswer();
+            });
+        };
+    </script>
+</body>
+</html>
