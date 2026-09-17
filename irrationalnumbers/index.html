@@ -401,15 +401,16 @@
         let currentChallenge = null;
         let studentEstimate = null;
         let showExact = false;
+        let challengeAttempts = 0;
 
         const estimationChallenges = [
-            { label: '&pi;', val: Math.PI, bounds: [2, 5], precision: 2 },
-            { label: '<span class="radical">&radic;<span class="radical-content">2</span></span>', val: Math.sqrt(2), bounds: [0, 3], precision: 2 },
-            { label: '<span class="radical">&radic;<span class="radical-content">5</span></span>', val: Math.sqrt(5), bounds: [1, 4], precision: 2 },
-            { label: '<span class="radical">&radic;<span class="radical-content">10</span></span>', val: Math.sqrt(10), bounds: [2, 5], precision: 1 },
-            { label: '<span class="radical">&radic;<span class="radical-content">20</span></span>', val: Math.sqrt(20), bounds: [3, 6], precision: 1 },
-            { label: '<span class="radical">&radic;<span class="radical-content">50</span></span>', val: Math.sqrt(50), bounds: [5, 9], precision: 1 },
-            { label: '2&pi;', val: 2 * Math.PI, bounds: [5, 8], precision: 1 }
+            { label: '&pi;', val: Math.PI, bounds: [2, 5], precision: 2, hint: "Think about the common approximation for pi: 3.14..." },
+            { label: '<span class="radical">&radic;<span class="radical-content">2</span></span>', val: Math.sqrt(2), bounds: [0, 3], precision: 2, hint: "What number times itself is close to 2? 1.4 x 1.4 = 1.96" },
+            { label: '<span class="radical">&radic;<span class="radical-content">5</span></span>', val: Math.sqrt(5), bounds: [1, 4], precision: 2, hint: "2 squared is 4, and 3 squared is 9. It's closer to 2." },
+            { label: '<span class="radical">&radic;<span class="radical-content">10</span></span>', val: Math.sqrt(10), bounds: [2, 5], precision: 1, hint: "3 squared is 9. So the square root of 10 is just a bit more than 3." },
+            { label: '<span class="radical">&radic;<span class="radical-content">20</span></span>', val: Math.sqrt(20), bounds: [3, 6], precision: 1, hint: "4 squared is 16, 5 squared is 25. It's almost right in the middle." },
+            { label: '<span class="radical">&radic;<span class="radical-content">50</span></span>', val: Math.sqrt(50), bounds: [5, 9], precision: 1, hint: "7 squared is 49. So it's very slightly more than 7." },
+            { label: '2&pi;', val: 2 * Math.PI, bounds: [5, 8], precision: 1, hint: "If pi is about 3.14, what is double that?" }
         ];
 
         function newEstimationChallenge() {
@@ -421,6 +422,7 @@
             document.getElementById('nl-input').value = '';
             studentEstimate = null;
             showExact = false;
+            challengeAttempts = 0;
             
             const feedback = document.getElementById('nl-feedback');
             feedback.innerHTML = '';
@@ -446,25 +448,36 @@
             }
 
             studentEstimate = inputVal;
-            showExact = true; // Reveal the true location
+            challengeAttempts++;
 
             const exactVal = currentChallenge.val;
             const diff = Math.abs(studentEstimate - exactVal);
             const allowableError = currentChallenge.precision === 1 ? 0.15 : 0.05;
 
-            // Pan to show both points if necessary
-            viewOffset = exactVal;
-            // Zoom in closer
-            scale = 300;
-
             let fbHTML = "";
             if (diff <= allowableError) {
+                showExact = true; // Reveal true location
+                viewOffset = exactVal; // Pan to show both points if necessary
+                scale = 300; // Zoom in closer
+                
                 fbHTML = `<span class='text-green-600 font-bold text-lg'>Great estimation! 🎉</span><br>`;
+                fbHTML += `<span class='text-sm text-gray-700'>The exact value is approx <strong>${exactVal.toFixed(2)}...</strong> You guessed <strong>${studentEstimate}</strong>.</span>`;
             } else {
-                fbHTML = `<span class='text-red-500 font-bold text-lg'>Not quite!</span><br>`;
+                if (challengeAttempts === 1) {
+                    showExact = false; // Don't reveal yet
+                    viewOffset = studentEstimate; // Pan to their estimate to show them where they landed
+                    
+                    fbHTML = `<span class='text-red-500 font-bold text-lg'>Not quite! Try again.</span><br>`;
+                    fbHTML += `<span class='text-sm text-gray-700'><strong>Hint:</strong> ${currentChallenge.hint}</span>`;
+                } else {
+                    showExact = true; // Reveal on second try
+                    viewOffset = exactVal; // Pan
+                    scale = 300; // Zoom
+                    
+                    fbHTML = `<span class='text-red-500 font-bold text-lg'>Not quite!</span><br>`;
+                    fbHTML += `<span class='text-sm text-gray-700'>The exact value is approx <strong>${exactVal.toFixed(2)}...</strong> You guessed <strong>${studentEstimate}</strong>.</span>`;
+                }
             }
-            
-            fbHTML += `<span class='text-sm text-gray-700'>The exact value is approx <strong>${exactVal.toFixed(4)}...</strong> You guessed <strong>${studentEstimate}</strong>. (Error: ${diff.toFixed(3)})</span>`;
             
             feedback.innerHTML = fbHTML;
             feedback.className = "mt-4 text-center h-12 flex flex-col justify-center feedback-pop";
@@ -660,7 +673,8 @@
                 q: "A circular pizza has a diameter of 14 inches. Which of the following represents the <strong>exact</strong> circumference of the pizza? (Circumference = &pi; &times; diameter)",
                 options: ["43.96 inches", "14&pi; inches", "44 inches", "7&pi; inches"],
                 correctIndex: 1,
-                explanation: "The exact formula leaves &pi; as a symbol. C = &pi;d = 14&pi;. Using 3.14 gives an approximation of 43.96."
+                explanation: "The exact formula leaves &pi; as a symbol. C = &pi;d = 14&pi;. Using 3.14 gives an approximation of 43.96.",
+                hint: "Remember, an 'exact' value keeps the mathematical symbol instead of using a rounded decimal like 3.14."
             },
             {
                 q: "A square garden has an area of 30 square meters. You need to find the side length of the garden to buy fencing. Which statement is true?",
@@ -671,25 +685,29 @@
                     "The side length is exactly 15 meters."
                 ],
                 correctIndex: 2,
-                explanation: "Side length is the square root of the area. &radic;30 is not a perfect square, so it is an irrational number."
+                explanation: "Side length is the square root of the area. &radic;30 is not a perfect square, so it is an irrational number.",
+                hint: "To find the side length of a square from its area, you take the square root. Is 30 a perfect square?"
             },
             {
                 q: "You are cutting a diagonal brace for a square gate that is 2 meters wide and 2 meters tall. The length of the brace is exactly &radic;8 meters. To measure and cut the wood, what is the best decimal approximation to use?",
                 options: ["2.4 meters", "2.83 meters", "3.1 meters", "4.0 meters"],
                 correctIndex: 1,
-                explanation: "&radic;8 is between &radic;4 (2) and &radic;9 (3). It is very close to 3. Using a calculator, &radic;8 &approx; 2.828..., which rounds to 2.83 meters."
+                explanation: "&radic;8 is between &radic;4 (2) and &radic;9 (3). It is very close to 3. Using a calculator, &radic;8 &approx; 2.828..., which rounds to 2.83 meters.",
+                hint: "Think about perfect squares. &radic;8 is between &radic;4 (which is 2) and &radic;9 (which is 3). It's much closer to 3."
             },
             {
                 q: "Which of these real numbers will completely fill a calculator screen with digits and show absolutely no repeating pattern?",
                 options: ["1/3", "&radic;25", "3.14", "&radic;15"],
                 correctIndex: 3,
-                explanation: "1/3 repeats (0.333...), &radic;25 is exactly 5 (terminating), 3.14 is a terminating decimal. &radic;15 is irrational, so its decimal is non-terminating and non-repeating."
+                explanation: "1/3 repeats (0.333...), &radic;25 is exactly 5 (terminating), 3.14 is a terminating decimal. &radic;15 is irrational, so its decimal is non-terminating and non-repeating.",
+                hint: "You are looking for an irrational number. Which of these cannot be written as a simple fraction or a perfect square root?"
             },
             {
                 q: "In a physics formula, a student calculates a time of '2&pi;' seconds. The teacher asks for the answer to the nearest tenth. What should the student report?",
                 options: ["3.1 seconds", "6.2 seconds", "6.3 seconds", "2.0 seconds"],
                 correctIndex: 2,
-                explanation: "2 &times; &pi; &approx; 2 &times; 3.14159... = 6.28318... Rounded to the nearest tenth, this is 6.3."
+                explanation: "2 &times; &pi; &approx; 2 &times; 3.14159... = 6.28318... Rounded to the nearest tenth, this is 6.3.",
+                hint: "&pi; is approximately 3.14159. Multiply that by 2, and then look at the second decimal place to round the first decimal place."
             }
         ];
 
@@ -734,31 +752,39 @@
             const feedbackEl = document.getElementById('prob-feedback');
             const buttons = btnElement.parentElement.querySelectorAll('button');
             
+            feedbackEl.classList.remove('hidden', 'bg-red-100', 'text-red-800', 'border-red-300', 'bg-green-100', 'text-green-800', 'border-green-300');
+            
+            // Clear previous styles from all buttons
             buttons.forEach(btn => {
-                btn.disabled = true;
-                btn.classList.add('cursor-not-allowed', 'opacity-70');
+                btn.classList.remove('border-red-500', 'bg-red-50', 'text-red-800', 'border-green-500', 'bg-green-50', 'text-green-800');
+                if(!btn.disabled) {
+                     btn.classList.add('border-gray-300', 'hover:bg-gray-50', 'hover:border-primary', 'text-gray-700');
+                }
             });
 
-            feedbackEl.classList.remove('hidden');
-
             if (selectedIndex === p.correctIndex) {
-                btnElement.classList.replace('border-gray-300', 'border-green-500');
-                btnElement.classList.replace('hover:border-primary', 'border-green-500');
-                btnElement.classList.add('bg-green-50', 'text-green-800');
+                // Correct answer selected
+                buttons.forEach(btn => {
+                    btn.disabled = true;
+                    btn.classList.add('cursor-not-allowed', 'opacity-70');
+                });
+                
+                btnElement.classList.remove('border-gray-300', 'hover:border-primary', 'hover:bg-gray-50', 'text-gray-700');
+                btnElement.classList.add('border-green-500', 'bg-green-50', 'text-green-800', 'opacity-100');
                 
                 feedbackEl.classList.add('bg-green-100', 'text-green-800', 'border', 'border-green-300');
                 feedbackEl.innerHTML = `<strong>Correct! 🎉</strong> <p class="text-sm mt-1">${p.explanation}</p>`;
             } else {
-                btnElement.classList.replace('border-gray-300', 'border-red-500');
-                btnElement.classList.replace('hover:border-primary', 'border-red-500');
-                btnElement.classList.add('bg-red-50', 'text-red-800');
+                // Incorrect answer selected
+                btnElement.classList.remove('border-gray-300', 'hover:border-primary', 'hover:bg-gray-50', 'text-gray-700');
+                btnElement.classList.add('border-red-500', 'bg-red-50', 'text-red-800');
                 
-                const correctBtn = buttons[p.correctIndex];
-                correctBtn.classList.replace('border-gray-300', 'border-green-500');
-                correctBtn.classList.add('bg-green-50');
+                // Disable the wrong button so they don't click it again, but keep others active
+                btnElement.disabled = true;
+                btnElement.classList.add('cursor-not-allowed', 'opacity-70');
 
                 feedbackEl.classList.add('bg-red-100', 'text-red-800', 'border', 'border-red-300');
-                feedbackEl.innerHTML = `<strong>Not quite.</strong> <p class="text-sm mt-1">${p.explanation}</p>`;
+                feedbackEl.innerHTML = `<strong>Not quite. Try again!</strong> <p class="text-sm mt-1"><strong>Hint:</strong> ${p.hint}</p>`;
             }
         }
 
