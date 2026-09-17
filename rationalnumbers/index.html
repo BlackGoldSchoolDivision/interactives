@@ -213,7 +213,7 @@
 
                 <!-- Challenge Header -->
                 <div class="bg-slate-50 border border-slate-200 p-6 rounded-lg mb-4 text-center shadow-inner">
-                    <p class="text-slate-700 font-medium text-lg mb-2">Find a rational number that sits exactly between:</p>
+                    <p class="text-slate-700 font-medium text-lg mb-2">Find a rational number that sits between:</p>
                     <div class="flex justify-center items-center gap-4">
                         <span id="bound-A" class="font-bold text-2xl text-teal-700 math-font bg-teal-50 px-4 py-2 rounded border border-teal-200 shadow-sm">?</span>
                         <span class="text-slate-500 font-bold text-xl">and</span>
@@ -331,7 +331,6 @@
             }
         }
 
-        // --- STREAMING_CHUNK:Javascript for Classify Game... ---
         // --- Tab 2: Classification Game ---
         const gameItems = [
             { id: 'i1', type: 'natural', display: '8' },
@@ -430,7 +429,6 @@
         }
         function resetSortGame() { initSortGame(); }
 
-        // --- STREAMING_CHUNK:Javascript for The In-Between Game... ---
         // --- Tab 3: The In-Between Game (Number Line) ---
         const canvas = document.getElementById('numberLineCanvas');
         const ctx = canvas.getContext('2d');
@@ -503,7 +501,7 @@
 
             let fbHTML = "";
             if (inputVal > minBound && inputVal < maxBound) {
-                fbHTML = `<span class='text-green-600 font-bold text-lg'>Perfect! 🎉</span><br><span class='text-sm text-slate-600'>${inputStr} (${inputVal}) is exactly between the bounds.</span>`;
+                fbHTML = `<span class='text-green-600 font-bold text-lg'>Perfect! 🎉</span><br><span class='text-sm text-slate-600'>${inputStr} (${inputVal}) is between the bounds.</span>`;
             } else if (inputVal === minBound || inputVal === maxBound) {
                 fbHTML = `<span class='text-amber-500 font-bold text-lg'>Almost!</span><br><span class='text-sm text-slate-600'>You picked one of the boundaries. Try a number <em>strictly between</em> them.</span>`;
             } else {
@@ -638,7 +636,6 @@
             if(document.getElementById('in-between').classList.contains('active')) resizeCanvas();
         });
 
-
         // --- STREAMING_CHUNK:Javascript for Word Problems Section... ---
         // --- Tab 4: Word Problems (Rational Numbers) ---
         const wordProblems = [
@@ -646,35 +643,41 @@
                 q: "A recipe calls for 3/4 cup of sugar. If you want to make half of the recipe, how much sugar do you need?",
                 options: ["3/8 cup", "1.5 cups", "3/2 cups", "1/4 cup"],
                 correctIndex: 0,
+                hint: "To find half of a fraction, multiply it by 1/2. Try solving: (3/4) &times; (1/2).",
                 explanation: "To find half of a fraction, multiply it by 1/2. (3/4) &times; (1/2) = 3/8."
             },
             {
                 q: "The temperature in Edmonton was -12.5 &deg;C in the morning. By afternoon, it dropped another 4.2 &deg;C. What is the new temperature?",
                 options: ["-8.3 &deg;C", "-16.7 &deg;C", "8.3 &deg;C", "16.7 &deg;C"],
                 correctIndex: 1,
+                hint: "Dropping means subtracting or adding a negative. Try solving: -12.5 - 4.2.",
                 explanation: "Dropping means subtracting or adding a negative. -12.5 - 4.2 = -16.7 &deg;C."
             },
             {
                 q: "You have a piece of wood that is 8.4 meters long. You need to cut it into 4 equal pieces. How long is each piece?",
                 options: ["33.6 m", "4.2 m", "2.1 m", "2.4 m"],
                 correctIndex: 2,
+                hint: "Divide the total length by the number of pieces. Try solving: 8.4 &divide; 4.",
                 explanation: "Divide the total length by the number of pieces. 8.4 &divide; 4 = 2.1 meters."
             },
             {
                 q: "Your bank account has a balance of -$35.50 (you are overdrawn). You deposit a check for $100.00. What is your new rational balance?",
                 options: ["-$135.50", "$64.50", "$135.50", "$65.50"],
                 correctIndex: 1,
+                hint: "You are adding a positive amount to a negative balance. Try solving: -35.50 + 100.00.",
                 explanation: "Adding a positive number to a negative number: -35.50 + 100.00 = 64.50."
             },
             {
                 q: "A scuba diver descends at a rate of 2.5 meters per minute. What is her depth (as a rational number) relative to the surface after 6 minutes?",
                 options: ["-15 meters", "15 meters", "-8.5 meters", "-12 meters"],
                 correctIndex: 0,
+                hint: "Descending is represented by a negative rate (-2.5). Multiply this rate by the time. Try solving: -2.5 &times; 6.",
                 explanation: "Descending is represented by a negative rate (-2.5). Multiply by time: -2.5 &times; 6 = -15 meters."
             }
         ];
 
         let currentProblemIndex = 0;
+        let currentProblemAttempts = 0;
 
         function loadNewProblem() {
             let newIdx;
@@ -683,6 +686,7 @@
             } while(newIdx === currentProblemIndex && wordProblems.length > 1);
             
             currentProblemIndex = newIdx;
+            currentProblemAttempts = 0;
             
             const container = document.getElementById('problems-container');
             const p = wordProblems[currentProblemIndex];
@@ -695,7 +699,7 @@
             
             p.options.forEach((opt, idx) => {
                 html += `
-                    <button onclick="checkAnswer(${idx}, this)" class="w-full text-left p-4 rounded border border-slate-300 bg-white hover:bg-slate-100 hover:border-primary transition font-medium text-slate-700 shadow-sm">
+                    <button onclick="checkAnswer(${idx}, this)" class="w-full text-left p-4 rounded border border-slate-300 bg-white hover:bg-slate-100 hover:border-primary transition font-medium text-slate-700 shadow-sm" data-index="${idx}">
                         ${opt}
                     </button>
                 `;
@@ -715,31 +719,54 @@
             const feedbackEl = document.getElementById('prob-feedback');
             const buttons = btnElement.parentElement.querySelectorAll('button');
             
-            buttons.forEach(btn => {
-                btn.disabled = true;
-                btn.classList.add('cursor-not-allowed', 'opacity-70');
-            });
+            currentProblemAttempts++;
 
             feedbackEl.classList.remove('hidden');
+            // reset classes
+            feedbackEl.className = 'mt-4 p-4 rounded-lg';
 
             if (selectedIndex === p.correctIndex) {
+                // Correct Answer
+                buttons.forEach(btn => {
+                    btn.disabled = true;
+                    btn.classList.add('cursor-not-allowed', 'opacity-70');
+                });
+
                 btnElement.classList.replace('border-slate-300', 'border-green-500');
-                btnElement.classList.replace('hover:border-primary', 'border-green-500');
-                btnElement.classList.add('bg-green-50', 'text-green-800');
+                btnElement.classList.remove('hover:border-primary', 'hover:bg-slate-100');
+                btnElement.classList.add('bg-green-50', 'text-green-800', 'border-green-500');
                 
                 feedbackEl.classList.add('bg-green-100', 'text-green-800', 'border', 'border-green-300');
                 feedbackEl.innerHTML = `<strong>Correct! 🎉</strong> <p class="text-sm mt-1">${p.explanation}</p>`;
             } else {
+                // Incorrect Answer
                 btnElement.classList.replace('border-slate-300', 'border-red-500');
-                btnElement.classList.replace('hover:border-primary', 'border-red-500');
-                btnElement.classList.add('bg-red-50', 'text-red-800');
-                
-                const correctBtn = buttons[p.correctIndex];
-                correctBtn.classList.replace('border-slate-300', 'border-green-500');
-                correctBtn.classList.add('bg-green-50', 'border-green-500');
+                btnElement.classList.remove('hover:border-primary', 'hover:bg-slate-100');
+                btnElement.classList.add('bg-red-50', 'text-red-800', 'border-red-500');
+                btnElement.disabled = true;
+                btnElement.classList.add('cursor-not-allowed');
 
-                feedbackEl.classList.add('bg-red-100', 'text-red-800', 'border', 'border-red-300');
-                feedbackEl.innerHTML = `<strong>Not quite.</strong> <p class="text-sm mt-1">${p.explanation}</p>`;
+                if (currentProblemAttempts === 1) {
+                    // First incorrect attempt - show hint
+                    feedbackEl.classList.add('bg-amber-100', 'text-amber-800', 'border', 'border-amber-300');
+                    feedbackEl.innerHTML = `<strong>Not quite. Try again!</strong> <p class="text-sm mt-1">${p.hint}</p>`;
+                } else {
+                    // Second (or more) incorrect attempt - show full explanation and correct answer
+                    buttons.forEach(btn => {
+                        btn.disabled = true;
+                        btn.classList.add('cursor-not-allowed', 'opacity-70');
+                    });
+
+                    const correctBtn = Array.from(buttons).find(b => parseInt(b.dataset.index) === p.correctIndex);
+                    if(correctBtn) {
+                        correctBtn.classList.replace('border-slate-300', 'border-green-500');
+                        correctBtn.classList.remove('opacity-70');
+                        correctBtn.classList.add('bg-green-50', 'border-green-500');
+                    }
+
+                    feedbackEl.classList.add('bg-red-100', 'text-red-800', 'border', 'border-red-300');
+                    feedbackEl.innerHTML = `<strong>Incorrect.</strong> <p class="text-sm mt-1">${p.explanation}</p>`;
+                }
             }
         }
 
