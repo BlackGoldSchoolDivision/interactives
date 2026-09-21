@@ -88,11 +88,41 @@
             background-color: #e2e8f0;
             color: #0f172a;
         }
+
+        /* Print Optimization */
+        @media print {
+            .no-print { display: none !important; }
+            body { background-color: #ffffff !important; }
+            #step-4 { max-width: 100% !important; width: 100% !important; margin: 0 !important; padding: 0 !important; }
+            #document-viewer { box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; }
+            
+            /* Force side-by-side table layout for printers to prevent collapsing */
+            .pdf-page-block {
+                display: table !important;
+                width: 100% !important;
+                page-break-inside: avoid !important;
+                margin-bottom: 2rem !important;
+            }
+            .pdf-page-block > div.lg\:w-5\/12 {
+                display: table-cell !important;
+                width: 45% !important;
+                vertical-align: top !important;
+                padding-right: 1.5rem !important;
+                float: none !important;
+            }
+            .pdf-page-block > div.lg\:w-7\/12 {
+                display: table-cell !important;
+                width: 55% !important;
+                vertical-align: top !important;
+                float: none !important;
+            }
+            .lg\:sticky { position: static !important; }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <nav class="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-50">
+    <nav class="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-50 no-print">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
@@ -113,7 +143,7 @@
     <main class="flex-grow flex flex-col items-center justify-start pt-8 px-4 sm:px-6 lg:px-8 w-full max-w-6xl mx-auto pb-12">
         
         <!-- Progress Indicator -->
-        <div class="w-full max-w-3xl mb-8">
+        <div class="w-full max-w-3xl mb-8 no-print">
             <div class="flex items-center justify-between relative">
                 <div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-slate-200 z-0 rounded-full"></div>
                 <div id="progress-bar" class="absolute left-0 top-1/2 transform -translate-y-1/2 h-1 bg-blue-600 z-0 transition-all duration-300 ease-in-out rounded-full" style="width: 0%;"></div>
@@ -212,7 +242,7 @@
         <div id="step-4" class="step-container w-full">
             <div class="flex flex-col md:flex-row gap-6">
                 <!-- Controls Panel -->
-                <div class="w-full md:w-64 flex-shrink-0 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 h-fit sticky top-20">
+                <div class="w-full md:w-64 flex-shrink-0 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 h-fit sticky top-20 no-print">
                     <h3 class="font-bold text-slate-800 mb-4 border-b pb-2 flex items-center">
                         <i class="fa-solid fa-universal-access text-blue-600 mr-2"></i> Accessibility
                     </h3>
@@ -253,8 +283,12 @@
                         <p class="text-xs text-slate-500 mb-4">
                             <i class="fa-solid fa-info-circle mr-1"></i> This view is highly optimized for screen readers and extensions like <strong>Read & Write for Google</strong>.
                         </p>
+                        <!-- Export and Print Buttons -->
+                        <button onclick="exportToGoogleDoc()" class="w-full mb-3 flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors text-sm shadow-sm">
+                            <i class="fa-solid fa-file-word mr-2"></i> Export to Google Doc
+                        </button>
                         <button onclick="window.print()" class="w-full flex items-center justify-center px-4 py-2 border border-slate-300 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition-colors text-sm">
-                            <i class="fa-solid fa-print mr-2"></i> Print / Save as PDF
+                            <i class="fa-solid fa-print mr-2"></i> Print Clean Layout
                         </button>
                     </div>
                 </div>
@@ -267,7 +301,7 @@
                 </div>
             </div>
             
-            <div class="mt-8 text-center">
+            <div class="mt-8 text-center no-print">
                 <button onclick="goToStep(3)" class="text-blue-600 hover:text-blue-800 font-medium text-sm mr-4">
                     <i class="fa-solid fa-pen mr-1"></i> Back to Editor
                 </button>
@@ -383,37 +417,93 @@
                     let pageHtml = "";
                     let currentParagraph = "";
                     let lastY = -1;
+                    let lastX = -1;
+                    let lastFontSize = -1;
+                    
+                    // Helper to clean up text, math, and blanks before wrapping in HTML
+                    const processFormatting = (text) => {
+                        if (!text) return "";
+                        // Convert underscores/dots to readable [BLANK] tags
+                        let processed = text.replace(/_{3,}/g, ' <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded border border-blue-200">[BLANK]</span> ');
+                        processed = processed.replace(/\.{3,}/g, ' <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded border border-blue-200">[BLANK]</span> ');
+                        
+                        // If sentence ends in "=", append a blank
+                        if (processed.trim().endsWith('=')) {
+                            processed = processed.trim() + ' <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded border border-blue-200">[BLANK]</span>';
+                        }
+                        
+                        // Find inline sub-questions (like "a)", "b)", "1.") and force them to break to new lines
+                        // Looks for a space, then letter/number, parenthesis/period, then space.
+                        processed = processed.replace(/\s+([a-zA-Z]\)|\d+\.)\s+/g, '<br><br><strong class="text-blue-700">$1</strong> ');
+                        
+                        // Translate common math symbols for screen readers
+                        processed = processed.replace(/×/g, ' times ');
+                        processed = processed.replace(/÷/g, ' divided by ');
+                        
+                        return processed.trim();
+                    };
                     
                     for (let j = 0; j < textContent.items.length; j++) {
                         const item = textContent.items[j];
                         const text = item.str.trim();
                         
-                        if (!text) {
-                            if (item.hasEOL) currentParagraph += " ";
+                        if (!text && !item.hasEOL) {
+                            if (currentParagraph && !currentParagraph.endsWith(" ")) currentParagraph += " ";
                             continue;
                         }
                         
+                        const currentY = item.transform[5];
+                        const currentX = item.transform[4];
+                        const currentFontSize = Math.abs(item.transform[0]);
+                        
+                        // Detect superscripts (exponents) based on coordinate position and font size
+                        let isSuperscript = false;
+                        if (lastY !== -1 && lastFontSize !== -1 && text !== "") {
+                            const yDiff = currentY - lastY;
+                            // If it is positioned higher up (yDiff > 2) and has a smaller font, it's an exponent
+                            if (yDiff > 2 && currentFontSize < lastFontSize * 0.9) {
+                                isSuperscript = true;
+                            }
+                        }
+                        
+                        if (isSuperscript) {
+                            // Translate the physical exponent into readable text
+                            if (text === "2") currentParagraph += " squared";
+                            else if (text === "3") currentParagraph += " cubed";
+                            else if (!isNaN(text)) currentParagraph += ` to the power of ${text}`;
+                            else currentParagraph += `<sup>${text}</sup>`;
+                            
+                            // Skip updating coordinates so the base line remains the reference for the next item
+                            continue; 
+                        }
+                        
                         // Detect significant Y-coordinate change to identify new lines/paragraphs
-                        if (lastY !== -1 && Math.abs(item.transform[5] - lastY) > 12) {
-                            if (currentParagraph.match(/[.!?:]$/)) {
-                                pageHtml += `<p>${currentParagraph.trim()}</p>\n`;
+                        if (lastY !== -1 && Math.abs(currentY - lastY) > 12) {
+                            // Determine if we should join sentences or start a new paragraph
+                            if (currentParagraph.match(/[.!?:]$/) || currentParagraph.match(/^[a-zA-Z]\)|\d+\./)) {
+                                pageHtml += `<p class="mb-3">${processFormatting(currentParagraph)}</p>\n`;
                                 currentParagraph = text;
                             } else {
                                 currentParagraph += " " + text;
                             }
                         } else {
-                            if (currentParagraph && !currentParagraph.endsWith(" ")) {
+                            if (currentParagraph && !currentParagraph.endsWith(" ") && text !== "." && text !== ",") {
                                 currentParagraph += " ";
                             }
                             currentParagraph += text;
                         }
                         
-                        lastY = item.transform[5];
+                        // Track last valid text metrics
+                        if (text !== "") {
+                            lastY = currentY;
+                            lastX = currentX;
+                            lastFontSize = currentFontSize;
+                        }
                     }
                     
                     // Push the last paragraph of the page
                     if (currentParagraph.trim()) {
-                        pageHtml += `<p>${currentParagraph.trim()}</p>\n`;
+                        pageHtml += `<p class="mb-3">${processFormatting(currentParagraph)}</p>\n`;
                     }
                     
                     // Wrap the extracted text with the visual page reference in a side-by-side layout
@@ -560,6 +650,79 @@
             if (font === 'sans') content.classList.add('font-sans');
             if (font === 'serif') content.classList.add('font-serif');
             if (font === 'dyslexic') content.classList.add('font-dyslexic');
+        }
+
+        // --- Export to Google Docs (.doc) ---
+        function exportToGoogleDoc() {
+            // Clone the content so we don't manipulate the live DOM
+            const contentClone = document.getElementById('doc-content').cloneNode(true);
+            
+            // Clean up UI-specific attributes
+            contentClone.querySelectorAll('*').forEach(el => {
+                el.removeAttribute('contenteditable');
+                el.classList.remove('focus:ring-2', 'focus:ring-blue-400', 'outline-none');
+            });
+
+            // Google Docs does not understand side-by-side flexbox divs well upon import.
+            // We convert our flex layout into an invisible HTML Table for the export.
+            const blocks = contentClone.querySelectorAll('.pdf-page-block');
+            blocks.forEach(block => {
+                const imgCol = block.querySelector('.lg\\:w-5\\/12');
+                const textCol = block.querySelector('.lg\\:w-7\\/12');
+                
+                if (imgCol && textCol) {
+                    const table = document.createElement('table');
+                    table.style.width = '100%';
+                    table.style.borderCollapse = 'collapse';
+                    table.style.marginBottom = '30px';
+                    table.setAttribute('border', '0');
+                    
+                    // Reconstruct content inside table cells
+                    table.innerHTML = `
+                        <tr>
+                            <td style="width: 45%; vertical-align: top; padding-right: 20px;">
+                                ${imgCol.innerHTML}
+                            </td>
+                            <td style="width: 55%; vertical-align: top;">
+                                ${textCol.innerHTML}
+                            </td>
+                        </tr>
+                    `;
+                    block.parentNode.replaceChild(table, block);
+                }
+            });
+
+            // Wrap in Microsoft Word / Google Docs compatible HTML header
+            const header = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' 
+                      xmlns:w='urn:schemas-microsoft-com:office:word' 
+                      xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>DocuClear Export</title>
+                    <style>
+                        body { font-family: 'Arial', sans-serif; }
+                        h1 { font-size: 24pt; font-weight: bold; margin-bottom: 12pt; }
+                        h2 { font-size: 18pt; font-weight: bold; margin-bottom: 10pt; }
+                        p { margin-bottom: 10pt; line-height: 1.5; }
+                        img { max-width: 100%; height: auto; }
+                    </style>
+                </head>
+                <body>
+            `;
+            const footer = "</body></html>";
+            const sourceHTML = header + contentClone.innerHTML + footer;
+            
+            // Create a Blob containing the HTML with a Word mimetype and trigger download
+            const blob = new Blob(['\ufeff', sourceHTML], { type: 'application/msword' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'DocuClear_Accessible_Lesson.doc';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
         }
     </script>
 </body>
