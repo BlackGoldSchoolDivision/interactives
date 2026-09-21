@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocuClear - Accessibility Conversion Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+
+        .step-container {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .step-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #3b82f6;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Dyslexic font option */
+        .font-dyslexic {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', sans-serif; /* Fallbacks for a more readable default if OpenDyslexic isn't installed */
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <nav class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <svg class="h-8 w-8 text-blue-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <span class="font-bold text-xl text-slate-800">DocuClear</span>
+                </div>
+                <div class="flex items-center">
+                    <span class="text-sm text-slate-500">Educator Prototype</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow flex flex-col items-center justify-start pt-10 px-4 sm:px-6 lg:px-8 w-full max-w-5xl mx-auto">
+        
+        <!-- Progress Indicator -->
+        <div class="w-full max-w-3xl mb-8">
+            <div class="flex items-center justify-between relative">
+                <div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-slate-200 z-0 rounded-full"></div>
+                <div id="progress-bar" class="absolute left-0 top-1/2 transform -translate-y-1/2 h-1 bg-blue-600 z-0 transition-all duration-300 ease-in-out rounded-full" style="width: 0%;"></div>
+                
+                <div class="relative z-10 flex flex-col items-center">
+                    <div id="step-dot-1" class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold shadow-sm transition-colors duration-300">1</div>
+                    <span class="text-xs mt-2 font-medium text-slate-700">Upload</span>
+                </div>
+                <div class="relative z-10 flex flex-col items-center">
+                    <div id="step-dot-2" class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold shadow-sm transition-colors duration-300">2</div>
+                    <span class="text-xs mt-2 font-medium text-slate-500">Process</span>
+                </div>
+                <div class="relative z-10 flex flex-col items-center">
+                    <div id="step-dot-3" class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold shadow-sm transition-colors duration-300">3</div>
+                    <span class="text-xs mt-2 font-medium text-slate-500">Review</span>
+                </div>
+                <div class="relative z-10 flex flex-col items-center">
+                    <div id="step-dot-4" class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold shadow-sm transition-colors duration-300">4</div>
+                    <span class="text-xs mt-2 font-medium text-slate-500">Output</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 1: Upload -->
+        <div id="step-1" class="step-container active w-full max-w-2xl bg-white p-8 rounded-2xl shadow-sm border border-slate-200 text-center">
+            <h2 class="text-2xl font-bold text-slate-800 mb-2">Upload a Document</h2>
+            <p class="text-slate-600 mb-8">Select a PDF or image file that needs accessibility formatting.</p>
+            
+            <div id="drop-zone" class="border-2 border-dashed border-slate-300 rounded-xl p-12 hover:bg-slate-50 transition-colors cursor-pointer group">
+                <svg class="mx-auto h-16 w-16 text-slate-400 group-hover:text-blue-500 transition-colors mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                </svg>
+                <p class="text-slate-700 font-medium mb-1">Click to upload or drag and drop</p>
+                <p class="text-sm text-slate-500">PDF, PNG, or JPG (Max 10MB)</p>
+                <input type="file" id="file-input" class="hidden" accept=".pdf,.png,.jpg,.jpeg">
+            </div>
+
+            <!-- Mock File List -->
+            <div class="mt-8 text-left">
+                <p class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">Or choose a sample document</p>
+                <button onclick="startProcessing('Brain_Style_Report_Complex_Layout.pdf')" class="w-full flex items-center p-4 border border-slate-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-left group">
+                    <svg class="h-6 w-6 text-red-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
+                    </svg>
+                    <div>
+                        <p class="font-medium text-slate-800 group-hover:text-blue-700">Brain_Style_Report_Complex_Layout.pdf</p>
+                        <p class="text-xs text-slate-500">Contains complex tables, sidebars, and un-tagged images.</p>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 2: Processing -->
+        <div id="step-2" class="step-container w-full max-w-2xl bg-white p-12 rounded-2xl shadow-sm border border-slate-200 text-center">
+            <div class="flex flex-col items-center justify-center">
+                <div class="loading-spinner mb-6"></div>
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">Analyzing Document...</h2>
+                <p class="text-slate-600 mb-6" id="processing-status">Extracting text via OCR...</p>
+                
+                <div class="w-full max-w-md bg-slate-100 rounded-full h-2.5 mb-2 overflow-hidden">
+                    <div id="inner-progress" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300 ease-out" style="width: 0%"></div>
+                </div>
+                
+                <ul class="text-sm text-left text-slate-500 mt-6 space-y-2 w-full max-w-md">
+                    <li id="task-1" class="flex items-center text-slate-400"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Reading file structure</li>
+                    <li id="task-2" class="flex items-center text-slate-400"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Linearizing text blocks (fixing sidebars)</li>
+                    <li id="task-3" class="flex items-center text-slate-400"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Applying semantic HTML tags</li>
+                    <li id="task-4" class="flex items-center text-slate-400"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Identifying complex elements (images/tables/math)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Step 3: Review & Remediate -->
+        <div id="step-3" class="step-container w-full max-w-4xl bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-800 mb-2">Review Required Items</h2>
+            <p class="text-slate-600 mb-6">DocuClear restructured the text, but found elements requiring human context for screen readers.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Left Column: Items to fix -->
+                <div class="space-y-6">
+                    <div class="bg-amber-50 border border-amber-200 rounded-lg p-5">
+                        <div class="flex items-start mb-3">
+                            <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2 py-1 rounded uppercase tracking-wide mr-2">Action Needed</span>
+                            <h3 class="font-semibold text-slate-800">Missing Image Description (Alt Text)</h3>
+                        </div>
+                        <!-- Placeholder for a brain chart image -->
+                        <div class="bg-white border border-slate-200 rounded p-2 mb-4 flex items-center justify-center h-32">
+                            <img src="https://placehold.co/300x100/e2e8f0/475569?text=Chart:+8+Brain+Styles" alt="Visual representation of brain styles" class="max-h-full">
+                        </div>
+                        <p class="text-sm text-slate-600 mb-3">Screen readers need a text description of this image. What does it convey?</p>
+                        <textarea id="alt-text-input" rows="2" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all" placeholder="e.g., A circular chart showing the 8 brain styles..."></textarea>
+                        
+                        <div class="flex items-center mt-3">
+                            <input id="decorative-check" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                            <label for="decorative-check" class="ml-2 text-sm font-medium text-slate-600">Mark as decorative (screen readers will skip this)</label>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-5">
+                        <div class="flex items-start mb-3">
+                            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded uppercase tracking-wide mr-2">Automated Fix</span>
+                            <h3 class="font-semibold text-slate-800">Complex Table Flattened</h3>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-2">A multi-column table detailing the 8 styles was found. It has been converted into a linear list for better text-to-speech flow.</p>
+                        <div class="bg-white p-3 rounded border border-slate-200 text-sm font-mono text-slate-500 overflow-hidden h-16">
+                            * Sage: Caring, Protective, Careful.<br>
+                            * Energizer: Committed, Creative, Lofty...
+                        </div>
+                    </div>
+
+                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-5">
+                        <div class="flex items-start mb-3">
+                            <span class="bg-purple-100 text-purple-800 text-xs font-bold px-2 py-1 rounded uppercase tracking-wide mr-2">Automated Fix</span>
+                            <h3 class="font-semibold text-slate-800">Math Equation Translated</h3>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-2">An equation was detected and converted to a readable format for text-to-speech tools.</p>
+                        <div class="flex items-center justify-center p-4 bg-white border border-slate-200 rounded mb-3 text-slate-800">
+                            <span class="font-serif text-lg italic">x = <span class="whitespace-nowrap">(-b ± &radic;(b&sup2; - 4ac)) / 2a</span></span>
+                        </div>
+                        <p class="text-xs font-semibold text-slate-500 uppercase mb-1">Screen Reader Output:</p>
+                        <div class="bg-white p-3 rounded border border-slate-200 text-sm font-mono text-slate-700 leading-relaxed">
+                            "x equals negative b plus or minus the square root of b squared minus four a c, all divided by two a"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Linear Preview -->
+                <div class="border border-slate-200 rounded-lg overflow-hidden flex flex-col h-[42rem]">
+                    <div class="bg-slate-50 border-b border-slate-200 p-3 flex justify-between items-center">
+                        <span class="text-sm font-semibold text-slate-700">Linear Text Preview</span>
+                        <span class="text-xs text-green-600 font-medium flex items-center">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Screen Reader Ready
+                        </span>
+                    </div>
+                    <div class="p-5 overflow-y-auto bg-white flex-grow text-sm text-slate-700 space-y-3 font-mono">
+                        <h1 class="text-lg font-bold text-slate-900">What's your Brain Style?</h1>
+                        <p>SIX SECONDS EMOTIONAL INTELLIGENCE NETWORK</p>
+                        <p>Your Brain Style is a snapshot of how your brain processes cognitive and emotional data...</p>
+                        <h2 class="text-base font-bold text-slate-900 mt-4">Your Brain Style is based on three elements:</h2>
+                        <ol class="list-decimal pl-5 space-y-1">
+                            <li>Focus: Do you prefer data that is analytical or emotional?</li>
+                            <li>Decisions: Do you tend to protect or innovate?</li>
+                        </ol>
+                        <p class="text-slate-400 italic">[Content continues structurally...]</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 flex justify-end space-x-4">
+                <button onclick="goToStep(2)" class="px-6 py-2 border border-slate-300 rounded-lg text-slate-700 font-medium hover:bg-slate-50 transition-colors">Back</button>
+                <button onclick="generateOutput()" class="px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-sm">Generate Accessible Output</button>
+            </div>
+        </div>
+
+        <!-- Step 4: Output -->
+        <div id="step-4" class="step-container w-full max-w-5xl">
+            
+            <div class="flex flex-col md:flex-row gap-6">
+                <!-- Controls Panel -->
+                <div class="w-full md:w-64 flex-shrink-0 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 h-fit">
+                    <h3 class="font-bold text-slate-800 mb-4 border-b pb-2">Student Controls</h3>
+                    
+                    <div class="space-y-5">
+                        <!-- Font Size -->
+                        <div>
+                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wide block mb-2">Text Size</label>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="changeFontSize('small')" class="w-8 h-8 flex items-center justify-center rounded border border-slate-300 hover:bg-slate-50 text-sm">A</button>
+                                <button onclick="changeFontSize('medium')" class="w-8 h-8 flex items-center justify-center rounded border border-blue-500 bg-blue-50 text-blue-700 text-base font-medium">A</button>
+                                <button onclick="changeFontSize('large')" class="w-8 h-8 flex items-center justify-center rounded border border-slate-300 hover:bg-slate-50 text-lg font-bold">A</button>
+                            </div>
+                        </div>
+
+                        <!-- Contrast -->
+                        <div>
+                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wide block mb-2">Theme</label>
+                            <div class="flex space-x-2">
+                                <button onclick="changeTheme('light')" class="w-8 h-8 rounded-full border-2 border-blue-500 bg-white shadow-sm"></button>
+                                <button onclick="changeTheme('sepia')" class="w-8 h-8 rounded-full border border-slate-300 bg-[#f4ecd8] shadow-sm"></button>
+                                <button onclick="changeTheme('dark')" class="w-8 h-8 rounded-full border border-slate-300 bg-slate-900 shadow-sm"></button>
+                            </div>
+                        </div>
+
+                        <!-- Font Family -->
+                        <div>
+                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wide block mb-2">Font</label>
+                            <select id="font-select" onchange="changeFont()" class="w-full p-2 border border-slate-300 rounded text-sm outline-none focus:border-blue-500">
+                                <option value="sans">Standard (Sans-Serif)</option>
+                                <option value="serif">Standard (Serif)</option>
+                                <option value="dyslexic">Dyslexia Friendly</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 pt-6 border-t border-slate-200">
+                        <button onclick="shareLink()" class="w-full mb-3 flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors text-sm shadow-sm">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
+                            Share Link to Student
+                        </button>
+                        <button class="w-full flex items-center justify-center px-4 py-2 border border-slate-300 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition-colors text-sm">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            Export Tagged PDF
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Final Output Viewer -->
+                <div id="document-viewer" class="flex-grow bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-200 transition-all duration-300">
+                    <div id="doc-content" class="max-w-2xl mx-auto space-y-6 text-base leading-relaxed">
+                        <!-- Semantic HTML Content -->
+                        <h1 class="text-3xl font-bold mb-2">What's your Brain Style?</h1>
+                        <p class="font-semibold uppercase tracking-wider text-sm mb-6">Six Seconds Emotional Intelligence Network</p>
+                        
+                        <p>Your Brain Style is a snapshot of how your brain processes cognitive and emotional data. It provides insight into what you tend to notice and feel motivated by - and why.</p>
+                        
+                        <h2 class="text-2xl font-bold mt-8 mb-4">Your Brain Style is based on three elements:</h2>
+                        <ol class="list-decimal pl-6 space-y-2">
+                            <li><strong>Focus:</strong> Do you prefer data that is analytical or emotional?</li>
+                            <li><strong>Decisions:</strong> Do you tend to protect or innovate?</li>
+                            <li><strong>Drive:</strong> Are you usually motivated by the practical or the idealistic?</li>
+                        </ol>
+
+                        <div id="dynamic-image-container" class="my-8 p-4 bg-slate-50 border border-slate-200 rounded-lg">
+                            <img src="https://placehold.co/600x200/e2e8f0/475569?text=Chart:+8+Brain+Styles" id="final-image" alt="A circular chart showing the 8 brain styles" class="w-full h-auto rounded">
+                            <p class="text-sm text-slate-500 mt-2 italic">Image Description: <span id="final-alt-text">A circular chart showing the 8 brain styles</span></p>
+                        </div>
+
+                        <h2 class="text-2xl font-bold mt-8 mb-4">There are 8 primary Brain Styles:</h2>
+                        <ul class="list-disc pl-6 space-y-2">
+                            <li><strong>Sage:</strong> Caring, Protective, Careful.</li>
+                            <li><strong>Energizer:</strong> Committed, Creative, Lofty.</li>
+                            <li><strong>Guardian:</strong> Protective, Careful, Pragmatic.</li>
+                            <li><strong>Visionary:</strong> Creative, Real-world, Long term.</li>
+                            <li><strong>Deliverer:</strong> Caring, Passionate, Task-oriented.</li>
+                            <li><strong>Strategist:</strong> Precise, Analytical, Future-oriented.</li>
+                            <li><strong>Inventor:</strong> Accurate, Transformative, Open.</li>
+                            <li><strong>Scientist:</strong> Generative, Careful, Precise.</li>
+                        </ul>
+
+                        <hr class="my-8 border-slate-200">
+
+                        <h2 class="text-2xl font-bold mb-4">Your Assessment Results</h2>
+                        <p>Based on your responses to the SEI assessment, your primary Brain Style is <strong>Strategist</strong>.</p>
+                        
+                        <div class="p-6 bg-blue-50 rounded-xl border border-blue-100 my-6">
+                            <h3 class="text-xl font-bold text-blue-900 mb-3">Your Brain Style is: Strategist</h3>
+                            <p class="text-blue-800">Strategists value logic. They want the world to make sense. They're precise and careful. The Strategist knows there is a right answer and is determined to find it. For them, accuracy is more important than expediency, and they don't like it when people push them too quickly. More than any other Brain Style, a Strategist is future-oriented and focused on finding the right solution.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center pb-12">
+                <button onclick="goToStep(1)" class="text-blue-600 hover:text-blue-800 font-medium text-sm">Start Over with a New Document</button>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Setup Drag and Drop
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('bg-blue-50', 'border-blue-400');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('bg-blue-50', 'border-blue-400');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('bg-blue-50', 'border-blue-400');
+            if (e.dataTransfer.files.length > 0) {
+                startProcessing(e.dataTransfer.files[0].name);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                startProcessing(e.target.files[0].name);
+            }
+        });
+
+        // Navigation Logic
+        function goToStep(step) {
+            // Hide all steps
+            document.querySelectorAll('.step-container').forEach(el => el.classList.remove('active'));
+            // Show target step
+            document.getElementById(`step-${step}`).classList.add('active');
+            
+            updateProgressBar(step);
+        }
+
+        function updateProgressBar(step) {
+            const bar = document.getElementById('progress-bar');
+            const percentages = {1: '0%', 2: '33%', 3: '66%', 4: '100%'};
+            bar.style.width = percentages[step];
+
+            for (let i = 1; i <= 4; i++) {
+                const dot = document.getElementById(`step-dot-${i}`);
+                const text = dot.nextElementSibling;
+                if (i <= step) {
+                    dot.classList.remove('bg-slate-200', 'text-slate-500');
+                    dot.classList.add('bg-blue-600', 'text-white');
+                    text.classList.remove('text-slate-500');
+                    text.classList.add('text-slate-700');
+                } else {
+                    dot.classList.add('bg-slate-200', 'text-slate-500');
+                    dot.classList.remove('bg-blue-600', 'text-white');
+                    text.classList.add('text-slate-500');
+                    text.classList.remove('text-slate-700');
+                }
+            }
+        }
+
+        // Simulate Processing
+        function startProcessing(filename) {
+            goToStep(2);
+            
+            const statusText = document.getElementById('processing-status');
+            const innerProgress = document.getElementById('inner-progress');
+            
+            const tasks = [
+                { id: 'task-1', time: 500, msg: "Reading file structure..." },
+                { id: 'task-2', time: 1500, msg: "Linearizing text blocks (fixing sidebars)..." },
+                { id: 'task-3', time: 2500, msg: "Applying semantic HTML tags..." },
+                { id: 'task-4', time: 3500, msg: "Translating math & identifying images..." }
+            ];
+
+            innerProgress.style.width = '0%';
+            
+            tasks.forEach((task, index) => {
+                setTimeout(() => {
+                    statusText.innerText = task.msg;
+                    innerProgress.style.width = `${(index + 1) * 25}%`;
+                    
+                    const taskEl = document.getElementById(task.id);
+                    taskEl.classList.remove('text-slate-400');
+                    taskEl.classList.add('text-blue-600', 'font-medium');
+                    taskEl.innerHTML = `<svg class="w-4 h-4 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> ${taskEl.innerText}`;
+                    
+                    if (index === tasks.length - 1) {
+                        setTimeout(() => goToStep(3), 800); // Move to review step
+                    }
+                }, task.time);
+            });
+        }
+
+        function generateOutput() {
+            // Apply user inputted alt text to final output
+            const altInput = document.getElementById('alt-text-input').value;
+            const isDecorative = document.getElementById('decorative-check').checked;
+            
+            const finalImageContainer = document.getElementById('dynamic-image-container');
+            const finalImage = document.getElementById('final-image');
+            const finalAltTextDisplay = document.getElementById('final-alt-text');
+
+            if (isDecorative) {
+                finalImageContainer.style.display = 'none'; // Hide if decorative in web view
+            } else {
+                finalImageContainer.style.display = 'block';
+                const finalAlt = altInput || "A circular chart showing the 8 brain styles";
+                finalImage.alt = finalAlt;
+                finalAltTextDisplay.innerText = finalAlt;
+            }
+
+            goToStep(4);
+        }
+
+        // Customization Controls for Output Viewer
+        const viewer = document.getElementById('document-viewer');
+        const content = document.getElementById('doc-content');
+
+        function changeFontSize(size) {
+            // Reset active states
+            const buttons = event.target.parentElement.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.classList.remove('border-blue-500', 'bg-blue-50', 'text-blue-700');
+                btn.classList.add('border-slate-300', 'hover:bg-slate-50');
+            });
+            
+            // Set active state
+            event.target.classList.remove('border-slate-300', 'hover:bg-slate-50');
+            event.target.classList.add('border-blue-500', 'bg-blue-50', 'text-blue-700');
+
+            if (size === 'small') content.classList.replace(content.className.match(/text-\w+/)[0], 'text-sm');
+            if (size === 'medium') content.classList.replace(content.className.match(/text-\w+/)[0], 'text-base');
+            if (size === 'large') content.classList.replace(content.className.match(/text-\w+/)[0], 'text-xl');
+        }
+
+        function changeTheme(theme) {
+            // Reset styles
+            viewer.classList.remove('bg-white', 'bg-[#fcf8f2]', 'bg-slate-900', 'text-slate-900', 'text-[#3e2723]', 'text-slate-100');
+            content.querySelectorAll('h1, h2, h3').forEach(h => h.classList.remove('text-slate-900', 'text-[#2e1d1a]', 'text-white'));
+            
+            // Update active ring on buttons
+            const buttons = event.target.parentElement.querySelectorAll('button');
+            buttons.forEach(btn => btn.classList.replace('border-2', 'border'));
+            buttons.forEach(btn => btn.classList.replace('border-blue-500', 'border-slate-300'));
+            event.target.classList.replace('border', 'border-2');
+            event.target.classList.replace('border-slate-300', 'border-blue-500');
+
+            if (theme === 'light') {
+                viewer.classList.add('bg-white', 'text-slate-900');
+                content.querySelectorAll('h1, h2, h3').forEach(h => h.classList.add('text-slate-900'));
+            } else if (theme === 'sepia') {
+                viewer.classList.add('bg-[#fcf8f2]', 'text-[#3e2723]');
+                content.querySelectorAll('h1, h2, h3').forEach(h => h.classList.add('text-[#2e1d1a]'));
+            } else if (theme === 'dark') {
+                viewer.classList.add('bg-slate-900', 'text-slate-100');
+                content.querySelectorAll('h1, h2, h3').forEach(h => h.classList.add('text-white'));
+            }
+        }
+
+        function changeFont() {
+            const font = document.getElementById('font-select').value;
+            content.classList.remove('font-sans', 'font-serif', 'font-dyslexic');
+            
+            if (font === 'sans') content.classList.add('font-sans');
+            if (font === 'serif') content.classList.add('font-serif');
+            if (font === 'dyslexic') content.classList.add('font-dyslexic');
+        }
+
+        function shareLink() {
+            // Simulate copying a link
+            const dummy = document.createElement("input");
+            document.body.appendChild(dummy);
+            dummy.value = "https://docuclear.app/view/a8f9c2";
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+            
+            // Show brief feedback
+            const btn = event.target.closest('button');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = `<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Copied!`;
+            btn.classList.replace('bg-blue-600', 'bg-green-600');
+            btn.classList.replace('hover:bg-blue-700', 'hover:bg-green-700');
+            
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.classList.replace('bg-green-600', 'bg-blue-600');
+                btn.classList.replace('hover:bg-green-700', 'hover:bg-blue-700');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
