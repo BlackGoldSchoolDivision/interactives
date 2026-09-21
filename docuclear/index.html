@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DocuClear - Accessibility Conversion Tool</title>
+    <title>DocuClear - PDF to Accessible Text</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load PDF.js for client-side text extraction -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     </script>
+    <!-- Load FontAwesome for Editor Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         
@@ -46,42 +50,49 @@
             100% { transform: rotate(360deg); }
         }
         
-        /* Dyslexic font option */
+        /* Dyslexic font option - using system fonts that are generally easier to read if specific ones aren't installed */
         .font-dyslexic {
             font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', sans-serif;
+            letter-spacing: 0.05em;
+            word-spacing: 0.1em;
         }
 
-        /* Generated Content Formatting */
-        #doc-content h1, #preview-content h1 { font-size: 1.875rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.75rem; line-height: 1.2; color: #1e293b;}
-        #doc-content h2, #preview-content h2 { font-size: 1.5rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem; line-height: 1.3; color: #334155;}
-        #doc-content h3, #preview-content h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.25rem; margin-bottom: 0.5rem; line-height: 1.4; color: #475569;}
-        #doc-content p, #preview-content p { margin-bottom: 1rem; }
-        #doc-content ul, #preview-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
-        #doc-content ol, #preview-content ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
-        #doc-content strong, #preview-content strong { font-weight: 700; }
-        
-        /* Highlight specific fixes for demo */
-        .math-fix {
-            background-color: #fef08a;
-            padding: 0 4px;
-            border-radius: 4px;
-            border: 1px solid #fde047;
-            font-weight: 500;
+        /* Generated Content Formatting for Student View */
+        #doc-content h1 { font-size: 2rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 1rem; line-height: 1.2; }
+        #doc-content h2 { font-size: 1.5rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem; line-height: 1.3; }
+        #doc-content h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.25rem; margin-bottom: 0.5rem; line-height: 1.4; }
+        #doc-content p { margin-bottom: 1.25rem; line-height: 1.7; }
+        #doc-content ul { list-style-type: disc; padding-left: 2rem; margin-bottom: 1.25rem; line-height: 1.7;}
+        #doc-content ol { list-style-type: decimal; padding-left: 2rem; margin-bottom: 1.25rem; line-height: 1.7;}
+        #doc-content strong { font-weight: 700; }
+        #doc-content img { max-width: 100%; height: auto; border-radius: 0.5rem; margin-top: 1rem; margin-bottom: 1rem; border: 1px solid #e2e8f0; }
+
+        /* WYSIWYG Editor Styles */
+        #editor-content {
+            min-height: 400px;
+            outline: none;
         }
-        .image-fix {
-            background-color: #bfdbfe;
-            padding: 4px 8px;
-            border-radius: 4px;
-            border: 1px dashed #60a5fa;
-            display: inline-block;
-            margin-bottom: 8px;
-            font-size: 0.875rem;
+        #editor-content h1 { font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem; }
+        #editor-content h2 { font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem; margin-top: 1rem; }
+        #editor-content p { margin-bottom: 1rem; }
+        #editor-content ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1rem; }
+        #editor-content img { max-width: 100%; height: auto; border-radius: 0.5rem; margin-top: 1rem; margin-bottom: 1rem; border: 1px solid #e2e8f0; }
+        
+        .toolbar-btn {
+            padding: 0.5rem;
+            color: #475569;
+            border-radius: 0.25rem;
+            transition: all 0.2s;
+        }
+        .toolbar-btn:hover {
+            background-color: #e2e8f0;
+            color: #0f172a;
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <nav class="bg-white shadow-sm border-b border-slate-200">
+    <nav class="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
@@ -90,14 +101,16 @@
                     </svg>
                     <span class="font-bold text-xl text-slate-800">DocuClear</span>
                 </div>
-                <div class="flex items-center">
-                    <span class="text-sm text-slate-500">Educator Prototype</span>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm font-medium px-3 py-1 bg-green-100 text-green-800 rounded-full">
+                        <i class="fa-solid fa-check-circle mr-1"></i> Client-Side Only (No API required)
+                    </span>
                 </div>
             </div>
         </div>
     </nav>
 
-    <main class="flex-grow flex flex-col items-center justify-start pt-10 px-4 sm:px-6 lg:px-8 w-full max-w-5xl mx-auto">
+    <main class="flex-grow flex flex-col items-center justify-start pt-8 px-4 sm:px-6 lg:px-8 w-full max-w-6xl mx-auto pb-12">
         
         <!-- Progress Indicator -->
         <div class="w-full max-w-3xl mb-8">
@@ -111,15 +124,15 @@
                 </div>
                 <div class="relative z-10 flex flex-col items-center">
                     <div id="step-dot-2" class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold shadow-sm transition-colors duration-300">2</div>
-                    <span class="text-xs mt-2 font-medium text-slate-500">Process</span>
+                    <span class="text-xs mt-2 font-medium text-slate-500">Extract</span>
                 </div>
                 <div class="relative z-10 flex flex-col items-center">
                     <div id="step-dot-3" class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold shadow-sm transition-colors duration-300">3</div>
-                    <span class="text-xs mt-2 font-medium text-slate-500">Review</span>
+                    <span class="text-xs mt-2 font-medium text-slate-500">Format & Edit</span>
                 </div>
                 <div class="relative z-10 flex flex-col items-center">
                     <div id="step-dot-4" class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold shadow-sm transition-colors duration-300">4</div>
-                    <span class="text-xs mt-2 font-medium text-slate-500">Output</span>
+                    <span class="text-xs mt-2 font-medium text-slate-500">Student View</span>
                 </div>
             </div>
         </div>
@@ -127,134 +140,91 @@
         <!-- Step 1: Upload -->
         <div id="step-1" class="step-container active w-full max-w-2xl bg-white p-8 rounded-2xl shadow-sm border border-slate-200 text-center">
             <h2 class="text-2xl font-bold text-slate-800 mb-2">Upload a Document</h2>
-            <p class="text-slate-600 mb-8">Select a PDF or image file that needs accessibility formatting.</p>
+            <p class="text-slate-600 mb-8">Select a PDF file. The text will be extracted locally in your browser.</p>
             
-            <div id="drop-zone" class="border-2 border-dashed border-slate-300 rounded-xl p-12 hover:bg-slate-50 transition-colors cursor-pointer group">
+            <div id="drop-zone" class="border-2 border-dashed border-slate-300 rounded-xl p-12 hover:bg-slate-50 transition-colors cursor-pointer group bg-slate-50/50">
                 <svg class="mx-auto h-16 w-16 text-slate-400 group-hover:text-blue-500 transition-colors mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                 </svg>
-                <p class="text-slate-700 font-medium mb-1">Click to upload or drag and drop</p>
-                <p class="text-sm text-slate-500">PDF Document</p>
+                <p class="text-slate-700 font-medium mb-1 text-lg">Click to upload or drag and drop</p>
+                <p class="text-sm text-slate-500">Only PDF documents are supported</p>
                 <input type="file" id="file-input" class="hidden" accept=".pdf">
-            </div>
-            
-            <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800 text-left">
-                <strong>Live AI Mode Active:</strong> You can now upload any PDF file. The tool will extract the text and use AI to automatically translate complex formatting and math into readable HTML!
             </div>
         </div>
 
         <!-- Step 2: Processing -->
         <div id="step-2" class="step-container w-full max-w-2xl bg-white p-12 rounded-2xl shadow-sm border border-slate-200 text-center">
-            <div class="flex flex-col items-center justify-center">
+            <div class="flex flex-col items-center justify-center py-8">
                 <div class="loading-spinner mb-6"></div>
-                <h2 class="text-2xl font-bold text-slate-800 mb-2">Analyzing Document...</h2>
-                <p class="text-slate-600 mb-6" id="processing-status">Reading file structure...</p>
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">Extracting Text...</h2>
+                <p class="text-slate-600 mb-6" id="processing-status">Reading file structure locally...</p>
                 
                 <div class="w-full max-w-md bg-slate-100 rounded-full h-2.5 mb-2 overflow-hidden">
                     <div id="inner-progress" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300 ease-out" style="width: 0%"></div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Teacher Formatting Editor -->
+        <div id="step-3" class="step-container w-full max-w-6xl">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col h-[80vh]">
                 
-                <ul class="text-sm text-left text-slate-500 mt-6 space-y-2 w-full max-w-md">
-                    <li id="task-1" class="flex items-center text-slate-400"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Extracting text and visual layouts</li>
-                    <li id="task-2" class="flex items-center text-slate-400"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Applying semantic HTML tags</li>
-                    <li id="task-3" class="flex items-center text-slate-400"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Translating complex math/LaTeX into readable text</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Step 3: Review & Remediate -->
-        <div id="step-3" class="step-container w-full max-w-4xl bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
-            <h2 class="text-2xl font-bold text-slate-800 mb-2">Review Required Items</h2>
-            <p class="text-slate-600 mb-6">DocuClear restructured the text and found specific elements requiring review.</p>
-        
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Left Column: Items to fix -->
-                <div id="remediation-column" class="space-y-6">
-                    
-                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-5">
-                        <div class="flex items-start mb-3">
-                            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded uppercase tracking-wide mr-2">Automated Fix</span>
-                            <h3 class="font-semibold text-slate-800">Reading Order Linearized</h3>
-                        </div>
-                        <p class="text-sm text-slate-600 mb-2">Multi-column layouts and sidebars have been flattened into a logical top-to-bottom reading order.</p>
-                    </div>
-
-                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-5">
-                        <div class="flex items-start mb-3">
-                            <span class="bg-yellow-100 text-yellow-800 text-xs font-bold px-2 py-1 rounded uppercase tracking-wide mr-2">Math Translation</span>
-                            <h3 class="font-semibold text-slate-800">LaTeX Equations Converted</h3>
-                        </div>
-                        <p class="text-sm text-slate-600 mb-2">Mathematical notation (like square roots and exponents) has been translated into plain English text strings to ensure screen readers pronounce them correctly.</p>
-                        <div class="text-xs bg-white p-2 rounded border border-yellow-200 mt-2">
-                            Original: <code class="text-slate-500">\sqrt{36}=</code><br>
-                            Translated: <strong class="text-slate-800">the square root of 36 equals</strong>
-                        </div>
+                <!-- Editor Header & Toolbar -->
+                <div class="bg-slate-50 border-b border-slate-200 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-800">Review & Format</h2>
+                        <p class="text-xs text-slate-500">Raw text extracted. Fix formatting or add image descriptions here.</p>
                     </div>
                     
-                    <!-- Action Needed: Image Alt Text -->
-                    <div class="bg-red-50 border border-red-200 rounded-lg p-5 shadow-sm">
-                        <div class="flex items-start mb-3">
-                            <span class="bg-red-100 text-red-800 text-xs font-bold px-2 py-1 rounded uppercase tracking-wide mr-2">Action Needed</span>
-                            <h3 class="font-semibold text-slate-800">Image Description (Alt Text)</h3>
-                        </div>
-                        <p class="text-sm text-slate-600 mb-3">A screen reader cannot interpret images. Please describe the image found in Part 2, Question 3.</p>
-                        
-                        <div class="bg-white border border-slate-200 p-2 rounded mb-3 text-center">
-                            <div class="w-32 h-32 mx-auto bg-blue-100 border border-blue-300 grid grid-cols-3 grid-rows-3 gap-px">
-                                <!-- Mock 3x3 Cube -->
-                                <div class="bg-blue-300"></div><div class="bg-blue-300"></div><div class="bg-blue-300"></div>
-                                <div class="bg-blue-300"></div><div class="bg-blue-300"></div><div class="bg-blue-300"></div>
-                                <div class="bg-blue-300"></div><div class="bg-blue-300"></div><div class="bg-blue-300"></div>
-                            </div>
-                            <span class="text-xs text-slate-400 mt-1 block">Context: "Look at the 3D cube model below..."</span>
-                        </div>
-                        
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Image Description:</label>
-                        <textarea id="alt-text-input" class="w-full border border-slate-300 rounded p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none" rows="2" placeholder="e.g., A 3D cube composed of smaller blocks, measuring 3 blocks high, 3 blocks long, and 3 blocks deep."></textarea>
-                        
-                        <div class="mt-2 flex items-center">
-                            <input type="checkbox" id="decorative" class="mr-2 rounded text-blue-600 focus:ring-blue-500 h-4 w-4">
-                            <label for="decorative" class="text-xs text-slate-600">Mark as decorative (screen reader will skip)</label>
-                        </div>
+                    <!-- Toolbar -->
+                    <div class="flex bg-white border border-slate-200 rounded-lg shadow-sm p-1">
+                        <button type="button" onclick="formatText('formatBlock', 'H1')" class="toolbar-btn" title="Heading 1"><b>H1</b></button>
+                        <button type="button" onclick="formatText('formatBlock', 'H2')" class="toolbar-btn" title="Heading 2"><b>H2</b></button>
+                        <div class="w-px bg-slate-200 mx-1 my-1"></div>
+                        <button type="button" onclick="formatText('bold')" class="toolbar-btn" title="Bold"><i class="fa-solid fa-bold"></i></button>
+                        <button type="button" onclick="formatText('italic')" class="toolbar-btn" title="Italic"><i class="fa-solid fa-italic"></i></button>
+                        <div class="w-px bg-slate-200 mx-1 my-1"></div>
+                        <button type="button" onclick="formatText('insertUnorderedList')" class="toolbar-btn" title="Bullet List"><i class="fa-solid fa-list-ul"></i></button>
+                        <button type="button" onclick="document.getElementById('editor-image-upload').click()" class="toolbar-btn" title="Insert Image"><i class="fa-regular fa-image"></i></button>
+                        <input type="file" id="editor-image-upload" class="hidden" accept="image/*" onchange="insertEditorImage(this)">
+                        <button type="button" onclick="formatText('removeFormat')" class="toolbar-btn" title="Clear Formatting"><i class="fa-solid fa-eraser"></i></button>
                     </div>
                 </div>
 
-                <!-- Right Column: Linear Preview -->
-                <div class="border border-slate-200 rounded-lg overflow-hidden flex flex-col h-[42rem]">
-                    <div class="bg-slate-50 border-b border-slate-200 p-3 flex justify-between items-center">
-                        <span class="text-sm font-semibold text-slate-700">Linear Text Preview</span>
-                        <span class="text-xs text-green-600 font-medium flex items-center">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Screen Reader Ready
-                        </span>
-                    </div>
-                    <div id="preview-content" class="p-5 overflow-y-auto bg-white flex-grow text-sm text-slate-700 space-y-3">
-                        <!-- Preview content injected via JS -->
+                <!-- Editable Content Area -->
+                <div class="flex-grow overflow-y-auto p-4 md:p-8 bg-slate-50">
+                    <div id="editor-content" class="w-full text-slate-800" spellcheck="true">
+                        <!-- Content injected via JS -->
                     </div>
                 </div>
-            </div>
 
-            <div class="mt-8 flex justify-end space-x-4">
-                <button onclick="goToStep(1)" class="px-6 py-2 border border-slate-300 rounded-lg text-slate-700 font-medium hover:bg-slate-50 transition-colors">Cancel</button>
-                <button onclick="generateOutput()" class="px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-sm">Generate Accessible Output</button>
+                <!-- Footer Actions -->
+                <div class="bg-slate-50 border-t border-slate-200 p-4 flex justify-between items-center">
+                    <button onclick="goToStep(1)" class="px-4 py-2 text-slate-600 font-medium hover:text-slate-800 transition-colors">Start Over</button>
+                    <button onclick="generateStudentView()" class="px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-sm flex items-center">
+                        Publish to Student View <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
             </div>
         </div>
 
-        <!-- Step 4: Output -->
-        <div id="step-4" class="step-container w-full max-w-5xl">
-            
+        <!-- Step 4: Output / Student View -->
+        <div id="step-4" class="step-container w-full">
             <div class="flex flex-col md:flex-row gap-6">
                 <!-- Controls Panel -->
-                <div class="w-full md:w-64 flex-shrink-0 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 h-fit">
-                    <h3 class="font-bold text-slate-800 mb-4 border-b pb-2">Student Controls</h3>
+                <div class="w-full md:w-64 flex-shrink-0 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 h-fit sticky top-20">
+                    <h3 class="font-bold text-slate-800 mb-4 border-b pb-2 flex items-center">
+                        <i class="fa-solid fa-universal-access text-blue-600 mr-2"></i> Accessibility
+                    </h3>
                     
                     <div class="space-y-5">
                         <!-- Font Size -->
                         <div>
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wide block mb-2">Text Size</label>
                             <div class="flex items-center space-x-2">
-                                <button onclick="changeFontSize('small')" class="w-8 h-8 flex items-center justify-center rounded border border-slate-300 hover:bg-slate-50 text-sm">A</button>
-                                <button onclick="changeFontSize('medium')" class="w-8 h-8 flex items-center justify-center rounded border border-blue-500 bg-blue-50 text-blue-700 text-base font-medium">A</button>
-                                <button onclick="changeFontSize('large')" class="w-8 h-8 flex items-center justify-center rounded border border-slate-300 hover:bg-slate-50 text-lg font-bold">A</button>
+                                <button onclick="changeFontSize('small')" class="w-10 h-10 flex items-center justify-center rounded border border-slate-300 hover:bg-slate-50 text-sm">A</button>
+                                <button onclick="changeFontSize('medium')" class="w-10 h-10 flex items-center justify-center rounded border border-blue-500 bg-blue-50 text-blue-700 text-base font-medium">A</button>
+                                <button onclick="changeFontSize('large')" class="w-10 h-10 flex items-center justify-center rounded border border-slate-300 hover:bg-slate-50 text-xl font-bold">A</button>
                             </div>
                         </div>
 
@@ -262,81 +232,55 @@
                         <div>
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wide block mb-2">Theme</label>
                             <div class="flex space-x-2">
-                                <button onclick="changeTheme('light')" class="w-8 h-8 rounded-full border-2 border-blue-500 bg-white shadow-sm"></button>
-                                <button onclick="changeTheme('sepia')" class="w-8 h-8 rounded-full border border-slate-300 bg-[#f4ecd8] shadow-sm"></button>
-                                <button onclick="changeTheme('dark')" class="w-8 h-8 rounded-full border border-slate-300 bg-slate-900 shadow-sm"></button>
+                                <button onclick="changeTheme('light')" class="w-10 h-10 rounded-full border-2 border-blue-500 bg-white shadow-sm" title="Light Mode"></button>
+                                <button onclick="changeTheme('sepia')" class="w-10 h-10 rounded-full border border-slate-300 bg-[#f4ecd8] shadow-sm" title="Sepia Mode"></button>
+                                <button onclick="changeTheme('dark')" class="w-10 h-10 rounded-full border border-slate-300 bg-slate-900 shadow-sm" title="Dark Mode"></button>
                             </div>
                         </div>
 
                         <!-- Font Family -->
                         <div>
-                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wide block mb-2">Font</label>
-                            <select id="font-select" onchange="changeFont()" class="w-full p-2 border border-slate-300 rounded text-sm outline-none focus:border-blue-500">
+                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wide block mb-2">Font Style</label>
+                            <select id="font-select" onchange="changeFont()" class="w-full p-2.5 border border-slate-300 rounded text-sm outline-none focus:border-blue-500 bg-white">
                                 <option value="sans">Standard (Sans-Serif)</option>
-                                <option value="serif">Standard (Serif)</option>
+                                <option value="serif">Book (Serif)</option>
                                 <option value="dyslexic">Dyslexia Friendly</option>
                             </select>
                         </div>
                     </div>
                     
                     <div class="mt-8 pt-6 border-t border-slate-200">
-                        <button onclick="shareLink()" class="w-full mb-3 flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors text-sm shadow-sm">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
-                            Share Link to Student
-                        </button>
-                        <button class="w-full flex items-center justify-center px-4 py-2 border border-slate-300 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition-colors text-sm">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                            Export Tagged PDF
+                        <p class="text-xs text-slate-500 mb-4">
+                            <i class="fa-solid fa-info-circle mr-1"></i> This view is highly optimized for screen readers and extensions like <strong>Read & Write for Google</strong>.
+                        </p>
+                        <button onclick="window.print()" class="w-full flex items-center justify-center px-4 py-2 border border-slate-300 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition-colors text-sm">
+                            <i class="fa-solid fa-print mr-2"></i> Print / Save as PDF
                         </button>
                     </div>
                 </div>
 
                 <!-- Final Output Viewer -->
-                <div id="document-viewer" class="flex-grow bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-200 transition-all duration-300">
-                    <div id="doc-content" class="max-w-2xl mx-auto space-y-6 text-base leading-relaxed">
-                        <!-- Final content injected here -->
+                <div id="document-viewer" class="flex-grow bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200 transition-all duration-300 min-h-[60vh]">
+                    <div id="doc-content" class="w-full mx-auto text-base">
+                        <!-- Final content injected here from editor -->
                     </div>
                 </div>
             </div>
             
-            <div class="mt-8 text-center pb-12">
-                <button onclick="goToStep(1)" class="text-blue-600 hover:text-blue-800 font-medium text-sm">Start Over with a New Document</button>
+            <div class="mt-8 text-center">
+                <button onclick="goToStep(3)" class="text-blue-600 hover:text-blue-800 font-medium text-sm mr-4">
+                    <i class="fa-solid fa-pen mr-1"></i> Back to Editor
+                </button>
+                <button onclick="goToStep(1)" class="text-slate-500 hover:text-slate-800 font-medium text-sm">
+                    Upload New Document
+                </button>
             </div>
         </div>
 
     </main>
 
     <script>
-        // Setup Drag and Drop
-        const dropZone = document.getElementById('drop-zone');
-        const fileInput = document.getElementById('file-input');
-
-        dropZone.addEventListener('click', () => fileInput.click());
-
-        dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropZone.classList.add('bg-blue-50', 'border-blue-400');
-        });
-
-        dropZone.addEventListener('dragleave', () => {
-            dropZone.classList.remove('bg-blue-50', 'border-blue-400');
-        });
-
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('bg-blue-50', 'border-blue-400');
-            if (e.dataTransfer.files.length > 0) {
-                startProcessing(e.dataTransfer.files[0]); 
-            }
-        });
-
-        fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                startProcessing(e.target.files[0]);
-            }
-        });
-
-        // Navigation Logic
+        // --- Navigation Logic ---
         function goToStep(step) {
             document.querySelectorAll('.step-container').forEach(el => el.classList.remove('active'));
             document.getElementById(`step-${step}`).classList.add('active');
@@ -365,7 +309,36 @@
             }
         }
 
-        // Real API Processing with PDF.js and Gemini AI
+        // --- Drag and Drop Setup ---
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('bg-blue-50', 'border-blue-400');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('bg-blue-50', 'border-blue-400');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('bg-blue-50', 'border-blue-400');
+            if (e.dataTransfer.files.length > 0) {
+                startProcessing(e.dataTransfer.files[0]); 
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                startProcessing(e.target.files[0]);
+            }
+        });
+
+        // --- PDF Processing (Entirely Client-Side using PDF.js) ---
         async function startProcessing(file) {
             if (!file) return;
             if (file.type !== 'application/pdf') {
@@ -377,146 +350,168 @@
             
             const statusText = document.getElementById('processing-status');
             const innerProgress = document.getElementById('inner-progress');
-            const tasks = [
-                document.getElementById('task-1'),
-                document.getElementById('task-2'),
-                document.getElementById('task-3')
-            ];
-
-            // Reset UI
-            innerProgress.style.width = '0%';
-            tasks.forEach(t => {
-                t.className = 'flex items-center text-slate-400';
-                t.innerHTML = `<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> ${t.innerText}`;
-            });
-
-            const markComplete = (index) => {
-                const el = tasks[index];
-                el.className = 'flex items-center text-blue-600 font-medium';
-                el.innerHTML = `<svg class="w-4 h-4 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> ${el.innerText}`;
-            };
-
+            
             try {
-                // Task 1: Extract Text using PDF.js
-                statusText.innerText = "Extracting raw text from PDF...";
+                statusText.innerText = "Loading PDF into browser memory...";
                 innerProgress.style.width = '20%';
                 
+                // Load PDF as ArrayBuffer
                 const arrayBuffer = await file.arrayBuffer();
                 const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-                let rawText = "";
                 
+                statusText.innerText = `Extracting images and text from ${pdf.numPages} pages...`;
+                innerProgress.style.width = '50%';
+                
+                let allExtractedHtml = "";
+
+                // Loop through pages
                 for (let i = 1; i <= pdf.numPages; i++) {
                     const page = await pdf.getPage(i);
+                    
+                    // 1. Render the page to a canvas to capture original layout and images
+                    const viewport = page.getViewport({ scale: 1.2 });
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+                    const pageImageURI = canvas.toDataURL('image/jpeg', 0.8);
+                    
                     const textContent = await page.getTextContent();
-                    const pageText = textContent.items.map(item => item.str).join(' ');
-                    rawText += pageText + "\n\n";
+                    
+                    // We need to reconstruct paragraphs because PDF text is often just loose lines
+                    let pageHtml = "";
+                    let currentParagraph = "";
+                    let lastY = -1;
+                    
+                    for (let j = 0; j < textContent.items.length; j++) {
+                        const item = textContent.items[j];
+                        const text = item.str.trim();
+                        
+                        if (!text) {
+                            if (item.hasEOL) currentParagraph += " ";
+                            continue;
+                        }
+                        
+                        // Detect significant Y-coordinate change to identify new lines/paragraphs
+                        if (lastY !== -1 && Math.abs(item.transform[5] - lastY) > 12) {
+                            if (currentParagraph.match(/[.!?:]$/)) {
+                                pageHtml += `<p>${currentParagraph.trim()}</p>\n`;
+                                currentParagraph = text;
+                            } else {
+                                currentParagraph += " " + text;
+                            }
+                        } else {
+                            if (currentParagraph && !currentParagraph.endsWith(" ")) {
+                                currentParagraph += " ";
+                            }
+                            currentParagraph += text;
+                        }
+                        
+                        lastY = item.transform[5];
+                    }
+                    
+                    // Push the last paragraph of the page
+                    if (currentParagraph.trim()) {
+                        pageHtml += `<p>${currentParagraph.trim()}</p>\n`;
+                    }
+                    
+                    // Wrap the extracted text with the visual page reference in a side-by-side layout
+                    allExtractedHtml += `
+                        <div class="mb-12 pdf-page-block flex flex-col lg:flex-row gap-6 items-start w-full">
+                            <div class="w-full lg:w-5/12 flex-shrink-0 lg:sticky lg:top-12 rounded-xl overflow-hidden border border-slate-300 shadow-sm" contenteditable="false">
+                                <div class="bg-slate-100 p-2 text-xs font-bold text-slate-500 uppercase tracking-wide text-center border-b border-slate-200">
+                                    <i class="fa-solid fa-image mr-1"></i> Page ${i} Original
+                                </div>
+                                <img src="${pageImageURI}" class="w-full block bg-white" alt="Original visual layout of page ${i}" />
+                            </div>
+                            <div class="w-full lg:w-7/12 page-text-content bg-white p-6 md:p-8 rounded-xl border border-slate-200 shadow-sm outline-none focus:ring-2 focus:ring-blue-400 transition-all min-h-[400px]" contenteditable="true">
+                                ${pageHtml}
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Add a visual page break indicator for the editor
+                    if (i < pdf.numPages) {
+                        allExtractedHtml += `<hr class="my-10 border-t-2 border-dashed border-slate-300 col-span-full" title="Page Break">`;
+                    }
+                    
+                    // Update progress
+                    innerProgress.style.width = `${50 + (i / pdf.numPages * 40)}%`;
+                }
+
+                statusText.innerText = "Formatting complete! Opening editor...";
+                innerProgress.style.width = '100%';
+                
+                // Inject into Editor
+                if (!allExtractedHtml) {
+                    allExtractedHtml = "<p><i>No readable text could be extracted from this PDF. It might be an image-only scan.</i></p>";
                 }
                 
-                markComplete(0);
+                document.getElementById('editor-content').innerHTML = allExtractedHtml;
+                
+                setTimeout(() => goToStep(3), 800);
 
-                // Task 2 & 3: Process with Live Gemini AI
-                statusText.innerText = "AI is structuring text and translating math...";
-                innerProgress.style.width = '60%';
-                
-                const htmlContent = await formatTextWithAI(rawText);
-                
-                markComplete(1);
-                markComplete(2);
-                
-                innerProgress.style.width = '100%';
-                statusText.innerText = "Processing Complete!";
-                
-                // Inject the generated HTML content dynamically
-                document.getElementById('preview-content').innerHTML = htmlContent;
-                document.getElementById('doc-content').innerHTML = htmlContent;
-                
-                setTimeout(() => goToStep(3), 1000);
             } catch (error) {
                 console.error("Processing Error:", error);
-                statusText.innerText = "Error processing document.";
+                statusText.innerText = "Error extracting PDF.";
                 statusText.classList.add("text-red-600");
-                document.getElementById('preview-content').innerHTML = `<div class="p-4 bg-red-50 text-red-700 rounded-lg border border-red-200"><strong>Error details:</strong><br>${error.message}</div>`;
-                document.getElementById('doc-content').innerHTML = `<p class="text-red-500">Document failed to process.</p>`;
-                setTimeout(() => goToStep(3), 1000);
+                alert("Failed to process the PDF. Ensure it is a valid text-based PDF.");
+                setTimeout(() => goToStep(1), 2000);
             }
         }
 
-        async function formatTextWithAI(rawText) {
-            // Using Canvas native authentication injection
-            const apiKey = "";
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
-
-            const systemPrompt = `You are an accessibility conversion tool for educators.
-            Your job is to convert raw, messy text extracted from a PDF into clean, highly readable, semantic HTML designed specifically for screen readers.
-            
-            Strict Rules:
-            1. Format the output using ONLY semantic HTML tags (<h1>, <h2>, <p>, <ul>, <ol>, <li>, <strong>).
-            2. DO NOT wrap the output in <html>, <head>, or <body> tags. Output only the inner content.
-            3. MATH & LATEX TRANSLATION (CRITICAL): You must convert any mathematical notation, exponents, roots, or LaTeX symbols into plain English words so a screen reader will read them correctly. 
-               - Replace \`\\sqrt{36}\` with "the square root of 36".
-               - Replace \`m^{2}\` with "square meters".
-               - Replace \`4^{2}\` with "4 squared" or "4 to the power of 2".
-               Wrap EVERY translated math phrase in <span class="math-fix">...</span>
-            4. IMAGES: If the text refers to an image, graph, diagram, or chart, insert the following exactly:
-               <br><span id="dynamic-alt-text" class="image-fix">[Image Description Required]</span><br>
-            5. Return ONLY the HTML code. Do not wrap it in markdown formatting blocks like \`\`\`html.`;
-
-            const payload = {
-                contents: [{ parts: [{ text: rawText }] }],
-                systemInstruction: { parts: [{ text: systemPrompt }] },
-            };
-
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`AI API Error (${response.status}): ${errorText}`);
-            }
-
-            const data = await response.json();
-            
-            if (!data.candidates || data.candidates.length === 0) {
-                throw new Error("No content generated by AI.");
-            }
-            
-            let html = data.candidates[0].content.parts[0].text;
-            
-            // Clean up markdown block syntax if the AI mistakenly adds it
-            html = html.replace(/```html/gi, '').replace(/```/g, '').trim();
-            
-            return html;
+        // --- WYSIWYG Editor Actions ---
+        function formatText(command, value = null) {
+            // Use browser's native execCommand for simple rich text editing
+            document.execCommand(command, false, value);
+            document.getElementById('editor-content').focus();
         }
 
-        // Generate Final Output (Handling Alt Text)
-        function generateOutput() {
-            const altTextInput = document.getElementById('alt-text-input').value;
-            const isDecorative = document.getElementById('decorative').checked;
-            
-            // Update the document content based on user input during review
-            const altTextSpans = document.querySelectorAll('#dynamic-alt-text');
-            
-            altTextSpans.forEach(span => {
-                if (isDecorative) {
-                    span.innerText = "[Decorative image skipped by screen reader]";
-                    span.classList.replace('bg-blue-100', 'bg-slate-100');
-                    span.classList.replace('border-blue-300', 'border-slate-300');
-                    span.classList.replace('text-blue-800', 'text-slate-500');
-                } else if (altTextInput.trim() !== "") {
-                    span.innerText = `[Image description: ${altTextInput}]`;
-                } else {
-                    span.innerText = "[Unlabeled Image]";
-                    span.classList.add('bg-red-100', 'border-red-300', 'text-red-800');
+        // Ensure hitting "Enter" in the editor creates <p> tags instead of <div>s
+        document.getElementById('editor-content').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                document.execCommand('formatBlock', false, 'p');
+            }
+        });
+
+        function insertEditorImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgHtml = `<img src="${e.target.result}" alt="Teacher inserted image or diagram" />`;
+                    document.execCommand('insertHTML', false, imgHtml);
                 }
-            });
+                reader.readAsDataURL(input.files[0]);
+                input.value = ''; // Reset
+            }
+        }
 
+        // --- Move to Student View ---
+        function generateStudentView() {
+            // Grab the HTML from the editor
+            const editorHTML = document.getElementById('editor-content').innerHTML;
+            const viewerContent = document.getElementById('doc-content');
+            
+            // Clean up any empty paragraphs or the dashed hr lines used for page breaks
+            let cleanedHTML = editorHTML.replace(/<hr[^>]*>/gi, '');
+            
+            // Disable editing and remove focus rings for the clean student output
+            cleanedHTML = cleanedHTML.replace(/contenteditable="true"/gi, 'contenteditable="false"');
+            cleanedHTML = cleanedHTML.replace(/focus:ring-2|focus:ring-blue-400/gi, '');
+            
+            // Inject into viewer
+            viewerContent.innerHTML = cleanedHTML;
+            
+            // Ensure first element is an H1 if it isn't already, just to help with structure
+            if(viewerContent.firstChild && viewerContent.firstChild.nodeName !== 'H1') {
+                // Not strictly necessary, but good for accessibility structure if the teacher forgot
+            }
+            
             goToStep(4);
         }
 
-        // Customization Controls for Output Viewer
+        // --- Student View Controls (Accessibility) ---
         const viewer = document.getElementById('document-viewer');
         const content = document.getElementById('doc-content');
 
@@ -530,16 +525,19 @@
             event.target.classList.remove('border-slate-300', 'hover:bg-slate-50');
             event.target.classList.add('border-blue-500', 'bg-blue-50', 'text-blue-700');
 
-            content.classList.remove('text-sm', 'text-base', 'text-xl');
+            content.classList.remove('text-sm', 'text-base', 'text-xl', 'text-2xl');
             if (size === 'small') content.classList.add('text-sm');
             if (size === 'medium') content.classList.add('text-base');
-            if (size === 'large') content.classList.add('text-xl');
+            if (size === 'large') content.classList.add('text-xl'); // Added larger text support
         }
 
         function changeTheme(theme) {
+            // Remove previous theme classes
             viewer.classList.remove('bg-white', 'bg-[#fcf8f2]', 'bg-slate-900', 'text-slate-900', 'text-[#3e2723]', 'text-slate-100');
-            content.querySelectorAll('h1, h2, h3').forEach(h => h.classList.remove('text-slate-900', 'text-[#2e1d1a]', 'text-white'));
             
+            // Since the generated content inherits color, we just need to set the container
+            
+            // Update button styles
             const buttons = event.target.parentElement.querySelectorAll('button');
             buttons.forEach(btn => btn.classList.replace('border-2', 'border'));
             buttons.forEach(btn => btn.classList.replace('border-blue-500', 'border-slate-300'));
@@ -548,13 +546,10 @@
 
             if (theme === 'light') {
                 viewer.classList.add('bg-white', 'text-slate-900');
-                content.querySelectorAll('h1, h2, h3').forEach(h => h.classList.add('text-slate-900'));
             } else if (theme === 'sepia') {
                 viewer.classList.add('bg-[#fcf8f2]', 'text-[#3e2723]');
-                content.querySelectorAll('h1, h2, h3').forEach(h => h.classList.add('text-[#2e1d1a]'));
             } else if (theme === 'dark') {
                 viewer.classList.add('bg-slate-900', 'text-slate-100');
-                content.querySelectorAll('h1, h2, h3').forEach(h => h.classList.add('text-white'));
             }
         }
 
@@ -565,27 +560,6 @@
             if (font === 'sans') content.classList.add('font-sans');
             if (font === 'serif') content.classList.add('font-serif');
             if (font === 'dyslexic') content.classList.add('font-dyslexic');
-        }
-
-        function shareLink() {
-            const dummy = document.createElement("input");
-            document.body.appendChild(dummy);
-            dummy.value = "https://docuclear.app/view/a8f9c2";
-            dummy.select();
-            document.execCommand("copy");
-            document.body.removeChild(dummy);
-            
-            const btn = event.target.closest('button');
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = `<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Copied!`;
-            btn.classList.replace('bg-blue-600', 'bg-green-600');
-            btn.classList.replace('hover:bg-blue-700', 'hover:bg-green-700');
-            
-            setTimeout(() => {
-                btn.innerHTML = originalHTML;
-                btn.classList.replace('bg-green-600', 'bg-blue-600');
-                btn.classList.replace('hover:bg-green-700', 'hover:bg-blue-700');
-            }, 2000);
         }
     </script>
 </body>
