@@ -309,7 +309,50 @@ function loadVoices(){
   sel.value=String(remembered>=0?remembered:0);
 }
 if('speechSynthesis' in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}else{document.getElementById('speakName').disabled=true;document.getElementById('speakDetails').disabled=true;statusEl.textContent='Speech synthesis is not available in this browser.'}
-function speakText(text){if(!('speechSynthesis' in window))return;speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(text);let v=voices[Number(document.getElementById('voice').value)||0];if(v)u.voice=v;u.lang=v?.lang||'en-US';u.rate=Number(document.getElementById('rate').value)||.9;u.pitch=1;u.onstart=()=>{live.textContent=`Speaking ${selected.name}.`};u.onerror=()=>{statusEl.textContent='This voice could not play. Try another voice from the Voice menu.'};speechSynthesis.speak(u)}
+function getFallbackVoice(excludeName=''){
+  const all=speechSynthesis.getVoices().filter(v=>/^en(-|_)/i.test(v.lang)&&v.name!==excludeName);
+  return all.find(v=>/^en-us/i.test(v.lang)&&v.localService)
+      || all.find(v=>/^en-us/i.test(v.lang))
+      || all.find(v=>v.localService)
+      || all[0]
+      || null;
+}
+function speakText(text,retrying=false,failedVoiceName=''){
+  if(!('speechSynthesis' in window))return;
+  speechSynthesis.cancel();
+  let u=new SpeechSynthesisUtterance(text);
+  let v=null;
+  if(retrying){
+    v=getFallbackVoice(failedVoiceName);
+  }else{
+    v=voices[Number(document.getElementById('voice').value)||0]||null;
+  }
+  if(v)u.voice=v;
+  u.lang=v?.lang||'en-US';
+  u.rate=Number(document.getElementById('rate').value)||.9;
+  u.pitch=1;
+  u.onstart=()=>{live.textContent=`Speaking ${selected.name}.`};
+  u.onerror=ev=>{
+    if(ev.error==='canceled'||ev.error==='interrupted')return;
+    if(!retrying&&(ev.error==='voice-unavailable'||ev.error==='language-unavailable'||ev.error==='synthesis-unavailable'||ev.error==='synthesis-failed')){
+      statusEl.textContent='That voice is unavailable on this device. Trying another English voice…';
+      setTimeout(()=>speakText(text,true,v?.name||''),80);
+      return;
+    }
+    if(retrying){
+      const basic=new SpeechSynthesisUtterance(text);
+      basic.lang='en-US';
+      basic.rate=Number(document.getElementById('rate').value)||.9;
+      basic.pitch=1;
+      basic.onstart=()=>{live.textContent=`Speaking ${selected.name}.`;statusEl.textContent='Using this device’s available English voice.'};
+      basic.onerror=()=>{statusEl.textContent='Speech is unavailable on this device or browser.'};
+      speechSynthesis.speak(basic);
+      return;
+    }
+    statusEl.textContent='This voice could not play. Try another voice from the Voice menu.';
+  };
+  speechSynthesis.speak(u);
+}
 function detailsText(e=selected){return `${e.name}. Symbol ${e.symbol}. Atomic number ${e.number}. Atomic mass ${e.mass}. ${e.categoryLabel}. Group ${e.group??'not assigned'}, period ${e.period}. ${e.fact}`}
 function readDetails(e=selected){selected=e;updateSelection(false);speakText(detailsText(e));statusEl.textContent=`Reading details for ${e.name}.`}
 document.getElementById('speakName').addEventListener('click',()=>speakText(selected.name));document.getElementById('speakDetails').addEventListener('click',()=>readDetails(selected));
