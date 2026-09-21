@@ -624,46 +624,53 @@
                 
                 if (imgCol && textCol) {
                     const table = document.createElement('table');
+                    table.setAttribute('width', '100%');
                     table.style.width = '100%';
                     table.style.borderCollapse = 'collapse';
+                    table.style.border = 'none';
                     table.style.marginBottom = '40px';
-                    table.setAttribute('border', '0');
-                    // Force Google Docs to respect column widths
-                    table.style.tableLayout = 'fixed'; 
                     
-                    // Extract just the image and give it hardcoded bounds for Google Docs
+                    // Extract just the image and give it smaller bounds to prevent overlapping in Docs
                     const img = imgCol.querySelector('img');
                     let imgSrc = img ? img.src : '';
                     
                     table.innerHTML = `
-                        <tr>
-                            <td style="width: 45%; vertical-align: top; padding-right: 24px; border: none;">
-                                <div style="font-size: 11px; font-weight: bold; color: #64748b; margin-bottom: 10px; font-family: sans-serif; text-transform: uppercase;">
-                                    Page Original
-                                </div>
-                                <img src="${imgSrc}" width="350" style="width: 100%; max-width: 350px; height: auto; border: 1px solid #e2e8f0;" alt="Original Page Visual" />
-                            </td>
-                            <td style="width: 55%; vertical-align: top; border: none; padding-top: 25px;">
-                                ${textCol.innerHTML}
-                            </td>
-                        </tr>
+                        <tbody>
+                            <tr>
+                                <td width="40%" valign="top" style="width: 40%; vertical-align: top; padding-right: 20px; border: none;">
+                                    <div style="font-family: Arial, sans-serif; font-size: 11px; font-weight: bold; color: #64748b; margin-bottom: 10px; text-transform: uppercase;">
+                                        Page Original
+                                    </div>
+                                    <img src="${imgSrc}" width="260" style="max-width: 100%; border: 1px solid #e2e8f0;" alt="Original Page Visual" />
+                                </td>
+                                <td width="60%" valign="top" style="width: 60%; vertical-align: top; border: none;">
+                                    ${textCol.innerHTML}
+                                </td>
+                            </tr>
+                        </tbody>
                     `;
                     block.parentNode.replaceChild(table, block);
                 }
             });
 
             const hiddenDiv = document.createElement('div');
-            hiddenDiv.contentEditable = true;
             hiddenDiv.style.position = 'absolute';
             hiddenDiv.style.left = '-9999px';
-            hiddenDiv.style.fontFamily = 'Arial, sans-serif'; // Default font Docs respects
+            hiddenDiv.style.fontFamily = 'Arial, sans-serif'; 
             hiddenDiv.innerHTML = contentClone.innerHTML;
             document.body.appendChild(hiddenDiv);
 
-            hiddenDiv.focus();
-            document.execCommand('selectAll');
+            // Use Range Selection to ensure *only* the content is copied (prevents UI glitches)
+            const range = document.createRange();
+            range.selectNodeContents(hiddenDiv);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            
             document.execCommand('copy');
             
+            // Cleanup
+            selection.removeAllRanges();
             document.body.removeChild(hiddenDiv);
 
             const btn = document.getElementById('gdoc-btn');
