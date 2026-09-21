@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordering Rational Numbers</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@600;700;800&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0fdfa; /* Tailwind teal-50 */
+            color: #1e293b;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .heading-font {
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .flip-card {
+            background-color: transparent;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .flip-card-front {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+        }
+        .flip-card-back {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        .draggable {
+            cursor: grab;
+            user-select: none;
+            touch-action: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .draggable:active {
+            cursor: grabbing;
+        }
+        .draggable.dragging {
+            opacity: 0.5;
+            transform: scale(0.95);
+        }
+        .draggable.selected-mobile {
+            outline: 4px solid #f59e0b; /* Amber outline for mobile selection */
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+        
+        .drop-slot {
+            min-height: 4rem;
+            min-width: 4rem;
+            border: 2px dashed #cbd5e1;
+            transition: all 0.3s ease;
+        }
+        .drop-slot.drag-over {
+            background-color: #e0f2fe;
+            border-color: #3b82f6;
+            border-style: solid;
+        }
+
+        /* Fraction styling helper */
+        .fraction {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            vertical-align: middle;
+            line-height: 1.2;
+            margin: 0 0.2rem;
+        }
+        .fraction > span:first-child {
+            border-bottom: 2px solid currentColor;
+            padding: 0 0.1rem;
+        }
+        .fraction > span:last-child {
+            padding: 0 0.1rem;
+        }
+
+        /* Repeating Decimal Overline */
+        .overline {
+            text-decoration: overline;
+        }
+
+        /* Transitions */
+        .fade-in { animation: fadeIn 0.4s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-md z-10 sticky top-0">
+        <div class="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center">
+            <div class="flex items-center gap-2 mb-4 sm:mb-0">
+                <div class="bg-teal-500 text-white p-2 rounded-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path></svg>
+                </div>
+                <h1 class="text-2xl font-bold text-slate-800 heading-font">Ordering Rational Numbers</h1>
+            </div>
+            
+            <div class="flex space-x-2 w-full sm:w-auto pb-2 sm:pb-0" id="main-nav">
+                <button onclick="app.switchTab('home')" id="home-btn" class="hidden whitespace-nowrap px-6 py-2 rounded-full text-sm font-bold transition-colors bg-slate-100 text-slate-700 hover:bg-slate-200 shadow-sm flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    Back to Home
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-6xl mx-auto w-full px-4 py-8 sm:px-6 lg:px-8">
+        
+        <!-- Feedback Banner (Hidden by default) -->
+        <div id="feedback-banner" class="hidden mb-6 p-4 rounded-xl shadow-sm transform transition-all duration-300">
+            <div class="flex items-start">
+                <div id="feedback-icon" class="flex-shrink-0 mt-0.5"></div>
+                <div class="ml-3 w-full">
+                    <h3 id="feedback-title" class="text-lg font-bold"></h3>
+                    <p id="feedback-message" class="mt-1 text-base"></p>
+                    <div id="feedback-explanation" class="mt-3 text-sm bg-white bg-opacity-50 p-3 rounded-lg hidden"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 0: Home / Menu -->
+        <section id="home" class="tab-content fade-in">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                <div onclick="app.switchTab('vocab')" class="bg-white rounded-2xl shadow-md p-8 border border-slate-100 cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col items-center text-center group">
+                    <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">📚</div>
+                    <h3 class="text-2xl font-bold text-slate-800 heading-font mb-2">Vocabulary Builder</h3>
+                    <p class="text-slate-500">Learn the key terms and definitions you'll need.</p>
+                </div>
+                
+                <div onclick="app.switchTab('act2')" class="bg-white rounded-2xl shadow-md p-8 border border-slate-100 cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col items-center text-center group">
+                    <div class="w-16 h-16 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">⬆️</div>
+                    <h3 class="text-2xl font-bold text-slate-800 heading-font mb-2">Order the Numbers</h3>
+                    <p class="text-slate-500">Drag and drop numbers into the correct order.</p>
+                </div>
+                
+                <div onclick="app.switchTab('act3')" class="bg-white rounded-2xl shadow-md p-8 border border-slate-100 cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col items-center text-center group">
+                    <div class="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">🏷️</div>
+                    <h3 class="text-2xl font-bold text-slate-800 heading-font mb-2">Label the Order</h3>
+                    <p class="text-slate-500">Assign position labels 1 to 4 to a set of static numbers.</p>
+                </div>
+
+                <div onclick="app.switchTab('act4')" class="bg-white rounded-2xl shadow-md p-8 border border-slate-100 cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col items-center text-center group">
+                    <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">📏</div>
+                    <h3 class="text-2xl font-bold text-slate-800 heading-font mb-2">Number Line</h3>
+                    <p class="text-slate-500">Place numbers on a line to see how they ascend and descend.</p>
+                </div>
+                
+                <div onclick="app.switchTab('quiz')" class="md:col-span-2 lg:col-span-2 bg-amber-50 rounded-2xl shadow-md p-8 border border-amber-200 cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col items-center text-center group">
+                    <div class="w-16 h-16 bg-amber-200 text-amber-700 rounded-full flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">🏆</div>
+                    <h3 class="text-2xl font-bold text-amber-900 heading-font mb-2">Practice Quiz</h3>
+                    <p class="text-amber-700">Test your skills with a mixed 10-question challenge!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 1: Vocabulary Builder -->
+        <section id="vocab" class="tab-content fade-in hidden">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-slate-800 heading-font mb-2">Vocabulary Builder</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">Click or tap on the cards below to reveal the definitions of important terms you'll need to know for ordering rational numbers.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="vocab-grid">
+                <!-- Cards injected via JS -->
+            </div>
+        </section>
+
+        <!-- TAB 2: Order the Numbers -->
+        <section id="act2" class="tab-content fade-in hidden">
+            <div class="bg-white rounded-2xl shadow-xl p-6 sm:p-10 border border-slate-100">
+                <div class="text-center mb-8">
+                    <span class="inline-block py-1 px-3 rounded-full bg-blue-100 text-blue-800 text-xs font-bold uppercase tracking-wider mb-2" id="act2-badge">Activity 1</span>
+                    <h2 class="text-3xl font-bold text-slate-800 heading-font mb-3">Order the Numbers</h2>
+                    <p class="text-slate-600 text-lg">
+                        Drag and drop the numbers into the empty slots in <strong id="act2-prompt-order" class="text-blue-600 underline decoration-2 underline-offset-4">Ascending</strong> order.
+                        <br><span class="text-sm text-slate-400 mt-1 block">(You can also tap a number, then tap an empty box to move it!)</span>
+                    </p>
+                </div>
+
+                <!-- Available Numbers -->
+                <div class="mb-8">
+                    <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3 text-center">Available Numbers</h3>
+                    <div class="flex flex-wrap justify-center gap-4 min-h-[5rem]" id="act2-source-container">
+                        <!-- Draggables injected here -->
+                    </div>
+                </div>
+
+                <!-- Target Slots -->
+                <div class="mb-10">
+                    <div class="flex justify-between text-sm font-bold text-slate-500 mb-2 px-4 max-w-3xl mx-auto">
+                        <span id="act2-label-start">Smallest</span>
+                        <span id="act2-label-end">Largest</span>
+                    </div>
+                    <div class="flex flex-col sm:flex-row justify-center items-center gap-4 max-w-3xl mx-auto bg-slate-50 p-6 rounded-xl border-2 border-dashed border-slate-200" id="act2-target-container">
+                        <div class="drop-slot act2-slot w-32 h-20 bg-white rounded-xl shadow-inner flex items-center justify-center text-slate-400 font-medium" data-index="0">1st</div>
+                        <div class="drop-slot act2-slot w-32 h-20 bg-white rounded-xl shadow-inner flex items-center justify-center text-slate-400 font-medium" data-index="1">2nd</div>
+                        <div class="drop-slot act2-slot w-32 h-20 bg-white rounded-xl shadow-inner flex items-center justify-center text-slate-400 font-medium" data-index="2">3rd</div>
+                        <div class="drop-slot act2-slot w-32 h-20 bg-white rounded-xl shadow-inner flex items-center justify-center text-slate-400 font-medium" data-index="3">4th</div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button onclick="app.checkAct2()" class="px-8 py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-bold text-lg shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5">Check Answer</button>
+                    <button onclick="app.resetAct2()" class="px-8 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl font-bold text-lg transition-all hidden" id="act2-next-btn">Next Problem</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: Label Order -->
+        <section id="act3" class="tab-content fade-in hidden">
+            <div class="bg-white rounded-2xl shadow-xl p-6 sm:p-10 border border-slate-100">
+                <div class="text-center mb-8">
+                    <span class="inline-block py-1 px-3 rounded-full bg-purple-100 text-purple-800 text-xs font-bold uppercase tracking-wider mb-2" id="act3-badge">Activity 2</span>
+                    <h2 class="text-3xl font-bold text-slate-800 heading-font mb-3">Label the Order</h2>
+                    <p class="text-slate-600 text-lg">
+                        Label these numbers in <strong id="act3-prompt-order" class="text-purple-600 underline decoration-2 underline-offset-4">Descending</strong> order.
+                        <br><span class="text-sm">Drag label <strong>1</strong> to the <span id="act3-desc-first">largest</span> number, and <strong>4</strong> to the <span id="act3-desc-last">smallest</span>.</span>
+                    </p>
+                </div>
+
+                <!-- Labels available to drag -->
+                <div class="mb-10 text-center">
+                    <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">Labels to use</h3>
+                    <div class="flex justify-center gap-4 min-h-[4rem]" id="act3-labels-container">
+                        <!-- Labels 1-4 created in JS -->
+                    </div>
+                </div>
+
+                <!-- Static Numbers with Drop Slots -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto mb-10" id="act3-static-container">
+                    <!-- Structure injected via JS -->
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button onclick="app.checkAct3()" class="px-8 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold text-lg shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5">Check Labels</button>
+                    <button onclick="app.resetAct3()" class="px-8 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl font-bold text-lg transition-all hidden" id="act3-next-btn">Next Problem</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: Number Line -->
+        <section id="act4" class="tab-content fade-in hidden">
+            <div class="bg-white rounded-2xl shadow-xl p-6 sm:p-10 border border-slate-100 overflow-hidden">
+                <div class="text-center mb-8">
+                    <span class="inline-block py-1 px-3 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-wider mb-2" id="act4-badge">Activity 3</span>
+                    <h2 class="text-3xl font-bold text-slate-800 heading-font mb-3">Number Line Placement</h2>
+                    <p class="text-slate-600 text-lg max-w-2xl mx-auto">
+                        Drag the numbers onto their exact positions on the number line below. <br>
+                        <span class="text-sm text-slate-500">Notice how moving left decreases value (<strong class="text-emerald-700">Descending</strong>) and moving right increases value (<strong class="text-emerald-700">Ascending</strong>).</span>
+                    </p>
+                </div>
+
+                <!-- Available Numbers -->
+                <div class="mb-16">
+                    <div class="flex flex-wrap justify-center gap-4 min-h-[5rem]" id="act4-source-container">
+                        <!-- Draggables injected here -->
+                    </div>
+                </div>
+
+                <!-- Number Line Container -->
+                <div class="mb-16 relative w-full max-w-4xl mx-auto px-4 sm:px-12 h-32 pt-8">
+                    <div class="flex justify-between text-xs sm:text-sm font-bold text-slate-400 mb-6 uppercase absolute top-0 left-0 right-0 px-4 sm:px-12">
+                        <span class="flex items-center gap-1"><span>&larr;</span> Descending (Smaller)</span>
+                        <span class="flex items-center gap-1">Ascending (Larger) <span>&rarr;</span></span>
+                    </div>
+                    
+                    <div class="relative w-full h-1 bg-slate-300 rounded" id="act4-line-container">
+                        <!-- Ticks & Slots injected via JS -->
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+                    <button onclick="app.checkAct4()" class="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-lg shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5">Check Answer</button>
+                    <button onclick="app.resetAct4()" class="px-8 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl font-bold text-lg transition-all hidden" id="act4-next-btn">Next Problem</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: Practice Quiz -->
+        <section id="quiz" class="tab-content fade-in hidden">
+            <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl shadow-xl p-6 sm:p-10 border border-amber-100 relative">
+                
+                <!-- Quit Quiz Button -->
+                <button onclick="app.quitQuiz()" id="quiz-quit-btn" class="absolute top-4 right-4 sm:top-6 sm:right-6 hidden px-3 py-2 bg-white/80 hover:bg-white text-red-500 rounded-lg text-sm font-bold shadow-sm transition-all border border-red-100 flex items-center gap-1 z-10">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg> Stop Quiz
+                </button>
+
+                <!-- Quiz Start Screen -->
+                <div id="quiz-start-screen" class="text-center py-10">
+                    <div class="w-24 h-24 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-4xl">🏆</span>
+                    </div>
+                    <h2 class="text-4xl font-bold text-slate-800 heading-font mb-4">Ultimate Practice Quiz</h2>
+                    <p class="text-slate-600 text-lg max-w-xl mx-auto mb-8">
+                        Ready to test your skills? This quiz will mix up both ordering and labeling activities. 
+                        There are 10 questions. Let's see what you've learned!
+                    </p>
+                    <button onclick="app.startQuiz()" class="px-10 py-4 bg-amber-500 hover:bg-amber-600 text-white rounded-full font-bold text-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">Start Quiz Now</button>
+                </div>
+
+                <!-- Quiz Active Screen (Reuses Act2/Act3 containers visually but wrapped) -->
+                <div id="quiz-active-screen" class="hidden">
+                    <div class="flex justify-between items-center mb-6 pb-4 border-b border-amber-200">
+                        <div class="text-amber-800 font-bold heading-font text-xl">Question <span id="quiz-q-num">1</span> of 10</div>
+                        <div class="flex gap-1" id="quiz-progress-dots">
+                            <!-- Dots injected via JS -->
+                        </div>
+                        <div class="text-amber-800 font-bold heading-font text-xl">Score: <span id="quiz-score">0</span></div>
+                    </div>
+                    
+                    <!-- We will dynamically inject the relevant activity (Act 2 or Act 3 HTML structure) here -->
+                    <div id="quiz-question-container"></div>
+                    
+                    <div class="mt-8 flex justify-center hidden" id="quiz-next-container">
+                        <button onclick="app.nextQuizQuestion()" class="px-8 py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-bold text-lg shadow-md transition-all">Next Question ➔</button>
+                    </div>
+                </div>
+
+                <!-- Quiz End Screen -->
+                <div id="quiz-end-screen" class="text-center py-10 hidden">
+                    <div class="w-32 h-32 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+                        <span class="text-6xl" id="quiz-final-emoji">🎉</span>
+                    </div>
+                    <h2 class="text-4xl font-bold text-slate-800 heading-font mb-2">Quiz Complete!</h2>
+                    <p class="text-slate-600 text-xl mb-6">You scored <strong class="text-2xl text-amber-600" id="quiz-final-score">0</strong> out of 10.</p>
+                    <p class="text-slate-500 mb-8 max-w-md mx-auto" id="quiz-final-message"></p>
+                    <div class="flex justify-center gap-4">
+                        <button onclick="app.startQuiz()" class="px-8 py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-bold text-lg shadow-md transition-all">Try Again</button>
+                        <button onclick="app.switchTab('vocab')" class="px-8 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl font-bold text-lg transition-all">Review Vocab</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        /**
+         * State and Core Logic for Rational Numbers Application
+         */
+        const app = {
+            state: {
+                currentTab: 'home',
+                mobileSelectedElement: null, // For tap-to-place functionality
+                
+                act2: {
+                    numbers: [],
+                    targetOrder: 'ascending', // 'ascending' or 'descending'
+                    attempts: 0
+                },
+                act3: {
+                    numbers: [],
+                    targetOrder: 'descending',
+                    attempts: 0
+                },
+                act4: {
+                    numbers: [],
+                    attempts: 0
+                },
+                quiz: {
+                    isActive: false,
+                    currentQuestion: 0,
+                    totalQuestions: 10,
+                    score: 0,
+                    attempts: 0,
+                    currentType: null // 'act2' or 'act3'
+                }
+            },
+
+            // Vocabulary Data
+            vocabData: [
+                { term: "Rational Number", def: "Any number that can be written as a fraction where the numerator and denominator are integers (and denominator is not 0).", icon: "🔢" },
+                { term: "Integer", def: "A whole number that can be positive, negative, or zero. (e.g., -3, 0, 7)", icon: "➖" },
+                { term: "Fraction", def: "A part of a whole, written with a numerator (top) and denominator (bottom).", icon: "🍕" },
+                { term: "Decimal", def: "A number based on the number 10, containing a decimal point.", icon: "⏺️" },
+                { term: "Ascending Order", def: "Arranged from smallest to largest. (Going UP)", icon: "📈" },
+                { term: "Descending Order", def: "Arranged from largest to smallest. (Going DOWN)", icon: "📉" },
+                { term: "Absolute Value", def: "The distance of a number from zero on a number line, regardless of its sign.", icon: "📏" },
+                { term: "Number Line", def: "A line where numbers are placed in order, with smaller numbers to the left and larger numbers to the right.", icon: "↔️" }
+            ],
+
+            /**
+             * Math Utilities
+             */
+            mathUtils: {
+                // Generate a random rational number object
+                generateRational: function(min = -10, max = 10) {
+                    const types = ['integer', 'terminating', 'repeating', 'fraction', 'mixed'];
+                    const type = types[Math.floor(Math.random() * types.length)];
+                    let numObj = { type: type, display: '', html: '', value: 0 };
+
+                    const randSign = () => Math.random() < 0.5 ? 1 : -1;
+
+                    if (type === 'integer') {
+                        let val = Math.floor(Math.random() * (max - min + 1)) + min;
+                        if(val === 0) val = 1; // avoid excessive zeros
+                        numObj.value = val;
+                        numObj.display = val.toString();
+                        numObj.html = val.toString();
+                    } 
+                    else if (type === 'terminating') {
+                        let val = (Math.random() * (max - min)) + min;
+                        let places = Math.random() < 0.5 ? 1 : 2; // 1 or 2 decimal places
+                        val = parseFloat(val.toFixed(places));
+                        if (val === 0) val = 0.5;
+                        numObj.value = val;
+                        numObj.display = val.toString();
+                        numObj.html = val.toString();
+                    } 
+                    else if (type === 'repeating') {
+                        const reps = [
+                            { txt: '3', v: 1/3 },
+                            { txt: '6', v: 2/3 },
+                            { txt: '1<span class="overline">6</span>', v: 1/6 },
+                            { txt: '8<span class="overline">3</span>', v: 5/6 }
+                        ];
+                        let opt = reps[Math.floor(Math.random() * reps.length)];
+                        
+                        let whole = Math.floor(Math.random() * (max - min)) + min;
+                        if (whole === max) whole = max - 1; // Prevent boundary overflow
+                        
+                        let isNeg = whole < 0 || (whole === 0 && Math.random() < 0.5);
+                        let absWhole = Math.abs(whole);
+                        
+                        numObj.value = isNeg ? -(absWhole + opt.v) : (absWhole + opt.v);
+                        let signStr = isNeg ? '-' : '';
+                        numObj.display = `${signStr}${absWhole}.${opt.txt.replace(/<[^>]*>?/gm, '')}...`;
+                        numObj.html = `${signStr}${absWhole}.${opt.txt}`;
+                    }
+                    else if (type === 'fraction') {
+                        let sign = randSign();
+                        let den = Math.floor(Math.random() * 8) + 2; // 2 to 9
+                        let num = Math.floor(Math.random() * (den * Math.max(1, Math.abs(max))));
+                        if (num === 0) num = 1;
+                        
+                        let val = sign * (num / den);
+                        // Clamp values strictly to min/max
+                        if (val < min) val = min + 0.5;
+                        if (val > max) val = max - 0.5;
+                        
+                        let absVal = Math.abs(val);
+                        let finalNum = Math.round(absVal * den);
+                        let signStr = sign < 0 ? '-' : '';
+                        
+                        numObj.value = val;
+                        numObj.display = `${signStr}${finalNum}/${den}`;
+                        numObj.html = `${signStr}<span class="fraction"><span>${finalNum}</span><span>${den}</span></span>`;
+                    }
+                    else if (type === 'mixed') {
+                        let sign = randSign();
+                        let absMaxWhole = Math.max(0, Math.abs(max) - 1);
+                        let whole = Math.floor(Math.random() * (absMaxWhole)) + 1; 
+                        let den = Math.floor(Math.random() * 4) + 2; // 2 to 5
+                        let num = Math.floor(Math.random() * (den - 1)) + 1;
+                        
+                        let val = sign * (whole + (num / den));
+                        if(val < min) val = min + 0.5;
+                        if(val > max) val = max - 0.5;
+                        
+                        whole = Math.floor(Math.abs(val));
+                        let fracVal = Math.abs(val) - whole;
+                        num = Math.round(fracVal * den);
+                        if(num===0){ num=1; den=2; }
+                        
+                        numObj.value = val;
+                        let signStr = val < 0 ? '-' : '';
+                        numObj.display = `${signStr}${whole} ${num}/${den}`;
+                        numObj.html = `${signStr}${whole} <span class="fraction"><span>${num}</span><span>${den}</span></span>`;
+                    }
+
+                    return numObj;
+                },
+
+                // Generate N unique numbers with a minimum spacing gap (vital for number line)
+                getUniqueNumbers: function(count, minVal = -10, maxVal = 10, minSpacing = 0.05) {
+                    let nums = [];
+                    let attempts = 0;
+                    while (nums.length < count && attempts < 500) {
+                        let candidate = this.generateRational(minVal, maxVal);
+                        
+                        let isUnique = true;
+                        for (let n of nums) {
+                            if (Math.abs(candidate.value - n.value) < minSpacing) {
+                                isUnique = false;
+                                break;
+                            }
+                        }
+                        if (isUnique) nums.push(candidate);
+                        attempts++;
+                    }
+                    return nums;
+                }
+            },
+
+            init: function() {
+                this.renderVocab();
+                this.setupDragAndDropGlobals();
+                
+                // Set up default activities
+                this.resetAct2();
+                this.resetAct3();
+                this.resetAct4();
+
+                // Ensure proper home state on load
+                this.switchTab('home');
+            },
+
+            switchTab: function(tabId) {
+                // Stop the quiz silently if navigating away (no blocked confirm() dialogs)
+                if (this.state.quiz.isActive && tabId !== 'quiz') {
+                    this.state.quiz.isActive = false;
+                    document.getElementById('quiz-quit-btn').classList.add('hidden');
+                }
+
+                this.state.currentTab = tabId;
+                
+                // Show/Hide Home button
+                const homeBtn = document.getElementById('home-btn');
+                if (homeBtn) {
+                    if (tabId === 'home') {
+                        homeBtn.classList.add('hidden');
+                    } else {
+                        homeBtn.classList.remove('hidden');
+                    }
+                }
+
+                // Show/Hide content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                document.getElementById(tabId).classList.remove('hidden');
+
+                // Hide feedback
+                this.hideFeedback();
+
+                // Refresh state if navigating back to practice pages
+                if (tabId === 'act2' && document.getElementById('act2-next-btn').classList.contains('hidden') === false) {
+                    this.resetAct2();
+                }
+                if (tabId === 'act3' && document.getElementById('act3-next-btn').classList.contains('hidden') === false) {
+                    this.resetAct3();
+                }
+                if (tabId === 'act4' && document.getElementById('act4-next-btn').classList.contains('hidden') === false) {
+                    this.resetAct4();
+                }
+            },
+
+            quitQuiz: function() {
+                // Instantly exit the quiz to avoid blocked browser pop-ups
+                this.state.quiz.isActive = false;
+                document.getElementById('quiz-quit-btn').classList.add('hidden');
+                this.switchTab('home');
+            },
+
+            renderVocab: function() {
+                const grid = document.getElementById('vocab-grid');
+                grid.innerHTML = '';
+                this.vocabData.forEach((item, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'flip-card h-48';
+                    card.innerHTML = `
+                        <div class="flip-card-inner rounded-xl">
+                            <div class="flip-card-front flex-col text-xl font-bold heading-font text-center">
+                                <div class="text-5xl mb-2 drop-shadow-md">${item.icon}</div>
+                                <div>${item.term}</div>
+                            </div>
+                            <div class="flip-card-back text-sm sm:text-base font-medium">
+                                ${item.def}
+                            </div>
+                        </div>
+                    `;
+                    card.addEventListener('click', () => {
+                        card.classList.toggle('flipped');
+                    });
+                    grid.appendChild(card);
+                });
+            },
+
+            resetAct2: function() {
+                this.state.act2.attempts = 0;
+                this.state.act2.targetOrder = Math.random() < 0.5 ? 'ascending' : 'descending';
+                this.state.act2.numbers = this.mathUtils.getUniqueNumbers(4);
+                
+                // Shuffle numbers for display
+                let shuffled = [...this.state.act2.numbers].sort(() => Math.random() - 0.5);
+
+                this.renderAct2UI(shuffled);
+            },
+
+            renderAct2UI: function(shuffledNumbers) {
+                const isQuiz = this.state.quiz.isActive;
+                const containerIdPrefix = isQuiz ? 'quiz-q' : 'act2';
+                
+                const promptEl = document.getElementById(isQuiz ? 'quiz-prompt-order' : 'act2-prompt-order');
+                if(promptEl) {
+                    promptEl.innerText = this.state.act2.targetOrder.charAt(0).toUpperCase() + this.state.act2.targetOrder.slice(1);
+                }
+
+                const labelStart = document.getElementById(isQuiz ? 'quiz-label-start' : 'act2-label-start');
+                const labelEnd = document.getElementById(isQuiz ? 'quiz-label-end' : 'act2-label-end');
+                
+                if (labelStart && labelEnd) {
+                    if (this.state.act2.targetOrder === 'ascending') {
+                        labelStart.innerText = "Smallest"; labelEnd.innerText = "Largest";
+                    } else {
+                        labelStart.innerText = "Largest"; labelEnd.innerText = "Smallest";
+                    }
+                }
+
+                const sourceContainer = document.getElementById(isQuiz ? 'quiz-act2-source' : 'act2-source-container');
+                const targetContainer = document.getElementById(isQuiz ? 'quiz-act2-target' : 'act2-target-container');
+                
+                if(!sourceContainer || !targetContainer) return;
+
+                sourceContainer.innerHTML = '';
+                
+                // Create draggable numbers
+                shuffledNumbers.forEach((numObj, idx) => {
+                    const el = document.createElement('div');
+                    el.className = 'draggable relative z-10 w-28 h-20 bg-white rounded-xl shadow-md border-2 border-slate-200 flex items-center justify-center text-xl font-bold text-slate-800 transition-all hover:border-blue-400 hover:shadow-lg';
+                    el.innerHTML = numObj.html;
+                    el.draggable = true;
+                    el.dataset.val = numObj.value;
+                    el.dataset.display = numObj.display;
+                    el.id = `${containerIdPrefix}-drag-${idx}`;
+                    
+                    this.attachDragEvents(el);
+                    this.attachTapSelectEvents(el);
+                    
+                    sourceContainer.appendChild(el);
+                });
+
+                // Clear targets
+                targetContainer.innerHTML = '';
+                for(let i=0; i<4; i++) {
+                    const slot = document.createElement('div');
+                    slot.className = 'drop-slot act2-slot w-32 h-20 bg-white rounded-xl shadow-inner flex items-center justify-center text-slate-300 font-medium text-lg relative overflow-hidden';
+                    slot.dataset.index = i;
+                    // Add background number
+                    slot.innerHTML = `<span class="absolute inset-0 flex items-center justify-center text-4xl font-bold text-slate-100 z-0 pointer-events-none">${i+1}</span>`;
+                    
+                    this.attachDropEvents(slot);
+                    this.attachTapPlaceEvents(slot);
+                    
+                    targetContainer.appendChild(slot);
+                }
+
+                this.hideFeedback();
+                const nextBtn = document.getElementById(isQuiz ? 'quiz-next-container' : 'act2-next-btn');
+                if(nextBtn && !isQuiz) nextBtn.classList.add('hidden');
+            },
+
+            checkAct2: function() {
+                const isQuiz = this.state.quiz.isActive;
+                const stateRef = this.state.act2;
+                stateRef.attempts++;
+                
+                const targetContainer = document.getElementById(isQuiz ? 'quiz-act2-target' : 'act2-target-container');
+                const slots = targetContainer.querySelectorAll('.drop-slot');
+                
+                let currentOrder = [];
+                let isFull = true;
+
+                slots.forEach(slot => {
+                    const item = slot.querySelector('.draggable');
+                    if (item) {
+                        currentOrder.push(parseFloat(item.dataset.val));
+                    } else {
+                        isFull = false;
+                    }
+                });
+
+                if (!isFull) {
+                    this.showFeedback('warning', 'Incomplete!', 'Please place all 4 numbers into the slots before checking.', null, isQuiz);
+                    stateRef.attempts--; // Don't count as a mistake
+                    return;
+                }
+
+                // Check correct order
+                let sortedNums = [...stateRef.numbers].sort((a, b) => a.value - b.value);
+                if (stateRef.targetOrder === 'descending') {
+                    sortedNums.reverse();
+                }
+
+                let isCorrect = true;
+                for(let i=0; i<4; i++) {
+                    if(currentOrder[i] !== sortedNums[i].value) {
+                        isCorrect = false;
+                        break;
+                    }
+                }
+
+                if (isCorrect) {
+                    this.handleCorrectAnswer(isQuiz);
+                } else {
+                    this.handleIncorrectAnswer(stateRef, sortedNums, isQuiz, 'act2');
+                }
+            },
+
+            resetAct3: function() {
+                this.state.act3.attempts = 0;
+                this.state.act3.targetOrder = Math.random() < 0.5 ? 'ascending' : 'descending';
+                this.state.act3.numbers = this.mathUtils.getUniqueNumbers(4);
+                
+                this.renderAct3UI();
+            },
+
+            renderAct3UI: function() {
+                const isQuiz = this.state.quiz.isActive;
+                const containerIdPrefix = isQuiz ? 'quiz-q' : 'act3';
+                
+                const promptEl = document.getElementById(isQuiz ? 'quiz-act3-order' : 'act3-prompt-order');
+                if(promptEl) {
+                    promptEl.innerText = this.state.act3.targetOrder.charAt(0).toUpperCase() + this.state.act3.targetOrder.slice(1);
+                }
+                
+                const descFirst = document.getElementById(isQuiz ? 'quiz-act3-first' : 'act3-desc-first');
+                const descLast = document.getElementById(isQuiz ? 'quiz-act3-last' : 'act3-desc-last');
+                
+                if (descFirst && descLast) {
+                    if(this.state.act3.targetOrder === 'ascending') {
+                        descFirst.innerText = 'smallest'; descLast.innerText = 'largest';
+                    } else {
+                        descFirst.innerText = 'largest'; descLast.innerText = 'smallest';
+                    }
+                }
+
+                const labelsContainer = document.getElementById(isQuiz ? 'quiz-act3-labels' : 'act3-labels-container');
+                const staticContainer = document.getElementById(isQuiz ? 'quiz-act3-static' : 'act3-static-container');
+                
+                if(!labelsContainer || !staticContainer) return;
+
+                // Render Labels
+                labelsContainer.innerHTML = '';
+                for(let i=1; i<=4; i++) {
+                    const el = document.createElement('div');
+                    el.className = 'draggable relative z-10 w-16 h-16 bg-purple-600 text-white rounded-full shadow-md flex items-center justify-center text-2xl font-bold transition-all hover:bg-purple-500 hover:shadow-lg';
+                    el.innerText = i;
+                    el.draggable = true;
+                    el.dataset.val = i;
+                    el.id = `${containerIdPrefix}-label-${i}`;
+                    
+                    this.attachDragEvents(el);
+                    this.attachTapSelectEvents(el);
+                    
+                    labelsContainer.appendChild(el);
+                }
+
+                // Render Static Numbers & Slots
+                staticContainer.innerHTML = '';
+                this.state.act3.numbers.forEach((numObj, idx) => {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col items-center gap-4';
+                    
+                    const numBox = document.createElement('div');
+                    numBox.className = 'w-full h-24 bg-white rounded-lg shadow-sm border border-slate-100 flex items-center justify-center text-3xl font-bold text-slate-800';
+                    numBox.innerHTML = numObj.html;
+                    
+                    const slotBox = document.createElement('div');
+                    slotBox.className = 'drop-slot act3-slot w-20 h-20 bg-white rounded-full border-2 border-dashed border-slate-300 flex items-center justify-center text-slate-400 text-sm font-medium';
+                    slotBox.dataset.numval = numObj.value;
+                    slotBox.innerHTML = 'Drop<br>Label';
+                    
+                    this.attachDropEvents(slotBox);
+                    this.attachTapPlaceEvents(slotBox);
+
+                    wrapper.appendChild(numBox);
+                    wrapper.appendChild(slotBox);
+                    staticContainer.appendChild(wrapper);
+                });
+
+                this.hideFeedback();
+                const nextBtn = document.getElementById(isQuiz ? 'quiz-next-container' : 'act3-next-btn');
+                if(nextBtn && !isQuiz) nextBtn.classList.add('hidden');
+            },
+
+            checkAct3: function() {
+                const isQuiz = this.state.quiz.isActive;
+                const stateRef = this.state.act3;
+                stateRef.attempts++;
+                
+                const staticContainer = document.getElementById(isQuiz ? 'quiz-act3-static' : 'act3-static-container');
+                const slots = staticContainer.querySelectorAll('.drop-slot');
+                
+                let isFull = true;
+                let userAnswers = []; // { numberValue, labelValue }
+
+                slots.forEach(slot => {
+                    const item = slot.querySelector('.draggable');
+                    if (item) {
+                        userAnswers.push({
+                            numberValue: parseFloat(slot.dataset.numval),
+                            labelValue: parseInt(item.dataset.val)
+                        });
+                    } else {
+                        isFull = false;
+                    }
+                });
+
+                if (!isFull) {
+                    this.showFeedback('warning', 'Incomplete!', 'Please place all 4 labels into the slots before checking.', null, isQuiz);
+                    stateRef.attempts--;
+                    return;
+                }
+
+                // Determine correct labels
+                let sortedNums = [...stateRef.numbers].sort((a, b) => a.value - b.value);
+                if (stateRef.targetOrder === 'descending') {
+                    sortedNums.reverse();
+                }
+                
+                // Create map of Correct Number Value -> Correct Label (1-4)
+                let correctMap = {};
+                sortedNums.forEach((n, idx) => {
+                    correctMap[n.value] = idx + 1;
+                });
+
+                let isCorrect = true;
+                for(let ans of userAnswers) {
+                    if(correctMap[ans.numberValue] !== ans.labelValue) {
+                        isCorrect = false;
+                        break;
+                    }
+                }
+
+                if (isCorrect) {
+                    this.handleCorrectAnswer(isQuiz);
+                } else {
+                    this.handleIncorrectAnswer(stateRef, sortedNums, isQuiz, 'act3');
+                }
+            },
+
+            resetAct4: function() {
+                this.state.act4.attempts = 0;
+                // Generate 4 numbers between -5 and 5, with at least 1.5 distance so the drop targets don't overlap visually!
+                this.state.act4.numbers = this.mathUtils.getUniqueNumbers(4, -5, 5, 1.5);
+                
+                let shuffled = [...this.state.act4.numbers].sort(() => Math.random() - 0.5);
+                this.renderAct4UI(shuffled);
+            },
+
+            renderAct4UI: function(shuffledNumbers) {
+                const isQuiz = this.state.quiz.isActive;
+                const containerIdPrefix = isQuiz ? 'quiz-q' : 'act4';
+                
+                const sourceContainer = document.getElementById(isQuiz ? 'quiz-act4-source' : 'act4-source-container');
+                const lineContainer = document.getElementById(isQuiz ? 'quiz-act4-line' : 'act4-line-container');
+                
+                if(!sourceContainer || !lineContainer) return;
+
+                sourceContainer.innerHTML = '';
+                
+                // Create draggable numbers
+                shuffledNumbers.forEach((numObj, idx) => {
+                    const el = document.createElement('div');
+                    el.className = 'draggable relative z-10 w-20 h-16 sm:w-24 sm:h-16 bg-white rounded-xl shadow-md border-2 border-slate-200 flex items-center justify-center text-lg sm:text-xl font-bold text-slate-800 transition-all hover:border-emerald-400 hover:shadow-lg';
+                    el.innerHTML = numObj.html;
+                    el.draggable = true;
+                    el.dataset.val = numObj.value;
+                    el.dataset.display = numObj.display;
+                    el.id = `${containerIdPrefix}-line-drag-${idx}`;
+                    
+                    this.attachDragEvents(el);
+                    this.attachTapSelectEvents(el);
+                    
+                    sourceContainer.appendChild(el);
+                });
+
+                // Render Number Line Ticks (-5 to 5)
+                lineContainer.innerHTML = '';
+                for (let i = -5; i <= 5; i++) {
+                    const leftPos = ((i + 5) / 10) * 100;
+                    
+                    const tick = document.createElement('div');
+                    tick.className = 'absolute top-1/2 w-0.5 h-4 bg-slate-400 -translate-x-1/2 -translate-y-1/2';
+                    tick.style.left = `${leftPos}%`;
+                    
+                    const label = document.createElement('div');
+                    label.className = 'absolute top-6 left-1/2 -translate-x-1/2 text-xs font-bold text-slate-500';
+                    label.innerText = i;
+                    tick.appendChild(label);
+                    
+                    lineContainer.appendChild(tick);
+                }
+
+                // Render specific Drop Slots placed at exact % locations of the generated numbers
+                this.state.act4.numbers.forEach((numObj, idx) => {
+                    const leftPos = ((numObj.value + 5) / 10) * 100;
+
+                    const slotWrapper = document.createElement('div');
+                    slotWrapper.className = 'absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-0';
+                    slotWrapper.style.left = `${leftPos}%`;
+
+                    const slot = document.createElement('div');
+                    slot.className = 'drop-slot act4-slot w-16 h-16 sm:w-24 sm:h-16 bg-white rounded-xl border-2 border-dashed border-slate-300 flex items-center justify-center text-slate-300 text-xs text-center p-1 relative';
+                    slot.dataset.numval = numObj.value;
+                    
+                    const dot = document.createElement('div');
+                    dot.className = 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-emerald-500 rounded-full z-0 opacity-20 pointer-events-none';
+                    slot.appendChild(dot);
+                    
+                    this.attachDropEvents(slot);
+                    this.attachTapPlaceEvents(slot);
+
+                    slotWrapper.appendChild(slot);
+                    lineContainer.appendChild(slotWrapper);
+                });
+
+                this.hideFeedback();
+                const nextBtn = document.getElementById(isQuiz ? 'quiz-next-container' : 'act4-next-btn');
+                if(nextBtn && !isQuiz) nextBtn.classList.add('hidden');
+            },
+
+            checkAct4: function() {
+                const isQuiz = this.state.quiz.isActive;
+                const stateRef = this.state.act4;
+                stateRef.attempts++;
+                
+                const lineContainer = document.getElementById(isQuiz ? 'quiz-act4-line' : 'act4-line-container');
+                const slots = lineContainer.querySelectorAll('.drop-slot');
+                
+                let isFull = true;
+                let isCorrect = true;
+
+                slots.forEach(slot => {
+                    const expectedVal = parseFloat(slot.dataset.numval);
+                    const droppedItem = slot.querySelector('.draggable');
+                    
+                    if (droppedItem) {
+                        const droppedVal = parseFloat(droppedItem.dataset.val);
+                        if (Math.abs(expectedVal - droppedVal) > 0.01) {
+                            isCorrect = false;
+                        }
+                    } else {
+                        isFull = false;
+                    }
+                });
+
+                if (!isFull) {
+                    this.showFeedback('warning', 'Incomplete!', 'Please place all 4 numbers onto the number line slots before checking.', null, isQuiz);
+                    stateRef.attempts--;
+                    return;
+                }
+
+                let sortedNums = [...stateRef.numbers].sort((a, b) => a.value - b.value);
+
+                if (isCorrect) {
+                    this.handleCorrectAnswer(isQuiz, 'act4');
+                } else {
+                    this.handleIncorrectAnswer(stateRef, sortedNums, isQuiz, 'act4');
+                }
+            },
+
+            handleCorrectAnswer: function(isQuiz, type) {
+                this.showFeedback('success', 'Correct!', 'Great job! You ordered them perfectly.', null, isQuiz);
+                
+                if (isQuiz) {
+                    this.state.quiz.score++;
+                    document.getElementById('quiz-score').innerText = this.state.quiz.score;
+                    document.getElementById('quiz-next-container').classList.remove('hidden');
+                    
+                    // Mark progress dot green
+                    const dots = document.getElementById('quiz-progress-dots').children;
+                    if(dots[this.state.quiz.currentQuestion - 1]) {
+                        dots[this.state.quiz.currentQuestion - 1].className = 'w-3 h-3 rounded-full bg-green-500';
+                    }
+                } else {
+                    const btnId = this.state.currentTab === 'act2' ? 'act2-next-btn' : 'act3-next-btn';
+                    document.getElementById(btnId).classList.remove('hidden');
+                }
+            },
+
+            handleIncorrectAnswer: function(stateRef, sortedNums, isQuiz, type) {
+                if (stateRef.attempts === 1) {
+                    // Hint
+                    let hintStr = `Remember, for <strong>${stateRef.targetOrder}</strong> order, you go from ${stateRef.targetOrder === 'ascending' ? 'smallest to largest' : 'largest to smallest'}.<br>`;
+                    hintStr += "<em>Hint: Negative numbers with a larger absolute value are actually smaller (e.g., -5 is smaller than -2). Convert fractions to decimals if it helps compare!</em>";
+                    this.showFeedback('hint', 'Not quite right, try again!', hintStr, null, isQuiz);
+                } 
+                else if (stateRef.attempts >= 2) {
+                    // Answer & Explanation
+                    let explStr = `<p class="font-bold mb-2">Here is the correct answer:</p>`;
+                    
+                    if (type === 'act2') {
+                        explStr += `<div class="flex gap-2 mb-2 flex-wrap">`;
+                        sortedNums.forEach(n => {
+                            explStr += `<span class="bg-blue-100 text-blue-800 px-2 py-1 rounded border border-blue-200">${n.display}</span>`;
+                        });
+                        explStr += `</div>`;
+                    } else if (type === 'act3') {
+                        explStr += `<ul class="list-disc list-inside">`;
+                        sortedNums.forEach((n, idx) => {
+                            explStr += `<li>Label <strong>${idx+1}</strong> goes to <strong>${n.display}</strong></li>`;
+                        });
+                        explStr += `</ul>`;
+                    } else if (type === 'act4') {
+                        explStr += `<p class="mb-2">From left to right on the number line (Ascending):</p>`;
+                        explStr += `<div class="flex gap-2 mb-2 flex-wrap">`;
+                        sortedNums.forEach(n => {
+                            explStr += `<span class="bg-emerald-100 text-emerald-800 px-2 py-1 rounded border border-emerald-200">${n.display}</span>`;
+                        });
+                        explStr += `</div>`;
+                    }
+                    
+                    explStr += `<p class="mt-2 text-xs text-slate-600">To compare them, convert to decimals: ` + 
+                        sortedNums.map(n => `${n.display} = ${n.value.toFixed(2)}`).join(', ') + 
+                        `</p>`;
+
+                    this.showFeedback('error', 'Still incorrect.', 'Let\'s look at the solution so you can learn for next time.', explStr, isQuiz);
+                    
+                    if (isQuiz) {
+                        document.getElementById('quiz-next-container').classList.remove('hidden');
+                        // Mark progress dot red
+                        const dots = document.getElementById('quiz-progress-dots').children;
+                        if(dots[this.state.quiz.currentQuestion - 1]) {
+                            dots[this.state.quiz.currentQuestion - 1].className = 'w-3 h-3 rounded-full bg-red-500';
+                        }
+                    } else {
+                        let btnId = 'act2-next-btn';
+                        if (this.state.currentTab === 'act3') btnId = 'act3-next-btn';
+                        if (this.state.currentTab === 'act4') btnId = 'act4-next-btn';
+                        document.getElementById(btnId).classList.remove('hidden');
+                    }
+                }
+            },
+
+            showFeedback: function(type, title, message, explanationHtml = null, isQuiz = false) {
+                const banner = document.getElementById('feedback-banner');
+                const titleEl = document.getElementById('feedback-title');
+                const messageEl = document.getElementById('feedback-message');
+                const iconEl = document.getElementById('feedback-icon');
+                const explEl = document.getElementById('feedback-explanation');
+                
+                banner.className = 'mb-6 p-4 rounded-xl shadow-sm transform transition-all duration-300 flex fade-in';
+                explEl.classList.add('hidden');
+                explEl.innerHTML = '';
+
+                if (type === 'success') {
+                    banner.classList.add('bg-green-100', 'text-green-800', 'border', 'border-green-200');
+                    iconEl.innerHTML = `<svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`;
+                } else if (type === 'hint') {
+                    banner.classList.add('bg-blue-100', 'text-blue-800', 'border', 'border-blue-200');
+                    iconEl.innerHTML = `<svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`;
+                } else if (type === 'error') {
+                    banner.classList.add('bg-red-100', 'text-red-800', 'border', 'border-red-200');
+                    iconEl.innerHTML = `<svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`;
+                } else if (type === 'warning') {
+                    banner.classList.add('bg-amber-100', 'text-amber-800', 'border', 'border-amber-200');
+                    iconEl.innerHTML = `<svg class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>`;
+                }
+
+                titleEl.innerHTML = title;
+                messageEl.innerHTML = message;
+                
+                if (explanationHtml) {
+                    explEl.classList.remove('hidden');
+                    explEl.innerHTML = explanationHtml;
+                }
+
+                // In quiz mode, place banner inside the quiz container dynamically or above it
+                if (isQuiz) {
+                    const quizContainer = document.getElementById('quiz-active-screen');
+                    quizContainer.insertBefore(banner, document.getElementById('quiz-question-container'));
+                } else {
+                    const tab = document.getElementById(this.state.currentTab);
+                    tab.insertBefore(banner, tab.firstChild);
+                }
+            },
+
+            hideFeedback: function() {
+                const banner = document.getElementById('feedback-banner');
+                banner.classList.add('hidden');
+                // clear old classes
+                banner.className = 'hidden mb-6 p-4 rounded-xl shadow-sm transform transition-all duration-300';
+            },
+
+            startQuiz: function() {
+                this.state.quiz.isActive = true;
+                this.state.quiz.currentQuestion = 0;
+                this.state.quiz.score = 0;
+                
+                document.getElementById('quiz-score').innerText = '0';
+                document.getElementById('quiz-start-screen').classList.add('hidden');
+                document.getElementById('quiz-end-screen').classList.add('hidden');
+                document.getElementById('quiz-active-screen').classList.remove('hidden');
+                document.getElementById('quiz-quit-btn').classList.remove('hidden');
+                
+                // Initialize progress dots
+                const dotsContainer = document.getElementById('quiz-progress-dots');
+                dotsContainer.innerHTML = '';
+                for(let i=0; i<this.state.quiz.totalQuestions; i++) {
+                    dotsContainer.innerHTML += `<div class="w-3 h-3 rounded-full bg-amber-200"></div>`;
+                }
+
+                this.nextQuizQuestion();
+            },
+
+            nextQuizQuestion: function() {
+                this.state.quiz.currentQuestion++;
+                
+                if (this.state.quiz.currentQuestion > this.state.quiz.totalQuestions) {
+                    this.endQuiz();
+                    return;
+                }
+
+                document.getElementById('quiz-q-num').innerText = this.state.quiz.currentQuestion;
+                document.getElementById('quiz-next-container').classList.add('hidden');
+                this.hideFeedback();
+
+                const qContainer = document.getElementById('quiz-question-container');
+                qContainer.innerHTML = ''; // clear
+
+                // Randomly pick Act 2, Act 3, or Act 4 style
+                const types = ['act2', 'act3', 'act4'];
+                this.state.quiz.currentType = types[Math.floor(Math.random() * types.length)];
+
+                if (this.state.quiz.currentType === 'act2') {
+                    // Inject Act 2 HTML template
+                    qContainer.innerHTML = `
+                        <div class="mb-6 text-center">
+                            <p class="text-slate-600 text-lg">
+                                Drag and drop the numbers into <strong id="quiz-prompt-order" class="text-blue-600 underline"></strong> order.
+                            </p>
+                        </div>
+                        <div class="mb-6 flex justify-center gap-4 min-h-[5rem]" id="quiz-act2-source"></div>
+                        <div class="mb-6">
+                            <div class="flex justify-between text-sm font-bold text-slate-500 mb-2 px-4 max-w-3xl mx-auto">
+                                <span id="quiz-label-start">Smallest</span><span id="quiz-label-end">Largest</span>
+                            </div>
+                            <div class="flex flex-col sm:flex-row justify-center items-center gap-4 max-w-3xl mx-auto bg-slate-50 p-6 rounded-xl border-2 border-dashed border-slate-200" id="quiz-act2-target"></div>
+                        </div>
+                        <div class="text-center"><button onclick="app.checkAct2()" class="px-8 py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-bold shadow-md">Check Answer</button></div>
+                    `;
+                    // Setup data
+                    this.state.act2.attempts = 0;
+                    this.state.act2.targetOrder = Math.random() < 0.5 ? 'ascending' : 'descending';
+                    this.state.act2.numbers = this.mathUtils.getUniqueNumbers(4);
+                    let shuffled = [...this.state.act2.numbers].sort(() => Math.random() - 0.5);
+                    this.renderAct2UI(shuffled);
+                    
+                } else if (this.state.quiz.currentType === 'act3') {
+                    // Inject Act 3 HTML template
+                    qContainer.innerHTML = `
+                        <div class="mb-6 text-center">
+                            <p class="text-slate-600 text-lg">
+                                Label these numbers in <strong id="quiz-act3-order" class="text-purple-600 underline"></strong> order.
+                                <br><span class="text-sm">Drag label <strong>1</strong> to the <span id="quiz-act3-first"></span>, and <strong>4</strong> to the <span id="quiz-act3-last"></span>.</span>
+                            </p>
+                        </div>
+                        <div class="mb-6 flex justify-center gap-4 min-h-[4rem]" id="quiz-act3-labels"></div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto mb-6" id="quiz-act3-static"></div>
+                        <div class="text-center"><button onclick="app.checkAct3()" class="px-8 py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-bold shadow-md">Check Labels</button></div>
+                    `;
+                    // Setup data
+                    this.state.act3.attempts = 0;
+                    this.state.act3.targetOrder = Math.random() < 0.5 ? 'ascending' : 'descending';
+                    this.state.act3.numbers = this.mathUtils.getUniqueNumbers(4);
+                    this.renderAct3UI();
+                } else {
+                    // Inject Act 4 (Number Line) HTML template
+                    qContainer.innerHTML = `
+                        <div class="mb-6 text-center">
+                            <p class="text-slate-600 text-lg">
+                                Drag the numbers onto their exact positions on the number line below.
+                            </p>
+                        </div>
+                        <div class="mb-12 flex justify-center gap-4 min-h-[5rem]" id="quiz-act4-source"></div>
+                        <div class="mb-12 relative w-full max-w-4xl mx-auto px-4 sm:px-12 h-32 pt-8">
+                            <div class="flex justify-between text-xs sm:text-sm font-bold text-slate-400 mb-6 uppercase absolute top-0 left-0 right-0 px-4 sm:px-12">
+                                <span>&larr; Descending</span><span>Ascending &rarr;</span>
+                            </div>
+                            <div class="relative w-full h-1 bg-slate-300 rounded" id="quiz-act4-line"></div>
+                        </div>
+                        <div class="text-center"><button onclick="app.checkAct4()" class="px-8 py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-bold shadow-md">Check Answer</button></div>
+                    `;
+                    // Setup data
+                    this.state.act4.attempts = 0;
+                    this.state.act4.numbers = this.mathUtils.getUniqueNumbers(4, -5, 5, 1.5);
+                    let shuffled = [...this.state.act4.numbers].sort(() => Math.random() - 0.5);
+                    this.renderAct4UI(shuffled);
+                }
+            },
+
+            endQuiz: function() {
+                document.getElementById('quiz-active-screen').classList.add('hidden');
+                document.getElementById('quiz-end-screen').classList.remove('hidden');
+                document.getElementById('quiz-quit-btn').classList.add('hidden');
+                
+                const score = this.state.quiz.score;
+                document.getElementById('quiz-final-score').innerText = score;
+                
+                const msgEl = document.getElementById('quiz-final-message');
+                const emojiEl = document.getElementById('quiz-final-emoji');
+                
+                if (score === 10) {
+                    msgEl.innerText = "Flawless victory! You are a master of rational numbers.";
+                    emojiEl.innerText = "🏆";
+                } else if (score >= 7) {
+                    msgEl.innerText = "Great job! You have a solid understanding, keep practicing to reach perfection.";
+                    emojiEl.innerText = "👍";
+                } else {
+                    msgEl.innerText = "Good effort! Review the vocabulary and practice the activities a bit more.";
+                    emojiEl.innerText = "📚";
+                }
+                
+                this.state.quiz.isActive = false;
+            },
+
+            setupDragAndDropGlobals: function() {
+                // To allow dropping, prevent default on document dragover
+                document.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                });
+                
+                // Clear selection if clicking outside
+                document.addEventListener('click', (e) => {
+                    if (this.state.mobileSelectedElement) {
+                        // If clicked outside draggables and slots
+                        if (!e.target.closest('.draggable') && !e.target.closest('.drop-slot')) {
+                            this.clearMobileSelection();
+                        }
+                    }
+                });
+            },
+
+            attachDragEvents: function(element) {
+                element.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', element.id);
+                    setTimeout(() => element.classList.add('dragging'), 0);
+                    // Clear tap selection if drag starts
+                    this.clearMobileSelection();
+                });
+
+                element.addEventListener('dragend', () => {
+                    element.classList.remove('dragging');
+                });
+            },
+
+            attachDropEvents: function(slot) {
+                slot.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    if (!slot.querySelector('.draggable')) {
+                        slot.classList.add('drag-over');
+                    }
+                });
+
+                slot.addEventListener('dragleave', () => {
+                    slot.classList.remove('drag-over');
+                });
+
+                slot.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    slot.classList.remove('drag-over');
+                    
+                    const id = e.dataTransfer.getData('text/plain');
+                    const draggable = document.getElementById(id);
+                    
+                    if (draggable) {
+                        this.handleElementPlacement(draggable, slot);
+                    }
+                });
+            },
+
+            attachTapSelectEvents: function(element) {
+                element.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    
+                    // If clicking already selected, deselect
+                    if (this.state.mobileSelectedElement === element) {
+                        this.clearMobileSelection();
+                        return;
+                    }
+                    
+                    // Select this element
+                    this.clearMobileSelection();
+                    this.state.mobileSelectedElement = element;
+                    element.classList.add('selected-mobile');
+                    
+                    // Note: Instead of alert, use a gentle UI hint if needed, 
+                    // but visual outline is usually enough.
+                });
+            },
+
+            attachTapPlaceEvents: function(slot) {
+                slot.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    
+                    if (this.state.mobileSelectedElement) {
+                        this.handleElementPlacement(this.state.mobileSelectedElement, slot);
+                        this.clearMobileSelection();
+                    }
+                });
+            },
+
+            clearMobileSelection: function() {
+                if (this.state.mobileSelectedElement) {
+                    this.state.mobileSelectedElement.classList.remove('selected-mobile');
+                    this.state.mobileSelectedElement = null;
+                }
+            },
+
+            handleElementPlacement: function(draggable, slot) {
+                // Check if slot already has a draggable
+                const existingItem = slot.querySelector('.draggable');
+                
+                // For Act2 and Act3 logic, we are strict: slots hold 1 item.
+                if (existingItem) {
+                    // Swap logic: Move existing item back to source container
+                    // Find appropriate source container
+                    let sourceContainer = null;
+                    const isQuiz = this.state.quiz.isActive;
+                    
+                    if (draggable.id.includes('line-drag')) {
+                        sourceContainer = document.getElementById(isQuiz ? 'quiz-act4-source' : 'act4-source-container');
+                    } else if (draggable.id.includes('drag')) {
+                        sourceContainer = document.getElementById(isQuiz ? 'quiz-act2-source' : 'act2-source-container');
+                    } else if (draggable.id.includes('label')) {
+                        sourceContainer = document.getElementById(isQuiz ? 'quiz-act3-labels' : 'act3-labels-container');
+                    }
+                    
+                    if (sourceContainer) {
+                        sourceContainer.appendChild(existingItem);
+                    }
+                }
+                
+                // Clear text (like "1st" or "Drop Label") if it's there by clearing inner content except absolute background
+                Array.from(slot.childNodes).forEach(child => {
+                    if(child.nodeType === 3) slot.removeChild(child); // remove text nodes
+                    if(child.tagName === 'BR') slot.removeChild(child);
+                });
+                
+                // Append element to slot
+                slot.appendChild(draggable);
+                
+                // Reset styling to ensure it fits perfectly
+                draggable.style.margin = '0';
+            }
+        };
+
+        // Initialize application when DOM is loaded
+        window.onload = function() {
+            app.init();
+        };
+    </script>
+</body>
+</html>
