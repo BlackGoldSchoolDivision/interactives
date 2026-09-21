@@ -626,15 +626,24 @@
                     const table = document.createElement('table');
                     table.style.width = '100%';
                     table.style.borderCollapse = 'collapse';
-                    table.style.marginBottom = '30px';
+                    table.style.marginBottom = '40px';
                     table.setAttribute('border', '0');
+                    // Force Google Docs to respect column widths
+                    table.style.tableLayout = 'fixed'; 
+                    
+                    // Extract just the image and give it hardcoded bounds for Google Docs
+                    const img = imgCol.querySelector('img');
+                    let imgSrc = img ? img.src : '';
                     
                     table.innerHTML = `
                         <tr>
-                            <td style="width: 45%; vertical-align: top; padding-right: 20px;">
-                                ${imgCol.innerHTML}
+                            <td style="width: 45%; vertical-align: top; padding-right: 24px; border: none;">
+                                <div style="font-size: 11px; font-weight: bold; color: #64748b; margin-bottom: 10px; font-family: sans-serif; text-transform: uppercase;">
+                                    Page Original
+                                </div>
+                                <img src="${imgSrc}" width="350" style="width: 100%; max-width: 350px; height: auto; border: 1px solid #e2e8f0;" alt="Original Page Visual" />
                             </td>
-                            <td style="width: 55%; vertical-align: top;">
+                            <td style="width: 55%; vertical-align: top; border: none; padding-top: 25px;">
                                 ${textCol.innerHTML}
                             </td>
                         </tr>
@@ -647,6 +656,7 @@
             hiddenDiv.contentEditable = true;
             hiddenDiv.style.position = 'absolute';
             hiddenDiv.style.left = '-9999px';
+            hiddenDiv.style.fontFamily = 'Arial, sans-serif'; // Default font Docs respects
             hiddenDiv.innerHTML = contentClone.innerHTML;
             document.body.appendChild(hiddenDiv);
 
