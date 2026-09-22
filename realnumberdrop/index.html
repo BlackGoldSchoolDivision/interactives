@@ -94,7 +94,7 @@
     </div>
 
     <!-- Game Over Overlay -->
-    <div id="gameOverScreen" class="absolute inset-0 z-20 hidden flex-col items-center justify-center glass-panel bg-slate-900/95 p-6 text-center">
+    <div id="gameOverScreen" class="absolute inset-0 z-20 hidden flex-col items-center justify-center glass-panel bg-slate-900/95 p-6 text-center transition-opacity duration-300">
         <h2 class="text-5xl font-black text-red-500 mb-4 drop-shadow-[0_0_15px_rgba(239,68,68,0.8)]">GAME OVER</h2>
         <p class="text-2xl text-white mb-2">Final Score: <span id="finalScore" class="font-black text-blue-400">0</span></p>
         <p class="text-slate-400 mb-8 max-w-md text-sm">Review the continuum: Irrationals fill the gaps between rationals on the number line!</p>
@@ -139,25 +139,39 @@ const NUMBERS_DATA = [
     { text: "√5", types: ["irrational"] },
     { text: "0.101001...", types: ["irrational"] },
     { text: "-√3", types: ["irrational"] },
+    { text: "e", types: ["irrational"] },
+    { text: "√7", types: ["irrational"] },
+    { text: "π/2", types: ["irrational"] },
     // Rationals (Fractions & Repeating)
     { text: "1/3", types: ["rational", "repeating"] },
     { text: "0.333...", types: ["rational", "repeating"] },
     { text: "-5/8", types: ["rational", "terminating"] },
     { text: "2/3", types: ["rational", "repeating"] },
+    { text: "1/9", types: ["rational", "repeating"] },
+    { text: "0.1212...", types: ["rational", "repeating"] },
+    { text: "5/6", types: ["rational", "repeating"] },
     // Rationals (Terminating Decimals)
     { text: "-4.5", types: ["rational", "terminating"] },
     { text: "3.14", types: ["rational", "terminating"] },
     { text: "0.25", types: ["rational", "terminating"] },
+    { text: "3/4", types: ["rational", "terminating"] },
+    { text: "1.125", types: ["rational", "terminating"] },
+    { text: "-7/2", types: ["rational", "terminating"] },
     // Integers (Subset of Rational)
     { text: "-5", types: ["rational", "integer", "terminating"] },
     { text: "0", types: ["rational", "integer", "terminating"] },
     { text: "-100", types: ["rational", "integer", "terminating"] },
     { text: "-10/2", types: ["rational", "integer", "terminating"] }, // Evaluates to -5
+    { text: "-12", types: ["rational", "integer", "terminating"] },
+    { text: "0/5", types: ["rational", "integer", "terminating"] },
     // Natural Numbers (Subset of Integer & Rational)
     { text: "1", types: ["rational", "integer", "natural", "terminating"] },
     { text: "5", types: ["rational", "integer", "natural", "terminating"] },
     { text: "25/5", types: ["rational", "integer", "natural", "terminating"] },
-    { text: "√9", types: ["rational", "integer", "natural", "terminating"] } // Evaluates to 3
+    { text: "√9", types: ["rational", "integer", "natural", "terminating"] }, // Evaluates to 3
+    { text: "7", types: ["rational", "integer", "natural", "terminating"] },
+    { text: "100", types: ["rational", "integer", "natural", "terminating"] },
+    { text: "√16", types: ["rational", "integer", "natural", "terminating"] }
 ];
 
 const RULES = [
@@ -353,6 +367,7 @@ function initGame() {
     
     startScreen.classList.add('hidden');
     gameOverScreen.classList.add('hidden');
+    gameOverScreen.style.display = ''; // Reset display style applied in endGame
     hud.classList.remove('hidden');
     
     cancelAnimationFrame(animationFrameId);
@@ -421,8 +436,24 @@ function gameLoop() {
 
         // Off screen (Missed)
         if (b.y - b.radius > canvas.height) {
-            // If they missed a CORRECT number, penalty (optional, let's just ignore to make it casual, 
-            // but the prompt wants learning. Missing a correct one is a lost opportunity).
+            // Check if they missed a CORRECT number (counts as a lost life)
+            const isCorrect = b.data.types.includes(currentRule.target);
+            if (isCorrect) {
+                lives--;
+                floatingTexts.push(new FloatingText(b.x, canvas.height - 40, "Missed!", "#f87171"));
+                
+                // Screen shake effect
+                canvas.style.transform = 'translate(5px, 5px)';
+                setTimeout(() => canvas.style.transform = 'translate(-5px, -5px)', 50);
+                setTimeout(() => canvas.style.transform = 'translate(5px, -5px)', 100);
+                setTimeout(() => canvas.style.transform = 'translate(0, 0)', 150);
+                
+                updateHUD();
+
+                if (lives <= 0) {
+                    endGame();
+                }
+            }
             bubbles.splice(i, 1);
         }
     }
@@ -441,7 +472,9 @@ function gameLoop() {
         if (floatingTexts[i].life <= 0) floatingTexts.splice(i, 1);
     }
 
-    animationFrameId = requestAnimationFrame(gameLoop);
+    if (gameState === 'PLAYING') {
+        animationFrameId = requestAnimationFrame(gameLoop);
+    }
 }
 
 function handleCatch(bubble) {
@@ -482,6 +515,7 @@ function updateHUD() {
 
 function endGame() {
     gameState = 'GAMEOVER';
+    cancelAnimationFrame(animationFrameId); // Stop the game loop immediately
     hud.classList.add('hidden');
     gameOverScreen.classList.remove('hidden');
     gameOverScreen.style.display = 'flex'; // override hidden util
