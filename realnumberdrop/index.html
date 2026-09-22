@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Real Number Drop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #f8fafc;
+            touch-action: none; /* Prevent scroll on touch devices */
+        }
+        /* Custom scrollbar for instructions */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .btn-game {
+            background: linear-gradient(to right, #3b82f6, #8b5cf6);
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+        .btn-game:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden flex flex-col items-center justify-center p-2 sm:p-4">
+
+<div id="game-wrapper" class="relative w-full max-w-4xl h-full max-h-[800px] rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.5)] border border-slate-700 bg-slate-900">
+    
+    <!-- Game Canvas -->
+    <canvas id="gameCanvas" class="absolute inset-0 w-full h-full"></canvas>
+
+    <!-- Heads Up Display (HUD) -->
+    <div id="hud" class="absolute inset-x-0 top-0 p-4 flex justify-between items-start pointer-events-none z-10 hidden">
+        <div class="glass-panel px-4 py-2 rounded-xl flex flex-col items-start">
+            <span class="text-xs text-slate-400 uppercase tracking-wider font-bold">Score</span>
+            <span id="scoreDisplay" class="text-2xl font-black text-white leading-none">0</span>
+        </div>
+        
+        <div id="ruleDisplayContainer" class="flex-1 mx-4 flex justify-center">
+            <div class="glass-panel px-6 py-3 rounded-2xl border-yellow-500/30 border-2 shadow-[0_0_20px_rgba(234,179,8,0.2)] text-center animate-bounce duration-1000">
+                <span class="text-xs text-yellow-400 uppercase tracking-widest font-bold block mb-1">Target Category</span>
+                <span id="ruleDisplay" class="text-lg sm:text-xl font-black text-white drop-shadow-md">Catch Rational Numbers!</span>
+            </div>
+        </div>
+
+        <div class="glass-panel px-4 py-2 rounded-xl flex flex-col items-end">
+            <span class="text-xs text-slate-400 uppercase tracking-wider font-bold">Lives</span>
+            <span id="livesDisplay" class="text-xl text-red-500 tracking-widest mt-1 drop-shadow-md">❤️❤️❤️</span>
+        </div>
+    </div>
+
+    <!-- Start Menu Overlay -->
+    <div id="startScreen" class="absolute inset-0 z-20 flex flex-col items-center justify-center glass-panel bg-slate-900/90 p-6 text-center transition-opacity duration-300">
+        <h1 class="text-4xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 mb-2 drop-shadow-lg">Real Number Drop</h1>
+        <p class="text-slate-300 mb-8 max-w-lg text-sm sm:text-base">
+            Based on <strong>"Navigating the Continuum of Real Numbers"</strong>.<br>
+            Sort the falling numbers into their correct sets. Watch the target rule at the top of the screen!
+        </p>
+        
+        <div class="text-left bg-slate-800/50 p-4 sm:p-6 rounded-xl border border-slate-600 mb-8 max-w-lg w-full max-h-[40vh] overflow-y-auto">
+            <h2 class="font-bold text-blue-400 mb-2">How to Play:</h2>
+            <ul class="list-disc list-inside text-sm text-slate-300 space-y-2">
+                <li><strong>Drag</strong> your basket (or use left/right arrows) to catch numbers.</li>
+                <li>Catch numbers that match the <strong>Target Category</strong>.</li>
+                <li>Avoid numbers that don't belong!</li>
+                <li><strong>Rational:</strong> Fractions, terminating & repeating decimals, integers.</li>
+                <li><strong>Irrational:</strong> Non-terminating, non-repeating decimals (π, √2).</li>
+            </ul>
+        </div>
+
+        <button id="startBtn" class="btn-game text-white font-bold text-xl px-10 py-4 rounded-full shadow-[0_0_20px_rgba(59,130,246,0.5)] hover:shadow-[0_0_30px_rgba(59,130,246,0.8)] focus:outline-none">
+            START GAME
+        </button>
+    </div>
+
+    <!-- Game Over Overlay -->
+    <div id="gameOverScreen" class="absolute inset-0 z-20 hidden flex-col items-center justify-center glass-panel bg-slate-900/95 p-6 text-center">
+        <h2 class="text-5xl font-black text-red-500 mb-4 drop-shadow-[0_0_15px_rgba(239,68,68,0.8)]">GAME OVER</h2>
+        <p class="text-2xl text-white mb-2">Final Score: <span id="finalScore" class="font-black text-blue-400">0</span></p>
+        <p class="text-slate-400 mb-8 max-w-md text-sm">Review the continuum: Irrationals fill the gaps between rationals on the number line!</p>
+        <button id="restartBtn" class="btn-game text-white font-bold text-xl px-10 py-4 rounded-full shadow-[0_0_20px_rgba(139,92,246,0.5)] hover:shadow-[0_0_30px_rgba(139,92,246,0.8)] focus:outline-none">
+            PLAY AGAIN
+        </button>
+    </div>
+</div>
+
+<script>
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+// UI Elements
+const startScreen = document.getElementById('startScreen');
+const gameOverScreen = document.getElementById('gameOverScreen');
+const hud = document.getElementById('hud');
+const scoreDisplay = document.getElementById('scoreDisplay');
+const livesDisplay = document.getElementById('livesDisplay');
+const ruleDisplay = document.getElementById('ruleDisplay');
+const finalScore = document.getElementById('finalScore');
+const startBtn = document.getElementById('startBtn');
+const restartBtn = document.getElementById('restartBtn');
+const ruleDisplayContainer = document.getElementById('ruleDisplayContainer');
+
+// Game State
+let gameState = 'START'; // START, PLAYING, GAMEOVER
+let score = 0;
+let lives = 3;
+let currentRule = null;
+let animationFrameId;
+let fallSpeed = 2;
+let spawnRate = 120; // Frames between spawns
+let frameCount = 0;
+let level = 1;
+
+// Curriculum Data: Numbers and their categories
+const NUMBERS_DATA = [
+    // Irrationals
+    { text: "π", types: ["irrational"] },
+    { text: "√2", types: ["irrational"] },
+    { text: "√5", types: ["irrational"] },
+    { text: "0.101001...", types: ["irrational"] },
+    { text: "-√3", types: ["irrational"] },
+    // Rationals (Fractions & Repeating)
+    { text: "1/3", types: ["rational", "repeating"] },
+    { text: "0.333...", types: ["rational", "repeating"] },
+    { text: "-5/8", types: ["rational", "terminating"] },
+    { text: "2/3", types: ["rational", "repeating"] },
+    // Rationals (Terminating Decimals)
+    { text: "-4.5", types: ["rational", "terminating"] },
+    { text: "3.14", types: ["rational", "terminating"] },
+    { text: "0.25", types: ["rational", "terminating"] },
+    // Integers (Subset of Rational)
+    { text: "-5", types: ["rational", "integer", "terminating"] },
+    { text: "0", types: ["rational", "integer", "terminating"] },
+    { text: "-100", types: ["rational", "integer", "terminating"] },
+    { text: "-10/2", types: ["rational", "integer", "terminating"] }, // Evaluates to -5
+    // Natural Numbers (Subset of Integer & Rational)
+    { text: "1", types: ["rational", "integer", "natural", "terminating"] },
+    { text: "5", types: ["rational", "integer", "natural", "terminating"] },
+    { text: "25/5", types: ["rational", "integer", "natural", "terminating"] },
+    { text: "√9", types: ["rational", "integer", "natural", "terminating"] } // Evaluates to 3
+];
+
+const RULES = [
+    { name: "Catch Rational Numbers!", target: "rational", color: "#3b82f6" }, // Blue
+    { name: "Catch Irrational Numbers!", target: "irrational", color: "#ef4444" }, // Red
+    { name: "Catch Integers!", target: "integer", color: "#10b981" }, // Green
+    { name: "Catch Natural Numbers!", target: "natural", color: "#f59e0b" } // Yellow
+];
+
+class Player {
+    constructor() {
+        this.width = 120;
+        this.height = 30;
+        this.x = canvas.width / 2 - this.width / 2;
+        this.y = canvas.height - this.height - 20;
+        this.color = '#8b5cf6';
+        this.targetX = this.x;
+        this.speed = 0.2; // LERP speed for smooth movement
+    }
+
+    draw() {
+        // Draw basket
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.roundRect(this.x, this.y, this.width, this.height, [10, 10, 20, 20]);
+        ctx.fill();
+        
+        // Glow effect
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = this.color;
+        ctx.beginPath();
+        ctx.roundRect(this.x + 5, this.y + 5, this.width - 10, this.height - 10, 10);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        
+        // Inner rim
+        ctx.fillStyle = '#6d28d9';
+        ctx.beginPath();
+        ctx.roundRect(this.x + 5, this.y, this.width - 10, 8, [5, 5, 0, 0]);
+        ctx.fill();
+    }
+
+    update() {
+        // Smooth interpolation towards targetX (for touch/mouse)
+        this.x += (this.targetX - this.x) * this.speed;
+        
+        // Boundary checks
+        if (this.x < 0) this.x = 0;
+        if (this.x + this.width > canvas.width) this.x = canvas.width - this.width;
+        
+        // Update Y based on canvas resize
+        this.y = canvas.height - this.height - Math.max(20, canvas.height * 0.05);
+    }
+}
+
+class NumberBubble {
+    constructor(data) {
+        this.radius = 40;
+        this.x = Math.random() * (canvas.width - this.radius * 2) + this.radius;
+        this.y = -this.radius;
+        this.data = data;
+        this.speedY = fallSpeed + (Math.random() * 1);
+        this.isCaught = false;
+        // Randomize bubble visual
+        this.hue = Math.floor(Math.random() * 360);
+    }
+
+    draw() {
+        // Bubble background
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${this.hue}, 60%, 20%, 0.7)`;
+        ctx.fill();
+        ctx.strokeStyle = `hsla(${this.hue}, 80%, 60%, 1)`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Highlight for bubble effect
+        ctx.beginPath();
+        ctx.arc(this.x - 10, this.y - 10, this.radius / 4, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+        ctx.fill();
+
+        // Text
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 20px Inter';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.shadowBlur = 4;
+        ctx.shadowColor = 'rgba(0,0,0,0.8)';
+        ctx.fillText(this.data.text, this.x, this.y);
+        ctx.shadowBlur = 0; // Reset
+    }
+
+    update() {
+        this.y += this.speedY;
+    }
+}
+
+class Particle {
+    constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.size = Math.random() * 5 + 2;
+        this.speedX = Math.random() * 6 - 3;
+        this.speedY = Math.random() * -6 - 2;
+        this.gravity = 0.2;
+        this.life = 1.0;
+    }
+    update() {
+        this.speedY += this.gravity;
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.life -= 0.02;
+    }
+    draw() {
+        ctx.globalAlpha = Math.max(0, this.life);
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1.0;
+    }
+}
+
+class FloatingText {
+    constructor(x, y, text, color) {
+        this.x = x;
+        this.y = y;
+        this.text = text;
+        this.color = color;
+        this.life = 1.0;
+        this.speedY = -2;
+    }
+    update() {
+        this.y += this.speedY;
+        this.life -= 0.02;
+    }
+    draw() {
+        ctx.globalAlpha = Math.max(0, this.life);
+        ctx.fillStyle = this.color;
+        ctx.font = 'bold 24px Inter';
+        ctx.textAlign = 'center';
+        ctx.shadowBlur = 4;
+        ctx.shadowColor = 'black';
+        ctx.fillText(this.text, this.x, this.y);
+        ctx.shadowBlur = 0;
+        ctx.globalAlpha = 1.0;
+    }
+}
+
+let player;
+let bubbles = [];
+let particles = [];
+let floatingTexts = [];
+
+function resizeCanvas() {
+    const container = document.getElementById('game-wrapper');
+    canvas.width = container.clientWidth;
+    canvas.height = container.clientHeight;
+    if (player) {
+        player.y = canvas.height - player.height - Math.max(20, canvas.height * 0.05);
+    }
+}
+window.addEventListener('resize', resizeCanvas);
+
+function pickNewRule() {
+    currentRule = RULES[Math.floor(Math.random() * RULES.length)];
+    ruleDisplay.textContent = currentRule.name;
+    ruleDisplayContainer.querySelector('div').style.borderColor = currentRule.color;
+    ruleDisplayContainer.querySelector('div').style.boxShadow = `0 0 20px ${currentRule.color}40`;
+    
+    // Create a temporary overlay text for rule change
+    floatingTexts.push(new FloatingText(canvas.width/2, canvas.height/3, currentRule.name, currentRule.color));
+}
+
+function initGame() {
+    resizeCanvas();
+    player = new Player();
+    bubbles = [];
+    particles = [];
+    floatingTexts = [];
+    score = 0;
+    lives = 3;
+    fallSpeed = 2;
+    spawnRate = 120;
+    level = 1;
+    frameCount = 0;
+    updateHUD();
+    pickNewRule();
+    gameState = 'PLAYING';
+    
+    startScreen.classList.add('hidden');
+    gameOverScreen.classList.add('hidden');
+    hud.classList.remove('hidden');
+    
+    cancelAnimationFrame(animationFrameId);
+    gameLoop();
+}
+
+function gameLoop() {
+    if (gameState !== 'PLAYING') return;
+    
+    // Clear Canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Difficulty progression
+    frameCount++;
+    if (frameCount % 600 === 0) { // Every ~10 seconds
+        level++;
+        fallSpeed += 0.5;
+        spawnRate = Math.max(40, spawnRate - 15);
+        if (level % 2 === 0) pickNewRule(); // Change rule every 2 levels
+    }
+
+    // Spawn Bubbles
+    if (frameCount % spawnRate === 0) {
+        // 70% chance to spawn a number that matches the rule to keep it fair, 30% random
+        let numData;
+        if (Math.random() < 0.7) {
+            const matchingNumbers = NUMBERS_DATA.filter(n => n.types.includes(currentRule.target));
+            numData = matchingNumbers[Math.floor(Math.random() * matchingNumbers.length)];
+        } else {
+            numData = NUMBERS_DATA[Math.floor(Math.random() * NUMBERS_DATA.length)];
+        }
+        bubbles.push(new NumberBubble(numData));
+    }
+
+    // Update and Draw Player
+    player.update();
+    player.draw();
+
+    // Update and Draw Bubbles
+    for (let i = bubbles.length - 1; i >= 0; i--) {
+        let b = bubbles[i];
+        b.update();
+        b.draw();
+
+        // Collision Detection (Circle vs Rectangle)
+        // Find closest point on rectangle to circle center
+        let testX = b.x;
+        let testY = b.y;
+        
+        if (b.x < player.x) testX = player.x; // left edge
+        else if (b.x > player.x + player.width) testX = player.x + player.width; // right edge
+        
+        if (b.y < player.y) testY = player.y; // top edge
+        else if (b.y > player.y + player.height) testY = player.y + player.height; // bottom edge
+        
+        let distX = b.x - testX;
+        let distY = b.y - testY;
+        let distance = Math.sqrt((distX*distX) + (distY*distY));
+
+        if (distance <= b.radius) {
+            // Collision Occurred
+            handleCatch(b);
+            bubbles.splice(i, 1);
+            continue;
+        }
+
+        // Off screen (Missed)
+        if (b.y - b.radius > canvas.height) {
+            // If they missed a CORRECT number, penalty (optional, let's just ignore to make it casual, 
+            // but the prompt wants learning. Missing a correct one is a lost opportunity).
+            bubbles.splice(i, 1);
+        }
+    }
+
+    // Update and Draw Particles
+    for (let i = particles.length - 1; i >= 0; i--) {
+        particles[i].update();
+        particles[i].draw();
+        if (particles[i].life <= 0) particles.splice(i, 1);
+    }
+
+    // Update and Draw Floating Texts
+    for (let i = floatingTexts.length - 1; i >= 0; i--) {
+        floatingTexts[i].update();
+        floatingTexts[i].draw();
+        if (floatingTexts[i].life <= 0) floatingTexts.splice(i, 1);
+    }
+
+    animationFrameId = requestAnimationFrame(gameLoop);
+}
+
+function handleCatch(bubble) {
+    const isCorrect = bubble.data.types.includes(currentRule.target);
+    
+    // Create explosion particles
+    for (let i = 0; i < 15; i++) {
+        particles.push(new Particle(bubble.x, bubble.y, isCorrect ? '#34d399' : '#f87171'));
+    }
+
+    if (isCorrect) {
+        score += 10;
+        floatingTexts.push(new FloatingText(bubble.x, bubble.y, "+10", "#34d399"));
+    } else {
+        lives--;
+        floatingTexts.push(new FloatingText(bubble.x, bubble.y, "Wrong Set!", "#f87171"));
+        
+        // Screen shake effect
+        canvas.style.transform = 'translate(5px, 5px)';
+        setTimeout(() => canvas.style.transform = 'translate(-5px, -5px)', 50);
+        setTimeout(() => canvas.style.transform = 'translate(5px, -5px)', 100);
+        setTimeout(() => canvas.style.transform = 'translate(0, 0)', 150);
+    }
+    
+    updateHUD();
+
+    if (lives <= 0) {
+        endGame();
+    }
+}
+
+function updateHUD() {
+    scoreDisplay.textContent = score;
+    let hearts = '';
+    for(let i=0; i<lives; i++) hearts += '❤️';
+    livesDisplay.textContent = hearts;
+}
+
+function endGame() {
+    gameState = 'GAMEOVER';
+    hud.classList.add('hidden');
+    gameOverScreen.classList.remove('hidden');
+    gameOverScreen.style.display = 'flex'; // override hidden util
+    finalScore.textContent = score;
+}
+
+// Keyboard Controls
+const keys = { ArrowLeft: false, ArrowRight: false };
+window.addEventListener('keydown', (e) => {
+    if (gameState !== 'PLAYING') return;
+    if (e.key === 'ArrowLeft') keys.ArrowLeft = true;
+    if (e.key === 'ArrowRight') keys.ArrowRight = true;
+});
+window.addEventListener('keyup', (e) => {
+    if (e.key === 'ArrowLeft') keys.ArrowLeft = false;
+    if (e.key === 'ArrowRight') keys.ArrowRight = false;
+});
+
+// Update keyboard movement independently of frame rate for smoothness
+setInterval(() => {
+    if (gameState === 'PLAYING' && player) {
+        const speed = 8 + level;
+        if (keys.ArrowLeft) player.targetX = Math.max(0, player.targetX - speed);
+        if (keys.ArrowRight) player.targetX = Math.min(canvas.width - player.width, player.targetX + speed);
+    }
+}, 16);
+
+// Touch and Mouse Controls
+function handlePointerMove(e) {
+    if (gameState !== 'PLAYING' || !player) return;
+    e.preventDefault(); // Prevent scrolling
+    const rect = canvas.getBoundingClientRect();
+    
+    let clientX;
+    if (e.touches && e.touches.length > 0) {
+        clientX = e.touches[0].clientX;
+    } else {
+        clientX = e.clientX;
+    }
+    
+    // Scale X coordinate to canvas size
+    const scaleX = canvas.width / rect.width;
+    const x = (clientX - rect.left) * scaleX;
+    
+    // Center paddle on pointer
+    player.targetX = x - player.width / 2;
+}
+
+canvas.addEventListener('mousemove', handlePointerMove);
+canvas.addEventListener('touchmove', handlePointerMove, { passive: false });
+canvas.addEventListener('touchstart', handlePointerMove, { passive: false });
+
+// Button Listeners
+startBtn.addEventListener('click', initGame);
+restartBtn.addEventListener('click', initGame);
+
+// Initial Setup
+resizeCanvas();
+
+</script>
+</body>
+</html>
