@@ -998,3 +998,57 @@ function renderOutcomesAccordion() {
     if (gradeFilter !== 'all' && String(g.grade) !== gradeFilter) return;
     g.units.forEach((u, uIdx) => {
       if (unitFilter !== 'all' && u.title !== unitFilter) return;
+      const unitText = [u.title, u.overview, u.focusingQuestions, ...u.keyConcepts, ...u.outcomes.flatMap(c => [c.cluster, ...c.items]), ...Object.values(u.skills).flat()].join(' ').toLowerCase();
+      if (q && !unitText.includes(q)) return;
+      html += `
+        <div class="card acc-unit" id="unit-${gIdx}-${uIdx}">
+          <div class="acc-header" onclick="toggleAccordion('unit-${gIdx}-${uIdx}')">
+            <div>
+              <h4>Grade ${g.grade} · ${escapeHtml(u.title)}</h4>
+              <div style="font-size:13px; color:#6c8399; margin-top:6px;">${escapeHtml(u.focusingQuestions)}</div>
+            </div>
+            <div style="color:#2d76da; font-weight:700;">Open</div>
+          </div>
+          <div class="acc-body">
+            <p><strong>Overview:</strong> ${escapeHtml(u.overview)}</p>
+            <p><strong>Key concepts:</strong> ${escapeHtml(u.keyConcepts.join(', '))}</p>
+            ${u.outcomes.map(cluster => `
+              <div class="cluster">
+                <div class="cluster-title">${escapeHtml(cluster.cluster)}</div>
+                <ul>${cluster.items.map(item => `<li>${highlight(item,q)}</li>`).join('')}</ul>
+              </div>`).join('')}
+            <div class="skill-grid">
+              ${Object.entries(u.skills).map(([name,items]) => `
+                <div class="skill-box">
+                  <h5>${escapeHtml(name)}</h5>
+                  <ul>${items.map(item => `<li>${highlight(item,q)}</li>`).join('')}</ul>
+                </div>`).join('')}
+            </div>
+          </div>
+        </div>`;
+    });
+  });
+  outcomesAccordion.innerHTML = html || `<div class="card stack-card"><div class="empty-state"><strong>No outcomes matched your search.</strong></div></div>`;
+}
+function highlight(text,q) {
+  const safe = escapeHtml(text);
+  if (!q) return safe;
+  const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return safe.replace(new RegExp(`(${escaped})`, 'ig'), '<mark style="background:#fff0a8; padding:0 2px;">$1</mark>');
+}
+window.toggleAccordion = function(id) {
+  document.getElementById(id).classList.toggle('open');
+};
+outcomesSearch.addEventListener('input', renderOutcomesAccordion);
+outcomesGradeFilter.addEventListener('change', renderOutcomesAccordion);
+outcomesUnitFilter.addEventListener('change', renderOutcomesAccordion);
+
+populateCreateControls();
+populateOutcomeFilters();
+renderRecentActivities();
+renderSavedActivities();
+renderPopularUnits();
+renderOutcomesAccordion();
+</script>
+</body>
+</html>
