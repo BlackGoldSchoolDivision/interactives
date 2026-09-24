@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Science Inquiry Builder v1.0</title>
+<style>
+  :root {
+    --navy:#10345a;
+    --navy-2:#174a78;
+    --blue:#2d76da;
+    --blue-2:#eaf3ff;
+    --teal:#25b3a6;
+    --green:#4bbf7a;
+    --purple:#8c73f1;
+    --gold:#f6c358;
+    --red:#ef6e73;
+    --ink:#1d2b3a;
+    --muted:#5e7286;
+    --border:#dbe6f1;
+    --panel:#ffffff;
+    --bg:#f4f8fc;
+    --soft:#f8fbfe;
+    --shadow:0 12px 28px rgba(14,39,71,.08);
+    --radius:18px;
+  }
+  * { box-sizing:border-box; }
+  html,body { margin:0; padding:0; background:var(--bg); color:var(--ink); font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; }
+  button,input,select,textarea { font:inherit; }
+  .app { display:grid; grid-template-columns: 260px 1fr; min-height:100vh; }
+  .sidebar { background:linear-gradient(180deg,#10345a 0%,#0a2742 100%); color:#fff; padding:20px 16px; display:flex; flex-direction:column; gap:18px; position:sticky; top:0; height:100vh; }
+  .brand { display:flex; gap:12px; align-items:center; padding:8px 10px 16px; border-bottom:1px solid rgba(255,255,255,.14); }
+  .flask { width:42px; height:42px; border-radius:14px; display:grid; place-items:center; background:rgba(255,255,255,.12); font-size:24px; }
+  .brand h1 { margin:0; font-size:22px; line-height:1.05; }
+  .brand p { margin:4px 0 0; color:rgba(255,255,255,.75); font-size:12px; }
+  .nav { display:flex; flex-direction:column; gap:8px; }
+  .nav-btn { width:100%; border:none; background:transparent; color:#e9f2fb; text-align:left; padding:14px 14px; border-radius:14px; display:flex; align-items:center; gap:12px; cursor:pointer; transition:.18s ease; }
+  .nav-btn:hover, .nav-btn.active { background:rgba(71,140,216,.24); color:#fff; }
+  .nav-ico { width:26px; text-align:center; opacity:.95; }
+  .side-card { margin-top:auto; background:linear-gradient(180deg, rgba(62,121,197,.22), rgba(19,71,120,.2)); border:1px solid rgba(255,255,255,.1); border-radius:18px; padding:18px; }
+  .side-card h3 { margin:0 0 10px; font-size:20px; }
+  .side-card p { margin:0; color:#dbe8f7; line-height:1.5; font-size:14px; }
+
+  .main { padding:22px; }
+  .view { display:none; }
+  .view.active { display:block; }
+  .topbar { display:flex; justify-content:space-between; gap:18px; align-items:center; margin-bottom:18px; }
+  .searchbar { flex:1; display:flex; align-items:center; background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:10px 14px; box-shadow:var(--shadow); min-width:0; }
+  .searchbar input { flex:1; border:none; outline:none; background:transparent; font-size:15px; min-width:0; }
+  .pill-user { background:var(--panel); border:1px solid var(--border); box-shadow:var(--shadow); padding:10px 14px; border-radius:16px; display:flex; gap:12px; align-items:center; white-space:nowrap; }
+  .avatar { width:38px; height:38px; border-radius:50%; display:grid; place-items:center; background:#d9ebff; color:#1b5fc2; font-weight:700; }
+  .page-grid { display:grid; grid-template-columns: 1.5fr .95fr; gap:18px; align-items:start; }
+  .card { background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); }
+  .hero { padding:22px; overflow:hidden; position:relative; }
+  .hero h2 { font-size:46px; line-height:1.02; margin:0 0 10px; color:#1b4f9b; }
+  .hero p { color:var(--muted); font-size:17px; margin:0 0 18px; max-width:720px; }
+  .hero-illustration { position:absolute; right:22px; top:18px; width:280px; height:138px; background:linear-gradient(180deg,#dff0ff,#f2fbff); border-radius:22px; overflow:hidden; display:flex; align-items:flex-end; justify-content:center; padding:18px; }
+  .hero-illustration::before { content:""; position:absolute; inset:auto 0 0 0; height:54px; background:linear-gradient(180deg,#bfe3ff,#9ed4a3); border-top-left-radius:60px; border-top-right-radius:60px; }
+  .hero-illustration::after { content:""; position:absolute; width:80px; height:80px; right:32px; top:18px; background:#ffe8a5; border-radius:50%; opacity:.92; }
+  .hero-quote { position:absolute; right:28px; top:18px; width:220px; color:#2b67a4; font-style:italic; font-size:12px; line-height:1.4; z-index:1; text-align:right; }
+  .hero-search { margin-top:10px; display:flex; align-items:center; gap:10px; background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:8px 8px 8px 14px; max-width:760px; position:relative; z-index:2; }
+  .hero-search input { flex:1; border:none; outline:none; font-size:15px; background:transparent; }
+  .go-btn,.primary-btn { border:none; background:var(--blue); color:white; border-radius:14px; padding:12px 18px; cursor:pointer; font-weight:700; }
+  .primary-btn:hover,.go-btn:hover { filter:brightness(.98); }
+  .section-title { display:flex; justify-content:space-between; align-items:end; gap:10px; margin:18px 0 10px; }
+  .section-title h3 { margin:0; font-size:30px; color:#173f76; }
+  .section-title .mini-link { color:var(--blue); cursor:pointer; font-weight:700; }
+  .quick-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:14px; }
+  .quick-card { padding:18px; border-radius:18px; border:1px solid var(--border); background:linear-gradient(180deg,#fff,#f9fcff); min-height:155px; display:flex; flex-direction:column; gap:12px; cursor:pointer; transition:.18s ease; }
+  .quick-card:hover { transform:translateY(-2px); box-shadow:var(--shadow); }
+  .quick-card .q-ico { font-size:30px; }
+  .quick-card h4 { margin:0; font-size:26px; line-height:1.05; color:#173f76; }
+  .quick-card p { margin:0; color:var(--muted); font-size:14px; line-height:1.4; }
+  .tint-green { background:#eefaf2; } .tint-purple { background:#f3efff; } .tint-gold { background:#fff8e9; } .tint-blue { background:#edf6ff; } .tint-red { background:#fff1f2; }
+
+  .split { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:16px; }
+  .list-card { padding:14px 16px; }
+  .activity-item { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; padding:13px 0; border-top:1px solid #edf2f7; }
+  .activity-item:first-of-type { border-top:none; }
+  .activity-item h4 { margin:0 0 5px; font-size:16px; color:#173f76; }
+  .activity-item p { margin:0; color:var(--muted); font-size:13px; }
+  .activity-meta { color:#8aa1b8; font-size:12px; white-space:nowrap; }
+  .unit-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  .unit-tile { overflow:hidden; border-radius:16px; border:1px solid var(--border); background:#fff; cursor:pointer; }
+  .unit-thumb { height:78px; background:linear-gradient(135deg,#73b6ff,#d1edff); display:flex; align-items:end; justify-content:left; padding:10px; color:#fff; font-size:12px; letter-spacing:.04em; text-transform:uppercase; font-weight:700; }
+  .unit-thumb.heat { background:linear-gradient(135deg,#f8c25c,#eb7d39); }
+  .unit-thumb.lightning { background:linear-gradient(135deg,#7357f9,#ad6cff); }
+  .unit-thumb.wave { background:linear-gradient(135deg,#6bc7ff,#1d7cd7); }
+  .unit-thumb.space { background:linear-gradient(135deg,#273b76,#71a7ff); }
+  .unit-thumb.chem { background:linear-gradient(135deg,#4fbfd3,#1553af); }
+  .unit-thumb.struct { background:linear-gradient(135deg,#6998c7,#b9d1ec); }
+  .unit-thumb.bio { background:linear-gradient(135deg,#4eb984,#9ce0bf); }
+  .unit-tile div:last-child { padding:10px 12px; font-weight:700; color:#20426d; }
+
+  .stats-card { padding:20px; }
+  .stats-card h3 { margin:0 0 12px; color:#173f76; font-size:28px; }
+  .coverage-list { display:grid; gap:12px; margin-top:12px; }
+  .coverage-line { display:flex; gap:12px; align-items:flex-start; color:var(--muted); }
+  .coverage-line strong { color:#153f74; }
+
+  .subhead { margin:0 0 6px; color:#173f76; font-size:34px; }
+  .subtle { color:var(--muted); }
+  .form-card { padding:18px; }
+  .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .field { display:flex; flex-direction:column; gap:6px; }
+  .field label { font-size:13px; color:#35506d; font-weight:700; }
+  .field input, .field select, .field textarea { width:100%; border:1px solid var(--border); border-radius:12px; padding:11px 12px; background:#fff; outline:none; }
+  .field textarea { min-height:92px; resize:vertical; }
+  .span-2 { grid-column:span 2; }
+  .activity-type-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; }
+  .type-btn, .level-btn { border:1px solid var(--border); background:#fff; border-radius:14px; padding:12px 10px; text-align:center; cursor:pointer; font-size:13px; color:#20426d; }
+  .type-btn.active, .level-btn.active { border-color:#8fc1ff; background:#eef6ff; color:#1454af; font-weight:700; }
+  .level-row { display:flex; gap:10px; flex-wrap:wrap; }
+  .helper-panel { padding:18px; background:linear-gradient(180deg,#f9fcff,#f4f9ff); }
+  .helper-panel h4 { margin:0 0 10px; color:#173f76; font-size:28px; }
+  .checklist { display:grid; gap:9px; color:var(--muted); margin-top:12px; }
+  .checklist div::before { content:"✓"; color:var(--green); font-weight:900; margin-right:9px; }
+  .create-layout { display:grid; grid-template-columns:1.18fr .82fr; gap:18px; }
+  .preview-wrap { margin-top:18px; }
+  .preview-header { display:flex; justify-content:space-between; gap:10px; align-items:center; padding:14px 16px; border-bottom:1px solid #eaf0f6; }
+  .preview-actions { display:flex; gap:8px; flex-wrap:wrap; }
+  .small-btn { border:1px solid var(--border); background:#fff; padding:9px 12px; border-radius:12px; cursor:pointer; color:#18426e; }
+  .small-btn.active { background:#edf6ff; border-color:#98c4ff; color:#1354ad; font-weight:700; }
+  .preview-body { padding:16px; }
+  .result-title { margin:0 0 4px; color:#173f76; font-size:32px; }
+  .result-sub { margin:0; color:var(--muted); font-size:13px; }
+  .result-grid { display:grid; grid-template-columns:1.3fr .95fr; gap:14px; margin-top:14px; }
+  .result-grid .mini-card, .teacher-note, .result-row > div { border:1px solid var(--border); border-radius:14px; background:#fff; padding:12px; }
+  .mini-card h5, .teacher-note h5, .result-row h5 { margin:0 0 8px; color:#1a477d; font-size:15px; }
+  .mini-card p, .mini-card li, .teacher-note p, .teacher-note li, .result-row p, .result-row li { font-size:14px; color:#34506b; line-height:1.45; margin:0; }
+  .result-row { display:grid; gap:12px; }
+  .teacher-note { background:#fffbef; }
+  .teacher-hidden .teacher-only { display:none !important; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th,td { border:1px solid #d7e5f4; padding:8px 8px; text-align:left; }
+  th { background:#f4f9ff; color:#1e4678; }
+  .tag-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+  .tag { background:#edf6ff; color:#1259b8; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:700; }
+
+  .stack-card { padding:18px; }
+  .empty-state { text-align:center; color:var(--muted); padding:28px 12px; }
+  .saved-card { padding:16px; display:grid; gap:10px; border-top:1px solid #edf2f7; }
+  .saved-card:first-child { border-top:none; }
+  .saved-top { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
+  .saved-top h4 { margin:0; color:#173f76; }
+  .saved-meta { color:#7e94aa; font-size:12px; }
+  .saved-actions { display:flex; gap:8px; flex-wrap:wrap; }
+
+  .outcomes-toolbar { display:grid; grid-template-columns: 1fr 180px 280px; gap:12px; margin-bottom:16px; }
+  .accordion { display:grid; gap:14px; }
+  .acc-unit { overflow:hidden; }
+  .acc-header { padding:16px 18px; display:flex; justify-content:space-between; gap:12px; align-items:center; cursor:pointer; }
+  .acc-header h4 { margin:0; color:#173f76; font-size:21px; }
+  .acc-body { padding:0 18px 18px; border-top:1px solid #edf2f7; display:none; }
+  .acc-unit.open .acc-body { display:block; }
+  .acc-body p { color:var(--muted); line-height:1.55; }
+  .cluster { margin-top:16px; border:1px solid #eaf0f6; border-radius:14px; overflow:hidden; }
+  .cluster-title { background:#f7fbff; padding:12px 14px; color:#1d4679; font-weight:700; }
+  .cluster ul { margin:0; padding:12px 18px 16px 30px; display:grid; gap:10px; }
+  .skill-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:16px; }
+  .skill-box { border:1px solid #eaf0f6; border-radius:14px; padding:12px; }
+  .skill-box h5 { margin:0 0 8px; color:#1d4679; }
+  .skill-box ul { margin:0; padding-left:18px; display:grid; gap:8px; }
+
+  .template-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
+  .template-card { padding:20px; }
+  .template-card h4 { margin:0 0 10px; color:#173f76; font-size:24px; }
+  .template-card ul { margin:0; padding-left:18px; color:#415a74; display:grid; gap:8px; }
+  .template-card p { color:var(--muted); }
+  .badge { display:inline-flex; gap:8px; align-items:center; padding:7px 11px; border-radius:999px; background:#eef6ff; color:#1258b3; font-size:12px; font-weight:700; }
+  .settings-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .info-list { display:grid; gap:8px; color:#405971; }
+  .footer-note { margin-top:18px; color:#7a8ea4; font-size:13px; }
+
+  @media print {
+    body,html { background:#fff; }
+    .sidebar,.topbar,.nav,.preview-actions,.hero-search,.outcomes-toolbar,.saved-actions,.type-btn,.level-btn,.helper-panel,.form-card .primary-btn, .main > :not(.view.active), .teacher-only, .hide-print { display:none !important; }
+    .app { display:block; }
+    .main { padding:0; }
+    .card { box-shadow:none; border:1px solid #dce6ef; }
+    .preview-body { padding:0; }
+  }
+
+  @media (max-width: 1180px) {
+    .app { grid-template-columns:1fr; }
+    .sidebar { position:relative; height:auto; }
+    .page-grid,.create-layout,.split,.result-grid,.template-grid,.settings-grid,.skill-grid { grid-template-columns:1fr; }
+    .quick-grid { grid-template-columns:repeat(2,1fr); }
+    .activity-type-grid { grid-template-columns:repeat(2,1fr); }
+    .outcomes-toolbar { grid-template-columns:1fr; }
+    .unit-grid { grid-template-columns:repeat(2,1fr); }
+    .hero h2 { font-size:36px; padding-right:0; }
+    .hero-illustration { position:relative; right:auto; top:auto; width:100%; margin-top:16px; }
+  }
+  @media (max-width: 700px) {
+    .main { padding:14px; }
+    .quick-grid,.unit-grid { grid-template-columns:1fr; }
+    .hero h2 { font-size:30px; }
+    .section-title h3,.subhead { font-size:26px; }
+    .activity-type-grid { grid-template-columns:1fr; }
+    .form-grid { grid-template-columns:1fr; }
+    .span-2 { grid-column:span 1; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="flask">🧪</div>
+      <div>
+        <h1>Science Inquiry Builder</h1>
+        <p>Version 1.0 · Grades 7–9 built in</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <button class="nav-btn active" data-view="home"><span class="nav-ico">🏠</span>Home</button>
+      <button class="nav-btn" data-view="create"><span class="nav-ico">➕</span>Create</button>
+      <button class="nav-btn" data-view="activities"><span class="nav-ico">🗂️</span>My Activities</button>
+      <button class="nav-btn" data-view="outcomes"><span class="nav-ico">📚</span>Built-in Outcomes</button>
+      <button class="nav-btn" data-view="templates"><span class="nav-ico">🧩</span>Templates</button>
+      <button class="nav-btn" data-view="settings"><span class="nav-ico">⚙️</span>Settings / About</button>
+    </nav>
+    <div class="side-card">
+      <h3>Curious minds build a brighter world.</h3>
+      <p>Turn curriculum outcomes into inquiry labs, design challenges, evidence tasks, investigative questions, and review sets.</p>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar hide-print">
+      <div class="searchbar">
+        <span style="margin-right:10px">🔎</span>
+        <input id="globalSearch" placeholder="Search built-in outcomes, units, or topics…" />
+      </div>
+      <div class="pill-user">
+        <div class="avatar">DM</div>
+        <div>
+          <div style="font-weight:700; color:#173f76;">Darren</div>
+          <div style="font-size:12px; color:#6b8198;">Teacher / Facilitator</div>
+        </div>
+      </div>
+    </div>
+
+    <section class="view active" id="view-home">
+      <div class="page-grid">
+        <div>
+          <div class="card hero">
+            <h2>Science Inquiry Builder</h2>
+            <p>Create labs, design challenges, reviews, and inquiry tasks from curriculum outcomes.</p>
+            <div class="hero-search">
+              <span>🔎</span>
+              <input id="heroSearch" placeholder='Paste or search a science outcome or topic (e.g. "temperature and dissolving")' />
+              <button class="go-btn" id="heroGo">Go</button>
+            </div>
+            <div class="hero-illustration">
+              <div class="hero-quote">Real outcomes.<br>Deeper thinking.<br>Brighter learners.</div>
+              <div style="position:absolute; bottom:16px; left:20px; font-size:44px; opacity:.9">🏔️🌲🌊</div>
+            </div>
+          </div>
+
+          <div class="section-title">
+            <h3>Quick Start</h3>
+          </div>
+          <div class="quick-grid">
+            <div class="quick-card tint-green" data-type="Inquiry Lab"><div class="q-ico">🧪</div><h4>Inquiry Lab</h4><p>Hands-on investigations from your outcomes.</p></div>
+            <div class="quick-card tint-purple" data-type="Design Challenge"><div class="q-ico">⚙️</div><h4>Design Challenge</h4><p>Open-ended STEM challenges and prototype tasks.</p></div>
+            <div class="quick-card tint-gold" data-type="Evidence & Decision"><div class="q-ico">💡</div><h4>Evidence & Decision</h4><p>Use evidence to make and justify a decision.</p></div>
+            <div class="quick-card tint-blue" data-type="Investigative Questions"><div class="q-ico">🔎</div><h4>Investigative Questions</h4><p>Generate rich, open questions to investigate.</p></div>
+            <div class="quick-card tint-red" data-type="Review & Retrieval"><div class="q-ico">📊</div><h4>Review & Retrieval</h4><p>Create mixed question sets for lasting learning.</p></div>
+          </div>
+
+          <div class="split">
+            <div class="card list-card">
+              <div class="section-title" style="margin-top:0"><h3 style="font-size:28px">Recent Activities</h3><span class="mini-link" id="viewAllActivities">View all →</span></div>
+              <div id="recentActivitiesList"></div>
+            </div>
+            <div class="card list-card">
+              <div class="section-title" style="margin-top:0"><h3 style="font-size:28px">Popular Science Units</h3><span class="mini-link" id="viewAllOutcomes">View all →</span></div>
+              <div class="unit-grid" id="popularUnits"></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card stats-card">
+            <span class="badge">Grades 7–9 ready</span>
+            <h3>Turn curriculum outcomes into engaging science learning.</h3>
+            <div class="coverage-list">
+              <div class="coverage-line"><span>✅</span><div><strong id="unitCount">15</strong> science units built in across Grades 7, 8, and 9.</div></div>
+              <div class="coverage-line"><span>✅</span><div><strong id="outcomeCount">0</strong> curriculum outcome statements loaded for quick selection and search.</div></div>
+              <div class="coverage-line"><span>✅</span><div><strong>5</strong> activity types: Inquiry Lab, Design Challenge, Evidence & Decision, Investigative Questions, and Review & Retrieval.</div></div>
+              <div class="coverage-line"><span>✅</span><div>Teacher and student views, built-in print support, and activity saving with local browser storage.</div></div>
+            </div>
+            <div class="footer-note">Version 1.0 is a fully working static prototype. The next step could be plugging in AI generation or Drive export.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="view-create">
+      <div class="section-title"><h3 class="subhead">Create a New Activity</h3></div>
+      <p class="subtle" style="margin-top:-8px">Turn a curriculum outcome into a ready-to-use science activity.</p>
+      <div class="create-layout">
+        <div class="card form-card">
+          <div class="form-grid">
+            <div class="field"><label>Grade</label><select id="gradeSelect"></select></div>
+            <div class="field"><label>Unit / Topic</label><select id="unitSelect"></select></div>
+            <div class="field span-2"><label>Learning Outcome</label><select id="outcomeSelect"></select></div>
+            <div class="field span-2"><label>Optional Custom Outcome / Topic</label><textarea id="customOutcome" placeholder="Paste your own outcome or a topic if you want to build from custom text."></textarea></div>
+            <div class="field span-2">
+              <label>Activity Type</label>
+              <div class="activity-type-grid" id="typeGrid"></div>
+            </div>
+            <div class="field span-2">
+              <label>Inquiry Level</label>
+              <div class="level-row" id="levelRow"></div>
+            </div>
+            <div class="field"><label>Time</label><select id="timeSelect"><option>30–45 minutes</option><option selected>1–2 hours</option><option>2–3 hours</option><option>Multi-day</option></select></div>
+            <div class="field"><label>Materials (optional)</label><input id="materialsInput" placeholder="e.g. beakers, sugar, thermometers, rulers" /></div>
+            <div class="field span-2"><label>Teacher Notes (optional)</label><textarea id="teacherNotes" placeholder="e.g. differentiation, safety notes, specific context…"></textarea></div>
+          </div>
+          <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="primary-btn" id="generateBtn">✨ Generate Activity</button>
+            <button class="small-btn" id="clearBtn">Reset Form</button>
+          </div>
+        </div>
+        <div class="card helper-panel hide-print">
+          <span class="badge">Curriculum to curiosity in seconds</span>
+          <h4>Built for middle school science.</h4>
+          <div class="checklist">
+            <div>Aligned to your 7–9 outcomes</div>
+            <div>Age-appropriate and editable</div>
+            <div>Variety of activity types</div>
+            <div>Ready to use or customize</div>
+            <div>Works beautifully on Chromebooks</div>
+          </div>
+          <div style="font-size:84px; text-align:right; opacity:.78; margin-top:22px;">⚛️</div>
+        </div>
+      </div>
+
+      <div class="preview-wrap card" id="previewCard">
+        <div class="preview-header">
+          <div>
+            <div style="font-size:12px; color:#6f869d; text-transform:uppercase; letter-spacing:.06em;">Generated activity</div>
+            <div style="font-weight:700; color:#173f76; font-size:20px;">Preview</div>
+          </div>
+          <div class="preview-actions hide-print">
+            <button class="small-btn active" id="studentViewBtn">Student Version</button>
+            <button class="small-btn" id="teacherViewBtn">Teacher Version</button>
+            <button class="small-btn" id="saveActivityBtn">Save Activity</button>
+            <button class="small-btn" id="printBtn">Print / Save PDF</button>
+          </div>
+        </div>
+        <div class="preview-body teacher-hidden" id="generatedActivity">
+          <div class="empty-state">
+            <div style="font-size:46px; margin-bottom:10px;">🧪</div>
+            <strong>No activity generated yet.</strong>
+            <div style="margin-top:6px;">Choose a built-in outcome or paste your own, then click <em>Generate Activity</em>.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="view-activities">
+      <div class="section-title"><h3 class="subhead">My Activities</h3></div>
+      <p class="subtle" style="margin-top:-8px">Saved activities are stored in this browser using local storage.</p>
+      <div class="card stack-card">
+        <div id="savedActivitiesList"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-outcomes">
+      <div class="section-title"><h3 class="subhead">Built-in Outcomes</h3></div>
+      <p class="subtle" style="margin-top:-8px">Browse all built-in Grade 7–9 science units, outcome clusters, and skill outcomes.</p>
+      <div class="outcomes-toolbar hide-print">
+        <div class="searchbar" style="box-shadow:none;"><span style="margin-right:10px">🔎</span><input id="outcomesSearch" placeholder="Search outcomes, units, or keywords…"></div>
+        <select id="outcomesGradeFilter"></select>
+        <select id="outcomesUnitFilter"></select>
+      </div>
+      <div class="accordion" id="outcomesAccordion"></div>
+    </section>
+
+    <section class="view" id="view-templates">
+      <div class="section-title"><h3 class="subhead">Templates</h3></div>
+      <p class="subtle" style="margin-top:-8px">The five built-in activity models used by Science Inquiry Builder v1.0.</p>
+      <div class="template-grid">
+        <div class="card template-card"><span class="badge">🧪 Inquiry Lab</span><h4>Inquiry Lab</h4><p>Use for outcomes that lend themselves to hands-on investigation, variables, observations, data tables, graphing, and conclusions.</p><ul><li>Essential question</li><li>Prediction or hypothesis</li><li>Variables and materials</li><li>Procedure and data table</li><li>Analysis and conclusion</li></ul></div>
+        <div class="card template-card"><span class="badge">⚙️ Design Challenge</span><h4>Design Challenge</h4><p>Use for systems, structures, mechanical design, technologies, and prototype building tasks.</p><ul><li>Problem</li><li>Criteria and constraints</li><li>Plan and sketch</li><li>Test data</li><li>Troubleshooting and redesign</li></ul></div>
+        <div class="card template-card"><span class="badge">💡 Evidence & Decision</span><h4>Evidence & Decision</h4><p>Use when students need to study evidence, weigh trade-offs, and justify an environmental or scientific decision.</p><ul><li>Issue or scenario</li><li>What we need to know</li><li>Evidence table</li><li>Benefits and trade-offs</li><li>Claim and justification</li></ul></div>
+        <div class="card template-card"><span class="badge">🔎 Investigative Questions</span><h4>Investigative Questions</h4><p>Generate strong, testable, or open-ended science questions connected to the selected outcome.</p><ul><li>Question stems</li><li>What to change or compare</li><li>What to measure or observe</li><li>Suggested evidence collection</li></ul></div>
+        <div class="card template-card"><span class="badge">📊 Review & Retrieval</span><h4>Review & Retrieval</h4><p>Produce a balanced review set with recall, explain, apply, analyze, and transfer prompts.</p><ul><li>Recall questions</li><li>Explain why/how</li><li>Application questions</li><li>Analyze data or scenarios</li><li>Transfer prompt</li></ul></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-settings">
+      <div class="section-title"><h3 class="subhead">Settings / About</h3></div>
+      <div class="settings-grid">
+        <div class="card stack-card">
+          <h3 style="margin-top:0; color:#173f76;">About this version</h3>
+          <div class="info-list">
+            <div><strong>App:</strong> Science Inquiry Builder</div>
+            <div><strong>Version:</strong> 1.0</div>
+            <div><strong>Coverage:</strong> Grade 7, Grade 8, and Grade 9 science outcomes built in</div>
+            <div><strong>Storage:</strong> Activities save locally in the browser</div>
+            <div><strong>Printing:</strong> Built-in print-friendly student and teacher views</div>
+          </div>
+        </div>
+        <div class="card stack-card">
+          <h3 style="margin-top:0; color:#173f76;">Possible next steps</h3>
+          <ul style="margin:0; padding-left:20px; color:#425d77; display:grid; gap:10px;">
+            <li>Add AI-powered drafting for richer custom activities</li>
+            <li>Export directly to Google Docs or PDF files</li>
+            <li>Add teacher answer keys for review and retrieval tasks</li>
+            <li>Attach class management and sharing features</li>
+            <li>Connect to a hosted database rather than local storage</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-note">Built from the supplied Grade 7, Grade 8, and Grade 9 science outcome documents. This prototype focuses on a clean workflow and curriculum browsing.</div>
+    </section>
+  </main>
+</div>
+
+<script>
+const CURRICULUM_DATA = [{"grade": 7, "units": [{"title": "Unit A: Interactions and Ecosystems", "overview": "Ecosystems develop and are maintained by natural processes and are affected by human action. To foster an understanding of ecosystems, this unit develops student awareness of ecosystem components and interactions, as well as natural cycles and processes of change. Building on this knowledge, students investigate human impacts and engage in studies that involve environmental monitoring and research. By reflecting on their findings, students become aware of the intended and unintended consequences of human activity, and recognize the need for responsible decision making and action.", "focusingQuestions": "How do human activities affect ecosystems? What methods can we use to observe and monitor changes in ecosystems, and assess the impacts of our actions?", "keyConcepts": ["interactions and interdependencies", "environmental monitoring", "environmental impacts", "producers, consumers, decomposers", "nutrient cycles and energy flow", "species distribution", "succession", "endangered species", "extinction", "environmental management"], "outcomes": [{"cluster": "1. Investigate and describe relationships between humans and their environments, and identify related issues and scientific questions", "items": ["illustrate how life-supporting environments meet the needs of living things for nutrients, energy sources, moisture, suitable habitat, and exchange of gases", "describe examples of interaction and interdependency within an ecosystem (e.g., identify examples of dependency between species, and describe adaptations involved; identify changing relationships between humans and their environments, over time and in different cultures - as, for example, in aboriginal cultures)", "identify examples of human impacts on ecosystems, and investigate and analyze the link between these impacts and the human wants and needs that give rise to them(e.g., identify impacts of the use of plants and animals as sources of food, fibre and other materials; identify potential impacts of waste products on environments)", "analyze personal and public decisions that involve consideration of environmental impacts, and identify needs for scientific knowledge that can inform those decisions"]}, {"cluster": "2. Trace and interpret the flow of energy and materials within an ecosystem", "items": ["analyze an ecosystem to identify biotic and abiotic components, and describe interactions among these components", "describing and giving examples of energy and nutrient storage in plants and animals", "describing how matter is recycled in an ecosystem through interactions among plants, animals, fungi, bacteria and other microorganisms", "interpreting food webs, and predicting the effects of changes to any part of a web", "describe the process of cycling carbon and water through an ecosystem", "identify mechanisms by which pollutants enter and move through the environment, and can become concentrated in some organisms (e.g., acid rain, mercury, PCBs, DDT)"]}, {"cluster": "3. Monitor a local environment, and assess the impacts of environmental factors on the growth, health and reproduction of organisms in that environment", "items": ["investigate a variety of habitats, and describe and interpret distribution patterns of living things found in those habitats (e.g., describe and compare two areas within the school grounds - a relatively undisturbed site and a site that has been affected by heavy use; describe and compare a wetland and a dryland area in a local parkland)", "investigate and interpret evidence of interaction and change (e.g., population fluctuations, changes in weather, availability of food or introduction of new species into an ecosystem)", "identify signs of ecological succession in local ecosystems (e.g., emergence of fireweed in recently cut forest areas, replacement of poplar by spruce in maturing forests, reestablishment of native plants on unused farmland)"]}, {"cluster": "4. Describe the relationships among knowledge, decisions and actions in maintaining life-supporting environments", "items": ["identify intended and unintended consequences of human activities within local and global environments (e.g., changes resulting from habitat loss, pest control or from introduction of new species; changes leading to species extinction)", "describe and interpret examples of scientific investigations that serve to inform environmental decision making", "illustrate, through examples, the limits of scientific and technological knowledge in making decisions about life-supporting environments (e.g., identify limits in scientific knowledge of the impact of changing land use on individual species; describe examples in which aboriginal knowledge - based on long-term observation - provides an alternative source of understanding)", "analyze a local environmental issue or problem based on evidence from a variety of sources, and identify possible actions and consequences (e.g., analyze a local issue on the control of the beaver population in a nearby wetland, and identify possible consequences)"]}], "skills": {"Initiating and Planning": ["identify science-related issues (e.g., identify a specific issue regarding human impacts on environments)", "identify questions to investigate arising from practical problems and issues (e.g., identify questions, such as: \"What effects would an urban or industrial development have on a nearby forest or farming community?\")", "state a prediction and a hypothesis based on background information or an observed pattern of events (e.g., predict changes in the population of an organism if factor X were increased, or if a species were introduced or removed from the ecosystem; propose factors that will affect the population of a given animal species)", "select appropriate methods and tools for collecting data and information (e.g., select or develop a method for estimating a plant population within a given study plot; design a survey as a first step in investigating an environmental issue)"], "Performing and Recording": ["research information relevant to a given problem or issue", "select and integrate information from various print and electronic sources or from several parts of the same source (e.g., compile information on a global environmental issue from books, magazines, pamphlets and Internet sites, as well as from conversations with experts)", "use tools and apparatus effectively and accurately for collecting data (e.g., measure factors, such as temperature, moisture, light, shelter and potential sources of food, that might affect the survival and distribution of different organisms within a local environment)", "estimate measurements (e.g., estimate the population of a given plant in a one square metre quadrat, and use this figure to estimate the population within an area of 100 square metres)"], "Analyzing and Interpreting": ["identify strengths and weaknesses of different methods of collecting and displaying data(e.g., compare two different approaches to measuring the amount of moisture in an environment; analyze information presented by proponents on two sides of an environmental issue)", "compile and display data, by hand or computer, in a variety of formats, including diagrams, flow charts, tables, bar graphs and line graphs (e.g., illustrate a food web, based on observations made within a given environment)", "classify organisms found in a study plot"], "Communication and Teamwork": ["communicate questions, ideas, intentions, plans and results, using lists, notes in point form, sentences, data tables, graphs, drawings, oral language and other means (e.g., present findings from an analysis of a local issue, such as the control of the beaver population in a nearby wetland)", "evaluate individual and group processes used in planning, problem solving, decision making and completing a task", "defend a given position on an issue, based on their findings (e.g., make a case for or against on an issue, such as: \"Should a natural gas plant be located near a farming community?\")"]}}, {"title": "Unit B: Plants for Food and Fibre", "overview": "Humans have always depended on plants as a source of food and fibre, and to meet a variety of other needs. To better meet these needs, technologies have been developed for selecting and breeding productive plant varieties and for maximizing their growth by modifying growing environments. Long-term sustainability requires an awareness of the practices humans use and an examination of the impacts of these practices on the larger environment.", "focusingQuestions": "How do we produce useful plant products? What techniques do we use, what knowledge are these techniques based on, and how do we apply these techniques in a sustainable way?", "keyConcepts": ["needs and uses of plants", "plant propagation and reproduction", "life processes and structure of plants", "fertilizers and soil nutrients", "chemical and biological controls", "plant varieties", "selective breeding", "monocultures", "resource management", "sustainability"], "outcomes": [{"cluster": "1. Investigate plant uses; and identify links among needs, technologies, products and impacts", "items": ["illustrate and explain the essential role of plants within the environment", "describe human uses of plants as sources of food and raw materials, and give examples of other uses (e.g., identify uses of plants as herbs or medicines; describe plant products, and identify plant sources on which they depend)", "investigate trends in land use from natural environments (e.g., forests, grasslands) to managed environments (e.g., farms, gardens, greenhouses) and describe changes", "investigate practical problems and issues in maintaining productive plants within sustainable environments, and identify questions for further study (e.g., investigate the long-term effects of irrigation practices or fertilizer use)"]}, {"cluster": "2. Investigate life processes and structures of plants, and interpret related characteristics and needs of plants in a local environment", "items": ["describe the general structure and functions of seed plants (e.g., describe the roots, stem, leaves and flower of a common local plant)", "investigate and interpret variations in plant structure, and relate these to different ways that plants are adapted to their environment (e.g., distinguish between plants with shallow spreading roots and those with deep taproots; describe and interpret differences in flower form and in the timing of flower production)", "investigate and interpret variations in needs of different plants and their tolerance for different growing conditions (e.g., tolerance for drought, soil salinization or short growing seasons)", "describe the processes of diffusion, osmosis, conduction of fluids, transpiration, photosynthesis and gas exchange in plants [Note: This item requires a general understanding of the processes; it does not require knowledge of the specific biochemistry of these processes.]", "describe life cycles of seed plants, and identify example methods used to ensure their germination, growth and reproduction (e.g., describe propagation of plants from seeds and vegetative techniques, such as cuttings; conduct a germination study; describe the use of beehives to support pollination)"]}, {"cluster": "3. Analyze plant environments, and identify impacts of specific factors and controls", "items": ["describe methods used to increase yields, through modifying the environment and by creating artificial environments (e.g., describe processes used in raising bedding plants or in vegetable production through hydroponics)", "investigate and describe characteristics of different soils and their major component(e.g., distinguish among clayey soils, sandy soils and soils rich in organic content; investigate and describe particle sizes, compaction and moisture content of soil samples)", "identify practices that may enhance or degrade soils in particular applications", "describe and interpret the consequences of using herbicides, pesticides and biological controls in agriculture and forestry"]}, {"cluster": "4. Identify and interpret relationships among human needs, technologies, environments, and the culture and use of living things as sources of food and fibre", "items": ["investigate and describe the development of plant varieties through selective breeding, and identify related needs and problems (e.g., identify needs leading to the development of new grain varieties; identify problems arising from the development of new plant varieties that require extensive fertilization)", "investigate and identify intended and unintended consequences of environmental management practices (e.g., identify problems arising from monocultural land use in agricultural and forestry practices, such as susceptibility to insect infestation or loss of diversity)", "identify the effects of different practices on the sustainability of agriculture and environmental resources (e.g., identify positive and negative effects of using chemical fertilizers and pesticides and of using organic farming practices)"]}], "skills": {"Initiating and Planning": ["define practical problems (e.g., identify problems in growing plants under dry conditions)", "identify questions to investigate arising from practical problems and issues (e.g., What methods will help limit moisture loss from plants and soil? What reduction in the loss of soil moisture can be achieved through the use of a plastic ground sheet or through the use of a plastic canopy?)", "rephrase questions in a testable form, and clearly define practical problems (e.g., rephrase a broad question, such as: \"What amount of fertilizer is best?\" to become \"What effect will the application of different quantities of fertilizer X have on the growth of plant Y and its environment?\")", "state a prediction and a hypothesis based on background information or an observed pattern of events (e.g., predict the effect of a particular plant treatment)", "formulate operational definitions (e.g., define the health of a plant in terms of its colour and growth pattern)"], "Performing and Recording": ["research information relevant to a given problem", "construct and test a prototype design to achieve a specific purpose (e.g., develop and test a device for watering house plants over a two-week absence)", "observe and record data, and create simple line drawings (e.g., describe plant growth, using qualitative and quantitative observations; draw and describe plant changes resulting from an experimental procedure)", "estimate measurements (e.g., estimate plant populations; estimate the surface area of a leaf)"], "Analyzing and Interpreting": ["identify strengths and weaknesses of different methods of collecting and displaying data(e.g., compare two different ways to measure the amount of moisture in soil; evaluate different ways of presenting data on the health and growth of plants)", "use and/or construct a classification key (e.g., distinguish among several grain varieties, using a classification guide or key)", "compile and display data, by hand or computer, in a variety of formats, including diagrams, flow charts, tables, bar graphs and line graphs (e.g., prepare a record of a plant's growth that charts its development in terms of height, leaf development, flowering and seed production)", "identify new questions and problems that arise from what was learned"], "Communication and Teamwork": ["receive, understand and act on the ideas of others (e.g., adopt and use an agreed procedure for counting or estimating the population of a group of plants)", "communicate questions, ideas, intentions, plans and results, using lists, notes in point form, sentences, data tables, graphs, drawings, oral language and other means (e.g., show the growth of a group of plants over time through a data table and diagrams)", "evaluate individual and group processes used in planning, problem solving, decision making and completing a task"]}}, {"title": "Unit C: Heat and Temperature", "overview": "The production, transfer and transformation of heat energy plays an important role in meeting human needs. In learning about heat, students investigate sources and uses of heat energy and consider the impact of resource usage on our long-term ability to meet energy needs. In focusing their studies, students explore different applications, investigate the scientific principles involved and consider questions about the nature of heat. The particle model of matter is introduced to help students explain their observations and understand relationships between heat and temperature.", "focusingQuestions": "What heat-related technologies do we use to meet human needs? Upon what scientific principles are these technologies based? What implications do these technologies have for sustainable use of resources?", "keyConcepts": ["heat energy needs and technologies", "thermal energy*", "particle model of matter", "temperature", "thermal expansion", "change of state", "heat transfer", "insulation and thermal conductivity", "thermal energy sources", "energy conservation", "* Note: The terms heat energy and thermal energy may both be used in this unit. Heat energy is the more familiar term for younger students and is useful in introducing the topic.Thermal energy is the preferred scientific term and should be introduced during the unit to help prepare students for later grades."], "outcomes": [{"cluster": "1. Illustrate and explain how human needs have led to technologies for obtaining and controlling thermal energy and to increased use of energy resources", "items": ["investigate and interpret examples of heat-related technologies and energy use in the past (e.g., investigate uses of heat for domestic purposes, such as cooking or home heating, and for industrial processes, such as ceramics, metallurgy or use of engines)", "trace linkages between human purposes and the development of heat-related materials and technologies (e.g., development of hair dryers and clothes dryers; development of protective clothing, such as oven mitts, ski suits and survival clothing)", "identify and explain uses of devices and systems to generate, transfer, control or remove thermal energy (e.g., describe how a furnace and wall thermostat keep a house at a constant temperature)How it works: quick video", "identify examples of personal and societal choices in using energy resources and technology (e.g., identify choices that affect the amount of hot water used in their daily routines; identify choices in how that water is heated)"]}, {"cluster": "2. Describe the nature of thermal energy and its effects on different forms of matter, using informal observations, experimental evidence and models", "items": ["compare heat transmission in different materials (e.g., compare conduction of heat in different solids; compare the absorption of radiant heat by different surfaces)", "explain how heat is transmitted by conduction, convection and radiation in solids, liquids and gases", "describe the effect of heat on the motion of particles; and explain changes of state, using the particle model of matter", "distinguish between heat and temperature; and explain temperature, using the concept of kinetic energy and the particle model of matter", "investigate and describe the effects of heating and cooling on the volume of different materials, and identify applications of these effects (e.g., use of expansion joints on bridges and railway tracks to accommodate thermal expansion)"]}, {"cluster": "3. Apply an understanding of heat and temperature in interpreting natural phenomena and technological devices", "items": ["describe ways in which thermal energy is produced naturally (e.g., solar radiation, combustion of fuels, living things, geothermal sources and composting)", "describe examples of passive and active solar heating, and explain the principles that underlie them (e.g., design of homes to maximize use of winter sunshine)", "compare and evaluate materials and designs that maximize or minimize heat energy transfer (e.g., design and build a device that minimizes energy transfer, such as an insulated container for hot drinks; evaluate different window coatings for use in a model home)", "explain the operation of technological devices and systems that respond to temperature change (e.g., thermometers, bimetallic strips, thermostatically-controlled heating systems)", "describe and interpret the function of household devices and systems for generating, transferring, controlling or removing thermal energy (e.g., describe in general terms the operation of heaters, furnaces, refrigerators and air conditioning devices)", "investigate and describe practical problems in controlling and using thermal energy(e.g., heat losses, excess energy consumption, damage to materials caused by uneven heating, risk of fire)"]}, {"cluster": "4. Analyze issues related to the selection and use of thermal technologies, and explain decisions in terms of advantages and disadvantages for sustainability", "items": ["identify and evaluate different sources of heat and the environmental impacts of their use (e.g., identify advantages and disadvantages of fossil fuel use; compare the use of renewable and nonrenewable sources in different applications)", "compare the energy consumption of alternative technologies for heat production and use, and identify related questions and issues (e.g., compare the energy required in alternative cooking technologies, such as electric stoves, gas stoves, microwave ovens and solar cookers; identify issues regarding safety of fuels, hot surfaces and combustion products)", "identify positive and negative consequences of energy use, and describe examples of energy conservation in their home or community"]}], "skills": {"Initiating and Planning": ["identify science-related issues (e.g., identify an economic issue related to heat loss in a building)", "identify questions to investigate arising from a problem or issue (e.g., ask a question about the source of cold air in a building, or about ways to prevent cold areas)", "phrase questions in a testable form, and clearly define practical problems (e.g., rephrase a general question, such as: \"How can we cut heat loss through windows?\" to become \"What effect would the addition of a plastic layer have on heat loss through window glass?\" or \"How would the use of double- or triple-paned windows affect heat loss?\")", "design an experiment, and control the major variables (e.g., design an experiment to evaluate two alternative designs for solar heating a model house)"], "Performing and Recording": ["identify data and information that are relevant to a given problem or issue", "select and integrate information from various print and electronic sources or from several parts of the same source (e.g., describe current solar energy applications in Canada, based on information from a variety of print and electronic sources)", "use instruments effectively and accurately for collecting data (e.g., accurately read temperature scales and use a variety of thermometers; demonstrate skill in downloading text, images, and audio and video files on methods of solar heating)", "carry out procedures, controlling the major variables (e.g., show appropriate attention to controls in investigations of the insulative properties of different materials)"], "Analyzing and Interpreting": ["compile and display data, by hand or computer, in a variety of formats, including diagrams, flow charts, tables, bar graphs and line graphs (e.g., construct a database to enter, compare and present data on the insulative properties of different materials)", "identify, and suggest explanations for, discrepancies in data", "identify and evaluate potential applications of findings (e.g., the application of heat transfer principles to the design of homes and protective clothing)", "test the design of a constructed device or system (e.g., test a personally-constructed heating or cooling device)"], "Communication and Teamwork": ["communicate questions, ideas, intentions, plans and results, using lists, notes in point form, sentences, data tables, graphs, drawings, oral language and other means (e.g., use electronic hardware to generate data summaries and graphs of group data, and present these findings)", "defend a given position on an issue, based on their findings (e.g., defend the use of a particular renewable or nonrenewable source of heat energy in a particular application)"]}}, {"title": "Unit D: Structures and Forces", "overview": "Structures can be found in both natural and human-constructed environments, serving a variety of purposes and taking a wide range of forms. In learning about structures, students investigate the properties of materials used, and test them under different loads and forces. They examine different ways that structural components are configured, analyze forces involved, and investigate resulting effects on structural strength and stability. As part of their study, students also examine construction methods used in the past and the present, and learn how science and technology link together in developing safe and efficient designs that meet human needs.", "focusingQuestions": "How do structures stand up under load? What forces act on structures, and what materials and design characteristics contribute to structural strength and stability?", "keyConcepts": ["structural forms", "material strength and stiffness", "joints", "forces on and within structures (loads and stresses)", "direction of forces", "deformation", "structural stability", "modes of failure", "performance requirements", "margin of safety"], "outcomes": [{"cluster": "1. Describe and interpret different types of structures encountered in everyday objects, buildings, plants and animals; and identify materials from which they are made ✔️", "items": ["recognize and classify structural forms and materials used in construction (e.g., identify examples of frame structures, such as goal posts and girder bridges, examples of shell structures, such as canoes and car roofs, and examples of frame-and-shell structures, such as houses and apartment buildings)", "interpret examples of variation in the design of structures that share a common function, and evaluate the effectiveness of the designs (e.g., compare and evaluate different forms of roofed structures, or different designs for communication towers)", "scavenger hunt - take pics and find three different variations of the structure: for example - cell towers, walking bridges, commercial buildings", "describe and compare example structures developed by different cultures and at different times; and interpret differences in functions, materials and aesthetics (e.g., describe traditional designs of indigenous people and peoples of other cultures; compare classical and current designs; investigate the role of symmetry in design)", "describe and interpret natural structures, including the structure of living things and structures created by animals (e.g., skeletons, exoskeletons, trees, birds' nests)", "identify points of failure and modes of failure in natural and built structures (e.g., potential failure of a tree under snow load, potential failure of an overloaded bridge)"]}, {"cluster": "2. Investigate and analyze forces within structures, and forces applied to them", "items": ["recognize and use units of force and mass, and identify and measure forces and loads", "identify examples of frictional forces and their use in structures (e.g., friction of a nail driven into wood, friction of pilings or footings in soil, friction of stone laid on stone)", "identify tension, compression, shearing and bending forces within a structure; and describe how these forces can cause the structure to fail (e.g., identify tensile forces that cause lengthening and possible snapping of a member; identify bending forces that could lead to breakage)", "analyze a design, and identify properties of materials that are important to individual parts of the structure (e.g., recognize that cables can be used as a component of structures where only tensile forces are involved; recognize that beams are subject to tension on one side and compression on the other; recognize that flexibility is important in some structures)", "infer how the stability of a model structure will be affected by changes in the distribution of mass within the structure and by changes in the design of its foundation(e.g., infer how the stability of a structure will be affected by increasing the width of its foundation)"]}, {"cluster": "3. Investigate and analyze the properties of materials used in structures✔️", "items": ["devise and use methods of testing the strength and flexibility of materials used in a structure (e.g., measure deformation under load)", "identify points in a structure where flexible or fixed joints are required, and evaluate the appropriateness of different types of joints for the particular application (e.g., fixed jointing by welding, gluing or nailing; hinged jointing by use of pins or flexible materials)", "compare structural properties of different materials, including natural materials and synthetics", "investigate and describe the role of different materials found in plant and animal structures (e.g., recognize the role of bone, cartilage and ligaments in vertebrate animals, and the role of different layers of materials in plants)"]}, {"cluster": "4. Demonstrate and describe processes used in developing, evaluating and improving structures that will meet human needs with a margin of safety", "items": ["demonstrate and describe methods to increase the strength of materials through changes in design (e.g., corrugation of surfaces, lamination of adjacent members, changing the shape of components, changing the method of fastening)", "identify environmental factors that may affect the stability and safety of a structure, and describe how these factors are taken into account (e.g., recognize that snow load, wind load and soil characteristics need to be taken into account in building designs; describe example design adaptations used in earthquake-prone regions)", "analyze and evaluate a technological design or process on the basis of identified criteria, such as costs, benefits, safety and potential impact on the environment"]}], "skills": {"Initiating and Planning": ["identify practical problems (e.g., identify a problem related to the stability of a structure)", "propose alternative solutions to a practical problem, select one, and develop a plan(e.g., propose an approach to increasing the stability of a structure)", "select appropriate methods and tools for collecting data to solve problems (e.g., use or develop an appropriate method for determining if the mass of a structure is well distributed over its foundation)", "formulate operational definitions of major variables and other aspects of their investigations (e.g., define flexibility of a component as the amount of deformation for a given load)"], "Performing and Recording": ["research information relevant to a given problem", "organize data, using a format that is appropriate to the task or experiment (e.g., use a database or spreadsheet for recording the deformation of components under different loads)", "carry out procedures, controlling the major variables (e.g., ensure that tests to determine the effect of any one variable are based on changes to that variable only)", "use tools and apparatus safely (e.g., select appropriate tools, and safely apply methods for joining materials; use saws and other cutting tools safely)"], "Analyzing and Interpreting": ["compile and display data, by hand or computer, in a variety of formats, including diagrams, flow charts, tables, bar graphs, line graphs and scatterplots (e.g., plot a graph, showing the deflection of different materials tested under load)", "identify and evaluate potential applications of findings (e.g., identify possible applications of materials for which they have studied the properties)", "test the design of a constructed device or system (e.g., test and evaluate a prototype design of a foundation for a model building to be constructed on sand)", "evaluate designs and prototypes in terms of function, reliability, safety, efficiency, use of materials and impact on the environment", "identify and correct practical problems in the way a prototype or constructed device functions"], "Communication and Teamwork": ["communicate questions, ideas, intentions, plans and results, using lists, notes in point form, sentences, data tables, graphs, drawings, oral language and other means (e.g., produce a work plan, in cooperation with other team members, that identifies criteria for selecting materials and evaluating designs)", "work cooperatively with team members to develop and carry out a plan, and troubleshoot problems as they arise"]}}, {"title": "Unit E: Planet Earth", "overview": "The scientific study of Earth is based on direct observation of landforms and materials that make up Earth's surface and on the sample evidence we have of Earth's interior. By studying this evidence, we discover patterns in the nature and distribution of Earth's materials, and in the kinds of changes that take place. This knowledge can be used in developing models for geologic structures and processes - models that help both scientists and students enlarge their understanding of their observations, and guide further investigation and research.", "focusingQuestions": "What do we know about Earth - about its surface and what lies below? What evidence do we have, and how do we use this evidence in developing an understanding of Earth and its changes?", "keyConcepts": ["strata", "rocks and minerals", "rock cycle: formation of igneous rock, metamorphism and sedimentary processes", "mountain formation: folding and faulting", "crustal movement/plate tectonics", "geological time scale", "fossil formation", "weathering and erosion", "sudden and gradual/incremental change", "development of models based on observation and evidence"], "outcomes": [{"cluster": "1. Describe and demonstrate methods used in the scientific study of Earth and in observing and interpreting its component materials", "items": ["investigate and interpret evidence that Earth's surface undergoes both gradual and sudden change (e.g., recognize earthquakes, volcanoes and landslides as examples of sudden change; recognize glacial erosion and river erosion as examples of gradual/incremental change)", "interpret models that show a layered structure for Earth's interior; and describe, in general terms, evidence for such models", "identify and explain the purpose of different tools and techniques used in the study of Earth (e.g., describe and explain the use of seismographs and coring drills, as well as tools and techniques for the close examination of rocks; describe methods used in oil and gas exploration)", "explain the need for common terminology and conventions in describing rocks and minerals, and apply suitable terms and conventions in describing sample materials(e.g., use common terms in describing the lustre, transparency, cleavage and fracture of rocks and minerals; apply the Mohs' scale in describing mineral hardness)"]}, {"cluster": "2. Identify evidence for the rock cycle, and use the rock cycle concept to interpret and explain the characteristics of particular rocks", "items": ["distinguish between rocks and minerals", "describe characteristics of the three main classes of rocks - igneous, sedimentary and metamorphic - and describe evidence of their formation (e.g., describe evidence of igneous rock formation, based on the study of rocks found in and around volcanoes; describe the role of fossil evidence in interpreting sedimentary rock)", "describe local rocks and sediments, and interpret ways they may have formed", "investigate and interpret examples of weathering, erosion and sedimentation"]}, {"cluster": "3. Investigate and interpret evidence of major changes in landforms and the rock layers that underlie them", "items": ["investigate and interpret patterns in the structure and distribution of mountain formations (e.g., describe and interpret mountain formations of the North American cordillera)", "interpret the structure and development of fold and fault mountains", "describe evidence for crustal movement, and identify and interpret patterns in these movements (e.g., identify evidence of earthquakes and volcanic action along the Pacific Rim; identify evidence of the movement of the Pacific plate relative to the North American plate)", "identify and interpret examples of gradual/incremental change, and predict the results of those changes over extended periods of time (e.g., identify evidence of erosion, and predict the effect of erosional change over a year, century and millennium; project the effect of a given rate of continental drift over a period of one million years)"]}, {"cluster": "4. Describe, interpret and evaluate evidence from the fossil record", "items": ["describe the nature of different kinds of fossils, and identify hypotheses about their formation (e.g., identify the kinds of rocks where fossils are likely to be found; identify the portions of living things most likely to be preserved; identify possible means of preservation, including replacement of one material by another and formation of molds and casts)", "explain and apply methods used to interpret fossils (e.g., identify techniques used for fossil reconstruction, based on knowledge of current living things and findings of related fossils; identify examples of petrified wood and bone)", "describe patterns in the appearance of different life forms, as indicated by the fossil record (e.g., construct and interpret a geological time scale; and describe, in general terms, the evidence that has led to its development)", "identify uncertainties in interpreting individual items of fossil evidence; and explain the role of accumulated evidence in developing accepted scientific ideas, theories and explanations"]}], "skills": {"Initiating and Planning": ["identify questions to investigate (e.g., How are rocks formed?)", "define and delimit questions to facilitate investigation (e.g., ask a question about a sample group of rocks from a specific region, or about a specific type of rock or rock formation)", "state a prediction and a hypothesis based on background information or an observed pattern of events (e.g., predict where an outcrop of a given rock will appear, based on observations at nearby sites)", "formulate operational definitions of major variables and other aspects of their investigations (e.g., define hardness by reference to a set of mineral samples, or by reference to the Mohs' scale of hardness)"], "Performing and Recording": ["carry out procedures, controlling the major variables", "estimate measurements (e.g., estimate the thickness of sedimentary layers)", "research information relevant to a given question (e.g., research information regarding the effect of acid rain on the rate of rock weathering)", "select and integrate information from various print and electronic sources or from several parts of the same source (e.g., demonstrate proficiency in uploading and downloading text, image, audio and video files)", "organize data, using a format that is appropriate to the task or experiment (e.g., use diagrams to show the shape and thickness of different layers in a rock outcrop)"], "Analyzing and Interpreting": ["use or construct a classification key (e.g., apply a classification key to identify a group of rocks from a local gravel yard)", "interpret patterns and trends in data, and infer and explain relationships among the variables (e.g., interpret example graphs of seismic data, and explain the lag time between data received at different locations)", "predict the value of a variable, by interpolating or extrapolating from data (e.g., determine, in a stream table study, the quantity of sediment carried over a half-hour period, then extrapolate the amount that would be carried if the time were extended to a day, month, year or millennium)", "identify and suggest explanations for discrepancies in data (e.g., suggest explanations for an igneous rock being found in a sedimentary formation)", "identify new questions and problems that arise from what was learned (e.g., identify new questions that arise after learning about plate tectonics)"], "Communication and Teamwork": ["work cooperatively with team members to develop and carry out a plan, and troubleshoot problems as they arise (e.g., each group member is assigned a task to investigate a particular mineral, and the results are pooled in a common data table)", "evaluate individual and group processes used in planning, problem solving, decision making and completing a task (e.g., evaluate the relative success and scientific merits of an Earth science field trip organized and guided by themselves)"]}}]}, {"grade": 8, "units": [{"title": "Unit A: Mix and Flow of Matter", "overview": "The materials that we use - including natural and manufactured ones - often take the form of fluids. Students learn that such diverse substances as air, natural gas, water and oil are fluids. In further investigations, they discover that many common household materials are aqueous solutions or suspensions in which the main component is water. Students learn that the properties of individual fluids are important to their use, including such properties as density, buoyancy, viscosity and the fluid's response to changes in temperature and pressure. The particle model of matter is introduced to help students make a conceptual link between the nature of matter and the specific behaviour of fluids.", "focusingQuestions": "What are fluids? What are they made of and how do we use them? What properties of fluids are important to their use?", "keyConcepts": ["WHMIS symbols and nomenclature", "pure substances, mixtures and solutions", "solute and solvent", "concentration", "solubility and saturation points", "particle model of matter", "properties of fluids", "viscosity and flow rate", "mass, volume, density", "pressure", "buoyancy"], "outcomes": [{"cluster": "1. Investigate and describe fluids used in technological devices and everyday materials", "items": ["investigate and identify examples of fluids in household materials, technological devices, living things and natural environments", "explain the Workplace Hazardous Materials Information System (WHMIS) symbols for labelling substances; and describe the safety precautions to follow when handling, storing and disposing of substances at home and in the laboratory", "describe examples in which materials are prepared as fluids in order to facilitate transport, processing or use (e.g., converting mineral ores to liquids or slurries to facilitate transport, use of paint solvents to facilitate mixing and application of pigments, use of soapy water to carry away unwanted particles of material)", "identify properties of fluids that are important in their selection and use (e.g., lubricant properties of oils, compressibility of gases used in tires)"]}, {"cluster": "2. Investigate and describe the composition of fluids, and interpret the behaviour of materials in solution", "items": ["distinguish among pure substances, mixtures and solutions, using common examples (e.g., identify examples found in households)", "investigate the solubility of different materials, and describe their concentration (e.g., describe concentration in grams of solute per 100 mL of solution)", "investigate and identify factors that affect solubility and the rate of dissolving a solute in a solvent (e.g., identify the effect of temperature on solubility; identify the effect of particle size and agitation on rate of dissolving)", "relate the properties of mixtures and solutions to the particle model of matter (e.g., recognize that the attraction between particles of solute and particles of solvent helps keep materials in solution)"]}, {"cluster": "3. Investigate and compare the properties of gases and liquids; and relate variations in their viscosity, density, buoyancy and compressibility to the particle model of matter", "items": ["investigate and compare fluids, based on their viscosity and flow rate, and describe the effects of temperature change on liquid flow", "observe the mass and volume of a liquid, and calculate its density using the formula d = m/v [Note: This outcome does not require students to perform formula manipulations or solve for unknown terms other than the density.]", "compare densities of materials; and explain differences in the density of solids, liquids and gases, using the particle model of matter", "describe methods of altering the density of a fluid, and identify and interpret related practical applications (e.g., describe changes in buoyancy resulting from increasing the concentration of salt in water; observe and describe density currents)", "describe pressure as a force per unit area by using the formula p = F/A, and describe applications of pressure in fluids and everyday situations (e.g., describe pressure exerted by water in hoses, air in tires, carbon dioxide in fire extinguishers; explain the effects of flat heels and stiletto heels, using the concept of pressure)", "investigate and compare the compressibility of liquids and gases"]}, {"cluster": "4. Identify, interpret and apply technologies based on properties of fluids", "items": ["describe technologies based on the solubility of materials (e.g., mining salt or potash by dissolving)", "describe and interpret technologies based on flow rate and viscosity (e.g., heavy oil extraction from tar sands, development of motor oils for different seasons, ketchup/mustard squeeze bottles)", "describe and interpret technologies for moving fluids from one place to another (e.g., intravenous lines, pumps and valves, oil and gas pipelines)", "construct a device that uses the transfer of fluids to apply a force or to control motion (e.g., construct a model hydraulic lift; construct a submersible that can be made to sink or float by transfer of a fluid; construct a model of a pump)"]}], "skills": {"Initiating and Planning": ["define practical problems (e.g., the need to remove a salt coating from a bicycle or vehicle)", "identify questions to investigate, arising from practical problems and issues (e.g., identify questions, such as: \"What factors affect the speed with which a material dissolves?\")", "rephrase questions in a testable form, and clearly define practical problems (e.g., rephrase a question, such as: \"Is salt very soluble?\" to become \"What is the most salt that can be dissolved in one litre of water at 23°C?\")", "design an experiment, and identify the major variables (e.g., design or apply a procedure for measuring the solubility of different materials)"], "Performing and Recording": ["carry out procedures, controlling the major variables (e.g., carry out a test of the viscosity of different fluids)", "use instruments effectively and accurately for collecting data (e.g., measure the mass and volume of a given sample of liquid)", "construct and test prototype designs and systems (e.g., construct a model submarine that is controlled by an air hose connected to a syringe)", "use tools and apparatus safely (e.g., wear safety goggles during investigations of solution properties)", "organize data, using a format that is appropriate to the task or experiment (e.g., demonstrate the use of a database or spreadsheet for organizing information)"], "Analyzing and Interpreting": ["identify and suggest explanations for discrepancies in data (e.g., explain a loss in the volume of a liquid, by identifying such factors as evaporation or absorption by a filtering material)", "predict the value of a variable, by interpolating or extrapolating from graphical data (e.g., extrapolate results to predict how much solute will dissolve in a given solvent at a given temperature)", "identify new questions and problems that arise from what was learned (e.g., identify questions, such as: \"What techniques are used to remove pollutants from air and water?\")", "identify and evaluate potential applications of findings"], "Communication and Teamwork": ["identify and correct practical problems in the way a prototype or constructed device functions (e.g., identify and seal leaks in a model fluid system)", "work cooperatively with team members to develop and carry out a plan, and troubleshoot problems as they arise", "communicate questions, ideas, intentions, plans and results, using lists, notes in point form, sentences, data tables, graphs, drawings, oral language and other means (e.g., show the differences in flow rate, using a data table and diagrams)"]}}, {"title": "Unit B: Cells and Systems", "overview": "Living things take a variety of forms as reflected in their structures, internal processes and ways of responding to their environments. Finding pattern within this diversity has been a major challenge for the biological sciences and has led to the development of ideas, such as systems, cells, structures and functions - ideas developed from the study of all living things. Using these ideas, students learn to interpret life at a variety of levels, from individual cells to complex organisms. To develop their understanding, students investigate ways that components of a living system work together and, through these studies, learn that healthy organisms - including healthy humans - function as balanced systems within a life-supporting environment.", "focusingQuestions": "How can we make sense of the vast diversity of living things? What do living things have in common - from the smallest to the largest - and what variations do we find in the structure and function of living things?", "keyConcepts": ["organisms", "cells", "organs", "tissues", "structure and function", "systems", "response to stimuli", "health and environmental factors"], "outcomes": [{"cluster": "1. Investigate living things; and identify and apply scientific ideas used to interpret their general structure, function and organization", "items": ["investigate and describe example scientific studies of the characteristics of living things (e.g., investigate and describe an ongoing scientific study of a locally-found organism)", "apply the concept of system in describing familiar organisms and analyzing their general structure and function", "illustrate and explain how different organisms have similar functions that are met in a variety of ways (e.g., recognize food gathering as a common function of animals, and note a variety of food-gathering structures)"]}, {"cluster": "2. Investigate and describe the role of cells within living things", "items": ["describe the role of cells as a basic unit of life", "analyze similarities and differences between single-celled and multicelled organisms (e.g., compare, in general terms, an amoeba and a grizzly bear, a single-celled alga and a poplar tree)", "distinguish between plant and animal cells (e.g., distinguish between cell walls and cell membranes)", "describe the movement of gases and liquids into and out of cells during diffusion and osmosis, based on concentration differences [Note: This outcome requires a general understanding of processes, not a detailed analysis of mechanisms.]", "examine plant and animal structures; and identify contributing roles of cells, tissues and organs"]}, {"cluster": "3. Interpret the healthy function of human body systems, and illustrate ways the body reacts to internal and external stimuli", "items": ["describe, in general terms, body systems for respiration, circulation, digestion, excretion and sensory awareness (e.g., describe how blood is circulated throughout the body to carry oxygen and nutrients to the body's various tissues and organs)", "describe, in general terms, the role of individual organs and tissues in supporting the healthy functioning of the human body (e.g., the role of lungs in exchanging oxygen and carbon dioxide, the role of bronchia in providing a passageway for air)", "describe ways in which various types of cells contribute to the healthy functioning of the human body (e.g., describe the roles of individual cells in nerves, muscle, blood, skin and bone)", "describe changes in body functions in response to changing conditions (e.g., changes in heart rate in response to exercise, change in metabolism in response to lower temperature, reflex responses to stimuli)"]}, {"cluster": "4. Describe areas of scientific investigation leading to new knowledge about body systems and to new medical applications", "items": ["identify examples of research into functions and dysfunctions of human cells, organs or body systems", "describe ways in which research about cells, organs and systems has brought about improvements in human health and nutrition (e.g., development of medicines; immunization procedures; diets based on the needs of organs, such as the heart)", "investigate and describe factors that affect the healthy function of the human respiratory, circulatory and digestive systems (e.g., investigate the effect of illness, aging or air quality on the function of the respiratory system)"]}], "skills": {"Initiating and Planning": ["identify questions to investigate (e.g., identify questions that arise from their own observations of plant and animal diversity)", "rephrase questions in a testable form (e.g., rephrase a question, such as: \"Why this structure?\" to become questions, such as: \"How is this structure used by the organism?\", \"How would the organism be affected if this structure were absent or did not function?\" or \"What similar structures do we find in other organisms?\")", "formulate operational definitions of major variables and other aspects of their investigations (e.g., define body systems in terms of the functions they perform)"], "Performing and Recording": ["use instruments - including microscopes - effectively and accurately for collecting data (e.g., use a microscope to produce a clear image of cells)", "estimate measurements (e.g., estimate the size of an object viewed under a microscope)", "observe and record data, and produce simple line drawings (e.g., draw cells and organisms)", "organize data, using a format that is appropriate to the task or experiment (e.g., compare the structure and function of two or more organisms, using charts and drawings)"], "Analyzing and Interpreting": ["identify strengths and weaknesses of different methods of collecting and displaying data (e.g., compare methods of measuring heart rate)", "identify and suggest explanations for discrepancies in data (e.g., explain variations in the heart rate and blood pressure of the same individual at different times during the day)", "compile and display data, by hand or computer, in a variety of formats, including diagrams, flow charts, tables, bar graphs and line graphs (e.g., prepare charts that compare structures of different organisms)", "identify new questions and problems that arise from what was learned"], "Communication and Teamwork": ["receive, understand and act on the ideas of others (e.g., adopt and use an agreed procedure for preparing diagrams and charts)", "communicate questions, ideas, intentions, plans and results, using lists, notes in point form, sentences, data tables, graphs, drawings, oral language and other means", "work cooperatively with team members to develop and carry out a plan (e.g., prepare a class presentation on the digestive system, including a model constructed by the group)", "evaluate individual and group processes used in planning, problem solving, decision making and completing a task (e.g., evaluate processes used in completing a cooperative group project)"]}}, {"title": "Unit C: Light and Optical Systems", "overview": "Our understanding of the world is based largely on what we see - both directly, and aided by optical devices that improve and extend our vision. Such tools as the microscope and telescope have helped extend knowledge in a variety of science fields, from the study of cells and stars to studies of the nature of light itself. In learning about light, students investigate its interactions with different materials and interpret its behaviour using a geometric ray model. Students then use their understanding of light to interpret a variety of light-based technologies and envisage new technologies we may use in the future.", "focusingQuestions": "What do we know about the nature of light? What technologies have been developed that use light, and what principles of light do they show?", "keyConcepts": ["microscopes and telescopes", "contribution of technologies to scientific development", "transmission and absorption of light", "sources of light", "reflection and refraction", "images", "vision and lenses", "imaging technologies"], "outcomes": [{"cluster": "1. Investigate the nature of light and vision; and describe the role of invention, explanation and inquiry in developing our current knowledge", "items": ["identify challenges in explaining the nature of light and vision (e.g., recognize that past explanations for vision involved conflicting ideas about the interaction of eyes and objects viewed; identify challenges in explaining upside-down images, rainbows and mirages)", "investigate the development of microscopes, telescopes and other optical devices; and describe how these developments contributed to the study of light and other areas of science", "investigate light beams and optical devices, and identify phenomena that provide evidence of the nature of light (e.g., evidence provided by viewing the passage of light through dusty air or cloudy water)"]}, {"cluster": "2. Investigate the transmission of light, and describe its behaviour using a geometric ray model", "items": ["investigate how light is reflected, transmitted and absorbed by different materials; and describe differences in the optical properties of various materials (e.g., compare light absorption of different materials; identify materials that transmit light; distinguish between clear and translucent materials; identify materials that will reflect a beam of light as a coherent beam)", "measure and predict angles of reflection", "investigate, measure and describe the refraction of light through different materials (e.g., measure differences in light refraction through pure water, salt water and different oils)", "investigate materials used in optical technologies; and predict the effects of changes in their design, alignment or composition"]}, {"cluster": "3. Investigate and explain the science of image formation and vision, and interpret related technologies", "items": ["demonstrate the formation of real images, using a double convex lens, and predict the effects of changes in the lens position on the size and location of images (e.g., demonstrate a method to produce a magnified or reduced image by altering the placement of one or more lenses)", "demonstrate and explain the use of microscopes; and describe, in general terms, the function of eyeglasses, binoculars and telescopes", "explain how objects are seen by the eye, and compare eyes with cameras (e.g., compare focusing mechanisms; compare the automatic functions of the eye with functions in an automatic camera)", "compare the function and design of the mammalian eye with that of other vertebrates and invertebrates (e.g., amphibians; fish; squid; shellfish; insects, such as the housefly)", "investigate and describe the development of new technologies to enhance human vision (e.g., laser surgery on eyes, development of technologies to extend night vision)", "investigate and interpret emerging technologies for storing and transmitting images in digital form (e.g., digital cameras, infrared imaging, remote imaging technologies)"]}], "skills": {"Initiating and Planning": ["identify questions to investigate (e.g., ask about the role of eyeglasses in improving vision)", "define and delimit questions to facilitate investigation (e.g., rephrase a question, such as: \"Is plastic the best material to use in eyeglasses?\" to become \"Which material refracts light the most?\")", "design an experiment, and identify the major variables", "state a prediction and a hypothesis based on background information or an observed pattern of events (e.g., predict the effect of dissolved materials on the refraction of light in a liquid)", "formulate operational definitions of major variables and other aspects of their investigations (e.g., operationally define \"refraction\" and \"beam of light\")"], "Performing and Recording": ["carry out procedures, controlling the major variables", "observe and record data, and prepare simple line drawings (e.g., prepare a drawing of the path of a light beam toward and away from a mirror)", "use instruments effectively and accurately for collecting data (e.g., measure angles of reflection; use a light sensor to measure light intensity)", "organize data, using a format that is appropriate to the task or experiment (e.g., demonstrate use of a database or spreadsheet for organizing information)", "use tools and apparatus safely (e.g., use lasers only in ways that do not create a risk of light entering anyone's eyes)"], "Analyzing and Interpreting": ["predict the value of a variable by interpolating or extrapolating from graphical data (e.g., predict the angle of a refracted beam of light)", "identify strengths and weaknesses of different ways of collecting and displaying data (e.g., evaluate different approaches to testing a lens)", "state a conclusion, based on experimental data, and explain how evidence gathered supports or refutes an initial idea (e.g., write a conclusion on the effect of dissolved materials on the refraction of light through water)", "identify new questions and problems that arise from what was learned (e.g., ask questions about new technologies for improving human vision and about the principles on which these technologies are based)"], "Communication and Teamwork": ["receive, understand and act on the ideas of others (e.g., act on the suggestions of others in testing and manipulating various lens combinations)", "recommend an appropriate way of summarizing and interpreting their findings (e.g., prepare a drawing and description of an improvised optical device)"]}}, {"title": "Unit D: Mechanical Systems", "overview": "Machines are used for many purposes in our daily lives when we need to transfer energy into motion or move materials in a controlled way. In learning about mechanical devices, students investigate how components are linked so that energy is transferred efficiently and desired functions are performed. A comparison of past and present technologies helps students recognize that different approaches have been used over time to meet common needs. Evaluations of efficiency, effectiveness and impacts on daily life, the community and the environment are important considerations in this unit.", "focusingQuestions": "How is energy transferred in mechanical devices? How do mechanical devices provide for controlled application of energy in ways that are efficient, effective and responsible?", "keyConcepts": ["design and function", "systems and subsystems", "transmission of force and motion", "simple machines", "mechanical advantage, speed ratios and force ratios", "hydraulics and pneumatics", "measurement of work in joules"], "outcomes": [{"cluster": "1. Illustrate the development of science and technology by describing, comparing and interpreting mechanical devices that have been improved over time", "items": ["investigate and provide examples of mechanical devices used in the past to meet particular needs (e.g., describe and interpret devices developed to move water or be moved by water, such as the Persian wheel, Archimedes' screw, mill wheel)", "illustrate how a common need has been met in different ways over time (e.g., development of different kinds of lifting devices)", "illustrate how trial and error and scientific knowledge both play a role in technological development (e.g., development of aircraft)"]}, {"cluster": "2. Analyze machines by describing the structures and functions of the overall system, the subsystems and the component parts", "items": ["analyze a mechanical device, by:", "describing the overall function of the device", "describing the contribution of individual components or subsystems to the overall function of the device", "identifying components that operate as simple machines", "identify the source of energy for some familiar mechanical devices", "identify linkages and power transmissions in a mechanical device, and describe their general function (e.g., identify the purpose and general function of belt drives and gear systems within a mechanical device)"]}, {"cluster": "3. Investigate and describe the transmission of force and energy between parts of a mechanical system", "items": ["analyze mechanical devices to determine speed ratios and force ratios", "build or modify a model mechanical system to provide for different turning ratios between a driving and driven shaft, or to achieve a given force ratio", "compare theoretical and actual values of force ratios, and propose explanations for discrepancies (e.g., identify frictional forces, and estimate their effect on efficiency)", "identify work input and work output in joules for a simple machine or mechanical system (e.g., use a device to lift a measured mass an identified distance, then calculate the work output)", "describe fluid pressure qualitatively and quantitatively, by:", "explaining how forces are transferred in all directions", "describing pressure in units of force per unit area", "describe how hydraulic pressure can be used to create a mechanical advantage in a simple hydraulic jack (e.g., describe the relationship among force, piston size and distance moved, using different sized syringes linked by tubing)", "describe and interpret technologies based on hydraulics and pneumatics (e.g., applications in hydraulic lifts and air-driven tools)"]}, {"cluster": "4. Analyze the social and environmental contexts of science and technology, as they apply to the development of mechanical devices", "items": ["evaluate the design and function of a mechanical device in relation to its efficiency and effectiveness, and identify its impacts on humans and the environment", "develop and apply a set of criteria for evaluating a given mechanical device, and defend those criteria in terms of relevance to social and environmental needs", "illustrate how technological development is influenced by advances in science, and by changes in society and the environment"]}], "skills": {"Initiating and Planning": ["identify practical problems (e.g., identify problems related to the effectiveness or efficiency of a mechanical device)", "identify questions to investigate arising from practical problems (e.g., \"What is the efficiency of this device?\")", "propose alternative solutions to a practical problem, select one, and develop a plan", "select appropriate methods and tools for collecting data to solve problems (e.g., develop or apply appropriate methods for measuring speed ratios and force ratios; plan and conduct a search, using a wide variety of electronic sources)", "formulate operational definitions of major variables and other aspects of their investigations (e.g., define \"frictional force\" by identifying a method to be used for measuring it)"], "Performing and Recording": ["research information relevant to a given problem", "select and integrate information from various print and electronic sources or from several parts of the same source", "construct and test prototype designs and systems", "carry out procedures, controlling the major variables (e.g., ensure that materials to be tested are of the same size and are tested under identical conditions)", "organize data, using a format that is appropriate to the task or experiment", "use tools and apparatus safely"], "Analyzing and Interpreting": ["identify and correct practical problems in the way a prototype or constructed device functions", "evaluate designs and prototypes in terms of function, reliability, safety, efficiency, use of materials and impact on the environment (e.g., test and evaluate the efficiency and reliability of a prototype device to lift a given mass from the floor to a tabletop)", "identify and evaluate potential applications of findings (e.g., identify possible applications of a simple machine or mechanical system they have studied)"], "Communication and Teamwork": ["use specific language that is scientifically and technologically appropriate (e.g., use such terms as \"system,\" \"subsystem,\" \"component\" and \"function\" in describing a mechanical system)", "communicate practical problems, plans and results in a variety of ways, using written and oral language, data tables, graphs, drawings and other means (e.g., describe, using pictures and words, the transmission of a force through a mechanical system)", "work cooperatively with team members to develop and carry out a plan, and troubleshoot problems as they arise"]}}, {"title": "Unit E: Freshwater and Saltwater Systems", "overview": "Earth is sometimes described as the water planet: over two-thirds of Earth's surface is covered by oceans and freshwater features. By exploring examples of aquatic systems, students come to appreciate the dynamic nature of these systems and learn about the interaction of landforms, sediments, water and climate. Students also investigate factors that affect the distribution and health of living things in aquatic environments and the supply and quality of water for human use.", "focusingQuestions": "How do water, land and climate interact? What are the characteristics of freshwater and saltwater systems, and how do they affect living things, including humans?", "keyConcepts": ["water quality", "water-borne materials", "erosion and deposition", "stream characteristics", "continental drainage systems", "ocean basins", "climate", "glaciers and icecaps", "adaptations to aquatic ecosystems", "human impact"], "outcomes": [{"cluster": "1. Describe the distribution and characteristics of water in local and global environments, and identify the significance of water supply and quality to the needs of humans and other living things", "items": ["describe, in general terms, the distribution of water in Alberta, Canada and the world; and interpret information about water characteristics (e.g., identify glaciers, snow, polar icecaps, ground water and oceans as components of Earth's water; interpret graphical information on the availability of potable water)", "recognize that fresh water and salt water contain varying amounts of dissolved materials, particulates and biological components; and interpret information on these component materials", "identify major factors used in determining if water is potable, and describe and demonstrate tests of water quality (e.g., investigate and describe the physical characteristics of a sample of water, such as clarity, salinity and hardness; investigate biological tests)", "describe, in general terms, methods for generating fresh water from salt water, based on evaporation, distillation and reverse osmosis"]}, {"cluster": "2. Investigate and interpret linkages among landforms, water and climate", "items": ["describe the processes of erosion and deposition resulting from wave action and water flow, by:", "identifying dissolved solids and sediment loads, and identifying sources and endpoints for these materials", "describing how waves and tides are generated and how they interact with shorelines", "investigate and describe stream characteristics (e.g., describe the slope, flow rate and stream profile characteristics of a model stream on a stream table)", "describe processes leading to the development of ocean basins and continental drainage systems (e.g., describe the formation of geological features on the ocean floor, such as continental shelves and trenches)", "identify evidence of glacial action, and analyze factors affecting the growth and attrition of glaciers and polar icecaps (e.g., identify factors that affect the size of polar ice sheets and the Columbia Icefield)", "describe the movement of ocean currents and its impact on regional climates (e.g., effects of the Gulf Stream, Labrador Current, El Niño, La Niña)"]}, {"cluster": "3. Analyze factors affecting productivity and species distribution in marine and freshwater environments", "items": ["investigate life forms found in fresh water and salt water, and identify and interpret examples of adaptations to these environments (e.g., describe and interpret examples of fish and invertebrate species found in a local freshwater environment)", "analyze factors that contribute to the development of adaptations in species found in saltwater and freshwater environments", "investigate and interpret examples of seasonal, short-term and long-term change in populations of living things found in aquatic environments (e.g., algal blooms, changes in local freshwater fish populations, cod and salmon stock depletion)", "analyze relationships between water quality and living things, and infer the quality of water based on the diversity of life supported by it"]}, {"cluster": "4. Analyze human impacts on aquatic systems; and identify the roles of science and technology in addressing related questions, problems and issues", "items": ["analyze human water uses, and identify the nature and scope of impacts resulting from different uses (e.g., identify pollutants in ground water and surface water systems resulting from domestic and industrial use; analyze the effects of agriculture and forestry practices on stream flow and water quality)", "identify current practices and technologies that affect water quality, evaluate environmental costs and benefits, and identify and evaluate alternatives (e.g., research and analyze alternatives for ensuring safe supplies of potable water; research, analyze and debate alternatives for a specific water quality issue, such as the location and design of a landfill, the protection of a natural waterway, the use of secondary and tertiary wastewater treatment, the salinization of soils due to irrigation, the eutrophication of ponds and streams due to excess use of phosphates in fertilizers and detergents, or a proposal to export water resources)", "illustrate the role of scientific research in monitoring environments and supporting development of appropriate environmental technologies (e.g., describe a local example of aquatic monitoring, and describe how this research contributes to watershed management)", "provide examples of problems that cannot be solved using scientific and technological knowledge alone (e.g., the need to prevent pollutants from entering aquatic environments, the need to avoid damage from ice sheets and icebergs)"]}], "skills": {"Initiating and Planning": ["identify science-related issues and problems", "identify questions to investigate, arising from science-related issues", "select appropriate methods and tools for collecting relevant data and information (e.g., plan and conduct a search, using a wide variety of electronic sources)", "design an experiment, and identify the major variables (e.g., design an experiment to compare the characteristics of two water samples)"], "Performing and Recording": ["research information relevant to a given issue", "select and integrate information from various print and electronic sources or from several parts of the same source (e.g., summarize information on a river basin)", "identify strengths and weaknesses of different methods of collecting and displaying data (e.g., identify strengths and weaknesses of technologies used to monitor and map changes in stream flow)"], "Analyzing and Interpreting": ["apply given criteria for evaluating evidence and sources of information (e.g., assess the authenticity and reliability of electronic sources)", "predict the value of a variable, by interpolating or extrapolating from graphical data (e.g., predict future stocks of fish based on long-term data)", "interpret patterns and trends in data, and infer and explain relationships among the variables (e.g., relate climates to proximity to oceans and to the characteristics of ocean currents)", "identify new questions and problems arising from what was learned (e.g., identify questions, such as: \"Can ocean currents be modified?\", \"Is kelp a viable source of food?\", \"How would icecap melting change Canadian coastlines?\")"], "Communication and Teamwork": ["use appropriate vocabulary, including correct science and technology terminology, to communicate ideas, procedures and results (e.g., use such terms as salinity, currents and basins when describing oceans and their characteristics)", "communicate questions, ideas, intentions, plans and results, using lists, notes in point form, sentences, data tables, graphs, drawings, oral language and other means (e.g., create a concept map, linking the different stages of the water cycle; prepare a multimedia presentation on changing climatic conditions and the effects on glaciers, ice sheets and water levels, incorporating graphics, audio, visuals and text gathered from remote sources)", "evaluate individual and group processes used in planning, problem solving, decision making and completing a task (e.g., discuss advantages and disadvantages of different research methods and sources used to gather information on an ocean basin)", "defend a given position on an issue, based on their findings"]}}]}, {"grade": 9, "units": [{"title": "Unit A: Biological Diversity", "overview": "Biological diversity is reflected in the range of species found in local and global environments and by subtle variations in characteristics found within individual species. In this unit, students learn that diversity is maintained through natural processes of sexual and asexual reproduction, though the survival of individual species - and variations within those species - may be influenced by ecological and human-caused factors. Students examine trends toward loss of diversity and examine related issues concerning environmental quality and the impact of technologies.", "focusingQuestions": "What is biological diversity, and by what processes do diverse living things pass on their characteristics to future generations? What impact does human activity have on biological diversity?", "keyConcepts": ["biological diversity", "species", "diversity within species", "habitat diversity", "niches", "populations", "asexual and sexual reproduction", "inheritance", "chromosomes, genes and DNA (introductory treatment)", "cell division - includes binary fission and formation of sex cells", "natural and artificial selection of genetic characteristics"], "outcomes": [{"cluster": "1. Investigate and interpret diversity among species and within species, and describe how diversity contributes to species survival", "items": ["observe variation in living things, and describe examples of variation among species and within species (e.g., observe and describe characteristics that distinguish two closely related species)", "identify examples of niches, and describe the role of variation in enabling closely related living things to survive in the same ecosystem (e.g., investigate different bird species found in a local park ecosystem, and infer how each is adapted to life within that ecosystem)", "investigate and interpret dependencies among species that link the survival of one species to the survival of others", "identify examples of symbiotic relationships (e.g., organisms that benefit other organisms by providing habitat, food, means of fertilization, or a source of oxygen)", "classify symbiotic relationships as mutualism, commensalism, parasitism", "identify the role of variation in species survival under changing environmental conditions (e.g., resistance to disease, ability to survive in severe environments)"]}, {"cluster": "2. Investigate the nature of reproductive processes and their role in transmitting species characteristics", "items": ["distinguish between sexual and asexual reproduction, and identify and interpret examples of asexual and sexual reproduction in different species, by:", "describing mechanisms of asexual reproduction including binary fission, budding and the production of spores", "describing mechanisms of sexual reproduction (e.g., cross-fertilization in seed plants, sexual reproduction in mammals)", "describing examples of organisms that show both sexual and asexual reproduction (e.g., yeasts that reproduce both by budding and sexual reproduction; plants that reproduce through suckering, runners or bulbs, as well as by seed production)", "describing the formation of zygote and embryo in plant and animal reproduction", "describe examples of variation of characteristics within a species, and identify examples of both discrete and continuous variation (e.g., hand clasping preference is an example of a discrete variation, the length of human hands varies on a continuum)", "investigate the transmission of characteristics from parents to offspring, and identify examples of characteristics in offspring that are:", "the same as the characteristics of both parents", "the same as the characteristics of one parent", "intermediate between parent characteristics", "different from both parents", "distinguish those characteristics that are heritable from those that are not heritable, and identify characteristics for which heredity and environment may both play a role (e.g., recognize that eye colour is heritable but that scars are not; recognize that a person's height and weight may be largely determined by heredity but that diet may also play a role)", "identify examples of dominant and recessive characteristics and recognize that dominance and recessiveness provide only a partial explanation for the variation of characteristics in offspring"]}, {"cluster": "3. Describe, in general terms, the role of genetic materials in the continuity and variation of species characteristics; and investigate and interpret related technologies", "items": ["describe, in general terms, the relationship of chromosomes, genes and DNA; and interpret their role as repositories of genetic information", "distinguish between cell division that leads to identical daughter cells, as in binary fission and mitosis, and cell division that leads to formation of sex cells, as in meiosis; and describe, in general terms, the synthesis of genetic materials that takes place during fertilization [Note: At this level, students should understand that the formation of sex cells involves the halving of the parent cell's genetic materials and that this process leads to zygote formation. Opportunity for further study of the specific mechanisms of cell division - mitosis and meiosis - will be provided in senior high school courses.]", "compare sexual and asexual reproduction, in terms of the advantages and disadvantages (e.g., recognize that asexual reproduction provides an efficient means of transmitting characteristics and that sexual reproduction provides an opportunity for recombination of characteristics)", "distinguish between, and identify examples of, natural and artificial selection (e.g., evolution of beak shapes in birds, development of high milk production in dairy cows)", "describe, in simple terms, some of the newly emerging technologies for recombining genetic material; and identify questions and issues related to their application"]}, {"cluster": "4. Identify impacts of human action on species survival and variation within species, and analyze related issues for personal and public decision making", "items": ["describe the relative abundance of species on Earth and in different environments (e.g., note the overall abundance of insect species; note that in harsh environments there are relatively fewer species found than in temperate and tropical environments)", "describe ongoing changes in biological diversity through extinction and extirpation of native species, and investigate the role of environmental factors in causing these changes (e.g., investigate the effect of changing river characteristics on the variety of species living in the river; investigate the effect of changing land use on the survival of wolf or grizzly bear populations)", "evaluate the success and limitations of various local and global strategies for minimizing loss of species diversity (e.g., breeding of endangered populations in zoos, development of seed banks, designating protected areas, development of international treaties regulating trade of protected species and animal parts)", "investigate and describe the use of biotechnology in environmental, agricultural or forest management; and identify potential impacts and issues (e.g., investigate issues related to the development of patented crop varieties and varieties that require extensive chemical treatments; identify issues related to selective breeding in game farming and in the rearing of fish stocks)"]}], "skills": {"Initiating and Planning": ["identify science-related issues (e.g., identify issues related to loss of species diversity)", "identify questions to investigate arising from science-related issues (e.g., \"What factors affect the ability of organisms to survive and reproduce in this ecosystem?\")", "state a prediction and a hypothesis based on background information or an observed pattern of events (e.g., predict changes to an area of local parkland that is subject to intense use; hypothesize means of impact, such as soil compaction and disturbance of nest sites)", "define and delimit questions and problems to facilitate investigation (e.g., delimit an electronic search for information on species survival by framing a question about a specific group of organisms or a specific ecosystem)"], "Performing and Recording": ["observe and record data, and prepare simple line drawings (e.g., compare two related plants by measuring, describing and drawing them)", "estimate measurements (e.g., estimate the population of a given plant species within a study plot)", "research information related to a given issue (e.g., conduct an electronic search for information on factors that affect the reproduction and survival of wood frogs)"], "Analyzing and Interpreting": ["identify strengths and weaknesses of different ways of displaying data (e.g., compare different ways of recording and displaying data on plant variation in a study plot)", "interpret patterns and trends in data, and infer and explain relationships among the variables (e.g., interpret data on changing animal populations, and infer possible causes)", "apply given criteria for evaluating evidence and sources of information (e.g., evaluate sources based on their currency, credibility and the extent to which claims are supported by data)", "identify new questions and problems that arise from what was learned"], "Communication and Teamwork": ["communicate questions, ideas, intentions, plans and results, using lists, notes in point form, sentences, data tables, graphs, drawings, oral language and other means (e.g., illustrate and compare methods of reproduction in sample organisms studied)", "evaluate individual and group processes used in investigating an issue and evaluating alternative decisions (e.g., evaluate strategies for locating information, such as the use of particular key words or search tools; evaluate approaches for sharing work on a given research task and for synthesizing the information found)", "defend a given position on an issue, based on their findings (e.g., defend a position on a proposed measure to protect a particular plant or animal population)"]}}, {"title": "Unit B: Matter and Chemical Change", "overview": "Different materials have different properties. The ability to distinguish between different substances and make sense of their properties, interactions and changes requires the development of ideas about chemical substance.", "focusingQuestions": "What are the properties of materials, and what happens to them during chemical change? What evidence do we have of chemical change; and what ideas, theories or models help us explain that evidence?", "keyConcepts": ["Workplace Hazardous Materials Information System (WHMIS) and safety", "substances and properties", "endothermic and exothermic reactions", "reactants and products", "conservation of mass", "factors affecting reaction rates", "periodic table", "elements, compounds and atomic theory", "chemical nomenclature (introductory treatment)"], "outcomes": [{"cluster": "1. Investigate materials, and describe them in terms of their physical and chemical properties", "items": ["investigate and describe properties of materials (e.g., investigate and describe the melting point, solubility and conductivity of materials observed)", "describe and apply different ways of classifying materials based on their composition and properties, including:", "distinguishing between pure substances, solutions and mechanical mixtures", "distinguishing between metals and nonmetals", "identifying and applying other methods of classification", "identify conditions under which properties of a material are changed, and critically evaluate if a new substance has been produced"]}, {"cluster": "2. Describe and interpret patterns in chemical reactions", "items": ["identify and evaluate dangers of caustic materials and potentially explosive reactions", "observe and describe evidence of chemical change in reactions between familiar materials, by:", "describing combustion, corrosion and other reactions involving oxygen", "observing and inferring evidence of chemical reactions between familiar household materials", "distinguish between materials that react readily and those that do not (e.g., compare reactions of different metals to a dilute corrosive solution)", "observe and describe patterns of chemical change, by:", "observing heat generated or absorbed in chemical reactions, and identifying examples of exothermic and endothermic reactions", "identifying conditions that affect rates of reactions (e.g., investigate and describe how factors such as heat, concentration, surface area and electrical energy can affect a chemical reaction)", "identifying evidence for conservation of mass in chemical reactions, and demonstrating and describing techniques by which that evidence is gathered."]}, {"cluster": "3. Describe ideas used in interpreting the chemical nature of matter, both in the past and present, and identify example evidence that has contributed to the development of these ideas", "items": ["demonstrate understanding of the origins of the periodic table, and relate patterns in the physical and chemical properties of elements to their positions in the periodic table—focusing on the first 18 elements", "distinguish between observation and theory, and provide examples of how models and theoretical ideas are used in explaining observations (e.g., describe how observations of electrical properties of materials led to ideas about electrons and protons; describe how observed differences in the densities of materials are explained, in part, using ideas about the mass of individual atoms)", "use the periodic table to identify the number of protons, electrons and other information about each atom; and describe, in general terms, the relationship between the structure of atoms in each group and the properties of elements in that group (e.g., use the periodic table to determine that sodium has 11 electrons and protons and, on average, about 12 neutrons; infer that different rows (periods) on the table reflect differences in atomic structure; interpret information on ion charges provided in some periodic tables) [Note: Knowledge of specific orbital structures for elements and groups of elements is not required at this grade level.]", "distinguish between ionic and molecular compounds, and describe the properties of some common examples of each"]}, {"cluster": "4. Apply simplified chemical nomenclature in describing elements, compounds and chemical reactions", "items": ["read and interpret chemical formulas for compounds of two elements, and give the IUPAC (International Union of Pure and Applied Chemistry) name and common name of these compounds (e.g., give, verbally and in writing, the name for NaCl(s) (sodium chloride), CO2(g) (carbon dioxide), MgO(s) (magnesium oxide), NH3(g) (nitrogen trihydride or ammonia), CH4(g) (carbon tetrahydride or methane), FeCl2(s) (iron(II) chloride), FeCl3(s) (iron(III) chloride)", "identify/describe chemicals commonly found in the home, and write the chemical symbols (e.g., table salt [NaCl(s)], water [H2O(l)], sodium hydroxide [NaOH(aq)] used in household cleaning supplies)", "identify examples of combining ratios/number of atoms per molecule found in some common materials, and use information on ion charges to predict combining ratios in ionic compounds of two elements (e.g., identify the number of atoms per molecule signified by the chemical formulas for CO(g) and CO2(g); predict combining ratios of iron and oxygen based on information on ion charges of iron and oxygen)", "assemble or draw simple models of molecular and ionic compounds (e.g., construct models of some carbon compounds using toothpicks, peas and cubes of potato) [Note: Diagrams and models should show the relative positions of atoms. Diagrams of orbital structures are not required at this grade level.]", "describe familiar chemical reactions, and represent these reactions by using word equations and chemical formulas and by constructing models of reactants and products (e.g., describe combustion reactions, such as: carbon + oxygen → carbon dioxide [C(s) + O2(g) → CO2(g)]; describe corrosion reactions, such as: iron + oxygen→ iron(II) oxide [Fe(s) + O2(g)→ FeO(s)]; describe replacement reactions, such as the following: zinc + copper(II) sulfate→ zinc sulfate + copper [Zn(s) + CuSO4(aq) → ZnSO4(aq) + Cu(s)]) [Note 1: This outcome does not require students to explain the formation of polyatomic ions. Some chemicals with polyatomic ions may nevertheless be introduced; e.g., a brief introduction to CuSO4(s), ZnSO4(s) and H2SO4(aq) can help prepare students for further study of these materials in units C and D.] [Note 2: At this grade level, students are not required to balance reactants and products in chemical equations. Teachers may want to inform students about opportunities for further study of chemistry in Science 10 and in Science 14-24.]"]}], "skills": {"Initiating and Planning": ["identify questions to investigate (e.g., ask questions about the reactivity of particular materials or about conditions that affect the rate of reaction, after observing that materials react at different rates)", "define and delimit questions and problems to facilitate investigation (e.g., reframe a general question, such as: \"What affects the speed of reactions?\" to become one or more specific questions, such as: \"How will temperature affect the rate of reaction between materials x and y?\" or \"How will moisture affect the rate of reaction between x and y?\")", "state a prediction and a hypothesis based on background information or an observed pattern of events", "select appropriate methods and tools for collecting data and information and for solving problems (e.g., plan and conduct a search for information about chemical elements, using appropriate print and electronic sources)"], "Performing and Recording": ["carry out procedures, controlling the major variables (e.g., investigate the effect of particle size on a chemical reaction, taking care to identify and control other potentially relevant variables)", "observe and record data, and prepare simple drawings (e.g., represent a molecule studied through a drawing)", "demonstrate knowledge of WHMIS standards, by using proper techniques for handling and disposing of laboratory materials", "research information relevant to a given question (e.g., research properties of materials)"], "Analyzing and Interpreting": ["compile and display data, by hand or computer, in a variety of formats, including diagrams, flow charts, tables, bar graphs, line graphs and scatterplots (e.g., present data on different chemical substances in a form that facilitates interpretation)", "calculate theoretical values of a variable (e.g., predict the total mass of the products of a chemical reaction, based on the mass of the reactants used) [Note: In this example, students can apply the law of conservation of mass.]", "identify and suggest explanations for discrepancies in data", "state a conclusion, based on experimental data, and explain how evidence gathered supports or refutes an initial idea", "identify new questions and problems that arise from what was learned (e.g., identify new questions, such as: \"Why do different compounds containing the same elements behave differently?\" or \"How do atoms stick together in a molecule?\")"], "Communication and Teamwork": ["receive, understand and act on the ideas of others (e.g., follow given safety procedures)", "evaluate individual and group processes used in planning and carrying out investigative tasks (e.g., evaluate the relative success and scientific merits of different approaches to drawing and making models of molecules)"]}}, {"title": "Unit C: Environmental Chemistry", "overview": "Environments are often viewed from a physical and biological perspective, but to fully understand how they function, it is important to view them from a chemical perspective as well. A study of environmental chemistry helps students understand that chemical substances make up the underlying fabric of the world and are part of the process in all natural cycles and changes. Through this unit, students also become aware of human-produced chemical substances that enter and interact with environments, and they investigate potential impacts of different substances on the distribution and abundance of living things.", "focusingQuestions": "What substances do we find in local and global environments? What role do they play, and how do changes in their concentration and distribution affect living things?", "keyConcepts": ["chemicals essential to life", "substrates and nutrients", "air and water quality", "organic and inorganic material", "acids and bases", "ingestion and absorption of materials", "concentration and dispersal", "evidence of toxicity", "stability and biodegradability", "hazards, probabilities and risk assessment", "uncertainties in environmental monitoring and in assessing toxicity and risk"], "outcomes": [{"cluster": "1. Investigate and describe, in general terms, the role of different substances in the environment in supporting or harming humans and other living things", "items": ["identify common organic and inorganic substances that are essential to the health and growth of humans and other living things, and illustrate the roles served by these materials (e.g., identify calcium as an essential material for bones; identify minerals that are known to enhance plant growth but that limit growth if too little or too much is available)", "describe, in general terms, the forms of organic matter synthesized by plants and animals, including carbohydrates, proteins and lipids", "describe and illustrate processes by which chemicals are introduced to the environment or their concentrations are changed (e.g., dilution in streams, biomagnification through food chains)", "describe the uptake of materials by living things through ingestion or absorption, and investigate and describe evidence that some materials are difficult for organisms to break down or eliminate (e.g., DDT, mercury)", "identify questions that may need to be addressed in deciding what substances - in what amounts - can be safely released into the environment (e.g., identify questions and considerations that may be important in determining how much phosphate can be released into river water without significant harm to living things)"]}, {"cluster": "2. Identify processes for measuring the quantity of different substances in the environment and for monitoring air and water quality", "items": ["identify substrates and nutrient sources for living things within a variety of environments", "describe and illustrate the use of biological monitoring as one method for determining environmental quality (e.g., assess water quality, by observing the relative abundance of various vertebrate and invertebrate species)", "identify chemical factors in an environment that might affect the health and distribution of living things in that environment (e.g., available oxygen, pH, dissolved nutrients in soil)", "apply and interpret measures of chemical concentration in parts per million, billion or trillion", "identify acids, bases and neutral substances, based on measures of their pH (e.g., use indicator solutions or pH meters to measure the pH of water samples)", "investigate, safely, and describe the effects of acids and bases on each other and on other substances (e.g., investigate and describe the reaction that results when baking powder is dissolved; describe the role of acids and bases in neutralizing each other)", "describe effects of acids and bases on living things (e.g., acid rain in lakes, antacids for upset stomachs, pH in shampoos and conditioners)"]}, {"cluster": "3. Analyze and evaluate mechanisms affecting the distribution of potentially harmful substances within an environment", "items": ["describe mechanisms for the transfer of materials through air, water and soil; and identify factors that may accelerate or retard distribution (e.g., wind speed, soil porosity)", "describe mechanisms for biodegradation, and interpret information on the biodegradability of different materials", "comprehend information on the biological impacts of hazardous chemicals on local and global environments, by:", "interpreting evidence for environmental changes in the vicinity of a substance release", "interpreting LD50 data and other information on toxicity [Note: LD50 refers to the amount of a substance found to be lethal to 50% of a population, if ingested.]", "identifying concerns with the disposal of domestic wastes, such as paints and oils, and industrial wastes", "investigate and evaluate potential risks resulting from consumer practices and industrial processes, and identify processes used in providing information and setting standards to manage these risks (e.g., interpret and explain the significance of manufacturer's information on how wood preservatives can be safely applied; recognize that some individuals may have greater sensitivity to particular chemical substances than do others in the general population)", "identify and evaluate information and evidence related to an issue in which environmental chemistry plays a major role (e.g., evaluate evidence that the use of insecticides to control mosquitoes has an effect/has no effect on bird populations)"]}], "skills": {"Initiating and Planning": ["identify science-related issues (e.g., identify issues regarding the use of soil fertilizers)", "identify questions arising from practical problems and issues (e.g., ask questions about the needs of different living things for nutrients and about the mechanisms by which these nutrients are obtained)", "state a prediction and a hypothesis about the concentration or dispersal of a chemical substance within an environment (e.g., state a hypothesis that relates the amount of oxygen in a local water sample to the presence or absence of dissolved nutrients)", "select appropriate methods and tools for collecting data and information and for solving problems (e.g., design an investigation to compare the chemical characteristics of two soils)"], "Performing and Recording": ["identify data and information that are relevant to the issue", "select and integrate information that is relevant to the issue (e.g., demonstrate proficiency in uploading and downloading text, image, audio and video files)", "use instruments and materials effectively and accurately for collecting data (e.g., measure and compare the pH in household products, foods and environments)", "organize data, using a format that is appropriate to the task or experiment", "use tools and apparatus safely"], "Analyzing and Interpreting": ["identify strengths and weaknesses of different ways of displaying data", "identify and suggest explanations for discrepancies in data (e.g., identify possible reasons for variation in the measured concentration of a chemical, where one sample is very different from others or where one group has a very different result from others)", "identify the line of best fit on a scatterplot, and interpolate or extrapolate based on the line of best fit (e.g., interpret class data on the effects of acidity on mould growth, graph the data, prepare a line of best fit, and predict the amount of growth that might be expected at different acidity values)", "apply given criteria for evaluating evidence and sources of information (e.g., use scatterplot data in evaluating how strong a relationship exists between two variables; evaluate claims of environmental impacts, based on the scope and relevance of supporting evidence)"], "Communication and Teamwork": ["work cooperatively with team members to develop and carry out a plan, and troubleshoot problems as they arise", "receive, understand and act on the ideas of others (e.g., seek and achieve group consensus on procedures to be used in an investigative activity, and act on that consensus)", "defend a given position on an issue or problem, based on their findings (e.g., provide a clear rationale for a choice between alternative chemical products in a consumer application)"]}}, {"title": "Unit D: Electrical Principles and Technologies", "overview": "Electricity provides the means to energize many devices, systems and processes that are part of our technological environment. Electrical devices are used to transfer and transform energy, to provide mechanisms for control and to transmit information in a variety of forms. In this unit, students learn the principles that underlie electrical technologies, by studying the form and function of electrical devices and by investigating ways to transfer, modify, measure, transform and control electrical energy. Using a problem-solving approach, students create and modify circuits to meet a variety of needs. Students also develop skills for evaluating technologies, by comparing alternative designs and by considering their efficiency, effectiveness and environmental impact.", "focusingQuestions": "How do we obtain and use electrical energy? What scientific principles are involved? What approaches can we use in selecting, developing and using energy-consuming devices that are efficient and effective in their energy use?", "keyConcepts": ["forms of energy", "energy transformation", "generation of electrical energy", "electric charge and current", "circuits", "electrical energy storage", "energy transmission", "measures and units of electrical energy", "electrical resistance and Ohm's law", "renewable and nonrenewable energy"], "outcomes": [{"cluster": "1. Investigate and interpret the use of devices to convert various forms of energy to electrical energy and electrical energy to other forms of energy", "items": ["identify, describe and interpret examples of mechanical, chemical, thermal, electrical and light energy", "investigate and describe evidence of energy transfer and transformation (e.g., mechanical energy transformed into electrical energy, electrical energy transferred through power grids, chemical energy converted to electrical energy and then to light energy in a flashlight, thermal energy converted to electrical energy in a thermocouple)", "investigate and evaluate the use of different electrodes, electrolytes and electrolytic concentrations in designing electrical storage cells", "construct, use and evaluate devices for transforming mechanical energy into electrical energy and for transforming electrical energy into mechanical energy", "modify the design of an electrical device, and observe and evaluate resulting changes (e.g., investigate the effect of changes in the orientation and placement of magnets, commutator and armature in a St. Louis motor or in a personally-built model of a motor)"]}, {"cluster": "2. Describe technologies for transfer and control of electrical energy", "items": ["assess the potential danger of electrical devices, by referring to the voltage and current rating (amperage) of the devices; and distinguish between safe and unsafe activities", "distinguish between static and current electricity, and identify example evidence of each", "identify electrical conductors and insulators, and compare the resistance of different materials to electric flow (e.g., compare the resistance of copper wire and nickel-chromium/Nichrome wire; investigate the conduction of electricity through different solutions; investigate applications of electrical resistance in polygraph or lie detector tests)", "use switches and resistors to control electrical flow, and predict the effects of these and other devices in given applications (e.g., investigate and describe the operation of a rheostat)", "describe, using models, the nature of electrical current; and explain the relationship among current, resistance and voltage (e.g., use a hydro-flow model to explain current, resistance and voltage)", "measure voltages and amperages in circuits (e.g., determine the resistance in a circuit with a dry cell and miniature light; determine the resistances of copper, nickel-chromium/ Nichrome wire, pencil graphite and salt solution)", "apply Ohm’s law to calculate resistance, voltage and current in simple circuits", "develop, test and troubleshoot circuit designs for a variety of specific purposes, based on low voltage circuits (e.g., develop and test a device that is activated by a photoelectric cell; develop a model hoist that will lift a load to a given level, then stop and release its load; test and evaluate the use of series and parallel circuits for wiring a set of lights)", "investigate toys, models and household appliances; and draw circuit diagrams to show the flow of electricity through them (e.g., safely dismantle discarded devices, such as heating devices or motorized toys, and draw diagrams to show the loads, conductors and switching mechanisms)", "identify similarities and differences between microelectronic circuits and circuits in a house (e.g., compare switches in a house with transistors in a microcircuit)"]}, {"cluster": "3. Identify and estimate energy inputs and outputs for example devices and systems, and evaluate the efficiency of energy conversions", "items": ["identify the forms of energy inputs and outputs in a device or system", "apply appropriate units, measures and devices in determining and describing quantities of energy transformed by an electrical device, by:", "measuring amperage and voltage, and calculating the number of watts consumed by an electrical device, using the formula P = IV [power (in watts) = current (in amps) × voltage (in volts)]", "calculating the quantity of electric energy, in joules, transformed by an electrical device, using the formula E = P × t [energy (in joules) = power (in watts) × time (in seconds)]", "apply the concepts of conservation of energy and efficiency to the analysis of energy devices (e.g., identify examples of energy dissipation in the form of heat, and describe the effect of these losses on useful energy output)", "compare energy inputs and outputs of a device, and calculate its efficiency, using the formula, percent efficiency = energy output/energy input × 100 (e.g., compare the number of joules of energy used with the number of joules of work produced, given information on electrical consumption and work output of a motor-driven device)", "investigate and describe techniques for reducing waste of energy in common household devices (e.g., by eliminating sources of friction in mechanical components, using more efficient forms of lighting, reducing overuse of appliances as in \"overdrying\" of clothes)"]}, {"cluster": "4. Describe and discuss the societal and environmental implications of the use of electrical energy", "items": ["identify and evaluate sources of electrical energy, including oil, gas, coal, biomass, wind and solar (e.g., identify and evaluate renewable and nonrenewable sources for generating electricity; evaluate the use of batteries as an alternative to internal combustion engines)", "describe the by-products of electrical generation and their impacts on the environment (e.g., identify by-products and potential impacts of coal-fired electricity generation)", "identify example uses of electrical technologies, and evaluate technologies in terms of benefits and impacts (e.g., identify benefits and issues related to the use of electrical technologies for storing and transmitting personal information)", "identify concerns regarding conservation of energy resources, and evaluate means for improving the sustainability of energy use"]}], "skills": {"Initiating and Planning": ["propose alternative solutions to a given practical problem, select one, and develop a plan", "identify questions to investigate arising from practical problems and issues (e.g., identify questions, such as: \"How can the amount of electric current in a circuit be controlled?\")", "rephrase questions in a testable form, and clearly define practical problems (e.g., rephrase questions, such as: \"Why do we use parallel circuits rather than series circuits in household wiring?\" to become \"How do series circuits and parallel circuits respond differently under load?\")", "state a prediction and a hypothesis based on background information or an observed pattern of events (e.g., predict the amount of current in a circuit of known resistance and applied voltage)", "formulate operational definitions of major variables in the study of electrical circuits (e.g., provide operational definitions for current, resistance, voltage, polarity)"], "Performing and Recording": ["use tools and apparatus safely (e.g., use appropriate sources of electrical energy, and follow procedures to ensure personal and group safety)", "estimate measurements (e.g., estimate the efficiency of a mechanical device)", "use instruments effectively and accurately for collecting data (e.g., use ammeters and voltmeters)"], "Analyzing and Interpreting": ["test the design of a constructed device or system", "evaluate designs and prototypes in terms of function, reliability, safety, efficiency, use of materials and impact on the environment (e.g., evaluate the safety, durability, efficiency and environmental impact of a personally-constructed wet cell design)", "identify and correct practical problems in the way a prototype or constructed device functions", "identify and suggest explanations for discrepancies in data (e.g., measure the current in similar circuits, and provide possible explanations for differences in current flow)", "identify potential sources of error, and determine the amount of error in a given measurement (e.g., identify the precision of voltmeters and ammeters used to measure current flow)"], "Communication and Teamwork": ["work cooperatively with team members to develop and carry out a plan, and troubleshoot problems as they arise", "communicate questions, ideas, intentions, plans and results, using lists, notes in point form, sentences, data tables, graphs, drawings, oral language and other means (e.g., use charts to present data on the voltage, current (amperage) and resistance found in series and parallel circuits)", "defend a given position on an issue or problem based on their findings (e.g., develop and defend a proposal on the appropriateness of an alternative energy source in a given application)"]}}, {"title": "Unit E: Space Exploration", "overview": "Technologies have played an essential role in the study of space and in the emerging use of space environments. Our modern understanding of space has developed in conjunction with advances in techniques for viewing distant objects, for transmitting images and data through space, and for manned and unmanned space exploration. A study of space exploration provides an opportunity for students to examine how science and technology interact and to learn how one process augments the other. Students become aware that technologies developed to meet the challenges of space are applied to new purposes.", "focusingQuestions": "How have humans attained a presence in space? What technologies have been developed and on what scientific ideas are they based? How has the development of these technologies contributed to the exploration, use and understanding of space and to benefits on Earth?", "keyConcepts": ["technologies for space exploration and observation", "reference frames for describing position and motion in space", "satellites and orbits", "distribution of matter through space", "composition and characteristics of bodies in space", "life-support technologies", "communication technologies"], "outcomes": [{"cluster": "1. Investigate and describe ways that human understanding of Earth and space has depended on technological development", "items": ["identify different ideas about the nature of Earth and space, based on culture and science (e.g., compare geocentric and heliocentric models [Note: knowledge of epicycles is not required]; describe Aboriginal views of space and those of other cultures; describe the role of observation in guiding scientific understanding of space)", "investigate and illustrate the contributions of technological advances - including optical telescopes, spectral analysis and space travel - to a scientific understanding of space", "describe, in general terms, the distribution of matter in star systems, galaxies, nebulae and the universe as a whole", "identify evidence for, and describe characteristics of, bodies that make up the solar system; and compare their composition and characteristics with those of Earth", "describe and apply techniques for determining the position and motion of objects in space, including:", "constructing and interpreting drawings and physical models that illustrate the motion of objects in space (e.g., represent the orbit of comets around the Sun, using a looped-string model)", "describing in general terms how parallax and the Doppler effect are used to estimate distances of objects in space and to determine their motion", "describing the position of objects in space, using angular coordinates (e.g., describe the location of a spot on a wall, by identifying its angle of elevation and its bearing or azimuth; describe the location of the Sun and other stars using altitude-azimuth coordinates, also referred to as horizon coordinates or local coordinates) [Note: A description of star positions based on right ascension and declination is not required.]", "investigate predictions about the motion, alignment and collision of bodies in space; and critically examine the evidence on which they are based (e.g., investigate predictions about eclipses; identify uncertainties in predicting and tracking meteor showers)"]}, {"cluster": "2. Identify problems in developing technologies for space exploration, describe technologies developed for life in space, and explain the scientific principles involved", "items": ["analyze space environments, and identify challenges that must be met in developing life-supporting systems (e.g., analyze implications of variations in gravity, temperature, availability of water, atmospheric pressure and atmospheric composition)", "describe technologies for life-support systems, and interpret the scientific principles on which they are based (e.g., investigate systems that involve the recycling of water and air)", "describe technologies for space transport, and interpret the scientific principles involved (e.g., describe the development of multistage rockets, shuttles and space stations; build a model vehicle to explore a planet or moon)", "identify materials and processes developed to meet needs in space, and identify related applications (e.g., medicines, remote sensing, microelectronics, polymers, medical imaging, wireless communication technologies, synthesis of fuels)", "describe the development of artificial satellites, and explain the major purposes for which they are used (e.g., communication, GPS - global positioning system, weather observation)"]}, {"cluster": "3. Describe and interpret the science of optical and radio telescopes, space probes and remote sensing technologies", "items": ["explain, in general terms, the operation of optical telescopes, including telescopes that are positioned in space environments", "explain the role of radio and optical telescopes in determining characteristics of stars and star systems", "describe and interpret, in general terms, the technologies used in global positioning systems and in remote sensing (e.g., use triangulation to determine the position of an object, given information on the distance from three different points) [Note: This example involves the use of geometric approaches rather than mathematical calculations.]"]}, {"cluster": "4. Identify issues and opportunities arising from the application of space technology, identify alternatives involved, and analyze implications", "items": ["recognize risks and dangers associated with space exploration (e.g., space junk, fuel expenditure, satellites burning up in the atmosphere, solar radiation)", "describe Canadian contributions to space research and development and to the astronaut program (e.g., Canadarm)", "identify and analyze factors that are important to decisions regarding space exploration and development (e.g., identify examples of costs and potential benefits that may be considered; investigate and describe political, environmental and ethical issues related to the ownership and use of resources in space)"]}], "skills": {"Initiating and Planning": ["identify practical problems (e.g., identify problems that must be addressed in developing a lifesupporting space environment)", "propose alternative solutions to a given practical problem, select one, and develop a plan (e.g., design and describe a model of a technology to be used in a space station)", "state a prediction and a hypothesis based on background information or an observed pattern of events (e.g., predict the next appearance of a comet, based on past observations; develop a hypothesis about the geologic history of a planet or its moon, based on recent data)"], "Performing and Recording": ["research information relevant to a given problem", "select and integrate information from various print and electronic sources or from several parts of the same source (e.g., compile and compare information about two exploratory missions)", "organize data, using a format that is appropriate to the task or experiment (e.g., maintain a log of observed changes in the night sky; prepare a data table to compare various planets)"], "Analyzing and Interpreting": ["test the design of a constructed device or system (e.g., create and test a model device for remote manipulation of materials)", "identify and correct practical problems in the way a prototype or constructed device functions (e.g., identify and correct problems in the functioning of a model \"remote transportation device\" that they have designed and built)", "identify the strengths and weaknesses of different methods of collecting and displaying data (e.g., compare Earth-based observations with those made from spacecraft)", "identify new questions and problems that arise from what was learned (e.g., identify questions to guide further investigation, such as: \"What limits the travelling distance and duration of space exploration?\", \"How old are the planets, and how did they form?\")"], "Communication and Teamwork": ["receive, understand and act on the ideas of others (e.g., take into account advice provided by other students or individuals in designing a model space suit or space vehicle)", "work cooperatively with team members to develop and carry out a plan, and troubleshoot problems as they arise (e.g., write and act out a skit to demonstrate tasks carried out by astronauts on a mission)", "defend a given position on an issue or problem, based on their findings (e.g., conduct appropriate research to justify their position on the economic costs or benefits of space exploration)"]}}]}];
+const APP_VERSION = '1.0';
+const STORAGE_KEY = 'science-inquiry-builder-activities-v1';
+
+const ACTIVITY_TYPES = [
+  'Inquiry Lab',
+  'Design Challenge',
+  'Evidence & Decision',
+  'Investigative Questions',
+  'Review & Retrieval'
+];
+const INQUIRY_LEVELS = ['Structured','Guided','Open'];
+let selectedType = 'Inquiry Lab';
+let selectedLevel = 'Structured';
+let currentGeneratedConfig = null;
+let currentTeacherMode = false;
+
+const gradeSelect = document.getElementById('gradeSelect');
+const unitSelect = document.getElementById('unitSelect');
+const outcomeSelect = document.getElementById('outcomeSelect');
+const generatedActivity = document.getElementById('generatedActivity');
+const saveActivityBtn = document.getElementById('saveActivityBtn');
+const recentActivitiesList = document.getElementById('recentActivitiesList');
+const savedActivitiesList = document.getElementById('savedActivitiesList');
+const globalSearch = document.getElementById('globalSearch');
+const outcomesAccordion = document.getElementById('outcomesAccordion');
+const outcomesSearch = document.getElementById('outcomesSearch');
+const outcomesGradeFilter = document.getElementById('outcomesGradeFilter');
+const outcomesUnitFilter = document.getElementById('outcomesUnitFilter');
+
+function slugify(s) {
+  return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+}
+function escapeHtml(str) {
+  return String(str ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function niceDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString(undefined, {month:'short', day:'numeric'});
+}
+function getSavedActivities() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch(e) { return []; }
+}
+function setSavedActivities(items) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+}
+function flattenOutcomes() {
+  const list = [];
+  CURRICULUM_DATA.forEach(g => {
+    g.units.forEach((u, uIndex) => {
+      u.outcomes.forEach((cluster, cIndex) => {
+        cluster.items.forEach((item, iIndex) => {
+          list.push({
+            id: `${g.grade}-${uIndex}-${cIndex}-${iIndex}`,
+            grade: g.grade,
+            unit: u.title,
+            unitKey: `${g.grade}-${uIndex}`,
+            cluster: cluster.cluster,
+            text: item,
+            focusingQuestions: u.focusingQuestions,
+            overview: u.overview,
+            keyConcepts: u.keyConcepts,
+            skills: u.skills
+          });
+        });
+      });
+    });
+  });
+  return list;
+}
+const ALL_OUTCOMES = flattenOutcomes();
+
+document.getElementById('outcomeCount').textContent = ALL_OUTCOMES.length;
+document.getElementById('unitCount').textContent = CURRICULUM_DATA.reduce((sum,g) => sum + g.units.length, 0);
+
+function switchView(view) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.view === view));
+  document.getElementById('view-' + view).classList.add('active');
+  if (view === 'activities') renderSavedActivities();
+  if (view === 'outcomes') renderOutcomesAccordion();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+document.querySelectorAll('.nav-btn').forEach(btn => btn.addEventListener('click', () => switchView(btn.dataset.view)));
+document.getElementById('viewAllActivities').addEventListener('click', () => switchView('activities'));
+document.getElementById('viewAllOutcomes').addEventListener('click', () => switchView('outcomes'));
+
+function populateCreateControls() {
+  gradeSelect.innerHTML = CURRICULUM_DATA.map(g => `<option value="${g.grade}">Grade ${g.grade}</option>`).join('');
+  updateUnitOptions();
+  renderTypeButtons();
+  renderLevelButtons();
+}
+function updateUnitOptions() {
+  const grade = Number(gradeSelect.value || CURRICULUM_DATA[0].grade);
+  const gradeData = CURRICULUM_DATA.find(g => g.grade === grade) || CURRICULUM_DATA[0];
+  unitSelect.innerHTML = gradeData.units.map((u, idx) => `<option value="${idx}">${u.title}</option>`).join('');
+  updateOutcomeOptions();
+}
+function updateOutcomeOptions() {
+  const grade = Number(gradeSelect.value || CURRICULUM_DATA[0].grade);
+  const gradeData = CURRICULUM_DATA.find(g => g.grade === grade) || CURRICULUM_DATA[0];
+  const unit = gradeData.units[Number(unitSelect.value || 0)] || gradeData.units[0];
+  let html = '';
+  unit.outcomes.forEach((cluster, cIdx) => {
+    html += `<optgroup label="${escapeHtml(cluster.cluster)}">`;
+    cluster.items.forEach((item, iIdx) => {
+      html += `<option value="${grade}|${unitSelect.value || 0}|${cIdx}|${iIdx}">${escapeHtml(item)}</option>`;
+    });
+    html += `</optgroup>`;
+  });
+  outcomeSelect.innerHTML = html;
+}
+function renderTypeButtons() {
+  const typeGrid = document.getElementById('typeGrid');
+  const icons = {'Inquiry Lab':'🧪','Design Challenge':'⚙️','Evidence & Decision':'💡','Investigative Questions':'🔎','Review & Retrieval':'📊'};
+  typeGrid.innerHTML = ACTIVITY_TYPES.map(type => `<button class="type-btn ${type===selectedType?'active':''}" data-type="${type}">${icons[type]}<br>${type}</button>`).join('');
+  typeGrid.querySelectorAll('.type-btn').forEach(btn => btn.addEventListener('click', () => { selectedType = btn.dataset.type; renderTypeButtons(); }));
+}
+function renderLevelButtons() {
+  const row = document.getElementById('levelRow');
+  row.innerHTML = INQUIRY_LEVELS.map(level => `<button class="level-btn ${level===selectedLevel?'active':''}" data-level="${level}">${level}</button>`).join('');
+  row.querySelectorAll('.level-btn').forEach(btn => btn.addEventListener('click', () => { selectedLevel = btn.dataset.level; renderLevelButtons(); }));
+}
+
+gradeSelect.addEventListener('change', updateUnitOptions);
+unitSelect.addEventListener('change', updateOutcomeOptions);
+
+document.getElementById('clearBtn').addEventListener('click', () => {
+  document.getElementById('customOutcome').value = '';
+  document.getElementById('materialsInput').value = '';
+  document.getElementById('teacherNotes').value = '';
+  selectedType = 'Inquiry Lab';
+  selectedLevel = 'Structured';
+  renderTypeButtons();
+  renderLevelButtons();
+});
+
+function getSelectedOutcomeData() {
+  const custom = document.getElementById('customOutcome').value.trim();
+  const grade = Number(gradeSelect.value);
+  const unitIndex = Number(unitSelect.value);
+  const gradeData = CURRICULUM_DATA.find(g => g.grade === grade) || CURRICULUM_DATA[0];
+  const unit = gradeData.units[unitIndex] || gradeData.units[0];
+  const [g, u, c, i] = (outcomeSelect.value || '').split('|').map(x => Number(x));
+  const cluster = unit.outcomes[c] || unit.outcomes[0];
+  const item = cluster?.items[i] || '';
+  return {
+    grade,
+    unitTitle: unit.title,
+    outcomeText: custom || item,
+    selectedBuiltInOutcome: item,
+    customOutcome: custom,
+    clusterTitle: cluster?.cluster || '',
+    focusingQuestions: unit.focusingQuestions,
+    overview: unit.overview,
+    keyConcepts: unit.keyConcepts,
+    skills: unit.skills,
+    type: selectedType,
+    level: selectedLevel,
+    time: document.getElementById('timeSelect').value,
+    materials: document.getElementById('materialsInput').value.trim(),
+    teacherNotes: document.getElementById('teacherNotes').value.trim()
+  };
+}
+
+function sentenceCase(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
+function shortUnitName(unitTitle) {
+  return unitTitle.split(':').slice(1).join(':').trim() || unitTitle;
+}
+function extractKeywords(text) {
+  const stop = new Set(['the','and','of','to','in','a','an','for','on','within','through','between','among','into','with','by','that','their','them','different','used','using','describe','identify','investigate','analyze','interpret','illustrate','explain','apply','general','terms','examples','students']);
+  return [...new Set(text.toLowerCase().replace(/[^a-z0-9\s-]/g,' ').split(/\s+/).filter(w => w.length > 3 && !stop.has(w)).slice(0,10))];
+}
+function deriveTitle(config) {
+  const outcome = config.outcomeText;
+  if (config.type === 'Inquiry Lab') {
+    if (/dissolv/i.test(outcome)) return 'How does temperature affect dissolving rate?';
+    if (/density/i.test(outcome)) return 'Comparing density in everyday materials';
+    if (/light/i.test(outcome)) return 'Investigating light in optical systems';
+    if (/electric/i.test(outcome)) return 'Exploring electric circuits and change';
+  }
+  if (config.type === 'Design Challenge') {
+    if (/heat|temperature/i.test(outcome)) return 'Build a device to reduce heat loss';
+    if (/structure|force/i.test(outcome)) return 'Design a strong structure';
+    if (/fluid|pressure|hydraulic/i.test(outcome)) return 'Build a fluid-powered device';
+    if (/electric/i.test(outcome)) return 'Design a simple electrical solution';
+    return 'Solve a science design challenge';
+  }
+  if (config.type === 'Evidence & Decision') return 'Using evidence to make a science decision';
+  if (config.type === 'Investigative Questions') return 'Investigative questions for deeper inquiry';
+  if (config.type === 'Review & Retrieval') return `${shortUnitName(config.unitTitle)} review`;
+  return sentenceCase(outcome.slice(0,60)) + (outcome.length > 60 ? '…' : '');
+}
+function suggestVariables(outcome) {
+  const o = outcome.toLowerCase();
+  if (o.includes('dissolv')) return {ind:'Temperature of the water', dep:'Time or amount dissolved', ctrl:'Amount of solute, volume of water, type of solute, container'};
+  if (o.includes('light')) return {ind:'Light source or angle', dep:'Observed light behaviour', ctrl:'Distance, material, room conditions'};
+  if (o.includes('plant') || o.includes('germination')) return {ind:'One growing condition (light, water, soil, salt, temperature)', dep:'Plant growth or germination', ctrl:'Seed type, container, time, number of seeds'};
+  if (o.includes('density')) return {ind:'Material or fluid tested', dep:'Density / float-sink behaviour', ctrl:'Measurement tools, temperature, sample size'};
+  if (o.includes('electric')) return {ind:'Component or circuit arrangement', dep:'Current, brightness, or circuit behaviour', ctrl:'Battery, wires, measurement method'};
+  if (o.includes('heat') || o.includes('temperature')) return {ind:'Material or insulation setup', dep:'Temperature change', ctrl:'Starting temperature, volume, time interval'};
+  return {ind:'One factor you change', dep:'What you measure or observe', ctrl:'Everything else you keep the same'};
+}
+function suggestMaterials(config) {
+  if (config.materials) return config.materials.split(',').map(s => s.trim()).filter(Boolean);
+  const o = config.outcomeText.toLowerCase();
+  if (o.includes('dissolv')) return ['Water (different temperatures)','Measuring cups','Solute (salt or sugar)','3 clear containers','Thermometer','Stopwatch','Spoon'];
+  if (o.includes('plant') || o.includes('germination')) return ['Seeds','Soil or paper towel','Water','Containers','Ruler','Labels'];
+  if (o.includes('density')) return ['Balance','Graduated cylinder','Test liquids or solids','Calculator','Data table'];
+  if (o.includes('electric')) return ['Battery','Wires','Bulb or buzzer','Switch','Optional meter'];
+  if (o.includes('light')) return ['Light source','Mirrors/lenses/materials','Screen or paper','Ruler','Observation sheet'];
+  return ['Classroom materials connected to the investigation','Notebook or digital recording sheet','Safety equipment as needed'];
+}
+function suggestProcedure(config) {
+  const o = config.outcomeText.toLowerCase();
+  if (config.type === 'Design Challenge') return [
+    'Review the problem and the success criteria.',
+    'Plan and sketch your design before building.',
+    'Build a first version using available materials.',
+    'Test the design and record evidence.',
+    'Reflect, troubleshoot, and improve the design.'
+  ];
+  if (o.includes('dissolv')) return ['Fill containers with water at different temperatures.','Add the same amount of solute to each container.','Stir in the same way for each trial and start timing.','Record how long dissolving takes or how much dissolves.','Repeat trials and calculate an average.'];
+  if (o.includes('plant') || o.includes('germination')) return ['Set up at least two growing conditions to compare.','Keep all other variables as similar as possible.','Observe and measure growth over several days.','Record qualitative and quantitative observations.','Compare the results and look for patterns.'];
+  if (o.includes('density')) return ['Measure the mass of each sample.','Measure the volume of each sample carefully.','Calculate density using d = m ÷ v.','Compare float/sink behaviour if appropriate.','Record and interpret patterns in a table or graph.'];
+  return ['Ask a clear testable question connected to the outcome.','Plan a fair test and identify the variables.','Carry out the investigation safely and carefully.','Record observations and measurements in a clear format.','Analyze patterns and draw a conclusion based on the evidence.'];
+}
+function essentialQuestion(config) {
+  const topic = shortUnitName(config.unitTitle);
+  if (config.type === 'Evidence & Decision') return `What evidence should guide decisions related to ${topic.toLowerCase()}?`;
+  if (config.type === 'Design Challenge') return `How can we design a solution connected to ${topic.toLowerCase()}?`;
+  if (config.type === 'Review & Retrieval') return `What do we understand, remember, and apply about ${topic.toLowerCase()}?`;
+  if (config.type === 'Investigative Questions') return `What powerful questions could we investigate about ${topic.toLowerCase()}?`;
+  return `How can we investigate and explain ideas related to ${topic.toLowerCase()}?`;
+}
+function generateQuestions(config) {
+  const keywords = extractKeywords(config.outcomeText);
+  const noun = keywords[0] || 'this concept';
+  return [
+    `What patterns or trends do you notice in your evidence about ${noun}?`,
+    `How does your evidence support or challenge your initial thinking?`,
+    `What scientific idea helps explain the results you observed?`,
+    `What variable or condition had the biggest effect, and how do you know?`,
+    `What would you change if you repeated this investigation?`,
+    `What new question does this investigation make you wonder about?`
+  ];
+}
+function generateInvestigativeQuestions(config) {
+  const noun = extractKeywords(config.outcomeText)[0] || shortUnitName(config.unitTitle).toLowerCase();
+  return [
+    `How does changing one factor affect ${noun}?`,
+    `What can be measured or observed to learn more about ${noun}?`,
+    `Which conditions produce the strongest effect or pattern?`,
+    `How could we compare two materials, organisms, or systems related to ${noun}?`,
+    `What evidence would help us explain cause and effect in ${noun}?`,
+    `What might happen if one part of the system changed, and how could we investigate it?`
+  ];
+}
+function reviewPrompts(config) {
+  const topic = shortUnitName(config.unitTitle);
+  const key = extractKeywords(config.outcomeText)[0] || 'the concept';
+  return {
+    recall:[`What is ${key}?`,`List two important ideas from ${topic}.`],
+    explain:`Explain why understanding ${key} matters in this unit.`,
+    apply:`Apply what you know about ${key} to a real-world example or classroom scenario.`,
+    analyze:`Analyze a new example, diagram, or data set connected to ${topic}. What does the evidence show?`,
+    transfer:`How could ideas from ${topic} help you understand a new problem or design a solution?`
+  };
+}
+function teacherTips(config) {
+  const tips = [];
+  if (config.level === 'Structured') tips.push('Provide the question, suggested procedure, and a ready-made data table.');
+  if (config.level === 'Guided') tips.push('Provide the question and some materials, but ask students to make some planning decisions.');
+  if (config.level === 'Open') tips.push('Ask students to design much more of the investigation or task themselves.');
+  tips.push('Encourage students to cite evidence from their own observations or collected data.');
+  tips.push('Use the Communication and Teamwork outcomes to guide how students share and defend their ideas.');
+  if (config.teacherNotes) tips.push(config.teacherNotes);
+  return tips;
+}
+
+function renderActivity(config) {
+  currentGeneratedConfig = config;
+  const title = deriveTitle(config);
+  const vars = suggestVariables(config.outcomeText);
+  const mats = suggestMaterials(config);
+  const procedure = suggestProcedure(config);
+  const questions = generateQuestions(config);
+  const tips = teacherTips(config);
+  const tags = [config.type, `Grade ${config.grade}`, shortUnitName(config.unitTitle), config.level, config.time];
+  let body = '';
+
+  if (config.type === 'Inquiry Lab') {
+    body = `
+      <h2 class="result-title">${escapeHtml(title)}</h2>
+      <p class="result-sub">Grade ${config.grade} · ${escapeHtml(shortUnitName(config.unitTitle))} · Inquiry Lab</p>
+      <div class="tag-row">${tags.map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>
+      <div class="result-grid">
+        <div class="result-row">
+          <div class="mini-card"><h5>Essential Question</h5><p>${escapeHtml(essentialQuestion(config))}</p></div>
+          <div class="mini-card"><h5>Prediction / Hypothesis</h5><p>I think… because…</p></div>
+          <div class="mini-card"><h5>Variables</h5><ul><li><strong>Independent:</strong> ${escapeHtml(vars.ind)}</li><li><strong>Dependent:</strong> ${escapeHtml(vars.dep)}</li><li><strong>Controlled:</strong> ${escapeHtml(vars.ctrl)}</li></ul></div>
+          <div class="mini-card"><h5>Materials</h5><ul>${mats.map(m=>`<li>${escapeHtml(m)}</li>`).join('')}</ul></div>
+          <div class="mini-card"><h5>Procedure</h5><ol style="margin:0; padding-left:18px; display:grid; gap:7px;">${procedure.map(step=>`<li>${escapeHtml(step)}</li>`).join('')}</ol></div>
+          <div class="teacher-note teacher-only"><h5>Teacher Notes</h5><ul>${tips.map(t=>`<li>${escapeHtml(t)}</li>`).join('')}</ul></div>
+        </div>
+        <div class="result-row">
+          <div class="mini-card"><h5>Data Table</h5>
+            <table><thead><tr><th>Condition</th><th>Trial 1</th><th>Trial 2</th><th>Trial 3</th><th>Average / Notes</th></tr></thead>
+            <tbody><tr><td>A</td><td></td><td></td><td></td><td></td></tr><tr><td>B</td><td></td><td></td><td></td><td></td></tr><tr><td>C</td><td></td><td></td><td></td><td></td></tr></tbody></table>
+          </div>
+          <div class="mini-card"><h5>Analysis Questions</h5><ol style="margin:0; padding-left:18px; display:grid; gap:7px;">${questions.slice(0,4).map(q=>`<li>${escapeHtml(q)}</li>`).join('')}</ol></div>
+          <div class="mini-card"><h5>Conclusion</h5><p>Write a conclusion that answers the essential question. Use evidence from your data, observations, and scientific reasoning.</p></div>
+          <div class="mini-card"><h5>Connected Outcome</h5><p>${escapeHtml(config.outcomeText)}</p></div>
+        </div>
+      </div>`;
+  } else if (config.type === 'Design Challenge') {
+    body = `
+      <h2 class="result-title">${escapeHtml(title)}</h2>
+      <p class="result-sub">Grade ${config.grade} · ${escapeHtml(shortUnitName(config.unitTitle))} · Design Challenge</p>
+      <div class="tag-row">${tags.map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>
+      <div class="result-grid">
+        <div class="result-row">
+          <div class="mini-card"><h5>The Problem</h5><p>Design and build a solution connected to this outcome: ${escapeHtml(config.outcomeText)}</p></div>
+          <div class="mini-card"><h5>Criteria</h5><ul><li>Must address the problem clearly</li><li>Must be supported by science ideas from the unit</li><li>Must be testable or explainable</li></ul></div>
+          <div class="mini-card"><h5>Constraints</h5><ul><li>Use available classroom materials</li><li>Work safely and collaboratively</li><li>Record decisions and revisions</li></ul></div>
+          <div class="mini-card"><h5>Plan / Sketch</h5><p>Sketch your design. Label key parts and explain how your design will work.</p></div>
+          <div class="teacher-note teacher-only"><h5>Teacher Notes</h5><ul>${tips.map(t=>`<li>${escapeHtml(t)}</li>`).join('')}</ul></div>
+        </div>
+        <div class="result-row">
+          <div class="mini-card"><h5>Test Plan</h5><ol style="margin:0; padding-left:18px; display:grid; gap:7px;">${procedure.map(step=>`<li>${escapeHtml(step)}</li>`).join('')}</ol></div>
+          <div class="mini-card"><h5>Test Data</h5><table><thead><tr><th>Test</th><th>Evidence / Measurement</th><th>What happened?</th></tr></thead><tbody><tr><td>1</td><td></td><td></td></tr><tr><td>2</td><td></td><td></td></tr><tr><td>3</td><td></td><td></td></tr></tbody></table></div>
+          <div class="mini-card"><h5>Troubleshooting</h5><p>What did not work as expected? What scientific idea helps explain the problem?</p></div>
+          <div class="mini-card"><h5>Improve Your Design</h5><p>How could you redesign or improve your solution based on your evidence?</p></div>
+        </div>
+      </div>`;
+  } else if (config.type === 'Evidence & Decision') {
+    body = `
+      <h2 class="result-title">${escapeHtml(title)}</h2>
+      <p class="result-sub">Grade ${config.grade} · ${escapeHtml(shortUnitName(config.unitTitle))} · Evidence & Decision</p>
+      <div class="tag-row">${tags.map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>
+      <div class="result-grid">
+        <div class="result-row">
+          <div class="mini-card"><h5>Issue / Scenario</h5><p>Consider a decision or issue connected to this outcome: ${escapeHtml(config.outcomeText)}</p></div>
+          <div class="mini-card"><h5>What do we need to know?</h5><ul><li>What scientific information is relevant?</li><li>Who or what could be affected?</li><li>What evidence is still missing?</li></ul></div>
+          <div class="mini-card"><h5>Benefits and Trade-offs</h5><ul><li>Possible benefits</li><li>Possible costs or risks</li><li>Short-term vs. long-term impacts</li></ul></div>
+          <div class="teacher-note teacher-only"><h5>Teacher Notes</h5><ul>${tips.map(t=>`<li>${escapeHtml(t)}</li>`).join('')}</ul></div>
+        </div>
+        <div class="result-row">
+          <div class="mini-card"><h5>Evidence Table</h5><table><thead><tr><th>Evidence / Source</th><th>What it suggests</th><th>Reliable?</th></tr></thead><tbody><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></tbody></table></div>
+          <div class="mini-card"><h5>Decision</h5><p>What position or decision do you recommend? State your claim clearly.</p></div>
+          <div class="mini-card"><h5>Justification</h5><p>Use scientific evidence, reasoning, and trade-offs to justify your decision.</p></div>
+        </div>
+      </div>`;
+  } else if (config.type === 'Investigative Questions') {
+    const iq = generateInvestigativeQuestions(config);
+    body = `
+      <h2 class="result-title">${escapeHtml(title)}</h2>
+      <p class="result-sub">Grade ${config.grade} · ${escapeHtml(shortUnitName(config.unitTitle))} · Investigative Questions</p>
+      <div class="tag-row">${tags.map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>
+      <div class="result-row" style="margin-top:14px;">
+        <div class="mini-card"><h5>Outcome Focus</h5><p>${escapeHtml(config.outcomeText)}</p></div>
+        <div class="teacher-note teacher-only"><h5>Teacher Notes</h5><ul>${tips.map(t=>`<li>${escapeHtml(t)}</li>`).join('')}</ul></div>
+      </div>
+      <div class="template-grid" style="margin-top:14px; grid-template-columns:repeat(2,1fr);">
+        ${iq.map((q,idx)=>`<div class="mini-card"><h5>Question ${idx+1}</h5><p>${escapeHtml(q)}</p><div style="margin-top:10px; color:#56708a; font-size:13px;"><strong>Could investigate by:</strong> noting what changes, what stays the same, and what data or observations to collect.</div></div>`).join('')}
+      </div>`;
+  } else if (config.type === 'Review & Retrieval') {
+    const rp = reviewPrompts(config);
+    body = `
+      <h2 class="result-title">${escapeHtml(title)}</h2>
+      <p class="result-sub">Grade ${config.grade} · ${escapeHtml(shortUnitName(config.unitTitle))} · Review & Retrieval</p>
+      <div class="tag-row">${tags.map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>
+      <div class="result-grid">
+        <div class="result-row">
+          <div class="mini-card"><h5>Recall</h5><ol style="margin:0; padding-left:18px; display:grid; gap:7px;">${rp.recall.map(q=>`<li>${escapeHtml(q)}</li>`).join('')}</ol></div>
+          <div class="mini-card"><h5>Explain</h5><p>${escapeHtml(rp.explain)}</p></div>
+          <div class="mini-card"><h5>Apply</h5><p>${escapeHtml(rp.apply)}</p></div>
+          <div class="teacher-note teacher-only"><h5>Teacher Notes</h5><ul>${tips.map(t=>`<li>${escapeHtml(t)}</li>`).join('')}</ul></div>
+        </div>
+        <div class="result-row">
+          <div class="mini-card"><h5>Analyze</h5><p>${escapeHtml(rp.analyze)}</p></div>
+          <div class="mini-card"><h5>Transfer</h5><p>${escapeHtml(rp.transfer)}</p></div>
+          <div class="mini-card"><h5>Mixed Question Types for Deeper Learning</h5><ul><li>Recall key facts</li><li>Explain ideas</li><li>Apply knowledge</li><li>Analyze information</li><li>Transfer to new situations</li></ul></div>
+        </div>
+      </div>`;
+  }
+  generatedActivity.innerHTML = body;
+  generatedActivity.classList.toggle('teacher-hidden', !currentTeacherMode);
+}
+
+document.getElementById('generateBtn').addEventListener('click', () => {
+  const config = getSelectedOutcomeData();
+  renderActivity(config);
+});
+
+document.getElementById('studentViewBtn').addEventListener('click', () => {
+  currentTeacherMode = false;
+  document.getElementById('studentViewBtn').classList.add('active');
+  document.getElementById('teacherViewBtn').classList.remove('active');
+  generatedActivity.classList.add('teacher-hidden');
+});
+document.getElementById('teacherViewBtn').addEventListener('click', () => {
+  currentTeacherMode = true;
+  document.getElementById('teacherViewBtn').classList.add('active');
+  document.getElementById('studentViewBtn').classList.remove('active');
+  generatedActivity.classList.remove('teacher-hidden');
+});
+document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+saveActivityBtn.addEventListener('click', () => {
+  if (!currentGeneratedConfig) return;
+  const activities = getSavedActivities();
+  const entry = {
+    id: crypto.randomUUID ? crypto.randomUUID() : 'id-' + Date.now(),
+    createdAt: new Date().toISOString(),
+    title: deriveTitle(currentGeneratedConfig),
+    config: currentGeneratedConfig
+  };
+  activities.unshift(entry);
+  setSavedActivities(activities.slice(0,50));
+  renderRecentActivities();
+  renderSavedActivities();
+  switchView('activities');
+});
+
+function loadSavedActivity(id) {
+  const item = getSavedActivities().find(a => a.id === id);
+  if (!item) return;
+  // repopulate form roughly
+  gradeSelect.value = String(item.config.grade);
+  updateUnitOptions();
+  const gradeData = CURRICULUM_DATA.find(g => g.grade === item.config.grade);
+  const unitIndex = gradeData.units.findIndex(u => u.title === item.config.unitTitle);
+  if (unitIndex >= 0) { unitSelect.value = String(unitIndex); updateOutcomeOptions(); }
+  // try to set matching built-in outcome if it exists
+  const matchOption = [...outcomeSelect.options].find(opt => opt.textContent === item.config.selectedBuiltInOutcome);
+  if (matchOption) outcomeSelect.value = matchOption.value;
+  document.getElementById('customOutcome').value = item.config.customOutcome || '';
+  document.getElementById('materialsInput').value = item.config.materials || '';
+  document.getElementById('teacherNotes').value = item.config.teacherNotes || '';
+  document.getElementById('timeSelect').value = item.config.time || '1–2 hours';
+  selectedType = item.config.type;
+  selectedLevel = item.config.level;
+  renderTypeButtons();
+  renderLevelButtons();
+  renderActivity(item.config);
+  switchView('create');
+}
+function deleteSavedActivity(id) {
+  const items = getSavedActivities().filter(a => a.id !== id);
+  setSavedActivities(items);
+  renderRecentActivities();
+  renderSavedActivities();
+}
+
+function renderRecentActivities() {
+  const items = getSavedActivities().slice(0,4);
+  if (!items.length) {
+    recentActivitiesList.innerHTML = `
+      <div class="activity-item"><div><h4>How does temperature affect dissolving rate?</h4><p>Inquiry Lab · Grade 8 · 1–2 hours</p></div><div class="activity-meta">Example</div></div>
+      <div class="activity-item"><div><h4>Build a device to reduce heat loss</h4><p>Design Challenge · Grade 7 · 1–2 hours</p></div><div class="activity-meta">Example</div></div>
+      <div class="activity-item"><div><h4>Electricity review</h4><p>Review & Retrieval · Grade 9</p></div><div class="activity-meta">Example</div></div>
+      <div class="activity-item"><div><h4>Investigative questions: ecosystems</h4><p>Investigative Questions · Grade 7</p></div><div class="activity-meta">Example</div></div>`;
+    return;
+  }
+  recentActivitiesList.innerHTML = items.map(item => `
+    <div class="activity-item">
+      <div><h4>${escapeHtml(item.title)}</h4><p>${escapeHtml(item.config.type)} · Grade ${item.config.grade} · ${escapeHtml(item.config.time)}</p></div>
+      <div class="activity-meta">${niceDate(item.createdAt)}</div>
+    </div>`).join('');
+}
+function renderSavedActivities() {
+  const items = getSavedActivities();
+  if (!items.length) {
+    savedActivitiesList.innerHTML = `<div class="empty-state"><div style="font-size:46px; margin-bottom:10px;">🗂️</div><strong>No saved activities yet.</strong><div style="margin-top:6px;">Generate an activity in Create and then click <em>Save Activity</em>.</div></div>`;
+    return;
+  }
+  savedActivitiesList.innerHTML = items.map(item => `
+    <div class="saved-card">
+      <div class="saved-top"><div><h4>${escapeHtml(item.title)}</h4><div class="saved-meta">${escapeHtml(item.config.type)} · Grade ${item.config.grade} · ${escapeHtml(shortUnitName(item.config.unitTitle))} · Saved ${niceDate(item.createdAt)}</div></div></div>
+      <div style="color:#50697f;">${escapeHtml(item.config.outcomeText)}</div>
+      <div class="saved-actions hide-print">
+        <button class="small-btn" onclick="loadSavedActivity('${item.id}')">Open</button>
+        <button class="small-btn" onclick="deleteSavedActivity('${item.id}')">Delete</button>
+      </div>
+    </div>`).join('');
+}
+window.loadSavedActivity = loadSavedActivity;
+window.deleteSavedActivity = deleteSavedActivity;
+
+function renderPopularUnits() {
+  const samples = [
+    {label:'Cells', class:'bio'},{label:'Heat', class:'heat'},{label:'Electricity', class:'lightning'},{label:'Fluids', class:'wave'},
+    {label:'Space', class:'space'},{label:'Chemistry', class:'chem'},{label:'Structures', class:'struct'},{label:'Ecosystems', class:'bio'}
+  ];
+  document.getElementById('popularUnits').innerHTML = samples.map(s => `<div class="unit-tile" onclick="jumpToTopic('${s.label}')"><div class="unit-thumb ${s.class}">Science Unit</div><div>${s.label}</div></div>`).join('');
+}
+window.jumpToTopic = function(topic) {
+  globalSearch.value = topic;
+  runGlobalSearch(topic);
+};
+
+document.querySelectorAll('.quick-card').forEach(card => card.addEventListener('click', () => {
+  selectedType = card.dataset.type;
+  renderTypeButtons();
+  switchView('create');
+}));
+
+function matchOutcome(query) {
+  const q = query.trim().toLowerCase();
+  if (!q) return null;
+  return ALL_OUTCOMES
+    .map(o => ({o, score: scoreOutcome(o,q)}))
+    .filter(x => x.score > 0)
+    .sort((a,b) => b.score - a.score)[0]?.o || null;
+}
+function scoreOutcome(o,q) {
+  let score = 0;
+  const hay = `${o.text} ${o.unit} ${o.cluster}`.toLowerCase();
+  if (hay.includes(q)) score += 10;
+  q.split(/\s+/).forEach(part => { if (part && hay.includes(part)) score += 2; });
+  return score;
+}
+function prefillFromOutcome(outcome) {
+  gradeSelect.value = String(outcome.grade);
+  updateUnitOptions();
+  const gradeData = CURRICULUM_DATA.find(g => g.grade === outcome.grade);
+  const unitIndex = gradeData.units.findIndex(u => u.title === outcome.unit);
+  unitSelect.value = String(unitIndex);
+  updateOutcomeOptions();
+  const option = [...outcomeSelect.options].find(opt => opt.textContent === outcome.text);
+  if (option) outcomeSelect.value = option.value;
+  selectedType = guessTypeFromOutcome(outcome.text, outcome.unit);
+  renderTypeButtons();
+}
+function guessTypeFromOutcome(text, unit) {
+  const hay = (text + ' ' + unit).toLowerCase();
+  if (/construct|design|device|technology|technologies|prototype|structure|mechanical|electrical principles/.test(hay)) return 'Design Challenge';
+  if (/decision|issue|impact|evaluate|risks|environment/.test(hay)) return 'Evidence & Decision';
+  if (/question/.test(hay)) return 'Investigative Questions';
+  if (/investigate|measure|observe|effect|rate|properties|compare/.test(hay)) return 'Inquiry Lab';
+  return 'Review & Retrieval';
+}
+function runGlobalSearch(query) {
+  const match = matchOutcome(query);
+  if (match) {
+    prefillFromOutcome(match);
+    switchView('create');
+  } else {
+    switchView('outcomes');
+    outcomesSearch.value = query;
+    renderOutcomesAccordion();
+  }
+}
+
+globalSearch.addEventListener('keydown', e => { if (e.key === 'Enter') runGlobalSearch(globalSearch.value); });
+document.getElementById('heroSearch').addEventListener('keydown', e => { if (e.key === 'Enter') runGlobalSearch(e.target.value); });
+document.getElementById('heroGo').addEventListener('click', () => runGlobalSearch(document.getElementById('heroSearch').value));
+
+function populateOutcomeFilters() {
+  outcomesGradeFilter.innerHTML = '<option value="all">All Grades</option>' + CURRICULUM_DATA.map(g => `<option value="${g.grade}">Grade ${g.grade}</option>`).join('');
+  const units = CURRICULUM_DATA.flatMap(g => g.units.map(u => u.title));
+  outcomesUnitFilter.innerHTML = '<option value="all">All Units</option>' + units.map(u => `<option value="${escapeHtml(u)}">${escapeHtml(u)}</option>`).join('');
+}
+function renderOutcomesAccordion() {
+  const q = (outcomesSearch.value || '').trim().toLowerCase();
+  const gradeFilter = outcomesGradeFilter.value || 'all';
+  const unitFilter = outcomesUnitFilter.value || 'all';
+
+  let html = '';
+  CURRICULUM_DATA.forEach((g, gIdx) => {
+    if (gradeFilter !== 'all' && String(g.grade) !== gradeFilter) return;
+    g.units.forEach((u, uIdx) => {
+      if (unitFilter !== 'all' && u.title !== unitFilter) return;
