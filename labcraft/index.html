@@ -32,11 +32,30 @@
 
         /* Print Styles */
         @media print {
-            body { 
+            html, body { 
                 background-color: white !important; 
+                height: auto !important;
+                min-height: auto !important;
+                overflow: visible !important;
+                display: block !important;
             }
             .no-print { 
                 display: none !important; 
+            }
+            main {
+                display: block !important;
+                overflow: visible !important;
+                max-height: none !important;
+                height: auto !important;
+                padding: 0 !important;
+            }
+            #preview-panel {
+                display: block !important; /* Force display, overriding tailwind's 'hidden' */
+                overflow: visible !important;
+                height: auto !important;
+                background: transparent !important;
+                padding: 0 !important;
+                border: none !important;
             }
             .print-container { 
                 width: 100% !important; 
@@ -47,11 +66,11 @@
                 border: none !important;
                 overflow: visible !important;
                 height: auto !important;
+                min-height: auto !important;
                 max-height: none !important;
             }
-            main {
-                overflow: visible !important;
-                max-height: none !important;
+            #preview-content {
+                padding: 0 !important; /* Remove heavy screen padding for paper */
             }
             .page-break { page-break-before: always; }
             .avoid-break { page-break-inside: avoid; }
@@ -215,8 +234,8 @@
         </div>
 
         <div id="preview-panel" class="hidden md:flex flex-grow h-full bg-slate-300/30 p-2 md:rounded-xl justify-center overflow-y-auto custom-scrollbar relative border border-slate-200 md:border-none w-full">
-            <!-- Background Grid Pattern for Editor feel -->
-            <div class="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#000 1px, transparent 1px); background-size: 20px 20px;"></div>
+            <!-- Background Grid Pattern for Editor feel (hidden on print) -->
+            <div class="absolute inset-0 z-0 opacity-[0.03] pointer-events-none no-print" style="background-image: radial-gradient(#000 1px, transparent 1px); background-size: 20px 20px;"></div>
             
             <div class="bg-white sm:rounded-xl sm:shadow-lg sm:border border-slate-200 w-full max-w-4xl print-container relative z-10 my-0 md:my-4 h-fit min-h-full">
                 <!-- Preview content injected here -->
