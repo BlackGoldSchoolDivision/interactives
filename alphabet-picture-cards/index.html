@@ -200,10 +200,13 @@
     let x=0;
     const pieces=Array.from(word).map(character=>{
       const metrics=measure.measureText(character);
-      const target=/[bdfhijkltA-Z]/.test(character)?55:28;
-      const scale=character===' '?1:Math.min(2.1,target/(metrics.actualBoundingBoxAscent||target));
-      const html=character===' '?'':`<text x="${x.toFixed(1)}" y="62" transform="translate(0 62) scale(1 ${scale.toFixed(3)}) translate(0 -62)" font-family="${font}" font-weight="600" font-size="${size.toFixed(1)}" fill="${kind==='model'?'#263638':'#a3aca8'}">${escapeHTML(character)}</text>`;
-      x+=metrics.width;
+      // The stem of i and j starts at the middle guide; only their dots sit above it.
+      // Stretching the whole glyph as an ascender makes the stem look like a capital I.
+      const target=/[bdfhkltA-Z]/.test(character)?55:28;
+      const scale=character===' '||/[ij]/.test(character)?1:Math.min(2.1,target/(metrics.actualBoundingBoxAscent||target));
+      const widthScale=scale>1.05?Math.sqrt(scale):1;
+      const html=character===' '?'':`<text x="0" y="62" transform="translate(${x.toFixed(1)} 62) scale(${widthScale.toFixed(3)} ${scale.toFixed(3)}) translate(0 -62)" font-family="${font}" font-weight="600" font-size="${size.toFixed(1)}" fill="${kind==='model'?'#263638':'#a3aca8'}">${escapeHTML(character)}</text>`;
+      x+=metrics.width*widthScale+(character===' '?0:1.5);
       return html;
     }).join('');
     const fit=Math.min(1,470/Math.max(x,1));
