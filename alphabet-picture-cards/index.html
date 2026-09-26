@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#214c55">
+  <title>Print &amp; Play Cards</title>
+  <meta name="description" content="Make printable alphabet picture cards and sight word practice sheets.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23214c55'/%3E%3Crect x='11' y='10' width='42' height='44' rx='3' fill='white'/%3E%3Ctext x='17' y='42' font-family='Arial' font-weight='bold' font-size='31' fill='%23214c55'%3EA%3C/text%3E%3Ccircle cx='41' cy='27' r='5' fill='%23a8cb65'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+:root{--ink:#21383c;--teal:#214c55;--mint:#d9eee7;--lime:#a8cb65;--paper:#fffdf8;--line:#d7ddd8;--muted:#627779;--paper-w:8.5in;--paper-h:11in;--page-scale:1;font-family:'DM Sans',Arial,sans-serif;color:var(--ink)}*{box-sizing:border-box}body{margin:0;background:#f2f5f1}button,input,textarea,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.4;cursor:default}input,textarea,select{min-width:0;border:1px solid #cbd9d5;background:#fff;border-radius:10px;color:var(--ink);padding:10px 11px}input:focus-visible,textarea:focus-visible,select:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid #94c9c0;outline-offset:2px}[hidden]{display:none!important}.topbar{min-height:88px;padding:15px clamp(18px,3vw,44px);background:#fdfefa;border-bottom:1px solid #dfe7e0;display:flex;align-items:center;gap:14px}.brand-mark{width:54px;height:54px;border-radius:13px;background:var(--teal);color:#fff;font:700 23px/54px Quicksand,'Trebuchet MS',sans-serif;text-align:center;position:relative;flex:none}.brand-mark span{position:absolute;color:var(--lime);font:700 13px Arial;top:-14px;right:9px}.eyebrow{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#61827d;font-weight:700}h1,h2,h3,p{margin-top:0}h1{font-size:22px;margin:2px 0 0;letter-spacing:-.025em}h2{font-size:21px;margin:0;letter-spacing:-.025em}h3{font-size:15px;margin:0}.top-actions{margin-left:auto}.workspace{display:grid;grid-template-columns:minmax(320px,390px) minmax(0,1fr);gap:26px;padding:26px clamp(18px,3vw,44px);max-width:1500px;margin:auto}.sidebar{background:#fff;border:1px solid #e1e8e2;border-radius:20px;box-shadow:0 9px 28px #284a4110;align-self:start;overflow:hidden}.mode-switch{display:flex;background:#edf3ee;padding:6px;margin:14px;border-radius:12px;gap:4px}.mode-switch button{flex:1;border:0;border-radius:9px;padding:11px 7px;background:transparent;font-weight:700;color:#5f7774}.mode-switch button[aria-selected=true]{background:#fff;color:#234d53;box-shadow:0 2px 6px #223e3920}.control-panel{padding:5px 22px 24px}.panel-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:8px 0 6px}.count-pill{border-radius:99px;background:#e6f2e7;padding:4px 9px;font-size:12px;font-weight:700;color:#466552}.helper{color:var(--muted);font-size:13px;line-height:1.5;margin:8px 0 17px}.button{border:1px solid #d2ded8;border-radius:10px;padding:10px 12px;background:#fff;color:var(--teal);font-weight:700;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center}.button:hover,.icon-button:hover{filter:brightness(.97)}.button.primary{color:#fff;background:var(--teal);border-color:var(--teal);padding:11px 18px}.button.soft{background:#e5f0eb;border-color:#e5f0eb}.button.ghost{background:#fff}.button-row{display:flex;gap:8px;flex-wrap:wrap}.card-list{margin:17px 0 18px;max-height:235px;overflow:auto;border:1px solid #e3eae5;border-radius:12px;padding:5px}.card-list button{display:flex;width:100%;align-items:center;gap:10px;text-align:left;padding:7px;border:0;border-radius:8px;background:#fff;color:var(--ink)}.card-list button[aria-current=true]{background:#eaf3ef}.card-list .thumbnail{width:34px;height:34px;display:grid;place-items:center;border:1px solid #dde7e0;border-radius:7px;font-size:20px;overflow:hidden;background:white}.thumbnail img{width:100%;height:100%;object-fit:contain}.card-list strong{font:700 18px Quicksand,'Trebuchet MS',sans-serif;min-width:34px}.card-list small{color:var(--muted);font-size:12px}.editor{border-top:1px solid #e2eae4;padding-top:15px}.text-button{border:0;background:none;color:var(--teal);font-weight:700;padding:5px}.danger{color:#a04544}.form-grid{display:grid;grid-template-columns:90px 1fr;gap:10px;margin:12px 0}.form-grid label,.custom-row label{display:grid;gap:6px;font-size:12px;font-weight:700;color:#52706e}.field-label{display:block;font-size:12px;font-weight:700;color:#52706e;margin:13px 0 6px}.picture-gallery{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;max-height:153px;overflow:auto;margin:9px 0}.picture-choice{min-width:0;min-height:45px;font-size:26px;background:#fff;border:1px solid #e1e9e3;border-radius:9px}.picture-choice[aria-pressed=true]{border:2px solid #47857b;background:#e8f3ed}.picture-choice:hover{background:#edf5ef}.custom-row{display:flex;gap:8px;align-items:end}.custom-row label{flex:1}.custom-row input{width:100%}.upload-button{display:block;margin-top:12px;padding:11px;border:1px dashed #91b8a9;border-radius:10px;text-align:center;font-size:13px;font-weight:700;color:var(--teal);cursor:pointer}.upload-button input,.import-label input{display:none}.tiny{font-size:11px;line-height:1.4;color:#728581;margin:9px 0 0}.settings{border-top:1px solid #e2eae4;margin-top:17px;padding-top:13px}.settings summary{font-weight:700;cursor:pointer}.setting-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;font-size:13px;font-weight:700}.setting-row select,.setting-row input{width:160px}.checkbox-row{display:flex;align-items:center;gap:8px;font-size:13px;margin:11px 0}.checkbox-row input{width:17px;height:17px;accent-color:#418577}.file-actions{margin-top:18px}.file-actions .button{font-size:12px;flex:1}.import-label{cursor:pointer}.control-panel textarea{width:100%;line-height:1.5;resize:vertical}.practice-tool{background:#f2f7f3;border:1px solid #dfebe3;border-radius:16px;padding:14px;margin-top:20px}.practice-title{display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:700;color:#4f7268}.flash-word{text-align:center;font:700 clamp(38px,5vw,60px)/1.3 Quicksand,'Trebuchet MS',sans-serif;min-height:105px;display:grid;place-items:center}.flash-actions{display:flex;gap:5px;justify-content:center}.flash-actions .button{font-size:12px;padding:9px 7px}.preview-main{min-width:0}.preview-header{display:flex;justify-content:space-between;align-items:end;gap:16px;margin:3px 0 17px}.preview-header h2{margin-top:3px}.preview-actions{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px;font-weight:700;white-space:nowrap}.icon-button{border:1px solid #d2ded8;width:33px;height:33px;border-radius:50%;background:white;color:var(--teal);font-size:22px;line-height:1}.preview-frame{min-height:400px;display:flex;justify-content:center;align-items:flex-start;background:#dce5df;border-radius:20px;padding:24px 12px;overflow:hidden}.print-pages{width:var(--scaled-w);height:var(--scaled-h);position:relative}.sheet-page{background:white;width:var(--paper-w);height:var(--paper-h);padding:.25in;box-shadow:0 8px 30px #203e3d30;display:none;overflow:hidden;transform-origin:top left;transform:scale(var(--page-scale))}.sheet-page.active{display:block}.cards-grid{width:100%;height:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:.11in}.letter-card,.word-card{border:3px solid #263638;background:white;min-width:0;min-height:0;overflow:hidden;position:relative}.letter-card{display:flex;flex-direction:column;padding:.1in}.letter-top{height:59%;min-height:0}.letter-top svg{display:block;width:100%;height:100%;overflow:visible}.letter-glyph{font-family:Quicksand,'Comic Sans MS','Trebuchet MS',sans-serif;font-weight:600;fill:#202324}.guide{stroke:#2b3435;stroke-width:3}.midline{stroke:#3e4546;stroke-width:2.3;stroke-dasharray:8 11}.marker{fill:#8cbf53}.letter-art{height:41%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.04in;overflow:hidden}.letter-art .emoji,.letter-art .symbol{font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif;font-size:1.65in;line-height:1.08;white-space:nowrap}.letter-art .symbol{font-family:'DejaVu Sans','Segoe UI Symbol',sans-serif;font-size:1.55in}.letter-art img{max-width:92%;max-height:85%;object-fit:contain}.art-label{font:700 17px Quicksand,'Trebuchet MS',sans-serif}.word-card{padding:.18in;display:flex;flex-direction:column;justify-content:space-evenly}.model-word{font:700 clamp(24px,4vw,50px) Quicksand,'Trebuchet MS',sans-serif;text-align:center;line-height:1.1;overflow-wrap:anywhere}.word-instruction{text-align:center;color:#65736d;font:600 14px 'DM Sans',Arial,sans-serif}.writing-lane{height:.7in;position:relative;flex:none}.writing-lane svg{width:100%;height:100%;display:block}.trace-text{position:absolute;left:.14in;bottom:.08in;color:#a9b0aa;font:600 37px Quicksand,'Trebuchet MS',sans-serif;white-space:nowrap}.practice-sheet{padding:.14in .16in;height:100%;display:flex;flex-direction:column}.sheet-heading{display:flex;align-items:end;justify-content:space-between;border-bottom:2px solid #253b3c;padding:.06in .08in .12in;font:700 23px Quicksand,'Trebuchet MS',sans-serif}.sheet-heading small{font:500 14px 'DM Sans',Arial,sans-serif}.practice-rows{flex:1;display:grid;grid-template-rows:repeat(6,minmax(0,1fr))}.word-row{display:grid;grid-template-columns:1.42in 1fr;gap:.12in;min-height:0;border-bottom:1px solid #d6ddd8;padding:.09in .06in}.word-model{font:700 28px Quicksand,'Trebuchet MS',sans-serif;overflow-wrap:anywhere;align-self:center}.row-lanes{display:flex;flex-direction:column;justify-content:center;gap:.04in;min-width:0}.row-lanes .writing-lane{height:.55in}.row-lanes .trace-text{font-size:30px;bottom:.055in}.print-note{font-size:12px;line-height:1.5;color:#61736e;text-align:center;max-width:650px;margin:15px auto 30px}#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#214c55;color:white;padding:10px 15px;border-radius:10px;box-shadow:0 7px 30px #0002;display:none;font-size:13px;z-index:10}#toast.show{display:block}
+@media(max-width:900px){.workspace{grid-template-columns:1fr;max-width:760px}.sidebar{order:1}.preview-main{order:2}.preview-frame{padding:14px 5px}.topbar{min-height:75px}.topbar h1{font-size:19px}}@media(max-width:540px){.top-actions .button{font-size:12px;padding:9px 10px}.brand-mark{width:43px;height:43px;line-height:43px;font-size:19px}.workspace{padding:14px;gap:18px}.control-panel{padding:5px 15px 20px}.preview-header{align-items:start;flex-direction:column;gap:9px}.preview-frame{border-radius:12px}.flash-actions{flex-wrap:wrap}}
+@media print{@page{size:letter portrait;margin:0}html,body{margin:0;padding:0;background:white!important}.topbar,.sidebar,.preview-header,.print-note,#toast{display:none!important}.workspace,.preview-main,.preview-frame,.print-pages{display:block!important;margin:0!important;padding:0!important;width:auto!important;height:auto!important;min-height:0!important;background:none!important;border:0!important;overflow:visible!important;box-shadow:none!important}.sheet-page,.sheet-page.active{display:block!important;width:var(--paper-w)!important;height:var(--paper-h)!important;transform:none!important;box-shadow:none!important;break-after:page;page-break-after:always;print-color-adjust:exact;-webkit-print-color-adjust:exact}.sheet-page:last-child{break-after:auto;page-break-after:auto}.letter-card,.word-card{border-color:#263638!important}.marker{fill:#8cbf53!important}}
+
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-mark" aria-hidden="true">Aa<span>●</span></div>
+    <div><div class="eyebrow">Classroom print studio</div><h1>Print &amp; Play Cards</h1></div>
+    <div class="top-actions"><button id="printTop" class="button primary">Print / Save PDF</button></div>
+  </header>
+  <main class="workspace">
+    <aside class="sidebar">
+      <div class="mode-switch" role="tablist" aria-label="Activity type">
+        <button type="button" id="tabAlphabet" role="tab" aria-selected="true">Alphabet cards</button>
+        <button type="button" id="tabWords" role="tab" aria-selected="false">Sight words</button>
+      </div>
+      <section id="alphabetControls" class="control-panel">
+        <div class="panel-heading"><h2>Your cards</h2><span id="cardCount" class="count-pill"></span></div>
+        <p class="helper">The complete A–Z set is ready. Four cards fit on each page. Select a letter to change its picture.</p>
+        <div class="button-row"><button type="button" id="addCard" class="button soft">+ Add card</button><button type="button" id="loadAlphabet" class="button ghost">Reset to A–Z</button></div>
+        <div id="cardList" class="card-list" aria-label="Alphabet cards"></div>
+        <div class="editor" id="cardEditor">
+          <div class="panel-heading"><h3>Edit selected card</h3><button id="removeCard" class="text-button danger" type="button">Remove</button></div>
+          <div class="form-grid"><label>Letter <input id="letterInput" maxlength="1" autocomplete="off" aria-label="Card letter"></label><label>Picture word <input id="wordInput" maxlength="32" autocomplete="off" aria-label="Picture word"></label></div>
+          <label class="field-label" for="pictureSearch">Choose a picture or symbol</label>
+          <input id="pictureSearch" placeholder="Search: ant, sun, star…" autocomplete="off">
+          <div id="pictureGallery" class="picture-gallery" aria-label="Picture choices"></div>
+          <div class="custom-row"><label>Type a symbol or emoji <input id="symbolInput" maxlength="8" placeholder="★  ♥  🐜" autocomplete="off"></label><button id="useSymbol" type="button" class="button soft">Use symbol</button></div>
+          <label class="upload-button">Upload your own image<input id="imageUpload" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"></label>
+          <p class="tiny">Uploaded pictures stay in this browser. You can print them or include them in a downloaded set.</p>
+        </div>
+        <details class="settings" open><summary>Page options</summary>
+          <div class="setting-row"><label for="paperSize">Paper</label><select id="paperSize"><option value="letter">US Letter</option><option value="a4">A4</option></select></div>
+          <label class="checkbox-row"><input id="showDots" type="checkbox" checked> Green guide dots</label>
+          <label class="checkbox-row"><input id="showLabels" type="checkbox"> Picture word labels</label>
+        </details>
+        <div class="button-row file-actions"><button type="button" id="printNearby" class="button primary">Print / Save PDF</button><button type="button" id="downloadSet" class="button ghost">Save editable set</button><label class="button ghost import-label">Open a set<input id="importSet" type="file" accept="application/json,.json"></label></div>
+        <p class="tiny">Print / Save PDF makes the actual pages. Save editable set keeps your card choices as a JSON backup for later.</p>
+      </section>
+      <section id="wordControls" class="control-panel" hidden>
+        <h2>Sight-word practice</h2><p class="helper">Enter one word per line, or separate words with commas. Your list makes printable cards and writing practice.</p>
+        <label class="field-label" for="wordsInput">Words to practise</label><textarea id="wordsInput" rows="7" spellcheck="false">the, and, is, to, see, like, my, can</textarea>
+        <div class="setting-row"><label for="wordLayout">Print layout</label><select id="wordLayout"><option value="cards">Four word cards</option><option value="practice">Tracing &amp; writing sheet</option></select></div>
+        <div class="setting-row"><label for="studentName">Name line</label><input id="studentName" placeholder="Optional name"></div>
+        <div class="practice-tool">
+          <div class="practice-title">Practice on screen <span id="knownCount">0 known</span></div>
+          <div id="flashWord" class="flash-word" aria-live="polite">the</div>
+          <div class="flash-actions"><button type="button" id="prevWord" class="button ghost" aria-label="Previous word">←</button><button type="button" id="speakWord" class="button soft">Hear word</button><button type="button" id="markKnown" class="button soft">I know it</button><button type="button" id="nextWord" class="button ghost" aria-label="Next word">→</button></div>
+          <div id="flashProgress" class="tiny"></div>
+        </div>
+      </section>
+    </aside>
+    <section class="preview-main" aria-label="Print preview">
+      <div class="preview-header"><div><div class="eyebrow">Live preview</div><h2 id="previewTitle">Alphabet picture cards</h2></div><div class="preview-actions"><button type="button" id="prevPage" class="icon-button" aria-label="Previous page">‹</button><span id="pageIndicator">Page 1 of 1</span><button type="button" id="nextPage" class="icon-button" aria-label="Next page">›</button></div></div>
+      <div id="previewFrame" class="preview-frame"><div id="printPages" class="print-pages"></div></div>
+      <p class="print-note">Choose <strong>Save as PDF</strong> in the print dialog to download the finished pages. Print at <strong>100% scale</strong> with browser headers and footers off.</p>
+    </section>
+  </main>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script>
+(() => {
+  'use strict';
+  const ITEMS = [
+    ['A','ant','🐜'],['B','bat','🏏'],['C','cookie','🍪'],['D','drum','🥁'],
+    ['E','elephant','🐘'],['F','fish','🐟'],['G','goat','🐐'],['H','hat','🎩'],
+    ['I','igloo','🧊'],['J','jellyfish','🪼'],['K','kite','🪁'],['L','lion','🦁'],
+    ['M','moon','🌙'],['N','nest','🪺'],['O','octopus','🐙'],['P','pizza','🍕'],
+    ['Q','queen','👑'],['R','rainbow','🌈'],['S','sun','☀️'],['T','turtle','🐢'],
+    ['U','umbrella','☂️'],['V','violin','🎻'],['W','whale','🐳'],['X','xylophone','🎼'],
+    ['Y','yarn','🧶'],['Z','zebra','🦓']
+  ];
+  const GALLERY = [
+    ['ant','🐜'],['apple','🍎'],['airplane','✈️'],['alligator','🐊'],['ball','⚽'],['bat','🏏'],['bear','🐻'],['bee','🐝'],['bird','🐦'],['book','📘'],
+    ['cat','🐈'],['car','🚗'],['cake','🎂'],['cookie','🍪'],['crab','🦀'],['dog','🐕'],['duck','🦆'],['drum','🥁'],['dinosaur','🦕'],['elephant','🐘'],
+    ['egg','🥚'],['fish','🐟'],['flower','🌼'],['frog','🐸'],['fire','🔥'],['goat','🐐'],['gift','🎁'],['grapes','🍇'],['hat','🎩'],['horse','🐴'],
+    ['house','🏠'],['ice','🧊'],['ice cream','🍦'],['jellyfish','🪼'],['juice','🧃'],['kite','🪁'],['key','🔑'],['lion','🦁'],['leaf','🍃'],
+    ['moon','🌙'],['mouse','🐭'],['monkey','🐵'],['nest','🪺'],['octopus','🐙'],['orange','🍊'],['owl','🦉'],['pizza','🍕'],['pig','🐷'],
+    ['penguin','🐧'],['queen','👑'],['rainbow','🌈'],['rabbit','🐇'],['robot','🤖'],['sun','☀️'],['star','⭐'],['snake','🐍'],['tree','🌳'],
+    ['turtle','🐢'],['train','🚂'],['umbrella','☂️'],['violin','🎻'],['volcano','🌋'],['whale','🐳'],['watermelon','🍉'],['xylophone','🎼'],['yarn','🧶'],['zebra','🦓'],
+    ['heart','♥'],['circle','●'],['square','■'],['triangle','▲'],['check','✓'],['arrow','→']
+  ];
+  const $ = id => document.getElementById(id);
+  const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const newCard = row => ({id:crypto.randomUUID?.() || String(Date.now()+Math.random()),letter:row[0],word:row[1],picture:{type:'emoji',value:row[2]}});
+  const defaults = () => ITEMS.map(newCard);
+  let saved;
+  try { saved = JSON.parse(localStorage.getItem('print-play-cards-v1') || 'null'); } catch { saved = null; }
+  let cards = Array.isArray(saved?.cards) && saved.cards.length ? saved.cards.map(normalizeCard).filter(Boolean) : defaults();
+  if (!cards.length) cards = defaults();
+  let selectedId = cards[0].id;
+  let mode = 'alphabet', page = 0, flashIndex = 0;
+  let known = new Set();
+  let settings = {paper:'letter',dots:true,labels:false,...saved?.settings};
+  let wordsText = typeof saved?.wordsText === 'string' ? saved.wordsText : $('wordsInput').value;
+  let wordLayout = saved?.wordLayout === 'practice' ? 'practice' : 'cards';
+  let studentName = typeof saved?.studentName === 'string' ? saved.studentName.slice(0,60) : '';
+  let storageNoticeShown = false;
+  let toastTimer;
+
+  function normalizeCard(input) {
+    if (!input || typeof input !== 'object') return null;
+    const letter = String(input.letter || '').trim().slice(0,1).toUpperCase();
+    if (!letter) return null;
+    const p = input.picture || {};
+    const type = ['emoji','symbol','image'].includes(p.type) ? p.type : 'emoji';
+    let value = String(p.value || '').slice(0,300000);
+    if (type === 'image' && !/^data:image\/(png|jpeg|webp);base64,[a-z0-9+/=]+$/i.test(value)) value = '';
+    return {id:String(input.id || crypto.randomUUID?.() || Math.random()).slice(0,80),letter,word:String(input.word || '').slice(0,32),picture:{type:value ? type : 'symbol',value:value || '★'}};
+  }
+  function selected() { return cards.find(c => c.id === selectedId) || cards[0]; }
+  function getWords() { return wordsText.split(/[,;\n]+/).map(w => w.trim()).filter(Boolean).slice(0,200); }
+  function toast(message) { const el=$('toast'); el.textContent=message; el.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),3500); }
+  function save() {
+    try { localStorage.setItem('print-play-cards-v1',JSON.stringify({cards,settings,wordsText,wordLayout,studentName})); }
+    catch { if (!storageNoticeShown) { toast('This set is too large to save automatically. Download a copy.'); storageNoticeShown=true; } }
+  }
+  function refresh() { renderControls(); renderPages(); save(); }
+  function setMode(next) {
+    mode=next; page=0;
+    $('tabAlphabet').setAttribute('aria-selected', String(mode==='alphabet'));
+    $('tabWords').setAttribute('aria-selected', String(mode==='words'));
+    $('alphabetControls').hidden=mode!=='alphabet'; $('wordControls').hidden=mode!=='words';
+    $('previewTitle').textContent=mode==='alphabet'?'Alphabet picture cards':wordLayout==='cards'?'Sight-word cards':'Sight-word writing practice';
+    renderPages(); if (mode==='words') renderFlash();
+  }
+  function renderControls() {
+    $('cardCount').textContent=cards.length+' card'+(cards.length===1?'':'s');
+    $('cardList').innerHTML=cards.map(c=>`<button type="button" data-id="${escapeHTML(c.id)}" aria-current="${c.id===selectedId}"><span class="thumbnail">${pictureHTML(c)}</span><strong>${escapeHTML(c.letter)}${escapeHTML(c.letter.toLowerCase())}</strong><small>${escapeHTML(c.word || 'Picture')}</small></button>`).join('');
+    const c=selected(); if (!c) return;
+    $('letterInput').value=c.letter; $('wordInput').value=c.word;
+    $('symbolInput').value=c.picture.type==='symbol'?c.picture.value:'';
+    renderGallery();
+  }
+  function renderGallery() {
+    const query=$('pictureSearch').value.trim().toLowerCase();
+    const options=GALLERY.filter(x=>!query||x[0].includes(query));
+    $('pictureGallery').innerHTML=options.length?options.map(([label,symbol])=>`<button class="picture-choice" type="button" data-label="${escapeHTML(label)}" data-symbol="${escapeHTML(symbol)}" title="${escapeHTML(label)}" aria-label="Use ${escapeHTML(label)}" aria-pressed="${selected()?.picture.value===symbol}">${escapeHTML(symbol)}</button>`).join(''):'<span class="tiny">No match. You can type a symbol or upload an image.</span>';
+  }
+  function pictureHTML(c) {
+    const p=c.picture;
+    if (p.type==='image') return `<img src="${escapeHTML(p.value)}" alt="${escapeHTML(c.word || 'Uploaded picture')}">`;
+    return `<span class="${p.type==='symbol'?'symbol':'emoji'}" aria-label="${escapeHTML(c.word)}">${escapeHTML(p.value)}</span>`;
+  }
+  const measureCanvas=document.createElement('canvas');
+  const measure=measureCanvas.getContext('2d');
+  function fittedGlyph(character,targetAscent,maxWidth) {
+    measure.font='600 100px Quicksand, "Comic Sans MS", "Trebuchet MS", sans-serif';
+    const metrics=measure.measureText(character);
+    const ascent=metrics.actualBoundingBoxAscent || 72;
+    const size=Math.min(350,100*targetAscent/ascent);
+    const width=metrics.width*size/100;
+    const visibleWidth=Math.min(width,maxWidth);
+    return {size:Math.round(size*10)/10,width:visibleWidth,fit:width>maxWidth?` textLength="${maxWidth}" lengthAdjust="spacingAndGlyphs"`:''};
+  }
+  const upperStarts={A:.5,B:.13,C:.84,D:.12,E:.12,F:.12,G:.82,H:.12,I:.5,J:.82,K:.12,L:.12,M:.12,N:.12,O:.78,P:.12,Q:.78,R:.12,S:.79,T:.5,U:.13,V:.12,W:.08,X:.1,Y:.13,Z:.1};
+  const lowerStarts={a:.78,b:.17,c:.8,d:.82,e:.75,f:.55,g:.78,h:.16,i:.5,j:.5,k:.17,l:.5,m:.12,n:.12,o:.77,p:.17,q:.78,r:.14,s:.79,t:.5,u:.14,v:.13,w:.1,x:.12,y:.13,z:.13};
+  function letterCard(c) {
+    const upper=escapeHTML(c.letter), lower=escapeHTML(c.letter.toLowerCase());
+    const lowerLetter=c.letter.toLowerCase();
+    const ascender='bdfhijklt'.includes(lowerLetter);
+    const cap=fittedGlyph(c.letter,169,160),small=fittedGlyph(lowerLetter,ascender?169:87,160);
+    const left=100-cap.width/2,smallLeft=260-small.width/2;
+    const upperDot=left+cap.width*(upperStarts[c.letter]??.15);
+    const lowerDot=smallLeft+small.width*(lowerStarts[lowerLetter]??.2);
+    const lowerTop=ascender?30:112;
+    return `<article class="letter-card" aria-label="${upper}, ${escapeHTML(c.word)}"><div class="letter-top"><svg viewBox="0 0 360 225" preserveAspectRatio="none" aria-hidden="true"><line class="guide" x1="4" y1="26" x2="356" y2="26"/><line class="midline" x1="4" y1="110" x2="356" y2="110"/><line class="guide" x1="4" y1="199" x2="356" y2="199"/><text class="letter-glyph" x="100" y="199" font-size="${cap.size}" text-anchor="middle"${cap.fit}>${upper}</text><text class="letter-glyph" x="260" y="199" font-size="${small.size}" text-anchor="middle"${small.fit}>${lower}</text>${settings.dots?`<circle class="marker" cx="${upperDot.toFixed(1)}" cy="30" r="9"/><circle class="marker" cx="${lowerDot.toFixed(1)}" cy="${lowerTop}" r="9"/>`:''}</svg></div><div class="letter-art">${pictureHTML(c)}${settings.labels?`<div class="art-label">${escapeHTML(c.word)}</div>`:''}</div></article>`;
+  }
+  function linesHTML(trace) {
+    const plain=String(trace||'');
+    measure.font='600 100px Quicksand, "Comic Sans MS", "Trebuchet MS", sans-serif';
+    const xHeight=measure.measureText('a').actualBoundingBoxAscent||55;
+    const targetSize=100*28/xHeight;
+    measure.font=`600 ${targetSize}px Quicksand, "Comic Sans MS", "Trebuchet MS", sans-serif`;
+    const width=measure.measureText(plain).width;
+    const fontSize=Math.min(targetSize,width>460?targetSize*460/width:targetSize);
+    return `<div class="writing-lane"><svg viewBox="0 0 500 65" preserveAspectRatio="none" aria-hidden="true"><line x1="2" y1="6" x2="498" y2="6" stroke="#515d5c" stroke-width="1.8"/><line x1="2" y1="33" x2="498" y2="33" stroke="#818c88" stroke-width="1.5" stroke-dasharray="7 8"/><line x1="2" y1="61" x2="498" y2="61" stroke="#515d5c" stroke-width="2"/>${plain?`<text x="12" y="61" font-family="Quicksand, 'Comic Sans MS', 'Trebuchet MS', sans-serif" font-weight="600" font-size="${fontSize.toFixed(1)}" fill="#a3aca8">${escapeHTML(plain)}</text>`:''}</svg></div>`;
+  }
+  function wordCard(word) {
+    return `<article class="word-card"><div class="model-word">${escapeHTML(word)}</div><div class="word-instruction">Read it • Trace it • Write it</div>${linesHTML(word)}${linesHTML('')}</article>`;
+  }
+  function practiceSheet(chunk, pageIndex) {
+    const rows=Array.from({length:6},(_,i)=>{const word=chunk[i];return `<div class="word-row"><div class="word-model">${word?escapeHTML(word):''}</div><div class="row-lanes">${linesHTML(word || '')}${linesHTML('')}</div></div>`;}).join('');
+    return `<div class="practice-sheet"><div class="sheet-heading"><span>Sight-word practice</span><small>Name: ${escapeHTML(studentName) || '____________________'}</small></div><div class="practice-rows">${rows}</div></div>`;
+  }
+  function pageCount() { return Math.max(1,Math.ceil((mode==='alphabet'?cards.length:getWords().length)/(mode==='words'&&wordLayout==='practice'?6:4))); }
+  function renderPages() {
+    const count=pageCount(); page=Math.max(0,Math.min(page,count-1));
+    const source=mode==='alphabet'?cards:getWords(); const per=mode==='words'&&wordLayout==='practice'?6:4;
+    const html=Array.from({length:count},(_,i)=>{
+      const chunk=source.slice(i*per,(i+1)*per);
+      const inside=mode==='words'&&wordLayout==='practice'?practiceSheet(chunk,i):`<div class="cards-grid">${chunk.map(x=>mode==='alphabet'?letterCard(x):wordCard(x)).join('')}</div>`;
+      return `<section class="sheet-page ${i===page?'active':''}" aria-label="Print page ${i+1}">${inside}</section>`;
+    }).join('');
+    $('printPages').innerHTML=html;
+    $('pageIndicator').textContent=`Page ${page+1} of ${count}`;
+    $('prevPage').disabled=page===0; $('nextPage').disabled=page===count-1;
+    $('previewTitle').textContent=mode==='alphabet'?'Alphabet picture cards':wordLayout==='cards'?'Sight-word cards':'Sight-word writing practice';
+    document.documentElement.style.setProperty('--paper-w',settings.paper==='a4'?'8.27in':'8.5in');
+    document.documentElement.style.setProperty('--paper-h',settings.paper==='a4'?'11.69in':'11in');
+    $('dynamicPageRule')?.remove();
+    const style=document.createElement('style');style.id='dynamicPageRule';style.textContent=`@media print{@page{size:${settings.paper==='a4'?'A4':'letter'} portrait;margin:0}}`;document.head.append(style);
+    requestAnimationFrame(fitPreview);
+  }
+  function fitPreview() {
+    const width=settings.paper==='a4'?8.27*96:8.5*96, height=settings.paper==='a4'?11.69*96:11*96;
+    const available=Math.max(120,$('previewFrame').clientWidth-24); const scale=Math.min(1,available/width);
+    document.documentElement.style.setProperty('--page-scale',scale);
+    document.documentElement.style.setProperty('--scaled-w',width*scale+'px');
+    document.documentElement.style.setProperty('--scaled-h',height*scale+'px');
+  }
+  function renderFlash() {
+    const words=getWords(); if (!words.length) { $('flashWord').textContent='Add a word'; $('flashProgress').textContent=''; $('knownCount').textContent='0 known'; return; }
+    flashIndex=((flashIndex%words.length)+words.length)%words.length;
+    $('flashWord').textContent=words[flashIndex]; $('flashProgress').textContent=`Word ${flashIndex+1} of ${words.length}`;
+    $('knownCount').textContent=`${known.size} known`;
+    $('markKnown').textContent=known.has(flashIndex)?'✓ I know it':'I know it';
+  }
+  async function print() { await document.fonts?.ready; renderPages(); window.print(); }
+
+  $('tabAlphabet').addEventListener('click',()=>setMode('alphabet'));
+  $('tabWords').addEventListener('click',()=>setMode('words'));
+  $('printTop').addEventListener('click',print);
+  $('printNearby').addEventListener('click',print);
+  $('prevPage').addEventListener('click',()=>{page--;renderPages();});
+  $('nextPage').addEventListener('click',()=>{page++;renderPages();});
+  $('cardList').addEventListener('click',event=>{const button=event.target.closest('button[data-id]');if(button){selectedId=button.dataset.id;renderControls();}});
+  $('addCard').addEventListener('click',()=>{const used=new Set(cards.map(c=>c.letter));const row=ITEMS.find(x=>!used.has(x[0]))||ITEMS[0];const card=newCard(row);cards.push(card);selectedId=card.id;page=Math.floor((cards.length-1)/4);refresh();});
+  $('loadAlphabet').addEventListener('click',()=>{cards=ITEMS.map(newCard);selectedId=cards[0].id;page=0;refresh();toast('The complete A–Z set is ready.');});
+  $('removeCard').addEventListener('click',()=>{if(cards.length===1){toast('Keep at least one card in the set.');return;}const i=cards.findIndex(c=>c.id===selectedId);cards.splice(i,1);selectedId=cards[Math.max(0,i-1)].id;refresh();});
+  $('letterInput').addEventListener('input',event=>{const c=selected();const next=event.target.value.replace(/[^\p{L}]/gu,'').slice(0,1).toUpperCase();event.target.value=next;if(next){c.letter=next;renderPages();save();const list=$('cardList').querySelector(`[data-id="${CSS.escape(c.id)}"] strong`);if(list)list.textContent=next+next.toLowerCase();}});
+  $('wordInput').addEventListener('input',event=>{selected().word=event.target.value.slice(0,32);renderPages();save();});
+  $('pictureSearch').addEventListener('input',renderGallery);
+  $('pictureGallery').addEventListener('click',event=>{const button=event.target.closest('button[data-symbol]');if(!button)return;const c=selected();c.picture={type:/^[●■▲♥✓→]$/.test(button.dataset.symbol)?'symbol':'emoji',value:button.dataset.symbol};c.word=button.dataset.label;$('pictureSearch').value='';refresh();});
+  $('useSymbol').addEventListener('click',()=>{const value=$('symbolInput').value.trim();if(!value){toast('Type a symbol or emoji first.');return;}selected().picture={type:'symbol',value:value.slice(0,8)};refresh();});
+  $('imageUpload').addEventListener('change',event=>{const file=event.target.files?.[0];event.target.value='';if(!file)return;if(!/^image\/(png|jpeg|webp|gif)$/.test(file.type)){toast('Choose a PNG, JPG, WebP or GIF image.');return;}const reader=new FileReader();reader.onload=()=>{const image=new Image();image.onload=()=>{const scale=Math.min(1,900/image.width,700/image.height),canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(image.width*scale));canvas.height=Math.max(1,Math.round(image.height*scale));const ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(image,0,0,canvas.width,canvas.height);selected().picture={type:'image',value:canvas.toDataURL('image/jpeg',.88)};refresh();toast('Picture added to this card.');};image.onerror=()=>toast('Could not read that picture.');image.src=String(reader.result);};reader.readAsDataURL(file);});
+  $('paperSize').addEventListener('change',event=>{settings.paper=event.target.value==='a4'?'a4':'letter';renderPages();save();});
+  $('showDots').addEventListener('change',event=>{settings.dots=event.target.checked;renderPages();save();});
+  $('showLabels').addEventListener('change',event=>{settings.labels=event.target.checked;renderPages();save();});
+  $('downloadSet').addEventListener('click',async()=>{const blob=new Blob([JSON.stringify({format:'print-play-cards-v1',cards,settings,wordsText,wordLayout,studentName},null,2)],{type:'application/json'});const filename='alphabet-card-set.json';if(navigator.canShare&&navigator.share){try{const file=new File([blob],filename,{type:'application/json'});if(navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'Alphabet card set'});return;}}catch(e){if(e?.name==='AbortError')return;}}const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;a.style.display='none';document.body.append(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(url);},5000);toast('Editable set saved. For finished pages, use Print / Save PDF.');});
+  $('importSet').addEventListener('change',async event=>{const file=event.target.files?.[0];event.target.value='';if(!file)return;try{const data=JSON.parse(await file.text());const imported=Array.isArray(data.cards)?data.cards.slice(0,200).map(normalizeCard).filter(Boolean):[];if(!imported.length)throw Error('No valid cards');cards=imported;selectedId=cards[0].id;settings={paper:data.settings?.paper==='a4'?'a4':'letter',dots:data.settings?.dots!==false,labels:data.settings?.labels===true};wordsText=typeof data.wordsText==='string'?data.wordsText.slice(0,5000):wordsText;wordLayout=data.wordLayout==='practice'?'practice':'cards';studentName=typeof data.studentName==='string'?data.studentName.slice(0,60):'';applySettings();page=0;refresh();renderFlash();toast('Card set opened.');}catch{toast('That file is not a card set.');}});
+  $('wordsInput').addEventListener('input',event=>{wordsText=event.target.value;flashIndex=0;known.clear();renderPages();renderFlash();save();});
+  $('wordLayout').addEventListener('change',event=>{wordLayout=event.target.value==='practice'?'practice':'cards';page=0;renderPages();save();});
+  $('studentName').addEventListener('input',event=>{studentName=event.target.value.slice(0,60);renderPages();save();});
+  $('prevWord').addEventListener('click',()=>{flashIndex--;renderFlash();});
+  $('nextWord').addEventListener('click',()=>{flashIndex++;renderFlash();});
+  $('markKnown').addEventListener('click',()=>{if(!getWords().length)return;known.has(flashIndex)?known.delete(flashIndex):known.add(flashIndex);renderFlash();});
+  $('speakWord').addEventListener('click',()=>{const word=getWords()[flashIndex];if(!word)return;if(!('speechSynthesis' in window)){toast('Speech is unavailable in this browser.');return;}speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(word);utterance.lang='en-CA';utterance.rate=.8;const voices=speechSynthesis.getVoices();utterance.voice=voices.find(v=>v.lang==='en-CA')||voices.find(v=>v.lang.startsWith('en'))||null;speechSynthesis.speak(utterance);});
+  window.addEventListener('resize',fitPreview);
+  const context=document.modelContext;
+  if (context?.registerTool) {
+    const lifecycle=new AbortController();
+    const register=tool=>{ try { Promise.resolve(context.registerTool(tool,{signal:lifecycle.signal})).catch(()=>{}); } catch {} };
+    register({
+      name:'set_alphabet_cards',title:'Set alphabet cards',
+      description:'Replace the current alphabet picture cards with the supplied letter, picture word and symbol pairs, then show the printable preview.',
+      inputSchema:{type:'object',properties:{cards:{type:'array',minItems:1,maxItems:52,items:{type:'object',properties:{letter:{type:'string'},word:{type:'string'},symbol:{type:'string'}},required:['letter','word','symbol'],additionalProperties:false}}},required:['cards'],additionalProperties:false},
+      annotations:{readOnlyHint:false,untrustedContentHint:false},
+      execute(input){
+        if (!Array.isArray(input?.cards)||input.cards.length<1||input.cards.length>52||input.cards.some(c=>!c||typeof c.letter!=='string'||!/^\p{L}$/u.test(c.letter)||typeof c.word!=='string'||c.word.length>32||typeof c.symbol!=='string'||!c.symbol.trim()||c.symbol.length>8)) throw Error('Provide 1–52 cards with one letter, a short word and a symbol.');
+        cards=input.cards.map(c=>({id:crypto.randomUUID?.()||String(Math.random()),letter:c.letter.toUpperCase(),word:c.word,picture:{type:'symbol',value:c.symbol}}));
+        selectedId=cards[0].id;page=0;refresh();setMode('alphabet');
+        return {cardCount:cards.length,pageCount:pageCount()};
+      }
+    });
+    register({
+      name:'set_sight_words',title:'Set sight words',
+      description:'Replace the current sight-word list, choose cards or writing practice, and show the printable preview.',
+      inputSchema:{type:'object',properties:{words:{type:'array',minItems:1,maxItems:200,items:{type:'string'}},layout:{type:'string',enum:['cards','practice']}},required:['words','layout'],additionalProperties:false},
+      annotations:{readOnlyHint:false,untrustedContentHint:false},
+      execute(input){
+        if (!Array.isArray(input?.words)||input.words.length<1||input.words.length>200||!['cards','practice'].includes(input.layout)||input.words.some(w=>typeof w!=='string'||!w.trim()||w.length>35||/[,;\n]/.test(w))) throw Error('Provide 1–200 short sight words and a valid layout.');
+        wordsText=input.words.join('\n');wordLayout=input.layout;known.clear();flashIndex=0;page=0;applySettings();save();setMode('words');
+        return {wordCount:getWords().length,pageCount:pageCount(),layout:wordLayout};
+      }
+    });
+  }
+  function applySettings(){ $('paperSize').value=settings.paper; $('showDots').checked=settings.dots; $('showLabels').checked=settings.labels; $('wordsInput').value=wordsText; $('wordLayout').value=wordLayout; $('studentName').value=studentName; }
+  applySettings();renderControls();renderPages();renderFlash();
+  document.fonts?.ready.then(()=>{renderPages();});
+})();
+
+</script>
+</body>
+</html>
