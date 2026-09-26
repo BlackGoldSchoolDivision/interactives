@@ -49,7 +49,7 @@
           <label class="checkbox-row"><input id="showDots" type="checkbox" checked> Green guide dots</label>
           <label class="checkbox-row"><input id="showLabels" type="checkbox"> Picture word labels</label>
         </details>
-        <div class="button-row file-actions"><button type="button" id="printNearby" class="button primary">Print / Save PDF</button><button type="button" id="downloadSet" class="button ghost">Save editable set</button><label class="button ghost import-label">Open a set<input id="importSet" type="file" accept="application/json,.json"></label></div>
+        <div class="button-row file-actions"><button type="button" id="printNearby" class="button primary">Print / Save PDF</button><a id="downloadSet" href="#" download="alphabet-card-set.json" class="button ghost">Save editable set</a><label class="button ghost import-label">Open a set<input id="importSet" type="file" accept="application/json,.json"></label></div>
         <p class="tiny">Print / Save PDF makes the actual pages. Save editable set keeps your card choices as a JSON backup for later.</p>
       </section>
       <section id="wordControls" class="control-panel" hidden>
@@ -251,7 +251,8 @@
   $('paperSize').addEventListener('change',event=>{settings.paper=event.target.value==='a4'?'a4':'letter';renderPages();save();});
   $('showDots').addEventListener('change',event=>{settings.dots=event.target.checked;renderPages();save();});
   $('showLabels').addEventListener('change',event=>{settings.labels=event.target.checked;renderPages();save();});
-  $('downloadSet').addEventListener('click',()=>{const blob=new Blob([JSON.stringify({format:'print-play-cards-v1',cards,settings,wordsText,wordLayout,studentName},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='alphabet-card-set.json';a.style.display='none';document.body.append(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(url);},30000);toast('Editable set downloaded. For finished pages, use Print / Save PDF.');});
+  let lastDownloadURL;
+  $('downloadSet').addEventListener('click',event=>{const blob=new Blob([JSON.stringify({format:'print-play-cards-v1',cards,settings,wordsText,wordLayout,studentName},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);event.currentTarget.href=url;if(lastDownloadURL)URL.revokeObjectURL(lastDownloadURL);lastDownloadURL=url;toast('Editable set ready to save. For finished pages, use Print / Save PDF.');});
   $('importSet').addEventListener('change',async event=>{const file=event.target.files?.[0];event.target.value='';if(!file)return;try{const data=JSON.parse(await file.text());const imported=Array.isArray(data.cards)?data.cards.slice(0,200).map(normalizeCard).filter(Boolean):[];if(!imported.length)throw Error('No valid cards');cards=imported;selectedId=cards[0].id;settings={paper:data.settings?.paper==='a4'?'a4':'letter',dots:data.settings?.dots!==false,labels:data.settings?.labels===true};wordsText=typeof data.wordsText==='string'?data.wordsText.slice(0,5000):wordsText;wordLayout=data.wordLayout==='practice'?'practice':'cards';studentName=typeof data.studentName==='string'?data.studentName.slice(0,60):'';applySettings();page=0;refresh();renderFlash();toast('Card set opened.');}catch{toast('That file is not a card set.');}});
   $('wordsInput').addEventListener('input',event=>{wordsText=event.target.value;flashIndex=0;known.clear();renderPages();renderFlash();save();});
   $('wordLayout').addEventListener('change',event=>{wordLayout=event.target.value==='practice'?'practice':'cards';page=0;renderPages();save();});
