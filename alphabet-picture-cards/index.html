@@ -15,6 +15,7 @@
 @media(max-width:900px){.workspace{grid-template-columns:1fr;max-width:760px}.sidebar{order:1}.preview-main{order:2}.preview-frame{padding:14px 5px}.topbar{min-height:75px}.topbar h1{font-size:19px}}@media(max-width:540px){.top-actions .button{font-size:12px;padding:9px 10px}.brand-mark{width:43px;height:43px;line-height:43px;font-size:19px}.workspace{padding:14px;gap:18px}.control-panel{padding:5px 15px 20px}.preview-header{align-items:start;flex-direction:column;gap:9px}.preview-frame{border-radius:12px}.flash-actions{flex-wrap:wrap}}
 @media print{@page{size:letter portrait;margin:0}html,body{margin:0;padding:0;background:white!important}.topbar,.sidebar,.preview-header,.print-note,#toast{display:none!important}.workspace,.preview-main,.preview-frame,.print-pages{display:block!important;margin:0!important;padding:0!important;width:auto!important;height:auto!important;min-height:0!important;background:none!important;border:0!important;overflow:visible!important;box-shadow:none!important}.sheet-page,.sheet-page.active{display:block!important;width:var(--paper-w)!important;height:var(--paper-h)!important;transform:none!important;box-shadow:none!important;break-after:page;page-break-after:always;print-color-adjust:exact;-webkit-print-color-adjust:exact}.sheet-page:last-child{break-after:auto;page-break-after:auto}.letter-card,.word-card{border-color:#263638!important}.marker{fill:#8cbf53!important}}
 .field-error{color:#a04544;font-size:12px;font-weight:700;margin:0 0 10px}.form-grid input:invalid{border-color:#b84c4c;background:#fff8f8}.word-card{padding:.13in;display:flex;flex-direction:column;justify-content:space-between}.word-card-label{text-align:center;color:#536c65;font:700 13px 'DM Sans',Arial,sans-serif;flex:none}.word-lanes{flex:1;display:flex;flex-direction:column;justify-content:space-evenly;gap:.07in;min-height:0}.word-lanes .writing-lane{height:.88in}.row-lanes .writing-lane{height:.57in}.writing-lane svg{overflow:visible}
+.writing-lane .word-glyphs{position:absolute;left:.12in;top:0;height:100%;width:auto;max-width:calc(100% - .24in)}
 
 </style>
 </head>
@@ -190,30 +191,96 @@
     const lowerTop=ascender?30:112;
     return `<article class="letter-card" aria-label="${upper}, ${escapeHTML(c.word)}"><div class="letter-top"><svg viewBox="0 0 360 225" preserveAspectRatio="none" aria-hidden="true"><line class="guide" x1="4" y1="26" x2="356" y2="26"/><line class="midline" x1="4" y1="110" x2="356" y2="110"/><line class="guide" x1="4" y1="199" x2="356" y2="199"/><text class="letter-glyph" x="100" y="199" font-size="${cap.size}" text-anchor="middle"${cap.fit}>${upper}</text><text class="letter-glyph" x="260" y="199" font-size="${small.size}" text-anchor="middle"${small.fit}>${lower}</text>${settings.dots?`<circle class="marker" cx="${upperDot.toFixed(1)}" cy="30" r="9"/><circle class="marker" cx="${lowerDot.toFixed(1)}" cy="${lowerTop}" r="9"/>`:''}</svg></div><div class="letter-art">${pictureHTML(c)}${settings.labels?`<div class="art-label">${escapeHTML(c.word)}</div>`:''}</div></article>`;
   }
+  // Handwriting glyphs use one coordinate system for every letter:
+  // top guide 7, middle guide 34, baseline 62, descenders below 62.
+  // Stroke centres sit slightly inside the guides so the ink touches each line.
+  const HAND_GLYPHS = {
+    a:[28,'M23 36 V60 M23 43 C21 38 17 36 13 36 C6 36 4 42 4 48 C4 55 8 60 14 60 C18 60 21 57 23 54'],
+    b:[29,'M5 9 V60 M5 43 C8 38 12 36 17 36 C23 36 26 41 26 48 C26 55 22 60 16 60 C11 60 7 57 5 54'],
+    c:[26,'M23 39 C20 37 17 36 13 36 C6 36 3 41 3 48 C3 55 7 60 14 60 C17 60 20 59 23 57'],
+    d:[29,'M24 9 V60 M24 43 C21 38 17 36 12 36 C6 36 3 41 3 48 C3 55 7 60 13 60 C18 60 22 57 24 54'],
+    e:[27,'M5 49 H24 C24 42 21 36 14 36 C7 36 3 41 3 48 C3 55 7 60 14 60 C18 60 21 58 24 56'],
+    f:[21,'M18 10 C13 8 8 11 8 18 V60 M3 36 H17'],
+    g:[29,'M24 36 V68 C24 77 20 81 13 81 C9 81 6 80 4 78 M24 43 C21 38 17 36 12 36 C6 36 3 41 3 48 C3 55 7 60 13 60 C18 60 22 57 24 54'],
+    h:[29,'M5 9 V60 M5 43 C8 38 12 36 17 36 C23 36 24 41 24 47 V60'],
+    i:[11,'M5 36 V60',[[5,19,2.2]]],
+    j:[15,'M10 36 V69 C10 78 7 81 3 81',[[10,19,2.2]]],
+    k:[28,'M5 9 V60 M24 36 L5 49 M13 44 L25 60'],
+    l:[11,'M5 9 V60'],
+    m:[43,'M5 36 V60 M5 43 C7 38 11 36 15 36 C20 36 22 40 22 46 V60 M22 44 C24 38 28 36 33 36 C39 36 40 41 40 47 V60'],
+    n:[29,'M5 36 V60 M5 43 C8 38 12 36 17 36 C23 36 24 41 24 47 V60'],
+    o:[28,'M14 36 C7 36 3 41 3 48 C3 55 7 60 14 60 C21 60 25 55 25 48 C25 41 21 36 14 36 Z'],
+    p:[29,'M5 36 V81 M5 43 C8 38 12 36 17 36 C23 36 26 41 26 48 C26 55 22 60 16 60 C11 60 7 57 5 54'],
+    q:[29,'M24 36 V81 M24 43 C21 38 17 36 12 36 C6 36 3 41 3 48 C3 55 7 60 13 60 C18 60 22 57 24 54'],
+    r:[22,'M5 36 V60 M5 45 C7 39 11 36 18 36'],
+    s:[26,'M22 39 C19 37 17 36 13 36 C7 36 4 39 4 43 C4 48 9 49 14 49 C20 50 23 52 23 55 C23 59 18 60 13 60 C9 60 6 59 3 57'],
+    t:[22,'M10 9 V53 C10 59 13 60 19 59 M3 36 H19'],
+    u:[29,'M5 36 V51 C5 57 8 60 14 60 C19 60 23 56 24 52 M24 36 V60'],
+    v:[28,'M4 36 L14 60 L24 36'],
+    w:[42,'M3 36 L11 60 L21 40 L30 60 L39 36'],
+    x:[27,'M4 36 L23 60 M23 36 L4 60'],
+    y:[28,'M4 36 L14 60 L24 36 M14 60 L9 74 C7 79 4 81 2 81'],
+    z:[27,'M4 36 H23 L4 60 H23'],
+    A:[36,'M3 60 L18 9 L33 60 M8 43 H28'],
+    B:[35,'M5 9 V60 H20 C29 60 32 54 32 47 C32 41 27 36 20 36 H5 M5 9 H19 C28 9 31 15 31 22 C31 30 26 36 19 36'],
+    C:[34,'M31 15 C27 11 23 9 17 9 C8 9 3 17 3 34 C3 51 8 60 17 60 C23 60 27 58 31 54'],
+    D:[36,'M5 9 V60 H17 C28 60 33 50 33 34 C33 18 28 9 17 9 Z'],
+    E:[32,'M29 9 H5 V60 H29 M5 34 H26'],
+    F:[32,'M5 60 V9 H29 M5 34 H26'],
+    G:[37,'M33 15 C29 11 24 9 18 9 C9 9 3 17 3 34 C3 51 8 60 18 60 C24 60 29 57 33 53 V36 H20'],
+    H:[37,'M5 9 V60 M32 9 V60 M5 35 H32'],
+    I:[25,'M4 9 H21 M12.5 9 V60 M4 60 H21'],
+    J:[32,'M28 9 V46 C28 56 23 60 15 60 C9 60 5 56 4 51'],
+    K:[35,'M5 9 V60 M32 9 L5 36 M15 27 L33 60'],
+    L:[31,'M5 9 V60 H28'],
+    M:[43,'M4 60 V9 L21.5 36 L39 9 V60'],
+    N:[37,'M5 60 V9 L32 60 V9'],
+    O:[37,'M18.5 9 C8 9 3 18 3 34 C3 51 8 60 18.5 60 C29 60 34 51 34 34 C34 18 29 9 18.5 9 Z'],
+    P:[35,'M5 60 V9 H19 C29 9 32 16 32 24 C32 32 29 39 19 39 H5'],
+    Q:[39,'M18.5 9 C8 9 3 18 3 34 C3 51 8 60 18.5 60 C29 60 34 51 34 34 C34 18 29 9 18.5 9 Z M26 51 L37 62'],
+    R:[35,'M5 60 V9 H19 C29 9 32 16 32 24 C32 32 29 39 19 39 H5 M19 39 L33 60'],
+    S:[34,'M30 15 C26 11 22 9 16 9 C8 9 4 15 4 22 C4 31 11 33 18 35 C26 37 30 40 30 48 C30 55 25 60 16 60 C10 60 6 58 3 54'],
+    T:[35,'M3 9 H32 M17.5 9 V60'],
+    U:[37,'M5 9 V44 C5 55 10 60 18.5 60 C27 60 32 55 32 44 V9'],
+    V:[37,'M3 9 L18.5 60 L34 9'],
+    W:[47,'M3 9 L11 60 L23.5 29 L36 60 L44 9'],
+    X:[35,'M4 9 L31 60 M31 9 L4 60'],
+    Y:[35,'M3 9 L17.5 34 L32 9 M17.5 34 V60'],
+    Z:[35,'M4 9 H31 L4 60 H31'],
+    '-':[18,'M3 48 H15'],
+    "'":[10,'M6 10 L4 22'],
+    '.':[10,'',[[5,59,2]]],
+    ',':[10,'M6 59 L4 68'],
+    '!':[12,'M6 9 V47',[[6,59,2]]],
+    '?':[28,'M4 18 C6 12 11 9 16 9 C23 9 26 14 26 21 C26 29 15 31 15 40 V45',[[15,59,2]]]
+  };
   function wordGlyphsHTML(word,kind) {
     if (!word) return '';
-    const font="Quicksand, 'Comic Sans MS', 'Trebuchet MS', sans-serif";
-    measure.font=`600 100px ${font}`;
-    const xHeight=measure.measureText('a').actualBoundingBoxAscent||55;
-    const size=100*28/xHeight;
-    measure.font=`600 ${size}px ${font}`;
+    const colour=kind==='model'?'#263638':'#a0aaa5';
     let x=0;
-    const pieces=Array.from(word).map(character=>{
-      const metrics=measure.measureText(character);
-      // The stem of i and j starts at the middle guide; only their dots sit above it.
-      // Stretching the whole glyph as an ascender makes the stem look like a capital I.
-      const target=/[bdfhkltA-Z]/.test(character)?55:28;
-      const scale=character===' '||/[ij]/.test(character)?1:Math.min(2.1,target/(metrics.actualBoundingBoxAscent||target));
-      const widthScale=scale>1.05?Math.sqrt(scale):1;
-      const html=character===' '?'':`<text x="0" y="62" transform="translate(${x.toFixed(1)} 62) scale(${widthScale.toFixed(3)} ${scale.toFixed(3)}) translate(0 -62)" font-family="${font}" font-weight="600" font-size="${size.toFixed(1)}" fill="${kind==='model'?'#263638':'#a3aca8'}">${escapeHTML(character)}</text>`;
-      x+=metrics.width*widthScale+(character===' '?0:1.5);
+    const shapes=Array.from(word).map(character=>{
+      if (character===' ') { x+=16; return ''; }
+      const glyph=HAND_GLYPHS[character];
+      if (!glyph) {
+        // Keep unfamiliar characters visible instead of silently dropping them.
+        measure.font='500 70px Arial, sans-serif';
+        const metrics=measure.measureText(character);
+        const size=70*51/(metrics.actualBoundingBoxAscent||60);
+        const width=Math.max(10,metrics.width*size/70);
+        const html=`<text x="${x.toFixed(1)}" y="60" font-family="Arial, sans-serif" font-size="${size.toFixed(1)}" fill="${colour}" stroke="none">${escapeHTML(character)}</text>`;
+        x+=width+2;
+        return html;
+      }
+      const [width,path,dots=[]]=glyph;
+      const html=`<g transform="translate(${x} 0)">${path?`<path d="${path}"/>`:''}${dots.map(([cx,cy,r])=>`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${colour}" stroke="none"/>`).join('')}</g>`;
+      x+=width+2;
       return html;
     }).join('');
-    const fit=Math.min(1,470/Math.max(x,1));
-    return `<g transform="translate(12 0) scale(${fit.toFixed(3)} 1)">${pieces}</g>`;
+    const width=Math.max(1,x+2);
+    return `<svg class="word-glyphs" viewBox="0 0 ${width} 90" preserveAspectRatio="none" style="aspect-ratio:${width}/90" aria-hidden="true"><g fill="none" stroke="${colour}" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round">${shapes}</g></svg>`;
   }
   function linesHTML(word='',kind='trace') {
-    return `<div class="writing-lane"><svg viewBox="0 0 500 90" preserveAspectRatio="none" aria-hidden="true"><line x1="2" y1="7" x2="498" y2="7" stroke="#515d5c" stroke-width="1.8"/><line x1="2" y1="34" x2="498" y2="34" stroke="#818c88" stroke-width="1.5" stroke-dasharray="7 8"/><line x1="2" y1="62" x2="498" y2="62" stroke="#515d5c" stroke-width="2"/>${wordGlyphsHTML(String(word||''),kind)}</svg></div>`;
+    return `<div class="writing-lane"><svg class="writing-guides" viewBox="0 0 500 90" preserveAspectRatio="none" aria-hidden="true"><line x1="2" y1="7" x2="498" y2="7" stroke="#515d5c" stroke-width="1.8"/><line x1="2" y1="34" x2="498" y2="34" stroke="#818c88" stroke-width="1.5" stroke-dasharray="7 8"/><line x1="2" y1="62" x2="498" y2="62" stroke="#515d5c" stroke-width="2"/></svg>${wordGlyphsHTML(String(word||''),kind)}</div>`;
   }
   function wordCard(word) {
     return `<article class="word-card" aria-label="Practise ${escapeHTML(word)}"><div class="word-card-label">Read • Trace • Write</div><div class="word-lanes">${linesHTML(word,'model')}${linesHTML(word,'trace')}${linesHTML('')}${linesHTML('')}</div></article>`;
