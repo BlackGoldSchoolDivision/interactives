@@ -16,6 +16,7 @@
 @media print{@page{size:letter portrait;margin:0}html,body{margin:0;padding:0;background:white!important}.topbar,.sidebar,.preview-header,.print-note,#toast{display:none!important}.workspace,.preview-main,.preview-frame,.print-pages{display:block!important;margin:0!important;padding:0!important;width:auto!important;height:auto!important;min-height:0!important;background:none!important;border:0!important;overflow:visible!important;box-shadow:none!important}.sheet-page,.sheet-page.active{display:block!important;width:var(--paper-w)!important;height:var(--paper-h)!important;transform:none!important;box-shadow:none!important;break-after:page;page-break-after:always;print-color-adjust:exact;-webkit-print-color-adjust:exact}.sheet-page:last-child{break-after:auto;page-break-after:auto}.letter-card,.word-card{border-color:#263638!important}.marker{fill:#8cbf53!important}}
 .field-error{color:#a04544;font-size:12px;font-weight:700;margin:0 0 10px}.form-grid input:invalid{border-color:#b84c4c;background:#fff8f8}.word-card{padding:.13in;display:flex;flex-direction:column;justify-content:space-between}.word-card-label{text-align:center;color:#536c65;font:700 13px 'DM Sans',Arial,sans-serif;flex:none}.word-lanes{flex:1;display:flex;flex-direction:column;justify-content:space-evenly;gap:.07in;min-height:0}.word-lanes .writing-lane{height:.88in}.row-lanes .writing-lane{height:.57in}.writing-lane svg{overflow:visible}
 .writing-lane .word-glyphs{position:absolute;left:.12in;top:0;height:100%;width:auto;max-width:calc(100% - .24in)}
+.word-export{align-items:center;margin-top:17px}.word-export .tiny{margin:0;max-width:170px}
 
 </style>
 </head>
@@ -59,6 +60,7 @@
         <label class="field-label" for="wordsInput">Words to practise</label><textarea id="wordsInput" rows="7" spellcheck="false">the, and, is, to, see, like, my, can</textarea>
         <div class="setting-row"><label for="wordLayout">Print layout</label><select id="wordLayout"><option value="cards">Four word cards</option><option value="practice">Tracing &amp; writing sheet</option></select></div>
         <div class="setting-row"><label for="studentName">Name line</label><input id="studentName" placeholder="Optional name"></div>
+        <div class="button-row word-export"><button type="button" id="downloadWordPDF" class="button primary">Download sight-word PDF</button><button type="button" id="shareWordPDF" class="button ghost" hidden>Share PDF</button><span class="tiny">Saves the pages directly, including on phones.</span></div>
         <div class="practice-tool">
           <div class="practice-title">Practice on screen <span id="knownCount">0 known</span></div>
           <div id="flashWord" class="flash-word" aria-live="polite">the</div>
@@ -322,12 +324,122 @@
     $('knownCount').textContent=`${known.size} known`;
     $('markKnown').textContent=known.has(flashIndex)?'✓ I know it':'I know it';
   }
+  // Direct PDF export avoids reliance on window.print in Android in-app browsers.
+  // Raster pages retain the same fixed handwriting geometry as the live SVG guides.
+  function drawGuideLane(ctx,left,right,top,height,word='',kind='trace') {
+    const scale=height/90;
+    for (const [y,dashed] of [[7,false],[34,true],[62,false]]) {
+      ctx.beginPath();ctx.setLineDash(dashed?[8*scale,9*scale]:[]);
+      ctx.lineWidth=(dashed?1.5:2)*scale;ctx.strokeStyle=dashed?'#818c88':'#515d5c';
+      ctx.moveTo(left,top+y*scale);ctx.lineTo(right,top+y*scale);ctx.stroke();
+    }
+    ctx.setLineDash([]);
+    if (!word) return;
+    const units=Array.from(word).reduce((sum,ch)=>sum+(ch===' '?16:(HAND_GLYPHS[ch]?.[0]||22)+2),2);
+    const sx=Math.min(scale,(right-left-28)/Math.max(units,1));
+    ctx.save();ctx.translate(left+23,top);ctx.scale(sx,scale);
+    ctx.strokeStyle=kind==='model'?'#263638':'#a0aaa5';ctx.fillStyle=ctx.strokeStyle;
+    ctx.lineWidth=3.6;ctx.lineCap='round';ctx.lineJoin='round';
+    let x=0;
+    for (const ch of word) {
+      if (ch===' ') {x+=16;continue;}
+      const glyph=HAND_GLYPHS[ch];
+      if (!glyph) {ctx.font='48px Arial';ctx.fillText(ch,x,60);x+=22;continue;}
+      const [width,path,dots=[]]=glyph;
+      if (path) {ctx.save();ctx.translate(x,0);ctx.stroke(new Path2D(path));ctx.restore();}
+      for (const [cx,cy,r] of dots) {ctx.beginPath();ctx.arc(x+cx,cy,r,0,Math.PI*2);ctx.fill();}
+      x+=width+2;
+    }
+    ctx.restore();
+  }
+  function drawWordCardsPDF(ctx,chunk,width,height) {
+    const dpi=200,margin=.25*dpi,gap=.11*dpi;
+    const cardWidth=(width-2*margin-gap)/2,cardHeight=(height-2*margin-gap)/2;
+    chunk.forEach((word,i)=>{
+      const col=i%2,row=Math.floor(i/2),x=margin+col*(cardWidth+gap),y=margin+row*(cardHeight+gap);
+      ctx.strokeStyle='#263638';ctx.lineWidth=6;ctx.strokeRect(x+3,y+3,cardWidth-6,cardHeight-6);
+      ctx.fillStyle='#536c65';ctx.font='bold 26px Arial';ctx.textAlign='center';
+      ctx.fillText('Read • Trace • Write',x+cardWidth/2,y+53);ctx.textAlign='left';
+      const left=x+27,right=x+cardWidth-27,laneHeight=.88*dpi;
+      const first=y+100,step=(cardHeight-100-laneHeight-62)/3;
+      for (let lane=0;lane<4;lane++) drawGuideLane(ctx,left,right,first+lane*step,laneHeight,lane<2?word:'',lane===0?'model':'trace');
+    });
+  }
+  function drawWordPracticePDF(ctx,chunk,width,height) {
+    const dpi=200,margin=.25*dpi;
+    ctx.fillStyle='#263638';ctx.font='bold 44px Arial';ctx.fillText('Sight-word practice',margin+16,margin+68);
+    ctx.font='26px Arial';ctx.textAlign='right';ctx.fillText('Name: '+(studentName||'____________________'),width-margin-16,margin+66);ctx.textAlign='left';
+    ctx.strokeStyle='#263638';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(margin+14,margin+92);ctx.lineTo(width-margin-14,margin+92);ctx.stroke();
+    const start=margin+110,rowHeight=(height-margin-start)/6;
+    for (let i=0;i<6;i++) {
+      const word=chunk[i]||'',y=start+i*rowHeight;
+      ctx.fillStyle='#263638';ctx.font='bold 46px Arial';ctx.fillText(word,margin+16,y+rowHeight/2+15);
+      const left=margin+310,right=width-margin-17,laneHeight=.57*dpi;
+      drawGuideLane(ctx,left,right,y+31,laneHeight,word);
+      drawGuideLane(ctx,left,right,y+rowHeight/2+19,laneHeight);
+      ctx.beginPath();ctx.strokeStyle='#d6ddd8';ctx.lineWidth=1.5;ctx.moveTo(margin+14,y+rowHeight-1);ctx.lineTo(width-margin-14,y+rowHeight-1);ctx.stroke();
+    }
+  }
+  function jpegPagesToPDF(images,ptWidth,ptHeight,pixelWidth,pixelHeight) {
+    const encoder=new TextEncoder(),chunks=[],offsets=[0];let byteCount=0;
+    const push=data=>{const bytes=typeof data==='string'?encoder.encode(data):data;chunks.push(bytes);byteCount+=bytes.length;};
+    const begin=id=>{offsets[id]=byteCount;push(`${id} 0 obj\n`);};
+    push('%PDF-1.4\n');
+    begin(1);push('<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
+    begin(2);push(`<< /Type /Pages /Count ${images.length} /Kids [${images.map((_,i)=>`${5+3*i} 0 R`).join(' ')}] >>\nendobj\n`);
+    images.forEach((image,i)=>{
+      const imageId=3+i*3,contentId=imageId+1,pageId=imageId+2;
+      begin(imageId);push(`<< /Type /XObject /Subtype /Image /Width ${pixelWidth} /Height ${pixelHeight} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${image.length} >>\nstream\n`);push(image);push('\nendstream\nendobj\n');
+      const stream=`q ${ptWidth} 0 0 ${ptHeight} 0 0 cm /Im${i} Do Q\n`;
+      begin(contentId);push(`<< /Length ${encoder.encode(stream).length} >>\nstream\n${stream}endstream\nendobj\n`);
+      begin(pageId);push(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${ptWidth} ${ptHeight}] /Resources << /XObject << /Im${i} ${imageId} 0 R >> >> /Contents ${contentId} 0 R >>\nendobj\n`);
+    });
+    const xref=byteCount;push(`xref\n0 ${offsets.length}\n0000000000 65535 f \n`);
+    for (let i=1;i<offsets.length;i++) push(`${String(offsets[i]).padStart(10,'0')} 00000 n \n`);
+    push(`trailer\n<< /Size ${offsets.length} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`);
+    return new Blob(chunks,{type:'application/pdf'});
+  }
+  async function makeSightWordPDF() {
+    const words=getWords();if(!words.length) throw Error('Add at least one sight word first.');
+    const a4=settings.paper==='a4',width=Math.round((a4?8.27:8.5)*200),height=Math.round((a4?11.69:11)*200);
+    const per=wordLayout==='practice'?6:4,images=[];
+    for(let start=0;start<words.length;start+=per) {
+      const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;
+      const ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,width,height);
+      const chunk=words.slice(start,start+per);
+      if(wordLayout==='practice') drawWordPracticePDF(ctx,chunk,width,height);
+      else drawWordCardsPDF(ctx,chunk,width,height);
+      const jpeg=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(Error('Could not render a PDF page.')),'image/jpeg',.93));
+      images.push(new Uint8Array(await jpeg.arrayBuffer()));
+    }
+    return jpegPagesToPDF(images,a4?595.28:612,a4?841.89:792,width,height);
+  }
+  async function exportSightPDF(method) {
+    const button=$(method==='share'?'shareWordPDF':'downloadWordPDF');button.disabled=true;
+    try {
+      toast('Preparing PDF pages…');
+      const blob=await makeSightWordPDF();
+      const name=wordLayout==='practice'?'sight-word-writing-practice.pdf':'sight-word-cards.pdf';
+      if(method==='share') {
+        await navigator.share({files:[new File([blob],name,{type:'application/pdf'})],title:'Sight-word practice'});
+        toast('PDF shared.');
+      } else {
+        const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=name;
+        document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
+        toast('PDF ready. Check your Downloads or the browser download prompt.');
+      }
+    } catch(error) {if(error.name!=='AbortError') toast(error.message||'Could not make the PDF.');}
+    finally {button.disabled=false;}
+  }
   async function print() { await document.fonts?.ready; renderPages(); window.print(); }
 
   $('tabAlphabet').addEventListener('click',()=>setMode('alphabet'));
   $('tabWords').addEventListener('click',()=>setMode('words'));
   $('printTop').addEventListener('click',print);
   $('printNearby').addEventListener('click',print);
+  $('downloadWordPDF').addEventListener('click',()=>exportSightPDF('download'));
+  $('shareWordPDF').addEventListener('click',()=>exportSightPDF('share'));
+  try { $('shareWordPDF').hidden=!navigator.canShare?.({files:[new File(['x'],'test.pdf',{type:'application/pdf'})]}); } catch { $('shareWordPDF').hidden=true; }
   $('prevPage').addEventListener('click',()=>{page--;renderPages();});
   $('nextPage').addEventListener('click',()=>{page++;renderPages();});
   $('cardList').addEventListener('click',event=>{const button=event.target.closest('button[data-id]');if(button){selectedId=button.dataset.id;$('pictureSearch').value='';renderControls();}});
