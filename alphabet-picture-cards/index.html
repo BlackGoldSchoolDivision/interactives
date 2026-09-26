@@ -14,6 +14,7 @@
 :root{--ink:#21383c;--teal:#214c55;--mint:#d9eee7;--lime:#a8cb65;--paper:#fffdf8;--line:#d7ddd8;--muted:#627779;--paper-w:8.5in;--paper-h:11in;--page-scale:1;font-family:'DM Sans',Arial,sans-serif;color:var(--ink)}*{box-sizing:border-box}body{margin:0;background:#f2f5f1}button,input,textarea,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.4;cursor:default}input,textarea,select{min-width:0;border:1px solid #cbd9d5;background:#fff;border-radius:10px;color:var(--ink);padding:10px 11px}input:focus-visible,textarea:focus-visible,select:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid #94c9c0;outline-offset:2px}[hidden]{display:none!important}.topbar{min-height:88px;padding:15px clamp(18px,3vw,44px);background:#fdfefa;border-bottom:1px solid #dfe7e0;display:flex;align-items:center;gap:14px}.brand-mark{width:54px;height:54px;border-radius:13px;background:var(--teal);color:#fff;font:700 23px/54px Quicksand,'Trebuchet MS',sans-serif;text-align:center;position:relative;flex:none}.brand-mark span{position:absolute;color:var(--lime);font:700 13px Arial;top:-14px;right:9px}.eyebrow{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#61827d;font-weight:700}h1,h2,h3,p{margin-top:0}h1{font-size:22px;margin:2px 0 0;letter-spacing:-.025em}h2{font-size:21px;margin:0;letter-spacing:-.025em}h3{font-size:15px;margin:0}.top-actions{margin-left:auto}.workspace{display:grid;grid-template-columns:minmax(320px,390px) minmax(0,1fr);gap:26px;padding:26px clamp(18px,3vw,44px);max-width:1500px;margin:auto}.sidebar{background:#fff;border:1px solid #e1e8e2;border-radius:20px;box-shadow:0 9px 28px #284a4110;align-self:start;overflow:hidden}.mode-switch{display:flex;background:#edf3ee;padding:6px;margin:14px;border-radius:12px;gap:4px}.mode-switch button{flex:1;border:0;border-radius:9px;padding:11px 7px;background:transparent;font-weight:700;color:#5f7774}.mode-switch button[aria-selected=true]{background:#fff;color:#234d53;box-shadow:0 2px 6px #223e3920}.control-panel{padding:5px 22px 24px}.panel-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:8px 0 6px}.count-pill{border-radius:99px;background:#e6f2e7;padding:4px 9px;font-size:12px;font-weight:700;color:#466552}.helper{color:var(--muted);font-size:13px;line-height:1.5;margin:8px 0 17px}.button{border:1px solid #d2ded8;border-radius:10px;padding:10px 12px;background:#fff;color:var(--teal);font-weight:700;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center}.button:hover,.icon-button:hover{filter:brightness(.97)}.button.primary{color:#fff;background:var(--teal);border-color:var(--teal);padding:11px 18px}.button.soft{background:#e5f0eb;border-color:#e5f0eb}.button.ghost{background:#fff}.button-row{display:flex;gap:8px;flex-wrap:wrap}.card-list{margin:17px 0 18px;max-height:235px;overflow:auto;border:1px solid #e3eae5;border-radius:12px;padding:5px}.card-list button{display:flex;width:100%;align-items:center;gap:10px;text-align:left;padding:7px;border:0;border-radius:8px;background:#fff;color:var(--ink)}.card-list button[aria-current=true]{background:#eaf3ef}.card-list .thumbnail{width:34px;height:34px;display:grid;place-items:center;border:1px solid #dde7e0;border-radius:7px;font-size:20px;overflow:hidden;background:white}.thumbnail img{width:100%;height:100%;object-fit:contain}.card-list strong{font:700 18px Quicksand,'Trebuchet MS',sans-serif;min-width:34px}.card-list small{color:var(--muted);font-size:12px}.editor{border-top:1px solid #e2eae4;padding-top:15px}.text-button{border:0;background:none;color:var(--teal);font-weight:700;padding:5px}.danger{color:#a04544}.form-grid{display:grid;grid-template-columns:90px 1fr;gap:10px;margin:12px 0}.form-grid label,.custom-row label{display:grid;gap:6px;font-size:12px;font-weight:700;color:#52706e}.field-label{display:block;font-size:12px;font-weight:700;color:#52706e;margin:13px 0 6px}.picture-gallery{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;max-height:153px;overflow:auto;margin:9px 0}.picture-choice{min-width:0;min-height:45px;font-size:26px;background:#fff;border:1px solid #e1e9e3;border-radius:9px}.picture-choice[aria-pressed=true]{border:2px solid #47857b;background:#e8f3ed}.picture-choice:hover{background:#edf5ef}.custom-row{display:flex;gap:8px;align-items:end}.custom-row label{flex:1}.custom-row input{width:100%}.upload-button{display:block;margin-top:12px;padding:11px;border:1px dashed #91b8a9;border-radius:10px;text-align:center;font-size:13px;font-weight:700;color:var(--teal);cursor:pointer}.upload-button input,.import-label input{display:none}.tiny{font-size:11px;line-height:1.4;color:#728581;margin:9px 0 0}.settings{border-top:1px solid #e2eae4;margin-top:17px;padding-top:13px}.settings summary{font-weight:700;cursor:pointer}.setting-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;font-size:13px;font-weight:700}.setting-row select,.setting-row input{width:160px}.checkbox-row{display:flex;align-items:center;gap:8px;font-size:13px;margin:11px 0}.checkbox-row input{width:17px;height:17px;accent-color:#418577}.file-actions{margin-top:18px}.file-actions .button{font-size:12px;flex:1}.import-label{cursor:pointer}.control-panel textarea{width:100%;line-height:1.5;resize:vertical}.practice-tool{background:#f2f7f3;border:1px solid #dfebe3;border-radius:16px;padding:14px;margin-top:20px}.practice-title{display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:700;color:#4f7268}.flash-word{text-align:center;font:700 clamp(38px,5vw,60px)/1.3 Quicksand,'Trebuchet MS',sans-serif;min-height:105px;display:grid;place-items:center}.flash-actions{display:flex;gap:5px;justify-content:center}.flash-actions .button{font-size:12px;padding:9px 7px}.preview-main{min-width:0}.preview-header{display:flex;justify-content:space-between;align-items:end;gap:16px;margin:3px 0 17px}.preview-header h2{margin-top:3px}.preview-actions{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px;font-weight:700;white-space:nowrap}.icon-button{border:1px solid #d2ded8;width:33px;height:33px;border-radius:50%;background:white;color:var(--teal);font-size:22px;line-height:1}.preview-frame{min-height:400px;display:flex;justify-content:center;align-items:flex-start;background:#dce5df;border-radius:20px;padding:24px 12px;overflow:hidden}.print-pages{width:var(--scaled-w);height:var(--scaled-h);position:relative}.sheet-page{background:white;width:var(--paper-w);height:var(--paper-h);padding:.25in;box-shadow:0 8px 30px #203e3d30;display:none;overflow:hidden;transform-origin:top left;transform:scale(var(--page-scale))}.sheet-page.active{display:block}.cards-grid{width:100%;height:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:.11in}.letter-card,.word-card{border:3px solid #263638;background:white;min-width:0;min-height:0;overflow:hidden;position:relative}.letter-card{display:flex;flex-direction:column;padding:.1in}.letter-top{height:59%;min-height:0}.letter-top svg{display:block;width:100%;height:100%;overflow:visible}.letter-glyph{font-family:Quicksand,'Comic Sans MS','Trebuchet MS',sans-serif;font-weight:600;fill:#202324}.guide{stroke:#2b3435;stroke-width:3}.midline{stroke:#3e4546;stroke-width:2.3;stroke-dasharray:8 11}.marker{fill:#8cbf53}.letter-art{height:41%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.04in;overflow:hidden}.letter-art .emoji,.letter-art .symbol{font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif;font-size:1.65in;line-height:1.08;white-space:nowrap}.letter-art .symbol{font-family:'DejaVu Sans','Segoe UI Symbol',sans-serif;font-size:1.55in}.letter-art img{max-width:92%;max-height:85%;object-fit:contain}.art-label{font:700 17px Quicksand,'Trebuchet MS',sans-serif}.word-card{padding:.18in;display:flex;flex-direction:column;justify-content:space-evenly}.model-word{font:700 clamp(24px,4vw,50px) Quicksand,'Trebuchet MS',sans-serif;text-align:center;line-height:1.1;overflow-wrap:anywhere}.word-instruction{text-align:center;color:#65736d;font:600 14px 'DM Sans',Arial,sans-serif}.writing-lane{height:.7in;position:relative;flex:none}.writing-lane svg{width:100%;height:100%;display:block}.trace-text{position:absolute;left:.14in;bottom:.08in;color:#a9b0aa;font:600 37px Quicksand,'Trebuchet MS',sans-serif;white-space:nowrap}.practice-sheet{padding:.14in .16in;height:100%;display:flex;flex-direction:column}.sheet-heading{display:flex;align-items:end;justify-content:space-between;border-bottom:2px solid #253b3c;padding:.06in .08in .12in;font:700 23px Quicksand,'Trebuchet MS',sans-serif}.sheet-heading small{font:500 14px 'DM Sans',Arial,sans-serif}.practice-rows{flex:1;display:grid;grid-template-rows:repeat(6,minmax(0,1fr))}.word-row{display:grid;grid-template-columns:1.42in 1fr;gap:.12in;min-height:0;border-bottom:1px solid #d6ddd8;padding:.09in .06in}.word-model{font:700 28px Quicksand,'Trebuchet MS',sans-serif;overflow-wrap:anywhere;align-self:center}.row-lanes{display:flex;flex-direction:column;justify-content:center;gap:.04in;min-width:0}.row-lanes .writing-lane{height:.55in}.row-lanes .trace-text{font-size:30px;bottom:.055in}.print-note{font-size:12px;line-height:1.5;color:#61736e;text-align:center;max-width:650px;margin:15px auto 30px}#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#214c55;color:white;padding:10px 15px;border-radius:10px;box-shadow:0 7px 30px #0002;display:none;font-size:13px;z-index:10}#toast.show{display:block}
 @media(max-width:900px){.workspace{grid-template-columns:1fr;max-width:760px}.sidebar{order:1}.preview-main{order:2}.preview-frame{padding:14px 5px}.topbar{min-height:75px}.topbar h1{font-size:19px}}@media(max-width:540px){.top-actions .button{font-size:12px;padding:9px 10px}.brand-mark{width:43px;height:43px;line-height:43px;font-size:19px}.workspace{padding:14px;gap:18px}.control-panel{padding:5px 15px 20px}.preview-header{align-items:start;flex-direction:column;gap:9px}.preview-frame{border-radius:12px}.flash-actions{flex-wrap:wrap}}
 @media print{@page{size:letter portrait;margin:0}html,body{margin:0;padding:0;background:white!important}.topbar,.sidebar,.preview-header,.print-note,#toast{display:none!important}.workspace,.preview-main,.preview-frame,.print-pages{display:block!important;margin:0!important;padding:0!important;width:auto!important;height:auto!important;min-height:0!important;background:none!important;border:0!important;overflow:visible!important;box-shadow:none!important}.sheet-page,.sheet-page.active{display:block!important;width:var(--paper-w)!important;height:var(--paper-h)!important;transform:none!important;box-shadow:none!important;break-after:page;page-break-after:always;print-color-adjust:exact;-webkit-print-color-adjust:exact}.sheet-page:last-child{break-after:auto;page-break-after:auto}.letter-card,.word-card{border-color:#263638!important}.marker{fill:#8cbf53!important}}
+.field-error{color:#a04544;font-size:12px;font-weight:700;margin:0 0 10px}.form-grid input:invalid{border-color:#b84c4c;background:#fff8f8}.word-card{padding:.13in;display:flex;flex-direction:column;justify-content:space-between}.word-card-label{text-align:center;color:#536c65;font:700 13px 'DM Sans',Arial,sans-serif;flex:none}.word-lanes{flex:1;display:flex;flex-direction:column;justify-content:space-evenly;gap:.07in;min-height:0}.word-lanes .writing-lane{height:.88in}.row-lanes .writing-lane{height:.57in}.writing-lane svg{overflow:visible}
 
 </style>
 </head>
@@ -37,12 +38,12 @@
         <div class="editor" id="cardEditor">
           <div class="panel-heading"><h3>Edit selected card</h3><button id="removeCard" class="text-button danger" type="button">Remove</button></div>
           <div class="form-grid"><label>Letter <input id="letterInput" maxlength="1" autocomplete="off" aria-label="Card letter"></label><label>Picture word <input id="wordInput" maxlength="32" autocomplete="off" aria-label="Picture word"></label></div>
-          <label class="field-label" for="pictureSearch">Choose a picture or symbol</label>
-          <input id="pictureSearch" placeholder="Search: ant, sun, star…" autocomplete="off">
+          <p id="wordError" class="field-error" role="status" hidden></p>
+          <label class="field-label" for="pictureSearch">Pictures and symbols for this letter</label>
+          <input id="pictureSearch" placeholder="Search matching pictures…" autocomplete="off">
           <div id="pictureGallery" class="picture-gallery" aria-label="Picture choices"></div>
-          <div class="custom-row"><label>Type a symbol or emoji <input id="symbolInput" maxlength="8" placeholder="★  ♥  🐜" autocomplete="off"></label><button id="useSymbol" type="button" class="button soft">Use symbol</button></div>
-          <label class="upload-button">Upload your own image<input id="imageUpload" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"></label>
-          <p class="tiny">Uploaded pictures stay in this browser. You can print them or include them in a downloaded set.</p>
+          <label class="upload-button">Upload your own image<input id="imageUpload" type="file" accept="image/png,image/jpeg,image/webp,image/gif"></label>
+          <p class="tiny">For your own image, enter a matching picture word first. The app can check the word, but cannot identify what is in an uploaded image.</p>
         </div>
         <details class="settings" open><summary>Page options</summary>
           <div class="setting-row"><label for="paperSize">Paper</label><select id="paperSize"><option value="letter">US Letter</option><option value="a4">A4</option></select></div>
@@ -96,6 +97,8 @@
   ];
   const $ = id => document.getElementById(id);
   const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const matchesLetter = (word,letter) => String(word||'').trim().toUpperCase().startsWith(String(letter||'').toUpperCase());
+  const defaultFor = letter => ITEMS.find(row=>row[0]===letter) || ITEMS[0];
   const newCard = row => ({id:crypto.randomUUID?.() || String(Date.now()+Math.random()),letter:row[0],word:row[1],picture:{type:'emoji',value:row[2]}});
   const defaults = () => ITEMS.map(newCard);
   let saved;
@@ -115,12 +118,18 @@
   function normalizeCard(input) {
     if (!input || typeof input !== 'object') return null;
     const letter = String(input.letter || '').trim().slice(0,1).toUpperCase();
-    if (!letter) return null;
+    if (!/^[A-Z]$/.test(letter)) return null;
     const p = input.picture || {};
     const type = ['emoji','symbol','image'].includes(p.type) ? p.type : 'emoji';
     let value = String(p.value || '').slice(0,300000);
     if (type === 'image' && !/^data:image\/(png|jpeg|webp);base64,[a-z0-9+/=]+$/i.test(value)) value = '';
-    return {id:String(input.id || crypto.randomUUID?.() || Math.random()).slice(0,80),letter,word:String(input.word || '').slice(0,32),picture:{type:value ? type : 'symbol',value:value || '★'}};
+    const word=String(input.word||'').slice(0,32);
+    const catalogue=GALLERY.find(row=>row[1]===value);
+    if (!matchesLetter(word,letter) || (type!=='image' && catalogue && !matchesLetter(catalogue[0],letter)) || !value) {
+      const row=defaultFor(letter);
+      return {id:String(input.id || crypto.randomUUID?.() || Math.random()).slice(0,80),letter,word:row[1],picture:{type:'emoji',value:row[2]}};
+    }
+    return {id:String(input.id || crypto.randomUUID?.() || Math.random()).slice(0,80),letter,word,picture:{type,value}};
   }
   function selected() { return cards.find(c => c.id === selectedId) || cards[0]; }
   function getWords() { return wordsText.split(/[,;\n]+/).map(w => w.trim()).filter(Boolean).slice(0,200); }
@@ -143,13 +152,14 @@
     $('cardList').innerHTML=cards.map(c=>`<button type="button" data-id="${escapeHTML(c.id)}" aria-current="${c.id===selectedId}"><span class="thumbnail">${pictureHTML(c)}</span><strong>${escapeHTML(c.letter)}${escapeHTML(c.letter.toLowerCase())}</strong><small>${escapeHTML(c.word || 'Picture')}</small></button>`).join('');
     const c=selected(); if (!c) return;
     $('letterInput').value=c.letter; $('wordInput').value=c.word;
-    $('symbolInput').value=c.picture.type==='symbol'?c.picture.value:'';
+    $('wordInput').setCustomValidity(''); $('wordError').hidden=true;
     renderGallery();
   }
   function renderGallery() {
     const query=$('pictureSearch').value.trim().toLowerCase();
-    const options=GALLERY.filter(x=>!query||x[0].includes(query));
-    $('pictureGallery').innerHTML=options.length?options.map(([label,symbol])=>`<button class="picture-choice" type="button" data-label="${escapeHTML(label)}" data-symbol="${escapeHTML(symbol)}" title="${escapeHTML(label)}" aria-label="Use ${escapeHTML(label)}" aria-pressed="${selected()?.picture.value===symbol}">${escapeHTML(symbol)}</button>`).join(''):'<span class="tiny">No match. You can type a symbol or upload an image.</span>';
+    const letter=selected()?.letter||'A';
+    const options=GALLERY.filter(([label])=>matchesLetter(label,letter)&&(!query||label.toLowerCase().includes(query)));
+    $('pictureGallery').innerHTML=options.length?options.map(([label,symbol])=>`<button class="picture-choice" type="button" data-label="${escapeHTML(label)}" data-symbol="${escapeHTML(symbol)}" title="${escapeHTML(label)}" aria-label="Use ${escapeHTML(label)}" aria-pressed="${selected()?.picture.value===symbol}">${escapeHTML(symbol)}</button>`).join(''):`<span class="tiny">No ${escapeHTML(letter)} pictures match that search.</span>`;
   }
   function pictureHTML(c) {
     const p=c.picture;
@@ -180,18 +190,30 @@
     const lowerTop=ascender?30:112;
     return `<article class="letter-card" aria-label="${upper}, ${escapeHTML(c.word)}"><div class="letter-top"><svg viewBox="0 0 360 225" preserveAspectRatio="none" aria-hidden="true"><line class="guide" x1="4" y1="26" x2="356" y2="26"/><line class="midline" x1="4" y1="110" x2="356" y2="110"/><line class="guide" x1="4" y1="199" x2="356" y2="199"/><text class="letter-glyph" x="100" y="199" font-size="${cap.size}" text-anchor="middle"${cap.fit}>${upper}</text><text class="letter-glyph" x="260" y="199" font-size="${small.size}" text-anchor="middle"${small.fit}>${lower}</text>${settings.dots?`<circle class="marker" cx="${upperDot.toFixed(1)}" cy="30" r="9"/><circle class="marker" cx="${lowerDot.toFixed(1)}" cy="${lowerTop}" r="9"/>`:''}</svg></div><div class="letter-art">${pictureHTML(c)}${settings.labels?`<div class="art-label">${escapeHTML(c.word)}</div>`:''}</div></article>`;
   }
-  function linesHTML(trace) {
-    const plain=String(trace||'');
-    measure.font='600 100px Quicksand, "Comic Sans MS", "Trebuchet MS", sans-serif';
+  function wordGlyphsHTML(word,kind) {
+    if (!word) return '';
+    const font="Quicksand, 'Comic Sans MS', 'Trebuchet MS', sans-serif";
+    measure.font=`600 100px ${font}`;
     const xHeight=measure.measureText('a').actualBoundingBoxAscent||55;
-    const targetSize=100*28/xHeight;
-    measure.font=`600 ${targetSize}px Quicksand, "Comic Sans MS", "Trebuchet MS", sans-serif`;
-    const width=measure.measureText(plain).width;
-    const fontSize=Math.min(targetSize,width>460?targetSize*460/width:targetSize);
-    return `<div class="writing-lane"><svg viewBox="0 0 500 65" preserveAspectRatio="none" aria-hidden="true"><line x1="2" y1="6" x2="498" y2="6" stroke="#515d5c" stroke-width="1.8"/><line x1="2" y1="33" x2="498" y2="33" stroke="#818c88" stroke-width="1.5" stroke-dasharray="7 8"/><line x1="2" y1="61" x2="498" y2="61" stroke="#515d5c" stroke-width="2"/>${plain?`<text x="12" y="61" font-family="Quicksand, 'Comic Sans MS', 'Trebuchet MS', sans-serif" font-weight="600" font-size="${fontSize.toFixed(1)}" fill="#a3aca8">${escapeHTML(plain)}</text>`:''}</svg></div>`;
+    const size=100*28/xHeight;
+    measure.font=`600 ${size}px ${font}`;
+    let x=0;
+    const pieces=Array.from(word).map(character=>{
+      const metrics=measure.measureText(character);
+      const target=/[bdfhijkltA-Z]/.test(character)?55:28;
+      const scale=character===' '?1:Math.min(2.1,target/(metrics.actualBoundingBoxAscent||target));
+      const html=character===' '?'':`<text x="${x.toFixed(1)}" y="62" transform="translate(0 62) scale(1 ${scale.toFixed(3)}) translate(0 -62)" font-family="${font}" font-weight="600" font-size="${size.toFixed(1)}" fill="${kind==='model'?'#263638':'#a3aca8'}">${escapeHTML(character)}</text>`;
+      x+=metrics.width;
+      return html;
+    }).join('');
+    const fit=Math.min(1,470/Math.max(x,1));
+    return `<g transform="translate(12 0) scale(${fit.toFixed(3)} 1)">${pieces}</g>`;
+  }
+  function linesHTML(word='',kind='trace') {
+    return `<div class="writing-lane"><svg viewBox="0 0 500 90" preserveAspectRatio="none" aria-hidden="true"><line x1="2" y1="7" x2="498" y2="7" stroke="#515d5c" stroke-width="1.8"/><line x1="2" y1="34" x2="498" y2="34" stroke="#818c88" stroke-width="1.5" stroke-dasharray="7 8"/><line x1="2" y1="62" x2="498" y2="62" stroke="#515d5c" stroke-width="2"/>${wordGlyphsHTML(String(word||''),kind)}</svg></div>`;
   }
   function wordCard(word) {
-    return `<article class="word-card"><div class="model-word">${escapeHTML(word)}</div><div class="word-instruction">Read it • Trace it • Write it</div>${linesHTML(word)}${linesHTML('')}</article>`;
+    return `<article class="word-card" aria-label="Practise ${escapeHTML(word)}"><div class="word-card-label">Read • Trace • Write</div><div class="word-lanes">${linesHTML(word,'model')}${linesHTML(word,'trace')}${linesHTML('')}${linesHTML('')}</div></article>`;
   }
   function practiceSheet(chunk, pageIndex) {
     const rows=Array.from({length:6},(_,i)=>{const word=chunk[i];return `<div class="word-row"><div class="word-model">${word?escapeHTML(word):''}</div><div class="row-lanes">${linesHTML(word || '')}${linesHTML('')}</div></div>`;}).join('');
@@ -238,16 +260,19 @@
   $('printNearby').addEventListener('click',print);
   $('prevPage').addEventListener('click',()=>{page--;renderPages();});
   $('nextPage').addEventListener('click',()=>{page++;renderPages();});
-  $('cardList').addEventListener('click',event=>{const button=event.target.closest('button[data-id]');if(button){selectedId=button.dataset.id;renderControls();}});
+  $('cardList').addEventListener('click',event=>{const button=event.target.closest('button[data-id]');if(button){selectedId=button.dataset.id;$('pictureSearch').value='';renderControls();}});
   $('addCard').addEventListener('click',()=>{const used=new Set(cards.map(c=>c.letter));const row=ITEMS.find(x=>!used.has(x[0]))||ITEMS[0];const card=newCard(row);cards.push(card);selectedId=card.id;page=Math.floor((cards.length-1)/4);refresh();});
   $('loadAlphabet').addEventListener('click',()=>{cards=ITEMS.map(newCard);selectedId=cards[0].id;page=0;refresh();toast('The complete A–Z set is ready.');});
   $('removeCard').addEventListener('click',()=>{if(cards.length===1){toast('Keep at least one card in the set.');return;}const i=cards.findIndex(c=>c.id===selectedId);cards.splice(i,1);selectedId=cards[Math.max(0,i-1)].id;refresh();});
-  $('letterInput').addEventListener('input',event=>{const c=selected();const next=event.target.value.replace(/[^\p{L}]/gu,'').slice(0,1).toUpperCase();event.target.value=next;if(next){c.letter=next;renderPages();save();const list=$('cardList').querySelector(`[data-id="${CSS.escape(c.id)}"] strong`);if(list)list.textContent=next+next.toLowerCase();}});
-  $('wordInput').addEventListener('input',event=>{selected().word=event.target.value.slice(0,32);renderPages();save();});
+  $('letterInput').addEventListener('input',event=>{const c=selected();const next=event.target.value.replace(/[^A-Za-z]/g,'').slice(0,1).toUpperCase();event.target.value=next;if(next&&next!==c.letter){const row=defaultFor(next);c.letter=next;c.word=row[1];c.picture={type:'emoji',value:row[2]};$('pictureSearch').value='';refresh();toast(`Picture changed to ${row[1]} for ${next}.`);}});
+  $('wordInput').addEventListener('input',event=>{const c=selected();const valid=matchesLetter(event.target.value,c.letter);$('wordError').hidden=valid;$('wordError').textContent=valid?'':`The picture word must begin with ${c.letter}.`;
+    event.target.setCustomValidity(valid?'':`Choose a word beginning with ${c.letter}.`);
+    if(valid){c.word=event.target.value.slice(0,32);renderPages();save();}
+  });
+  $('wordInput').addEventListener('blur',event=>{if(!matchesLetter(event.target.value,selected().letter)){event.target.value=selected().word;event.target.setCustomValidity('');$('wordError').hidden=true;}});
   $('pictureSearch').addEventListener('input',renderGallery);
-  $('pictureGallery').addEventListener('click',event=>{const button=event.target.closest('button[data-symbol]');if(!button)return;const c=selected();c.picture={type:/^[●■▲♥✓→]$/.test(button.dataset.symbol)?'symbol':'emoji',value:button.dataset.symbol};c.word=button.dataset.label;$('pictureSearch').value='';refresh();});
-  $('useSymbol').addEventListener('click',()=>{const value=$('symbolInput').value.trim();if(!value){toast('Type a symbol or emoji first.');return;}selected().picture={type:'symbol',value:value.slice(0,8)};refresh();});
-  $('imageUpload').addEventListener('change',event=>{const file=event.target.files?.[0];event.target.value='';if(!file)return;if(!/^image\/(png|jpeg|webp|gif)$/.test(file.type)){toast('Choose a PNG, JPG, WebP or GIF image.');return;}const reader=new FileReader();reader.onload=()=>{const image=new Image();image.onload=()=>{const scale=Math.min(1,900/image.width,700/image.height),canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(image.width*scale));canvas.height=Math.max(1,Math.round(image.height*scale));const ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(image,0,0,canvas.width,canvas.height);selected().picture={type:'image',value:canvas.toDataURL('image/jpeg',.88)};refresh();toast('Picture added to this card.');};image.onerror=()=>toast('Could not read that picture.');image.src=String(reader.result);};reader.readAsDataURL(file);});
+  $('pictureGallery').addEventListener('click',event=>{const button=event.target.closest('button[data-symbol]');if(!button)return;const c=selected();if(!matchesLetter(button.dataset.label,c.letter))return;c.picture={type:/^[●■▲♥✓→]$/.test(button.dataset.symbol)?'symbol':'emoji',value:button.dataset.symbol};c.word=button.dataset.label;$('pictureSearch').value='';refresh();});
+  $('imageUpload').addEventListener('change',event=>{const file=event.target.files?.[0];event.target.value='';if(!file)return;if(!matchesLetter(selected().word,selected().letter)){toast(`Enter a picture word beginning with ${selected().letter} first.`);return;}if(!/^image\/(png|jpeg|webp|gif)$/.test(file.type)){toast('Choose a PNG, JPG, WebP or GIF image.');return;}const cardId=selected().id;const reader=new FileReader();reader.onload=()=>{const image=new Image();image.onload=()=>{const scale=Math.min(1,900/image.width,700/image.height),canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(image.width*scale));canvas.height=Math.max(1,Math.round(image.height*scale));const ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(image,0,0,canvas.width,canvas.height);const card=cards.find(c=>c.id===cardId);if(!card)return;card.picture={type:'image',value:canvas.toDataURL('image/jpeg',.88)};refresh();toast('Picture added to this card.');};image.onerror=()=>toast('Could not read that picture.');image.src=String(reader.result);};reader.readAsDataURL(file);});
   $('paperSize').addEventListener('change',event=>{settings.paper=event.target.value==='a4'?'a4':'letter';renderPages();save();});
   $('showDots').addEventListener('change',event=>{settings.dots=event.target.checked;renderPages();save();});
   $('showLabels').addEventListener('change',event=>{settings.labels=event.target.checked;renderPages();save();});
@@ -272,7 +297,7 @@
       inputSchema:{type:'object',properties:{cards:{type:'array',minItems:1,maxItems:52,items:{type:'object',properties:{letter:{type:'string'},word:{type:'string'},symbol:{type:'string'}},required:['letter','word','symbol'],additionalProperties:false}}},required:['cards'],additionalProperties:false},
       annotations:{readOnlyHint:false,untrustedContentHint:false},
       execute(input){
-        if (!Array.isArray(input?.cards)||input.cards.length<1||input.cards.length>52||input.cards.some(c=>!c||typeof c.letter!=='string'||!/^\p{L}$/u.test(c.letter)||typeof c.word!=='string'||c.word.length>32||typeof c.symbol!=='string'||!c.symbol.trim()||c.symbol.length>8)) throw Error('Provide 1–52 cards with one letter, a short word and a symbol.');
+        if (!Array.isArray(input?.cards)||input.cards.length<1||input.cards.length>52||input.cards.some(c=>!c||typeof c.letter!=='string'||!/^[A-Z]$/i.test(c.letter)||typeof c.word!=='string'||c.word.length>32||!matchesLetter(c.word,c.letter)||typeof c.symbol!=='string'||!GALLERY.some(([label,symbol])=>label.toLowerCase()===c.word.toLowerCase()&&symbol===c.symbol))) throw Error('Choose catalogue pictures whose names begin with their letters.');
         cards=input.cards.map(c=>({id:crypto.randomUUID?.()||String(Math.random()),letter:c.letter.toUpperCase(),word:c.word,picture:{type:'symbol',value:c.symbol}}));
         selectedId=cards[0].id;page=0;refresh();setMode('alphabet');
         return {cardCount:cards.length,pageCount:pageCount()};
