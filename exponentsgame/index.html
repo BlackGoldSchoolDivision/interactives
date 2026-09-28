@@ -88,24 +88,67 @@
             
             <!-- Header (Hidden on start screen) -->
             <header id="game-header" class="bg-indigo-600 text-white p-4 flex justify-between items-center hidden">
-                <div class="font-bold text-xl game-title">🚀 Exponent Explorers</div>
-                <div class="flex items-center gap-4">
-                    <div class="text-sm font-semibold bg-indigo-800 px-3 py-1 rounded-full">Score: <span id="score-display">0</span></div>
-                    <div class="text-sm font-semibold bg-indigo-800 px-3 py-1 rounded-full">Level: <span id="level-display">1/4</span></div>
+                <div class="font-bold text-lg sm:text-xl game-title flex items-center gap-2">
+                    <span>🚀</span> <span class="hidden sm:inline">Exponent Explorers</span>
+                </div>
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <div class="text-xs sm:text-sm font-semibold bg-indigo-800 px-2 sm:px-3 py-1 rounded-full">Score: <span id="score-display">0</span></div>
+                    <div class="text-xs sm:text-sm font-semibold bg-indigo-800 px-2 sm:px-3 py-1 rounded-full">Level: <span id="level-display">1/4</span></div>
+                    <button onclick="resetGame()" title="Restart Game" class="bg-rose-500 hover:bg-rose-600 text-white text-xs sm:text-sm font-bold py-1 px-2 sm:px-3 rounded-full transition-colors flex items-center gap-1 shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                        <span class="hidden md:inline">Restart</span>
+                    </button>
                 </div>
             </header>
 
             <!-- Content Area -->
-            <div id="content-area" class="flex-grow flex flex-col p-6 sm:p-10 relative">
+            <div id="content-area" class="flex-grow flex flex-col p-4 sm:p-10 relative">
 
                 <section id="screen-start" class="flex-grow flex flex-col items-center justify-center text-center fade-in">
                     <div class="text-6xl mb-4">🪐</div>
-                    <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 mb-4">
+                    <h1 class="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 mb-4">
                         Exponent Explorers
                     </h1>
-                    <p class="text-lg text-slate-600 max-w-lg mx-auto mb-8">
+                    <p class="text-base sm:text-lg text-slate-600 max-w-lg mx-auto mb-8">
                         Welcome to Grade 7 Math! Your mission is to master the laws of exponents. We will build our vocabulary, practice the laws, and spot common mistakes.
                     </p>
+
+                    <!-- Anatomy Visual -->
+                    <div class="bg-white border-2 border-indigo-50 rounded-3xl p-5 sm:p-8 shadow-md mb-8 w-full max-w-xl">
+                        <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-8">Anatomy of an Exponent</h3>
+                        
+                        <div class="flex justify-center items-end text-7xl sm:text-8xl font-mono font-black mb-10 relative">
+                            <!-- Coefficient -->
+                            <span class="text-emerald-500 relative group transition-transform hover:scale-105">
+                                4
+                            </span>
+                            
+                            <!-- Base and Exponent Wrapper (Power) -->
+                            <span class="relative group ml-1 transition-transform hover:scale-105">
+                                <!-- Base -->
+                                <span class="text-blue-500 relative inline-block">
+                                    x
+                                </span>
+                                <!-- Exponent -->
+                                <sup class="text-purple-500 text-5xl sm:text-6xl relative top-[-0.6em]">
+                                    3
+                                </sup>
+                                
+                                <!-- Power Bracket -->
+                                <div class="absolute -bottom-4 left-0 w-full h-5 border-b-4 border-r-4 border-l-4 border-indigo-200 rounded-b-xl opacity-80"></div>
+                                <div class="absolute -bottom-10 left-1/2 -translate-x-1/2 text-sm sm:text-base font-bold text-indigo-500 bg-white px-3 tracking-wide">Power</div>
+                            </span>
+                        </div>
+
+                        <!-- Legend for Touch Devices & Clarity -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-left mt-12 border-t-2 border-slate-50 pt-6">
+                            <div class="flex items-center gap-3 bg-emerald-50 p-3 rounded-xl"><div class="w-5 h-5 rounded bg-emerald-500 flex-shrink-0 shadow-sm"></div> <span class="text-emerald-900 leading-tight"><b>Coefficient:</b> The number in front</span></div>
+                            <div class="flex items-center gap-3 bg-blue-50 p-3 rounded-xl"><div class="w-5 h-5 rounded bg-blue-500 flex-shrink-0 shadow-sm"></div> <span class="text-blue-900 leading-tight"><b>Base:</b> The number multiplied</span></div>
+                            <div class="flex items-center gap-3 bg-purple-50 p-3 rounded-xl"><div class="w-5 h-5 rounded bg-purple-500 flex-shrink-0 shadow-sm"></div> <span class="text-purple-900 leading-tight"><b>Exponent:</b> How many times</span></div>
+                            <div class="flex items-center gap-3 bg-indigo-50 p-3 rounded-xl"><div class="w-5 h-5 rounded bg-indigo-400 flex-shrink-0 shadow-sm"></div> <span class="text-indigo-900 leading-tight"><b>Power:</b> Base + exponent together</span></div>
+                        </div>
+                    </div>
+
                     <button onclick="startGame()" class="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-bold text-xl py-4 px-10 rounded-full shadow-lg transform transition hover:scale-105 active:scale-95">
                         Start Mission
                     </button>
