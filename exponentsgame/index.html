@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exponent Explorers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Fredoka:wght@500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0fdfa; /* Tailwind teal-50 */
+            background-image: radial-gradient(#ccfbf1 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        h1, h2, h3, .game-title {
+            font-family: 'Fredoka', sans-serif;
+        }
+        
+        /* Drag and Drop Styles */
+        .draggable {
+            cursor: grab;
+            transition: transform 0.1s;
+        }
+        .draggable:active {
+            cursor: grabbing;
+            transform: scale(0.95);
+        }
+        .draggable.dragging {
+            opacity: 0.5;
+        }
+        .dropzone {
+            transition: all 0.2s ease;
+            border: 2px dashed #94a3b8;
+        }
+        .dropzone.drag-over {
+            background-color: #e0f2fe;
+            border-color: #0ea5e9;
+            transform: scale(1.02);
+        }
+        .dropzone.filled {
+            border: 2px solid #22c55e;
+            background-color: #dcfce7;
+        }
+        .dropzone.incorrect-shake {
+            animation: shake 0.5s;
+            border-color: #ef4444;
+            background-color: #fee2e2;
+        }
+        
+        /* Click-to-select fallback styles */
+        .draggable.selected-for-drop {
+            ring: 4px;
+            ring-color: #3b82f6;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+            border: 2px solid #3b82f6;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        /* General Animations */
+        .fade-in {
+            animation: fadeIn 0.4s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .math-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1em;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col text-slate-800">
+
+    <main class="flex-grow flex items-center justify-center p-4">
+        <div id="game-container" class="bg-white rounded-3xl shadow-xl w-full max-w-4xl overflow-hidden flex flex-col min-h-[600px] relative">
+            
+            <!-- Header (Hidden on start screen) -->
+            <header id="game-header" class="bg-indigo-600 text-white p-4 flex justify-between items-center hidden">
+                <div class="font-bold text-xl game-title">🚀 Exponent Explorers</div>
+                <div class="flex items-center gap-4">
+                    <div class="text-sm font-semibold bg-indigo-800 px-3 py-1 rounded-full">Score: <span id="score-display">0</span></div>
+                    <div class="text-sm font-semibold bg-indigo-800 px-3 py-1 rounded-full">Level: <span id="level-display">1/4</span></div>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div id="content-area" class="flex-grow flex flex-col p-6 sm:p-10 relative">
+
+                <section id="screen-start" class="flex-grow flex flex-col items-center justify-center text-center fade-in">
+                    <div class="text-6xl mb-4">🪐</div>
+                    <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 mb-4">
+                        Exponent Explorers
+                    </h1>
+                    <p class="text-lg text-slate-600 max-w-lg mx-auto mb-8">
+                        Welcome to Grade 7 Math! Your mission is to master the laws of exponents. We will build our vocabulary, practice the laws, and spot common mistakes.
+                    </p>
+                    <button onclick="startGame()" class="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-bold text-xl py-4 px-10 rounded-full shadow-lg transform transition hover:scale-105 active:scale-95">
+                        Start Mission
+                    </button>
+                </section>
+
+                <section id="screen-vocab" class="hidden flex-grow flex-col fade-in">
+                    <div class="text-center mb-6">
+                        <h2 class="text-3xl font-bold text-indigo-700 mb-2">Phase 1: Vocabulary Builder</h2>
+                        <p class="text-slate-600">Drag the correct math term to its matching definition. <br><span class="text-sm text-indigo-500">(Tip: You can also tap a term, then tap a box!)</span></p>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row gap-8 flex-grow">
+                        <!-- Draggable Terms -->
+                        <div class="md:w-1/3 flex flex-col gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-inner" id="terms-container">
+                            <!-- Terms injected by JS -->
+                        </div>
+
+                        <!-- Drop Zones (Definitions) -->
+                        <div class="md:w-2/3 flex flex-col gap-4" id="definitions-container">
+                            <!-- Definitions injected by JS -->
+                        </div>
+                    </div>
+
+                    <div class="mt-8 text-center hidden" id="vocab-next-btn-container">
+                        <p class="text-green-600 font-bold mb-4 text-lg">Great job! You've mastered the terminology.</p>
+                        <button onclick="startPhase2()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-md transition transform hover:scale-105">
+                            Continue to Review
+                        </button>
+                    </div>
+                </section>
+
+                <section id="screen-review" class="hidden flex-grow flex-col fade-in">
+                    <div class="text-center mb-6">
+                        <h2 class="text-3xl font-bold text-indigo-700 mb-2">Phase 2: Exponent Laws Review</h2>
+                        <p class="text-slate-600">Let's quickly review the rules before we practice!</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto w-full flex-grow content-start">
+                        <!-- Product Law -->
+                        <div class="bg-blue-50 border-2 border-blue-200 rounded-xl p-5 shadow-sm">
+                            <h3 class="text-xl font-bold text-blue-800 mb-2">Product Law</h3>
+                            <p class="text-slate-700 mb-2">When multiplying powers with the same base, <strong class="text-blue-600">add</strong> the exponents.</p>
+                            <div class="bg-white p-3 rounded-lg text-center font-bold text-xl text-blue-600 font-mono">
+                                x<sup>a</sup> &middot; x<sup>b</sup> = x<sup>a+b</sup>
+                            </div>
+                        </div>
+
+                        <!-- Quotient Law -->
+                        <div class="bg-emerald-50 border-2 border-emerald-200 rounded-xl p-5 shadow-sm">
+                            <h3 class="text-xl font-bold text-emerald-800 mb-2">Quotient Law</h3>
+                            <p class="text-slate-700 mb-2">When dividing powers with the same base, <strong class="text-emerald-600">subtract</strong> the exponents.</p>
+                            <div class="bg-white p-3 rounded-lg text-center font-bold text-xl text-emerald-600 font-mono">
+                                x<sup>a</sup> &divide; x<sup>b</sup> = x<sup>a-b</sup>
+                            </div>
+                        </div>
+
+                        <!-- Power of a Power -->
+                        <div class="bg-purple-50 border-2 border-purple-200 rounded-xl p-5 shadow-sm">
+                            <h3 class="text-xl font-bold text-purple-800 mb-2">Power of a Power Law</h3>
+                            <p class="text-slate-700 mb-2">When raising a power to another power, <strong class="text-purple-600">multiply</strong> the exponents.</p>
+                            <div class="bg-white p-3 rounded-lg text-center font-bold text-xl text-purple-600 font-mono">
+                                (x<sup>a</sup>)<sup>b</sup> = x<sup>a &middot; b</sup>
+                            </div>
+                        </div>
+
+                        <!-- Zero Exponent -->
+                        <div class="bg-amber-50 border-2 border-amber-200 rounded-xl p-5 shadow-sm">
+                            <h3 class="text-xl font-bold text-amber-800 mb-2">Zero Exponent Law</h3>
+                            <p class="text-slate-700 mb-2">Any non-zero base raised to the power of zero is always <strong class="text-amber-600">one</strong>.</p>
+                            <div class="bg-white p-3 rounded-lg text-center font-bold text-xl text-amber-600 font-mono">
+                                x<sup>0</sup> = 1
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 text-center">
+                        <button onclick="startPhase3()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-md transition transform hover:scale-105">
+                            Start Practice
+                        </button>
+                    </div>
+                </section>
+
+                <section id="screen-quiz" class="hidden flex-grow flex-col fade-in">
+                    <div class="text-center mb-6">
+                        <h2 id="quiz-title" class="text-3xl font-bold text-indigo-700 mb-2">Phase 2: Exponent Laws</h2>
+                        <p id="quiz-subtitle" class="text-slate-600">Solve the expressions. You have 2 attempts per question!</p>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="w-full bg-slate-200 rounded-full h-2.5 mb-8">
+                        <div id="quiz-progress-bar" class="bg-indigo-600 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+
+                    <div class="bg-white border-2 border-indigo-100 rounded-2xl p-6 md:p-8 shadow-sm max-w-2xl mx-auto w-full flex-grow flex flex-col">
+                        
+                        <!-- Question -->
+                        <div class="text-center mb-8">
+                            <h3 id="question-text" class="text-2xl font-semibold text-slate-800 math-text mb-4">Question goes here</h3>
+                            <div id="question-equation" class="text-4xl font-bold text-indigo-600 math-text">
+                                <!-- Equation goes here -->
+                            </div>
+                        </div>
+
+                        <!-- Options -->
+                        <div id="options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                            <!-- Options injected by JS -->
+                        </div>
+
+                        <!-- Feedback Area (Hints/Explanations) -->
+                        <div id="feedback-area" class="hidden mt-4 p-4 rounded-xl text-left fade-in">
+                            <h4 id="feedback-title" class="font-bold text-lg mb-1">Feedback</h4>
+                            <p id="feedback-message" class="text-slate-700"></p>
+                        </div>
+
+                        <!-- Next Button -->
+                        <div class="mt-auto pt-6 text-center">
+                            <button id="next-question-btn" onclick="handleNextQuestion()" class="hidden bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-md transition transform hover:scale-105 mx-auto">
+                                Next Question
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="screen-end" class="hidden flex-grow flex-col items-center justify-center text-center fade-in">
+                    <div class="text-6xl mb-4">🏆</div>
+                    <h2 class="text-4xl font-extrabold text-indigo-700 mb-4">Mission Accomplished!</h2>
+                    <p class="text-xl text-slate-600 mb-6">You've successfully explored the galaxy of exponents.</p>
+                    
+                    <div class="bg-indigo-50 border border-indigo-100 p-8 rounded-3xl mb-8">
+                        <p class="text-lg text-slate-500 mb-2">Final Score</p>
+                        <p id="final-score" class="text-6xl font-black text-indigo-600">0</p>
+                    </div>
+
+                    <button onclick="resetGame()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 px-8 rounded-full shadow-md transition transform hover:scale-105">
+                        Play Again
+                    </button>
+                </section>
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- GAME DATA ---
+
+        const vocabularyData = [
+            { id: 'v1', term: 'Base', definition: 'The big number that is being multiplied by itself repeatedly.' },
+            { id: 'v2', term: 'Exponent', definition: 'The small number showing how many times the base is multiplied by itself.' },
+            { id: 'v3', term: 'Power', definition: 'The entire expression containing both a base and an exponent (e.g., 2³).' },
+            { id: 'v4', term: 'Coefficient', definition: 'A number placed in front of a variable or power (e.g., the 4 in 4x²).' }
+        ];
+
+        const practiceData = [
+            {
+                qText: "Warm-up: The Hidden Exponent",
+                equation: "a<sup>5</sup> &middot; a = ?",
+                options: ["a<sup>5</sup>", "a<sup>6</sup>", "2a<sup>5</sup>", "a<sup>4</sup>"],
+                correctIndex: 1,
+                hint: "Hint: When a variable doesn't have an exponent written, there is always a hidden '1' there. (a = a<sup>1</sup>).",
+                explanation: "<strong>Explanation:</strong> Because 'a' is the same as a<sup>1</sup>, we use the Product Law to add the exponents: 5 + 1 = 6. The answer is a<sup>6</sup>."
+            },
+            {
+                qText: "Simplify using the Product Law:",
+                equation: "x<sup>3</sup> &middot; x<sup>4</sup> = ?",
+                options: ["x<sup>12</sup>", "x<sup>7</sup>", "2x<sup>7</sup>", "x<sup>1</sup>"],
+                correctIndex: 1,
+                hint: "Hint: When you multiply powers with the same base, what should you do with the exponents? (Think about adding).",
+                explanation: "<strong>Explanation:</strong> According to the Product Law, when multiplying powers with the exact same base, you keep the base and <strong>add</strong> the exponents. <br>3 + 4 = 7, so the answer is x<sup>7</sup>."
+            },
+            {
+                qText: "Simplify using the Product Law:",
+                equation: "2<sup>3</sup> &middot; 2<sup>4</sup> = ?",
+                options: ["4<sup>7</sup>", "2<sup>12</sup>", "2<sup>7</sup>", "4<sup>12</sup>"],
+                correctIndex: 2,
+                hint: "Hint: Remember the golden rule of the Product Law: the base stays exactly the same!",
+                explanation: "<strong>Explanation:</strong> Keep the base as 2, and add the exponents (3 + 4). The answer is 2<sup>7</sup>. Never multiply the bases!"
+            },
+            {
+                qText: "Tricky Product Law:",
+                equation: "k<sup>4</sup> &middot; k<sup>5</sup> &middot; k = ?",
+                options: ["k<sup>9</sup>", "k<sup>10</sup>", "3k<sup>10</sup>", "k<sup>20</sup>"],
+                correctIndex: 1,
+                hint: "Hint: Don't forget the hidden '1' on the last 'k'!",
+                explanation: "<strong>Explanation:</strong> Add all the exponents together: 4 + 5 + 1 (from the hidden exponent) = 10. The answer is k<sup>10</sup>."
+            },
+            {
+                qText: "Simplify using the Quotient Law:",
+                equation: "y<sup>8</sup> &divide; y<sup>2</sup> = ?",
+                options: ["y<sup>4</sup>", "y<sup>6</sup>", "y<sup>10</sup>", "1"],
+                correctIndex: 1,
+                hint: "Hint: Division is the opposite of multiplication. If multiplying means adding exponents, what does division mean?",
+                explanation: "<strong>Explanation:</strong> According to the Quotient Law, when dividing powers with the same base, you keep the base and <strong>subtract</strong> the exponents. <br>8 - 2 = 6, so the answer is y<sup>6</sup>."
+            },
+            {
+                qText: "Simplify using the Quotient Law:",
+                equation: "10<sup>5</sup> &divide; 10<sup>4</sup> = ?",
+                options: ["10", "1<sup>1</sup>", "100", "0"],
+                correctIndex: 0,
+                hint: "Hint: Keep the base as 10 and subtract the exponents. What happens when the exponent is 1?",
+                explanation: "<strong>Explanation:</strong> 5 - 4 = 1, so the answer is 10<sup>1</sup>. An exponent of 1 is usually hidden, so the final answer is simply 10."
+            },
+            {
+                qText: "Simplify using the Quotient Law:",
+                equation: "w<sup>12</sup> &divide; w<sup>3</sup> = ?",
+                options: ["w<sup>4</sup>", "w<sup>9</sup>", "w<sup>15</sup>", "1"],
+                correctIndex: 1,
+                hint: "Hint: Subtract the bottom exponent from the top exponent.",
+                explanation: "<strong>Explanation:</strong> Subtract the exponents: 12 - 3 = 9. The answer is w<sup>9</sup>."
+            },
+            {
+                qText: "Simplify using the Power of a Power Law:",
+                equation: "(m<sup>2</sup>)<sup>5</sup> = ?",
+                options: ["m<sup>7</sup>", "m<sup>10</sup>", "m<sup>3</sup>", "2m<sup>5</sup>"],
+                correctIndex: 1,
+                hint: "Hint: This means you have 5 groups of m<sup>2</sup>. What's a faster way than adding?",
+                explanation: "<strong>Explanation:</strong> For a power raised to another power, you keep the base and <strong>multiply</strong> the exponents. <br>2 &times; 5 = 10, so the answer is m<sup>10</sup>."
+            },
+            {
+                qText: "Simplify using the Power of a Power Law:",
+                equation: "(3<sup>4</sup>)<sup>2</sup> = ?",
+                options: ["3<sup>6</sup>", "9<sup>8</sup>", "3<sup>8</sup>", "9<sup>6</sup>"],
+                correctIndex: 2,
+                hint: "Hint: Just like the Product Law, the base stays exactly the same!",
+                explanation: "<strong>Explanation:</strong> Keep the base as 3 and multiply the exponents (4 &times; 2 = 8). The correct answer is 3<sup>8</sup>."
+            },
+            {
+                qText: "Simplify using the Power of a Power Law:",
+                equation: "(p<sup>5</sup>)<sup>3</sup> = ?",
+                options: ["p<sup>8</sup>", "p<sup>2</sup>", "p<sup>15</sup>", "15p"],
+                correctIndex: 2,
+                hint: "Hint: Multiply the inside exponent by the outside exponent.",
+                explanation: "<strong>Explanation:</strong> 5 &times; 3 = 15. The answer is p<sup>15</sup>."
+            },
+            {
+                qText: "Simplify using the Zero Exponent Law:",
+                equation: "15<sup>0</sup> = ?",
+                options: ["0", "15", "1", "150"],
+                correctIndex: 2,
+                hint: "Hint: It is NOT zero! Any non-zero base raised to the power of zero has a very specific, special value.",
+                explanation: "<strong>Explanation:</strong> The Zero Exponent Law states that any non-zero base raised to the power of 0 is always equal to <strong>1</strong>."
+            },
+            {
+                qText: "Simplify using the Zero Exponent Law:",
+                equation: "(x &middot; y &middot; z)<sup>0</sup> = ?",
+                options: ["0", "1", "xyz", "x"],
+                correctIndex: 1,
+                hint: "Hint: The zero exponent applies to EVERYTHING inside the parentheses.",
+                explanation: "<strong>Explanation:</strong> It doesn't matter how big or complicated the base is; if the entire thing is raised to the power of 0, it equals 1."
+            },
+            {
+                qText: "Mixed Practice:",
+                equation: "x<sup>2</sup> &middot; x<sup>0</sup> = ?",
+                options: ["x<sup>2</sup>", "x<sup>0</sup>", "1", "0"],
+                correctIndex: 0,
+                hint: "Hint: You can use the Product Law (add 2 + 0) or replace x<sup>0</sup> with its actual value.",
+                explanation: "<strong>Explanation:</strong> Using the Product Law, 2 + 0 = 2, so the answer is x<sup>2</sup>. Alternatively, x<sup>0</sup> = 1, and x<sup>2</sup> &times; 1 is still x<sup>2</sup>."
+            },
+            {
+                qText: "Mixed Practice:",
+                equation: "c<sup>8</sup> &divide; c<sup>0</sup> = ?",
+                options: ["c<sup>8</sup>", "1", "0", "c"],
+                correctIndex: 0,
+                hint: "Hint: Divide by 1, or subtract the exponents (8 - 0).",
+                explanation: "<strong>Explanation:</strong> Since c<sup>0</sup> = 1, you are dividing c<sup>8</sup> by 1, which remains c<sup>8</sup>. Or, using the Quotient Law: 8 - 0 = 8."
+            },
+            {
+                qText: "Bonus Practice:",
+                equation: "b<sup>7</sup> &divide; b<sup>7</sup> = ?",
+                options: ["b<sup>14</sup>", "0", "1", "b"],
+                correctIndex: 2,
+                hint: "Hint: Think about what happens when you divide a number by itself.",
+                explanation: "<strong>Explanation:</strong> Using the Quotient Law, 7 - 7 = 0, so we get b<sup>0</sup>. The Zero Exponent Law tells us b<sup>0</sup> = 1. Also, anything divided by itself is 1!"
+            }
+        ];
+
+        const challengeData = [
+            {
+                qText: "Spot the Error!",
+                equation: "2<sup>3</sup> &middot; 2<sup>4</sup> = 4<sup>7</sup>",
+                options: [
+                    "They added the bases instead of multiplying them.",
+                    "They multiplied the bases; the base should stay the same.",
+                    "They added the exponents correctly, but shouldn't have.",
+                    "The equation is actually correct."
+                ],
+                correctIndex: 1,
+                hint: "Hint: Look closely at the base on the left side (2) and the right side (4). What happens to the base in the Product Law?",
+                explanation: "<strong>Explanation:</strong> When using exponent laws, the base must remain the same! You add the exponents, but keep the base as 2. The correct answer is 2<sup>7</sup>."
+            },
+            {
+                qText: "Spot the Error!",
+                equation: "(x<sup>4</sup>)<sup>3</sup> = x<sup>7</sup>",
+                options: [
+                    "They added the exponents instead of multiplying them.",
+                    "They multiplied the exponents instead of adding them.",
+                    "The base should become 3x.",
+                    "They subtracted the exponents."
+                ],
+                correctIndex: 0,
+                hint: "Hint: Think about what (x<sup>4</sup>)<sup>3</sup> really means. It's three groups of four. What is 4 times 3?",
+                explanation: "<strong>Explanation:</strong> This is a Power of a Power. You are supposed to multiply the exponents (4 &times; 3 = 12), not add them. The correct answer is x<sup>12</sup>."
+            },
+            {
+                qText: "Spot the Error!",
+                equation: "y<sup>10</sup> &divide; y<sup>2</sup> = y<sup>5</sup>",
+                options: [
+                    "They subtracted the bases.",
+                    "They should have added the exponents.",
+                    "They divided the exponents instead of subtracting them.",
+                    "They multiplied the exponents."
+                ],
+                correctIndex: 2,
+                hint: "Hint: What math operation should you use on the exponents when you are dividing the powers?",
+                explanation: "<strong>Explanation:</strong> For the Quotient Law, you must <strong>subtract</strong> the exponents (10 - 2 = 8). They mistakenly divided 10 by 2. The correct answer is y<sup>8</sup>."
+            },
+            {
+                qText: "Spot the Error!",
+                equation: "5<sup>0</sup> = 0",
+                options: [
+                    "They multiplied 5 by 0 instead of using the Zero Exponent Law.",
+                    "The base should turn into a negative number.",
+                    "They should have added 5 and 0.",
+                    "The equation is actually correct."
+                ],
+                correctIndex: 0,
+                hint: "Hint: What does the Zero Exponent Law say about ANY non-zero base?",
+                explanation: "<strong>Explanation:</strong> Any non-zero base raised to the power of 0 is always 1, not 0! They likely confused an exponent of zero with multiplying by zero."
+            },
+            {
+                qText: "Spot the Error!",
+                equation: "m<sup>4</sup> &middot; m<sup>5</sup> = m<sup>20</sup>",
+                options: [
+                    "They added the exponents instead of multiplying.",
+                    "They multiplied the exponents instead of adding them.",
+                    "The base should have changed to m<sup>2</sup>.",
+                    "They subtracted the exponents."
+                ],
+                correctIndex: 1,
+                hint: "Hint: This is the Product Law (multiplying powers). What is the rule for the exponents?",
+                explanation: "<strong>Explanation:</strong> When multiplying powers with the same base, you must <strong>add</strong> the exponents (4 + 5 = 9). They incorrectly multiplied them. The correct answer is m<sup>9</sup>."
+            },
+            {
+                qText: "Spot the Error!",
+                equation: "a<sup>6</sup> &divide; a<sup>6</sup> = a",
+                options: [
+                    "They forgot that 6 - 6 = 0, so the answer should be 1.",
+                    "They added the exponents instead of subtracting.",
+                    "They divided the bases.",
+                    "The equation is actually correct."
+                ],
+                correctIndex: 0,
+                hint: "Hint: If you subtract the exponents (6 - 6), what exponent do you get? And what does that make the final answer?",
+                explanation: "<strong>Explanation:</strong> 6 - 6 = 0, which gives us a<sup>0</sup>. According to the Zero Exponent Law, a<sup>0</sup> = 1. They wrote 'a', which is actually a<sup>1</sup>."
+            }
+        ];
+
+        // --- GAME STATE ---
+        let currentPhase = 1; // 1: Vocab, 2: Practice, 3: Challenge
+        let score = 0;
+        let vocabMatches = 0;
+        
+        let quizData = []; // Will hold current phase's questions
+        let currentQuestionIndex = 0;
+        let currentAttempts = 0;
+        let selectedTermId = null; // For click-to-match fallback
+
+        // DOM Elements
+        const screens = {
+            start: document.getElementById('screen-start'),
+            vocab: document.getElementById('screen-vocab'),
+            review: document.getElementById('screen-review'),
+            quiz: document.getElementById('screen-quiz'),
+            end: document.getElementById('screen-end')
+        };
+        const header = document.getElementById('game-header');
+        const scoreDisplay = document.getElementById('score-display');
+        const levelDisplay = document.getElementById('level-display');
+
+        function showScreen(screenName) {
+            Object.values(screens).forEach(s => s.classList.add('hidden'));
+            Object.values(screens).forEach(s => s.classList.remove('flex'));
+            
+            screens[screenName].classList.remove('hidden');
+            screens[screenName].classList.add('flex');
+
+            if (screenName !== 'start' && screenName !== 'end') {
+                header.classList.remove('hidden');
+            } else {
+                header.classList.add('hidden');
+            }
+        }
+
+        function updateScore(points) {
+            score += points;
+            scoreDisplay.textContent = score;
+            // Pop animation
+            scoreDisplay.parentElement.classList.add('scale-110', 'bg-indigo-500');
+            setTimeout(() => {
+                scoreDisplay.parentElement.classList.remove('scale-110', 'bg-indigo-500');
+            }, 300);
+        }
+
+        function startGame() {
+            score = 0;
+            vocabMatches = 0;
+            currentPhase = 1;
+            updateScore(0);
+            levelDisplay.textContent = "1/4";
+            initVocabPhase();
+            showScreen('vocab');
+        }
+
+        function initVocabPhase() {
+            const termsContainer = document.getElementById('terms-container');
+            const definitionsContainer = document.getElementById('definitions-container');
+            document.getElementById('vocab-next-btn-container').classList.add('hidden');
+            
+            termsContainer.innerHTML = '';
+            definitionsContainer.innerHTML = '';
+
+            // Shuffle terms for display
+            let shuffledTerms = [...vocabularyData].sort(() => Math.random() - 0.5);
+            let shuffledDefs = [...vocabularyData].sort(() => Math.random() - 0.5);
+
+            // Render Terms
+            shuffledTerms.forEach(item => {
+                const termEl = document.createElement('div');
+                termEl.className = 'draggable bg-white text-indigo-700 font-bold p-4 rounded-lg shadow cursor-pointer text-center border-2 border-indigo-100 hover:border-indigo-300 transition-colors select-none';
+                termEl.textContent = item.term;
+                termEl.draggable = true;
+                termEl.id = `term-${item.id}`;
+                termEl.dataset.id = item.id;
+                
+                // Drag Events
+                termEl.addEventListener('dragstart', handleDragStart);
+                termEl.addEventListener('dragend', handleDragEnd);
+
+                // Click-to-select Event (Mobile Fallback)
+                termEl.addEventListener('click', () => handleTermClick(termEl));
+
+                termsContainer.appendChild(termEl);
+            });
+
+            // Render Drop Zones
+            shuffledDefs.forEach(item => {
+                const defRow = document.createElement('div');
+                defRow.className = 'flex flex-col sm:flex-row gap-4 items-center bg-white p-3 rounded-xl shadow-sm border border-slate-100';
+                
+                const dropZone = document.createElement('div');
+                dropZone.className = 'dropzone w-full sm:w-40 h-16 bg-slate-50 rounded-lg flex items-center justify-center text-slate-400 font-semibold cursor-pointer';
+                dropZone.textContent = 'Drop Term Here';
+                dropZone.dataset.matchId = item.id;
+
+                // Drop Events
+                dropZone.addEventListener('dragover', handleDragOver);
+                dropZone.addEventListener('dragleave', handleDragLeave);
+                dropZone.addEventListener('drop', handleDrop);
+
+                // Click-to-drop Event (Mobile Fallback)
+                dropZone.addEventListener('click', () => handleDropZoneClick(dropZone));
+
+                const defText = document.createElement('div');
+                defText.className = 'flex-grow text-slate-700 p-2';
+                defText.textContent = item.definition;
+
+                defRow.appendChild(dropZone);
+                defRow.appendChild(defText);
+                definitionsContainer.appendChild(defRow);
+            });
+        }
+
+        // --- Drag and Drop Handlers ---
+        function handleDragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.dataset.id);
+            e.target.classList.add('dragging');
+            // Clear any click selection if user starts dragging
+            if (selectedTermId) {
+                document.getElementById(`term-${selectedTermId}`).classList.remove('selected-for-drop');
+                selectedTermId = null;
+            }
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault(); // Necessary to allow dropping
+            if (!e.currentTarget.classList.contains('filled')) {
+                e.currentTarget.classList.add('drag-over');
+            }
+        }
+
+        function handleDragLeave(e) {
+            e.currentTarget.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('drag-over');
+            
+            const draggedId = e.dataTransfer.getData('text/plain');
+            processVocabMatch(draggedId, e.currentTarget);
+        }
+
+        // --- Click-to-Match Handlers (Mobile Fallback) ---
+        function handleTermClick(termEl) {
+            if (termEl.classList.contains('hidden')) return; // Already matched
+            
+            // Deselect previous
+            if (selectedTermId) {
+                document.getElementById(`term-${selectedTermId}`).classList.remove('selected-for-drop');
+            }
+
+            // Select new
+            if (selectedTermId !== termEl.dataset.id) {
+                selectedTermId = termEl.dataset.id;
+                termEl.classList.add('selected-for-drop');
+            } else {
+                selectedTermId = null; // Toggle off
+            }
+        }
+
+        function handleDropZoneClick(dropZoneEl) {
+            if (!selectedTermId || dropZoneEl.classList.contains('filled')) return;
+            processVocabMatch(selectedTermId, dropZoneEl);
+        }
+
+        function processVocabMatch(termId, dropZone) {
+            const targetId = dropZone.dataset.matchId;
+            
+            if (termId === targetId) {
+                // Correct Match
+                const termEl = document.getElementById(`term-${termId}`);
+                
+                dropZone.textContent = termEl.textContent;
+                dropZone.classList.add('filled', 'text-green-700', 'font-bold');
+                dropZone.classList.remove('text-slate-400');
+                
+                termEl.classList.add('hidden'); // Hide original
+                
+                updateScore(10);
+                vocabMatches++;
+                selectedTermId = null;
+
+                if (vocabMatches === vocabularyData.length) {
+                    document.getElementById('vocab-next-btn-container').classList.remove('hidden');
+                    document.getElementById('vocab-next-btn-container').classList.add('fade-in');
+                }
+            } else {
+                // Incorrect Match
+                dropZone.classList.add('incorrect-shake');
+                setTimeout(() => dropZone.classList.remove('incorrect-shake'), 500);
+                
+                if (score > 0) updateScore(-2); // Small penalty for guessing wildly
+                
+                // Keep term selected if using click mode so they can try again easily
+            }
+        }
+
+        function startPhase2() {
+            currentPhase = 2;
+            levelDisplay.textContent = "2/4";
+            showScreen('review');
+        }
+
+        // Helper function to pick a random selection of questions
+        function getRandomQuestions(sourceArray, count) {
+            const shuffled = [...sourceArray].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        function startPhase3() {
+            currentPhase = 3;
+            levelDisplay.textContent = "3/4";
+            
+            // Pick 5 random questions for practice
+            quizData = getRandomQuestions(practiceData, 5);
+            currentQuestionIndex = 0;
+            
+            document.getElementById('quiz-title').textContent = "Phase 3: Practice Laws";
+            document.getElementById('quiz-subtitle').textContent = "Apply the Exponent Laws! You have 2 attempts per question.";
+            
+            showScreen('quiz');
+            loadQuestion();
+        }
+
+        function startPhase4() {
+            currentPhase = 4;
+            levelDisplay.textContent = "4/4";
+            
+            // Pick 3 random questions for the challenge
+            quizData = getRandomQuestions(challengeData, 3);
+            currentQuestionIndex = 0;
+            
+            document.getElementById('quiz-title').textContent = "Phase 4: Challenge Zone";
+            document.getElementById('quiz-subtitle').textContent = "Find the mistake! Identify why the equation is incorrect.";
+            
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            currentAttempts = 0;
+            const q = quizData[currentQuestionIndex];
+            
+            // Update Progress
+            const progress = (currentQuestionIndex / quizData.length) * 100;
+            document.getElementById('quiz-progress-bar').style.width = `${progress}%`;
+
+            // Setup Text
+            document.getElementById('question-text').innerHTML = q.qText;
+            document.getElementById('question-equation').innerHTML = q.equation;
+            
+            // Setup Options
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-option bg-slate-50 border-2 border-slate-200 text-slate-700 font-semibold p-4 rounded-xl hover:bg-indigo-50 hover:border-indigo-300 transition-all text-left text-lg flex items-center gap-3 w-full math-text';
+                
+                // Add letter styling
+                const letter = String.fromCharCode(65 + index); // A, B, C, D
+                const letterBadge = `<span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-lg flex items-center justify-center font-bold shrink-0">${letter}</span>`;
+                
+                btn.innerHTML = `${letterBadge} <span>${opt}</span>`;
+                btn.onclick = () => handleAnswer(index, btn);
+                optionsContainer.appendChild(btn);
+            });
+
+            // Reset Feedback & Buttons
+            const feedbackArea = document.getElementById('feedback-area');
+            feedbackArea.classList.add('hidden');
+            feedbackArea.className = 'hidden mt-4 p-4 rounded-xl text-left fade-in'; // Reset classes
+            
+            document.getElementById('next-question-btn').classList.add('hidden');
+        }
+
+        function handleAnswer(selectedIndex, btnElement) {
+            if (currentAttempts >= 2 && !btnElement.classList.contains('correct-style')) return; // Block clicks if locked
+            if (btnElement.disabled) return;
+
+            const q = quizData[currentQuestionIndex];
+            const isCorrect = (selectedIndex === q.correctIndex);
+            const feedbackArea = document.getElementById('feedback-area');
+            const feedbackTitle = document.getElementById('feedback-title');
+            const feedbackMessage = document.getElementById('feedback-message');
+
+            if (isCorrect) {
+                // CORRECT LOGIC
+                btnElement.classList.remove('bg-slate-50', 'border-slate-200', 'hover:bg-indigo-50');
+                btnElement.classList.add('bg-green-100', 'border-green-500', 'text-green-800', 'correct-style');
+                
+                // Disable other options
+                lockOptions();
+
+                feedbackArea.classList.remove('hidden', 'bg-amber-100', 'bg-rose-100');
+                feedbackArea.classList.add('bg-green-100', 'text-green-800', 'border', 'border-green-300');
+                feedbackTitle.textContent = "Correct! 🎉";
+                
+                // Show explanation if they got it right away, or reinforce
+                feedbackMessage.innerHTML = q.explanation;
+
+                // Points: 20 for first try, 10 for second try
+                const pointsEarned = (currentAttempts === 0) ? 20 : 10;
+                updateScore(pointsEarned);
+
+                document.getElementById('next-question-btn').classList.remove('hidden');
+
+            } else {
+                // INCORRECT LOGIC
+                currentAttempts++;
+                btnElement.classList.remove('bg-slate-50', 'border-slate-200', 'hover:bg-indigo-50');
+                btnElement.classList.add('bg-rose-100', 'border-rose-400', 'text-rose-800', 'opacity-50');
+                btnElement.disabled = true;
+
+                feedbackArea.classList.remove('hidden');
+
+                if (currentAttempts === 1) {
+                    // First failure -> Show Hint
+                    feedbackArea.classList.add('bg-amber-50', 'text-amber-900', 'border', 'border-amber-200');
+                    feedbackTitle.textContent = "Not quite. Try this hint:";
+                    feedbackMessage.innerHTML = q.hint;
+                } else {
+                    // Second failure -> Show Explanation & Force Next
+                    lockOptions();
+                    
+                    // Highlight correct answer
+                    const allButtons = document.querySelectorAll('.quiz-option');
+                    allButtons[q.correctIndex].classList.add('bg-green-50', 'border-green-500', 'text-green-800', 'ring-2', 'ring-green-400');
+
+                    feedbackArea.classList.remove('bg-amber-50', 'text-amber-900', 'border-amber-200');
+                    feedbackArea.classList.add('bg-blue-50', 'text-blue-900', 'border', 'border-blue-200');
+                    feedbackTitle.textContent = "Out of attempts! Let's review:";
+                    feedbackMessage.innerHTML = q.explanation;
+
+                    document.getElementById('next-question-btn').classList.remove('hidden');
+                }
+            }
+        }
+
+        function lockOptions() {
+            const btns = document.querySelectorAll('.quiz-option');
+            btns.forEach(b => {
+                b.disabled = true;
+                if (!b.classList.contains('correct-style') && !b.classList.contains('bg-rose-100')) {
+                    b.classList.add('opacity-60', 'cursor-not-allowed');
+                }
+            });
+        }
+
+        function handleNextQuestion() {
+            currentQuestionIndex++;
+            
+            if (currentQuestionIndex < quizData.length) {
+                loadQuestion();
+            } else {
+                // End of phase
+                document.getElementById('quiz-progress-bar').style.width = '100%';
+                
+                setTimeout(() => {
+                    if (currentPhase === 3) {
+                        startPhase4();
+                    } else if (currentPhase === 4) {
+                        endGame();
+                    }
+                }, 500);
+            }
+        }
+
+        function endGame() {
+            showScreen('end');
+            document.getElementById('final-score').textContent = score;
+        }
+
+        function resetGame() {
+            showScreen('start');
+        }
+
+        // Initialize drag events safely on load
+        window.onload = () => {
+            // Pre-load logic if needed
+        };
+
+    </script>
+</body>
+</html>
