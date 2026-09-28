@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power Explorer: Grade 8 Exponents</title>
+    
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'display': ['Orbitron', 'sans-serif'],
+                        'body': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0B0F19',
+                            panel: '#1A233A',
+                            primary: '#00F0FF',
+                            secondary: '#7000FF',
+                            success: '#00FF9D',
+                            danger: '#FF0055',
+                            warning: '#FFD700'
+                        }
+                    },
+                    animation: {
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        glow: {
+                            '0%': { boxShadow: '0 0 5px #00F0FF, 0 0 10px #00F0FF' },
+                            '100%': { boxShadow: '0 0 20px #00F0FF, 0 0 30px #00F0FF' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { background-color: #0B0F19; color: #fff; overflow-x: hidden; }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0B0F19; }
+        ::-webkit-scrollbar-thumb { background: #7000FF; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00F0FF; }
+        
+        .glass-panel {
+            background: rgba(26, 35, 58, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 1rem;
+        }
+        
+        .flip-card {
+            perspective: 1000px;
+        }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+        
+        /* Star Explosion Animation */
+        @keyframes star-explode {
+            0% { transform: translate(0, 0) scale(0.5); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(1.5) rotate(720deg); opacity: 0; }
+        }
+        .star-particle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            animation: star-explode 2s ease-out forwards;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // --- GAME DATA & QUESTION GENERATION ---
+        
+        const VOCAB_TERMS = [
+            { term: "Base", definition: "The number being multiplied by itself.", example: "In 5³, the base is 5." },
+            { term: "Exponent (Power)", definition: "The small number showing how many times to multiply the base.", example: "In 5³, the exponent is 3." },
+            { term: "Evaluate", definition: "To find the final value or answer of a math expression.", example: "Evaluating (-2)³ gives -8." },
+            { term: "Negative Base Rule (Even)", definition: "A negative base raised to an EVEN exponent results in a POSITIVE number.", example: "(-3)² = (-3) × (-3) = 9" },
+            { term: "Negative Base Rule (Odd)", definition: "A negative base raised to an ODD exponent results in a NEGATIVE number.", example: "(-2)³ = (-2) × (-2) × (-2) = -8" }
+        ];
+
+        // Utility random functions
+        const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+        const pickRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+        // Generate questions based on level
+        const generateQuestion = (level) => {
+            let q = {};
+            
+            if (level === 1) {
+                // Level 1: Negative Integers
+                const bases = [-2, -3, -4, -5, -10];
+                const base = pickRandom(bases);
+                const exp = randInt(2, 4);
+                const ans = Math.pow(base, exp);
+                
+                q.html = `<span>(<span class="text-brand-primary">${base}</span>)<sup><span class="text-brand-warning">${exp}</span></sup></span>`;
+                q.answer = ans.toString();
+                q.type = 'integer';
+                
+                if (exp % 2 === 0) {
+                    q.hint = `Remember: A negative base multiplied an EVEN number of times gives a POSITIVE result! \n(${base}) × (${base}) = +`;
+                } else {
+                    q.hint = `Remember: A negative base multiplied an ODD number of times gives a NEGATIVE result! \nNegative × Negative × Negative = Negative`;
+                }
+                
+                let explanationSteps = Array(exp).fill(`(${base})`).join(' × ');
+                q.explanation = `To evaluate (${base})^${exp}, multiply the base by itself ${exp} times:\n${explanationSteps} = ${ans}\n\nNotice that the negative sign is part of the base because it is inside the parentheses!`;
+                
+            } else if (level === 2) {
+                // Level 2: Fractions and Decimals
+                const isFraction = Math.random() > 0.5;
+                if (isFraction) {
+                    const num = randInt(1, 3);
+                    const den = pickRandom([2, 3, 4, 5]);
+                    const exp = randInt(2, 3);
+                    const ansNum = Math.pow(num, exp);
+                    const ansDen = Math.pow(den, exp);
+                    
+                    q.html = `<span>(<span class="text-brand-primary">${num}/${den}</span>)<sup><span class="text-brand-warning">${exp}</span></sup></span>`;
+                    q.answer = `${ansNum}/${ansDen}`;
+                    q.type = 'fraction';
+                    
+                    q.hint = "When evaluating a fraction with an exponent, apply the exponent to BOTH the numerator (top) and the denominator (bottom).";
+                    q.explanation = `Apply the power to both parts of the fraction:\nNumerator: ${num}^${exp} = ${ansNum}\nDenominator: ${den}^${exp} = ${ansDen}\n\nResult: ${ansNum}/${ansDen}`;
+                } else {
+                    const decBases = [0.1, 0.2, 0.3, 0.5];
+                    const base = pickRandom(decBases);
+                    const exp = randInt(2, 3);
+                    const ans = Math.pow(base, exp);
+                    // Handle JS floating point issues (e.g., 0.2 * 0.2 = 0.04000000000000001)
+                    const cleanAns = parseFloat(ans.toPrecision(12)); 
+                    
+                    q.html = `<span>(<span class="text-brand-primary">${base}</span>)<sup><span class="text-brand-warning">${exp}</span></sup></span>`;
+                    q.answer = cleanAns.toString();
+                    q.type = 'decimal';
+                    
+                    q.hint = `Think of ${base} as a fraction, or count the decimal places! Multiply the numbers normally, then adjust the decimal point.`;
+                    
+                    let steps = Array(exp).fill(`${base}`).join(' × ');
+                    q.explanation = `Multiply the decimal by itself ${exp} times:\n${steps} = ${cleanAns}\n\nTip: ${base} has 1 decimal place. Multiplied ${exp} times, the answer must have ${exp} decimal places.`;
+                }
+                
+            } else {
+                // Level 3: Simple Equations
+                const isFindBase = Math.random() > 0.5;
+                if (isFindBase) {
+                    const base = randInt(2, 6);
+                    const exp = randInt(2, 3);
+                    const result = Math.pow(base, exp);
+                    
+                    q.html = `<span><span class="text-brand-primary">x</span><sup><span class="text-brand-warning">${exp}</span></sup> = ${result}</span>`;
+                    q.answer = base.toString();
+                    q.type = 'integer';
+                    
+                    q.hint = `What number, when multiplied by itself ${exp} times, gives ${result}?`;
+                    q.explanation = `You are looking for the base 'x'.\nSince ${base} × ${base}${exp===3 ? ` × ${base}` : ''} = ${result}, we know that ${base}^${exp} = ${result}.\nTherefore, x = ${base}.`;
+                } else {
+                    const base = randInt(2, 5);
+                    const exp = randInt(2, 4);
+                    const result = Math.pow(base, exp);
+                    
+                    q.html = `<span><span class="text-brand-primary">${base}</span><sup><span class="text-brand-warning">x</span></sup> = ${result}</span>`;
+                    q.answer = exp.toString();
+                    q.type = 'integer';
+                    
+                    q.hint = `How many times do you need to multiply ${base} by itself to get ${result}?`;
+                    q.explanation = `You are looking for the exponent 'x'.\nLet's multiply the base:\n${base} × ${base} = ${base*base}\n` + 
+                                    (exp > 2 ? `× ${base} = ${Math.pow(base,3)}\n` : '') + 
+                                    (exp > 3 ? `× ${base} = ${Math.pow(base,4)}\n` : '') +
+                                    `It takes ${exp} times. So, ${base}^${exp} = ${result}.\nTherefore, x = ${exp}.`;
+                }
+            }
+            return q;
+        };
+
+        // --- COMPONENTS ---
+
+        const StarExplosion = () => {
+            const [stars, setStars] = useState([]);
+            
+            useEffect(() => {
+                const colors = ['text-brand-primary', 'text-brand-secondary', 'text-brand-warning', 'text-brand-success', 'text-white'];
+                const newStars = Array.from({ length: 40 }).map((_, i) => {
+                    const angle = Math.random() * 2 * Math.PI;
+                    const distance = 100 + Math.random() * 400; // Travel distance
+                    const tx = `${Math.cos(angle) * distance}px`;
+                    const ty = `${Math.sin(angle) * distance}px`;
+                    const size = Math.random() * 1.5 + 0.5; // Star size
+                    return {
+                        id: i,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        tx, ty, size,
+                        delay: Math.random() * 0.3 // Staggered start
+                    };
+                });
+                setStars(newStars);
+            }, []);
+
+            return (
+                <div className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center overflow-hidden">
+                    {stars.map(s => (
+                        <i key={s.id} 
+                           className={`fas fa-star star-particle ${s.color}`} 
+                           style={{ 
+                               '--tx': s.tx, 
+                               '--ty': s.ty, 
+                               fontSize: `${s.size}rem`,
+                               animationDelay: `${s.delay}s`
+                           }}>
+                        </i>
+                    ))}
+                </div>
+            );
+        };
+
+        const Flashcard = ({ term, definition, example }) => {
+            const [isFlipped, setIsFlipped] = useState(false);
+            
+            return (
+                <div 
+                    className={`flip-card w-full h-48 cursor-pointer ${isFlipped ? 'flipped' : ''}`}
+                    onClick={() => setIsFlipped(!isFlipped)}
+                >
+                    <div className="flip-card-inner">
+                        <div className="flip-card-front glass-panel border-brand-primary bg-brand-panel hover:border-brand-success transition-colors">
+                            <h3 className="font-display text-2xl text-brand-primary font-bold">{term}</h3>
+                            <p className="mt-4 text-sm text-gray-400"><i className="fas fa-hand-pointer mr-2"></i>Tap to reveal</p>
+                        </div>
+                        <div className="flip-card-back glass-panel border-brand-secondary bg-brand-panel">
+                            <p className="text-lg font-body font-semibold mb-2">{definition}</p>
+                            <p className="text-sm text-brand-warning italic bg-black bg-opacity-30 p-2 rounded w-full">{example}</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const Keypad = ({ onKeyPress, onBackspace, onSubmit, disabled }) => {
+            const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '0', '.'];
+            
+            return (
+                <div className="w-full max-w-sm mx-auto mt-6">
+                    <div className="grid grid-cols-3 gap-2 mb-2">
+                        {keys.map(k => (
+                            <button
+                                key={k}
+                                onClick={() => onKeyPress(k)}
+                                disabled={disabled}
+                                className="bg-brand-panel border border-gray-600 rounded-lg p-3 text-xl font-display hover:bg-gray-700 hover:border-brand-primary active:bg-brand-primary active:text-black transition-all disabled:opacity-50"
+                            >
+                                {k}
+                            </button>
+                        ))}
+                    </div>
+                    <div className="grid grid-cols-3 gap-2">
+                        <button
+                            onClick={() => onKeyPress('/')}
+                            disabled={disabled}
+                            className="bg-brand-panel border border-gray-600 rounded-lg p-3 text-xl font-display hover:bg-gray-700 hover:border-brand-primary active:bg-brand-primary active:text-black transition-all disabled:opacity-50"
+                        >
+                            /
+                        </button>
+                        <button
+                            onClick={onBackspace}
+                            disabled={disabled}
+                            className="bg-brand-panel border border-brand-danger text-brand-danger rounded-lg p-3 text-xl font-display hover:bg-brand-danger hover:text-white active:scale-95 transition-all disabled:opacity-50"
+                        >
+                            <i className="fas fa-backspace"></i>
+                        </button>
+                        <button
+                            onClick={onSubmit}
+                            disabled={disabled}
+                            className="bg-brand-primary text-brand-dark rounded-lg p-3 text-xl font-display font-bold hover:bg-white hover:shadow-[0_0_15px_#00F0FF] active:scale-95 transition-all disabled:opacity-50"
+                        >
+                            ENT
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            // View States: 'start', 'vocab', 'hub', 'game', 'end'
+            const [view, setView] = useState('start');
+            
+            // Game States
+            const [level, setLevel] = useState(1);
+            const [completedSectors, setCompletedSectors] = useState([false, false, false]);
+            const [score, setScore] = useState(0);
+            const [questionCount, setQuestionCount] = useState(0);
+            const [currentQ, setCurrentQ] = useState(null);
+            
+            // Interaction States
+            const [inputVal, setInputVal] = useState('');
+            const [attemptsLeft, setAttemptsLeft] = useState(2);
+            const [feedback, setFeedback] = useState(null);
+            const [canProceed, setCanProceed] = useState(false);
+
+            const maxQuestionsPerLevel = 5;
+            const levelNames = ["Integers & Negatives", "Fractions & Decimals", "Power Equations"];
+
+            // Global Restart
+            const startGame = () => {
+                if (window.confirm("Are you sure you want to restart the entire mission? All progress will be lost.")) {
+                    setScore(0);
+                    setLevel(1);
+                    setQuestionCount(0);
+                    setCompletedSectors([false, false, false]);
+                    setView('vocab');
+                }
+            };
+            
+            // Start from main screen
+            const startInitialGame = () => {
+                setScore(0);
+                setLevel(1);
+                setQuestionCount(0);
+                setCompletedSectors([false, false, false]);
+                setView('vocab');
+            };
+
+            const goToHub = () => {
+                setView('hub');
+            };
+
+            const startLevel = (lvl) => {
+                setLevel(lvl);
+                setQuestionCount(0);
+                loadNextQuestion(lvl); // Fixes the async state issue so questions match the sector
+                setView('game');
+            };
+
+            const loadNextQuestion = (activeLevel = level) => {
+                setInputVal('');
+                setAttemptsLeft(2);
+                setFeedback(null);
+                setCanProceed(false);
+                setCurrentQ(generateQuestion(activeLevel));
+            };
+
+            // Checking the answer
+            const handleSubmit = () => {
+                if (!inputVal || !currentQ || canProceed) return;
+
+                const cleanInput = inputVal.replace(/\s/g, '');
+                let isCorrect = false;
+
+                if (currentQ.type === 'decimal') {
+                    isCorrect = parseFloat(cleanInput) === parseFloat(currentQ.answer);
+                } else if (currentQ.type === 'fraction') {
+                    isCorrect = cleanInput === currentQ.answer;
+                } else {
+                    isCorrect = parseInt(cleanInput) === parseInt(currentQ.answer);
+                }
+
+                if (isCorrect) {
+                    const points = attemptsLeft === 2 ? 10 : 5;
+                    setScore(prev => prev + points);
+                    setFeedback({ type: 'success', message: `Correct! +${points} XP` });
+                    setCanProceed(true);
+                } else {
+                    const newAttempts = attemptsLeft - 1;
+                    setAttemptsLeft(newAttempts);
+                    
+                    if (newAttempts === 1) {
+                        setFeedback({ type: 'hint', message: currentQ.hint });
+                    } else {
+                        setFeedback({ type: 'solution', message: currentQ.explanation });
+                        setCanProceed(true);
+                    }
+                }
+            };
+
+            const handleNext = () => {
+                const nextCount = questionCount + 1;
+                if (nextCount >= maxQuestionsPerLevel) {
+                    // Complete sector and return to hub
+                    setCompletedSectors(prev => {
+                        const newArr = [...prev];
+                        newArr[level - 1] = true;
+                        return newArr;
+                    });
+                    setView('hub');
+                } else {
+                    setQuestionCount(nextCount);
+                    loadNextQuestion(level);
+                }
+            };
+
+            // Keypad Handlers
+            const handleKeyPress = (char) => {
+                if (canProceed || feedback?.type === 'solution') return;
+                setInputVal(prev => prev + char);
+            };
+            const handleBackspace = () => {
+                if (canProceed || feedback?.type === 'solution') return;
+                setInputVal(prev => prev.slice(0, -1));
+            };
+
+            
+            if (view === 'start') {
+                return (
+                    <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center">
+                        <div className="animate-float mb-8">
+                            <i className="fas fa-rocket text-6xl text-brand-primary"></i>
+                        </div>
+                        <h1 className="font-display text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-secondary mb-4">
+                            Power Explorer
+                        </h1>
+                        <p className="font-body text-lg md:text-xl text-gray-300 mb-8 max-w-xl">
+                            Master the rules of exponents. Evaluate powers with negative integers, fractions, decimals, and solve exponent equations to power up your ship!
+                        </p>
+                        <button 
+                            onClick={startInitialGame}
+                            className="bg-brand-primary text-brand-dark font-display font-bold text-xl py-4 px-10 rounded-full hover:shadow-[0_0_20px_#00F0FF] hover:bg-white transition-all transform hover:scale-105"
+                        >
+                            INITIATE LAUNCH <i className="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                );
+            }
+
+            if (view === 'vocab') {
+                return (
+                    <div className="min-h-screen p-6 max-w-4xl mx-auto flex flex-col">
+                        <div className="flex justify-between items-center mb-8 pt-4">
+                            <div className="text-center flex-grow">
+                                <h2 className="font-display text-3xl text-brand-primary"><i className="fas fa-book-open mr-3"></i>Briefing Room</h2>
+                                <p className="text-gray-400 mt-2">Review your core concepts before proceeding to the Command Console</p>
+                            </div>
+                            <button onClick={startGame} className="bg-brand-danger text-white p-2 rounded-lg hover:bg-red-600 transition-colors" title="Restart Mission">
+                                <i className="fas fa-power-off"></i>
+                            </button>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-grow mb-8">
+                            {VOCAB_TERMS.map((vocab, idx) => (
+                                <Flashcard key={idx} {...vocab} />
+                            ))}
+                        </div>
+
+                        <div className="text-center pb-8">
+                            <button 
+                                onClick={goToHub}
+                                className="bg-brand-success text-brand-dark font-display font-bold text-xl py-4 px-10 rounded-full hover:shadow-[0_0_20px_#00FF9D] hover:bg-white transition-all transform hover:scale-105"
+                            >
+                                PROCEED TO COMMAND CONSOLE <i className="fas fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (view === 'hub') {
+                const allCompleted = completedSectors.every(Boolean);
+
+                return (
+                    <div className="min-h-screen p-6 max-w-4xl mx-auto flex flex-col items-center">
+                        <div className="w-full flex justify-between items-center mb-8 pt-4">
+                            <div className="flex items-center">
+                                <i className="fas fa-satellite-dish text-brand-primary text-3xl mr-4"></i>
+                                <div>
+                                    <h2 className="font-display text-3xl text-white font-bold">Command Console</h2>
+                                    <p className="text-brand-success text-sm font-bold">Total XP: {score}</p>
+                                </div>
+                            </div>
+                            <button onClick={startGame} className="bg-brand-danger text-white p-3 rounded-lg hover:bg-red-600 transition-colors flex items-center shadow-[0_0_10px_rgba(255,0,85,0.5)]">
+                                <i className="fas fa-power-off mr-2"></i> RESTART
+                            </button>
+                        </div>
+
+                        <p className="font-body text-gray-300 mb-8 text-center max-w-lg">
+                            Select a sector to explore. You must complete all sectors to finish the mission.
+                        </p>
+
+                        <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                            {levelNames.map((name, index) => {
+                                const isCompleted = completedSectors[index];
+                                const sectorNum = index + 1;
+                                return (
+                                    <button 
+                                        key={index}
+                                        onClick={() => startLevel(sectorNum)}
+                                        disabled={isCompleted}
+                                        className={`glass-panel p-6 flex flex-col items-center justify-center text-center transition-all duration-300 ${
+                                            isCompleted 
+                                                ? 'opacity-60 border-brand-success bg-green-900 bg-opacity-20 cursor-not-allowed' 
+                                                : 'hover:border-brand-primary hover:bg-brand-panel hover:-translate-y-2 hover:shadow-[0_0_15px_rgba(0,240,255,0.3)] cursor-pointer'
+                                        }`}
+                                    >
+                                        <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 text-2xl ${
+                                            isCompleted ? 'bg-brand-success text-brand-dark' : 'bg-gray-800 text-brand-primary'
+                                        }`}>
+                                            {isCompleted ? <i className="fas fa-check"></i> : <span>{sectorNum}</span>}
+                                        </div>
+                                        <h3 className={`font-display font-bold text-lg mb-2 ${isCompleted ? 'text-brand-success' : 'text-white'}`}>
+                                            {name}
+                                        </h3>
+                                        <p className="text-xs text-gray-400">
+                                            {isCompleted ? 'Sector Cleared' : 'Awaiting Exploration'}
+                                        </p>
+                                    </button>
+                                );
+                            })}
+                        </div>
+
+                        {allCompleted && (
+                            <div className="animate-glow rounded-full">
+                                <button 
+                                    onClick={() => setView('end')}
+                                    className="bg-brand-warning text-brand-dark font-display font-bold text-xl py-4 px-12 rounded-full hover:bg-white transition-all transform hover:scale-105"
+                                >
+                                    FINISH MISSION <i className="fas fa-flag-checkered ml-2"></i>
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                );
+            }
+
+            if (view === 'end') {
+                return (
+                    <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center relative">
+                        <StarExplosion />
+                        <i className="fas fa-trophy text-6xl text-brand-warning mb-6 animate-glow rounded-full"></i>
+                        <h1 className="font-display text-4xl font-bold text-brand-primary mb-2">Mission Complete!</h1>
+                        <p className="font-body text-xl text-gray-300 mb-8">Final XP Score: <span className="text-brand-success font-bold">{score}</span></p>
+                        <button 
+                            onClick={startInitialGame}
+                            className="bg-brand-secondary text-white font-display font-bold text-xl py-3 px-8 rounded-full hover:shadow-[0_0_20px_#7000FF] transition-all transform hover:scale-105"
+                        >
+                            PLAY AGAIN
+                        </button>
+                    </div>
+                );
+            }
+
+            // --- View: Game ---
+            return (
+                <div className="min-h-screen flex flex-col pb-10">
+                    {/* Header bar */}
+                    <header className="bg-brand-panel border-b border-gray-700 p-4 flex justify-between items-center shadow-lg z-10">
+                        <div className="flex items-center">
+                            <i className="fas fa-user-astronaut text-brand-primary text-2xl mr-3"></i>
+                            <div>
+                                <h1 className="font-display font-bold text-lg hidden sm:block">Sector {level}: {levelNames[level-1]}</h1>
+                                <p className="text-xs text-gray-400">Node {questionCount + 1} / {maxQuestionsPerLevel}</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <div className="bg-black bg-opacity-50 px-4 py-2 rounded-lg border border-brand-primary font-display flex items-center">
+                                <i className="fas fa-star text-brand-warning mr-2"></i> 
+                                <span className="text-brand-success text-xl font-bold">{score} XP</span>
+                            </div>
+                            <button onClick={startGame} className="bg-brand-danger text-white p-2 rounded-lg hover:bg-red-600 transition-colors hidden sm:block" title="Restart Mission">
+                                <i className="fas fa-power-off"></i>
+                            </button>
+                        </div>
+                    </header>
+
+                    {/* Progress Bar */}
+                    <div className="w-full bg-gray-800 h-2 flex">
+                        <div 
+                            className="bg-gradient-to-r from-brand-secondary to-brand-primary h-2 transition-all duration-500 ease-out"
+                            style={{ width: `${((questionCount) / maxQuestionsPerLevel) * 100}%` }}
+                        ></div>
+                    </div>
+
+                    {/* Main Game Area */}
+                    <main className="flex-grow flex flex-col items-center px-4 mt-8 max-w-2xl mx-auto w-full">
+                        
+                        <div className="w-full flex justify-between mb-4 text-sm font-bold text-gray-400">
+                            <button onClick={() => setView('hub')} className="text-brand-primary hover:text-white transition-colors">
+                                <i className="fas fa-arrow-left mr-1"></i> Back to Hub
+                            </button>
+                            <div className="flex gap-2 items-center">
+                                <span>Integrity:</span>
+                                <i className={`fas fa-heart ${attemptsLeft >= 1 ? 'text-brand-danger' : 'text-gray-700'}`}></i>
+                                <i className={`fas fa-heart ${attemptsLeft >= 2 ? 'text-brand-danger' : 'text-gray-700'}`}></i>
+                            </div>
+                        </div>
+
+                        {/* Display Area */}
+                        <div className="w-full glass-panel p-8 text-center min-h-[200px] flex flex-col items-center justify-center relative overflow-hidden">
+                            <p className="text-gray-400 font-body mb-4 uppercase tracking-widest text-sm">Evaluate / Solve</p>
+                            
+                            {currentQ && (
+                                <div 
+                                    className="text-5xl md:text-7xl font-display mb-6 transition-all"
+                                    dangerouslySetInnerHTML={{ __html: currentQ.html }}
+                                />
+                            )}
+
+                            {/* Input Display box */}
+                            <div className={`w-full max-w-[200px] border-b-4 pb-2 text-3xl font-body font-bold text-center h-12 flex items-center justify-center 
+                                ${feedback?.type === 'success' ? 'border-brand-success text-brand-success' : 
+                                  feedback?.type === 'hint' || feedback?.type === 'solution' ? 'border-brand-danger text-brand-danger' : 
+                                  'border-brand-primary text-white'}`}
+                            >
+                                {inputVal || <span className="text-gray-600 opacity-50 animate-pulse">_</span>}
+                            </div>
+                        </div>
+
+                        {/* Feedback / Instructions Area */}
+                        <div className="w-full min-h-[8rem] mt-6 mb-6 flex flex-col justify-center">
+                            {feedback ? (
+                                <div className={`w-full p-4 rounded-lg font-body flex items-start border-l-4 ${
+                                    feedback.type === 'success' ? 'bg-green-900 bg-opacity-30 border-brand-success text-green-200' :
+                                    feedback.type === 'hint' ? 'bg-yellow-900 bg-opacity-30 border-brand-warning text-yellow-200' :
+                                    'bg-red-900 bg-opacity-30 border-brand-danger text-red-200'
+                                }`}>
+                                    <i className={`fas mt-1 mr-3 ${
+                                        feedback.type === 'success' ? 'fa-check-circle text-brand-success' :
+                                        feedback.type === 'hint' ? 'fa-lightbulb text-brand-warning' :
+                                        'fa-exclamation-triangle text-brand-danger'
+                                    }`}></i>
+                                    <div className="whitespace-pre-line text-sm md:text-base leading-relaxed">
+                                        {feedback.message}
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="text-center text-gray-500 text-sm mt-4">
+                                    <p>Enter your answer using the console below.</p>
+                                    <p>Use '/' for fractions (e.g., 1/4).</p>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Action Controls */}
+                        {canProceed ? (
+                            <button 
+                                onClick={handleNext}
+                                className="mt-4 w-full max-w-sm bg-brand-primary text-brand-dark font-display font-bold py-4 rounded-lg hover:bg-white hover:shadow-[0_0_15px_#00F0FF] transition-all text-xl"
+                            >
+                                CONTINUE <i className="fas fa-forward ml-2"></i>
+                            </button>
+                        ) : (
+                            <Keypad 
+                                onKeyPress={handleKeyPress} 
+                                onBackspace={handleBackspace} 
+                                onSubmit={handleSubmit}
+                                disabled={canProceed || attemptsLeft === 0}
+                            />
+                        )}
+                    </main>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
