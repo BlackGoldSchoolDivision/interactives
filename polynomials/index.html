@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polynomial Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* 3D Flip Animations for Vocab Cards */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+        
+        .card-inner {
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+        }
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        /* General Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        /* Custom Scrollbar for math expressions */
+        .math-scroll::-webkit-scrollbar {
+            height: 6px;
+        }
+        .math-scroll::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+            border-radius: 4px;
+        }
+        .math-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        .math-scroll::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 selection:bg-indigo-200 min-h-screen flex flex-col">
+
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="bg-indigo-600 p-2 rounded-lg shadow-sm">
+                        <i class="fa-solid fa-calculator text-white text-xl"></i>
+                    </div>
+                    <h1 class="text-2xl font-extrabold tracking-tight text-gray-900">
+                        Polynomial Explorer
+                    </h1>
+                </div>
+                
+                <nav class="flex space-x-1 bg-gray-100 p-1 rounded-xl overflow-x-auto w-full md:w-auto" id="main-nav">
+                    <button data-target="tab-vocab" class="tab-btn flex items-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-lg whitespace-nowrap transition-all duration-200 ease-in-out bg-white text-indigo-700 shadow-sm border border-gray-200/50">
+                        <i class="fa-solid fa-book-open"></i> Vocab Builder
+                    </button>
+                    <button data-target="tab-classify" class="tab-btn flex items-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-lg whitespace-nowrap transition-all duration-200 ease-in-out text-gray-600 hover:text-indigo-600 hover:bg-gray-200/50">
+                        <i class="fa-solid fa-layer-group"></i> Classify Terms
+                    </button>
+                    <button data-target="tab-operations" class="tab-btn flex items-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-lg whitespace-nowrap transition-all duration-200 ease-in-out text-gray-600 hover:text-indigo-600 hover:bg-gray-200/50">
+                        <i class="fa-solid fa-plus-minus"></i> Operations
+                    </button>
+                    <button data-target="tab-sort" class="tab-btn flex items-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-lg whitespace-nowrap transition-all duration-200 ease-in-out text-gray-600 hover:text-indigo-600 hover:bg-gray-200/50">
+                        <i class="fa-solid fa-arrow-down-a-z"></i> Order & Sort
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-8 sm:px-6 lg:px-8 flex-grow w-full">
+        
+        <!-- VOCABULARY TAB -->
+        <section id="tab-vocab" class="tab-content animate-fadeIn">
+            <div class="space-y-6">
+                <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-100">
+                    <h2 class="text-xl font-bold text-indigo-900 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-book-open text-indigo-600"></i> Vocabulary Builder
+                    </h2>
+                    <p class="text-indigo-700">Click on any card to reveal its definition. Mastering these words is the first step to conquering polynomials!</p>
+                </div>
+                <div id="vocab-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Cards injected via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- CLASSIFY TAB -->
+        <section id="tab-classify" class="tab-content hidden animate-fadeIn">
+            <div class="space-y-6 max-w-3xl mx-auto">
+                <div class="bg-emerald-50 p-6 rounded-xl border border-emerald-100">
+                    <h2 class="text-xl font-bold text-emerald-900 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group text-emerald-600"></i> Classify Polynomials
+                    </h2>
+                    <p class="text-emerald-700">Identify the correct name based on the <b>number of terms</b> and the <b>highest degree</b> (exponent).</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200 text-center">
+                    <p class="text-gray-500 mb-2 uppercase tracking-wider text-sm font-semibold">Classify this expression</p>
+                    <div id="classify-display" class="text-4xl py-6 bg-gray-50 rounded-lg border border-gray-100 mb-8 overflow-x-auto math-scroll whitespace-nowrap px-4">
+                        <!-- Poly injected via JS -->
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                        <!-- Term Selection -->
+                        <div class="text-left space-y-3">
+                            <label class="font-semibold text-gray-700 flex justify-between">
+                                By Number of Terms:
+                                <span id="classify-term-label" class="text-emerald-600 text-sm hidden">Selected: <span></span></span>
+                            </label>
+                            <div class="grid grid-cols-2 gap-2" id="classify-term-btns">
+                                <button data-val="Monomial" class="p-3 rounded-lg border transition-all bg-white text-gray-700 border-gray-300 hover:border-emerald-400 hover:bg-emerald-50">Monomial</button>
+                                <button data-val="Binomial" class="p-3 rounded-lg border transition-all bg-white text-gray-700 border-gray-300 hover:border-emerald-400 hover:bg-emerald-50">Binomial</button>
+                                <button data-val="Trinomial" class="p-3 rounded-lg border transition-all bg-white text-gray-700 border-gray-300 hover:border-emerald-400 hover:bg-emerald-50">Trinomial</button>
+                                <button data-val="Polynomial" class="p-3 rounded-lg border transition-all bg-white text-gray-700 border-gray-300 hover:border-emerald-400 hover:bg-emerald-50">Polynomial</button>
+                            </div>
+                        </div>
+
+                        <!-- Degree Selection -->
+                        <div class="text-left space-y-3">
+                            <label class="font-semibold text-gray-700 flex justify-between">
+                                By Degree:
+                                <span id="classify-degree-label" class="text-blue-600 text-sm hidden">Selected: <span></span></span>
+                            </label>
+                            <div class="grid grid-cols-2 gap-2" id="classify-degree-btns">
+                                <button data-val="Constant" class="p-3 rounded-lg border transition-all bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:bg-blue-50">Constant</button>
+                                <button data-val="Linear" class="p-3 rounded-lg border transition-all bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:bg-blue-50">Linear</button>
+                                <button data-val="Quadratic" class="p-3 rounded-lg border transition-all bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:bg-blue-50">Quadratic</button>
+                                <button data-val="Cubic" class="p-3 rounded-lg border transition-all bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:bg-blue-50">Cubic</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="classify-action-btn" disabled class="w-full md:w-auto px-8 py-3 bg-gray-900 text-white rounded-lg font-bold hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 mx-auto">
+                        Check Answer
+                    </button>
+                </div>
+
+                <div id="classify-feedback" class="hidden"></div>
+            </div>
+        </section>
+
+        <!-- OPERATIONS TAB -->
+        <section id="tab-operations" class="tab-content hidden animate-fadeIn">
+            <div class="space-y-6 max-w-4xl mx-auto">
+                <div class="bg-blue-50 p-6 rounded-xl border border-blue-100 flex flex-col md:flex-row gap-4 justify-between items-center">
+                    <div>
+                        <h2 class="text-xl font-bold text-blue-900 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-plus-minus text-blue-600"></i> Operations
+                        </h2>
+                        <p class="text-blue-700 text-sm md:text-base">Combine polynomials by adding, subtracting, or multiplying.</p>
+                    </div>
+                    
+                    <div class="flex bg-white rounded-lg p-1 border border-blue-200 shadow-sm shrink-0" id="ops-type-selector">
+                        <button data-type="add" class="px-4 py-2 text-sm font-semibold rounded-md transition-all bg-blue-600 text-white shadow-sm">Addition (+)</button>
+                        <button data-type="sub" class="px-4 py-2 text-sm font-semibold rounded-md transition-all text-gray-600 hover:bg-blue-50">Subtraction (-)</button>
+                        <button data-type="mult" class="px-4 py-2 text-sm font-semibold rounded-md transition-all text-gray-600 hover:bg-blue-50">Multiplication (×)</button>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200 text-center">
+                    <div class="text-3xl md:text-4xl py-8 bg-gray-50 rounded-lg border border-gray-100 mb-8 flex flex-wrap justify-center items-center gap-4 overflow-x-auto math-scroll px-4">
+                        <span class="text-gray-700">(</span>
+                        <span id="ops-poly1" class="whitespace-nowrap"></span>
+                        <span class="text-gray-700">)</span>
+                        
+                        <span id="ops-sign" class="text-blue-600 font-bold mx-2">+</span>
+                        
+                        <span class="text-gray-700">(</span>
+                        <span id="ops-poly2" class="whitespace-nowrap"></span>
+                        <span class="text-gray-700">)</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8" id="ops-options-grid">
+                        <!-- Options injected via JS -->
+                    </div>
+
+                    <button id="ops-action-btn" disabled class="w-full md:w-auto px-10 py-4 bg-gray-900 text-white rounded-lg font-bold hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-lg shadow-md hover:shadow-lg flex items-center justify-center gap-2 mx-auto">
+                        Submit Answer
+                    </button>
+                </div>
+
+                <div id="ops-feedback" class="hidden"></div>
+            </div>
+        </section>
+
+        <!-- SORT TAB -->
+        <section id="tab-sort" class="tab-content hidden animate-fadeIn">
+            <div class="space-y-6 max-w-4xl mx-auto">
+                <div class="bg-purple-50 p-6 rounded-xl border border-purple-100">
+                    <h2 class="text-xl font-bold text-purple-900 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-down-a-z text-purple-600"></i> Order Polynomials
+                    </h2>
+                    <p class="text-purple-700">Practicing term order is important. Click the terms below to build the polynomial in <b id="sort-target-text">descending order</b> based on their degree (exponents).</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-bold text-gray-800 uppercase tracking-wider">Target: <span id="sort-target-heading">Descending</span> Order</h3>
+                    </div>
+
+                    <div class="mb-10">
+                        <p class="text-sm text-gray-500 mb-3 font-semibold">Your Polynomial (Click to remove)</p>
+                        <div id="sort-selected-area" class="min-h-[100px] bg-purple-50 rounded-xl border-2 border-dashed border-purple-300 p-4 flex flex-wrap gap-3 items-center justify-center transition-all">
+                            <!-- Selected terms injected here -->
+                        </div>
+                    </div>
+
+                    <div class="mb-10">
+                        <p class="text-sm text-gray-500 mb-3 font-semibold">Available Terms (Click to add)</p>
+                        <div id="sort-unsorted-area" class="min-h-[80px] flex flex-wrap gap-3 justify-center">
+                            <!-- Unsorted terms injected here -->
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center">
+                        <button id="sort-action-btn" disabled class="px-10 py-4 bg-gray-900 text-white rounded-lg font-bold hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-lg shadow-md w-full md:w-auto flex items-center justify-center gap-2">
+                            Check Order
+                        </button>
+                    </div>
+                </div>
+
+                <div id="sort-feedback" class="hidden"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Core Math Engine and formatting utilities
+        const MathEngine = {
+            formatTerm: (c, e, isFirst) => {
+                if (c === 0) return null;
+                let sign = c < 0 ? '-' : (isFirst ? '' : '+');
+                let absC = Math.abs(c);
+                let cStr = (absC === 1 && e !== 0) ? '' : absC;
+                let xStr = e === 0 ? '' : (e === 1 ? 'x' : `x<sup>${e}</sup>`);
+                let signSpace = isFirst && sign === '-' ? '-' : (isFirst ? '' : ` ${sign} `);
+                
+                return `<span data-e="${e}">${signSpace}${cStr}${xStr}</span>`;
+            },
+
+            formatPoly: (terms) => {
+                if (terms.length === 0) return `<span>0</span>`;
+                const sortedTerms = [...terms].sort((a, b) => b.e - a.e).filter(t => t.c !== 0);
+                if (sortedTerms.length === 0) return `<span>0</span>`;
+                
+                return `<span class="inline-flex items-center space-x-1 text-lg font-medium tracking-wide">
+                    ${sortedTerms.map((t, idx) => MathEngine.formatTerm(t.c, t.e, idx === 0)).join('')}
+                </span>`;
+            },
+
+            polyToString: (terms) => {
+                const sortedTerms = [...terms].sort((a, b) => b.e - a.e).filter(t => t.c !== 0);
+                if (sortedTerms.length === 0) return "0";
+                return sortedTerms.map((t, idx) => {
+                    let sign = t.c < 0 ? '-' : (idx === 0 ? '' : '+');
+                    let absC = Math.abs(t.c);
+                    let cStr = (absC === 1 && t.e !== 0) ? '' : absC;
+                    let xStr = t.e === 0 ? '' : (t.e === 1 ? 'x' : `x^${t.e}`);
+                    let signSpace = idx === 0 && sign === '-' ? '-' : (idx === 0 ? '' : ` ${sign} `);
+                    return `${signSpace}${cStr}${xStr}`;
+                }).join('');
+            },
+
+            generatePoly: (exactDegree = null, exactTerms = null) => {
+                const degree = exactDegree !== null ? exactDegree : Math.floor(Math.random() * 4); // 0 to 3
+                const numTerms = exactTerms !== null ? exactTerms : Math.floor(Math.random() * (degree + 1)) + 1;
+                
+                let terms = [];
+                let availableExponents = Array.from({length: degree}, (_, i) => i);
+                
+                terms.push({
+                    c: (Math.floor(Math.random() * 9) + 1) * (Math.random() > 0.5 ? 1 : -1),
+                    e: degree
+                });
+
+                for (let i = 1; i < numTerms; i++) {
+                    if (availableExponents.length === 0) break;
+                    const expIdx = Math.floor(Math.random() * availableExponents.length);
+                    const exp = availableExponents.splice(expIdx, 1)[0];
+                    let coeff = (Math.floor(Math.random() * 9) + 1) * (Math.random() > 0.5 ? 1 : -1);
+                    terms.push({ c: coeff, e: exp });
+                }
+                
+                return terms.sort((a, b) => b.e - a.e);
+            },
+
+            getDegreeName: (degree) => {
+                const names = { 0: 'Constant', 1: 'Linear', 2: 'Quadratic', 3: 'Cubic' };
+                return names[degree] || `Degree ${degree}`;
+            },
+
+            getTermName: (numTerms) => {
+                const names = { 1: 'Monomial', 2: 'Binomial', 3: 'Trinomial' };
+                return names[numTerms] || 'Polynomial';
+            }
+        };
+
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Reset styles
+                tabBtns.forEach(b => {
+                    b.className = "tab-btn flex items-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-lg whitespace-nowrap transition-all duration-200 ease-in-out text-gray-600 hover:text-indigo-600 hover:bg-gray-200/50";
+                });
+                tabContents.forEach(c => c.classList.add('hidden'));
+
+                // Set active styles
+                btn.className = "tab-btn flex items-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-lg whitespace-nowrap transition-all duration-200 ease-in-out bg-white text-indigo-700 shadow-sm border border-gray-200/50";
+                document.getElementById(btn.dataset.target).classList.remove('hidden');
+            });
+        });
+
+        const vocabList = [
+            { term: "Polynomial", def: "An expression consisting of variables and coefficients, involving addition, subtraction, multiplication, and non-negative integer exponents." },
+            { term: "Monomial", def: "A polynomial with exactly one term. Example: 3x² or -5" },
+            { term: "Binomial", def: "A polynomial with exactly two terms. Example: 2x + 3" },
+            { term: "Trinomial", def: "A polynomial with exactly three terms. Example: x² + 2x + 1" },
+            { term: "Degree", def: "The highest exponent of the variable in the polynomial." },
+            { term: "Constant", def: "A polynomial of degree 0. A plain number without variables. Example: 7" },
+            { term: "Linear", def: "A polynomial of degree 1. Example: 4x - 2" },
+            { term: "Quadratic", def: "A polynomial of degree 2. Example: x² + 5" },
+            { term: "Cubic", def: "A polynomial of degree 3. Example: 2x³ - x + 4" },
+            { term: "Coefficient", def: "The number multiplied by the variable. In 5x², 5 is the coefficient." }
+        ];
+
+        const vocabGrid = document.getElementById('vocab-grid');
+        vocabList.forEach(item => {
+            const cardHTML = `
+                <div class="card h-40 relative rounded-xl cursor-pointer perspective-1000">
+                    <div class="card-inner absolute inset-0 w-full h-full transform-style-3d">
+                        <!-- Front -->
+                        <div class="absolute inset-0 backface-hidden bg-white border-2 border-indigo-100 rounded-xl shadow-sm p-6 flex flex-col items-center justify-center text-center transition-all hover:border-indigo-300 hover:shadow-md z-10">
+                            <h3 class="text-2xl font-bold text-gray-800">${item.term}</h3>
+                            <p class="text-sm text-indigo-400 mt-2 flex items-center gap-1"><i class="fa-solid fa-rotate"></i> Tap to flip</p>
+                        </div>
+                        <!-- Back -->
+                        <div class="absolute inset-0 backface-hidden bg-indigo-600 rounded-xl shadow-lg p-6 flex items-center justify-center text-center text-white rotate-y-180">
+                            <p class="text-sm font-medium leading-relaxed">${item.def}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            vocabGrid.insertAdjacentHTML('beforeend', cardHTML);
+        });
+
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('flipped');
+            });
+        });
+
+        const ClassifyState = {
+            problem: [], termAns: '', degreeAns: '', status: 'idle', attempts: 0
+        };
+
+        const classifyDisplay = document.getElementById('classify-display');
+        const classifyTermBtns = document.getElementById('classify-term-btns').children;
+        const classifyDegreeBtns = document.getElementById('classify-degree-btns').children;
+        const classifyTermLabel = document.getElementById('classify-term-label');
+        const classifyDegreeLabel = document.getElementById('classify-degree-label');
+        const classifyActionBtn = document.getElementById('classify-action-btn');
+        const classifyFeedback = document.getElementById('classify-feedback');
+
+        function generateClassifyProblem() {
+            ClassifyState.problem = MathEngine.generatePoly();
+            ClassifyState.termAns = '';
+            ClassifyState.degreeAns = '';
+            ClassifyState.status = 'idle';
+            ClassifyState.attempts = 0;
+            updateClassifyUI();
+        }
+
+        function updateClassifyUI() {
+            classifyDisplay.innerHTML = MathEngine.formatPoly(ClassifyState.problem);
+            
+            // Update Term Buttons
+            Array.from(classifyTermBtns).forEach(btn => {
+                let isActive = ClassifyState.termAns === btn.dataset.val;
+                btn.className = `p-3 rounded-lg border transition-all ${isActive ? 'bg-emerald-600 text-white border-emerald-600 shadow-md' : 'bg-white text-gray-700 border-gray-300 hover:border-emerald-400 hover:bg-emerald-50'}`;
+                btn.disabled = ClassifyState.status === 'correct';
+                if(ClassifyState.status === 'correct') btn.classList.add('opacity-50', 'cursor-not-allowed');
+            });
+            if(ClassifyState.termAns) {
+                classifyTermLabel.classList.remove('hidden');
+                classifyTermLabel.querySelector('span').textContent = ClassifyState.termAns;
+            } else {
+                classifyTermLabel.classList.add('hidden');
+            }
+
+            // Update Degree Buttons
+            Array.from(classifyDegreeBtns).forEach(btn => {
+                let isActive = ClassifyState.degreeAns === btn.dataset.val;
+                btn.className = `p-3 rounded-lg border transition-all ${isActive ? 'bg-blue-600 text-white border-blue-600 shadow-md' : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:bg-blue-50'}`;
+                btn.disabled = ClassifyState.status === 'correct';
+                if(ClassifyState.status === 'correct') btn.classList.add('opacity-50', 'cursor-not-allowed');
+            });
+            if(ClassifyState.degreeAns) {
+                classifyDegreeLabel.classList.remove('hidden');
+                classifyDegreeLabel.querySelector('span').textContent = ClassifyState.degreeAns;
+            } else {
+                classifyDegreeLabel.classList.add('hidden');
+            }
+
+            // Update Button Logic & Action State
+            let canSubmit = ClassifyState.termAns !== '' && ClassifyState.degreeAns !== '';
+            classifyActionBtn.disabled = !canSubmit && ClassifyState.status === 'idle';
+
+            if (ClassifyState.status === 'correct' || ClassifyState.status === 'wrong2') {
+                classifyActionBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Next Problem';
+                classifyActionBtn.className = "w-full md:w-auto px-8 py-3 bg-emerald-600 text-white rounded-lg font-bold hover:bg-emerald-500 transition-all flex items-center justify-center gap-2 mx-auto mt-4";
+                classifyActionBtn.onclick = generateClassifyProblem;
+            } else {
+                classifyActionBtn.innerHTML = 'Check Answer';
+                classifyActionBtn.className = "w-full md:w-auto px-8 py-3 bg-gray-900 text-white rounded-lg font-bold hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all mt-4 flex items-center justify-center gap-2 mx-auto block";
+                classifyActionBtn.onclick = checkClassifyAnswer;
+            }
+
+            // Update Feedback
+            classifyFeedback.className = 'mt-6 animate-fadeIn';
+            if (ClassifyState.status === 'idle') {
+                classifyFeedback.classList.add('hidden');
+            } else if (ClassifyState.status === 'wrong1') {
+                classifyFeedback.innerHTML = `
+                    <div class="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-lg flex gap-3 shadow-sm">
+                        <i class="fa-solid fa-lightbulb text-amber-500 text-2xl shrink-0 mt-1"></i>
+                        <div>
+                            <h4 class="font-bold text-amber-800">Hint (Attempt 1 of 2)</h4>
+                            <p class="text-amber-700 mt-1">
+                                Not quite!<br>• For <b>Terms</b>, count the parts separated by + or - signs.<br>• For <b>Degree</b>, look for the largest exponent on any variable.
+                            </p>
+                        </div>
+                    </div>`;
+            } else if (ClassifyState.status === 'wrong2') {
+                let highestDegree = Math.max(...ClassifyState.problem.map(t => t.e));
+                let numTerms = ClassifyState.problem.filter(t => t.c !== 0).length;
+                classifyFeedback.innerHTML = `
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg flex gap-3 shadow-sm">
+                        <i class="fa-solid fa-circle-question text-red-500 text-2xl shrink-0 mt-1"></i>
+                        <div>
+                            <h4 class="font-bold text-red-800">Explanation</h4>
+                            <p class="text-red-700 mb-2">Let's break it down together:</p>
+                            <ul class="list-disc list-inside text-red-700 space-y-1">
+                                <li>This expression has <b>${numTerms} terms</b>, so it is a <b>${MathEngine.getTermName(numTerms)}</b>.</li>
+                                <li>The highest exponent is <b>${highestDegree}</b>, which means the degree is <b>${MathEngine.getDegreeName(highestDegree)}</b>.</li>
+                            </ul>
+                        </div>
+                    </div>`;
+            } else if (ClassifyState.status === 'correct') {
+                classifyFeedback.innerHTML = `
+                    <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg flex gap-3 shadow-sm">
+                        <i class="fa-solid fa-circle-check text-emerald-500 text-2xl shrink-0 mt-1"></i>
+                        <div>
+                            <h4 class="font-bold text-emerald-800">Excellent!</h4>
+                            <p class="text-emerald-700 mt-1">You correctly identified both the term name and the degree.</p>
+                        </div>
+                    </div>`;
+            }
+        }
+
+        Array.from(classifyTermBtns).forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                if(ClassifyState.status === 'correct') return;
+                ClassifyState.termAns = e.target.dataset.val;
+                updateClassifyUI();
+            });
+        });
+
+        Array.from(classifyDegreeBtns).forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                if(ClassifyState.status === 'correct') return;
+                ClassifyState.degreeAns = e.target.dataset.val;
+                updateClassifyUI();
+            });
+        });
+
+        function checkClassifyAnswer() {
+            const highestDegree = Math.max(...ClassifyState.problem.map(t => t.e));
+            const numTerms = ClassifyState.problem.filter(t => t.c !== 0).length;
+            
+            const correctTermName = MathEngine.getTermName(numTerms);
+            const correctDegreeName = MathEngine.getDegreeName(highestDegree);
+
+            const isTermCorrect = ClassifyState.termAns === correctTermName || (numTerms > 3 && ClassifyState.termAns === 'Polynomial');
+            const isDegreeCorrect = ClassifyState.degreeAns === correctDegreeName;
+
+            if (isTermCorrect && isDegreeCorrect) {
+                ClassifyState.status = 'correct';
+            } else {
+                ClassifyState.attempts++;
+                ClassifyState.status = ClassifyState.attempts >= 2 ? 'wrong2' : 'wrong1';
+            }
+            updateClassifyUI();
+        }
+
+        generateClassifyProblem();
+
+
+        const OpsState = {
+            opType: 'add', p1: [], p2: [], options: [], selectedOpt: null, status: 'idle', attempts: 0
+        };
+
+        const opsTypeBtns = document.getElementById('ops-type-selector').children;
+        const opsPoly1 = document.getElementById('ops-poly1');
+        const opsPoly2 = document.getElementById('ops-poly2');
+        const opsSign = document.getElementById('ops-sign');
+        const opsOptionsGrid = document.getElementById('ops-options-grid');
+        const opsActionBtn = document.getElementById('ops-action-btn');
+        const opsFeedback = document.getElementById('ops-feedback');
+
+        Array.from(opsTypeBtns).forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                OpsState.opType = e.target.dataset.type;
+                Array.from(opsTypeBtns).forEach(b => {
+                    b.className = "px-4 py-2 text-sm font-semibold rounded-md transition-all text-gray-600 hover:bg-blue-50";
+                });
+                e.target.className = "px-4 py-2 text-sm font-semibold rounded-md transition-all bg-blue-600 text-white shadow-sm";
+                generateOpsProblem();
+            });
+        });
+
+        function calculateCorrectAnswer(p1, p2, type) {
+            let result = {};
+            if (type === 'add' || type === 'sub') {
+                p1.forEach(t => { result[t.e] = (result[t.e] || 0) + t.c; });
+                p2.forEach(t => { result[t.e] = (result[t.e] || 0) + (type === 'add' ? t.c : -t.c); });
+            } else if (type === 'mult') {
+                p1.forEach(t1 => {
+                    p2.forEach(t2 => {
+                        let newE = t1.e + t2.e;
+                        let newC = t1.c * t2.c;
+                        result[newE] = (result[newE] || 0) + newC;
+                    });
+                });
+            }
+            let finalTerms = [];
+            for (let e in result) {
+                if (result[e] !== 0) finalTerms.push({ c: result[e], e: parseInt(e) });
+            }
+            return finalTerms.length > 0 ? finalTerms : [{c:0, e:0}];
+        }
+
+        function generateOpsProblem() {
+            let p1, p2;
+            if (OpsState.opType === 'mult') {
+                p1 = MathEngine.generatePoly(1, 2);
+                p2 = MathEngine.generatePoly(1, 2);
+            } else {
+                const deg = Math.floor(Math.random() * 2) + 1; // 1 or 2
+                p1 = MathEngine.generatePoly(deg, deg + 1);
+                p2 = MathEngine.generatePoly(deg, deg + 1);
+            }
+            
+            OpsState.p1 = p1;
+            OpsState.p2 = p2;
+            OpsState.selectedOpt = null;
+            OpsState.status = 'idle';
+            OpsState.attempts = 0;
+
+            const correct = calculateCorrectAnswer(p1, p2, OpsState.opType);
+            let opts = [correct];
+
+            const generateDistractor = () => {
+                let res = {};
+                if (OpsState.opType === 'add') {
+                    p1.forEach(t => { res[t.e] = (res[t.e] || 0) + t.c; });
+                    p2.forEach(t => { res[t.e] = (res[t.e] || 0) - t.c; });
+                } else if (OpsState.opType === 'sub') {
+                    p1.forEach(t => { res[t.e] = (res[t.e] || 0) + t.c; });
+                    p2.forEach(t => { res[t.e] = (res[t.e] || 0) + t.c; });
+                } else if (OpsState.opType === 'mult') {
+                    p1.forEach(t1 => {
+                        let matchingT2 = p2.find(t2 => t2.e === t1.e);
+                        if (matchingT2) {
+                            let newE = t1.e + matchingT2.e;
+                            res[newE] = (res[newE] || 0) + (t1.c * matchingT2.c);
+                        }
+                    });
+                }
+                let distTerms = [];
+                for (let e in res) {
+                    if (res[e] !== 0) distTerms.push({ c: res[e], e: parseInt(e) });
+                }
+                if (distTerms.length === 0 || MathEngine.polyToString(distTerms) === MathEngine.polyToString(correct)) {
+                    distTerms = MathEngine.generatePoly(Math.max(...correct.map(t=>t.e)), correct.length);
+                }
+                return distTerms;
+            };
+
+            while (opts.length < 4) {
+                let dist = generateDistractor();
+                const distStr = MathEngine.polyToString(dist);
+                if (!opts.some(o => MathEngine.polyToString(o) === distStr)) {
+                    opts.push(dist);
+                } else {
+                    opts.push(MathEngine.generatePoly(Math.max(...correct.map(t=>t.e)) + Math.floor(Math.random()*2), 2));
+                }
+            }
+            OpsState.options = opts.sort(() => Math.random() - 0.5);
+            updateOpsUI();
+        }
+
+        function updateOpsUI() {
+            opsPoly1.innerHTML = MathEngine.formatPoly(OpsState.p1);
+            opsPoly2.innerHTML = MathEngine.formatPoly(OpsState.p2);
+            opsSign.textContent = OpsState.opType === 'add' ? '+' : (OpsState.opType === 'sub' ? '-' : '×');
+
+            opsOptionsGrid.innerHTML = '';
+            OpsState.options.forEach((opt, idx) => {
+                let isSelected = OpsState.selectedOpt === idx;
+                let btn = document.createElement('button');
+                btn.className = `p-6 rounded-xl border-2 text-xl transition-all flex items-center justify-center min-h-[80px] ${
+                    isSelected ? 'border-blue-600 bg-blue-50 shadow-md ring-2 ring-blue-200 ring-offset-2' 
+                    : 'border-gray-200 bg-white hover:border-blue-300 hover:bg-gray-50'
+                } ${OpsState.status === 'correct' && !isSelected ? 'opacity-50' : ''}`;
+                btn.innerHTML = MathEngine.formatPoly(opt);
+                btn.disabled = OpsState.status === 'correct';
+                btn.onclick = () => {
+                    if(OpsState.status === 'correct') return;
+                    OpsState.selectedOpt = idx;
+                    updateOpsUI();
+                };
+                opsOptionsGrid.appendChild(btn);
+            });
+
+            opsActionBtn.disabled = OpsState.selectedOpt === null && OpsState.status === 'idle';
+            
+            if (OpsState.status === 'correct' || OpsState.status === 'wrong2') {
+                opsActionBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Next Problem';
+                opsActionBtn.className = "w-full md:w-auto px-10 py-4 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-500 transition-all flex items-center justify-center gap-2 mx-auto text-lg shadow-md hover:shadow-lg";
+                opsActionBtn.onclick = generateOpsProblem;
+            } else {
+                opsActionBtn.innerHTML = 'Submit Answer';
+                opsActionBtn.className = "w-full md:w-auto px-10 py-4 bg-gray-900 text-white rounded-lg font-bold hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-lg shadow-md hover:shadow-lg mt-0 mx-auto block";
+                opsActionBtn.onclick = checkOpsAnswer;
+            }
+
+            opsFeedback.className = 'mt-6 animate-fadeIn';
+            if (OpsState.status === 'idle') {
+                opsFeedback.classList.add('hidden');
+            } else if (OpsState.status === 'wrong1') {
+                let hint = OpsState.opType === 'add' ? "Combine 'like terms'. Add the coefficients of variables that have the exact same exponent." :
+                           OpsState.opType === 'sub' ? "Remember to distribute the negative sign to EVERY term in the second parenthesis before combining like terms." :
+                           "Use the FOIL method (First, Outer, Inner, Last). Multiply each term in the first parenthesis by every term in the second. Remember: x · x = x².";
+                opsFeedback.innerHTML = `
+                    <div class="bg-amber-50 border-l-4 border-amber-400 p-5 rounded-r-lg flex gap-4 shadow-sm">
+                        <i class="fa-solid fa-lightbulb text-amber-500 text-3xl shrink-0"></i>
+                        <div>
+                            <h4 class="text-lg font-bold text-amber-800">Hint</h4>
+                            <p class="text-amber-700 mt-1">${hint}</p>
+                        </div>
+                    </div>`;
+            } else if (OpsState.status === 'wrong2') {
+                let explanation = OpsState.opType === 'add' ? "Group terms with identical powers. E.g., (3x²) + (2x²) = 5x²." :
+                                  OpsState.opType === 'sub' ? "Change subtraction to addition by flipping the signs of the second polynomial, then combine like terms." :
+                                  "Multiply the coefficients and add the exponents of identical bases. Then combine any resulting like terms.";
+                
+                opsFeedback.innerHTML = `
+                    <div class="bg-red-50 border-l-4 border-red-500 p-5 rounded-r-lg flex gap-4 shadow-sm">
+                        <i class="fa-solid fa-graduation-cap text-red-500 text-3xl shrink-0"></i>
+                        <div>
+                            <h4 class="text-lg font-bold text-red-800">Explanation</h4>
+                            <p class="text-red-700 mt-1 mb-3">
+                                The correct answer is: <span class="font-bold text-lg bg-red-100 px-2 py-1 rounded inline-block mt-2">${MathEngine.formatPoly(calculateCorrectAnswer(OpsState.p1, OpsState.p2, OpsState.opType))}</span>
+                            </p>
+                            <div class="bg-white/50 p-3 rounded text-sm text-red-800">${explanation}</div>
+                        </div>
+                    </div>`;
+            } else if (OpsState.status === 'correct') {
+                opsFeedback.innerHTML = `
+                    <div class="bg-emerald-50 border-l-4 border-emerald-500 p-5 rounded-r-lg flex gap-4 shadow-sm">
+                        <i class="fa-solid fa-circle-check text-emerald-500 text-3xl shrink-0"></i>
+                        <div>
+                            <h4 class="text-lg font-bold text-emerald-800">Outstanding!</h4>
+                            <p class="text-emerald-700 mt-1">Your calculations are spot on.</p>
+                        </div>
+                    </div>`;
+            }
+        }
+
+        function checkOpsAnswer() {
+            const correctAns = calculateCorrectAnswer(OpsState.p1, OpsState.p2, OpsState.opType);
+            const selectedAns = OpsState.options[OpsState.selectedOpt];
+
+            if (MathEngine.polyToString(selectedAns) === MathEngine.polyToString(correctAns)) {
+                OpsState.status = 'correct';
+            } else {
+                OpsState.attempts++;
+                OpsState.status = OpsState.attempts >= 2 ? 'wrong2' : 'wrong1';
+            }
+            updateOpsUI();
+        }
+
+        generateOpsProblem();
+
+
+        const SortState = {
+            targetOrder: null, 
+            unsorted: [], 
+            selected: [], 
+            status: 'idle', 
+            attempts: 0, 
+            streakCount: 0, 
+            lastOrderType: null
+        };
+
+        const sortTargetText = document.getElementById('sort-target-text');
+        const sortTargetHeading = document.getElementById('sort-target-heading');
+        const sortSelectedArea = document.getElementById('sort-selected-area');
+        const sortUnsortedArea = document.getElementById('sort-unsorted-area');
+        const sortActionBtn = document.getElementById('sort-action-btn');
+        const sortFeedback = document.getElementById('sort-feedback');
+
+        function generateSortProblem() {
+            let terms = MathEngine.generatePoly(4, 4);
+            let shuffled = [...terms].sort(() => Math.random() - 0.5);
+            
+            let newOrder;
+            if (SortState.streakCount >= 3) {
+                // Force a switch if we've had the same order 3 times in a row
+                newOrder = SortState.lastOrderType === 'descending' ? 'ascending' : 'descending';
+            } else {
+                // Otherwise randomly pick
+                newOrder = Math.random() > 0.5 ? 'descending' : 'ascending';
+            }
+
+            // Update the streak counter appropriately
+            if (newOrder === SortState.lastOrderType) {
+                SortState.streakCount++;
+            } else {
+                SortState.streakCount = 1;
+                SortState.lastOrderType = newOrder;
+            }
+            
+            SortState.targetOrder = newOrder;
+            
+            SortState.unsorted = shuffled.map((t, idx) => ({ ...t, id: `term-${idx}` }));
+            SortState.selected = [];
+            SortState.status = 'idle';
+            SortState.attempts = 0;
+            updateSortUI();
+        }
+
+        function updateSortUI() {
+            sortTargetText.textContent = SortState.targetOrder + " order";
+            sortTargetHeading.textContent = SortState.targetOrder.charAt(0).toUpperCase() + SortState.targetOrder.slice(1);
+
+            sortSelectedArea.innerHTML = '';
+            if (SortState.selected.length === 0) {
+                sortSelectedArea.innerHTML = `<span class="text-purple-300 italic">Terms will appear here...</span>`;
+            } else {
+                SortState.selected.forEach((term, idx) => {
+                    let btn = document.createElement('button');
+                    btn.className = "px-6 py-4 bg-white border border-purple-200 shadow-sm rounded-lg text-xl hover:bg-red-50 hover:border-red-200 transition-all font-medium text-gray-800";
+                    btn.innerHTML = MathEngine.formatTerm(term.c, term.e, idx === 0);
+                    btn.onclick = () => {
+                        if(SortState.status === 'correct') return;
+                        SortState.selected = SortState.selected.filter(t => t.id !== term.id);
+                        SortState.unsorted.push(term);
+                        updateSortUI();
+                    };
+                    sortSelectedArea.appendChild(btn);
+                });
+            }
+
+            sortUnsortedArea.innerHTML = '';
+            SortState.unsorted.forEach(term => {
+                let btn = document.createElement('button');
+                btn.className = "px-6 py-4 bg-gray-100 border border-gray-300 rounded-lg text-xl hover:bg-purple-100 hover:border-purple-300 hover:shadow-md transition-all font-medium text-gray-800 transform hover:-translate-y-1";
+                btn.innerHTML = MathEngine.formatTerm(term.c, term.e, true);
+                btn.onclick = () => {
+                    if(SortState.status === 'correct') return;
+                    SortState.unsorted = SortState.unsorted.filter(t => t.id !== term.id);
+                    SortState.selected.push(term);
+                    updateSortUI();
+                };
+                sortUnsortedArea.appendChild(btn);
+            });
+
+            sortActionBtn.disabled = SortState.unsorted.length > 0 && SortState.status === 'idle';
+
+            if (SortState.status === 'correct' || SortState.status === 'wrong2') {
+                sortActionBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Next Problem';
+                sortActionBtn.className = "px-10 py-4 bg-purple-600 text-white rounded-lg font-bold hover:bg-purple-500 transition-all flex items-center justify-center gap-2 text-lg shadow-md w-full md:w-auto mx-auto";
+                sortActionBtn.onclick = generateSortProblem;
+            } else {
+                sortActionBtn.innerHTML = 'Check Order';
+                sortActionBtn.className = "px-10 py-4 bg-gray-900 text-white rounded-lg font-bold hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-lg shadow-md w-full md:w-auto mx-auto block";
+                sortActionBtn.onclick = checkSortAnswer;
+            }
+
+            sortFeedback.className = 'mt-6 animate-fadeIn';
+            if (SortState.status === 'idle') {
+                sortFeedback.classList.add('hidden');
+            } else if (SortState.status === 'wrong1') {
+                let hintText = SortState.targetOrder === 'descending' 
+                    ? "Descending means going DOWN. Start with the highest exponent and end with the constant (plain number)."
+                    : "Ascending means going UP. Start with the constant (plain number) and end with the highest exponent.";
+                sortFeedback.innerHTML = `
+                    <div class="bg-amber-50 border-l-4 border-amber-400 p-5 rounded-r-lg flex gap-4 shadow-sm">
+                        <i class="fa-solid fa-lightbulb text-amber-500 text-3xl shrink-0"></i>
+                        <div>
+                            <h4 class="text-lg font-bold text-amber-800">Hint</h4>
+                            <p class="text-amber-700 mt-1">${hintText}</p>
+                        </div>
+                    </div>`;
+            } else if (SortState.status === 'wrong2') {
+                let allTerms = [...SortState.selected, ...SortState.unsorted];
+                allTerms.sort((a,b) => SortState.targetOrder === 'descending' ? b.e - a.e : a.e - b.e);
+                let orderStr = allTerms.map(t => t.e).join(SortState.targetOrder === 'descending' ? ' > ' : ' < ');
+                sortFeedback.innerHTML = `
+                    <div class="bg-red-50 border-l-4 border-red-500 p-5 rounded-r-lg flex gap-4 shadow-sm">
+                        <i class="fa-solid fa-graduation-cap text-red-500 text-3xl shrink-0"></i>
+                        <div>
+                            <h4 class="text-lg font-bold text-red-800">Explanation</h4>
+                            <p class="text-red-700 mt-1 mb-2">Look at the exponents of the terms provided:</p>
+                            <div class="bg-white/60 p-3 rounded text-red-800 font-medium border border-red-100">
+                               Correct ${SortState.targetOrder} order: ${orderStr} (Exponents)
+                            </div>
+                            <p class="text-red-700 mt-2 text-sm italic">Click "Next Problem" to try a new one.</p>
+                        </div>
+                    </div>`;
+            } else if (SortState.status === 'correct') {
+                sortFeedback.innerHTML = `
+                    <div class="bg-emerald-50 border-l-4 border-emerald-500 p-5 rounded-r-lg flex gap-4 shadow-sm">
+                        <i class="fa-solid fa-circle-check text-emerald-500 text-3xl shrink-0"></i>
+                        <div>
+                            <h4 class="text-lg font-bold text-emerald-800">Perfect Ordering!</h4>
+                            <p class="text-emerald-700 mt-1">You placed all terms in the correct ${SortState.targetOrder} sequence.</p>
+                        </div>
+                    </div>`;
+            }
+        }
+
+        function checkSortAnswer() {
+            if (SortState.unsorted.length > 0) return;
+
+            let isCorrect = true;
+            for (let i = 0; i < SortState.selected.length - 1; i++) {
+                if (SortState.targetOrder === 'descending') {
+                    if (SortState.selected[i].e < SortState.selected[i+1].e) isCorrect = false;
+                } else {
+                    if (SortState.selected[i].e > SortState.selected[i+1].e) isCorrect = false;
+                }
+            }
+
+            if (isCorrect) {
+                SortState.status = 'correct';
+            } else {
+                SortState.attempts++;
+                SortState.status = SortState.attempts >= 2 ? 'wrong2' : 'wrong1';
+                if (SortState.attempts < 2) {
+                    SortState.unsorted = [...SortState.unsorted, ...SortState.selected];
+                    SortState.selected = [];
+                }
+            }
+            updateSortUI();
+        }
+
+        // Initialize the first sorting problem
+        generateSortProblem();
+
+    </script>
+</body>
+</html>
