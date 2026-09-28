@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exponent Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0fdf4; /* Light green background for a fresh feel */
+            color: #1f2937;
+        }
+
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(to right, #16a34a, #0d9488);
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Styling for the interactive input areas */
+        .math-input {
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            text-align: center;
+            width: 100px;
+            transition: border-color 0.2s;
+        }
+
+        .math-input:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+
+        /* Fraction styling */
+        .fraction {
+            display: inline-block;
+            vertical-align: middle;
+            text-align: center;
+            margin: 0 0.2rem;
+        }
+        
+        .fraction > span {
+            display: block;
+            padding: 0.1em;
+        }
+        
+        .fraction span.fdn {
+            border-top: 2px solid #1f2937;
+        }
+
+        /* Button styling with effects */
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 8px -1px rgba(16, 185, 129, 0.4);
+        }
+        
+        .btn-primary:active {
+            transform: scale(0.95);
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: #4b5563;
+            border: 2px solid #e5e7eb;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            border-color: #9ca3af;
+            color: #1f2937;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        @keyframes bounce-sm {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .animate-bounce-sm {
+            animation: bounce-sm 2s infinite;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.4s ease-in-out;
+        }
+        
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .pop {
+            animation: pop 0.3s ease-in-out;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+
+        /* Level Badges */
+        .badge-bronze { background-color: #cd7f32; color: white; }
+        .badge-silver { background-color: #c0c0c0; color: #1f2937; }
+        .badge-gold { background-color: #ffd700; color: #1f2937; }
+        .badge-diamond { background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); color: white; }
+
+        /* Notification Toast */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 16px;
+            position: fixed;
+            z-index: 50;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+            opacity: 0;
+            transition: opacity 0.3s, bottom 0.3s, visibility 0.3s;
+        }
+
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px;
+        }
+        
+        #toast.success { background-color: #10b981; }
+        #toast.error { background-color: #ef4444; }
+
+        /* Hide sections initially */
+        .app-section {
+            display: none;
+        }
+        .app-section.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <nav class="bg-white shadow-sm border-b border-green-100 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center cursor-pointer" onclick="navigateTo('home')">
+                    <div class="flex-shrink-0 flex items-center gap-2">
+                        <i class="fa-solid fa-rocket text-green-500 text-2xl animate-bounce-sm"></i>
+                        <span class="font-bold text-xl tracking-tight gradient-text">Exponent Explorer</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="hidden sm:flex space-x-1">
+                        <button onclick="navigateTo('learn')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-green-600 hover:bg-green-50 transition-colors">
+                            <i class="fa-solid fa-book-open mr-1"></i> Learn
+                        </button>
+                        <button onclick="navigateTo('practice')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-green-600 hover:bg-green-50 transition-colors">
+                            <i class="fa-solid fa-dumbbell mr-1"></i> Practice
+                        </button>
+                        <button onclick="navigateTo('challenge')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-green-600 hover:bg-green-50 transition-colors">
+                            <i class="fa-solid fa-trophy mr-1"></i> Challenge
+                        </button>
+                    </div>
+                    
+                    <!-- Stats Display -->
+                    <div class="flex items-center gap-2 bg-green-50 px-3 py-1.5 rounded-full border border-green-200">
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <span id="score-display" class="font-bold text-green-800">0</span>
+                    </div>
+                    
+                    <!-- Mobile menu button -->
+                    <div class="sm:hidden flex items-center">
+                        <button id="mobile-menu-btn" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                            <i class="fa-solid fa-bars text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="sm:hidden hidden bg-white border-b border-gray-200">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <button onclick="navigateTo('learn'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-green-600 hover:bg-green-50">Learn</button>
+                <button onclick="navigateTo('practice'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-green-600 hover:bg-green-50">Practice</button>
+                <button onclick="navigateTo('challenge'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-green-600 hover:bg-green-50">Challenge</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        
+        <section id="section-home" class="app-section active fade-in">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">Master the Power of <span class="gradient-text">Exponents</span></h1>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Build your skills from the basics of squares and cubes to mastering negative, fractional, and decimal bases.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Tier 1: Learn -->
+                <div class="card p-6 flex flex-col items-center text-center border-t-4 border-blue-400 cursor-pointer" onclick="navigateTo('learn')">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-book-open text-2xl text-blue-500"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-2">1. The Basics</h2>
+                    <p class="text-gray-600 mb-6 flex-grow">Learn what exponents are, explore perfect squares and cubes, and visualize how they work.</p>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                        Beginner
+                    </span>
+                </div>
+
+                <!-- Tier 2: Practice -->
+                <div class="card p-6 flex flex-col items-center text-center border-t-4 border-green-400 cursor-pointer" onclick="navigateTo('practice')">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-dumbbell text-2xl text-green-500"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-2">2. Skill Builder</h2>
+                    <p class="text-gray-600 mb-6 flex-grow">Practice evaluating expressions with different bases: negative numbers, decimals, and fractions.</p>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                        Intermediate
+                    </span>
+                </div>
+
+                <!-- Tier 3: Challenge -->
+                <div class="card p-6 flex flex-col items-center text-center border-t-4 border-purple-400 cursor-pointer" onclick="navigateTo('challenge')">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-trophy text-2xl text-purple-500"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-2">3. Equation Solver</h2>
+                    <p class="text-gray-600 mb-6 flex-grow">Apply your knowledge to solve algebraic equations involving variables and exponents.</p>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
+                        Advanced
+                    </span>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center bg-white p-6 rounded-xl shadow-sm max-w-2xl mx-auto border border-gray-100">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2"><i class="fa-solid fa-lightbulb text-yellow-400 mr-2"></i> How it works</h3>
+                <p class="text-gray-600 text-sm">Start with The Basics if you're new to exponents. Earn points by completing practice problems and unlocking challenges. Your progress is saved as you play!</p>
+            </div>
+        </section>
+
+        <section id="section-learn" class="app-section">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-3xl font-bold text-gray-800"><i class="fa-solid fa-book-open text-blue-500 mr-3"></i>The Basics</h2>
+                <button onclick="navigateTo('home')" class="text-gray-500 hover:text-gray-700">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> Back
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Concept Explanation -->
+                <div class="card p-6">
+                    <h3 class="text-xl font-bold mb-4 text-blue-800 border-b pb-2">What is an Exponent?</h3>
+                    <p class="mb-4 text-gray-700">An exponent is a shorthand way to write repeated multiplication.</p>
+                    
+                    <div class="bg-blue-50 p-4 rounded-lg mb-6 flex items-center justify-center gap-4 text-2xl font-serif">
+                        <div class="text-center relative">
+                            <span class="font-bold text-blue-700">base</span>
+                            <div class="absolute -top-3 -right-6 text-sm text-purple-600 font-bold">exponent</div>
+                        </div>
+                        <i class="fa-solid fa-arrow-right-long text-gray-400 text-lg"></i>
+                        <div>
+                            <span class="font-bold text-blue-700">2</span><sup class="text-purple-600 font-bold">3</sup>
+                        </div>
+                        <i class="fa-solid fa-equals text-gray-400 text-lg"></i>
+                        <div class="text-lg">
+                            <span class="text-blue-700">2</span> &times; <span class="text-blue-700">2</span> &times; <span class="text-blue-700">2</span> = 8
+                        </div>
+                    </div>
+
+                    <ul class="space-y-3 text-gray-700 list-disc pl-5">
+                        <li>The <strong class="text-blue-700">base</strong> is the number being multiplied.</li>
+                        <li>The <strong class="text-purple-600">exponent</strong> (or power) tells you how many times to use the base as a factor.</li>
+                        <li><strong>Any non-zero number to the power of 0 is 1.</strong> (e.g., 5<sup>0</sup> = 1)</li>
+                        <li><strong>Any number to the power of 1 is itself.</strong> (e.g., 5<sup>1</sup> = 5)</li>
+                    </ul>
+                </div>
+
+                <!-- Interactive Visualization -->
+                <div class="card p-6 flex flex-col">
+                    <h3 class="text-xl font-bold mb-4 text-blue-800 border-b pb-2">Visualize: Squares & Cubes</h3>
+                    
+                    <div class="flex justify-center gap-4 mb-6">
+                        <button onclick="setVisMode('square')" id="btn-vis-square" class="px-4 py-2 rounded-md bg-blue-600 text-white font-medium transition-colors">Perfect Squares (x²)</button>
+                        <button onclick="setVisMode('cube')" id="btn-vis-cube" class="px-4 py-2 rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300 font-medium transition-colors">Perfect Cubes (x³)</button>
+                    </div>
+
+                    <div class="flex items-center justify-center gap-4 mb-4">
+                        <span class="font-medium text-gray-700">Base:</span>
+                        <input type="range" id="vis-slider" min="1" max="5" value="3" class="w-1/2 accent-blue-600" oninput="updateVisualization()">
+                        <span id="vis-value" class="font-bold text-xl w-8 text-center text-blue-700">3</span>
+                    </div>
+
+                    <div class="text-center mb-4 text-lg font-serif">
+                        <span id="vis-equation">3<sup>2</sup> = 3 &times; 3 = 9</span>
+                    </div>
+
+                    <!-- Visualization Container -->
+                    <div class="flex-grow bg-gray-50 rounded-lg flex items-center justify-center p-4 border border-gray-200 min-h-[200px] overflow-hidden">
+                        <div id="vis-container" class="relative transition-all duration-300">
+                            <!-- Squares/Cubes generated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mini Quiz to transition to practice -->
+            <div class="mt-8 card p-6 text-center bg-blue-50 border border-blue-100">
+                <h3 class="text-lg font-bold text-blue-800 mb-2">Ready to test your knowledge?</h3>
+                <p class="text-gray-600 mb-4">Move on to the Skill Builder to practice with different types of bases.</p>
+                <button onclick="navigateTo('practice')" class="btn-primary">Go to Skill Builder <i class="fa-solid fa-arrow-right ml-2"></i></button>
+            </div>
+        </section>
+
+        <section id="section-practice" class="app-section">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-3xl font-bold text-gray-800"><i class="fa-solid fa-dumbbell text-green-500 mr-3"></i>Skill Builder</h2>
+                <button onclick="navigateTo('home')" class="text-gray-500 hover:text-gray-700">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> Back
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <!-- Practice Mode Selectors -->
+                <button onclick="setPracticeMode('basic')" id="btn-prac-basic" class="p-4 card text-center border-2 border-green-500 bg-green-50 transition-all">
+                    <div class="text-xl font-bold text-green-700 mb-1">Standard</div>
+                    <div class="text-sm text-gray-600">Positive integers</div>
+                    <div class="mt-2 text-xs font-mono">3² = 9</div>
+                </button>
+                <button onclick="setPracticeMode('negative')" id="btn-prac-negative" class="p-4 card text-center border-2 border-transparent hover:border-gray-300 transition-all">
+                    <div class="text-xl font-bold text-gray-700 mb-1">Negative Bases</div>
+                    <div class="text-sm text-gray-600">Watch the signs!</div>
+                    <div class="mt-2 text-xs font-mono">(-2)³ = -8</div>
+                </button>
+                <button onclick="setPracticeMode('decimal')" id="btn-prac-decimal" class="p-4 card text-center border-2 border-transparent hover:border-gray-300 transition-all">
+                    <div class="text-xl font-bold text-gray-700 mb-1">Decimal Bases</div>
+                    <div class="text-sm text-gray-600">Powers of decimals</div>
+                    <div class="mt-2 text-xs font-mono">0.5² = 0.25</div>
+                </button>
+                <button onclick="setPracticeMode('fraction')" id="btn-prac-fraction" class="p-4 card text-center border-2 border-transparent hover:border-gray-300 transition-all">
+                    <div class="text-xl font-bold text-gray-700 mb-1">Fractional Bases</div>
+                    <div class="text-sm text-gray-600">Apply to top & bottom</div>
+                    <div class="mt-2 text-xs font-mono">(1/2)² = 1/4</div>
+                </button>
+            </div>
+
+            <div class="card p-8 max-w-3xl mx-auto">
+                <!-- Info block for current mode -->
+                <div id="practice-info" class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r-md text-sm text-blue-800">
+                    <p><strong>Standard Bases:</strong> Multiply the base by itself the number of times indicated by the exponent.</p>
+                </div>
+
+                <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+                    <!-- The Problem -->
+                    <div class="flex-1 flex justify-center items-center p-6 bg-gray-50 rounded-xl border border-gray-200 min-h-[160px]">
+                        <div id="practice-problem" class="text-5xl font-serif text-gray-800">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <div class="text-3xl text-gray-400 hidden md:block">
+                        <i class="fa-solid fa-equals"></i>
+                    </div>
+
+                    <!-- The Input Area -->
+                    <div class="flex-1 flex flex-col items-center gap-4 w-full">
+                        <div id="input-container-standard" class="w-full text-center">
+                            <input type="text" id="practice-input" class="math-input w-full max-w-[200px]" placeholder="Answer" onkeypress="handlePracticeEnter(event)">
+                        </div>
+                        
+                        <!-- Special input for fractions (hidden by default) -->
+                        <div id="input-container-fraction" class="w-full text-center hidden flex-col items-center justify-center gap-2">
+                            <input type="text" id="practice-input-num" class="math-input w-24" placeholder="Num">
+                            <div class="w-24 h-1 bg-gray-800 rounded-full"></div>
+                            <input type="text" id="practice-input-den" class="math-input w-24" placeholder="Den">
+                        </div>
+
+                        <div class="flex gap-2 w-full justify-center mt-2">
+                            <button onclick="checkPracticeAnswer()" class="btn-primary w-full max-w-[150px]">Check</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feedback Area -->
+                <div id="practice-feedback" class="mt-6 text-center font-medium min-h-[40px] opacity-0 transition-opacity">
+                    <!-- Feedback text goes here -->
+                </div>
+            </div>
+            
+            <!-- Progress indicator -->
+            <div class="max-w-3xl mx-auto mt-6 px-2">
+                <div class="flex justify-between text-sm text-gray-600 mb-1">
+                    <span>Section Mastery</span>
+                    <span id="mastery-text">0 / 5</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    <div id="mastery-bar" class="bg-green-600 h-2.5 rounded-full" style="width: 0%"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-challenge" class="app-section">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-3xl font-bold text-gray-800"><i class="fa-solid fa-trophy text-purple-500 mr-3"></i>Equation Solver</h2>
+                <button onclick="navigateTo('home')" class="text-gray-500 hover:text-gray-700">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> Back
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Instructions / Hints -->
+                <div class="lg:col-span-1 space-y-6">
+                    <div class="card p-6 bg-purple-50 border border-purple-100">
+                        <h3 class="font-bold text-purple-800 mb-2">How to Solve</h3>
+                        <p class="text-sm text-gray-700 mb-4">To solve for a variable in an exponent equation, you usually need to isolate the variable or use opposite operations.</p>
+                        
+                        <div class="space-y-4">
+                            <div class="bg-white p-3 rounded shadow-sm text-sm">
+                                <div class="font-bold text-gray-800 mb-1">Solving for base (x² = 25)</div>
+                                <div class="text-gray-600">Take the square root of both sides. x = 5 (or -5)</div>
+                            </div>
+                            <div class="bg-white p-3 rounded shadow-sm text-sm">
+                                <div class="font-bold text-gray-800 mb-1">Solving for exponent (2ˣ = 8)</div>
+                                <div class="text-gray-600">Ask: "2 to what power equals 8?" Since 2³ = 8, x = 3.</div>
+                            </div>
+                            <div class="bg-white p-3 rounded shadow-sm text-sm border-l-4 border-yellow-400">
+                                <div class="font-bold text-gray-800 mb-1">Note on Negative Roots</div>
+                                <div class="text-gray-600">For even powers (like x²), there are technically positive and negative answers. For this activity, provide the <strong>positive</strong> answer.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Equation Interactive -->
+                <div class="lg:col-span-2">
+                    <div class="card p-8 h-full flex flex-col">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-bold text-gray-800">Find the value of <span class="text-purple-600 font-serif italic text-2xl">x</span></h3>
+                            <div class="text-sm font-medium bg-gray-100 px-3 py-1 rounded-full text-gray-600">
+                                Level <span id="challenge-level">1</span>
+                            </div>
+                        </div>
+
+                        <div class="flex-grow flex flex-col items-center justify-center gap-8">
+                            <!-- Equation Display -->
+                            <div class="bg-gray-50 px-8 py-6 rounded-xl border-2 border-gray-200 text-center relative overflow-hidden group">
+                                <div class="absolute inset-0 bg-gradient-to-r from-purple-50 to-blue-50 opacity-0 group-hover:opacity-100 transition-opacity -z-10"></div>
+                                <div id="challenge-equation" class="text-4xl md:text-5xl font-serif text-gray-800">
+                                    <!-- Populated by JS -->
+                                    x<sup>2</sup> + 5 = 30
+                                </div>
+                            </div>
+
+                            <!-- Input Area -->
+                            <div class="flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                                <span class="text-3xl font-serif italic text-purple-600">x =</span>
+                                <input type="number" id="challenge-input" class="math-input border-purple-200 focus:border-purple-500 focus:ring-purple-200" placeholder="?" onkeypress="handleChallengeEnter(event)">
+                                <button onclick="checkChallengeAnswer()" class="btn-primary bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 shadow-purple-200">Submit</button>
+                            </div>
+                            
+                            <!-- Step-by-step help (initially hidden) -->
+                            <div id="challenge-hint-area" class="w-full max-w-md hidden fade-in">
+                                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-sm text-yellow-800">
+                                    <p class="font-bold mb-1"><i class="fa-solid fa-lightbulb"></i> Hint:</p>
+                                    <p id="challenge-hint-text">First, subtract 5 from both sides to isolate the x² term.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 flex justify-between items-center border-t pt-4">
+                            <button onclick="showHint()" class="text-sm text-gray-500 hover:text-yellow-600 font-medium transition-colors">
+                                <i class="fa-solid fa-circle-question mr-1"></i> Need a hint?
+                            </button>
+                            <button onclick="generateChallenge()" class="text-sm text-blue-500 hover:text-blue-700 font-medium transition-colors">
+                                Skip <i class="fa-solid fa-forward ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 text-center text-sm text-gray-500">
+            Interactive Math: Exponent Explorer &copy; 2026 | Designed for Grades 7-9
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast">Message here</div>
+
+    <script>
+        // Global State
+        const state = {
+            score: 0,
+            currentSection: 'home',
+            learn: {
+                visMode: 'square', // 'square' or 'cube'
+                baseValue: 3
+            },
+            practice: {
+                mode: 'basic', // basic, negative, decimal, fraction
+                currentProblem: null,
+                attempts: 0,
+                mastery: {
+                    basic: 0,
+                    negative: 0,
+                    decimal: 0,
+                    fraction: 0
+                },
+                masteryRequired: 5
+            },
+            challenge: {
+                level: 1, // 1: basic base solving, 2: basic exponent solving, 3: simple equations
+                currentEquation: null,
+                attempts: 0,
+                streak: 0
+            }
+        };
+
+        // Utility: Generate random integer between min and max (inclusive)
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // Utility: Show toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `show ${type}`;
+            
+            setTimeout(() => {
+                toast.className = toast.className.replace('show', '');
+            }, 3000);
+        }
+
+        // Utility: Update Score Display
+        function addScore(points) {
+            state.score += points;
+            const scoreDisplay = document.getElementById('score-display');
+            scoreDisplay.textContent = state.score;
+            scoreDisplay.classList.add('pop');
+            setTimeout(() => scoreDisplay.classList.remove('pop'), 300);
+        }
+
+        // Navigation
+        function navigateTo(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.app-section').forEach(sec => {
+                sec.classList.remove('active');
+            });
+            
+            // Show target section
+            const target = document.getElementById(`section-${sectionId}`);
+            if (target) {
+                target.classList.add('active');
+                state.currentSection = sectionId;
+                
+                // Section specific initialization
+                if (sectionId === 'learn') updateVisualization();
+                if (sectionId === 'practice' && !state.practice.currentProblem) generatePracticeProblem();
+                if (sectionId === 'challenge' && !state.challenge.currentEquation) generateChallenge();
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        document.getElementById('mobile-menu-btn').addEventListener('click', toggleMobileMenu);
+
+        /* ==========================================
+           LEARN SECTION LOGIC
+           ========================================== */
+        
+        function setVisMode(mode) {
+            state.learn.visMode = mode;
+            
+            // Update buttons
+            document.getElementById('btn-vis-square').className = mode === 'square' 
+                ? 'px-4 py-2 rounded-md bg-blue-600 text-white font-medium transition-colors' 
+                : 'px-4 py-2 rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300 font-medium transition-colors';
+                
+            document.getElementById('btn-vis-cube').className = mode === 'cube' 
+                ? 'px-4 py-2 rounded-md bg-blue-600 text-white font-medium transition-colors' 
+                : 'px-4 py-2 rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300 font-medium transition-colors';
+            
+            // Adjust slider max based on mode (cubes get too big visually)
+            const slider = document.getElementById('vis-slider');
+            slider.max = mode === 'square' ? 10 : 5;
+            if (parseInt(slider.value) > slider.max) {
+                slider.value = slider.max;
+            }
+            
+            updateVisualization();
+        }
+
+        function updateVisualization() {
+            const slider = document.getElementById('vis-slider');
+            const base = parseInt(slider.value);
+            const mode = state.learn.visMode;
+            
+            document.getElementById('vis-value').textContent = base;
+            
+            const container = document.getElementById('vis-container');
+            container.innerHTML = '';
+            
+            if (mode === 'square') {
+                document.getElementById('vis-equation').innerHTML = `${base}<sup>2</sup> = ${base} &times; ${base} = ${base * base}`;
+                renderSquare(base, container);
+            } else {
+                document.getElementById('vis-equation').innerHTML = `${base}<sup>3</sup> = ${base} &times; ${base} &times; ${base} = ${Math.pow(base, 3)}`;
+                renderCube(base, container);
+            }
+        }
+
+        function renderSquare(base, container) {
+            // Dynamic sizing to fit container
+            const maxBoxSize = 200;
+            const itemSize = Math.min(30, maxBoxSize / base);
+            
+            const grid = document.createElement('div');
+            grid.style.display = 'grid';
+            grid.style.gridTemplateColumns = `repeat(${base}, ${itemSize}px)`;
+            grid.style.gridTemplateRows = `repeat(${base}, ${itemSize}px)`;
+            grid.style.gap = '2px';
+            grid.className = 'fade-in';
+            
+            for (let i = 0; i < base * base; i++) {
+                const cell = document.createElement('div');
+                cell.style.backgroundColor = '#3b82f6'; // blue-500
+                cell.style.borderRadius = '2px';
+                grid.appendChild(cell);
+            }
+            
+            container.appendChild(grid);
+        }
+
+        function renderCube(base, container) {
+            // 2D representation of 3D cube (isometric-ish)
+            const wrapper = document.createElement('div');
+            wrapper.className = 'relative fade-in';
+            wrapper.style.width = '150px';
+            wrapper.style.height = '150px';
+            
+            const itemSize = Math.min(25, 100 / base);
+            const offset = itemSize * 0.4; // fake depth
+            
+            // Draw layers from back to front
+            for (let z = base - 1; z >= 0; z--) {
+                const layer = document.createElement('div');
+                layer.style.position = 'absolute';
+                layer.style.display = 'grid';
+                layer.style.gridTemplateColumns = `repeat(${base}, ${itemSize}px)`;
+                layer.style.gridTemplateRows = `repeat(${base}, ${itemSize}px)`;
+                layer.style.gap = '1px';
+                
+                // Offset for 3D effect
+                layer.style.left = `${(base - 1 - z) * offset}px`;
+                layer.style.top = `${(base - 1 - z) * offset}px`;
+                layer.style.zIndex = base - z;
+                
+                for (let i = 0; i < base * base; i++) {
+                    const cell = document.createElement('div');
+                    // Shade layers differently
+                    const shade = 500 - (z * 100); 
+                    // Basic color assignment since we can't easily dynamically compute tailwind colors
+                    const colors = ['#1e3a8a', '#1d4ed8', '#2563eb', '#3b82f6', '#60a5fa'];
+                    cell.style.backgroundColor = colors[Math.min(z, 4)];
+                    cell.style.border = '1px solid rgba(255,255,255,0.2)';
+                    layer.appendChild(cell);
+                }
+                wrapper.appendChild(layer);
+            }
+            
+            container.appendChild(wrapper);
+        }
+
+        /* ==========================================
+           PRACTICE SECTION LOGIC
+           ========================================== */
+           
+        const practiceInfos = {
+            basic: "<strong>Standard Bases:</strong> Multiply the positive whole number base by itself.",
+            negative: "<strong>Negative Bases:</strong> If the exponent is even, the answer is positive. If odd, the answer is negative. Watch the parentheses!",
+            decimal: "<strong>Decimal Bases:</strong> Multiply the decimal. Counting decimal places can help check your answer.",
+            fraction: "<strong>Fractional Bases:</strong> Apply the exponent to BOTH the numerator and the denominator."
+        };
+
+        function setPracticeMode(mode) {
+            state.practice.mode = mode;
+            
+            // Update UI buttons
+            const modes = ['basic', 'negative', 'decimal', 'fraction'];
+            modes.forEach(m => {
+                const btn = document.getElementById(`btn-prac-${m}`);
+                if (m === mode) {
+                    btn.classList.add('border-green-500', 'bg-green-50');
+                    btn.classList.remove('border-transparent');
+                } else {
+                    btn.classList.remove('border-green-500', 'bg-green-50');
+                    btn.classList.add('border-transparent');
+                }
+            });
+            
+            // Update info text
+            document.getElementById('practice-info').innerHTML = practiceInfos[mode];
+            
+            // Update progress bar
+            updateMasteryBar();
+            
+            // Toggle input types based on mode
+            if (mode === 'fraction') {
+                document.getElementById('input-container-standard').classList.add('hidden');
+                document.getElementById('input-container-fraction').classList.remove('hidden');
+                document.getElementById('input-container-fraction').classList.add('flex');
+            } else {
+                document.getElementById('input-container-standard').classList.remove('hidden');
+                document.getElementById('input-container-fraction').classList.add('hidden');
+                document.getElementById('input-container-fraction').classList.remove('flex');
+            }
+            
+            clearPracticeFeedback();
+            generatePracticeProblem();
+        }
+
+        function updateMasteryBar() {
+            const current = state.practice.mastery[state.practice.mode];
+            const max = state.practice.masteryRequired;
+            const percentage = Math.min(100, (current / max) * 100);
+            
+            document.getElementById('mastery-text').textContent = `${Math.min(current, max)} / ${max}`;
+            document.getElementById('mastery-bar').style.width = `${percentage}%`;
+            
+            if (current >= max) {
+                document.getElementById('mastery-bar').classList.add('bg-yellow-400');
+                document.getElementById('mastery-bar').classList.remove('bg-green-600');
+            } else {
+                document.getElementById('mastery-bar').classList.add('bg-green-600');
+                document.getElementById('mastery-bar').classList.remove('bg-yellow-400');
+            }
+        }
+
+        function generatePracticeProblem() {
+            const mode = state.practice.mode;
+            let base, exponent, answer, displayStr, explanation;
+            
+            state.practice.attempts = 0; // Reset attempts
+            
+            switch (mode) {
+                case 'basic':
+                    base = getRandomInt(1, 12);
+                    exponent = base > 5 ? getRandomInt(2, 3) : getRandomInt(2, 4);
+                    // Special case for base 10
+                    if (base === 10) exponent = getRandomInt(2, 5);
+                    
+                    answer = Math.pow(base, exponent);
+                    displayStr = `${base}<sup>${exponent}</sup>`;
+                    explanation = `${base} multiplied by itself ${exponent} times equals ${answer}.`;
+                    
+                    state.practice.currentProblem = { type: 'standard', base, exponent, answer: answer.toString(), explanation };
+                    break;
+                    
+                case 'negative':
+                    base = getRandomInt(2, 8) * -1;
+                    exponent = getRandomInt(2, 4);
+                    
+                    // Add variation: sometimes without parentheses
+                    const useParentheses = Math.random() > 0.3;
+                    
+                    let expText = "";
+                    if (useParentheses) {
+                        answer = Math.pow(base, exponent);
+                        displayStr = `(${base})<sup>${exponent}</sup>`;
+                        expText = exponent % 2 === 0 
+                            ? `A negative number in parentheses to an EVEN power (${exponent}) results in a positive answer.` 
+                            : `A negative number in parentheses to an ODD power (${exponent}) results in a negative answer.`;
+                    } else {
+                        // -x^y means -(x^y)
+                        answer = -Math.pow(Math.abs(base), exponent);
+                        displayStr = `${base}<sup>${exponent}</sup>`;
+                        expText = `Without parentheses, the exponent only applies to the number, not the negative sign.`;
+                    }
+                    
+                    explanation = `${expText} The correct answer is ${answer}.`;
+                    state.practice.currentProblem = { type: 'standard', answer: answer.toString(), explanation };
+                    break;
+                    
+                case 'decimal':
+                    // e.g., 0.2, 0.5, 1.2
+                    const decimals = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 1.2, 1.5];
+                    base = decimals[Math.floor(Math.random() * decimals.length)];
+                    exponent = base < 1 ? getRandomInt(2, 3) : 2;
+                    
+                    // Handle JS floating point math issues accurately
+                    answer = Number(Math.pow(base, exponent).toFixed(exponent * (base.toString().split('.')[1]?.length || 1)));
+                    
+                    displayStr = `${base}<sup>${exponent}</sup>`;
+                    explanation = `${base} multiplied by itself ${exponent} times equals ${answer}.`;
+                    
+                    state.practice.currentProblem = { type: 'standard', answer: answer.toString(), explanation };
+                    break;
+                    
+                case 'fraction':
+                    const numerators = [1, 2, 3, 4, 5];
+                    const denominators = [2, 3, 4, 5, 6, 7];
+                    
+                    let num = numerators[Math.floor(Math.random() * numerators.length)];
+                    let den = denominators[Math.floor(Math.random() * denominators.length)];
+                    
+                    // Ensure proper fraction
+                    if (num >= den) {
+                        const temp = num;
+                        num = den;
+                        den = temp + 1;
+                    }
+                    
+                    exponent = den > 3 ? 2 : getRandomInt(2, 3);
+                    
+                    const ansNum = Math.pow(num, exponent);
+                    const ansDen = Math.pow(den, exponent);
+                    
+                    displayStr = `
+                        <div class="inline-flex items-center">
+                            <span class="text-5xl">(</span>
+                            <div class="fraction text-3xl">
+                                <span>${num}</span>
+                                <span class="fdn">${den}</span>
+                            </div>
+                            <span class="text-5xl">)<sup>${exponent}</sup></span>
+                        </div>
+                    `;
+                    
+                    explanation = `Apply the exponent ${exponent} to both the numerator (${num}<sup>${exponent}</sup> = ${ansNum}) and the denominator (${den}<sup>${exponent}</sup> = ${ansDen}).`;
+                    
+                    state.practice.currentProblem = { 
+                        type: 'fraction', 
+                        answerNum: ansNum.toString(), 
+                        answerDen: ansDen.toString(),
+                        explanation
+                    };
+                    break;
+            }
+            
+            // Display problem
+            const probContainer = document.getElementById('practice-problem');
+            probContainer.innerHTML = displayStr;
+            
+            // Add pop animation
+            probContainer.parentElement.classList.remove('pop');
+            void probContainer.parentElement.offsetWidth; // trigger reflow
+            probContainer.parentElement.classList.add('pop');
+            
+            // Clear inputs and enable them
+            const inputStandard = document.getElementById('practice-input');
+            const inputNum = document.getElementById('practice-input-num');
+            const inputDen = document.getElementById('practice-input-den');
+            
+            inputStandard.value = '';
+            inputStandard.disabled = false;
+            
+            inputNum.value = '';
+            inputNum.disabled = false;
+            
+            inputDen.value = '';
+            inputDen.disabled = false;
+            
+            // Focus input
+            if (mode === 'fraction') {
+                inputNum.focus();
+            } else {
+                inputStandard.focus();
+            }
+        }
+
+        function handlePracticeEnter(e) {
+            if (e.key === 'Enter') {
+                checkPracticeAnswer();
+            }
+        }
+
+        function checkPracticeAnswer() {
+            const prob = state.practice.currentProblem;
+            const mode = state.practice.mode;
+            let isCorrect = false;
+            let userAnswerStr = "";
+            
+            if (prob.type === 'standard') {
+                const inputEl = document.getElementById('practice-input');
+                const userAnswer = inputEl.value.trim();
+                if (userAnswer === "") return; // Don't check empty
+                
+                // Handle optional leading zero for decimals (e.g., .25 == 0.25)
+                let normUser = userAnswer;
+                if (normUser.startsWith('.')) normUser = '0' + normUser;
+                if (normUser.startsWith('-.')) normUser = '-0.' + normUser.substring(2);
+                
+                let normAns = prob.answer;
+                
+                isCorrect = (normUser === normAns);
+                userAnswerStr = userAnswer;
+                
+                if (!isCorrect) {
+                    inputEl.classList.add('shake');
+                    setTimeout(() => inputEl.classList.remove('shake'), 400);
+                }
+            } else if (prob.type === 'fraction') {
+                const numEl = document.getElementById('practice-input-num');
+                const denEl = document.getElementById('practice-input-den');
+                const userNum = numEl.value.trim();
+                const userDen = denEl.value.trim();
+                
+                if (userNum === "" || userDen === "") return;
+                
+                isCorrect = (userNum === prob.answerNum && userDen === prob.answerDen);
+                userAnswerStr = `${userNum}/${userDen}`;
+                
+                if (!isCorrect) {
+                    numEl.parentElement.classList.add('shake');
+                    setTimeout(() => numEl.parentElement.classList.remove('shake'), 400);
+                }
+            }
+            
+            const feedbackEl = document.getElementById('practice-feedback');
+            
+            if (isCorrect) {
+                // Correct
+                addScore(10);
+                state.practice.mastery[mode]++;
+                updateMasteryBar();
+                
+                feedbackEl.innerHTML = `<span class="text-green-600"><i class="fa-solid fa-check-circle mr-1"></i> Correct! Excellent work.</span>`;
+                feedbackEl.style.opacity = 1;
+                
+                // Check for mastery achievement
+                if (state.practice.mastery[mode] === state.practice.masteryRequired) {
+                    showToast(`Mastery Achieved in ${mode} bases! +50 Bonus`, 'success');
+                    addScore(50);
+                }
+                
+                setTimeout(() => {
+                    clearPracticeFeedback();
+                    generatePracticeProblem();
+                }, 1500);
+            } else {
+                // Incorrect
+                state.practice.attempts++;
+                
+                // Show Answer and Explanation on 2nd attempt
+                if (state.practice.attempts >= 2) {
+                    let ansDisplay = prob.type === 'fraction' ? `${prob.answerNum}/${prob.answerDen}` : prob.answer;
+                    
+                    feedbackEl.innerHTML = `
+                        <div class="bg-blue-50 border border-blue-200 p-3 rounded-lg text-left inline-block max-w-full">
+                            <span class="text-blue-800 font-bold block mb-1"><i class="fa-solid fa-info-circle mr-1"></i> The correct answer is ${ansDisplay}</span>
+                            <span class="text-gray-700 text-sm">${prob.explanation}</span>
+                            <div class="mt-2 text-xs text-gray-500 italic font-normal">Loading next problem...</div>
+                        </div>`;
+                    feedbackEl.style.opacity = 1;
+                    
+                    // Disable inputs temporarily
+                    if (prob.type === 'standard') {
+                        document.getElementById('practice-input').disabled = true;
+                    } else {
+                        document.getElementById('practice-input-num').disabled = true;
+                        document.getElementById('practice-input-den').disabled = true;
+                    }
+                    
+                    setTimeout(() => {
+                        clearPracticeFeedback();
+                        generatePracticeProblem();
+                    }, 4500);
+                    
+                    return;
+                }
+                
+                // Show Hint on 1st attempt
+                let hint = "Try again.";
+                
+                // Provide specific hints based on mode and common errors
+                if (mode === 'negative') {
+                    if (prob.answer.startsWith('-') && !userAnswerStr.startsWith('-')) {
+                        hint = "Check your sign. A negative number to an odd power, or no parentheses, means the result is negative.";
+                    } else if (!prob.answer.startsWith('-') && userAnswerStr.startsWith('-')) {
+                        hint = "Check your sign. A negative number in parentheses to an even power is positive.";
+                    }
+                } else if (mode === 'basic') {
+                    // Check if they multiplied base * exponent instead of power
+                    if (prob.base * prob.exponent == parseInt(userAnswerStr)) {
+                        hint = `Remember: ${prob.base}<sup>${prob.exponent}</sup> means multiplying ${prob.base} by itself ${prob.exponent} times, not ${prob.base} &times; ${prob.exponent}.`;
+                    } else {
+                        hint = `Remember to multiply ${prob.base} by itself ${prob.exponent} times.`;
+                    }
+                } else if (mode === 'decimal') {
+                    hint = "Remember to count your decimal places carefully when multiplying.";
+                } else if (mode === 'fraction') {
+                    hint = "Make sure you applied the exponent to BOTH the top and bottom numbers.";
+                }
+                
+                feedbackEl.innerHTML = `<span class="text-red-500"><i class="fa-solid fa-lightbulb mr-1"></i> Hint: ${hint}</span>`;
+                feedbackEl.style.opacity = 1;
+            }
+        }
+
+        function clearPracticeFeedback() {
+            const feedbackEl = document.getElementById('practice-feedback');
+            feedbackEl.style.opacity = 0;
+            setTimeout(() => { feedbackEl.innerHTML = ''; }, 300); // Wait for fade
+        }
+
+
+        /* ==========================================
+           CHALLENGE SECTION LOGIC
+           ========================================== */
+           
+        function generateChallenge() {
+            // Determine level based on streak
+            if (state.challenge.streak > 6) state.challenge.level = 3;
+            else if (state.challenge.streak > 3) state.challenge.level = 2;
+            else state.challenge.level = 1;
+            
+            document.getElementById('challenge-level').textContent = state.challenge.level;
+            
+            state.challenge.attempts = 0; // Reset attempts
+            
+            const level = state.challenge.level;
+            let equation, answer, hint, explanation;
+            
+            if (level === 1) {
+                // Solve for base: x^2 = y or x^3 = y
+                const isSquare = Math.random() > 0.3; // Favor squares
+                if (isSquare) {
+                    const ans = getRandomInt(2, 12);
+                    const result = ans * ans;
+                    equation = `x<sup>2</sup> = ${result}`;
+                    answer = ans;
+                    hint = `What positive number multiplied by itself equals ${result}? Try taking the square root.`;
+                    explanation = `To find x, take the square root of ${result}. The positive number that multiplied by itself equals ${result} is ${ans}.`;
+                } else {
+                    const ans = getRandomInt(2, 5);
+                    const result = Math.pow(ans, 3);
+                    equation = `x<sup>3</sup> = ${result}`;
+                    answer = ans;
+                    hint = `What number used as a factor 3 times equals ${result}?`;
+                    explanation = `To find x, take the cube root of ${result}. The number you multiply by itself 3 times to get ${result} is ${ans}.`;
+                }
+            } 
+            else if (level === 2) {
+                // Solve for exponent: b^x = y
+                const bases = [2, 3, 4, 5, 10];
+                const base = bases[Math.floor(Math.random() * bases.length)];
+                
+                // Ensure reasonable result size
+                const maxExp = base === 2 ? 6 : (base === 3 ? 4 : 3);
+                const ans = getRandomInt(2, maxExp);
+                const result = Math.pow(base, ans);
+                
+                equation = `${base}<sup>x</sup> = ${result}`;
+                answer = ans;
+                hint = `How many times do you need to multiply ${base} by itself to get ${result}?`;
+                explanation = `You need to multiply ${base} by itself ${ans} times to get ${result} (${Array(ans).fill(base).join(' &times; ')} = ${result}). So, x = ${ans}.`;
+            }
+            else {
+                // Simple 2-step equations: ax^2 + b = c or x^2 / a = b
+                const isAddSub = Math.random() > 0.5;
+                const ans = getRandomInt(2, 8);
+                const squared = ans * ans;
+                
+                if (isAddSub) {
+                    const b = getRandomInt(1, 20);
+                    const isAdd = Math.random() > 0.5;
+                    
+                    if (isAdd) {
+                        const c = squared + b;
+                        equation = `x<sup>2</sup> + ${b} = ${c}`;
+                        hint = `First, subtract ${b} from both sides to get x² by itself.`;
+                        explanation = `1) Subtract ${b} from both sides: x<sup>2</sup> = ${squared}.<br>2) Take the square root: x = ${ans}.`;
+                    } else {
+                        const c = squared - b;
+                        equation = `x<sup>2</sup> - ${b} = ${c}`;
+                        hint = `First, add ${b} to both sides to get x² by itself.`;
+                        explanation = `1) Add ${b} to both sides: x<sup>2</sup> = ${squared}.<br>2) Take the square root: x = ${ans}.`;
+                    }
+                } else {
+                    const a = getRandomInt(2, 5);
+                    const c = squared * a;
+                    equation = `${a}x<sup>2</sup> = ${c}`;
+                    hint = `First, divide both sides by ${a} to isolate x².`;
+                    explanation = `1) Divide both sides by ${a}: x<sup>2</sup> = ${squared}.<br>2) Take the square root: x = ${ans}.`;
+                }
+                answer = ans;
+            }
+            
+            state.challenge.currentEquation = { equation, answer: answer.toString(), hint, explanation };
+            
+            // Update UI
+            document.getElementById('challenge-equation').innerHTML = equation;
+            const inputEl = document.getElementById('challenge-input');
+            inputEl.value = '';
+            inputEl.disabled = false;
+            hideHint();
+            
+            // Add pop animation
+            const eqContainer = document.getElementById('challenge-equation');
+            eqContainer.classList.remove('pop');
+            void eqContainer.offsetWidth; // trigger reflow
+            eqContainer.classList.add('pop');
+            
+            inputEl.focus();
+        }
+
+        function handleChallengeEnter(e) {
+            if (e.key === 'Enter') {
+                checkChallengeAnswer();
+            }
+        }
+
+        function checkChallengeAnswer() {
+            const inputEl = document.getElementById('challenge-input');
+            const userAnswer = inputEl.value.trim();
+            if (userAnswer === "") return;
+            
+            const currentObj = state.challenge.currentEquation;
+            
+            if (userAnswer === currentObj.answer) {
+                // Correct
+                const points = state.challenge.level * 15;
+                addScore(points);
+                state.challenge.streak++;
+                
+                showToast(`Correct! +${points} points`, 'success');
+                
+                // Add success visual flair
+                inputEl.classList.add('bg-green-50', 'border-green-500', 'text-green-700');
+                
+                setTimeout(() => {
+                    inputEl.classList.remove('bg-green-50', 'border-green-500', 'text-green-700');
+                    generateChallenge();
+                }, 1000);
+            } else {
+                // Incorrect
+                state.challenge.attempts++;
+                state.challenge.streak = Math.max(0, state.challenge.streak - 1);
+                
+                inputEl.classList.add('shake', 'border-red-500');
+                setTimeout(() => inputEl.classList.remove('shake', 'border-red-500'), 500);
+                
+                if (state.challenge.attempts >= 2) {
+                    // Show answer and explanation on 2nd attempt
+                    const hintArea = document.getElementById('challenge-hint-area');
+                    hintArea.innerHTML = `
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-left w-full">
+                            <p class="font-bold text-blue-800 mb-1"><i class="fa-solid fa-info-circle"></i> The correct answer is ${currentObj.answer}</p>
+                            <p class="text-gray-700">${currentObj.explanation}</p>
+                            <p class="mt-3 text-xs text-gray-500 italic font-normal">Loading next equation...</p>
+                        </div>
+                    `;
+                    hintArea.classList.remove('hidden');
+                    inputEl.disabled = true;
+                    
+                    setTimeout(() => {
+                        generateChallenge();
+                    }, 4500);
+                } else {
+                    // Show hint on 1st attempt
+                    showHint();
+                }
+            }
+        }
+
+        function showHint() {
+            if (!state.challenge.currentEquation) return;
+            const hintArea = document.getElementById('challenge-hint-area');
+            hintArea.innerHTML = `
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-sm text-yellow-800 text-left w-full">
+                    <p class="font-bold mb-1"><i class="fa-solid fa-lightbulb"></i> Hint:</p>
+                    <p>${state.challenge.currentEquation.hint}</p>
+                </div>
+            `;
+            hintArea.classList.remove('hidden');
+        }
+
+        function hideHint() {
+            document.getElementById('challenge-hint-area').classList.add('hidden');
+        }
+
+        // Initialize application on load
+        window.onload = function() {
+            // Initial setup
+            updateVisualization();
+        };
+
+    </script>
+</body>
+</html>
