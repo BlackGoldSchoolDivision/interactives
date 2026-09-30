@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#faf7ef">
+  <meta name="description" content="Grade 4 space reading and thinking. Move evidence cards, sort words, build a skywatching plan, and record your ideas. Student activities and teacher guidance.">
+  <title>Space Arcade — Read, Move, Think</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect x='2' y='2' width='36' height='36' rx='8' fill='%23ffcb4f'/%3E%3Cellipse cx='20' cy='20' rx='17' ry='6' transform='rotate(-25 20 20)' fill='none' stroke='%23112739' stroke-width='2'/%3E%3Ccircle cx='20' cy='20' r='10' fill='%2391c9f3' stroke='%23112739' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to activities</a>
+  <div class="shell">
+    <header class="header">
+      <button class="brand" data-go="home" aria-label="Space Arcade activity menu">
+        <span class="brand-mark" aria-hidden="true">✦<span>↗</span></span>
+        <span><strong>SPACE ARCADE</strong><small>READ <i>·</i> MOVE <i>·</i> THINK</small></span>
+      </button>
+      <nav class="header-tools" aria-label="Work tools">
+        <button id="export" class="text-button">Save work</button>
+        <button id="import" class="text-button">Load work</button>
+        <button id="print" class="text-button">Print work</button>
+        <button id="help" class="text-button">How to play <span aria-hidden="true">ⓘ</span></button>
+      </nav>
+      <div class="role-switch" role="group" aria-label="Choose view">
+        <button id="student-view" aria-pressed="true">Student</button>
+        <button id="teacher-view" aria-pressed="false">Teacher</button>
+      </div>
+    </header>
+    <main id="main" tabindex="-1"></main>
+    <footer class="footer">
+      <span class="footer-note">Little clues. Big discoveries.</span>
+      <span class="footer-line" aria-hidden="true"></span>
+      <span id="save-status" role="status"></span>
+    </footer>
+    <p id="file-status" class="file-status" role="status"></p>
+  </div>
+  <input id="import-file" type="file" accept=".json,application/json" hidden>
+  <div id="announcement" class="sr-only" role="status" aria-live="polite"></div>
+  <div id="print-content" class="print-only"></div>
+  <dialog id="help-dialog" aria-labelledby="help-title">
+    <h2 id="help-title">A few ways to explore</h2>
+    <p>Choose an activity from the menu. Read the two passages when you need evidence.</p>
+    <ul><li><strong>Move cards:</strong> drag a card to a box. On a touch screen, tap a card, then tap <strong>Place here</strong>.</li><li><strong>Use a keyboard:</strong> press Enter or Space to select a card, Tab to a Place here button, then Enter to move it.</li><li><strong>Keep thinking:</strong> check the card sorts, then explain your ideas in your own words. Writing is for discussion with your teacher.</li><li><strong>Keep your work:</strong> work saves in this browser when storage is available. Save work downloads a file you can keep or give to your teacher. Load work opens it.</li></ul>
+    <p class="small-note">On a shared device, save your file and use New learner before the next student. Teacher view shows teaching notes and model responses; it is a view switch, with no account or password.</p>
+    <div class="actions"><button class="primary" data-close="help-dialog">Got it</button><button id="new-learner" class="outline">New learner</button></div>
+  </dialog>
+  <dialog id="confirm-dialog" aria-labelledby="confirm-title">
+    <h2 id="confirm-title">Replace this browser’s work?</h2>
+    <p id="confirm-description"></p>
+    <div class="actions"><button id="cancel-confirm" class="outline">Keep current work</button><button id="confirm-action" class="primary">Replace work</button></div>
+  </dialog>
+  <noscript><p class="no-script">Turn on JavaScript to use the activity boards. The original <a href="packet.pdf">printable packet</a> is also available.</p></noscript>
+</body>
+</html>
