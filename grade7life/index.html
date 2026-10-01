@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade 7 Financial Choices: A Year in the Life</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+        }
+        
+        /* Animations */
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        .slide-in-right { animation: slideInRight 0.3s ease-out forwards; }
+        .slide-up { animation: slideUp 0.4s ease-out forwards; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(15px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Interactive Elements */
+        .choice-btn { transition: all 0.2s ease; }
+        .choice-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .progress-bar-fill { transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s; }
+
+        /* Custom Scrollbars */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .dark-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
+        .dark-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+        .dark-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.4); }
+
+        /* Hide scrollbar for clean UI in certain containers but allow scrolling */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-0 sm:p-4 md:p-6 text-gray-800">
+
+    <div id="app" class="max-w-6xl w-full bg-white sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row h-screen sm:h-[90vh] max-h-[950px]">
+        
+        <!-- Sidebar: Stats & History (Desktop) -->
+        <div class="bg-slate-900 text-white w-full md:w-[320px] lg:w-[380px] p-6 flex flex-col hidden md:flex shrink-0 relative z-10">
+            <!-- Header -->
+            <div class="mb-6">
+                <h1 class="text-2xl font-extrabold mb-1 flex items-center gap-2 tracking-tight">
+                    <i class="fa-solid fa-layer-group text-blue-400"></i> Life Choices
+                </h1>
+                <p class="text-slate-400 text-xs font-medium uppercase tracking-widest">12-Month Simulator</p>
+            </div>
+
+            <!-- Budget Display -->
+            <div class="bg-slate-800/80 rounded-2xl p-5 mb-6 shadow-inner border border-slate-700">
+                <p class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bank Balance</p>
+                <p id="balance-display" class="text-4xl font-black text-emerald-400 transition-colors duration-300">$0</p>
+                <div class="mt-3 flex items-center gap-2 text-xs font-medium">
+                    <div class="bg-slate-700/50 px-2 py-1 rounded-md text-slate-300">
+                        <i class="fa-solid fa-money-bill-transfer text-emerald-500 mr-1"></i> Income: <span id="income-display" class="text-white">$0/mo</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Life Stats -->
+            <div class="space-y-5 bg-slate-800/40 rounded-2xl p-5 border border-slate-700/50">
+                <div>
+                    <div class="flex justify-between text-sm mb-1.5 font-medium">
+                        <span class="text-slate-200"><i class="fa-solid fa-face-smile text-amber-400 mr-1.5"></i> Happiness</span>
+                        <span id="happiness-val" class="text-amber-400">50%</span>
+                    </div>
+                    <div class="w-full bg-slate-900 rounded-full h-2 shadow-inner">
+                        <div id="happiness-bar" class="bg-amber-400 h-2 rounded-full progress-bar-fill" style="width: 50%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-sm mb-1.5 font-medium">
+                        <span class="text-slate-200"><i class="fa-solid fa-shield-halved text-blue-400 mr-1.5"></i> Preparedness</span>
+                        <span id="preparedness-val" class="text-blue-400">50%</span>
+                    </div>
+                    <div class="w-full bg-slate-900 rounded-full h-2 shadow-inner">
+                        <div id="preparedness-bar" class="bg-blue-500 h-2 rounded-full progress-bar-fill" style="width: 50%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline / Progress -->
+            <div class="mt-6 flex-grow flex flex-col min-h-0">
+                 <div class="flex justify-between items-center mb-3">
+                     <h3 class="text-xs text-slate-400 uppercase tracking-widest font-bold">Yearly Timeline</h3>
+                 </div>
+                 <div class="flex-grow overflow-y-auto custom-scrollbar dark-scrollbar pr-2 relative no-scrollbar">
+                     <!-- Vertical Line -->
+                     <div class="absolute left-3.5 top-2 bottom-2 w-0.5 bg-slate-700"></div>
+                     <ul id="timeline-list" class="space-y-3 relative pb-4">
+                        <!-- Timeline items injected here -->
+                     </ul>
+                 </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 flex flex-col relative bg-slate-50 overflow-hidden">
+            
+            <!-- Mobile Header (Visible only on small screens) -->
+            <div class="md:hidden flex justify-between items-center bg-slate-900 text-white p-4 shadow-md z-20 sticky top-0">
+                <div>
+                    <span class="text-[10px] text-slate-400 uppercase tracking-wider font-bold block">Balance (<span id="mobile-income">$0</span>/mo)</span>
+                    <span id="mobile-balance" class="text-xl font-black text-emerald-400">$0</span>
+                </div>
+                <div class="flex gap-4 text-sm">
+                    <div class="flex flex-col items-center"><i class="fa-solid fa-face-smile text-amber-400"></i><span id="mobile-hap" class="text-[10px] font-bold mt-0.5">50</span></div>
+                    <div class="flex flex-col items-center"><i class="fa-solid fa-shield-halved text-blue-400"></i><span id="mobile-prep" class="text-[10px] font-bold mt-0.5">50</span></div>
+                </div>
+            </div>
+
+            <div id="content-scroll-area" class="flex-1 overflow-y-auto custom-scrollbar p-4 sm:p-8 relative">
+                
+                <!-- SCREEN 1: Scenario Question -->
+                <div id="scenario-screen" class="max-w-2xl mx-auto w-full flex flex-col min-h-full fade-in pb-8">
+                    
+                    <!-- Month Context -->
+                    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-0.5 rounded-md uppercase tracking-wider" id="month-badge">Month 1</span>
+                                <span class="text-sm font-semibold text-slate-500" id="event-tracker">Decision 1 of 2</span>
+                            </div>
+                            <h2 id="month-name-theme" class="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight">September: Back to School</h2>
+                        </div>
+                    </div>
+
+                    <!-- Main Scenario Text -->
+                    <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200 mb-8">
+                        <h3 id="scenario-title" class="text-xl font-bold text-slate-800 mb-3">Scenario Title</h3>
+                        <p id="scenario-description" class="text-slate-600 text-base leading-relaxed">
+                            Description goes here.
+                        </p>
+                    </div>
+
+                    <!-- Choices Container -->
+                    <div id="choices-container" class="space-y-4 mt-auto">
+                        <!-- Buttons injected by JS -->
+                    </div>
+                </div>
+
+                <!-- SCREEN 2: Month End Summary -->
+                <div id="month-end-screen" class="hidden max-w-2xl mx-auto w-full flex flex-col justify-center min-h-full slide-up py-4">
+                    <div class="text-center mb-8">
+                        <div class="inline-flex items-center justify-center w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full mb-4 shadow-sm border-4 border-white">
+                            <i class="fa-solid fa-calendar-check text-4xl"></i>
+                        </div>
+                        <h2 class="text-3xl font-extrabold text-slate-900">Month Complete!</h2>
+                        <p class="text-slate-500 mt-2 font-medium" id="summary-month-text">You completed September.</p>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
+                        <h3 class="font-bold text-slate-800 mb-4 border-b border-slate-100 pb-2">End of Month Review</h3>
+                        
+                        <div class="space-y-4">
+                            <!-- Events Recap -->
+                            <div id="summary-events-recap" class="space-y-3 mb-6">
+                                <!-- Injected recap items -->
+                            </div>
+
+                            <div class="pt-4 border-t border-slate-100 flex justify-between items-center">
+                                <span class="font-semibold text-slate-600">Ending Balance</span>
+                                <span id="summary-total" class="text-2xl font-black text-emerald-600">$0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-4 mt-auto">
+                        <button onclick="endSimulation()" class="flex-1 bg-white border-2 border-slate-300 hover:border-slate-400 hover:bg-slate-50 text-slate-700 font-bold py-4 px-6 rounded-xl transition duration-200 text-center order-2 sm:order-1">
+                            <i class="fa-solid fa-chart-pie mr-2"></i> Stop & View Report
+                        </button>
+                        <button id="next-month-btn" onclick="startNextMonth()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl transition duration-200 shadow-lg shadow-blue-200 flex items-center justify-center gap-2 order-1 sm:order-2">
+                            Start Next Month <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SCREEN 3: Final Report -->
+                <div id="report-screen" class="hidden w-full max-w-4xl mx-auto flex flex-col slide-up pb-12 pt-4">
+                    
+                    <div class="text-center mb-10">
+                        <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight mb-3">Your Financial Persona</h1>
+                        <p class="text-lg text-slate-500 font-medium" id="report-subtitle">You completed X months. Let's analyze your choices.</p>
+                    </div>
+
+                    <!-- Hero Stats -->
+                    <div class="bg-slate-900 rounded-3xl p-8 text-white shadow-xl mb-10 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 opacity-5 transform translate-x-1/4 -translate-y-1/4">
+                            <i class="fa-solid fa-fingerprint text-[15rem]"></i>
+                        </div>
+                        <h2 class="text-sm text-slate-400 font-bold mb-6 uppercase tracking-widest relative z-10">Your Actual Path</h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 relative z-10">
+                            <div class="bg-white/10 rounded-2xl p-5 backdrop-blur-sm border border-white/10">
+                                <p class="text-slate-300 text-sm font-medium mb-1">Final Balance</p>
+                                <p id="report-user-balance" class="text-4xl font-black text-emerald-400">$0</p>
+                            </div>
+                            <div class="bg-white/10 rounded-2xl p-5 backdrop-blur-sm border border-white/10">
+                                <p class="text-slate-300 text-sm font-medium mb-1">Happiness</p>
+                                <div class="flex items-baseline gap-1">
+                                    <p id="report-user-hap" class="text-4xl font-black text-amber-400">0</p>
+                                    <span class="text-slate-400 text-sm font-medium">/ 100</span>
+                                </div>
+                            </div>
+                            <div class="bg-white/10 rounded-2xl p-5 backdrop-blur-sm border border-white/10">
+                                <p class="text-slate-300 text-sm font-medium mb-1">Preparedness</p>
+                                <div class="flex items-baseline gap-1">
+                                    <p id="report-user-prep" class="text-4xl font-black text-blue-400">0</p>
+                                    <span class="text-slate-400 text-sm font-medium">/ 100</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Values Reflection -->
+                    <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-200 mb-12 relative overflow-hidden">
+                        <div class="absolute left-0 top-0 w-1.5 h-full bg-purple-500"></div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-brain text-purple-500"></i> What Do You Value?
+                        </h3>
+                        <p id="report-values-reflection" class="text-slate-600 text-lg leading-relaxed">
+                            Analyzing your choices...
+                        </p>
+                    </div>
+
+                    <!-- Alternate Realities Grid -->
+                    <h3 class="text-2xl font-extrabold text-slate-900 mb-2 text-center">Alternative Realities</h3>
+                    <p class="text-center text-slate-500 mb-8 max-w-2xl mx-auto">Based on the exact timeframe you played, here is what would have happened if you adopted different personas.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                        
+                        <!-- Most Money Saved -->
+                        <div class="bg-white rounded-2xl border border-emerald-200 shadow-sm overflow-hidden flex flex-col">
+                            <div class="bg-emerald-50 px-5 py-4 border-b border-emerald-100 flex items-center gap-3">
+                                <i class="fa-solid fa-piggy-bank text-emerald-600 text-xl"></i>
+                                <h4 class="font-bold text-emerald-900">The Ultimate Saver</h4>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col bg-white">
+                                <p class="text-xs text-slate-500 mb-4 font-medium">Always chose the option that resulted in the most money, avoiding spending.</p>
+                                <div class="bg-slate-50 rounded-xl p-4 mb-4 space-y-2 border border-slate-100">
+                                    <div class="flex justify-between items-center"><span class="text-slate-500 text-sm">Balance:</span><span id="alt-saver-bal" class="font-black text-emerald-600 text-lg">$0</span></div>
+                                    <div class="flex justify-between items-center"><span class="text-slate-500 text-sm">Happiness:</span><span id="alt-saver-hap" class="font-bold text-slate-700">0</span></div>
+                                    <div class="flex justify-between items-center"><span class="text-slate-500 text-sm">Preparedness:</span><span id="alt-saver-prep" class="font-bold text-slate-700">0</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Most Balanced -->
+                        <div class="bg-white rounded-2xl border border-blue-200 shadow-md overflow-hidden flex flex-col md:-translate-y-4 ring-4 ring-blue-50 relative">
+                            <div class="absolute top-0 right-0 bg-blue-500 text-white text-[10px] font-bold uppercase tracking-wider py-1 px-3 rounded-bl-lg">Recommended</div>
+                            <div class="bg-blue-600 px-5 py-4 border-b border-blue-700 flex items-center gap-3">
+                                <i class="fa-solid fa-scale-balanced text-white text-xl"></i>
+                                <h4 class="font-bold text-white">The Balanced Master</h4>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col bg-white">
+                                <p class="text-xs text-slate-500 mb-4 font-medium">Prioritized a mix of financial responsibility, personal happiness, and readiness.</p>
+                                <div class="bg-blue-50 rounded-xl p-4 mb-4 space-y-2 border border-blue-100">
+                                    <div class="flex justify-between items-center"><span class="text-slate-500 text-sm">Balance:</span><span id="alt-bal-bal" class="font-black text-blue-700 text-lg">$0</span></div>
+                                    <div class="flex justify-between items-center"><span class="text-slate-500 text-sm">Happiness:</span><span id="alt-bal-hap" class="font-bold text-slate-700">0</span></div>
+                                    <div class="flex justify-between items-center"><span class="text-slate-500 text-sm">Preparedness:</span><span id="alt-bal-prep" class="font-bold text-slate-700">0</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Most Costly -->
+                        <div class="bg-white rounded-2xl border border-rose-200 shadow-sm overflow-hidden flex flex-col">
+                            <div class="bg-rose-50 px-5 py-4 border-b border-rose-100 flex items-center gap-3">
+                                <i class="fa-solid fa-basket-shopping text-rose-500 text-xl"></i>
+                                <h4 class="font-bold text-rose-900">The Big Spender</h4>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col bg-white">
+                                <p class="text-xs text-slate-500 mb-4 font-medium">Always chose the premium, most expensive, or most immediately fun option.</p>
+                                <div class="bg-slate-50 rounded-xl p-4 mb-4 space-y-2 border border-slate-100">
+                                    <div class="flex justify-between items-center"><span class="text-slate-500 text-sm">Balance:</span><span id="alt-spender-bal" class="font-black text-rose-600 text-lg">$0</span></div>
+                                    <div class="flex justify-between items-center"><span class="text-slate-500 text-sm">Happiness:</span><span id="alt-spender-hap" class="font-bold text-slate-700">0</span></div>
+                                    <div class="flex justify-between items-center"><span class="text-slate-500 text-sm">Preparedness:</span><span id="alt-spender-prep" class="font-bold text-slate-700">0</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="text-center">
+                        <button onclick="location.reload()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 px-10 rounded-xl transition duration-300 shadow-lg inline-flex items-center gap-2">
+                            <i class="fa-solid fa-rotate-right"></i> Play Again
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Structure for 12 Months (2 Events per month)
+        // Every choice is tagged with a 'persona' (saver, balanced, spender) for dynamic report generation.
+        // Cost values represent money REMOVED from balance. Income values are added.
+        const monthsData = [
+            {
+                name: "September", theme: "Back to School",
+                events: [
+                    {
+                        title: "Setting Your Income",
+                        desc: "Welcome to Grade 7! You need a way to earn money. Your parents offer a basic allowance, but you can also negotiate chores or take on a part-time job like flyer delivery.",
+                        choices: [
+                            { text: "Base allowance only ($20/mo). Lots of free time.", cost: 0, incChange: 20, hap: 10, prep: -5, persona: "spender", desc: "Base Allowance" },
+                            { text: "Allowance + household chores ($40/mo).", cost: 0, incChange: 40, hap: 0, prep: 10, persona: "balanced", desc: "Allowance + Chores" },
+                            { text: "Part-time job delivering flyers ($60/mo).", cost: 0, incChange: 60, hap: -10, prep: 15, persona: "saver", desc: "Part-Time Job" }
+                        ]
+                    },
+                    {
+                        title: "School Supplies",
+                        desc: "You need supplies for the new year. You have some old binders from last year, but the stores are full of cool new gear.",
+                        choices: [
+                            { text: "Buy the trendy new backpack and premium pens ($50).", cost: 50, hap: 15, prep: 10, persona: "spender", desc: "Premium Supplies" },
+                            { text: "Buy only the basic necessary supplies ($20).", cost: 20, hap: 5, prep: 10, persona: "balanced", desc: "Basic Supplies" },
+                            { text: "Reuse old binders and tape up your old backpack ($0).", cost: 0, hap: -10, prep: 5, persona: "saver", desc: "Reused Supplies" }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "October", theme: "Fall & Festivities",
+                events: [
+                    {
+                        title: "Thanksgiving Contribution",
+                        desc: "Your family is hosting Thanksgiving. They asked if you could contribute a dessert to the big dinner.",
+                        choices: [
+                            { text: "Buy a fancy pie from the bakery ($25).", cost: 25, hap: 10, prep: 0, persona: "spender", desc: "Bought Bakery Pie" },
+                            { text: "Buy ingredients and bake cookies yourself ($10).", cost: 10, hap: 15, prep: 10, persona: "balanced", desc: "Baked Cookies" },
+                            { text: "Offer to just help clean up instead ($0).", cost: 0, hap: -5, prep: 5, persona: "saver", desc: "Cleaned Up Instead" }
+                        ]
+                    },
+                    {
+                        title: "Halloween Costume",
+                        desc: "Your friends are planning a group costume for Halloween, but the pieces you need to buy are expensive.",
+                        choices: [
+                            { text: "Buy the epic premium costume ($45).", cost: 45, hap: 20, prep: 0, persona: "spender", desc: "Premium Costume" },
+                            { text: "DIY a costume using thrift store items ($15).", cost: 15, hap: 10, prep: 5, persona: "balanced", desc: "DIY Costume" },
+                            { text: "Skip dressing up to save money ($0).", cost: 0, hap: -15, prep: 0, persona: "saver", desc: "Skipped Costume" }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "November", theme: "Getting Colder",
+                events: [
+                    {
+                        title: "Winter Gear",
+                        desc: "The temperature has dropped. Your winter coat from last year is too small and you need a new one to walk to school.",
+                        choices: [
+                            { text: "Buy the expensive brand-name jacket ($60).", cost: 60, hap: 15, prep: 15, persona: "spender", desc: "Brand Name Coat" },
+                            { text: "Buy a warm jacket from a thrift shop ($25).", cost: 25, hap: 0, prep: 15, persona: "balanced", desc: "Thrift Shop Coat" },
+                            { text: "Suffer through with layers of old sweaters ($0).", cost: 0, hap: -20, prep: -15, persona: "saver", desc: "Old Sweaters" }
+                        ]
+                    },
+                    {
+                        title: "New Game Release",
+                        desc: "The most anticipated video game of the year just dropped. All your friends are playing it online tonight.",
+                        choices: [
+                            { text: "Buy it immediately at full price ($60).", cost: 60, hap: 20, prep: 0, persona: "spender", desc: "Bought Game Full Price" },
+                            { text: "Split the cost to share an account with a friend ($30).", cost: 30, hap: 15, prep: 0, persona: "balanced", desc: "Shared Game Account" },
+                            { text: "Wait a few months for it to go on sale ($0 for now).", cost: 0, hap: -10, prep: 5, persona: "saver", desc: "Waited for Sale" }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "December", theme: "The Holidays",
+                events: [
+                    {
+                        title: "Holiday Gifting",
+                        desc: "It's time to exchange gifts with your family and best friends. How do you approach your holiday shopping?",
+                        choices: [
+                            { text: "Buy nice items from the mall for everyone ($60).", cost: 60, hap: 20, prep: 0, persona: "spender", desc: "Mall Gifts" },
+                            { text: "Make handmade gifts and bake treats ($20).", cost: 20, hap: 15, prep: 10, persona: "balanced", desc: "Handmade Gifts" },
+                            { text: "Don't give any gifts this year ($0).", cost: 0, hap: -15, prep: -5, persona: "saver", desc: "No Gifts" }
+                        ]
+                    },
+                    {
+                        title: "Winter Break Outing",
+                        desc: "You have two weeks off school! Your friends want to celebrate by going out.",
+                        choices: [
+                            { text: "Go to the indoor amusement park & eat out ($40).", cost: 40, hap: 20, prep: 0, persona: "spender", desc: "Amusement Park" },
+                            { text: "Go to the movies and share popcorn ($15).", cost: 15, hap: 10, prep: 0, persona: "balanced", desc: "Movies" },
+                            { text: "Go sledding at the local hill for free ($0).", cost: 0, hap: 5, prep: 5, persona: "saver", desc: "Free Sledding" }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "January", theme: "Fresh Start",
+                events: [
+                    {
+                        title: "The Phone Bill",
+                        desc: "You finally got a smartphone for the new year! But your parents say you are responsible for paying your share of the monthly bill.",
+                        choices: [
+                            { text: "Pay for the premium plan with unlimited data ($40).", cost: 40, hap: 15, prep: 5, persona: "spender", desc: "Unlimited Data Plan" },
+                            { text: "Pay for the basic plan with limited data ($20).", cost: 20, hap: 0, prep: 10, persona: "balanced", desc: "Basic Data Plan" },
+                            { text: "Emergency only plan (no data away from Wi-Fi) ($5).", cost: 5, hap: -15, prep: 0, persona: "saver", desc: "No Data Plan" }
+                        ]
+                    },
+                    {
+                        title: "Broken Tech",
+                        desc: "Your headphones broke, and you use them every day on the bus.",
+                        choices: [
+                            { text: "Buy the trendy wireless earbuds ($45).", cost: 45, hap: 15, prep: 5, persona: "spender", desc: "Wireless Earbuds" },
+                            { text: "Buy a reliable basic pair with a cord ($15).", cost: 15, hap: 0, prep: 10, persona: "balanced", desc: "Basic Headphones" },
+                            { text: "Tape them up and hope one side still works ($0).", cost: 0, hap: -10, prep: -5, persona: "saver", desc: "Taped Headphones" }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "February", theme: "Mid-Winter Slump",
+                events: [
+                    {
+                        title: "Valentine's Day",
+                        desc: "There's a tradition of giving small gifts or candy to friends at school on Valentine's Day.",
+                        choices: [
+                            { text: "Buy big chocolate boxes for your close group ($30).", cost: 30, hap: 15, prep: 0, persona: "spender", desc: "Big Chocolates" },
+                            { text: "Buy a cheap box of small cards and lollipops ($10).", cost: 10, hap: 10, prep: 5, persona: "balanced", desc: "Cards & Lollipops" },
+                            { text: "Don't participate to save money ($0).", cost: 0, hap: -5, prep: 0, persona: "saver", desc: "Skipped Valentine's" }
+                        ]
+                    },
+                    {
+                        title: "Weekend Boredom",
+                        desc: "It's freezing outside and you are incredibly bored this weekend.",
+                        choices: [
+                            { text: "Go to the indoor trampoline park ($35).", cost: 35, hap: 20, prep: 0, persona: "spender", desc: "Trampoline Park" },
+                            { text: "Go to the community rec center pool ($10).", cost: 10, hap: 10, prep: 5, persona: "balanced", desc: "Rec Center Pool" },
+                            { text: "Stay home and re-read old books ($0).", cost: 0, hap: -5, prep: 0, persona: "saver", desc: "Stayed Home" }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "March", theme: "Spring Break",
+                events: [
+                    {
+                        title: "Spring Break Activity",
+                        desc: "You have a week off for Spring Break. How are you going to spend your free time?",
+                        choices: [
+                            { text: "Go on a day trip to the big waterpark ($50).", cost: 50, hap: 25, prep: 0, persona: "spender", desc: "Waterpark Trip" },
+                            { text: "Visit the local museum and get lunch ($20).", cost: 20, hap: 10, prep: 5, persona: "balanced", desc: "Local Museum" },
+                            { text: "Organize free games at the park ($0).", cost: 0, hap: 5, prep: 10, persona: "saver", desc: "Free Park Games" }
+                        ]
+                    },
+                    {
+                        title: "Spring Wardrobe",
+                        desc: "It's getting warmer, and your t-shirts and shorts from last year are looking a bit worn out.",
+                        choices: [
+                            { text: "Go on a mall run for new brand-name clothes ($60).", cost: 60, hap: 15, prep: 5, persona: "spender", desc: "Mall Shopping" },
+                            { text: "Thrift a few cool vintage items ($20).", cost: 20, hap: 10, prep: 10, persona: "balanced", desc: "Thrift Shopping" },
+                            { text: "Squeeze into your old clothes ($0).", cost: 0, hap: -10, prep: -5, persona: "saver", desc: "Wore Old Clothes" }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "April", theme: "Maintenance",
+                events: [
+                    {
+                        title: "Bike Repair",
+                        desc: "The snow has melted! You pulled your bike out, but the brakes are broken and the tires are flat.",
+                        choices: [
+                            { text: "Take it to the professional bike shop ($45).", cost: 45, hap: 5, prep: 15, persona: "spender", desc: "Pro Bike Repair" },
+                            { text: "Buy parts and watch tutorials to fix it yourself ($15).", cost: 15, hap: 0, prep: 15, persona: "balanced", desc: "DIY Bike Repair" },
+                            { text: "Leave it broken and just walk everywhere ($0).", cost: 0, hap: -10, prep: -15, persona: "saver", desc: "Walked Everywhere" }
+                        ]
+                    },
+                    {
+                        title: "April Showers",
+                        desc: "It's raining heavily this week. You lost your umbrella and keep arriving at school soaked.",
+                        choices: [
+                            { text: "Buy a stylish, heavy-duty umbrella ($25).", cost: 25, hap: 5, prep: 10, persona: "spender", desc: "Heavy-Duty Umbrella" },
+                            { text: "Buy a cheap, compact umbrella from the dollar store ($10).", cost: 10, hap: 0, prep: 10, persona: "balanced", desc: "Cheap Umbrella" },
+                            { text: "Use an old garbage bag as a poncho ($0).", cost: 0, hap: -15, prep: 0, persona: "saver", desc: "Garbage Bag Poncho" }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "May", theme: "End of Year Approaching",
+                events: [
+                    {
+                        title: "Mother's/Father's Day",
+                        desc: "It's time to show appreciation for your parents.",
+                        choices: [
+                            { text: "Buy a nice piece of jewelry or a watch ($40).", cost: 40, hap: 15, prep: 0, persona: "spender", desc: "Expensive Gift" },
+                            { text: "Buy a nice bouquet of flowers or a mug ($15).", cost: 15, hap: 10, prep: 5, persona: "balanced", desc: "Standard Gift" },
+                            { text: "Make a nice handmade card and do the dishes ($0).", cost: 0, hap: 10, prep: 10, persona: "saver", desc: "Handmade Gift & Chores" }
+                        ]
+                    },
+                    {
+                        title: "The School Dance",
+                        desc: "There's a big spring school dance coming up. There's pressure to dress up and go out for food beforehand.",
+                        choices: [
+                            { text: "Go all out: New outfit & dinner out ($50).", cost: 50, hap: 20, prep: 0, persona: "spender", desc: "Went All Out" },
+                            { text: "Buy ticket, wear regular clothes, eat at home ($15).", cost: 15, hap: 10, prep: 0, persona: "balanced", desc: "Standard Dance Experience" },
+                            { text: "Stay home and watch movies ($0).", cost: 0, hap: -10, prep: 0, persona: "saver", desc: "Stayed Home" }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "June", theme: "Summer Kickoff",
+                events: [
+                    {
+                        title: "Year-End School Trip",
+                        desc: "The school is organizing a massive year-end field trip to a science center. It's the highlight of the year.",
+                        choices: [
+                            { text: "Buy the VIP package with unlimited food/extras ($60).", cost: 60, hap: 25, prep: 0, persona: "spender", desc: "VIP Trip" },
+                            { text: "Buy the standard trip ticket ($30).", cost: 30, hap: 15, prep: 0, persona: "balanced", desc: "Standard Trip" },
+                            { text: "Stay behind at school in the library to save money ($0).", cost: 0, hap: -20, prep: 0, persona: "saver", desc: "Missed Trip" }
+                        ]
+                    },
+                    {
+                        title: "Summer Income Plan",
+                        desc: "School is out! With more free time, you can adjust how much you work over the summer.",
+                        choices: [
+                            { text: "Quit your chores/job to completely relax ($0/mo).", cost: 0, incChange: 0, hap: 20, prep: -10, persona: "spender", desc: "Summer Off" },
+                            { text: "Keep a moderate workload for spending money ($40/mo).", cost: 0, incChange: 40, hap: 10, prep: 10, persona: "balanced", desc: "Moderate Work" },
+                            { text: "Take on a full-time summer gig like lawn care ($80/mo).", cost: 0, incChange: 80, hap: -15, prep: 20, persona: "saver", desc: "Heavy Work" }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "July", theme: "Summer Vacation",
+                events: [
+                    {
+                        title: "Summer Camp",
+                        desc: "You have a lot of free time. Your parents suggest a summer activity to keep you busy.",
+                        choices: [
+                            { text: "Sign up for an expensive specialty sports/coding camp ($70).", cost: 70, hap: 15, prep: 20, persona: "spender", desc: "Specialty Camp" },
+                            { text: "Go to the local community center drop-in days ($25).", cost: 25, hap: 10, prep: 10, persona: "balanced", desc: "Community Center" },
+                            { text: "Just hang out at the public park for free ($0).", cost: 0, hap: 5, prep: 0, persona: "saver", desc: "Public Park" }
+                        ]
+                    },
+                    {
+                        title: "Summer Festival",
+                        desc: "The big mid-summer festival is in town with rides, games, and expensive food.",
+                        choices: [
+                            { text: "Buy an unlimited ride wristband and eat fair food ($50).", cost: 50, hap: 25, prep: 0, persona: "spender", desc: "Unlimited Rides & Food" },
+                            { text: "Buy a few tickets for specific rides and share a snack ($20).", cost: 20, hap: 15, prep: 0, persona: "balanced", desc: "Few Rides & Snack" },
+                            { text: "Just walk around and watch the fireworks for free ($0).", cost: 0, hap: 5, prep: 0, persona: "saver", desc: "Watched Fireworks" }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "August", theme: "Wrapping Up",
+                events: [
+                    {
+                        title: "End of Summer Hangout",
+                        desc: "Summer is almost over. You and your friends want one last big hangout before Grade 8 starts.",
+                        choices: [
+                            { text: "Go to an Escape Room and out for dinner after ($50).", cost: 50, hap: 20, prep: 0, persona: "spender", desc: "Escape Room & Dinner" },
+                            { text: "Host a pizza and video game party at your house ($20).", cost: 20, hap: 15, prep: 5, persona: "balanced", desc: "Pizza Party" },
+                            { text: "Go for a bike ride to the beach ($0).", cost: 0, hap: 10, prep: 5, persona: "saver", desc: "Beach Bike Ride" }
+                        ]
+                    },
+                    {
+                        title: "Tech for Grade 8",
+                        desc: "You need a laptop or tablet for Grade 8. Your parents provide a basic one, but you want upgrades.",
+                        choices: [
+                            { text: "Buy a premium case, wireless mouse, and stickers ($40).", cost: 40, hap: 15, prep: 5, persona: "spender", desc: "Premium Accessories" },
+                            { text: "Buy just a protective case to keep it safe ($15).", cost: 15, hap: 5, prep: 15, persona: "balanced", desc: "Basic Case" },
+                            { text: "Use it exactly as it is, no protection ($0).", cost: 0, hap: 0, prep: -10, persona: "saver", desc: "No Protection" }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        let state = {
+            monthIndex: 0,
+            eventIndex: 0,
+            balance: 0,
+            monthlyIncome: 0,
+            happiness: 50,
+            preparedness: 50,
+            
+            // For report generation tracking
+            completedEvents: [], // stores flat list of choice objects chosen
+            
+            // Track dynamic incomes for alternate realities
+            incomes: {
+                actual: 0,
+                saver: 0,
+                balanced: 0,
+                spender: 0
+            }
+        };
+
+        let currentMonthRecap = []; // Stores costs for the month-end screen
+
+        // DOM Elements mapping
+        const els = {
+            balance: document.getElementById('balance-display'),
+            income: document.getElementById('income-display'),
+            hapVal: document.getElementById('happiness-val'),
+            hapBar: document.getElementById('happiness-bar'),
+            prepVal: document.getElementById('preparedness-val'),
+            prepBar: document.getElementById('preparedness-bar'),
+            mobBal: document.getElementById('mobile-balance'),
+            mobInc: document.getElementById('mobile-income'),
+            mobHap: document.getElementById('mobile-hap'),
+            mobPrep: document.getElementById('mobile-prep'),
+            timeline: document.getElementById('timeline-list'),
+            
+            screens: {
+                scenario: document.getElementById('scenario-screen'),
+                monthEnd: document.getElementById('month-end-screen'),
+                report: document.getElementById('report-screen')
+            },
+            
+            scenario: {
+                badge: document.getElementById('month-badge'),
+                tracker: document.getElementById('event-tracker'),
+                theme: document.getElementById('month-name-theme'),
+                title: document.getElementById('scenario-title'),
+                desc: document.getElementById('scenario-description'),
+                choices: document.getElementById('choices-container')
+            },
+
+            summary: {
+                title: document.getElementById('summary-month-text'),
+                recapList: document.getElementById('summary-events-recap'),
+                total: document.getElementById('summary-total'),
+                nextBtn: document.getElementById('next-month-btn')
+            }
+        };
+
+        function initGame() {
+            // Reset state
+            state.monthIndex = 0;
+            state.eventIndex = 0;
+            state.balance = 0;
+            state.monthlyIncome = 0;
+            state.happiness = 50;
+            state.preparedness = 50;
+            state.completedEvents = [];
+            state.incomes = { actual: 0, saver: 0, balanced: 0, spender: 0 };
+            currentMonthRecap = [];
+            
+            els.timeline.innerHTML = '';
+            
+            updateUI();
+            
+            // Start Month 1
+            triggerPayday();
+            showScreen('scenario');
+            loadScenario();
+        }
+
+        function updateUI() {
+            // Stats clamps
+            state.happiness = Math.max(0, Math.min(100, state.happiness));
+            state.preparedness = Math.max(0, Math.min(100, state.preparedness));
+
+            // Texts
+            els.balance.innerText = `$${state.balance}`;
+            els.mobBal.innerText = `$${state.balance}`;
+            els.income.innerText = `$${state.monthlyIncome}/mo`;
+            els.mobInc.innerText = `$${state.monthlyIncome}`;
+            
+            els.hapVal.innerText = `${state.happiness}%`;
+            els.mobHap.innerText = state.happiness;
+            els.prepVal.innerText = `${state.preparedness}%`;
+            els.mobPrep.innerText = state.preparedness;
+
+            // Bars Colors
+            const getBarColor = (val, isHap) => {
+                if(val < 30) return 'bg-rose-500';
+                if(val < 70) return isHap ? 'bg-amber-400' : 'bg-blue-400';
+                return 'bg-emerald-500';
+            };
+
+            els.hapBar.style.width = `${state.happiness}%`;
+            els.hapBar.className = `h-2 rounded-full progress-bar-fill ${getBarColor(state.happiness, true)}`;
+
+            els.prepBar.style.width = `${state.preparedness}%`;
+            els.prepBar.className = `h-2 rounded-full progress-bar-fill ${getBarColor(state.preparedness, false)}`;
+
+            // Debt coloring
+            if(state.balance < 0) {
+                els.balance.classList.replace('text-emerald-400', 'text-rose-400');
+                els.mobBal.classList.replace('text-emerald-400', 'text-rose-400');
+            } else {
+                els.balance.classList.replace('text-rose-400', 'text-emerald-400');
+                els.mobBal.classList.replace('text-rose-400', 'text-emerald-400');
+            }
+        }
+
+        function triggerPayday() {
+            // Only add money if income > 0
+            if (state.monthlyIncome > 0) {
+                state.balance += state.monthlyIncome;
+                
+                // Add timeline entry
+                addToTimeline(`Month ${state.monthIndex + 1} Payday`, `+$${state.monthlyIncome}`, true);
+                
+                // Track for recap
+                currentMonthRecap.push({ text: "Monthly Income", amount: state.monthlyIncome, isPositive: true });
+                
+                updateUI();
+            }
+        }
+
+        function showScreen(screenName) {
+            Object.values(els.screens).forEach(el => el.classList.add('hidden'));
+            els.screens[screenName].classList.remove('hidden');
+            
+            // Re-trigger animations
+            els.screens[screenName].classList.remove('slide-up', 'fade-in');
+            void els.screens[screenName].offsetWidth;
+            els.screens[screenName].classList.add(screenName === 'scenario' ? 'fade-in' : 'slide-up');
+
+            document.getElementById('content-scroll-area').scrollTop = 0;
+        }
+
+        function loadScenario() {
+            const month = monthsData[state.monthIndex];
+            const event = month.events[state.eventIndex];
+            
+            els.scenario.badge.innerText = `Month ${state.monthIndex + 1}`;
+            els.scenario.tracker.innerText = `Decision ${state.eventIndex + 1} of ${month.events.length}`;
+            els.scenario.theme.innerText = `${month.name}: ${month.theme}`;
+            els.scenario.title.innerText = event.title;
+            els.scenario.desc.innerText = event.desc;
+            
+            els.scenario.choices.innerHTML = '';
+            
+            event.choices.forEach((choice, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'choice-btn w-full text-left bg-white border-2 border-slate-100 hover:border-blue-400 hover:bg-blue-50 text-slate-700 font-medium py-4 px-5 rounded-xl transition duration-200 slide-in-right relative overflow-hidden flex items-center justify-between group';
+                btn.style.animationDelay = `${idx * 0.1}s`;
+                
+                // Forecast debt
+                const wouldGoNegative = (state.balance - choice.cost) < 0;
+                let warning = wouldGoNegative && choice.cost > 0 ? `<span class="bg-rose-100 text-rose-600 text-[10px] uppercase font-bold px-2 py-1 rounded ml-2 whitespace-nowrap"><i class="fa-solid fa-triangle-exclamation"></i> Debt Risk</span>` : '';
+
+                // Cost display
+                let costBadge = choice.cost > 0 ? `<span class="text-rose-500 font-bold ml-2">-$${choice.cost}</span>` : '';
+                if(choice.incChange !== undefined) {
+                    costBadge = `<span class="text-emerald-500 font-bold ml-2">Sets Income to $${choice.incChange}/mo</span>`;
+                }
+
+                btn.innerHTML = `
+                    <span class="flex-1 pr-4 text-sm sm:text-base">${choice.text}</span>
+                    <div class="flex items-center">
+                        ${costBadge}
+                        ${warning}
+                        <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors ml-3 border border-slate-200 group-hover:border-blue-300">
+                            <i class="fa-solid fa-arrow-right text-slate-400 group-hover:text-blue-600"></i>
+                        </div>
+                    </div>
+                `;
+                
+                btn.onclick = () => makeChoice(choice, event);
+                els.scenario.choices.appendChild(btn);
+            });
+        }
+
+        function makeChoice(choice, event) {
+            // Apply Income Change if applicable
+            if (choice.incChange !== undefined) {
+                state.monthlyIncome = choice.incChange;
+                // If it's the very first event, immediately apply it to balance so they aren't broke in month 1
+                if (state.monthIndex === 0 && state.eventIndex === 0) {
+                     state.balance += state.monthlyIncome;
+                     addToTimeline(`Month 1 Payday`, `+$${state.monthlyIncome}`, true);
+                     currentMonthRecap.push({ text: "Monthly Income", amount: state.monthlyIncome, isPositive: true });
+                }
+            }
+
+            // Apply impacts
+            state.balance -= choice.cost;
+            state.happiness += choice.hap;
+            state.preparedness += choice.prep;
+            
+            // Record choice for report
+            state.completedEvents.push({
+                monthIndex: state.monthIndex,
+                eventIndex: state.eventIndex,
+                choice: choice
+            });
+
+            // Update trackers
+            updateUI();
+            
+            // Add to timelines
+            if(choice.cost > 0) {
+                addToTimeline(event.title, `-$${choice.cost}`, false);
+                currentMonthRecap.push({ text: event.title, amount: choice.cost, isPositive: false });
+            } else if (choice.cost === 0 && choice.incChange === undefined) {
+                 addToTimeline(event.title, `$0`, null);
+                 currentMonthRecap.push({ text: event.title, amount: 0, isPositive: null });
+            }
+
+            // Advance Game state
+            state.eventIndex++;
+            const month = monthsData[state.monthIndex];
+            
+            if (state.eventIndex >= month.events.length) {
+                // Month is over
+                prepareMonthEnd();
+                showScreen('monthEnd');
+            } else {
+                // Next event in same month
+                loadScenario();
+            }
+        }
+
+        function addToTimeline(title, amountStr, isPositive) {
+            const li = document.createElement('li');
+            li.className = 'relative pl-6 slide-in-right';
+            
+            let dotColor = 'bg-slate-400';
+            let textColor = 'text-slate-400';
+            if(isPositive === true) { dotColor = 'bg-emerald-400'; textColor = 'text-emerald-400'; }
+            if(isPositive === false) { dotColor = 'bg-rose-400'; textColor = 'text-rose-400'; }
+
+            li.innerHTML = `
+                <div class="absolute left-[-5px] top-1.5 w-3 h-3 rounded-full ${dotColor} border-2 border-slate-900 z-10"></div>
+                <div class="flex justify-between items-center bg-slate-800/30 rounded-lg p-2.5 border border-slate-700/50">
+                    <span class="text-xs text-slate-300 font-medium truncate pr-2">${title}</span>
+                    <span class="text-xs font-bold ${textColor} whitespace-nowrap">${amountStr}</span>
+                </div>
+            `;
+            els.timeline.appendChild(li);
+            els.timeline.parentElement.scrollTop = els.timeline.parentElement.scrollHeight;
+        }
+
+        function prepareMonthEnd() {
+            const month = monthsData[state.monthIndex];
+            els.summary.title.innerText = `You completed ${month.name}.`;
+            
+            els.summary.recapList.innerHTML = '';
+            
+            currentMonthRecap.forEach(item => {
+                let colorClass = 'text-slate-500';
+                let sign = '';
+                if(item.isPositive === true) { colorClass = 'text-emerald-500'; sign = '+'; }
+                if(item.isPositive === false) { colorClass = 'text-rose-500'; sign = '-'; }
+
+                els.summary.recapList.innerHTML += `
+                    <div class="flex justify-between items-center text-sm py-1 border-b border-slate-50 last:border-0">
+                        <span class="text-slate-600">${item.text}</span>
+                        <span class="font-bold ${colorClass}">${sign}$${item.amount}</span>
+                    </div>
+                `;
+            });
+            
+            els.summary.total.innerText = `$${state.balance}`;
+            if(state.balance < 0) els.summary.total.className = "text-2xl font-black text-rose-600";
+            else els.summary.total.className = "text-2xl font-black text-emerald-600";
+
+            if (state.monthIndex === 11) {
+                els.summary.nextBtn.style.display = 'none'; // Hide continue on last month
+            } else {
+                els.summary.nextBtn.style.display = 'flex';
+                els.summary.nextBtn.innerHTML = `Start ${monthsData[state.monthIndex + 1].name} <i class="fa-solid fa-arrow-right"></i>`;
+            }
+        }
+
+        function startNextMonth() {
+            state.monthIndex++;
+            state.eventIndex = 0;
+            currentMonthRecap = [];
+            
+            triggerPayday();
+            showScreen('scenario');
+            loadScenario();
+        }
+
+        function endSimulation() {
+            // Set User Stats
+            document.getElementById('report-user-balance').innerText = `$${state.balance}`;
+            if(state.balance < 0) document.getElementById('report-user-balance').classList.replace('text-emerald-400', 'text-rose-400');
+            document.getElementById('report-user-hap').innerText = state.happiness;
+            document.getElementById('report-user-prep').innerText = state.preparedness;
+
+            let monthsPlayed = state.monthIndex + (state.eventIndex > 0 ? 1 : 0);
+            document.getElementById('report-subtitle').innerText = `You completed choices in ${monthsPlayed} month(s). Let's see what they mean.`;
+
+            // Calculate Alternatives dynamically based on exactly what was played
+            let altStats = {
+                saver: { bal: 0, hap: 50, prep: 50, income: 0 },
+                balanced: { bal: 0, hap: 50, prep: 50, income: 0 },
+                spender: { bal: 0, hap: 50, prep: 50, income: 0 }
+            };
+
+            // Replay the exact structure the user played, but picking persona choices
+            let currentAltMonth = 0;
+            
+            for (let i = 0; i < state.completedEvents.length; i++) {
+                const eventRecord = state.completedEvents[i];
+                const mIdx = eventRecord.monthIndex;
+                const eIdx = eventRecord.eventIndex;
+                const eventData = monthsData[mIdx].events[eIdx];
+
+                // Did a new month start in our replay loop? (Payday trigger)
+                if (mIdx > currentAltMonth) {
+                    altStats.saver.bal += altStats.saver.income;
+                    altStats.balanced.bal += altStats.balanced.income;
+                    altStats.spender.bal += altStats.spender.income;
+                    currentAltMonth = mIdx;
+                }
+
+                // Process Event for each persona
+                ['saver', 'balanced', 'spender'].forEach(personaStr => {
+                    // Find the choice that matches this persona
+                    let pChoice = eventData.choices.find(c => c.persona === personaStr) || eventData.choices[0]; // fallback
+                    
+                    if (pChoice.incChange !== undefined) {
+                        altStats[personaStr].income = pChoice.incChange;
+                        // First event income immediate application
+                        if (mIdx === 0 && eIdx === 0) {
+                            altStats[personaStr].bal += altStats[personaStr].income;
+                        }
+                    }
+                    
+                    altStats[personaStr].bal -= pChoice.cost;
+                    altStats[personaStr].hap = Math.max(0, Math.min(100, altStats[personaStr].hap + pChoice.hap));
+                    altStats[personaStr].prep = Math.max(0, Math.min(100, altStats[personaStr].prep + pChoice.prep));
+                });
+            }
+
+            // Populate Report UI
+            const populateAlt = (prefix, data) => {
+                document.getElementById(`alt-${prefix}-bal`).innerText = `$${data.bal}`;
+                if(data.bal < 0) document.getElementById(`alt-${prefix}-bal`).classList.replace('text-emerald-600', 'text-rose-600');
+                if(data.bal < 0 && prefix === 'spender') document.getElementById(`alt-${prefix}-bal`).classList.replace('text-rose-600', 'text-rose-700'); // Keep red if spender
+                if(data.bal < 0 && prefix === 'bal') document.getElementById(`alt-${prefix}-bal`).classList.replace('text-blue-700', 'text-rose-600');
+
+                document.getElementById(`alt-${prefix}-hap`).innerText = data.hap;
+                document.getElementById(`alt-${prefix}-prep`).innerText = data.prep;
+            };
+
+            populateAlt('saver', altStats.saver);
+            populateAlt('bal', altStats.balanced);
+            populateAlt('spender', altStats.spender);
+
+            // Generate Reflection Text
+            let reflectionStr = "";
+            if (state.balance < 0) {
+                reflectionStr = `<strong>You ended up in debt!</strong> Your desire for premium items, social inclusion, or immediate fun outpaced your income. This is a very common trap. It suggests you might value immediate gratification over long-term security. In the real world, distinguishing between 'wants' and 'needs' is critical.`;
+            } else if (state.happiness >= 75 && state.balance < 30) {
+                reflectionStr = `<strong>You lived in the moment!</strong> You finished with high happiness, prioritizing fun and experiences. While enjoying life is important, your low bank balance suggests you might be vulnerable if a major emergency expense popped up. Try to find cheaper ways to have fun!`;
+            } else if (state.balance >= altStats.saver.bal - 20 && state.happiness < 40) {
+                reflectionStr = `<strong>You are the ultimate saver!</strong> You have a fantastic bank balance, but your happiness took a hit. This suggests you value financial security above all else, sometimes missing out on social events. Remember, money is a tool meant to help you enjoy life safely, not just to hoard.`;
+            } else if (state.preparedness < 40) {
+                reflectionStr = `<strong>You neglected preparation.</strong> You made choices that saved money or boosted short-term fun, but left you unprepared (like skipping repairs or buying cheap gear). In the real world, a lack of preparation often leads to much bigger financial emergencies later on.`;
+            } else {
+                reflectionStr = `<strong>You struck a great balance!</strong> You managed to keep a healthy bank account while keeping your happiness and preparedness up. This shows mature decision-making, understanding that you need to save for the future while still allowing yourself to enjoy the present.`;
+            }
+            document.getElementById('report-values-reflection').innerHTML = reflectionStr;
+
+            showScreen('report');
+        }
+
+        // Start game on load
+        window.onload = initGame;
+    </script>
+</body>
+</html>
