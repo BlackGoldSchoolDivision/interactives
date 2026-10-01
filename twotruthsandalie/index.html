@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2 Truths and a Lie - Educator Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Tailwind gray-100 */
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Custom scrollbar for the prompt list */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        
+        /* Game button styles */
+        .statement-btn {
+            transition: all 0.2s;
+        }
+        .statement-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .statement-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+        .statement-btn.correct {
+            background-color: #10b981; /* green-500 */
+            color: white;
+            border-color: #059669; /* green-600 */
+        }
+        .statement-btn.incorrect {
+            background-color: #ef4444; /* red-500 */
+            color: white;
+            border-color: #dc2626; /* red-600 */
+        }
+        .statement-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body class="text-gray-800 min-h-screen flex flex-col">
+
+    <header class="bg-indigo-600 text-white p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">2 Truths & 1 Lie <span class="text-indigo-200 text-sm font-normal">Educator Tool</span></h1>
+            <nav>
+                <button id="nav-setup" class="px-4 py-2 bg-indigo-700 hover:bg-indigo-800 rounded-md font-semibold transition mr-2">Teacher Setup</button>
+                <button id="nav-game" class="px-4 py-2 bg-indigo-500 hover:bg-indigo-400 rounded-md font-semibold transition">Play Game</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 flex-grow flex flex-col items-center justify-start mt-8">
+
+        <!-- VIEW: TEACHER SETUP -->
+        <section id="view-setup" class="w-full max-w-4xl bg-white rounded-xl shadow-lg p-6 fade-in block">
+            <div class="border-b pb-4 mb-6 flex justify-between items-end">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800">Content Creator</h2>
+                    <p class="text-gray-500 mt-1">Create up to 20 custom prompts for your students.</p>
+                </div>
+                <div class="text-sm font-semibold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">
+                    Prompts: <span id="prompt-count">0</span> / 20
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <!-- Left Column: Form -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 border-b pb-2">Add New Prompt</h3>
+                    <form id="prompt-form" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Topic / Subject Context (Optional)</label>
+                            <input type="text" id="input-topic" class="w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" placeholder="e.g., The Cell Cycle, World War II">
+                        </div>
+
+                        <div class="p-4 bg-green-50 rounded-lg border border-green-200">
+                            <label class="block text-sm font-bold text-green-800 mb-1">Truth 1</label>
+                            <textarea id="input-truth1" required rows="2" class="w-full p-2 border border-green-300 rounded-md focus:ring-green-500 focus:border-green-500" placeholder="Enter a true statement..."></textarea>
+                        </div>
+
+                        <div class="p-4 bg-green-50 rounded-lg border border-green-200">
+                            <label class="block text-sm font-bold text-green-800 mb-1">Truth 2</label>
+                            <textarea id="input-truth2" required rows="2" class="w-full p-2 border border-green-300 rounded-md focus:ring-green-500 focus:border-green-500" placeholder="Enter another true statement..."></textarea>
+                        </div>
+
+                        <div class="p-4 bg-red-50 rounded-lg border border-red-200">
+                            <label class="block text-sm font-bold text-red-800 mb-1">The Lie</label>
+                            <textarea id="input-lie" required rows="2" class="w-full p-2 border border-red-300 rounded-md focus:ring-red-500 focus:border-red-500" placeholder="Enter the false statement..."></textarea>
+                        </div>
+
+                        <div class="p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+                            <label class="block text-sm font-bold text-yellow-800 mb-1">Discussion Prompt (If they guess wrong)</label>
+                            <p class="text-xs text-yellow-700 mb-2">Encourage critical thinking. What misconception led them here?</p>
+                            <textarea id="input-discussion" required rows="2" class="w-full p-2 border border-yellow-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500" placeholder="e.g., Consider the role of mitochondria. Why might this seem true, but isn't?"></textarea>
+                        </div>
+
+                        <button type="submit" id="btn-add-prompt" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-md transition duration-200">
+                            Add Prompt to Game
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Right Column: List and Actions -->
+                <div class="flex flex-col h-full">
+                    <div class="flex justify-between items-center mb-4 border-b pb-2">
+                        <h3 class="text-xl font-semibold">Current Prompts</h3>
+                        <button id="btn-clear-all" class="text-sm text-red-600 hover:text-red-800 font-medium">Clear All</button>
+                    </div>
+                    
+                    <!-- Scrollable list of added prompts -->
+                    <div id="prompts-list" class="flex-grow overflow-y-auto custom-scrollbar pr-2 space-y-3 min-h-[300px] max-h-[600px] bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <p class="text-gray-400 text-center italic mt-10" id="empty-state">No prompts added yet. Use the form to create your game.</p>
+                        <!-- Prompt items will be injected here via JS -->
+                    </div>
+
+                    <!-- Data Management -->
+                    <div class="mt-6 pt-4 border-t border-gray-200">
+                        <div class="flex justify-between items-center mb-2">
+                            <h4 class="text-sm font-semibold text-gray-700">Save / Load Game Data</h4>
+                            <button id="btn-tutorial-open" class="text-xs text-indigo-600 hover:text-indigo-800 flex items-center font-medium transition-colors" type="button">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Help with saving
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-500 mb-3">Save your configuration to a file to share with students or load later.</p>
+                        <div class="flex space-x-2">
+                            <button id="btn-export" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-md transition duration-200 text-sm">
+                                Export Data (.json)
+                            </button>
+                            <label class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-md transition duration-200 text-sm text-center cursor-pointer">
+                                Import Data
+                                <input type="file" id="file-import" accept=".json" class="hidden">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW: STUDENT GAME -->
+        <section id="view-game" class="w-full max-w-3xl hidden fade-in">
+            
+            <!-- Game Ready State -->
+            <div id="game-start-screen" class="bg-white rounded-xl shadow-lg p-10 text-center">
+                <h2 class="text-4xl font-bold text-indigo-700 mb-4">2 Truths & 1 Lie</h2>
+                <p class="text-xl text-gray-600 mb-8">Can you spot the falsehood among the facts?</p>
+                <p id="game-status-msg" class="mb-8 text-gray-500"></p>
+                <button id="btn-start-game" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-8 rounded-full text-xl transition duration-200 shadow-md transform hover:scale-105 hidden">
+                    Start Game
+                </button>
+            </div>
+
+            <!-- Active Game State -->
+            <div id="game-active-screen" class="hidden">
+                <!-- Progress Bar -->
+                <div class="bg-white p-4 rounded-xl shadow-sm mb-6 flex justify-between items-center">
+                    <span class="font-bold text-gray-700" id="game-progress-text">Prompt 1 of X</span>
+                    <div class="w-1/2 bg-gray-200 rounded-full h-3">
+                        <div id="game-progress-bar" class="bg-indigo-600 h-3 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                    <span class="font-bold text-indigo-600">Score: <span id="game-score">0</span></span>
+                </div>
+
+                <!-- Prompt Card -->
+                <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                    <div id="game-topic-container" class="mb-6 text-center">
+                        <span id="game-topic" class="inline-block bg-indigo-100 text-indigo-800 text-sm font-semibold px-4 py-1 rounded-full uppercase tracking-wide">Topic</span>
+                    </div>
+                    
+                    <h3 class="text-2xl font-semibold text-center mb-8 text-gray-800">Which statement is the <span class="text-red-600 font-bold underline decoration-red-400 decoration-4">LIE</span>?</h3>
+
+                    <!-- Statements Container -->
+                    <div id="statements-container" class="space-y-4">
+                        <!-- Buttons injected via JS to randomize order -->
+                    </div>
+
+                    <!-- Feedback Area (Hidden initially) -->
+                    <div id="feedback-area" class="mt-8 hidden border-t pt-6">
+                        <div id="feedback-result" class="text-2xl font-bold text-center mb-4"></div>
+                        
+                        <!-- Discussion Prompt (Shows on wrong answer) -->
+                        <div id="discussion-container" class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 hidden">
+                            <h4 class="font-bold text-yellow-800 flex items-center mb-2">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Let's Discuss...
+                            </h4>
+                            <p id="feedback-discussion" class="text-yellow-700 text-lg"></p>
+                        </div>
+
+                        <!-- Reveal the Lie -->
+                        <div id="reveal-container" class="bg-blue-50 border border-blue-100 rounded-lg p-4 mb-6 text-center">
+                            <p class="text-sm text-blue-600 font-semibold mb-1">The actual lie was:</p>
+                            <p id="feedback-actual-lie" class="text-lg text-gray-800"></p>
+                        </div>
+
+                        <div class="text-center">
+                            <button id="btn-next-prompt" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-md transition duration-200">
+                                Next Prompt
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Over Screen -->
+            <div id="game-over-screen" class="bg-white rounded-xl shadow-lg p-10 text-center hidden fade-in">
+                <h2 class="text-4xl font-bold text-indigo-700 mb-2">Game Over!</h2>
+                <p class="text-2xl text-gray-700 mb-6">You scored <span id="final-score" class="font-bold text-indigo-600"></span> out of <span id="total-questions"></span>.</p>
+                
+                <div class="w-full bg-gray-200 rounded-full h-4 mb-8 max-w-md mx-auto">
+                    <div id="final-score-bar" class="bg-green-500 h-4 rounded-full" style="width: 0%"></div>
+                </div>
+
+                <p id="final-message" class="text-xl mb-8 italic text-gray-600"></p>
+                
+                <button id="btn-restart-game" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-md transition duration-200">
+                    Play Again
+                </button>
+            </div>
+        </section>
+
+        <div id="tutorial-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden flex items-center justify-center p-4 fade-in">
+            <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 max-h-[90vh] overflow-y-auto">
+                <div class="flex justify-between items-center border-b pb-3 mb-4">
+                    <h3 class="text-2xl font-bold text-indigo-700">How to Save & Load Your Game</h3>
+                    <button id="btn-tutorial-close" class="text-gray-400 hover:text-gray-600 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                
+                <div class="space-y-4 text-gray-700">
+                    <p>This tool runs entirely in your web browser. This is great for privacy, but it means there is no central database to automatically save your prompts.</p>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <h4 class="font-bold text-gray-900 mb-2 flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                            Saving (Exporting Data)
+                        </h4>
+                        <p class="text-sm mb-2">When you finish creating prompts, click <strong>"Export Data (.json)"</strong>. Think of a .json file just like a .docx (Word) or .pptx (PowerPoint) file—it's simply a save file for your game data.</p>
+                        <ul class="list-disc pl-5 text-sm space-y-1">
+                            <li>It will download to your computer's <strong>Downloads</strong> folder.</li>
+                            <li>You can rename this file (e.g., <code class="bg-gray-200 px-1 rounded text-xs">biology-quiz.json</code>) to keep it organized.</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <h4 class="font-bold text-gray-900 mb-2 flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                            Loading (Importing Data)
+                        </h4>
+                        <p class="text-sm mb-2">To play the game later, or to edit your prompts, open this website again and click <strong>"Import Data"</strong>.</p>
+                        <ul class="list-disc pl-5 text-sm space-y-1">
+                            <li>Select the <code class="bg-gray-200 px-1 rounded text-xs">.json</code> file you previously downloaded.</li>
+                            <li>Your prompts will instantly appear in the list, ready to play or edit!</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                        <h4 class="font-bold text-blue-900 mb-1">Sharing with colleagues?</h4>
+                        <p class="text-sm text-blue-800">You can email your saved <code class="bg-blue-100 px-1 rounded text-xs">.json</code> file to other teachers. They can open this site, click "Import Data", select the file, and use your exact quiz!</p>
+                    </div>
+                </div>
+
+                <div class="mt-6 text-center">
+                    <button id="btn-tutorial-got-it" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-md transition duration-200">
+                        Got it, thanks!
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // --- State Management ---
+        const MAX_PROMPTS = 20;
+        let promptsData = []; // Array of objects: { topic, truth1, truth2, lie, discussion, id }
+        let currentPromptIndex = 0;
+        let score = 0;
+        let isSetupView = true;
+
+        // --- DOM Elements ---
+        const views = {
+            setup: document.getElementById('view-setup'),
+            game: document.getElementById('view-game')
+        };
+        const navBtns = {
+            setup: document.getElementById('nav-setup'),
+            game: document.getElementById('nav-game')
+        };
+
+        // Setup Form Elements
+        const form = document.getElementById('prompt-form');
+        const inputTopic = document.getElementById('input-topic');
+        const inputTruth1 = document.getElementById('input-truth1');
+        const inputTruth2 = document.getElementById('input-truth2');
+        const inputLie = document.getElementById('input-lie');
+        const inputDiscussion = document.getElementById('input-discussion');
+        const promptsList = document.getElementById('prompts-list');
+        const emptyState = document.getElementById('empty-state');
+        const promptCountDisplay = document.getElementById('prompt-count');
+        const btnClearAll = document.getElementById('btn-clear-all');
+        const btnExport = document.getElementById('btn-export');
+        const fileImport = document.getElementById('file-import');
+        const btnAddPrompt = document.getElementById('btn-add-prompt');
+
+        // Tutorial Elements
+        const tutorialModal = document.getElementById('tutorial-modal');
+        const btnTutorialOpen = document.getElementById('btn-tutorial-open');
+        const btnTutorialClose = document.getElementById('btn-tutorial-close');
+        const btnTutorialGotIt = document.getElementById('btn-tutorial-got-it');
+
+        // Game Elements
+        const screens = {
+            start: document.getElementById('game-start-screen'),
+            active: document.getElementById('game-active-screen'),
+            over: document.getElementById('game-over-screen')
+        };
+        const btnStartGame = document.getElementById('btn-start-game');
+        const gameStatusMsg = document.getElementById('game-status-msg');
+        
+        // Active Game Elements
+        const gameProgressText = document.getElementById('game-progress-text');
+        const gameProgressBar = document.getElementById('game-progress-bar');
+        const gameScoreDisplay = document.getElementById('game-score');
+        const gameTopicContainer = document.getElementById('game-topic-container');
+        const gameTopic = document.getElementById('game-topic');
+        const statementsContainer = document.getElementById('statements-container');
+        
+        // Feedback Elements
+        const feedbackArea = document.getElementById('feedback-area');
+        const feedbackResult = document.getElementById('feedback-result');
+        const discussionContainer = document.getElementById('discussion-container');
+        const feedbackDiscussion = document.getElementById('feedback-discussion');
+        const feedbackActualLie = document.getElementById('feedback-actual-lie');
+        const btnNextPrompt = document.getElementById('btn-next-prompt');
+
+        // Game Over Elements
+        const finalScore = document.getElementById('final-score');
+        const totalQuestions = document.getElementById('total-questions');
+        const finalScoreBar = document.getElementById('final-score-bar');
+        const finalMessage = document.getElementById('final-message');
+        const btnRestartGame = document.getElementById('btn-restart-game');
+
+
+        // --- Navigation Logic ---
+        function switchView(viewName) {
+            if (viewName === 'setup') {
+                views.setup.classList.remove('hidden');
+                views.game.classList.add('hidden');
+                navBtns.setup.classList.replace('bg-indigo-500', 'bg-indigo-700');
+                navBtns.game.classList.replace('bg-indigo-700', 'bg-indigo-500');
+                isSetupView = true;
+            } else {
+                views.setup.classList.add('hidden');
+                views.game.classList.remove('hidden');
+                navBtns.setup.classList.replace('bg-indigo-700', 'bg-indigo-500');
+                navBtns.game.classList.replace('bg-indigo-500', 'bg-indigo-700');
+                isSetupView = false;
+                initGameStartScreen();
+            }
+        }
+
+        navBtns.setup.addEventListener('click', () => switchView('setup'));
+        navBtns.game.addEventListener('click', () => switchView('game'));
+
+
+        // --- STREAMING_CHUNK:Teacher Setup Logic ---
+        // Helper to generate unique IDs
+        const generateId = () => Math.random().toString(36).substr(2, 9);
+
+        function updateSetupUI() {
+            promptCountDisplay.textContent = promptsData.length;
+            
+            if (promptsData.length === 0) {
+                emptyState.style.display = 'block';
+                promptsList.innerHTML = '';
+                promptsList.appendChild(emptyState);
+                btnStartGame.classList.add('hidden');
+            } else {
+                emptyState.style.display = 'none';
+                renderPromptsList();
+            }
+
+            // Disable form if limit reached
+            if (promptsData.length >= MAX_PROMPTS) {
+                btnAddPrompt.disabled = true;
+                btnAddPrompt.textContent = "Maximum Prompts Reached (20)";
+                btnAddPrompt.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                btnAddPrompt.disabled = false;
+                btnAddPrompt.textContent = "Add Prompt to Game";
+                btnAddPrompt.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        function renderPromptsList() {
+            // Keep empty state element safe
+            promptsList.innerHTML = '';
+            
+            promptsData.forEach((prompt, index) => {
+                const item = document.createElement('div');
+                item.className = 'bg-white p-4 rounded-md border border-gray-200 shadow-sm relative group fade-in';
+                
+                let topicHtml = prompt.topic ? `<span class="inline-block bg-indigo-50 text-indigo-700 text-xs font-semibold px-2 py-1 rounded mb-2">${prompt.topic}</span>` : '';
+                
+                item.innerHTML = `
+                    <div class="pr-8">
+                        ${topicHtml}
+                        <div class="text-sm text-gray-800 mb-1"><span class="font-semibold text-green-600">T:</span> ${prompt.truth1}</div>
+                        <div class="text-sm text-gray-800 mb-1"><span class="font-semibold text-green-600">T:</span> ${prompt.truth2}</div>
+                        <div class="text-sm text-gray-800"><span class="font-semibold text-red-600">L:</span> ${prompt.lie}</div>
+                    </div>
+                    <button class="delete-btn absolute top-3 right-3 text-gray-400 hover:text-red-500 p-1 bg-white rounded-full transition-colors" data-id="${prompt.id}" title="Remove Prompt">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                    </button>
+                `;
+                promptsList.appendChild(item);
+            });
+
+            // Attach delete listeners
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const idToRemove = this.getAttribute('data-id');
+                    promptsData = promptsData.filter(p => p.id !== idToRemove);
+                    updateSetupUI();
+                });
+            });
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (promptsData.length >= MAX_PROMPTS) return;
+
+            const newPrompt = {
+                id: generateId(),
+                topic: inputTopic.value.trim(),
+                truth1: inputTruth1.value.trim(),
+                truth2: inputTruth2.value.trim(),
+                lie: inputLie.value.trim(),
+                discussion: inputDiscussion.value.trim()
+            };
+
+            promptsData.push(newPrompt);
+            updateSetupUI();
+
+            // Clear form (leave topic in case they are creating a batch)
+            inputTruth1.value = '';
+            inputTruth2.value = '';
+            inputLie.value = '';
+            inputDiscussion.value = '';
+            inputTruth1.focus();
+
+            // Scroll list to bottom
+            setTimeout(() => {
+                promptsList.scrollTop = promptsList.scrollHeight;
+            }, 100);
+        });
+
+        btnClearAll.addEventListener('click', () => {
+            if (confirm("Are you sure you want to delete all prompts? This cannot be undone.")) {
+                promptsData = [];
+                updateSetupUI();
+            }
+        });
+
+        // --- STREAMING_CHUNK:Export and Import Logic ---
+        btnExport.addEventListener('click', () => {
+            if (promptsData.length === 0) {
+                alert("No data to export. Create some prompts first.");
+                return;
+            }
+            const dataStr = JSON.stringify(promptsData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `2truths1lie_game_data_${new Date().toISOString().slice(0,10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+
+        fileImport.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    if (Array.isArray(importedData)) {
+                        // Basic validation
+                        const isValid = importedData.every(item => item.truth1 && item.truth2 && item.lie && item.discussion);
+                        if (isValid) {
+                            // Assign new IDs to avoid conflicts if appending, but here we overwrite
+                            promptsData = importedData.slice(0, MAX_PROMPTS).map(item => ({...item, id: generateId()}));
+                            updateSetupUI();
+                            alert("Game data imported successfully!");
+                        } else {
+                            alert("Invalid file format. Ensure it's a file exported from this tool.");
+                        }
+                    }
+                } catch (error) {
+                    alert("Error reading file. Make sure it is a valid JSON file.");
+                }
+            };
+            reader.readAsText(file);
+            // Reset input so the same file can be selected again if needed
+            e.target.value = '';
+        });
+
+        // --- STREAMING_CHUNK:Tutorial Modal Logic ---
+        function openTutorial() {
+            tutorialModal.classList.remove('hidden');
+        }
+
+        function closeTutorial() {
+            tutorialModal.classList.add('hidden');
+        }
+
+        btnTutorialOpen.addEventListener('click', openTutorial);
+        btnTutorialClose.addEventListener('click', closeTutorial);
+        btnTutorialGotIt.addEventListener('click', closeTutorial);
+        
+        // Close modal if clicking outside the white box
+        tutorialModal.addEventListener('click', (e) => {
+            if (e.target === tutorialModal) {
+                closeTutorial();
+            }
+        });
+
+
+        // --- STREAMING_CHUNK:Game Engine Logic ---
+        
+        // Fisher-Yates Shuffle
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function initGameStartScreen() {
+            screens.active.classList.add('hidden');
+            screens.over.classList.add('hidden');
+            screens.start.classList.remove('hidden');
+
+            if (promptsData.length === 0) {
+                gameStatusMsg.textContent = "No prompts have been set up yet. Please go to Teacher Setup.";
+                btnStartGame.classList.add('hidden');
+            } else {
+                gameStatusMsg.textContent = `Ready to play! ${promptsData.length} prompts loaded.`;
+                btnStartGame.classList.remove('hidden');
+            }
+        }
+
+        btnStartGame.addEventListener('click', startGame);
+        btnRestartGame.addEventListener('click', startGame);
+
+        function startGame() {
+            score = 0;
+            currentPromptIndex = 0;
+            
+            // Optionally shuffle the order of prompts themselves
+            // promptsData = shuffleArray([...promptsData]); 
+            
+            screens.start.classList.add('hidden');
+            screens.over.classList.add('hidden');
+            screens.active.classList.remove('hidden');
+            
+            loadPrompt();
+        }
+
+        function loadPrompt() {
+            // Reset feedback area
+            feedbackArea.classList.add('hidden');
+            statementsContainer.innerHTML = '';
+            
+            const currentPrompt = promptsData[currentPromptIndex];
+            
+            // Update Progress Header
+            gameProgressText.textContent = `Prompt ${currentPromptIndex + 1} of ${promptsData.length}`;
+            gameProgressBar.style.width = `${((currentPromptIndex) / promptsData.length) * 100}%`;
+            gameScoreDisplay.textContent = score;
+
+            // Update Topic
+            if (currentPrompt.topic) {
+                gameTopicContainer.classList.remove('hidden');
+                gameTopic.textContent = currentPrompt.topic;
+            } else {
+                gameTopicContainer.classList.add('hidden');
+            }
+
+            // Prepare statements array
+            const statements = [
+                { text: currentPrompt.truth1, isLie: false, id: 't1' },
+                { text: currentPrompt.truth2, isLie: false, id: 't2' },
+                { text: currentPrompt.lie, isLie: true, id: 'l1' }
+            ];
+
+            // Shuffle statements
+            shuffleArray(statements);
+
+            // Render buttons
+            statements.forEach((stmt) => {
+                const btn = document.createElement('button');
+                btn.className = 'statement-btn w-full text-left p-4 rounded-lg border-2 border-gray-200 bg-gray-50 hover:bg-white text-lg text-gray-800 font-medium break-words';
+                btn.textContent = stmt.text;
+                btn.dataset.isLie = stmt.isLie;
+                
+                btn.addEventListener('click', handleAnswerSelect);
+                statementsContainer.appendChild(btn);
+            });
+        }
+
+        // --- STREAMING_CHUNK:Handling Answers and Discussion ---
+        function handleAnswerSelect(e) {
+            const selectedBtn = e.target;
+            const isLie = selectedBtn.dataset.isLie === 'true';
+            const allBtns = statementsContainer.querySelectorAll('.statement-btn');
+            
+            // Disable all buttons immediately
+            allBtns.forEach(btn => btn.disabled = true);
+
+            const currentPrompt = promptsData[currentPromptIndex];
+
+            // Setup Feedback UI
+            feedbackArea.classList.remove('hidden');
+            discussionContainer.classList.add('hidden');
+            
+            // Highlight actual lie
+            let actualLieBtn;
+            allBtns.forEach(btn => {
+                if (btn.dataset.isLie === 'true') {
+                    actualLieBtn = btn;
+                }
+            });
+
+            if (isLie) {
+                // Correct Answer
+                selectedBtn.classList.add('correct');
+                score++;
+                gameScoreDisplay.textContent = score;
+                
+                feedbackResult.textContent = "Correct! You spotted the lie.";
+                feedbackResult.className = "text-2xl font-bold text-center mb-4 text-green-600";
+                
+                // Hide reveal container since they found it
+                document.getElementById('reveal-container').classList.add('hidden');
+
+            } else {
+                // Incorrect Answer
+                selectedBtn.classList.add('incorrect');
+                actualLieBtn.classList.add('correct'); // Show them the real lie
+                
+                feedbackResult.textContent = "Incorrect! That was a truth.";
+                feedbackResult.className = "text-2xl font-bold text-center mb-4 text-red-600";
+                
+                // Show discussion prompt to encourage thinking
+                discussionContainer.classList.remove('hidden');
+                feedbackDiscussion.textContent = currentPrompt.discussion;
+
+                // Show reveal container
+                const revealContainer = document.getElementById('reveal-container');
+                revealContainer.classList.remove('hidden');
+                feedbackActualLie.textContent = currentPrompt.lie;
+            }
+
+            // Update Progress Bar to reflect completion of this question
+            gameProgressBar.style.width = `${((currentPromptIndex + 1) / promptsData.length) * 100}%`;
+
+            // Change Next button text on last question
+            if (currentPromptIndex === promptsData.length - 1) {
+                btnNextPrompt.textContent = "Finish Game";
+            } else {
+                btnNextPrompt.textContent = "Next Prompt";
+            }
+        }
+
+        btnNextPrompt.addEventListener('click', () => {
+            currentPromptIndex++;
+            if (currentPromptIndex < promptsData.length) {
+                loadPrompt();
+            } else {
+                endGame();
+            }
+        });
+
+        // --- STREAMING_CHUNK:Game Over Logic ---
+        function endGame() {
+            screens.active.classList.add('hidden');
+            screens.over.classList.remove('hidden');
+
+            finalScore.textContent = score;
+            totalQuestions.textContent = promptsData.length;
+            
+            const percentage = (score / promptsData.length) * 100;
+            finalScoreBar.style.width = `${percentage}%`;
+
+            if (percentage === 100) {
+                finalScoreBar.classList.replace('bg-green-500', 'bg-blue-500');
+                finalMessage.textContent = "Flawless! Nothing gets past you.";
+            } else if (percentage >= 75) {
+                finalMessage.textContent = "Great job! You have a keen eye for facts.";
+            } else if (percentage >= 50) {
+                finalMessage.textContent = "Not bad! Some of those lies were tricky.";
+            } else {
+                finalMessage.textContent = "Tough round! Keep practicing those critical thinking skills.";
+            }
+        }
+
+        // Initialize UI on load
+        updateSetupUI();
+        
+        // Add one example prompt to show how it works
+        promptsData.push({
+            id: generateId(),
+            topic: "Biology: The Cell",
+            truth1: "Mitochondria are often referred to as the powerhouse of the cell.",
+            truth2: "Plant cells have a rigid cell wall, while animal cells do not.",
+            lie: "All cells contain a nucleus holding their DNA.",
+            discussion: "Consider prokaryotic cells (like bacteria) versus eukaryotic cells. Why might someone mistakenly think all living cells have a nucleus? What structure do bacteria use instead?"
+        });
+        updateSetupUI();
+
+    </script>
+</body>
+</html>
