@@ -736,7 +736,14 @@
                             useCORS: true,
                             logging: false,
                             windowWidth: 1056, // Match exact width of .pdf-export container
-                            scrollY: 0
+                            scrollY: 0,
+                            onclone: function(clonedDoc) {
+                                // CRITICAL FIX FOR GITHUB PAGES:
+                                // Remove all scripts in the cloned document so the Tailwind CDN 
+                                // doesn't re-trigger, which temporarily wipes all CSS during capture!
+                                const scripts = clonedDoc.querySelectorAll('script');
+                                scripts.forEach(s => s.remove());
+                            }
                         },
                         jsPDF:        { unit: 'in', format: 'letter', orientation: 'landscape' }
                     };
