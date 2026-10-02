@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hexagonal Thinking Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af', // Blue-800
+                        secondary: '#3b82f6', // Blue-500
+                        accent: '#bfdbfe', // Blue-200
+                        dark: '#1e293b',
+                        light: '#f8fafc',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Soft blue background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #header {
+            background-color: #1e40af;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        #main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        #sidebar {
+            width: 350px;
+            background-color: white;
+            border-right: 1px solid #e2e8f0;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            overflow-y: auto;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+            z-index: 5;
+        }
+
+        #canvas-container {
+            flex: 1;
+            position: relative;
+            background-color: #f0f4f8; /* Simple blue background */
+            /* Removed the honeycomb pattern */
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+        }
+        
+        canvas:active {
+            cursor: grabbing;
+        }
+
+        /* Custom scrollbar for sidebar */
+        #sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+        #sidebar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        #sidebar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        #sidebar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Loading spinner for Gemini API */
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid #3b82f6;
+            width: 20px;
+            height: 20px;
+            -webkit-animation: spin 1s linear infinite; /* Safari */
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="header">
+        <h1 class="text-2xl font-bold tracking-wider">Hexagonal Thinking Tool</h1>
+        <p class="text-sm text-blue-200 mt-1">Connect ideas using hexagonal thinking</p>
+    </div>
+
+    <div id="main-container">
+        <div id="sidebar">
+            
+            <!-- Section: Add Custom Term -->
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-sm">
+                <h2 class="text-lg font-semibold text-slate-800 mb-3 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Add Custom Term
+                </h2>
+                <div class="flex flex-col gap-3">
+                    <input type="text" id="customTermInput" placeholder="Enter a term..." class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    
+                    <div class="flex items-center gap-3">
+                        <label for="hexColorPicker" class="text-sm text-slate-600 font-medium">Color:</label>
+                        <input type="color" id="hexColorPicker" value="#fbbf24" class="w-8 h-8 rounded cursor-pointer border-0 p-0">
+                        <button id="addTermBtn" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                            Add to Board
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section: Generate with Gemini -->
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-sm">
+                <h2 class="text-lg font-semibold text-slate-800 mb-3 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    Generate with AI
+                </h2>
+                <p class="text-xs text-slate-500 mb-3">Enter a topic to generate related terms using Gemini.</p>
+                <div class="flex flex-col gap-3">
+                    <input type="text" id="topicInput" placeholder="e.g., Photosynthesis, World War 2" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    
+                    <div class="flex flex-col gap-1">
+                        <label for="languageSelect" class="text-sm text-slate-600 font-medium">Language:</label>
+                        <select id="languageSelect" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            <option value="English">English</option>
+                            <option value="French">French</option>
+                            <option value="Spanish">Spanish</option>
+                            <option value="German">German</option>
+                            <option value="Chinese (Mandarin)">Chinese (Mandarin)</option>
+                            <option value="Japanese">Japanese</option>
+                            <option value="Korean">Korean</option>
+                            <option value="Arabic">Arabic</option>
+                            <option value="Hindi">Hindi</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                         <label for="aiHexColorPicker" class="text-sm text-slate-600 font-medium">Color:</label>
+                         <input type="color" id="aiHexColorPicker" value="#a78bfa" class="w-8 h-8 rounded cursor-pointer border-0 p-0">
+                    </div>
+
+                    <button id="generateBtn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex justify-center items-center">
+                        <span>Generate Terms</span>
+                        <div id="aiLoader" class="loader hidden"></div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Section: Board Controls -->
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-sm mt-auto">
+                <h2 class="text-lg font-semibold text-slate-800 mb-3">Controls</h2>
+                <div class="flex flex-col gap-2">
+                    <button id="clearBoardBtn" class="w-full bg-red-100 hover:bg-red-200 text-red-700 font-medium py-2 px-4 rounded-lg transition-colors border border-red-200">
+                        Clear Board
+                    </button>
+                    <button id="resetViewBtn" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-800 font-medium py-2 px-4 rounded-lg transition-colors border border-slate-300">
+                        Reset View
+                    </button>
+                    <button id="savePdfBtn" class="w-full bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-medium py-2 px-4 rounded-lg transition-colors border border-emerald-300 flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        Save as PDF
+                    </button>
+                    <p class="text-xs text-slate-500 mt-2 text-center">Drag canvas to pan. Scroll to zoom.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="canvas-container">
+            <canvas id="hexCanvas"></canvas>
+        </div>
+    </div>
+
+    <!-- Modal for displaying messages (replaces alert) -->
+    <div id="messageModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+        <div class="bg-white rounded-xl shadow-2xl p-6 max-w-sm w-full mx-4 transform transition-all">
+            <h3 id="modalTitle" class="text-lg font-bold text-slate-800 mb-2">Message</h3>
+            <p id="modalMessage" class="text-slate-600 mb-6">This is a message.</p>
+            <div class="flex justify-end">
+                <button id="closeModalBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- State and Constants ---
+        const canvas = document.getElementById('hexCanvas');
+        const ctx = canvas.getContext('2d');
+        const container = document.getElementById('canvas-container');
+
+        let hexagons = [];
+        const hexRadius = 60; // Size of the hexagon
+        const hexHeight = Math.sqrt(3) * hexRadius;
+        const hexWidth = 2 * hexRadius;
+
+        // Viewport state for panning and zooming
+        let viewport = {
+            x: 0,
+            y: 0,
+            scale: 1
+        };
+
+        // Interaction state
+        let isDraggingCanvas = false;
+        let isDraggingHex = false;
+        let draggedHexIndex = -1;
+        let lastMousePos = { x: 0, y: 0 };
+        let hoverHexIndex = -1;
+
+        // Colors
+        const defaultColors = [
+            '#fbbf24', // amber-400
+            '#f87171', // red-400
+            '#60a5fa', // blue-400
+            '#34d399', // emerald-400
+            '#a78bfa'  // violet-400
+        ];
+
+        // Default initial terms
+        const initialTerms = [
+            { text: "Idea", color: '#fbbf24' },
+            { text: "Concept", color: '#60a5fa' },
+            { text: "Connection", color: '#34d399' }
+        ];
+
+        // --- Utility Functions ---
+
+        function showMessage(title, message) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalMessage').textContent = message;
+            document.getElementById('messageModal').classList.remove('hidden');
+        }
+
+        document.getElementById('closeModalBtn').addEventListener('click', () => {
+            document.getElementById('messageModal').classList.add('hidden');
+        });
+
+        // Resize canvas to fit container
+        function resizeCanvas() {
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+            draw();
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+
+        // Convert screen coordinates to world (canvas) coordinates
+        function screenToWorld(sx, sy) {
+            return {
+                x: (sx - viewport.x) / viewport.scale,
+                y: (sy - viewport.y) / viewport.scale
+            };
+        }
+
+        // --- Hexagon Geometry & Drawing ---
+
+        // Calculate vertices for a pointy-topped hexagon
+        function getHexVertices(cx, cy, radius) {
+            const vertices = [];
+            for (let i = 0; i < 6; i++) {
+                const angle_deg = 60 * i - 30;
+                const angle_rad = Math.PI / 180 * angle_deg;
+                vertices.push({
+                    x: cx + radius * Math.cos(angle_rad),
+                    y: cy + radius * Math.sin(angle_rad)
+                });
+            }
+            return vertices;
+        }
+
+        // Add a new hexagon to the board
+        function addHexagon(text, color) {
+            // Find a somewhat central position, spread out slightly
+            const spread = 200;
+            const wx = canvas.width / 2 / viewport.scale - viewport.x / viewport.scale + (Math.random() - 0.5) * spread;
+            const wy = canvas.height / 2 / viewport.scale - viewport.y / viewport.scale + (Math.random() - 0.5) * spread;
+
+            hexagons.push({
+                x: wx,
+                y: wy,
+                text: text,
+                color: color || defaultColors[Math.floor(Math.random() * defaultColors.length)],
+                selected: false
+            });
+            draw();
+        }
+
+        // Initialize board
+        function initBoard() {
+            hexagons = [];
+            resizeCanvas();
+            // Center the viewport
+            viewport.x = 0;
+            viewport.y = 0;
+            viewport.scale = 1;
+
+            // Add initial terms
+            initialTerms.forEach((term, index) => {
+                const cx = canvas.width / 2 + (index - 1) * (hexWidth * 1.1);
+                const cy = canvas.height / 2;
+                hexagons.push({
+                    x: cx,
+                    y: cy,
+                    text: term.text,
+                    color: term.color,
+                    selected: false
+                });
+            });
+            draw();
+        }
+
+        // Main draw function
+        function draw() {
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Apply viewport transformations
+            ctx.save();
+            ctx.translate(viewport.x, viewport.y);
+            ctx.scale(viewport.scale, viewport.scale);
+
+            // 1. Draw connections (snap lines if close) - Simplified for this version
+            drawConnections();
+
+            // 2. Draw Hexagons
+            // Draw unselected first, then hovered, then selected (dragged) on top
+            hexagons.forEach((hex, index) => {
+                if (index !== draggedHexIndex && index !== hoverHexIndex) {
+                    drawHexagon(hex, false, false);
+                }
+            });
+
+            if (hoverHexIndex !== -1 && hoverHexIndex !== draggedHexIndex) {
+                drawHexagon(hexagons[hoverHexIndex], true, false);
+            }
+
+            if (draggedHexIndex !== -1) {
+                drawHexagon(hexagons[draggedHexIndex], false, true);
+            }
+
+            ctx.restore();
+        }
+
+        // Draw a single hexagon
+        function drawHexagon(hex, isHovered, isDragged) {
+            const vertices = getHexVertices(hex.x, hex.y, hexRadius);
+
+            ctx.beginPath();
+            ctx.moveTo(vertices[0].x, vertices[0].y);
+            for (let i = 1; i < 6; i++) {
+                ctx.lineTo(vertices[i].x, vertices[i].y);
+            }
+            ctx.closePath();
+
+            // Shadow
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
+            ctx.shadowBlur = isDragged ? 15 : (isHovered ? 10 : 5);
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = isDragged ? 8 : (isHovered ? 4 : 2);
+
+            // Fill
+            ctx.fillStyle = hex.color;
+            ctx.fill();
+
+            // Reset shadow for stroke and text
+            ctx.shadowColor = 'transparent';
+
+            // Stroke
+            ctx.lineWidth = isDragged ? 3 : 2;
+            ctx.strokeStyle = isDragged ? '#1e293b' : 'rgba(255,255,255,0.5)';
+            ctx.stroke();
+
+            // Text
+            ctx.fillStyle = getContrastColor(hex.color);
+            ctx.font = `bold ${14}px Inter, sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // Text wrapping logic (simple)
+            wrapText(ctx, hex.text, hex.x, hex.y, hexWidth * 0.75, 18);
+        }
+
+        // Helper to determine text color based on hex background
+        function getContrastColor(hexColor) {
+            // Simple luma calculation
+            const c = hexColor.substring(1);      // strip #
+            const rgb = parseInt(c, 16);   // convert rrggbb to decimal
+            const r = (rgb >> 16) & 0xff;  // extract red
+            const g = (rgb >>  8) & 0xff;  // extract green
+            const b = (rgb >>  0) & 0xff;  // extract blue
+
+            const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
+
+            return luma < 128 ? '#ffffff' : '#1e293b'; // white for dark bg, dark slate for light bg
+        }
+
+        // Simple text wrapping
+        function wrapText(context, text, x, y, maxWidth, lineHeight) {
+            const words = text.split(' ');
+            let line = '';
+            let lines = [];
+
+            for(let n = 0; n < words.length; n++) {
+                let testLine = line + words[n] + ' ';
+                let metrics = context.measureText(testLine);
+                let testWidth = metrics.width;
+                if (testWidth > maxWidth && n > 0) {
+                    lines.push(line);
+                    line = words[n] + ' ';
+                }
+                else {
+                    line = testLine;
+                }
+            }
+            lines.push(line);
+
+            let startY = y - ((lines.length - 1) * lineHeight) / 2;
+            
+            for(let k = 0; k < lines.length; k++) {
+                context.fillText(lines[k], x, startY + (k * lineHeight));
+            }
+        }
+
+        // Draw connections (visual aid for snapping)
+        function drawConnections() {
+            // Visual logic for connected hexes could go here.
+            // For a simpler version, we just let them snap together.
+        }
+
+        // --- Interaction Logic ---
+
+        // Check if point is inside hexagon
+        function isPointInHex(px, py, hex) {
+            // Simple bounding box check first for performance
+            if (Math.abs(px - hex.x) > hexRadius || Math.abs(py - hex.y) > hexRadius) {
+                return false;
+            }
+
+            // Ray casting or precise geometric check
+            const vertices = getHexVertices(hex.x, hex.y, hexRadius);
+            let inside = false;
+            for (let i = 0, j = vertices.length - 1; i < vertices.length; j = i++) {
+                const xi = vertices[i].x, yi = vertices[i].y;
+                const xj = vertices[j].x, yj = vertices[j].y;
+                
+                const intersect = ((yi > py) != (yj > py))
+                    && (px < (xj - xi) * (py - yi) / (yj - yi) + xi);
+                if (intersect) inside = !inside;
+            }
+            return inside;
+        }
+
+        // Snap to nearest hexagon edge
+        function applySnapping(hexIndex) {
+            const movingHex = hexagons[hexIndex];
+            const snapDist = hexRadius * 2.5; // Distance to consider snapping
+            
+            let bestSnap = null;
+            let minDistance = Infinity;
+
+            for (let i = 0; i < hexagons.length; i++) {
+                if (i === hexIndex) continue;
+                
+                const targetHex = hexagons[i];
+                const dx = movingHex.x - targetHex.x;
+                const dy = movingHex.y - targetHex.y;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+
+                if (dist < snapDist) {
+                    // Possible snap positions around a pointy-topped hexagon
+                    // 6 positions, distance is roughly sqrt(3)*R
+                    const snapRadius = Math.sqrt(3) * hexRadius;
+                    
+                    for(let j=0; j<6; j++) {
+                        const angle = (j * 60 + 30) * Math.PI / 180; // offset by 30 deg for pointy top
+                        const sx = targetHex.x + snapRadius * Math.cos(angle);
+                        const sy = targetHex.y + snapRadius * Math.sin(angle);
+                        
+                        const sdx = movingHex.x - sx;
+                        const sdy = movingHex.y - sy;
+                        const sdist = Math.sqrt(sdx*sdx + sdy*sdy);
+                        
+                        if (sdist < minDistance && sdist < 40) { // 40px snap threshold
+                            minDistance = sdist;
+                            bestSnap = { x: sx, y: sy };
+                        }
+                    }
+                }
+            }
+
+            if (bestSnap) {
+                movingHex.x = bestSnap.x;
+                movingHex.y = bestSnap.y;
+            }
+        }
+
+        
+        // Mouse Events
+        canvas.addEventListener('mousedown', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            const worldPos = screenToWorld(mouseX, mouseY);
+
+            lastMousePos = { x: mouseX, y: mouseY };
+
+            // Check if clicking a hexagon (reverse order to pick top-most)
+            for (let i = hexagons.length - 1; i >= 0; i--) {
+                if (isPointInHex(worldPos.x, worldPos.y, hexagons[i])) {
+                    isDraggingHex = true;
+                    draggedHexIndex = i;
+                    
+                    // Move to end of array so it draws on top
+                    const hex = hexagons.splice(i, 1)[0];
+                    hexagons.push(hex);
+                    draggedHexIndex = hexagons.length - 1;
+                    
+                    draw();
+                    return;
+                }
+            }
+
+            // If not clicking a hex, drag the canvas
+            isDraggingCanvas = true;
+            canvas.style.cursor = 'grabbing';
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            
+            const dx = mouseX - lastMousePos.x;
+            const dy = mouseY - lastMousePos.y;
+
+            if (isDraggingHex && draggedHexIndex !== -1) {
+                // Move hexagon
+                hexagons[draggedHexIndex].x += dx / viewport.scale;
+                hexagons[draggedHexIndex].y += dy / viewport.scale;
+                draw();
+            } else if (isDraggingCanvas) {
+                // Pan canvas
+                viewport.x += dx;
+                viewport.y += dy;
+                draw();
+            } else {
+                // Hover effect
+                const worldPos = screenToWorld(mouseX, mouseY);
+                let foundHover = false;
+                for (let i = hexagons.length - 1; i >= 0; i--) {
+                    if (isPointInHex(worldPos.x, worldPos.y, hexagons[i])) {
+                        if (hoverHexIndex !== i) {
+                            hoverHexIndex = i;
+                            canvas.style.cursor = 'pointer';
+                            draw();
+                        }
+                        foundHover = true;
+                        break;
+                    }
+                }
+                if (!foundHover && hoverHexIndex !== -1) {
+                    hoverHexIndex = -1;
+                    canvas.style.cursor = 'grab';
+                    draw();
+                }
+            }
+
+            lastMousePos = { x: mouseX, y: mouseY };
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            if (isDraggingHex && draggedHexIndex !== -1) {
+                applySnapping(draggedHexIndex);
+            }
+            isDraggingHex = false;
+            isDraggingCanvas = false;
+            draggedHexIndex = -1;
+            canvas.style.cursor = hoverHexIndex !== -1 ? 'pointer' : 'grab';
+            draw();
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            isDraggingHex = false;
+            isDraggingCanvas = false;
+            draggedHexIndex = -1;
+            hoverHexIndex = -1;
+            canvas.style.cursor = 'grab';
+            draw();
+        });
+
+        // Zoom with mouse wheel
+        canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            
+            // Determine zoom direction and amount
+            const zoomSensitivity = 0.001;
+            const delta = -e.deltaY * zoomSensitivity;
+            let newScale = viewport.scale * (1 + delta);
+            
+            // Clamp scale
+            newScale = Math.max(0.2, Math.min(newScale, 3));
+            
+            // Zoom towards mouse pointer
+            const worldBeforeZoom = screenToWorld(mouseX, mouseY);
+            viewport.scale = newScale;
+            const worldAfterZoom = screenToWorld(mouseX, mouseY);
+            
+            viewport.x += (worldAfterZoom.x - worldBeforeZoom.x) * viewport.scale;
+            viewport.y += (worldAfterZoom.y - worldBeforeZoom.y) * viewport.scale;
+            
+            draw();
+        }, { passive: false });
+
+        // Touch Support
+        canvas.addEventListener('touchstart', (e) => {
+            if(e.touches.length === 1) {
+                e.preventDefault(); // Prevent scrolling
+                const rect = canvas.getBoundingClientRect();
+                const touchX = e.touches[0].clientX - rect.left;
+                const touchY = e.touches[0].clientY - rect.top;
+                const worldPos = screenToWorld(touchX, touchY);
+
+                lastMousePos = { x: touchX, y: touchY };
+
+                for (let i = hexagons.length - 1; i >= 0; i--) {
+                    if (isPointInHex(worldPos.x, worldPos.y, hexagons[i])) {
+                        isDraggingHex = true;
+                        draggedHexIndex = i;
+                        const hex = hexagons.splice(i, 1)[0];
+                        hexagons.push(hex);
+                        draggedHexIndex = hexagons.length - 1;
+                        draw();
+                        return;
+                    }
+                }
+                isDraggingCanvas = true;
+            }
+        }, { passive: false });
+
+        canvas.addEventListener('touchmove', (e) => {
+            if(e.touches.length === 1) {
+                e.preventDefault();
+                const rect = canvas.getBoundingClientRect();
+                const touchX = e.touches[0].clientX - rect.left;
+                const touchY = e.touches[0].clientY - rect.top;
+                
+                const dx = touchX - lastMousePos.x;
+                const dy = touchY - lastMousePos.y;
+
+                if (isDraggingHex && draggedHexIndex !== -1) {
+                    hexagons[draggedHexIndex].x += dx / viewport.scale;
+                    hexagons[draggedHexIndex].y += dy / viewport.scale;
+                    draw();
+                } else if (isDraggingCanvas) {
+                    viewport.x += dx;
+                    viewport.y += dy;
+                    draw();
+                }
+
+                lastMousePos = { x: touchX, y: touchY };
+            }
+        }, { passive: false });
+
+        canvas.addEventListener('touchend', () => {
+            if (isDraggingHex && draggedHexIndex !== -1) {
+                applySnapping(draggedHexIndex);
+            }
+            isDraggingHex = false;
+            isDraggingCanvas = false;
+            draggedHexIndex = -1;
+            draw();
+        });
+
+
+
+        // --- UI Controls ---
+
+        document.getElementById('addTermBtn').addEventListener('click', () => {
+            const input = document.getElementById('customTermInput');
+            const colorPicker = document.getElementById('hexColorPicker');
+            const term = input.value.trim();
+            
+            if (term) {
+                addHexagon(term, colorPicker.value);
+                input.value = '';
+            } else {
+                showMessage("Input Required", "Please enter a term to add.");
+            }
+        });
+
+        // Allow pressing Enter to add term
+        document.getElementById('customTermInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('addTermBtn').click();
+            }
+        });
+
+        document.getElementById('clearBoardBtn').addEventListener('click', () => {
+            // Confirm clear using custom modal implementation logic
+            document.getElementById('modalTitle').textContent = "Clear Board";
+            document.getElementById('modalMessage').textContent = "Are you sure you want to clear all hexagons? This cannot be undone.";
+            
+            // Replace close button with Confirm/Cancel for this specific action
+            const modalBtnContainer = document.getElementById('closeModalBtn').parentElement;
+            const originalContent = modalBtnContainer.innerHTML;
+            
+            modalBtnContainer.innerHTML = `
+                <button id="cancelClearBtn" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-medium py-2 px-4 rounded-lg transition-colors mr-2">Cancel</button>
+                <button id="confirmClearBtn" class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-6 rounded-lg transition-colors">Clear</button>
+            `;
+            
+            document.getElementById('messageModal').classList.remove('hidden');
+            
+            document.getElementById('cancelClearBtn').addEventListener('click', () => {
+                document.getElementById('messageModal').classList.add('hidden');
+                modalBtnContainer.innerHTML = originalContent; // Restore original OK button
+                // Re-attach listener
+                document.getElementById('closeModalBtn').addEventListener('click', () => {
+                    document.getElementById('messageModal').classList.add('hidden');
+                });
+            });
+
+            document.getElementById('confirmClearBtn').addEventListener('click', () => {
+                hexagons = [];
+                draw();
+                document.getElementById('messageModal').classList.add('hidden');
+                modalBtnContainer.innerHTML = originalContent;
+                document.getElementById('closeModalBtn').addEventListener('click', () => {
+                    document.getElementById('messageModal').classList.add('hidden');
+                });
+            });
+        });
+
+        document.getElementById('resetViewBtn').addEventListener('click', () => {
+            viewport.x = 0;
+            viewport.y = 0;
+            viewport.scale = 1;
+            draw();
+        });
+
+        document.getElementById('savePdfBtn').addEventListener('click', () => {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({
+                orientation: 'landscape',
+                unit: 'mm',
+                format: 'a4'
+            });
+
+            // Create a temporary canvas to include the background color
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = canvas.width;
+            tempCanvas.height = canvas.height;
+            const tempCtx = tempCanvas.getContext('2d');
+
+            // Fill background matching the app's styling
+            tempCtx.fillStyle = '#f0f4f8';
+            tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+
+            // Draw the current board state on top
+            tempCtx.drawImage(canvas, 0, 0);
+
+            // Export to JPEG data URI
+            const imgData = tempCanvas.toDataURL('image/jpeg', 1.0);
+
+            // Calculate image dimensions to fit perfectly within an A4 page
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+            const ratio = Math.min(pdfWidth / tempCanvas.width, pdfHeight / tempCanvas.height);
+
+            const imgX = (pdfWidth - tempCanvas.width * ratio) / 2;
+            const imgY = (pdfHeight - tempCanvas.height * ratio) / 2;
+
+            pdf.addImage(imgData, 'JPEG', imgX, imgY, tempCanvas.width * ratio, tempCanvas.height * ratio);
+            pdf.save('hexagonal-thinking-board.pdf');
+        });
+
+        // --- Gemini API Integration ---
+        
+        document.getElementById('generateBtn').addEventListener('click', async () => {
+            const topicInput = document.getElementById('topicInput');
+            const topic = topicInput.value.trim();
+            const colorPicker = document.getElementById('aiHexColorPicker');
+            const hexColor = colorPicker.value;
+            const languageSelect = document.getElementById('languageSelect');
+            const language = languageSelect.value;
+            
+            if (!topic) {
+                showMessage("Topic Required", "Please enter a topic for Gemini to generate terms.");
+                return;
+            }
+
+            const btnText = document.querySelector('#generateBtn span');
+            const loader = document.getElementById('aiLoader');
+            
+            // UI Loading state
+            btnText.textContent = "Generating...";
+            loader.classList.remove('hidden');
+            document.getElementById('generateBtn').disabled = true;
+            document.getElementById('generateBtn').classList.add('opacity-75', 'cursor-not-allowed');
+
+            try {
+                // System prompt to ensure structured output suitable for the hexagons
+                const systemPrompt = `Act as an educational curriculum expert. Provide a JSON array of strings containing 5 to 8 key terms, concepts, or important vocabulary words related to the user's topic. The terms must be in ${language}. The terms should be concise (1-3 words max) and suitable for a hexagonal thinking activity where students connect related ideas.`;
+                
+                const payload = {
+                    contents: [{ parts: [{ text: `Generate key terms for the topic: ${topic} in ${language}` }] }],
+                    systemInstruction: {
+                        parts: [{ text: systemPrompt }]
+                    },
+                    generationConfig: {
+                        responseMimeType: "application/json",
+                        responseSchema: {
+                            type: "ARRAY",
+                            items: {
+                                type: "STRING"
+                            }
+                        }
+                    }
+                };
+
+                const apiKey = ""; // Left empty as per Canvas environment requirements
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API returned status ${response.status}`);
+                }
+
+                const result = await response.json();
+                
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    
+                    const jsonString = result.candidates[0].content.parts[0].text;
+                    const generatedTerms = JSON.parse(jsonString);
+                    
+                    if (Array.isArray(generatedTerms) && generatedTerms.length > 0) {
+                        // Spread out new terms around the center
+                        generatedTerms.forEach((term, index) => {
+                            // Calculate position in a circle around center
+                            const angle = (index / generatedTerms.length) * Math.PI * 2;
+                            const radius = 250; // Distance from center
+                            
+                            // Adjust for viewport
+                            const centerX = canvas.width / 2 / viewport.scale - viewport.x / viewport.scale;
+                            const centerY = canvas.height / 2 / viewport.scale - viewport.y / viewport.scale;
+                            
+                            const wx = centerX + Math.cos(angle) * radius;
+                            const wy = centerY + Math.sin(angle) * radius;
+                            
+                            hexagons.push({
+                                x: wx,
+                                y: wy,
+                                text: term,
+                                color: hexColor, // Use selected color for AI generated terms
+                                selected: false
+                            });
+                        });
+                        
+                        draw();
+                        topicInput.value = ''; // Clear input on success
+                        
+                    } else {
+                        throw new Error("API did not return a valid array of terms.");
+                    }
+                } else {
+                    throw new Error("Unexpected API response structure.");
+                }
+
+            } catch (error) {
+                console.error("Error generating terms:", error);
+                showMessage("Generation Failed", "Failed to generate terms. Please try again later. Details: " + error.message);
+            } finally {
+                // Restore UI state
+                btnText.textContent = "Generate Terms";
+                loader.classList.add('hidden');
+                document.getElementById('generateBtn').disabled = false;
+                document.getElementById('generateBtn').classList.remove('opacity-75', 'cursor-not-allowed');
+            }
+        });
+
+        // Allow pressing Enter to generate
+        document.getElementById('topicInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('generateBtn').click();
+            }
+        });
+
+        // Initialize application
+        window.onload = () => {
+            initBoard();
+        };
+
+    </script>
+</body>
+</html>
