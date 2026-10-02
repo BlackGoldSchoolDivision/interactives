@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curriculum Vocabulary Generator</title>
+    <!-- Load Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        
+        /* Spinner animation */
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 3px solid white;
+            width: 20px;
+            height: 20px;
+            -webkit-animation: spin 1s linear infinite; /* Safari */
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans">
+    
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-10">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-brand-500 text-white p-2 rounded-lg">
+                    <i class="fa-solid fa-book-open"></i>
+                </div>
+                <h1 class="text-xl font-bold text-slate-900 tracking-tight">Curriculum Vocab Generator</h1>
+            </div>
+            <div class="text-sm font-medium text-slate-500 hidden sm:block">
+                Powered by Gemini AI
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex flex-col lg:flex-row gap-8">
+        
+        <aside class="w-full lg:w-1/3 flex flex-col gap-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <h2 class="text-lg font-semibold mb-4 text-slate-800">Generate Vocabulary</h2>
+                <p class="text-sm text-slate-500 mb-6">Enter curriculum details to generate a relevant vocabulary list.</p>
+                
+                <form id="vocab-form" class="flex flex-col gap-4">
+                    
+                    <!-- Grade Selection -->
+                    <div>
+                        <label for="grade-select" class="block text-sm font-medium text-slate-700 mb-1">Grade Level</label>
+                        <select id="grade-select" required class="w-full rounded-lg border-slate-300 border px-3 py-2 text-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-shadow bg-slate-50">
+                            <option value="" disabled selected>Select a grade...</option>
+                            <option value="Kindergarten">Kindergarten</option>
+                            <option value="Grade 1">Grade 1</option>
+                            <option value="Grade 2">Grade 2</option>
+                            <option value="Grade 3">Grade 3</option>
+                            <option value="Grade 4">Grade 4</option>
+                            <option value="Grade 5">Grade 5</option>
+                            <option value="Grade 6">Grade 6</option>
+                            <option value="Grade 7">Grade 7</option>
+                            <option value="Grade 8">Grade 8</option>
+                            <option value="Grade 9">Grade 9</option>
+                            <option value="Grade 10">Grade 10</option>
+                            <option value="Grade 11">Grade 11</option>
+                            <option value="Grade 12">Grade 12</option>
+                        </select>
+                    </div>
+
+                    <!-- Curriculum Area Selection -->
+                    <div>
+                        <label for="subject-select" class="block text-sm font-medium text-slate-700 mb-1">Curriculum Area</label>
+                        <select id="subject-select" required class="w-full rounded-lg border-slate-300 border px-3 py-2 text-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-shadow bg-slate-50">
+                            <option value="" disabled selected>Select a subject...</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Science">Science</option>
+                            <option value="English Language Arts">English Language Arts</option>
+                            <option value="Social Studies">Social Studies</option>
+                            <option value="Physical Education">Physical Education</option>
+                            <option value="Health">Health</option>
+                            <option value="Fine Arts">Fine Arts (Art, Drama, Music)</option>
+                            <option value="Career and Technology Foundations">Career and Technology Foundations (CTF)</option>
+                        </select>
+                    </div>
+
+                    <!-- Topic Input -->
+                    <div>
+                        <label for="topic-input" class="block text-sm font-medium text-slate-700 mb-1">Specific Topic</label>
+                        <input type="text" id="topic-input" required placeholder="e.g., Fractions, Ecosystems, Democracy..." class="w-full rounded-lg border-slate-300 border px-3 py-2 text-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-shadow bg-slate-50">
+                    </div>
+                    
+                     <!-- Number of words Input -->
+                    <div>
+                        <label for="count-input" class="block text-sm font-medium text-slate-700 mb-1">Number of Words</label>
+                        <input type="number" id="count-input" value="10" min="5" max="30" class="w-full rounded-lg border-slate-300 border px-3 py-2 text-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-shadow bg-slate-50">
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="generate-btn" class="mt-4 w-full bg-brand-600 hover:bg-brand-500 text-white font-medium py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span>Generate Vocabulary</span>
+                    </button>
+                    
+                    <!-- Loading state hidden by default -->
+                    <button type="button" id="loading-btn" disabled class="mt-4 w-full bg-brand-400 text-white font-medium py-2.5 px-4 rounded-lg hidden flex items-center justify-center gap-2 cursor-not-allowed">
+                        <div class="spinner"></div>
+                        <span>Generating...</span>
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Information Box -->
+            <div class="bg-blue-50 text-blue-800 rounded-xl p-5 border border-blue-100 text-sm">
+                <div class="flex gap-3 mb-2">
+                    <i class="fa-solid fa-circle-info mt-0.5"></i>
+                    <h3 class="font-semibold">How it works</h3>
+                </div>
+                <p class="ml-7 opacity-90">This tool uses Google's Gemini AI to generate age-appropriate vocabulary words, definitions, and example sentences based on the Alberta Curriculum standards.</p>
+            </div>
+        </aside>
+
+        <section class="w-full lg:w-2/3 flex flex-col h-full min-h-[500px]">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 flex-grow flex flex-col overflow-hidden relative">
+                
+                <!-- Results Header -->
+                <div class="bg-slate-50 border-b border-slate-200 p-4 sm:px-6 flex justify-between items-center">
+                    <h2 class="font-semibold text-slate-800" id="results-title">Vocabulary List</h2>
+                    <div class="flex gap-2">
+                        <button id="copy-btn" class="hidden text-sm bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 py-1.5 px-3 rounded-md transition-colors flex items-center gap-2">
+                            <i class="fa-regular fa-copy"></i> Copy Text
+                        </button>
+                        <button id="copy-json-btn" class="hidden text-sm bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 py-1.5 px-3 rounded-md transition-colors flex items-center gap-2" title="Copy as JSON data for other tools">
+                            <i class="fa-solid fa-code"></i> Copy JSON
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results Content Area -->
+                <div id="results-container" class="p-6 overflow-y-auto flex-grow flex flex-col relative">
+                    
+                    <!-- Initial Empty State -->
+                    <div id="empty-state" class="m-auto text-center flex flex-col items-center justify-center opacity-60 max-w-sm">
+                        <div class="bg-slate-100 w-20 h-20 rounded-full flex items-center justify-center mb-4">
+                            <i class="fa-solid fa-spell-check text-3xl text-slate-400"></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-slate-700 mb-2">No words generated yet</h3>
+                        <p class="text-sm text-slate-500">Fill out the form on the left and click generate to create a custom vocabulary list.</p>
+                    </div>
+
+                    <!-- Error State (Hidden by default) -->
+                    <div id="error-state" class="hidden m-auto text-center flex flex-col items-center justify-center text-red-600 max-w-sm">
+                        <div class="bg-red-50 w-16 h-16 rounded-full flex items-center justify-center mb-4 border border-red-100">
+                            <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-medium mb-2">Generation Failed</h3>
+                        <p id="error-message" class="text-sm opacity-80">An error occurred while connecting to the AI. Please try again.</p>
+                    </div>
+
+                    <!-- Actual Results (Hidden by default) -->
+                    <div id="vocab-list" class="hidden flex flex-col gap-4">
+                        <!-- List items will be injected here by JavaScript -->
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <!-- Toast Notification Container -->
+            <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2"></div>
+        </section>
+    </main>
+
+    <script>
+        // Store the raw JSON data for exporting
+        let currentVocabData = null;
+
+        // DOM Elements
+        const form = document.getElementById('vocab-form');
+        const generateBtn = document.getElementById('generate-btn');
+        const loadingBtn = document.getElementById('loading-btn');
+        
+        const gradeSelect = document.getElementById('grade-select');
+        const subjectSelect = document.getElementById('subject-select');
+        const topicInput = document.getElementById('topic-input');
+        const countInput = document.getElementById('count-input');
+        
+        const resultsTitle = document.getElementById('results-title');
+        const resultsContainer = document.getElementById('results-container');
+        const emptyState = document.getElementById('empty-state');
+        const errorState = document.getElementById('error-state');
+        const errorMessage = document.getElementById('error-message');
+        const vocabList = document.getElementById('vocab-list');
+        
+        const copyBtn = document.getElementById('copy-btn');
+        const copyJsonBtn = document.getElementById('copy-json-btn');
+        const toastContainer = document.getElementById('toast-container');
+
+        /**
+         * Calls the Gemini API to generate the vocabulary list
+         */
+        async function generateVocabulary(grade, subject, topic, count) {
+            const apiKey = ""; // Leave blank, environment will provide
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+            const systemPrompt = `You are an expert curriculum developer for the Alberta Education system in Canada. 
+Your task is to generate a list of exactly ${count} vocabulary words relevant to a specific Grade, Subject, and Topic.
+The definitions and example sentences MUST be age-appropriate for the specified grade level.
+The content should align with the general expectations of the Alberta curriculum for that subject and grade.`;
+
+            const userPrompt = `Generate a vocabulary list for:
+- Grade: ${grade}
+- Subject: ${subject}
+- Topic: ${topic}
+- Count: ${count} words
+
+Provide the response as a JSON array of objects.`;
+
+            // Define the JSON schema we expect back
+            const payload = {
+                contents: [{ parts: [{ text: userPrompt }] }],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                },
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "ARRAY",
+                        items: {
+                            type: "OBJECT",
+                            properties: {
+                                "word": { 
+                                    type: "STRING", 
+                                    description: "The vocabulary word." 
+                                },
+                                "partOfSpeech": { 
+                                    type: "STRING", 
+                                    description: "The part of speech (e.g., Noun, Verb, Adjective)." 
+                                },
+                                "definition": { 
+                                    type: "STRING", 
+                                    description: "An age-appropriate definition of the word." 
+                                },
+                                "exampleSentence": { 
+                                    type: "STRING", 
+                                    description: "An age-appropriate example sentence using the word." 
+                                },
+                                "relatedConcepts": {
+                                    type: "ARRAY",
+                                    items: { type: "STRING" },
+                                    description: "1-3 related words or concepts."
+                                }
+                            },
+                            required: ["word", "partOfSpeech", "definition", "exampleSentence"]
+                        }
+                    }
+                }
+            };
+
+            // Implementation of Exponential Backoff
+            const maxRetries = 3;
+            let retryDelay = 1000;
+
+            for (let i = 0; i <= maxRetries; i++) {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error?.message || `HTTP error! status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        
+                        const jsonText = result.candidates[0].content.parts[0].text;
+                        const parsedData = JSON.parse(jsonText);
+                        return parsedData;
+                    } else {
+                        throw new Error("Unexpected response structure from API.");
+                    }
+
+                } catch (error) {
+                    if (i === maxRetries) {
+                        throw error; // Rethrow if we're out of retries
+                    }
+                    // Wait before retrying (exponential backoff)
+                    await new Promise(resolve => setTimeout(resolve, retryDelay));
+                    retryDelay *= 2;
+                }
+            }
+        }
+
+        /**
+         * Renders the JSON vocabulary data into the DOM
+         */
+        function renderVocabularyList(vocabData, topic, grade) {
+            currentVocabData = vocabData;
+            vocabList.innerHTML = '';
+            
+            resultsTitle.textContent = `${topic} (${grade})`;
+            
+            vocabData.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = "bg-white border border-slate-200 rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group";
+                
+                // Left accent border based on part of speech
+                let accentColor = "bg-slate-400";
+                const pos = (item.partOfSpeech || "").toLowerCase();
+                if (pos.includes('noun')) accentColor = "bg-blue-500";
+                else if (pos.includes('verb')) accentColor = "bg-green-500";
+                else if (pos.includes('adj')) accentColor = "bg-amber-500";
+                else if (pos.includes('adv')) accentColor = "bg-purple-500";
+
+                let relatedHtml = '';
+                if (item.relatedConcepts && item.relatedConcepts.length > 0) {
+                    const tags = item.relatedConcepts.map(c => 
+                        `<span class="inline-block bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded-md border border-slate-200">${c}</span>`
+                    ).join(' ');
+                    relatedHtml = `<div class="mt-3 pt-3 border-t border-slate-100 flex flex-wrap gap-2 items-center">
+                        <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Related:</span>
+                        ${tags}
+                    </div>`;
+                }
+
+                card.innerHTML = `
+                    <div class="absolute left-0 top-0 bottom-0 w-1 ${accentColor}"></div>
+                    <div class="flex justify-between items-start mb-2 pl-3">
+                        <div class="flex items-baseline gap-2">
+                            <h3 class="text-xl font-bold text-slate-900">${item.word}</h3>
+                            <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200 italic">${item.partOfSpeech}</span>
+                        </div>
+                        <div class="text-slate-300 font-mono text-sm group-hover:text-slate-400 transition-colors">#${index + 1}</div>
+                    </div>
+                    <div class="pl-3 space-y-2">
+                        <p class="text-slate-700"><span class="font-semibold">Definition:</span> ${item.definition}</p>
+                        <p class="text-slate-600 italic bg-slate-50 p-2 rounded border border-slate-100">"${item.exampleSentence}"</p>
+                        ${relatedHtml}
+                    </div>
+                `;
+                vocabList.appendChild(card);
+            });
+
+            // Show results, hide others
+            emptyState.classList.add('hidden');
+            errorState.classList.add('hidden');
+            vocabList.classList.remove('hidden');
+            vocabList.classList.add('flex');
+            
+            // Show copy buttons
+            copyBtn.classList.remove('hidden');
+            copyJsonBtn.classList.remove('hidden');
+        }
+
+        /**
+         * Sets the UI to loading state
+         */
+        function setLoadingState(isLoading) {
+            if (isLoading) {
+                generateBtn.classList.add('hidden');
+                loadingBtn.classList.remove('hidden');
+                form.querySelectorAll('input, select').forEach(el => el.disabled = true);
+                
+                emptyState.classList.add('hidden');
+                errorState.classList.add('hidden');
+                vocabList.classList.add('hidden');
+                vocabList.classList.remove('flex');
+                
+                copyBtn.classList.add('hidden');
+                copyJsonBtn.classList.add('hidden');
+                resultsTitle.textContent = "Generating...";
+                
+                // Add a temporary loading indicator to the results area
+                const loadingDiv = document.createElement('div');
+                loadingDiv.id = 'temp-loader';
+                loadingDiv.className = 'm-auto flex flex-col items-center justify-center opacity-70';
+                loadingDiv.innerHTML = `
+                    <div class="spinner border-brand-500 border-t-transparent w-12 h-12 mb-4"></div>
+                    <p class="text-slate-600 font-medium">Consulting curriculum documents...</p>
+                `;
+                resultsContainer.appendChild(loadingDiv);
+                
+            } else {
+                generateBtn.classList.remove('hidden');
+                loadingBtn.classList.add('hidden');
+                form.querySelectorAll('input, select').forEach(el => el.disabled = false);
+                
+                const tempLoader = document.getElementById('temp-loader');
+                if (tempLoader) tempLoader.remove();
+            }
+        }
+
+        /**
+         * Shows a toast notification
+         */
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            const bgColor = type === 'error' ? 'bg-red-500' : 'bg-slate-800';
+            const icon = type === 'error' ? 'fa-circle-xmark' : 'fa-circle-check';
+            
+            toast.className = `${bgColor} text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 transition-opacity duration-300 opacity-0 translate-y-4`;
+            toast.innerHTML = `
+                <i class="fa-solid ${icon}"></i>
+                <span class="font-medium text-sm">${message}</span>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // Animate in
+            requestAnimationFrame(() => {
+                toast.classList.remove('opacity-0', 'translate-y-4');
+            });
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Form Submit Handler
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const grade = gradeSelect.value;
+            const subject = subjectSelect.value;
+            const topic = topicInput.value.trim();
+            const count = parseInt(countInput.value, 10) || 10;
+            
+            if (!grade || !subject || !topic) return;
+
+            setLoadingState(true);
+
+            try {
+                const data = await generateVocabulary(grade, subject, topic, count);
+                renderVocabularyList(data, topic, grade);
+                showToast(`Generated ${data.length} words successfully!`);
+            } catch (error) {
+                console.error("Vocabulary generation error:", error);
+                
+                // Show error state
+                emptyState.classList.add('hidden');
+                vocabList.classList.add('hidden');
+                vocabList.classList.remove('flex');
+                errorState.classList.remove('hidden');
+                errorState.classList.add('flex');
+                errorMessage.textContent = error.message || "Failed to generate vocabulary. Please try again.";
+                resultsTitle.textContent = "Error";
+                showToast("Generation failed", "error");
+            } finally {
+                setLoadingState(false);
+            }
+        });
+
+        // Copy Text Button
+        copyBtn.addEventListener('click', () => {
+            if (!currentVocabData) return;
+            
+            let textOutput = `Vocabulary List: ${topicInput.value} (${gradeSelect.value})\n\n`;
+            
+            currentVocabData.forEach((item, i) => {
+                textOutput += `${i+1}. ${item.word} (${item.partOfSpeech})\n`;
+                textOutput += `   Definition: ${item.definition}\n`;
+                textOutput += `   Example: "${item.exampleSentence}"\n`;
+                if (item.relatedConcepts && item.relatedConcepts.length > 0) {
+                    textOutput += `   Related: ${item.relatedConcepts.join(', ')}\n`;
+                }
+                textOutput += `\n`;
+            });
+
+            // Use fallback copy method for iframe compatibility
+            const textArea = document.createElement("textarea");
+            textArea.value = textOutput;
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                if(successful) showToast("Text copied to clipboard!");
+                else showToast("Failed to copy", "error");
+            } catch (err) {
+                showToast("Failed to copy", "error");
+            }
+            
+            document.body.removeChild(textArea);
+        });
+
+        // Copy JSON Button
+        copyJsonBtn.addEventListener('click', () => {
+            if (!currentVocabData) return;
+            
+            const jsonOutput = JSON.stringify(currentVocabData, null, 2);
+            
+            const textArea = document.createElement("textarea");
+            textArea.value = jsonOutput;
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                if(successful) showToast("JSON copied to clipboard!");
+                else showToast("Failed to copy JSON", "error");
+            } catch (err) {
+                showToast("Failed to copy JSON", "error");
+            }
+            
+            document.body.removeChild(textArea);
+        });
+
+    </script>
+</body>
+</html>
