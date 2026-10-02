@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Frayer Model</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- html2canvas for Image Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4f46e5',
+                        secondary: '#10b981',
+                        dark: '#1e293b',
+                        light: '#f8fafc',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Frayer Model specific layout */
+        .frayer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 1rem;
+            position: relative;
+            min-height: 60vh;
+        }
+
+        /* The central word circle */
+        .center-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 220px;
+            height: 140px;
+            background-color: white;
+            border-radius: 50%;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 4px solid #4f46e5;
+            padding: 1rem;
+        }
+
+        .dark .center-circle {
+            background-color: #1e293b;
+            border-color: #818cf8;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+        }
+
+        .center-input {
+            width: 100%;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: none;
+            background: transparent;
+            outline: none;
+            color: inherit;
+        }
+
+        /* The four quadrants */
+        .quadrant {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            display: flex;
+            flex-direction: column;
+            border: 2px solid #e2e8f0;
+            transition: border-color 0.3s;
+            height: 100%;
+        }
+
+        .dark .quadrant {
+            background-color: #0f172a;
+            border-color: #334155;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+        }
+
+        .quadrant:focus-within {
+            border-color: #4f46e5;
+        }
+        
+        .dark .quadrant:focus-within {
+            border-color: #818cf8;
+        }
+
+        .quadrant-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #4f46e5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .dark .quadrant-title {
+            color: #818cf8;
+        }
+
+        /* Custom styling for the editable div to act as a textarea */
+        .quadrant-textarea {
+            flex-grow: 1;
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: inherit;
+            position: relative;
+            z-index: 1;
+            overflow-y: auto;
+            height: 0;
+            padding-right: 0.5rem;
+        }
+
+        /* Allow list styles inside contenteditable */
+        .quadrant-textarea ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin: 0.25rem 0;
+        }
+        
+        .quadrant-textarea li {
+            margin-bottom: 0.25rem;
+        }
+
+        /* Placeholder logic for contenteditable */
+        .quadrant-textarea:empty::before {
+            content: attr(data-placeholder);
+            color: #94a3b8;
+            pointer-events: none;
+            display: block;
+            white-space: pre-wrap;
+        }
+
+        /* 
+         * SHAPE-OUTSIDE MAGIC 
+         * Creates an invisible ellipse in the corner of each quadrant 
+         * perfectly matching the center oval size + gap, so text wraps nicely.
+         */
+        .q1-textarea::before, .q2-textarea::before, .q3-textarea::before, .q4-textarea::before {
+            content: "";
+            height: 100%;
+            width: 110px;
+        }
+        /* Top Left */
+        .q1-textarea::before { float: right; shape-outside: ellipse(125px 85px at calc(100% + 32px) calc(100% + 32px)); }
+        /* Top Right */
+        .q2-textarea::before { float: left;  shape-outside: ellipse(125px 85px at calc(0% - 32px) calc(100% + 32px)); }
+        /* Bottom Left */
+        .q3-textarea::before { float: right; shape-outside: ellipse(125px 85px at calc(100% + 32px) calc(0% - 32px)); }
+        /* Bottom Right */
+        .q4-textarea::before { float: left;  shape-outside: ellipse(125px 85px at calc(0% - 32px) calc(0% - 32px)); }
+        
+        /* Tooltip styling */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: max-content;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 10px;
+            position: absolute;
+            z-index: 20;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.75rem;
+            font-weight: normal;
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Image Export Styling - Locked Dimensions to prevent clipping */
+        .image-export, .image-export * {
+            transition: none !important; /* Disable transitions for immediate render */
+        }
+        
+        .image-export {
+            width: 1056px !important;
+            height: 816px !important;
+            max-width: 1056px !important;
+            max-height: 816px !important;
+            min-height: 816px !important;
+            padding: 40px !important;
+            display: block !important;
+            background-color: white !important;
+            color: black !important;
+            box-sizing: border-box !important;
+            border: none !important;
+            box-shadow: none !important;
+            position: relative !important;
+            border-radius: 0 !important;
+            margin: 0 !important;
+        }
+        
+        .image-export .print-only {
+            display: block !important;
+            height: auto !important;
+            margin-bottom: 20px !important;
+            color: black !important;
+        }
+        
+        .image-export .frayer-grid {
+            height: 620px !important; 
+            min-height: 620px !important;
+            max-height: 620px !important;
+            gap: 20px !important;
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            grid-template-rows: 1fr 1fr !important;
+        }
+        
+        .image-export .no-print { display: none !important; }
+        
+        .image-export .center-circle {
+            position: absolute !important;
+            top: 48% !important;
+            left: 50% !important;
+            margin-left: -110px !important; 
+            margin-top: -70px !important;  
+            transform: none !important;      
+            display: flex !important;
+            background-color: white !important;
+            border: 4px solid #4f46e5 !important; 
+        }
+        
+        .image-export .quadrant {
+            height: 100% !important;
+            background-color: white !important;
+            border: 2px solid #e2e8f0 !important;
+        }
+        
+        .image-export .center-input::placeholder { color: transparent !important; }
+        .image-export .quadrant-textarea:empty::before { display: none !important; }
+        .image-export .tooltip { display: none !important; }
+        .image-export .quadrant-textarea { overflow: hidden !important; }
+
+        /* Disable shape-outside during export to prevent text blockiness */
+        .image-export .q1-textarea::before, 
+        .image-export .q2-textarea::before, 
+        .image-export .q3-textarea::before, 
+        .image-export .q4-textarea::before {
+            display: none !important;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            .frayer-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto auto;
+            }
+            .center-circle {
+                position: static;
+                transform: none;
+                width: 100%;
+                height: auto;
+                padding: 1.5rem;
+                border-radius: 0.5rem;
+                margin-bottom: 1rem;
+            }
+            .q1-textarea::before, .q2-textarea::before, .q3-textarea::before, .q4-textarea::before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+
+    <header class="bg-white dark:bg-slate-800 shadow-sm sticky top-0 z-50 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600 text-white p-2 rounded-lg">
+                    <i class="fa-solid fa-shapes text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold leading-tight">Interactive Frayer Model</h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Vocabulary Builder</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-2 sm:gap-4">
+                <button id="clearBtn" class="p-2 text-slate-500 hover:text-red-500 dark:text-slate-400 dark:hover:text-red-400 transition-colors tooltip rounded-md hover:bg-slate-100 dark:hover:bg-slate-700" aria-label="Clear All">
+                    <i class="fa-solid fa-trash-can"></i>
+                    <span class="tooltiptext">Clear All</span>
+                </button>
+                
+                <button id="downloadImageBtn" class="p-2 text-slate-500 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400 transition-colors tooltip rounded-md hover:bg-slate-100 dark:hover:bg-slate-700" aria-label="Download Image">
+                    <i class="fa-solid fa-image"></i>
+                    <span class="tooltiptext">Download JPG</span>
+                </button>
+                
+                <div class="w-px h-6 bg-slate-200 dark:bg-slate-700 mx-1"></div>
+
+                <button id="themeToggleBtn" class="p-2 text-slate-500 hover:text-amber-500 dark:text-slate-400 dark:hover:text-amber-400 transition-colors tooltip rounded-md hover:bg-slate-100 dark:hover:bg-slate-700" aria-label="Toggle Dark Mode">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                    <span class="tooltiptext">Toggle Theme</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow p-4 sm:p-6 lg:p-8 flex flex-col items-center justify-center">
+        
+        <!-- Instructions block (hidden when printing) -->
+        <div class="max-w-4xl w-full mb-6 bg-blue-50 dark:bg-slate-800 border border-blue-100 dark:border-slate-700 rounded-lg p-4 shadow-sm no-print">
+            <h2 class="text-sm font-semibold text-blue-800 dark:text-blue-300 flex items-center gap-2 mb-2">
+                <i class="fa-solid fa-circle-info"></i> How to use this Frayer Model
+            </h2>
+            <ul class="text-sm text-blue-700 dark:text-slate-300 list-disc list-inside space-y-1 ml-2">
+                <li>Enter your target <strong>Vocabulary Word</strong> or concept in the center oval.</li>
+                <li>Fill out the four quadrants to build a comprehensive understanding.</li>
+                <li>Your work is <strong>auto-saved</strong> locally in your browser.</li>
+                <li>Use the buttons in the top right to download a high-quality JPG image or clear the board.</li>
+            </ul>
+        </div>
+
+        <!-- The actual Frayer Model Container -->
+        <div id="frayerModelContainer" class="w-full max-w-5xl relative frayer-container bg-slate-50 dark:bg-slate-900 p-2 sm:p-8 rounded-xl">
+            
+            <!-- Hidden header for print/image exports -->
+            <div class="hidden print-only text-center mb-8">
+                <h1 class="text-3xl font-bold">Frayer Model</h1>
+                <div class="flex justify-between mt-4 border-b border-black pb-2 px-4">
+                    <span>Name: ______________________</span>
+                    <span>Date: ______________________</span>
+                </div>
+            </div>
+
+            <!-- The Grid -->
+            <div class="frayer-grid">
+                
+                <!-- Quadrant 1: Definition -->
+                <div class="quadrant group q1">
+                    <div class="quadrant-title">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-book-open text-indigo-500 dark:text-indigo-400"></i> Definition
+                            <div class="tooltip ml-1 text-slate-400">
+                                <i class="fa-regular fa-circle-question text-sm"></i>
+                                <span class="tooltiptext w-48 text-left">What does the word mean? Use your own words or a dictionary definition.</span>
+                            </div>
+                        </div>
+                        <button onmousedown="event.preventDefault(); document.execCommand('insertUnorderedList', false, null)" class="text-lg text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors no-print" title="Toggle Bullet List">
+                            <i class="fa-solid fa-list-ul"></i>
+                        </button>
+                    </div>
+                    <div id="defInput" class="quadrant-textarea q1-textarea" contenteditable="true" data-placeholder="Enter definition here..."></div>
+                </div>
+
+                <!-- Quadrant 2: Characteristics -->
+                <div class="quadrant group q2">
+                    <div class="quadrant-title">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-list-check text-emerald-500 dark:text-emerald-400"></i> Characteristics
+                            <div class="tooltip ml-1 text-slate-400">
+                                <i class="fa-regular fa-circle-question text-sm"></i>
+                                <span class="tooltiptext w-48 text-left">What are the features, traits, or properties of this concept? How would you describe it?</span>
+                            </div>
+                        </div>
+                        <button onmousedown="event.preventDefault(); document.execCommand('insertUnorderedList', false, null)" class="text-lg text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors no-print" title="Toggle Bullet List">
+                            <i class="fa-solid fa-list-ul"></i>
+                        </button>
+                    </div>
+                    <div id="charInput" class="quadrant-textarea q2-textarea" contenteditable="true" data-placeholder="Enter characteristics here..."></div>
+                </div>
+
+                <!-- Quadrant 3: Examples -->
+                <div class="quadrant group q3 flex flex-col">
+                    <div id="exInput" class="quadrant-textarea q3-textarea" contenteditable="true" data-placeholder="Enter examples here..."></div>
+                    <div class="quadrant-title mt-4 mb-0">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-check-circle text-blue-500 dark:text-blue-400"></i> Examples
+                            <div class="tooltip ml-1 text-slate-400">
+                                <i class="fa-regular fa-circle-question text-sm"></i>
+                                <span class="tooltiptext w-48 text-left">What are some specific instances or synonyms of this concept?</span>
+                            </div>
+                        </div>
+                        <button onmousedown="event.preventDefault(); document.execCommand('insertUnorderedList', false, null)" class="text-lg text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-print" title="Toggle Bullet List">
+                            <i class="fa-solid fa-list-ul"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quadrant 4: Non-Examples -->
+                <div class="quadrant group q4 flex flex-col">
+                    <div id="nonExInput" class="quadrant-textarea q4-textarea" contenteditable="true" data-placeholder="Enter non-examples here..."></div>
+                    <div class="quadrant-title mt-4 mb-0">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-times-circle text-rose-500 dark:text-rose-400"></i> Non-Examples
+                            <div class="tooltip ml-1 text-slate-400">
+                                <i class="fa-regular fa-circle-question text-sm"></i>
+                                <span class="tooltiptext w-48 text-left">What is the opposite of this concept? What might people confuse it with?</span>
+                            </div>
+                        </div>
+                        <button onmousedown="event.preventDefault(); document.execCommand('insertUnorderedList', false, null)" class="text-lg text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 transition-colors no-print" title="Toggle Bullet List">
+                            <i class="fa-solid fa-list-ul"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Center Circle: Word/Concept -->
+                <div class="center-circle group">
+                    <div class="w-full relative">
+                        <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 text-xs font-semibold text-indigo-600 dark:text-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity no-print whitespace-nowrap">
+                            Vocabulary Word
+                        </div>
+                        <input type="text" id="wordInput" class="center-input" placeholder="Word/Concept" aria-label="Vocabulary Word">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 py-4 text-center text-sm text-slate-500 dark:text-slate-400 no-print">
+        <p>Interactive Frayer Model Tool - Data is saved locally in your browser.</p>
+    </footer>
+
+    <!-- Modal for notifications (custom alert/confirm) -->
+    <div id="notificationModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center backdrop-blur-sm transition-opacity duration-300 opacity-0">
+        <div class="bg-white dark:bg-slate-800 rounded-lg p-6 max-w-sm w-full shadow-xl transform scale-95 transition-transform duration-300">
+            <h3 id="modalTitle" class="text-lg font-bold mb-2 text-slate-900 dark:text-white flex items-center gap-2">
+                <i class="fa-solid fa-circle-exclamation text-amber-500"></i> Notice
+            </h3>
+            <p id="modalMessage" class="text-slate-600 dark:text-slate-300 mb-6"></p>
+            <div class="flex justify-end gap-3" id="modalActions">
+                <button id="modalCancelBtn" class="px-4 py-2 text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 dark:text-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 rounded-md transition-colors hidden">
+                    Cancel
+                </button>
+                <button id="modalConfirmBtn" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md transition-colors shadow-sm">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM Elements
+            const inputs = {
+                word: document.getElementById('wordInput'),
+                def: document.getElementById('defInput'),
+                char: document.getElementById('charInput'),
+                ex: document.getElementById('exInput'),
+                nonEx: document.getElementById('nonExInput')
+            };
+            
+            const buttons = {
+                clear: document.getElementById('clearBtn'),
+                image: document.getElementById('downloadImageBtn'), // Switched to Image Download
+                theme: document.getElementById('themeToggleBtn')
+            };
+
+            const themeIcon = document.getElementById('themeIcon');
+            const frayerContainer = document.getElementById('frayerModelContainer');
+            
+            // Modal Elements
+            const modal = document.getElementById('notificationModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalMessage = document.getElementById('modalMessage');
+            const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+            const modalCancelBtn = document.getElementById('modalCancelBtn');
+
+            // --- State Management (Local Storage) ---
+            const STORAGE_KEY = 'frayer_model_data';
+
+            // Load saved data on startup
+            function loadData() {
+                const savedData = localStorage.getItem(STORAGE_KEY);
+                if (savedData) {
+                    try {
+                        const data = JSON.parse(savedData);
+                        inputs.word.value = data.word || '';
+                        inputs.def.innerHTML = data.def || '';
+                        inputs.char.innerHTML = data.char || '';
+                        inputs.ex.innerHTML = data.ex || '';
+                        inputs.nonEx.innerHTML = data.nonEx || '';
+                        
+                        // Cleanup any stray br tags from empty saves to ensure placeholder shows
+                        Object.values(inputs).forEach(input => {
+                            if(input !== inputs.word && (input.innerHTML === '<br>' || input.innerHTML.trim() === '')) {
+                                input.innerHTML = '';
+                            }
+                        });
+                    } catch (e) {
+                        console.error('Error parsing saved data', e);
+                    }
+                }
+            }
+
+            // Save data whenever inputs change
+            function saveData() {
+                const data = {
+                    word: inputs.word.value,
+                    def: inputs.def.innerHTML,
+                    char: inputs.char.innerHTML,
+                    ex: inputs.ex.innerHTML,
+                    nonEx: inputs.nonEx.innerHTML
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            }
+
+            // Add event listeners to all inputs for auto-saving
+            Object.values(inputs).forEach(input => {
+                input.addEventListener('input', function() {
+                    // Ensure complete emptiness for CSS placeholder to work when backspacing
+                    if (this !== inputs.word && (this.innerHTML === '<br>' || this.innerHTML.trim() === '')) {
+                        this.innerHTML = '';
+                    }
+                    saveData();
+                });
+            });
+
+            // Force plain text paste to keep Frayer layout clean
+            document.querySelectorAll('.quadrant-textarea').forEach(el => {
+                el.addEventListener('paste', function(e) {
+                    e.preventDefault();
+                    const text = (e.originalEvent || e).clipboardData.getData('text/plain');
+                    document.execCommand('insertText', false, text);
+                });
+            });
+
+            // Initialize data
+            loadData();
+
+            // --- Theme Management (Dark Mode) ---
+            function initTheme() {
+                if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.classList.add('dark');
+                    updateThemeIcon(true);
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    updateThemeIcon(false);
+                }
+            }
+
+            function updateThemeIcon(isDark) {
+                if (isDark) {
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                } else {
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                }
+            }
+
+            // Toggle theme
+            buttons.theme.addEventListener('click', () => {
+                const isDark = document.documentElement.classList.toggle('dark');
+                localStorage.theme = isDark ? 'dark' : 'light';
+                updateThemeIcon(isDark);
+            });
+
+            initTheme();
+
+            // --- Custom Modal Functions ---
+            let currentConfirmCallback = null;
+
+            function showModal(title, message, isConfirm = false, onConfirm = null) {
+                modalTitle.innerHTML = title;
+                modalMessage.textContent = message;
+                
+                if (isConfirm) {
+                    modalCancelBtn.classList.remove('hidden');
+                    currentConfirmCallback = onConfirm;
+                } else {
+                    modalCancelBtn.classList.add('hidden');
+                    currentConfirmCallback = null;
+                }
+
+                modal.classList.remove('hidden');
+                void modal.offsetWidth; // Trigger reflow for transition
+                modal.classList.remove('opacity-0');
+                modal.firstElementChild.classList.remove('scale-95');
+                modal.firstElementChild.classList.add('scale-100');
+            }
+
+            function hideModal() {
+                modal.classList.add('opacity-0');
+                modal.firstElementChild.classList.remove('scale-100');
+                modal.firstElementChild.classList.add('scale-95');
+                
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300); // match duration-300
+            }
+
+            modalConfirmBtn.addEventListener('click', () => {
+                if (currentConfirmCallback) {
+                    currentConfirmCallback();
+                }
+                hideModal();
+            });
+
+            modalCancelBtn.addEventListener('click', hideModal);
+
+            // --- Action Buttons ---
+
+            // Clear All
+            buttons.clear.addEventListener('click', () => {
+                showModal(
+                    '<i class="fa-solid fa-triangle-exclamation text-red-500"></i> Clear Board',
+                    'Are you sure you want to clear all fields? This action cannot be undone.',
+                    true, 
+                    () => { 
+                        inputs.word.value = '';
+                        inputs.def.innerHTML = '';
+                        inputs.char.innerHTML = '';
+                        inputs.ex.innerHTML = '';
+                        inputs.nonEx.innerHTML = '';
+                        saveData();
+                    }
+                );
+            });
+
+            // Download as JPG Image using html2canvas directly
+            buttons.image.addEventListener('click', () => {
+                const element = document.getElementById('frayerModelContainer');
+                
+                // Show loading state
+                const originalBtnHtml = buttons.image.innerHTML;
+                buttons.image.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+                buttons.image.disabled = true;
+
+                // Sync the input value directly to the attribute so html2canvas can read it
+                inputs.word.setAttribute('value', inputs.word.value);
+
+                // Temporarily force light mode for clean printed export
+                const wasDark = document.documentElement.classList.contains('dark');
+                if (wasDark) {
+                    document.documentElement.classList.remove('dark');
+                }
+
+                // Apply export class to lock dimensions and layout strictly
+                element.classList.add('image-export');
+
+                // Wait a tiny bit for the browser to render the new locked CSS layout
+                setTimeout(() => {
+                    html2canvas(element, {
+                        scale: 2, // 2x scale for crisp high-resolution text
+                        useCORS: true,
+                        backgroundColor: '#ffffff',
+                        logging: false,
+                        // CRITICAL FIX: Ignore window scrolling to prevent bottom clipping
+                        scrollY: -window.scrollY, 
+                        windowWidth: document.documentElement.offsetWidth,
+                    }).then(canvas => {
+                        // Restore original UI state
+                        element.classList.remove('image-export');
+                        if (wasDark) document.documentElement.classList.add('dark');
+                        buttons.image.innerHTML = originalBtnHtml;
+                        buttons.image.disabled = false;
+                        
+                        // Convert canvas to JPG data URL
+                        const imgData = canvas.toDataURL('image/jpeg', 0.95);
+                        
+                        // Create a temporary link to trigger the download
+                        const downloadLink = document.createElement('a');
+                        let fileNameWord = inputs.word.value.trim().replace(/[^a-z0-9]/gi, '_').toLowerCase();
+                        if (!fileNameWord) fileNameWord = 'blank';
+                        
+                        downloadLink.download = `frayer_model_${fileNameWord}.jpg`;
+                        downloadLink.href = imgData;
+                        downloadLink.click();
+                        
+                    }).catch(err => {
+                        console.error('Image generation error:', err);
+                        
+                        // Restore original UI state on failure
+                        element.classList.remove('image-export');
+                        if (wasDark) document.documentElement.classList.add('dark');
+                        buttons.image.innerHTML = originalBtnHtml;
+                        buttons.image.disabled = false;
+                        
+                        showModal('Error', 'There was an issue generating the image.');
+                    });
+                }, 150);
+            });
+        });
+    </script>
+</body>
+</html>
