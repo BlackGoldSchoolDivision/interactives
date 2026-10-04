@@ -4,6 +4,7 @@ Run from any working directory: python3 source/build.py
 Pass --captures /path/to/screenshots to refresh the published JPEG thumbnails.
 """
 import argparse
+import hashlib
 import json
 from pathlib import Path
 
@@ -29,5 +30,8 @@ for a in data:
 payload = json.dumps(data, ensure_ascii=False, separators=(',', ':')).replace('<', '\\u003c')
 template = (ROOT / 'source/page-template.html').read_text()
 assert template.count('__CATALOGUE__') == 1
+assert template.count('__SCRIPT_VERSION__') == 1
+script_version = hashlib.sha256((ROOT / 'catalogue.js').read_bytes()).hexdigest()[:12]
+template = template.replace('__SCRIPT_VERSION__', script_version)
 (ROOT / 'index.html').write_text(template.replace('__CATALOGUE__', payload))
 print(f"Built {len(data)} catalogue entries; {(ROOT/'index.html').stat().st_size:,} byte HTML")
