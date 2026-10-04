@@ -7,7 +7,7 @@ const descriptions = {
   'Favourites': 'A good place to start. Choose one and jump in.',
   'All activities': 'Browse the full collection, or choose a subject and activity type.',
   'Reading & writing': 'Build words, develop ideas, and make meaning.',
-  'Morphology': 'Explore word parts and word building. Improvements to these earlier versions are planned.',
+  'Morphology': 'Build words, investigate families and compare how affixes change meaning. Explore games and printable activities.',
   'Maths': 'Explore models and practise reasoning with numbers.',
   'Science': 'Observe, test ideas, and explain what you notice.',
   'Geography': 'Alberta, Canada, the world, and the skills we use to map them.',
