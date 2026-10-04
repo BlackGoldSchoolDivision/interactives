@@ -29,7 +29,14 @@ document.addEventListener('click',event=>{const b=event.target.closest('button[d
   if(action==='home'){deck=[];route='game';render(true);return;}
   if(action==='resume'){route='game';render(true);return;}
   if(action==='start'){start(b.dataset.level);return;}
-  if(action==='pick'){selected[Number(b.dataset.column)]=b.dataset.part;message='';render();return;}
+  if(action==='pick'){
+    selected[Number(b.dataset.column)]=b.dataset.part;message='';
+    main.querySelectorAll('button[data-action="pick"]').forEach(tile=>tile.setAttribute('aria-pressed',String(selected[Number(tile.dataset.column)]===tile.dataset.part)));
+    main.querySelector('[aria-label="Your word sum"]').textContent=selected.map(p=>p===null?'□':p||'—').join(' + ');
+    main.querySelector('[data-action="check-build"]').disabled=selected.some(p=>p===null);
+    main.querySelectorAll('.feedback.error').forEach(f=>f.remove());
+    return;
+  }
   if(action==='hint'){hinted=true;supported=true;announce('A hint is shown below the activity.');render();return;}
   if(action==='check-build'){
     if(!MorphCore.partsCorrect(selected,m.parts)){supported=true;const wrong=selected.map((p,i)=>p!==m.parts[i]?['prefix','base','suffix'][i]:null).filter(Boolean);message=`Revisit your ${wrong.join(' and ')}. Use the meaning clue and the full base. You can change a tile and check again.`;messageType='error';announce(message);render();return;}
