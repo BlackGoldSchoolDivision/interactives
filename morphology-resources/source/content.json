@@ -1,0 +1,1711 @@
+{
+  "missions": [
+    {
+      "id": "replay",
+      "level": "start",
+      "word": "replay",
+      "parts": [
+        "re",
+        "play",
+        ""
+      ],
+      "sentence": "We missed the best part. Please ___ the video.",
+      "meanings": [
+        "play again",
+        "play before everyone else",
+        "stop playing"
+      ],
+      "rule": "",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": ""
+    },
+    {
+      "id": "reread",
+      "level": "start",
+      "word": "reread",
+      "parts": [
+        "re",
+        "read",
+        ""
+      ],
+      "sentence": "The directions are tricky. I will ___ them.",
+      "meanings": [
+        "read again",
+        "read incorrectly",
+        "read without help"
+      ],
+      "rule": "",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": ""
+    },
+    {
+      "id": "repack",
+      "level": "start",
+      "word": "repack",
+      "parts": [
+        "re",
+        "pack",
+        ""
+      ],
+      "sentence": "I forgot my lunch, so I need to ___ my bag.",
+      "meanings": [
+        "pack again",
+        "take everything out",
+        "pack before breakfast"
+      ],
+      "rule": "",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": ""
+    },
+    {
+      "id": "preheat",
+      "level": "start",
+      "word": "preheat",
+      "parts": [
+        "pre",
+        "heat",
+        ""
+      ],
+      "sentence": "Before the dough goes in, ___ the oven.",
+      "meanings": [
+        "heat beforehand",
+        "heat again after baking",
+        "remove the heat"
+      ],
+      "rule": "",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": ""
+    },
+    {
+      "id": "misread",
+      "level": "start",
+      "word": "misread",
+      "parts": [
+        "mis",
+        "read",
+        ""
+      ],
+      "sentence": "I thought the sign said 15, but it said 18. I ___ it.",
+      "meanings": [
+        "read incorrectly",
+        "read again",
+        "read before a friend"
+      ],
+      "rule": "",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": ""
+    },
+    {
+      "id": "unfair",
+      "level": "start",
+      "word": "unfair",
+      "parts": [
+        "un",
+        "fair",
+        ""
+      ],
+      "sentence": "Only one team gets a turn. That is ___.",
+      "meanings": [
+        "not fair",
+        "fair again",
+        "very fair"
+      ],
+      "rule": "",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": ""
+    },
+    {
+      "id": "disagree",
+      "level": "start",
+      "word": "disagree",
+      "parts": [
+        "dis",
+        "agree",
+        ""
+      ],
+      "sentence": "You prefer blue and I prefer green. We ___.",
+      "meanings": [
+        "have different opinions; not agree",
+        "agree again",
+        "agree before a meeting"
+      ],
+      "rule": "",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": ""
+    },
+    {
+      "id": "helpful",
+      "level": "start",
+      "word": "helpful",
+      "parts": [
+        "",
+        "help",
+        "ful"
+      ],
+      "sentence": "You carried the heavy box for me. That was ___.",
+      "meanings": [
+        "giving help; useful",
+        "without help",
+        "a person who helps"
+      ],
+      "rule": "",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": ""
+    },
+    {
+      "id": "careless",
+      "level": "start",
+      "word": "careless",
+      "parts": [
+        "",
+        "care",
+        "less"
+      ],
+      "sentence": "Leaving the lid open was a ___ mistake.",
+      "meanings": [
+        "not taking enough care",
+        "taking great care",
+        "someone who provides care"
+      ],
+      "rule": "",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": ""
+    },
+    {
+      "id": "kindness",
+      "level": "start",
+      "word": "kindness",
+      "parts": [
+        "",
+        "kind",
+        "ness"
+      ],
+      "sentence": "Sharing her lunch showed ___.",
+      "meanings": [
+        "the quality of being kind",
+        "a kind person",
+        "being less kind"
+      ],
+      "rule": "",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": ""
+    },
+    {
+      "id": "teacher",
+      "level": "start",
+      "word": "teacher",
+      "parts": [
+        "",
+        "teach",
+        "er"
+      ],
+      "sentence": "Our ___ helps us learn new things.",
+      "meanings": [
+        "a person who teaches",
+        "more able to teach",
+        "the act of teaching again"
+      ],
+      "rule": "",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": "a person who does the action"
+    },
+    {
+      "id": "painted",
+      "level": "start",
+      "word": "painted",
+      "parts": [
+        "",
+        "paint",
+        "ed"
+      ],
+      "sentence": "Yesterday, we ___ the fence blue.",
+      "meanings": [
+        "put paint on it in the past",
+        "are putting paint on it now",
+        "will paint it again"
+      ],
+      "rule": "",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": "marks an action in the past"
+    },
+    {
+      "id": "unhelpful",
+      "level": "meaning",
+      "word": "unhelpful",
+      "parts": [
+        "un",
+        "help",
+        "ful"
+      ],
+      "sentence": "Directions that leave out every step are ___.",
+      "meanings": [
+        "not helpful",
+        "helpful again",
+        "a person who gives help"
+      ],
+      "rule": "",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": ""
+    },
+    {
+      "id": "unkindness",
+      "level": "meaning",
+      "word": "unkindness",
+      "parts": [
+        "un",
+        "kind",
+        "ness"
+      ],
+      "sentence": "Laughing at someone’s mistake shows ___.",
+      "meanings": [
+        "the quality of being unkind",
+        "an especially kind person",
+        "being kind again"
+      ],
+      "rule": "",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": ""
+    },
+    {
+      "id": "rereading",
+      "level": "meaning",
+      "word": "rereading",
+      "parts": [
+        "re",
+        "read",
+        "ing"
+      ],
+      "sentence": "I am ___ the chapter to check a detail.",
+      "meanings": [
+        "reading again",
+        "reading incorrectly",
+        "someone who reads"
+      ],
+      "rule": "",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": "shows an ongoing action here"
+    },
+    {
+      "id": "repainted",
+      "level": "meaning",
+      "word": "repainted",
+      "parts": [
+        "re",
+        "paint",
+        "ed"
+      ],
+      "sentence": "The wall was blue. Yesterday, we ___ it green.",
+      "meanings": [
+        "painted again in the past",
+        "painted incorrectly",
+        "are painting it for the first time"
+      ],
+      "rule": "",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": "marks an action in the past"
+    },
+    {
+      "id": "dislike",
+      "level": "meaning",
+      "word": "dislike",
+      "parts": [
+        "dis",
+        "like",
+        ""
+      ],
+      "sentence": "I really ___ the bitter taste of that medicine.",
+      "meanings": [
+        "not like",
+        "like again",
+        "like very much"
+      ],
+      "rule": "",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": ""
+    },
+    {
+      "id": "misplace",
+      "level": "meaning",
+      "word": "misplace",
+      "parts": [
+        "mis",
+        "place",
+        ""
+      ],
+      "sentence": "If I put my keys somewhere and forget where, I ___ them.",
+      "meanings": [
+        "put something somewhere and lose track of it",
+        "put something back in its usual place",
+        "put something down beforehand"
+      ],
+      "rule": "",
+      "spellings": [],
+      "prefixJob": "wrongly; in the wrong place here",
+      "suffixJob": ""
+    },
+    {
+      "id": "hopeful",
+      "level": "meaning",
+      "word": "hopeful",
+      "parts": [
+        "",
+        "hope",
+        "ful"
+      ],
+      "sentence": "The sky is clearing. We are ___ that the game will go ahead.",
+      "meanings": [
+        "feeling hope; expecting something good",
+        "without hope",
+        "hoping again"
+      ],
+      "rule": "Keep the final e in hope before -ful. This suffix begins with a consonant.",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": ""
+    },
+    {
+      "id": "joyful",
+      "level": "meaning",
+      "word": "joyful",
+      "parts": [
+        "",
+        "joy",
+        "ful"
+      ],
+      "sentence": "We cheered together at the ___ celebration.",
+      "meanings": [
+        "feeling or showing great joy",
+        "without joy",
+        "a person who brings joy"
+      ],
+      "rule": "Keep the y in joy. A vowel comes before it: joy + ful → joyful.",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": ""
+    },
+    {
+      "id": "fearless",
+      "level": "meaning",
+      "word": "fearless",
+      "parts": [
+        "",
+        "fear",
+        "less"
+      ],
+      "sentence": "The ___ climber stayed calm on the high wall.",
+      "meanings": [
+        "showing no fear",
+        "full of fear",
+        "a person who causes fear"
+      ],
+      "rule": "",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": ""
+    },
+    {
+      "id": "darkness",
+      "level": "meaning",
+      "word": "darkness",
+      "parts": [
+        "",
+        "dark",
+        "ness"
+      ],
+      "sentence": "When we turned off the light, the room filled with ___.",
+      "meanings": [
+        "the state of being dark",
+        "darker than something else",
+        "a person who likes the dark"
+      ],
+      "rule": "",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": ""
+    },
+    {
+      "id": "quickly",
+      "level": "meaning",
+      "word": "quickly",
+      "parts": [
+        "",
+        "quick",
+        "ly"
+      ],
+      "sentence": "The rabbit moved ___ across the path.",
+      "meanings": [
+        "in a quick way",
+        "more quick than another rabbit",
+        "the quality of being quick"
+      ],
+      "rule": "",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": ""
+    },
+    {
+      "id": "smaller",
+      "level": "meaning",
+      "word": "smaller",
+      "parts": [
+        "",
+        "small",
+        "er"
+      ],
+      "sentence": "This pebble is ___ than that rock.",
+      "meanings": [
+        "more small; less large than the other one",
+        "a person who is small",
+        "the quality of being small"
+      ],
+      "rule": "",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": "compares two things: more small"
+    },
+    {
+      "id": "making",
+      "level": "spelling",
+      "word": "making",
+      "parts": [
+        "",
+        "make",
+        "ing"
+      ],
+      "sentence": "We are ___ a model of a bridge.",
+      "meanings": [
+        "creating something now",
+        "created something in the past",
+        "creating it again"
+      ],
+      "rule": "Remove the final e in make before adding -ing: make + ing → making.",
+      "spellings": [
+        "making",
+        "makeing",
+        "makking"
+      ],
+      "prefixJob": "",
+      "suffixJob": "shows an ongoing action here"
+    },
+    {
+      "id": "hoping",
+      "level": "spelling",
+      "word": "hoping",
+      "parts": [
+        "",
+        "hope",
+        "ing"
+      ],
+      "sentence": "I am ___ that my friend can visit.",
+      "meanings": [
+        "wanting something good to happen",
+        "jumping on one foot",
+        "a person who has hope"
+      ],
+      "rule": "Remove the final e in hope before -ing. Hoping comes from hope; hopping comes from hop.",
+      "spellings": [
+        "hoping",
+        "hopeing",
+        "hopping"
+      ],
+      "prefixJob": "",
+      "suffixJob": "shows an ongoing action here"
+    },
+    {
+      "id": "caring",
+      "level": "spelling",
+      "word": "caring",
+      "parts": [
+        "",
+        "care",
+        "ing"
+      ],
+      "sentence": "The nurse is ___ for an injured person.",
+      "meanings": [
+        "looking after someone now",
+        "not taking care",
+        "looked after someone in the past"
+      ],
+      "rule": "Remove the final e in care before adding -ing: care + ing → caring.",
+      "spellings": [
+        "caring",
+        "careing",
+        "carring"
+      ],
+      "prefixJob": "",
+      "suffixJob": "shows an ongoing action here"
+    },
+    {
+      "id": "baker",
+      "level": "spelling",
+      "word": "baker",
+      "parts": [
+        "",
+        "bake",
+        "er"
+      ],
+      "sentence": "The ___ makes bread every morning.",
+      "meanings": [
+        "a person who bakes",
+        "more baked than something else",
+        "the act of baking again"
+      ],
+      "rule": "Remove the final e in bake before adding -er: bake + er → baker.",
+      "spellings": [
+        "baker",
+        "bakeer",
+        "bakker"
+      ],
+      "prefixJob": "",
+      "suffixJob": "a person who does the action"
+    },
+    {
+      "id": "happiness",
+      "level": "spelling",
+      "word": "happiness",
+      "parts": [
+        "",
+        "happy",
+        "ness"
+      ],
+      "sentence": "Her smile showed her ___.",
+      "meanings": [
+        "the state of being happy",
+        "a person who is happy",
+        "not happy"
+      ],
+      "rule": "In happy, a consonant comes before y. Change y to i before -ness: happy + ness → happiness.",
+      "spellings": [
+        "happiness",
+        "happyness",
+        "happines"
+      ],
+      "prefixJob": "",
+      "suffixJob": ""
+    },
+    {
+      "id": "luckily",
+      "level": "spelling",
+      "word": "luckily",
+      "parts": [
+        "",
+        "lucky",
+        "ly"
+      ],
+      "sentence": "___, we found the missing mittens before the bus came.",
+      "meanings": [
+        "by good luck",
+        "without luck",
+        "the state of being lucky"
+      ],
+      "rule": "In lucky, a consonant comes before y. Change y to i before -ly: lucky + ly → luckily.",
+      "spellings": [
+        "luckily",
+        "luckyly",
+        "luckly"
+      ],
+      "prefixJob": "",
+      "suffixJob": ""
+    },
+    {
+      "id": "tried",
+      "level": "spelling",
+      "word": "tried",
+      "parts": [
+        "",
+        "try",
+        "ed"
+      ],
+      "sentence": "Yesterday, I ___ a new strategy.",
+      "meanings": [
+        "made an attempt in the past",
+        "am making an attempt now",
+        "a person who makes attempts"
+      ],
+      "rule": "In try, a consonant comes before y. Change y to i before -ed: try + ed → tried.",
+      "spellings": [
+        "tried",
+        "tryed",
+        "tryied"
+      ],
+      "prefixJob": "",
+      "suffixJob": "marks an action in the past"
+    },
+    {
+      "id": "carried",
+      "level": "spelling",
+      "word": "carried",
+      "parts": [
+        "",
+        "carry",
+        "ed"
+      ],
+      "sentence": "Yesterday, we ___ the books to class.",
+      "meanings": [
+        "moved something while holding it in the past",
+        "are holding it now",
+        "a person who carries things"
+      ],
+      "rule": "In carry, a consonant comes before y. Change y to i before -ed: carry + ed → carried.",
+      "spellings": [
+        "carried",
+        "carryed",
+        "carred"
+      ],
+      "prefixJob": "",
+      "suffixJob": "marks an action in the past"
+    },
+    {
+      "id": "running",
+      "level": "spelling",
+      "word": "running",
+      "parts": [
+        "",
+        "run",
+        "ing"
+      ],
+      "sentence": "The children are ___ around the field.",
+      "meanings": [
+        "moving quickly on foot now",
+        "ran around the field in the past",
+        "a person who runs"
+      ],
+      "rule": "Run has one syllable and ends in one vowel letter + one consonant. Double n before -ing: run + ing → running.",
+      "spellings": [
+        "running",
+        "runing",
+        "runng"
+      ],
+      "prefixJob": "",
+      "suffixJob": "shows an ongoing action here"
+    },
+    {
+      "id": "stopped",
+      "level": "spelling",
+      "word": "stopped",
+      "parts": [
+        "",
+        "stop",
+        "ed"
+      ],
+      "sentence": "The bus ___ at the school yesterday.",
+      "meanings": [
+        "came to a halt in the past",
+        "is coming to a halt now",
+        "a person who stops things"
+      ],
+      "rule": "Stop has one syllable and ends in one vowel letter + one consonant. Double p before -ed: stop + ed → stopped.",
+      "spellings": [
+        "stopped",
+        "stoped",
+        "stoppped"
+      ],
+      "prefixJob": "",
+      "suffixJob": "marks an action in the past"
+    },
+    {
+      "id": "swimmer",
+      "level": "spelling",
+      "word": "swimmer",
+      "parts": [
+        "",
+        "swim",
+        "er"
+      ],
+      "sentence": "The ___ crossed the pool.",
+      "meanings": [
+        "a person who swims",
+        "more able to swim",
+        "the state of swimming"
+      ],
+      "rule": "Swim has one syllable and ends in one vowel letter + one consonant. Double m before -er: swim + er → swimmer.",
+      "spellings": [
+        "swimmer",
+        "swimer",
+        "swimemer"
+      ],
+      "prefixJob": "",
+      "suffixJob": "a person who does the action"
+    },
+    {
+      "id": "bigger",
+      "level": "spelling",
+      "word": "bigger",
+      "parts": [
+        "",
+        "big",
+        "er"
+      ],
+      "sentence": "A horse is ___ than a mouse.",
+      "meanings": [
+        "more big; larger than the other one",
+        "a person who is big",
+        "the state of being big"
+      ],
+      "rule": "Big has one syllable and ends in one vowel letter + one consonant. Double g before -er: big + er → bigger.",
+      "spellings": [
+        "bigger",
+        "biger",
+        "biggger"
+      ],
+      "prefixJob": "",
+      "suffixJob": "compares two things: more big"
+    }
+  ],
+  "extras": [
+    {
+      "id": "playing",
+      "level": "start",
+      "word": "playing",
+      "parts": [
+        "",
+        "play",
+        "ing"
+      ],
+      "sentence": "The children are ___ a game.",
+      "meanings": [
+        "taking part in a game now",
+        "",
+        ""
+      ],
+      "rule": "Keep the y in play. A vowel comes before it.",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": "shows an ongoing action here"
+    },
+    {
+      "id": "played",
+      "level": "start",
+      "word": "played",
+      "parts": [
+        "",
+        "play",
+        "ed"
+      ],
+      "sentence": "Yesterday, we ___ a game.",
+      "meanings": [
+        "took part in a game in the past",
+        "",
+        ""
+      ],
+      "rule": "Keep the y in play. A vowel comes before it.",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": "marks an action in the past"
+    },
+    {
+      "id": "crying",
+      "level": "start",
+      "word": "crying",
+      "parts": [
+        "",
+        "cry",
+        "ing"
+      ],
+      "sentence": "The baby is ___.",
+      "meanings": [
+        "shedding tears now",
+        "",
+        ""
+      ],
+      "rule": "Keep the y in cry before -ing. The suffix already begins with i.",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": "shows an ongoing action here"
+    },
+    {
+      "id": "helper",
+      "level": "start",
+      "word": "helper",
+      "parts": [
+        "",
+        "help",
+        "er"
+      ],
+      "sentence": "The ___ carried the box.",
+      "meanings": [
+        "a person who helps",
+        "",
+        ""
+      ],
+      "rule": "",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": "a person who does the action"
+    },
+    {
+      "id": "careful",
+      "level": "start",
+      "word": "careful",
+      "parts": [
+        "",
+        "care",
+        "ful"
+      ],
+      "sentence": "Be ___ near the road.",
+      "meanings": [
+        "taking care",
+        "",
+        ""
+      ],
+      "rule": "Keep the final e in care before the consonant suffix -ful.",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": ""
+    },
+    {
+      "id": "unhappy",
+      "level": "start",
+      "word": "unhappy",
+      "parts": [
+        "un",
+        "happy",
+        ""
+      ],
+      "sentence": "The missed visit made him ___.",
+      "meanings": [
+        "not happy",
+        "",
+        ""
+      ],
+      "rule": "",
+      "spellings": [],
+      "prefixJob": "",
+      "suffixJob": ""
+    }
+  ],
+  "cases": [
+    {
+      "id": "flow",
+      "title": "The flower puzzle",
+      "kind": "Word families",
+      "intro": "Investigate the base flow, meaning move steadily, like water. A family member keeps a connection to this base and its meaning.",
+      "groups": [
+        {
+          "id": "family",
+          "label": "flow family",
+          "detail": "The base and its meaning connect"
+        },
+        {
+          "id": "lookalike",
+          "label": "Another base",
+          "detail": "Similar letters or sounds are not enough"
+        }
+      ],
+      "cards": [
+        {
+          "word": "flowed",
+          "group": "family",
+          "evidence": "flow + ed → flowed: moved steadily in the past.",
+          "sentence": "",
+          "id": "flow-0"
+        },
+        {
+          "word": "flowing",
+          "group": "family",
+          "evidence": "flow + ing → flowing: moving steadily.",
+          "sentence": "",
+          "id": "flow-1"
+        },
+        {
+          "word": "overflow",
+          "group": "family",
+          "evidence": "over + flow → overflow: flow beyond a limit.",
+          "sentence": "",
+          "id": "flow-2"
+        },
+        {
+          "word": "overflowing",
+          "group": "family",
+          "evidence": "over + flow + ing → overflowing: flowing beyond a limit.",
+          "sentence": "",
+          "id": "flow-3"
+        },
+        {
+          "word": "flower",
+          "group": "lookalike",
+          "evidence": "Flower means a bloom. It is not flow + er; the letters do not make that meaning.",
+          "sentence": "",
+          "id": "flow-4"
+        },
+        {
+          "word": "flowers",
+          "group": "lookalike",
+          "evidence": "flower + s → flowers. The base is flower, not flow.",
+          "sentence": "",
+          "id": "flow-5"
+        }
+      ],
+      "evidence": {
+        "prompt": "Why is flower outside this flow family?",
+        "answers": [
+          "Its base and meaning are different, even though some letters match.",
+          "Every word ending in -er is a person who does something.",
+          "A family member must sound exactly like its base."
+        ],
+        "explanation": "A spelling resemblance is a clue to investigate, not proof. Flower has its own base and word history."
+      },
+      "apply": {
+        "prompt": "“Rain made the pond overflow.” What happened?",
+        "answers": [
+          "Water flowed beyond the pond’s limit.",
+          "Flowers grew in the pond.",
+          "The water stopped moving."
+        ],
+        "explanation": "Over- adds the idea of going beyond a limit to flow."
+      },
+      "tip": "Use both structure and meaning. Do not cut a word just because a familiar letter string appears."
+    },
+    {
+      "id": "play",
+      "title": "Play or display?",
+      "kind": "Word families",
+      "intro": "Investigate the base play, meaning take part in a game or activity. A family member keeps a connection to this base and its meaning.",
+      "groups": [
+        {
+          "id": "family",
+          "label": "play family",
+          "detail": "The base and its meaning connect"
+        },
+        {
+          "id": "lookalike",
+          "label": "Another base",
+          "detail": "Similar letters or sounds are not enough"
+        }
+      ],
+      "cards": [
+        {
+          "word": "player",
+          "group": "family",
+          "evidence": "play + er → player: a person who plays.",
+          "sentence": "",
+          "id": "play-0"
+        },
+        {
+          "word": "playing",
+          "group": "family",
+          "evidence": "play + ing → playing: taking part in the activity.",
+          "sentence": "",
+          "id": "play-1"
+        },
+        {
+          "word": "replay",
+          "group": "family",
+          "evidence": "re + play → replay: play again.",
+          "sentence": "",
+          "id": "play-2"
+        },
+        {
+          "word": "playful",
+          "group": "family",
+          "evidence": "play + ful → playful: enjoying play; full of fun.",
+          "sentence": "",
+          "id": "play-3"
+        },
+        {
+          "word": "display",
+          "group": "lookalike",
+          "evidence": "Display means show. It is not dis + play meaning “not play”.",
+          "sentence": "",
+          "id": "play-4"
+        },
+        {
+          "word": "displayed",
+          "group": "lookalike",
+          "evidence": "display + ed → displayed. Its base here is display, not play.",
+          "sentence": "",
+          "id": "play-5"
+        }
+      ],
+      "evidence": {
+        "prompt": "What is the strongest evidence that replay belongs?",
+        "answers": [
+          "Re- means again, and the word still means play.",
+          "It has the same number of letters as player.",
+          "Every word ending in play belongs automatically."
+        ],
+        "explanation": "Replay has a meaningful prefix plus the base play. Display has a different base and history."
+      },
+      "apply": {
+        "prompt": "“Let’s replay the final scene.” What should we do?",
+        "answers": [
+          "Play the scene again.",
+          "Stop playing the scene.",
+          "Show a poster of the scene."
+        ],
+        "explanation": "Re- means again in replay."
+      },
+      "tip": "A word family is based on a meaningful base, not just a matching ending."
+    },
+    {
+      "id": "care",
+      "title": "The missing e",
+      "kind": "Word families",
+      "intro": "Investigate the base care, meaning look after; give attention. A family member keeps a connection to this base and its meaning.",
+      "groups": [
+        {
+          "id": "family",
+          "label": "care family",
+          "detail": "The base and its meaning connect"
+        },
+        {
+          "id": "lookalike",
+          "label": "Another base",
+          "detail": "Similar letters or sounds are not enough"
+        }
+      ],
+      "cards": [
+        {
+          "word": "careful",
+          "group": "family",
+          "evidence": "care + ful → careful: taking care. Keep the final e before -ful.",
+          "sentence": "",
+          "id": "care-0"
+        },
+        {
+          "word": "careless",
+          "group": "family",
+          "evidence": "care + less → careless: not taking enough care.",
+          "sentence": "",
+          "id": "care-1"
+        },
+        {
+          "word": "caring",
+          "group": "family",
+          "evidence": "care + ing → caring: looking after someone. Remove final e before -ing.",
+          "sentence": "",
+          "id": "care-2"
+        },
+        {
+          "word": "cared",
+          "group": "family",
+          "evidence": "care + ed → cared: gave care in the past. Remove final e before -ed.",
+          "sentence": "",
+          "id": "care-3"
+        },
+        {
+          "word": "scare",
+          "group": "lookalike",
+          "evidence": "Scare means frighten. There is no prefix s- meaning “frighten” attached to care.",
+          "sentence": "",
+          "id": "care-4"
+        },
+        {
+          "word": "scared",
+          "group": "lookalike",
+          "evidence": "scare + ed → scared: frightened. Its base is scare, not care.",
+          "sentence": "",
+          "id": "care-5"
+        }
+      ],
+      "evidence": {
+        "prompt": "Why does caring still belong to care?",
+        "answers": [
+          "The full base is care; its final e is removed before -ing.",
+          "Its base is always car because those letters stay.",
+          "Any word starting with car belongs to care."
+        ],
+        "explanation": "Word sums show the underlying base even when a suffix changes its written ending."
+      },
+      "apply": {
+        "prompt": "“A careless spill soaked the notebook.” What does careless tell us?",
+        "answers": [
+          "Someone did not take enough care.",
+          "Someone took extra care.",
+          "Someone frightened the notebook."
+        ],
+        "explanation": "-less adds the idea of lacking care in this context."
+      },
+      "tip": "Compare care + ful → careful with care + ing → caring. The base is the same; the suffix boundary behaves differently."
+    },
+    {
+      "id": "hope",
+      "title": "Hoping or hopping?",
+      "kind": "Word families",
+      "intro": "Investigate the base hope, meaning want something good to happen. A family member keeps a connection to this base and its meaning.",
+      "groups": [
+        {
+          "id": "family",
+          "label": "hope family",
+          "detail": "The base and its meaning connect"
+        },
+        {
+          "id": "lookalike",
+          "label": "Another base",
+          "detail": "Similar letters or sounds are not enough"
+        }
+      ],
+      "cards": [
+        {
+          "word": "hopeful",
+          "group": "family",
+          "evidence": "hope + ful → hopeful: feeling hope. Keep final e before -ful.",
+          "sentence": "",
+          "id": "hope-0"
+        },
+        {
+          "word": "hopeless",
+          "group": "family",
+          "evidence": "hope + less → hopeless: without hope.",
+          "sentence": "",
+          "id": "hope-1"
+        },
+        {
+          "word": "hoping",
+          "group": "family",
+          "evidence": "hope + ing → hoping: wanting something good to happen. Remove final e.",
+          "sentence": "",
+          "id": "hope-2"
+        },
+        {
+          "word": "hoped",
+          "group": "family",
+          "evidence": "hope + ed → hoped: felt hope in the past. Remove final e.",
+          "sentence": "",
+          "id": "hope-3"
+        },
+        {
+          "word": "hop",
+          "group": "lookalike",
+          "evidence": "Hop means jump on one foot or make a small jump. It is a different base.",
+          "sentence": "",
+          "id": "hope-4"
+        },
+        {
+          "word": "hopping",
+          "group": "lookalike",
+          "evidence": "hop + ing → hopping. Double p at this boundary. It belongs to hop, not hope.",
+          "sentence": "",
+          "id": "hope-5"
+        }
+      ],
+      "evidence": {
+        "prompt": "Which word sum explains hoping?",
+        "answers": [
+          "hope + ing → hoping",
+          "hop + ing → hoping",
+          "hop + ping → hoping"
+        ],
+        "explanation": "Hoping keeps the meaning of hope. Hopping comes from hop and doubles p."
+      },
+      "apply": {
+        "prompt": "“Ari is hoping for snow.” What is Ari doing?",
+        "answers": [
+          "Wishing that snow will fall.",
+          "Jumping on one foot.",
+          "Playing in snow that already fell."
+        ],
+        "explanation": "The spelling and the sentence point to hope, not hop."
+      },
+      "tip": "Say and compare hoping and hopping. Read the whole sentence before deciding."
+    },
+    {
+      "id": "heat",
+      "title": "Heat hidden in wheat?",
+      "kind": "Word families",
+      "intro": "Investigate the base heat, meaning make warm or hot. A family member keeps a connection to this base and its meaning.",
+      "groups": [
+        {
+          "id": "family",
+          "label": "heat family",
+          "detail": "The base and its meaning connect"
+        },
+        {
+          "id": "lookalike",
+          "label": "Another base",
+          "detail": "Similar letters or sounds are not enough"
+        }
+      ],
+      "cards": [
+        {
+          "word": "heated",
+          "group": "family",
+          "evidence": "heat + ed → heated: made warm in the past.",
+          "sentence": "",
+          "id": "heat-0"
+        },
+        {
+          "word": "heating",
+          "group": "family",
+          "evidence": "heat + ing → heating: making warm.",
+          "sentence": "",
+          "id": "heat-1"
+        },
+        {
+          "word": "reheat",
+          "group": "family",
+          "evidence": "re + heat → reheat: heat again.",
+          "sentence": "",
+          "id": "heat-2"
+        },
+        {
+          "word": "heater",
+          "group": "family",
+          "evidence": "heat + er → heater: a thing that provides heat.",
+          "sentence": "",
+          "id": "heat-3"
+        },
+        {
+          "word": "wheat",
+          "group": "lookalike",
+          "evidence": "Wheat is a grain. It is not w + heat; w- is not a meaningful prefix here.",
+          "sentence": "",
+          "id": "heat-4"
+        },
+        {
+          "word": "cheat",
+          "group": "lookalike",
+          "evidence": "Cheat means act dishonestly. Its base is cheat, not heat.",
+          "sentence": "",
+          "id": "heat-5"
+        }
+      ],
+      "evidence": {
+        "prompt": "What makes heater a member of the heat family?",
+        "answers": [
+          "It names something that provides heat.",
+          "All words ending in -er are people.",
+          "Any word with h-e-a-t letters has the base heat."
+        ],
+        "explanation": "Here -er makes a noun for a thing that does the action. Meaning matters as well as letters."
+      },
+      "apply": {
+        "prompt": "“Reheat the soup before lunch.” What should happen?",
+        "answers": [
+          "The soup should be heated again.",
+          "Wheat should be added to the soup.",
+          "The soup should be cooled."
+        ],
+        "explanation": "Re- adds again to heat."
+      },
+      "tip": "An -er noun can name a person or a thing. Check what the word means."
+    },
+    {
+      "id": "corn",
+      "title": "Two bases can join",
+      "kind": "Word families",
+      "intro": "Investigate the base corn, meaning the grain we eat. A family member keeps a connection to this base and its meaning.",
+      "groups": [
+        {
+          "id": "family",
+          "label": "corn family",
+          "detail": "The base and its meaning connect"
+        },
+        {
+          "id": "lookalike",
+          "label": "Another base",
+          "detail": "Similar letters or sounds are not enough"
+        }
+      ],
+      "cards": [
+        {
+          "word": "popcorn",
+          "group": "family",
+          "evidence": "pop + corn → popcorn: corn that has popped. This is a compound.",
+          "sentence": "",
+          "id": "corn-0"
+        },
+        {
+          "word": "cornfield",
+          "group": "family",
+          "evidence": "corn + field → cornfield: a field of corn. Both parts are bases.",
+          "sentence": "",
+          "id": "corn-1"
+        },
+        {
+          "word": "cornbread",
+          "group": "family",
+          "evidence": "corn + bread → cornbread: bread made with cornmeal. Both parts are bases.",
+          "sentence": "",
+          "id": "corn-2"
+        },
+        {
+          "word": "sweetcorn",
+          "group": "family",
+          "evidence": "sweet + corn → sweetcorn: a kind of corn. This is a compound.",
+          "sentence": "",
+          "id": "corn-3"
+        },
+        {
+          "word": "corner",
+          "group": "lookalike",
+          "evidence": "Corner means a place where edges meet. It is not corn (the grain) + er.",
+          "sentence": "",
+          "id": "corn-4"
+        },
+        {
+          "word": "unicorn",
+          "group": "lookalike",
+          "evidence": "Unicorn’s corn comes from a Latin word for horn, not the grain corn.",
+          "sentence": "",
+          "id": "corn-5"
+        }
+      ],
+      "evidence": {
+        "prompt": "Why is cornfield a compound?",
+        "answers": [
+          "It joins two bases: corn and field.",
+          "Field is a suffix meaning person.",
+          "Every long word is a compound."
+        ],
+        "explanation": "Both corn and field can stand as words and contribute meaning. A compound joins bases."
+      },
+      "apply": {
+        "prompt": "“We walked beside the cornfield.” What did we walk beside?",
+        "answers": [
+          "A field where corn grows.",
+          "A corner of a room.",
+          "An animal with one horn."
+        ],
+        "explanation": "Corn + field gives a useful clue to the compound’s meaning."
+      },
+      "tip": "The grain corn and the Latin element for horn have similar spellings but different meanings and histories."
+    },
+    {
+      "id": "er",
+      "title": "The -er mystery",
+      "kind": "Affix jobs",
+      "intro": "The ending -er can do different jobs. Read each word and its sentence before deciding.",
+      "groups": [
+        {
+          "id": "doer",
+          "label": "Person who does it",
+          "detail": "Names someone who does the base action"
+        },
+        {
+          "id": "compare",
+          "label": "More than another",
+          "detail": "Compares a quality"
+        }
+      ],
+      "cards": [
+        {
+          "word": "teacher",
+          "group": "doer",
+          "evidence": "teach + er → teacher: a person who teaches.",
+          "sentence": "The teacher explained the task.",
+          "id": "er-0"
+        },
+        {
+          "word": "runner",
+          "group": "doer",
+          "evidence": "run + er → runner: a person who runs. Double n.",
+          "sentence": "The runner crossed the line.",
+          "id": "er-1"
+        },
+        {
+          "word": "baker",
+          "group": "doer",
+          "evidence": "bake + er → baker: a person who bakes. Remove final e.",
+          "sentence": "The baker made bread.",
+          "id": "er-2"
+        },
+        {
+          "word": "faster",
+          "group": "compare",
+          "evidence": "fast + er → faster: more fast.",
+          "sentence": "The rabbit is faster than the turtle.",
+          "id": "er-3"
+        },
+        {
+          "word": "smaller",
+          "group": "compare",
+          "evidence": "small + er → smaller: less large.",
+          "sentence": "This box is smaller than that one.",
+          "id": "er-4"
+        },
+        {
+          "word": "colder",
+          "group": "compare",
+          "evidence": "cold + er → colder: more cold.",
+          "sentence": "Today is colder than yesterday.",
+          "id": "er-5"
+        }
+      ],
+      "evidence": {
+        "prompt": "How can we decide what -er does?",
+        "answers": [
+          "Look at the base, the word’s meaning, and its sentence.",
+          "-er always means a person.",
+          "-er always means more."
+        ],
+        "explanation": "The same written ending can serve different grammatical jobs. Context and the kind of base help."
+      },
+      "apply": {
+        "prompt": "“This coat is warmer than mine.” What does -er do?",
+        "answers": [
+          "It compares warmth: more warm.",
+          "It names a person who warms things.",
+          "It means warmth happened in the past."
+        ],
+        "explanation": "Warmer is a comparison here, not a name for a person."
+      },
+      "tip": "Compare teach → teacher with small → smaller. Ask: a person, or a comparison?"
+    },
+    {
+      "id": "s",
+      "title": "The two jobs of -s",
+      "kind": "Affix jobs",
+      "intro": "An -s ending can mark more than one noun, or a present-tense verb with he, she, it, or one named person. Use the sentences.",
+      "groups": [
+        {
+          "id": "plural",
+          "label": "More than one",
+          "detail": "Plural noun"
+        },
+        {
+          "id": "verb",
+          "label": "One subject does it",
+          "detail": "Present-tense verb"
+        }
+      ],
+      "cards": [
+        {
+          "word": "cats",
+          "group": "plural",
+          "evidence": "cat + s → cats: more than one cat.",
+          "sentence": "Three cats sat on the wall.",
+          "id": "s-0"
+        },
+        {
+          "word": "books",
+          "group": "plural",
+          "evidence": "book + s → books: more than one book.",
+          "sentence": "I borrowed several books.",
+          "id": "s-1"
+        },
+        {
+          "word": "paints",
+          "group": "plural",
+          "evidence": "paint + s → paints: more than one kind or container of paint here.",
+          "sentence": "The artist chose three paints.",
+          "id": "s-2"
+        },
+        {
+          "word": "jumps",
+          "group": "verb",
+          "evidence": "jump + s → jumps: what one named person does.",
+          "sentence": "Amir jumps over the puddle.",
+          "id": "s-3"
+        },
+        {
+          "word": "reads",
+          "group": "verb",
+          "evidence": "read + s → reads: what one named person does.",
+          "sentence": "Mia reads after lunch.",
+          "id": "s-4"
+        },
+        {
+          "word": "paints",
+          "group": "verb",
+          "evidence": "paint + s → paints: what one named person does here.",
+          "sentence": "Noah paints the fence.",
+          "id": "s-5"
+        }
+      ],
+      "evidence": {
+        "prompt": "Why are the two paints cards in different groups?",
+        "answers": [
+          "One is a plural noun; the other is a verb in its sentence.",
+          "Identical spellings must always have the same job.",
+          "The longer sentence always contains a plural."
+        ],
+        "explanation": "The spelling alone does not settle the job. Read “three paints” and “Noah paints” in context."
+      },
+      "apply": {
+        "prompt": "“The dog barks at the door.” What does -s mark?",
+        "answers": [
+          "A present-tense action with one subject: the dog.",
+          "More than one dog.",
+          "An action in the past."
+        ],
+        "explanation": "Barks is a verb here. The noun dog is singular."
+      },
+      "tip": "Read aloud: “Three paints are on the shelf” and “Noah paints the fence.” Same spelling, different jobs."
+    },
+    {
+      "id": "un",
+      "title": "What does un- undo?",
+      "kind": "Affix jobs",
+      "intro": "Un- can mean “not” with a quality, or reverse an action. Investigate its job in each word.",
+      "groups": [
+        {
+          "id": "not",
+          "label": "Not this quality",
+          "detail": "Describes the opposite state"
+        },
+        {
+          "id": "reverse",
+          "label": "Reverse the action",
+          "detail": "Undo what the base action does"
+        }
+      ],
+      "cards": [
+        {
+          "word": "unhappy",
+          "group": "not",
+          "evidence": "un + happy → unhappy: not happy.",
+          "sentence": "",
+          "id": "un-0"
+        },
+        {
+          "word": "unfair",
+          "group": "not",
+          "evidence": "un + fair → unfair: not fair.",
+          "sentence": "",
+          "id": "un-1"
+        },
+        {
+          "word": "unkind",
+          "group": "not",
+          "evidence": "un + kind → unkind: not kind.",
+          "sentence": "",
+          "id": "un-2"
+        },
+        {
+          "word": "unwrap",
+          "group": "reverse",
+          "evidence": "un + wrap → unwrap: remove the wrapping.",
+          "sentence": "",
+          "id": "un-3"
+        },
+        {
+          "word": "untie",
+          "group": "reverse",
+          "evidence": "un + tie → untie: undo a knot.",
+          "sentence": "",
+          "id": "un-4"
+        },
+        {
+          "word": "unlock",
+          "group": "reverse",
+          "evidence": "un + lock → unlock: undo the locked state.",
+          "sentence": "",
+          "id": "un-5"
+        }
+      ],
+      "evidence": {
+        "prompt": "Does un- always mean exactly “not”?",
+        "answers": [
+          "No. It can also mean reverse an action, as in untie.",
+          "Yes. Untie means never tie anything.",
+          "No. Un- always means again."
+        ],
+        "explanation": "Unhappy describes a state. Untie describes undoing an action. Keep the meaning connected to the base."
+      },
+      "apply": {
+        "prompt": "“Please unwrap the gift.” What should you do?",
+        "answers": [
+          "Remove the wrapping.",
+          "Wrap it a second time.",
+          "Decide that it is not a gift."
+        ],
+        "explanation": "Here un- reverses wrap."
+      },
+      "tip": "Act out wrap/unwrap and tie/untie, then contrast happy/unhappy."
+    },
+    {
+      "id": "ed",
+      "title": "One ending, three sounds",
+      "kind": "Affix jobs",
+      "intro": "These words all use -ed for a past action. Sort by the ending you hear when you say the whole word. /t/ sounds like t; /d/ like d; /ɪd/ adds a syllable, like id.",
+      "groups": [
+        {
+          "id": "t",
+          "label": "/t/ sound",
+          "detail": "No extra syllable"
+        },
+        {
+          "id": "d",
+          "label": "/d/ sound",
+          "detail": "No extra syllable"
+        },
+        {
+          "id": "id",
+          "label": "/ɪd/ sound",
+          "detail": "An extra syllable"
+        }
+      ],
+      "cards": [
+        {
+          "word": "jumped",
+          "group": "t",
+          "evidence": "jump + ed → jumped. The ending sounds like /t/; it still marks the past.",
+          "sentence": "",
+          "id": "ed-0"
+        },
+        {
+          "word": "helped",
+          "group": "t",
+          "evidence": "help + ed → helped. The ending sounds like /t/.",
+          "sentence": "",
+          "id": "ed-1"
+        },
+        {
+          "word": "played",
+          "group": "d",
+          "evidence": "play + ed → played. The ending sounds like /d/.",
+          "sentence": "",
+          "id": "ed-2"
+        },
+        {
+          "word": "cleaned",
+          "group": "d",
+          "evidence": "clean + ed → cleaned. The ending sounds like /d/.",
+          "sentence": "",
+          "id": "ed-3"
+        },
+        {
+          "word": "wanted",
+          "group": "id",
+          "evidence": "want + ed → wanted. The ending sounds like /ɪd/ and adds a syllable.",
+          "sentence": "",
+          "id": "ed-4"
+        },
+        {
+          "word": "needed",
+          "group": "id",
+          "evidence": "need + ed → needed. The ending sounds like /ɪd/ and adds a syllable.",
+          "sentence": "",
+          "id": "ed-5"
+        }
+      ],
+      "evidence": {
+        "prompt": "What stays the same in these six words?",
+        "answers": [
+          "The -ed spelling and its job of marking a past action.",
+          "The ending always sounds exactly the same.",
+          "Every ending adds an extra syllable."
+        ],
+        "explanation": "A morpheme can keep its spelling and grammatical job while its pronunciation varies."
+      },
+      "apply": {
+        "prompt": "“We walked home yesterday.” What does -ed tell us?",
+        "answers": [
+          "The walking happened in the past, even though the ending sounds like /t/.",
+          "There was more than one walk.",
+          "The action is happening now."
+        ],
+        "explanation": "Walk + ed → walked. The suffix marks the past; its sound here is /t/."
+      },
+      "tip": "Read each whole word. Do not pronounce every -ed as a separate “ed” syllable."
+    }
+  ]
+}
