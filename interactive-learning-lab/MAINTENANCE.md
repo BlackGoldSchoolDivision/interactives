@@ -1,10 +1,17 @@
 # Interactive Learning Lab — refresh list
 
-The October 2026 catalogue includes 144 entries, with 100 additions to the earlier 44-entry draft. All original geography links are retained. This pass expanded the catalogue; it did not modify the linked activities.
+The October 2026 catalogue includes 146 entries, with 102 additions to the earlier 44-entry draft. All original geography links are retained. The catalogue refresh now includes two new research-informed morphology activities.
 
-## First: morphology
+## New morphology activities
 
-Darren reports that these earlier tools do not work well enough yet. Revisit word-part accuracy, instructions, feedback, controls and usability before describing them as finished classroom activities. The catalogue labels the six morphology entries “Update planned”.
+- [Morpheme Missions](https://interactives.blackgold.ca/morpheme-missions/): 36 word-building missions, spelling-boundary feedback, a Word Lab and printable six-word activities with answer keys.
+- [Word Detective](https://interactives.blackgold.ca/word-detective/): ten investigations with sorting, evidence questions, context application and printable case files with explained keys.
+
+Research and sources are documented in morphology-resources/RESEARCH_NOTES.md. These games support word-level practice; they are not validated interventions or diagnostic assessments.
+
+## Earlier morphology tools: update backlog
+
+Darren reports that these earlier tools do not work well enough yet. Revisit word-part accuracy, instructions, feedback, controls and usability before describing them as finished classroom activities. The catalogue labels the six earlier morphology entries “Update planned”.
 
 - [Rooting For You!](https://maltais239.github.io/interactives/rootwords/)
 - [WordWorks Lab](https://interactives.blackgold.ca/wordworks-lab/)
@@ -15,7 +22,7 @@ Darren reports that these earlier tools do not work well enough yet. Revisit wor
 
 ## Then: sorting, flashcards and question formats
 
-Keep the useful formats and update individual activities as we go. The current catalogue exposes 20 sorting entries, 7 flashcard entries and 75 entries with some question practice. These groups overlap and include hubs, models and printables.
+Keep the useful formats and update individual activities as we go. The current catalogue exposes 21 sorting entries, 7 flashcard entries and 77 entries with some question practice. These groups overlap and include hubs, models and printables.
 
 - Sorting: touch and keyboard controls, clear target areas, useful feedback, reset/replay and content accuracy.
 - Flashcards: editable sets, flip/navigation controls, readable text and optional audio. Printable cards should remain clearly identified.

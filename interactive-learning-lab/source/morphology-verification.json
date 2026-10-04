@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-04",
+  "app_commit": "7521ece56f3e0ef20facdf3db1a9245403c8101b",
+  "activities": [
+    "https://interactives.blackgold.ca/morpheme-missions/",
+    "https://interactives.blackgold.ca/word-detective/"
+  ],
+  "checks": [
+    "Curated content validation and Node logic checks passed.",
+    "Full six-word spelling round completed: five independent, one supported; all tile selections and full bases verified.",
+    "Full six-word meaning-maker round completed using keyboard tiles, including combined affixes and no suffix.",
+    "Wrong part, spelling and meaning choices permit correction; hints are explained.",
+    "A complete flow-family investigation covered sorting correction, evidence correction, context application and an escaped written reflection.",
+    "The two paints cards retain separate plural-noun and verb jobs in their sentences.",
+    "All six past-tense -ed words sorted into three pronunciation groups with keyboard Enter.",
+    "The Word Lab correctly preserves y in cry before -ing.",
+    "Morpheme Missions generates six printable prompts plus six answer-key items with full bases.",
+    "Word Detective generates six explained key rows and includes both paints contexts.",
+    "Neither app has horizontal overflow at the observed 1348-pixel desktop viewport.",
+    "Real JPEG browser screenshots captured and optimized to 900 by 620 pixels.",
+    "146 catalogue entries, 39 geography entries, 8 morphology entries and 12 favourites; all 144 earlier catalogue records preserved."
+  ],
+  "limits": "The games have not been evaluated in a classroom intervention study. These browser checks cover representative flows and edge cases, rather than every item on every device."
+}

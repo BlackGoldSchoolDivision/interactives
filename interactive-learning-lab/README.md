@@ -1,6 +1,6 @@
 # Interactive Learning Lab
 
-A classroom activity catalogue for Engaging Students, created for Darren Maltais. It contains 144 entries across 12 subjects and 17 activity types. This edition adds 100 entries, keeps the original geography collection, and gives the writing tools, morphology, sorting, flashcards and varied question formats their own routes through the collection.
+A classroom activity catalogue for Engaging Students, created for Darren Maltais. It contains 146 entries across 12 subjects and 17 activity types. This edition adds 102 entries, keeps the original geography collection, and gives the writing tools, morphology, sorting, flashcards and varied question formats their own routes through the collection.
 
 ## Files
 
@@ -25,3 +25,7 @@ Keep each entry ID stable, use a unique launch URL, supply subject/type labels a
 The page is published inside BlackGoldSchoolDivision/interactives and uses the existing GitHub Pages hosting. Its screenshot files are published separately in Maltais239/interactives/learning-lab-images; images/ is excluded from the Black Gold commit. Add its live URL to a full-page embed in the Engaging Students Google Site, then publish the Google Site. The catalogue can also be used directly as a standalone website. Future catalogue updates reuse the same URL.
 
 See Google_Sites_Setup.md for the embed steps. The catalogue was published separately; creating or publishing the native Google Site remains an editor step.
+
+## New morphology activities
+
+Morpheme Missions and Word Detective add 36 word-building missions, a curated Word Lab, ten investigations, and printable activities with answer keys. Both are published in the Black Gold interactives repository. Source and research notes are maintained under morphology-resources/. Six earlier morphology tools retain their Update planned labels.
