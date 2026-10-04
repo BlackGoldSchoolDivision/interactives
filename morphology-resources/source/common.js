@@ -5,7 +5,7 @@ function announce(message) { document.getElementById('announcer').textContent=me
 function draw(html,focus=false) {
   const old=document.activeElement, remembered=old&&main.contains(old)?{id:old.id,data:{...old.dataset}}:null;
   main.innerHTML=html;
-  if(focus){main.focus();return;}
+  if(focus){main.focus({preventScroll:true});window.scrollTo({top:0,behavior:'instant'});return;}
   if(remembered){const match=remembered.id?document.getElementById(remembered.id):[...main.querySelectorAll('button[data-action]')].find(b=>Object.keys(remembered.data).every(k=>b.dataset[k]===remembered.data[k]));if(match&&!match.disabled)match.focus({preventScroll:true});else{const next=main.querySelector('[data-action="next"],[data-action="to-meaning"],[data-action="to-evidence"],[data-action="to-apply"],[data-action="finish"]');if(next)next.focus({preventScroll:true});}}
 }
 function navActive(route) { document.querySelectorAll('nav button').forEach(b=>{const active=b.dataset.route===route;b.classList.toggle('active',active);if(active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');}); }
