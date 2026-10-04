@@ -1,0 +1,109 @@
+{
+  "links": [
+    {
+      "title": "DOK 1 · MatchConfederation: Key TermsTime & Place",
+      "url": "https://maltais239.github.io/interactives/social-studies-7-9/grade-7/confederation-terms.html"
+    },
+    {
+      "title": "DOK 1 · MatchPost-Confederation EconomySystems",
+      "url": "https://maltais239.github.io/interactives/social-studies-7-9/grade-7/economy-terms.html"
+    },
+    {
+      "title": "DOK 2 · SequenceJoining ConfederationTime & Place",
+      "url": "https://maltais239.github.io/interactives/social-studies-7-9/grade-7/joining-confederation.html"
+    },
+    {
+      "title": "DOK 2 · SortTariffs vs. Free TradeSystems",
+      "url": "https://maltais239.github.io/interactives/social-studies-7-9/grade-7/tariffs-vs-free-trade.html"
+    },
+    {
+      "title": "DOK 2 · MatchWWI & Canadian SovereigntyTime & Place",
+      "url": "https://maltais239.github.io/interactives/social-studies-7-9/grade-7/sovereignty-wwi.html"
+    },
+    {
+      "title": "DOK 3 · SortDiscrimination & Steps Toward EqualityCitizenship",
+      "url": "https://maltais239.github.io/interactives/social-studies-7-9/grade-7/rights-and-discrimination.html"
+    },
+    {
+      "title": "DOK 1 · SortEconomic SectorsSystems",
+      "url": "https://maltais239.github.io/interactives/social-studies-7-9/grade-8/economic-sectors.html"
+    },
+    {
+      "title": "DOK 1 · SortIndividualism vs. CollectivismTime & Place",
+      "url": "https://maltais239.github.io/interactives/social-studies-7-9/grade-8/individualism-collectivism.html"
+    },
+    {
+      "title": "DOK 1 · SortParty Systems of the WorldSystems",
+      "url": "https://maltais239.github.io/interactives/social-studies-7-9/grade-8/party-systems.html"
+    },
+    {
+      "title": "DOK 1 · SortThree Branches of GovernmentSystems",
+      "url": "https://maltais239.github.io/interactives/social-studies-7-9/grade-8/three-branches.html"
+    },
+    {
+      "title": "DOK 2 · SortFour Economic SystemsSystems",
+      "url": "https://maltais239.github.io/interactives/social-studies-7-9/grade-8/four-economic-systems.html"
+    },
+    {
+      "title": "DOK 2 · SpectrumTotalitarian ↔ AnarchySystems",
+      "url": "https://maltais239.github.io/interactives/social-studies-7-9/grade-8/political-control-spectrum.html"
+    },
+    {
+      "title": "DOK 3 · CompareParliamentary vs. PresidentialSystems",
+      "url": "https://maltais239.github.io/interactives/social-studies-7-9/grade-8/parliamentary-vs-presidential.html"
+    },
+    {
+      "title": "DOK 3 · SpectrumThe Economic SpectrumSystems",
+      "url": "https://maltais239.github.io/interactives/social-studies-7-9/grade-8/economic-spectrum.html"
+    },
+    {
+      "title": "DOK 1 · SortPush & Pull FactorsTime & Place",
+      "url": "https://maltais239.github.io/interactives/social-studies-7-9/grade-9/push-pull-factors.html"
+    },
+    {
+      "title": "DOK 2 · SequenceCanada in the Second World WarTime & Place",
+      "url": "https://maltais239.github.io/interactives/social-studies-7-9/grade-9/wwii-contributions.html"
+    },
+    {
+      "title": "DOK 2 · MatchCanada on the World StageTime & Place",
+      "url": "https://maltais239.github.io/interactives/social-studies-7-9/grade-9/international-organizations.html"
+    },
+    {
+      "title": "DOK 2 · SortCanada's Mixed EconomySystems",
+      "url": "https://maltais239.github.io/interactives/social-studies-7-9/grade-9/public-vs-private.html"
+    },
+    {
+      "title": "DOK 2 · SequenceEvolving Rights in CanadaCitizenship",
+      "url": "https://maltais239.github.io/interactives/social-studies-7-9/grade-9/evolving-rights-timeline.html"
+    },
+    {
+      "title": "DOK 2 · SortImpacts of UrbanizationTime & Place",
+      "url": "https://maltais239.github.io/interactives/social-studies-7-9/grade-9/urbanization-impacts.html"
+    },
+    {
+      "title": "DOK 2 · SortWho Governs What?Systems",
+      "url": "https://maltais239.github.io/interactives/social-studies-7-9/grade-9/federal-vs-provincial.html"
+    },
+    {
+      "title": "DOK 3 · SequenceHow a Bill Becomes LawSystems",
+      "url": "https://maltais239.github.io/interactives/social-studies-7-9/grade-9/how-a-bill-becomes-law.html"
+    }
+  ],
+  "checks": [
+    {
+      "title": "DOK 1 · MatchConfederation: Key TermsTime & Place",
+      "url": "https://maltais239.github.io/interactives/social-studies-7-9/grade-7/confederation-terms.html",
+      "dom": "- link \"← All activities\":\n  - /url: ../index.html\n- generic: Grade 7 · DOK 1 · Match\n- 'heading \"Confederation: Key Terms\" [level=1]'\n- paragraph: Drag each term onto its definition. (How has Canada changed since Confederation?)\n- generic: Provisional government\n- generic: Scrip\n- generic: Rupert's Land\n- generic: Dominion\n- generic: Confederation\n- generic: Fathers of Confederation\n- generic: British North America Act\n- generic: Vast territory purchased from the Hudson's Bay Company in 1870\n- generic: Leaders who negotiated Canada's creation at Charlottetown, Quebec & London\n- generic: Certificates issued to Métis in exchange for land rights\n- generic: The 1867 law that created Canada and split federal & provincial powers\n- generic: Temporary government Louis Riel formed at Red River in 1869\n- generic: The name for the self-governing country Canada became in 1867\n- generic: The 1867 union of colonies into one country\n- button \"Check Answers\"\n- button \"Start Over\""
+    },
+    {
+      "title": "DOK 2 · SpectrumTotalitarian ↔ AnarchySystems",
+      "url": "https://maltais239.github.io/interactives/social-studies-7-9/grade-8/political-control-spectrum.html",
+      "dom": "- link \"← All activities\":\n  - /url: ../index.html\n- generic: Grade 8 · DOK 2 · Spectrum\n- heading \"Totalitarian ↔ Anarchy\" [level=1]\n- paragraph: Place each feature along the spectrum of political control.\n- generic: Total control\n- generic: No control\n- generic: No government or central authority\n- generic: Political opposition is allowed\n- generic: Citizens vote in regular elections\n- generic: Rights, freedoms & rule of law\n- generic: One ruler controls everything\n- generic: Censorship & propaganda\n- generic: Totalitarian\n- generic: Democracy\n- generic: Anarchy\n- button \"Check Answers\"\n- button \"Start Over\""
+    },
+    {
+      "title": "DOK 3 · SequenceHow a Bill Becomes LawSystems",
+      "url": "https://maltais239.github.io/interactives/social-studies-7-9/grade-9/how-a-bill-becomes-law.html",
+      "dom": "- link \"← All activities\":\n  - /url: ../index.html\n- generic: Grade 9 · DOK 3 · Sequence\n- heading \"How a Bill Becomes Law\" [level=1]\n- paragraph: Put the federal law-making steps in the correct order.\n- generic: Third reading (final vote)\n- generic: Committee stage (detailed review)\n- generic: Memorandum to Cabinet\n- generic: Bill drafted in Cabinet\n- generic: Second reading (debate on principle)\n- generic: Royal Assent by the Governor General\n- generic: First reading (introduced)\n- generic: Report stage\n- generic: \"1\"\n- generic: \"2\"\n- generic: \"3\"\n- generic: \"4\"\n- generic: \"5\"\n- generic: \"6\"\n- generic: \"7\"\n- generic: \"8\"\n- button \"Check Answers\"\n- button \"Start Over\""
+    }
+  ]
+}

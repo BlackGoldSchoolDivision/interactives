@@ -1,0 +1,110 @@
+[
+  {
+    "label": "En français",
+    "path": "livingsystemsreadingpassageFR",
+    "repo": "personal",
+    "activity_id": "ecosystemannotation",
+    "url": "https://maltais239.github.io/interactives/livingsystemsreadingpassageFR/",
+    "title": "Activité d'Annotation Étudiante - Écosystèmes",
+    "dom": "- heading \"Activité d'Annotation Étudiante\" [level=1]\n- heading \"Le Monde Super des Écosystèmes\" [level=2]\n- heading \"Texte Source (Sélectionnez le mode à droite, puis cliquez pour surligner)\" [level=3]\n- heading \"Mon court résumé\" [level=4]\n- button \"Effacer\"\n- textbox \"Mon court résumé\":\n  - /placeholder: Écrivez votre court résumé ici...\n- heading \"Mots-clés & Vocabulaire •\" [level=4]\n- button \"Effacer\"\n- textbox \"Mots-clés et Vocabulaire\":\n  - /placeholder: Les mots-clés surlignés apparaîtront ici...\n- heading \"Idées Clés •\" [level=4]\n- button \"Effacer\"\n- textbox \"Idées Clés\":\n  - /placeholder: Les idées clés (phrases) surlignées apparaîtront ici...\n- button \"Sauvegarder\"\n- button \"Charger\"\n- button \"Copier\"\n- status"
+  },
+  {
+    "label": "Sample flashcards",
+    "path": "basicflashcards",
+    "repo": "personal",
+    "activity_id": "customflashcards",
+    "url": "https://maltais239.github.io/interactives/basicflashcards/",
+    "title": "Interactive Flashcards",
+    "dom": "- generic: Particle model of matter\n- generic: A scientific idea that all matter is made of tiny particles in constant motion.\n- generic: Card 1 of 5\n- button \"Previous\"\n- button \"Flip\"\n- button \"Next\""
+  },
+  {
+    "label": "En français",
+    "path": "PATpracticescience6FR",
+    "repo": "personal",
+    "activity_id": "sciencepat",
+    "url": "https://maltais239.github.io/interactives/PATpracticescience6FR/",
+    "title": "Science PAT Practice",
+    "dom": "- generic: Grade 6 • Alberta Curriculum\n- heading \"🔬 Science PAT Practice\" [level=1]\n- paragraph: Get ready for your Provincial Achievement Test!\n- paragraph: Pick a topic below to start practicing 👇\n- button \"Start Matter & Particles quiz with 20 questions\":\n  - generic: 🧪\n  - generic: 20 Q\n  - heading \"Matter & Particles\" [level=3]\n  - paragraph: Particle model, phase changes\n  - generic: START\n- button \"Start Forces & Interactions quiz with 20 questions\":\n  - generic: 💪\n  - generic: 20 Q\n  - heading \"Forces & Interactions\" [level=3]\n  - paragraph: Newton's Third Law, elasticity\n  - generic: START\n- button \"Start Energy Resources quiz with 20 questions\":\n  - generic: ⚡\n  - generic: 20 Q\n  - heading \"Energy Resources\" [level=3]\n  - paragraph: Renewable vs. fossil fuels\n  - generic: START\n- button \"Start Climate & Earth Systems quiz with 20 questions\":\n  - generic: 🌍\n  - generic: 20 Q\n  - heading \"Climate & Earth Systems\" [level=3]\n  - paragraph: Climate change, weather\n  - generic: START\n- button \"Start Ecosystems quiz with 20 questions\":\n  - generic: 🌱\n  - generic: 20 Q\n  - heading \"Ecosystems\" [level=3]\n  - paragraph: Plants, animals, photosynthesis\n  - generic: START\n- button \"Start Space & Solar System quiz with 20 questions\":\n  - generic: 🚀\n  - generic: 20 Q\n  - heading \"Space & Solar System\" [level=3]\n  - paragraph: Planets, satellites, exploration\n  - generic: START\n- button \"Start Computer Science quiz with 20 questions\":\n  - generic: 💻\n  - generic: 20 Q\n  - "
+  },
+  {
+    "label": "En français",
+    "path": "ordersofgovernmentfr",
+    "repo": "personal",
+    "activity_id": "governmentsort",
+    "url": "https://maltais239.github.io/interactives/ordersofgovernmentfr/",
+    "title": "Jeu de tri - Les ordres de gouvernement au Canada",
+    "dom": "- heading \"Les ordres de gouvernement au Canada\" [level=1]\n- paragraph: Glissez et déposez chaque responsabilité dans le bon ordre de gouvernement.\n- img \"Parcs locaux\"\n- generic: Parcs locaux\n- img \"Hôpitaux et Santé\"\n- generic: Hôpitaux et Santé\n- img \"Éducation et Écoles\"\n- generic: Éducation et Écoles\n- img \"Passeports\"\n- generic: Passeports\n- img \"Monnaie\"\n- generic: Monnaie\n- img \"Défense nationale\"\n- generic: Défense nationale\n- img \"Collecte des déchets\"\n- generic: Collecte des déchets\n- img \"Permis de conduire\"\n- generic: Permis de conduire\n- img \"Eau et Égouts\"\n- generic: Eau et Égouts\n- img \"Autoroutes\"\n- generic: Autoroutes\n- img \"Bibliothèques\"\n- generic: Bibliothèques\n- img \"Service des incendies\"\n- generic: Service des incendies\n- img \"Postes Canada\"\n- generic: Postes Canada\n- generic: Fédéral\n- generic \"Zone fédéral\"\n- generic: Provincial et Territorial\n- generic \"Zone provincial\"\n- generic: Local (Municipal)\n- generic \"Zone municipal\"\n- button \"Vérifier les réponses\"\n- button \"Recommencer\""
+  },
+  {
+    "label": "En français",
+    "path": "commerceetressources",
+    "repo": "personal",
+    "activity_id": "traderesources",
+    "url": "https://maltais239.github.io/interactives/commerceetressources/",
+    "title": "Commerce et Ressources : Défi du tri",
+    "dom": "- heading \"Commerce et Ressources\" [level=1]\n- paragraph: Triez les éléments en Ressources naturelles, Biens ou Moyens de transport !\n- generic: Arbres (Bois)\n- generic: Pain\n- generic: Vêtements\n- generic: Oléoduc\n- generic: Eau douce\n- generic: Avion\n- generic: Blé\n- generic: Pétrole brut\n- generic: Navire de charge\n- generic: Train de fret\n- generic: Meubles\n- generic: Essence\n- generic: Électronique\n- generic: Minerai de fer\n- generic: Camion de transport\n- generic: Ressources naturelles\n- generic: Biens\n- generic: Transport\n- button \"Vérifier les réponses\"\n- button \"Recommencer\""
+  },
+  {
+    "label": "Advanced version",
+    "path": "integerexploreradvanced",
+    "repo": "bg",
+    "activity_id": "integerexplorer",
+    "url": "https://interactives.blackgold.ca/integerexploreradvanced/",
+    "title": "Integer Operations Explorer",
+    "dom": "- banner:\n  - generic: \n  - heading \"Integer Explorer - Advanced\" [level=1]\n  - paragraph: Grade 7 Interactive Math Tool\n  - navigation:\n    - button \" Explore & Visualize\":\n      - generic: \n      - text: Explore & Visualize\n    - button \" Practice\":\n      - generic: \n      - text: Practice\n    - button \" Rules & Cheat Sheet\":\n      - generic: \n      - text: Rules & Cheat Sheet\n    - button \" Word Problems\":\n      - generic: \n      - text: Word Problems\n- main:\n  - heading \"1 Build Your Equation\" [level=2]:\n    - generic: \"1\"\n    - text: Build Your Equation\n  - button \"2 Terms\"\n  - button \"3 Terms (Order of Ops)\"\n  - generic: Int 1\n  - button \"-\"\n  - generic: \"5\"\n  - button \"+\"\n  - generic: Op 1\n  - button \"+\"\n  - button \"−\"\n  - button \"×\"\n  - button \"÷\"\n  - generic: Int 2\n  - button \"-\"\n  - generic: \"-3\"\n  - button \"+\"\n  - generic: =\n  - generic: \"2\"\n  - button \" Chips Model\":\n    - generic: \n    - text: Chips Model\n  - button \" Number Line\":\n    - generic: \n    - text: Number Line\n  - text: \n  - generic: Visual Representation (Chips)\n  - generic: +1 (Positive)\n  - generic: \"-1 (Negative)\"\n  - generic: First Value (5)\n  - generic \"+1\": +\n  - generic \"+1\": +\n  - generic \"+1\": +\n  - generic \"+1\": +\n  - generic \"+1\": +\n  - generic: +\n  - generic: Second Value (-3)\n  - generic \"-1\": −\n  - generic \"-1\": −\n  - generic \"-1\": −\n  - generic: =\n  - generic: Result (2)\n  - generic: 3 Zero Pair(s) Cancel Out\n  - generic: +\n  - generic: +\n  - generic: +\n  - generic: \"-\"\n  "
+  },
+  {
+    "label": "Squares & rational numbers",
+    "path": "perfectsquaresexplorer",
+    "repo": "bg",
+    "activity_id": "squarescubes",
+    "url": "https://interactives.blackgold.ca/perfectsquaresexplorer/",
+    "title": "Grade 8 Math: Squares & Rational Numbers",
+    "dom": "- banner:\n  - 'heading \"Math 8: Squares & Numbers\" [level=1]':\n    - text: \"Math 8: Squares & Numbers\"\n  - navigation:\n    - button \"Area Explorer\"\n    - button \"Number Types\"\n    - button \"Word Problems\"\n- main:\n  - heading \"Perfect vs. Non-Perfect Squares\" [level=2]\n  - paragraph:\n    - text: Use the slider to change the\n    - strong: Area\n    - text: of the square. Notice how the side length changes. A\n    - strong: perfect square\n    - text: has an area that results in a rational side length (like an integer). A\n    - strong: non-perfect square\n    - text: results in an irrational side length (a decimal that goes on forever without repeating).\n  - generic: Side Length = 1\n  - generic: Area = 1\n  - generic: Side Length = 1\n  - generic: \"Set Area: 1 square units\"\n  - 'slider \"Set Area: 1 square units\"': \"1\"\n  - generic: \"1\"\n  - generic: \"25\"\n  - generic: \"50\"\n  - generic: \"75\"\n  - generic: \"100\"\n  - heading \"Mathematical Breakdown\" [level=3]\n  - generic: \"Given Area:\"\n  - strong: \"1\"\n  - generic: \"Side Length (√Area):\"\n  - strong: \"1\"\n  - generic: \"Square Type:\"\n  - generic: Perfect Square\n  - generic: \"Side Length is:\"\n  - generic: Rational Number (Integer)\n  - paragraph:\n    - text: Because\n    - strong: 1 × 1 = 1\n    - text: exactly. The side length is a terminating integer.\n  - paragraph: Every positive real number has exactly two square roots. For Area = 1, they are 1 and -1. (Side lengths are always positive).\n- contentinfo:\n  - paragraph: Grade 8 Mathematics • Perfec"
+  },
+  {
+    "label": "Power Explorer",
+    "path": "powerexplorer",
+    "repo": "bg",
+    "activity_id": "exponentexplorer",
+    "url": "https://interactives.blackgold.ca/powerexplorer/",
+    "title": "Power Explorer: Grade 8 Exponents",
+    "dom": "- generic: \n- heading \"Power Explorer\" [level=1]\n- paragraph: Master the rules of exponents. Evaluate powers with negative integers, fractions, decimals, and solve exponent equations to power up your ship!\n- button \"INITIATE LAUNCH \":\n  - text: INITIATE LAUNCH\n  - generic: "
+  },
+  {
+    "label": "Exponent game",
+    "path": "exponentsgame",
+    "repo": "bg",
+    "activity_id": "exponentexplorer",
+    "url": "https://interactives.blackgold.ca/exponentsgame/",
+    "title": "Exponent Explorers",
+    "dom": "- main:\n  - generic: 🪐\n  - heading \"Exponent Explorers\" [level=1]\n  - paragraph: Welcome to Grade 7 Math! Your mission is to master the laws of exponents. We will build our vocabulary, practice the laws, and spot common mistakes.\n  - heading \"Anatomy of an Exponent\" [level=3]\n  - generic: \"4\"\n  - generic: x\n  - superscript: \"3\"\n  - generic: Power\n  - generic: \"Coefficient: The number in front\"\n  - generic: \"Base: The number multiplied\"\n  - generic: \"Exponent: How many times\"\n  - generic: \"Power: Base + exponent together\"\n  - button \"Start Mission\""
+  },
+  {
+    "label": "Pattern Quest",
+    "path": "patternquest3",
+    "repo": "personal",
+    "activity_id": "patterndetective",
+    "url": "https://maltais239.github.io/interactives/patternquest3/",
+    "title": "Pattern Quest – Grade 3 Magic Meadow",
+    "dom": "- banner:\n  - generic: Pattern Quest\n  - generic: Grade 3 Magic Meadow\n  - generic: \"0\"\n- main:\n  - heading \"Pattern Quest!\" [level=2]\n  - paragraph: Restore magic to the Meadow by solving numerical sequences and patterns!\n  - button \"Let’s Play! ▶▶\"\n  - generic: 🔢\n  - text: Even, Odd & Ordinals\n  - generic: ♾️\n  - text: Finite vs. Infinite\n  - generic: ✖️\n  - text: Skip-Counting Grids\n  - generic: 🧮\n  - text: Change Operators (+ − × ÷)\n- contentinfo:\n  - paragraph: © 2026 Grade 3 Pattern Quest — Crafted using Alberta Curriculum Standards.\n  - paragraph: Built with high-contrast accessibility standards and voiceover synthesis. No ads or paywalls."
+  },
+  {
+    "label": "En français",
+    "path": "Troisniveauxdegouvernement",
+    "repo": "personal",
+    "activity_id": "governmentguide",
+    "url": "https://maltais239.github.io/interactives/Troisniveauxdegouvernement/",
+    "title": "Trois niveaux de gouvernement - Canada",
+    "dom": "- banner:\n  - heading \"Trois niveaux de gouvernement\" [level=1]\n  - paragraph: Triez les Dirigeants indigo et les Responsabilités blanches !\n- generic: \"Score : 0 / 12\"\n- button \"Réinitialiser\"\n- generic: 🛡️\n- generic: L'armée\n- generic: 🏘️\n- generic: Maire\n- generic \"Colline du Parlement\": 🏛️\n- img \"feuille d'érable\"\n- generic: Premier ministre\n- generic: 🛣️\n- generic: Autoroutes\n- generic: 💰\n- generic: Monnaie\n- generic: 📖\n- generic: Passeport\n- generic: 🌳\n- generic: Parc local\n- generic: 🏥\n- generic: Hôpitaux\n- generic: 🏛️\n- generic: Premier ministre (provincial)\n- generic: 👨‍🚒\n- generic: Caserne de pompiers\n- generic: 🚛\n- generic: Camion à ordures\n- generic: 🏫\n- generic: Écoles\n- generic: 👤\n- heading \"DIRIGEANTS DU GOUVERNEMENT\" [level=2]\n- paragraph: Dirigeant fédéral\n- paragraph: Dirigeant provincial\n- paragraph: Dirigeant municipal\n- generic: 🛠️\n- heading \"RESPONSABILITÉS DU GOUVERNEMENT\" [level=2]\n- paragraph: Services fédéraux\n- paragraph: Services provinciaux\n- paragraph: Services municipaux"
+  },
+  {
+    "label": "En français",
+    "path": "MMGovernmentFR",
+    "repo": "personal",
+    "activity_id": "governmentsystems",
+    "url": "https://maltais239.github.io/interactives/MMGovernmentFR/",
+    "title": "Systèmes de gouvernement : La démocratie au Canada",
+    "dom": "- banner:\n  - heading \"Systèmes de gouvernement\" [level=1]\n  - paragraph: Analyser la démocratie au Canada\n  - generic: 6e année - Sciences humaines\n- heading \"1. Le concept d'un système\" [level=2]\n- paragraph:\n  - text: Avant de comprendre le gouvernement, nous devons comprendre ce qu'est un\n  - strong: système\n  - text: . Un système est un groupe d'éléments qui travaillent ensemble pour faire fonctionner quelque chose. Tout comme une équipe de hockey a besoin d'un gardien, de défenseurs et d'attaquants, une société a besoin d'une structure gouvernementale pour assurer la sécurité et l'ordre.\n- 'heading \"Analogie : L''équipe de hockey\" [level=3]'\n- generic: 🥅\n- generic: Gardien de but\n- text: Arrête les buts (Défense)\n- generic: 🏒\n- generic: Capitaine\n- text: Mène la stratégie\n- generic: 🦓\n- generic: Arbitre\n- text: Applique les règles\n- heading \"Structure\" [level=4]\n- paragraph: Les systèmes gouvernementaux fournissent un leadership et des lois pour éviter le chaos dans la société.\n- heading \"Démocratie\" [level=4]\n- paragraph: Un système spécifique où les « joueurs » (citoyens) ont leur mot à dire dans le plan de match.\n- heading \"Réflexion de l'élève\" [level=3]:\n  - text: Réflexion de l'élève\n- generic: 1. Que se passerait-il dans le match s'il n'y avait pas d'arbitre (pas de lois) ?\n- textbox \"Écris tes idées ici...\"\n- generic: 2. Que se passerait-il si le capitaine décidait de toutes les règles sans demander à l'équipe ?\n- textbox \"Écris tes idées ici...\"\n- 'heading \""
+  }
+]

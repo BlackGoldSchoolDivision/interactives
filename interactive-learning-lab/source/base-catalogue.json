@@ -1,0 +1,846 @@
+[
+  {
+    "id": "vocabularyarcade",
+    "title": "Vocabulary Arcade",
+    "category": "Reading & writing",
+    "group": "",
+    "description": "One word set, five ways to practise: matching, clues, swiping, scrambling, and flashcards.",
+    "favourite": true,
+    "tags": [
+      "Custom word sets",
+      "Five games"
+    ],
+    "url": "https://interactives.blackgold.ca/vocabularyarcadevisual/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/vocabularyarcade.jpg",
+    "captured": "2026-10-04"
+  },
+  {
+    "id": "writerspark",
+    "title": "Writer Spark",
+    "category": "Reading & writing",
+    "group": "",
+    "description": "Find a story starter, map your ideas, organise a narrative, or open a freewriting space.",
+    "favourite": true,
+    "tags": [
+      "Storytelling",
+      "Planning"
+    ],
+    "url": "https://maltais239.github.io/interactives/writerspark/",
+    "links": [],
+    "credit": "MacGregor Maltais Magic Writer Spark",
+    "screenshot": "screenshots/writerspark.jpg",
+    "captured": "2026-10-04"
+  },
+  {
+    "id": "moonphases",
+    "title": "Moon Phase Lab",
+    "category": "Science",
+    "group": "",
+    "description": "Move one Moon around Earth, watch the view from Earth change, then match and name the phases.",
+    "favourite": true,
+    "tags": [
+      "Explore & practise",
+      "Teacher results"
+    ],
+    "url": "https://maltais239.github.io/interactives/moonphases/",
+    "links": [
+      {
+        "label": "En français",
+        "url": "https://maltais239.github.io/interactives/moonphases-fr/"
+      }
+    ],
+    "credit": "",
+    "screenshot": "screenshots/moonphases.jpg",
+    "captured": "2026-10-04"
+  },
+  {
+    "id": "geotrek",
+    "title": "GeoTrek",
+    "category": "Geography",
+    "group": "World",
+    "description": "Travel from one country to another by choosing neighbouring countries. Use clues to plan your route.",
+    "favourite": true,
+    "tags": [
+      "Borders & routes"
+    ],
+    "url": "https://maltais239.github.io/interactives/geotrek/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/geotrek.jpg",
+    "captured": "2026-10-04",
+    "original_title": "GeoTrek. This is a fun way to learn countries that isn't just identification.",
+    "original_urls": [
+      "https://maltais239.github.io/interactives/geotrek/"
+    ]
+  },
+  {
+    "id": "mackwoodmapping",
+    "title": "Mackwood Mapping",
+    "category": "Geography",
+    "group": "World",
+    "description": "Choose a region and identify countries by clicking the map. Track your progress through the challenge.",
+    "favourite": true,
+    "tags": [
+      "Country challenge"
+    ],
+    "url": "https://interactives.blackgold.ca/Mackwoodmapping/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/mackwoodmapping.jpg",
+    "captured": "2026-10-04",
+    "original_title": "Mackwood Mapping!",
+    "original_urls": [
+      "https://interactives.blackgold.ca/Mackwoodmapping/",
+      "https://maltais239.github.io/interactives/Mackwoodmapping/"
+    ]
+  },
+  {
+    "id": "rootwords",
+    "title": "Rooting For You!",
+    "category": "Reading & writing",
+    "group": "",
+    "description": "Reveal roots, use context clues, and work out what a whole word means.",
+    "favourite": true,
+    "tags": [
+      "Roots & meaning"
+    ],
+    "url": "https://maltais239.github.io/interactives/rootwords/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/rootwords.jpg",
+    "captured": "2026-10-04"
+  },
+  {
+    "id": "thinkingroutines",
+    "title": "Thinking Routines",
+    "category": "Thinking tools",
+    "group": "",
+    "description": "Choose a Social Studies outcome and lesson phase, then find a routine with a ready-to-use teacher process.",
+    "favourite": true,
+    "tags": [
+      "Grades 7–9",
+      "Teacher tool"
+    ],
+    "url": "https://interactives.blackgold.ca/thinkingroutines8/",
+    "links": [
+      {
+        "label": "Grade 7",
+        "url": "https://interactives.blackgold.ca/thinkingroutines7/"
+      },
+      {
+        "label": "Grade 9",
+        "url": "https://interactives.blackgold.ca/thinkingroutines9/"
+      }
+    ],
+    "credit": "",
+    "screenshot": "screenshots/thinkingroutines.jpg",
+    "captured": "2026-10-04"
+  },
+  {
+    "id": "makechange",
+    "title": "Cashier Change Challenge",
+    "category": "Maths",
+    "group": "",
+    "description": "Calculate change and drag Canadian bills and coins from the till to pay the customer.",
+    "favourite": true,
+    "tags": [
+      "Canadian money",
+      "Three levels"
+    ],
+    "url": "https://maltais239.github.io/interactives/makechange/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/makechange.jpg",
+    "captured": "2026-10-04"
+  },
+  {
+    "id": "wordworks",
+    "title": "WordWorks Lab",
+    "category": "Reading & writing",
+    "group": "",
+    "description": "Explore word families and see how prefixes, base words, and suffixes change meaning.",
+    "favourite": false,
+    "tags": [
+      "Word building",
+      "Hear the words"
+    ],
+    "url": "https://interactives.blackgold.ca/wordworks-lab/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/wordworks.jpg",
+    "captured": "2026-10-04"
+  },
+  {
+    "id": "alphabetcards",
+    "title": "Print & Play Cards",
+    "category": "Reading & writing",
+    "group": "",
+    "description": "Choose alphabet pictures or sight words, preview the primary writing lines, and print practice pages.",
+    "favourite": false,
+    "tags": [
+      "Early literacy",
+      "Printable"
+    ],
+    "url": "https://interactives.blackgold.ca/alphabet-picture-cards/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/alphabetcards.jpg",
+    "captured": "2026-10-04"
+  },
+  {
+    "id": "periodictable",
+    "title": "Accessible Periodic Table",
+    "category": "Science",
+    "group": "",
+    "description": "Search elements, hear their names and details, and switch to large element cards.",
+    "favourite": false,
+    "tags": [
+      "Listen & explore",
+      "Large cards"
+    ],
+    "url": "https://interactives.blackgold.ca/accessible-periodic-table/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/periodictable.jpg",
+    "captured": "2026-10-04"
+  },
+  {
+    "id": "spaceactivities",
+    "title": "Space Arcade",
+    "category": "Science",
+    "group": "",
+    "description": "Read, move sticky notes, sort evidence, weigh choices, and build a mission plan across eight activities.",
+    "favourite": false,
+    "tags": [
+      "Grade 4",
+      "Save & print"
+    ],
+    "url": "https://interactives.blackgold.ca/space-activities/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/spaceactivities.jpg",
+    "captured": "2026-10-04"
+  },
+  {
+    "id": "watercycle",
+    "title": "Water Cycle Explorer",
+    "category": "Science",
+    "group": "",
+    "description": "Explore water pathways on an illustrated landscape, then try labelling the cycle yourself.",
+    "favourite": false,
+    "tags": [
+      "Explore & label"
+    ],
+    "url": "https://maltais239.github.io/interactives/water-cycle-explorer/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/watercycle.jpg",
+    "captured": "2026-10-04"
+  },
+  {
+    "id": "fractionexplorer",
+    "title": "Fraction Explorer",
+    "category": "Maths",
+    "group": "",
+    "description": "Build visual fractions, compare denominators, and practise simplifying and fraction operations.",
+    "favourite": false,
+    "tags": [
+      "Grade 7",
+      "Visual models"
+    ],
+    "url": "https://interactives.blackgold.ca/fractionexplorer/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/fractionexplorer.jpg",
+    "captured": "2026-10-04"
+  },
+  {
+    "id": "hexthinker",
+    "title": "HEX-Thinker",
+    "category": "Thinking tools",
+    "group": "",
+    "description": "Add your own terms, move the hexagons, and explain connections between ideas.",
+    "favourite": false,
+    "tags": [
+      "Custom terms",
+      "Connections"
+    ],
+    "url": "https://interactives.blackgold.ca/HEX-Thinker/",
+    "links": [],
+    "credit": "By Greg Gowens",
+    "screenshot": "screenshots/hexthinker.jpg",
+    "captured": "2026-10-04"
+  },
+  {
+    "id": "asctriangle",
+    "title": "Association Triangle",
+    "category": "Thinking tools",
+    "group": "",
+    "description": "Connect three terms, quotes, or images. Explain each relationship and bring the ideas together.",
+    "favourite": false,
+    "tags": [
+      "Custom prompts",
+      "Connections"
+    ],
+    "url": "https://interactives.blackgold.ca/ASC-Triangle/",
+    "links": [],
+    "credit": "By Greg Gowens",
+    "screenshot": "screenshots/asctriangle.jpg",
+    "captured": "2026-10-04"
+  },
+  {
+    "id": "geo-canadiangeochallenge1",
+    "title": "Canadian Geography: Local Places",
+    "category": "Geography",
+    "group": "Canada",
+    "description": "Find your community and explore places across Canada.",
+    "favourite": false,
+    "tags": [
+      "Communities"
+    ],
+    "url": "https://maltais239.github.io/interactives/Canadiangeochallenge1/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/geo-canadiangeochallenge1.jpg",
+    "captured": "2026-10-04",
+    "original_title": "Canadian Geography Challenge 1: local places",
+    "original_urls": [
+      "https://maltais239.github.io/interactives/Canadiangeochallenge1/"
+    ]
+  },
+  {
+    "id": "piratemapping",
+    "title": "Pirate Mapping",
+    "category": "Geography",
+    "group": "Map skills",
+    "description": "Follow the captain’s compass directions across a treasure map.",
+    "favourite": false,
+    "tags": [
+      "Directions & movement"
+    ],
+    "url": "https://maltais239.github.io/interactives/piratemapping/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/piratemapping.jpg",
+    "captured": "2026-10-04",
+    "original_title": "Pirate Mapping",
+    "original_urls": [
+      "https://maltais239.github.io/interactives/piratemapping/"
+    ]
+  },
+  {
+    "id": "geo-canadiangeographyfacts1",
+    "title": "Canada Fact Finder",
+    "category": "Geography",
+    "group": "Canada",
+    "description": "Click a province or territory to discover facts about it.",
+    "favourite": false,
+    "tags": [
+      "Explore & discover"
+    ],
+    "url": "https://maltais239.github.io/interactives/Canadiangeographyfacts1/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/geo-canadiangeographyfacts1.jpg",
+    "captured": "2026-10-04",
+    "original_title": "Canadian Provinces and Territories Fact Finder",
+    "original_urls": [
+      "https://maltais239.github.io/interactives/Canadiangeographyfacts1/"
+    ]
+  },
+  {
+    "id": "geo-canadiangeographyquiz1",
+    "title": "Provinces & Territories Map Challenge",
+    "category": "Geography",
+    "group": "Canada",
+    "description": "Read a clue and find the correct province or territory on the map.",
+    "favourite": false,
+    "tags": [
+      "Clues & locations"
+    ],
+    "url": "https://maltais239.github.io/interactives/Canadiangeographyquiz1/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/geo-canadiangeographyquiz1.jpg",
+    "captured": "2026-10-04",
+    "original_title": "Canadian Provinces and Territories Map Challenge",
+    "original_urls": [
+      "https://maltais239.github.io/interactives/Canadiangeographyquiz1/"
+    ]
+  },
+  {
+    "id": "albertaregions",
+    "title": "Alberta Regions & Subregions",
+    "category": "Geography",
+    "group": "Alberta",
+    "description": "Explore Alberta’s natural regions and the subregions within them.",
+    "favourite": false,
+    "tags": [
+      "Regions & subregions"
+    ],
+    "url": "https://maltais239.github.io/interactives/RegionsofAlberta/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/albertaregions.jpg",
+    "captured": "2026-10-04",
+    "original_title": "Alberta's Physiographic Regions and Subregions",
+    "original_urls": [
+      "https://maltais239.github.io/interactives/RegionsofAlberta/"
+    ]
+  },
+  {
+    "id": "geo-simpleregionsofalberta",
+    "title": "Alberta Regions Explorer",
+    "category": "Geography",
+    "group": "Alberta",
+    "description": "Use a simpler regional map to explore Alberta’s major natural regions.",
+    "favourite": false,
+    "tags": [
+      "Explore"
+    ],
+    "url": "https://maltais239.github.io/interactives/simpleregionsofAlberta/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/geo-simpleregionsofalberta.jpg",
+    "captured": "2026-10-04",
+    "original_title": "Alberta's Regions Explorer",
+    "original_urls": [
+      "https://maltais239.github.io/interactives/simpleregionsofAlberta/"
+    ]
+  },
+  {
+    "id": "geo-albertaregionsgame",
+    "title": "Alberta Regions Quiz",
+    "category": "Geography",
+    "group": "Alberta",
+    "description": "Explore, quiz, or practise identifying Alberta’s natural regions.",
+    "favourite": false,
+    "tags": [
+      "Explore, quiz & practise"
+    ],
+    "url": "https://maltais239.github.io/interactives/Albertaregionsgame/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/geo-albertaregionsgame.jpg",
+    "captured": "2026-10-04",
+    "original_title": "Interactive Alberta Regions Quiz game",
+    "original_urls": [
+      "https://maltais239.github.io/interactives/Albertaregionsgame/"
+    ]
+  },
+  {
+    "id": "geo-regionsofcanada",
+    "title": "Canada’s Physiographic Regions",
+    "category": "Geography",
+    "group": "Canada",
+    "description": "Explore the physical regions that shape Canada’s landscape.",
+    "favourite": false,
+    "tags": [
+      "Physical geography"
+    ],
+    "url": "https://maltais239.github.io/interactives/RegionsofCanada/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/geo-regionsofcanada.jpg",
+    "captured": "2026-10-04",
+    "original_title": "Canada's Physiographic Regions",
+    "original_urls": [
+      "https://maltais239.github.io/interactives/RegionsofCanada/"
+    ]
+  },
+  {
+    "id": "geo-regionsofcanadaquiz",
+    "title": "Canada’s Regions Quiz",
+    "category": "Geography",
+    "group": "Canada",
+    "description": "Use explore, quiz, and practice modes to learn Canada’s physical regions.",
+    "favourite": false,
+    "tags": [
+      "Explore, quiz & practise"
+    ],
+    "url": "https://maltais239.github.io/interactives/RegionsofCanadaquiz/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/geo-regionsofcanadaquiz.jpg",
+    "captured": "2026-10-04",
+    "original_title": "Interactive Regions Quiz Game",
+    "original_urls": [
+      "https://maltais239.github.io/interactives/RegionsofCanadaquiz/"
+    ]
+  },
+  {
+    "id": "geo-placenamesofalberta",
+    "title": "Place Names of Alberta",
+    "category": "Geography",
+    "group": "Alberta",
+    "description": "Investigate the stories and origins behind Alberta place names.",
+    "favourite": false,
+    "tags": [
+      "Places & stories"
+    ],
+    "url": "https://maltais239.github.io/interactives/placenamesofAlberta/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/geo-placenamesofalberta.jpg",
+    "captured": "2026-10-04",
+    "original_title": "Place Names of Alberta App",
+    "original_urls": [
+      "https://maltais239.github.io/interactives/placenamesofAlberta/"
+    ]
+  },
+  {
+    "id": "geo-canadiangeographychallenge2",
+    "title": "Provinces, Territories & Capitals",
+    "category": "Geography",
+    "group": "Canada",
+    "description": "Explore and practise Canada’s provinces, territories, and capital cities.",
+    "favourite": false,
+    "tags": [
+      "Capitals"
+    ],
+    "url": "https://maltais239.github.io/interactives/Canadiangeographychallenge2/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/geo-canadiangeographychallenge2.jpg",
+    "captured": "2026-10-04",
+    "original_title": "Provinces, Territories, Capitals Interactive Quiz",
+    "original_urls": [
+      "https://maltais239.github.io/interactives/Canadiangeographychallenge2/"
+    ]
+  },
+  {
+    "id": "geo-labelcanada",
+    "title": "Label Canada",
+    "category": "Geography",
+    "group": "Canada",
+    "description": "Drag province and territory labels onto the correct places on the map.",
+    "favourite": false,
+    "tags": [
+      "Drag & label"
+    ],
+    "url": "https://maltais239.github.io/interactives/labelCanada/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/geo-labelcanada.jpg",
+    "captured": "2026-10-04",
+    "original_title": "Label the Provinces and Territories",
+    "original_urls": [
+      "https://maltais239.github.io/interactives/labelCanada/"
+    ]
+  },
+  {
+    "id": "geo-mixedupcanadapuzzle",
+    "title": "Mixed-Up Canada Puzzle",
+    "category": "Geography",
+    "group": "Canada",
+    "description": "Move the province and territory pieces to put Canada back together.",
+    "favourite": false,
+    "tags": [
+      "Move & assemble"
+    ],
+    "url": "https://maltais239.github.io/interactives/mixedupcanadapuzzle/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/geo-mixedupcanadapuzzle.jpg",
+    "captured": "2026-10-04",
+    "original_title": "Mixed up Map of Canada Digital Puzzle",
+    "original_urls": [
+      "https://maltais239.github.io/interactives/mixedupcanadapuzzle/"
+    ]
+  },
+  {
+    "id": "worldgeography",
+    "title": "Learn the Countries of the World",
+    "category": "Geography",
+    "group": "World",
+    "description": "Explore countries, answer map questions, and practise by world region.",
+    "favourite": false,
+    "tags": [
+      "Explore, quiz & practise"
+    ],
+    "url": "https://maltais239.github.io/interactives/worldgeography195/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/worldgeography.jpg",
+    "captured": "2026-10-04",
+    "original_title": "Learn the Countries of the World",
+    "original_urls": [
+      "https://maltais239.github.io/interactives/worldgeography195/"
+    ]
+  },
+  {
+    "id": "labeltheworld",
+    "title": "Label the Countries of the World",
+    "category": "Geography",
+    "group": "World",
+    "description": "Drag country names onto the map and work through smaller regions.",
+    "favourite": false,
+    "tags": [
+      "Drag & label"
+    ],
+    "url": "https://maltais239.github.io/interactives/labeltheworld/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/labeltheworld.jpg",
+    "captured": "2026-10-04",
+    "original_title": "Label the Countries of the World",
+    "original_urls": [
+      "https://maltais239.github.io/interactives/labeltheworld/"
+    ]
+  },
+  {
+    "id": "geo-canadageotrek",
+    "title": "CanadaTrek",
+    "category": "Geography",
+    "group": "Canada",
+    "description": "Travel between provinces, territories, or capitals using neighbouring places.",
+    "favourite": false,
+    "tags": [
+      "Borders & routes"
+    ],
+    "url": "https://maltais239.github.io/interactives/Canadageotrek/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/geo-canadageotrek.jpg",
+    "captured": "2026-10-04",
+    "original_title": "CanadaTrek. A version for provinces, territories, and capitals.",
+    "original_urls": [
+      "https://maltais239.github.io/interactives/Canadageotrek/"
+    ]
+  },
+  {
+    "id": "geo-continentsgame",
+    "title": "Continents Identification",
+    "category": "Geography",
+    "group": "World",
+    "description": "Use the world map to identify and practise the continents.",
+    "favourite": false,
+    "tags": [
+      "Continents"
+    ],
+    "url": "https://maltais239.github.io/interactives/continentsgame/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/geo-continentsgame.jpg",
+    "captured": "2026-10-04",
+    "original_title": "Continents Identification",
+    "original_urls": [
+      "https://maltais239.github.io/interactives/continentsgame/"
+    ]
+  },
+  {
+    "id": "geo-latitudelongitude",
+    "title": "Latitude & Longitude",
+    "category": "Geography",
+    "group": "Map skills",
+    "description": "Find the target location using latitude and longitude coordinates.",
+    "favourite": false,
+    "tags": [
+      "Coordinates"
+    ],
+    "url": "https://maltais239.github.io/interactives/latitudelongitude/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/geo-latitudelongitude.jpg",
+    "captured": "2026-10-04",
+    "original_title": "Latitide and Longitude Interactive",
+    "original_urls": [
+      "https://maltais239.github.io/interactives/latitudelongitude/"
+    ]
+  },
+  {
+    "id": "geo-usstates",
+    "title": "US States",
+    "category": "Geography",
+    "group": "World",
+    "description": "Explore, quiz, and practise identifying US states on the map.",
+    "favourite": false,
+    "tags": [
+      "Explore, quiz & practise"
+    ],
+    "url": "https://maltais239.github.io/interactives/USstates/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/geo-usstates.jpg",
+    "captured": "2026-10-04",
+    "original_title": "US States just because.",
+    "original_urls": [
+      "https://maltais239.github.io/interactives/USstates/"
+    ]
+  },
+  {
+    "id": "geo-geotrekusa",
+    "title": "US States GeoTrek",
+    "category": "Geography",
+    "group": "World",
+    "description": "Build a route between states by choosing neighbouring states.",
+    "favourite": false,
+    "tags": [
+      "Borders & routes"
+    ],
+    "url": "https://maltais239.github.io/interactives/geotrekUSA/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/geo-geotrekusa.jpg",
+    "captured": "2026-10-04",
+    "original_title": "States GeoTrek",
+    "original_urls": [
+      "https://maltais239.github.io/interactives/geotrekUSA/"
+    ]
+  },
+  {
+    "id": "geo-albertaregionscoloringpage",
+    "title": "Geo Colouring Page",
+    "category": "Geography",
+    "group": "Map skills",
+    "description": "Open a map outline and print a colouring page for classroom use.",
+    "favourite": false,
+    "tags": [
+      "Printable map"
+    ],
+    "url": "https://maltais239.github.io/interactives/Albertaregionscoloringpage/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/geo-albertaregionscoloringpage.jpg",
+    "captured": "2026-10-04",
+    "original_title": "Geo Coloring Page. this can be used to make black lines of any geojson file",
+    "original_urls": [
+      "https://maltais239.github.io/interactives/Albertaregionscoloringpage/"
+    ]
+  },
+  {
+    "id": "template-alberta",
+    "title": "Alberta Colouring Template",
+    "category": "Geography",
+    "group": "Alberta",
+    "description": "Open the editable Google Slides template for Alberta’s regions.",
+    "favourite": false,
+    "tags": [
+      "Google Slides",
+      "Colouring template"
+    ],
+    "url": "https://docs.google.com/presentation/d/122ll02KnyW5R4zZR-RErknaxBoaUPagvA09RAi6QidQ/edit?usp=drive_link",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/template-alberta.jpg",
+    "captured": "2026-10-04",
+    "original_title": "Alberta Template",
+    "type": "template"
+  },
+  {
+    "id": "template-provinces",
+    "title": "Provinces & Territories Colouring Template",
+    "category": "Geography",
+    "group": "Canada",
+    "description": "Open the editable Google Slides template for Canada’s provinces and territories.",
+    "favourite": false,
+    "tags": [
+      "Google Slides",
+      "Colouring template"
+    ],
+    "url": "https://docs.google.com/presentation/d/1772O1H0pJWk2i2fc3C8dk826tjjMLNLSXMesVtNXIxw/edit?usp=drive_link",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/template-provinces.jpg",
+    "captured": "2026-10-04",
+    "original_title": "Provinces/Territories Template",
+    "type": "template"
+  },
+  {
+    "id": "template-regions-canada",
+    "title": "Canada Regions Colouring Template",
+    "category": "Geography",
+    "group": "Canada",
+    "description": "Open the editable Google Slides template for Canada’s physical regions.",
+    "favourite": false,
+    "tags": [
+      "Google Slides",
+      "Colouring template"
+    ],
+    "url": "https://docs.google.com/presentation/d/1uaISH7AXTFNQfInydlrWDPggw0lNsrf9GxzXV2iz25Y/edit?usp=drive_link",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/template-regions-canada.jpg",
+    "captured": "2026-10-04",
+    "original_title": "Regions of Canada Template",
+    "type": "template"
+  },
+  {
+    "id": "geo-numberedtreaties",
+    "title": "Numbered Treaties of Canada",
+    "category": "Geography",
+    "group": "Canada",
+    "description": "Explore numbered treaty areas and read the information shown for each.",
+    "favourite": false,
+    "tags": [
+      "Treaty areas"
+    ],
+    "url": "https://maltais239.github.io/interactives/numberedtreaties/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/geo-numberedtreaties.jpg",
+    "captured": "2026-10-04",
+    "original_title": "Numbered Treaties Interactive",
+    "original_urls": [
+      "https://maltais239.github.io/interactives/numberedtreaties/"
+    ]
+  },
+  {
+    "id": "geo-grade3numberedtreaties",
+    "title": "Grade 3 Treaty Explorer",
+    "category": "Geography",
+    "group": "Alberta",
+    "description": "Zoom in on treaty areas and use the map to gather information for research.",
+    "favourite": false,
+    "tags": [
+      "Student research"
+    ],
+    "url": "https://maltais239.github.io/interactives/grade3numberedtreaties/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/geo-grade3numberedtreaties.jpg",
+    "captured": "2026-10-04",
+    "original_title": "Grade 3 Numbered Treaties Interactive",
+    "original_urls": [
+      "https://maltais239.github.io/interactives/grade3numberedtreaties/"
+    ]
+  },
+  {
+    "id": "mapmastersubregions",
+    "title": "Mapmaster with Subregions",
+    "category": "Geography",
+    "group": "World",
+    "description": "Study or identify countries in world regions and smaller subregions, including the Middle East.",
+    "favourite": false,
+    "tags": [
+      "Study & game"
+    ],
+    "url": "https://interactives.blackgold.ca/mapmastersubregions/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/mapmastersubregions.jpg",
+    "captured": "2026-10-04",
+    "original_title": "Mapmaster with Subregions",
+    "original_urls": [
+      "https://interactives.blackgold.ca/mapmastersubregions/"
+    ]
+  },
+  {
+    "id": "canadamap",
+    "title": "Canada Map Challenge",
+    "category": "Geography",
+    "group": "Canada",
+    "description": "Read a province or territory clue, locate the answer, and ask for a hint when you need one.",
+    "favourite": false,
+    "tags": [
+      "Clues & hints"
+    ],
+    "url": "https://maltais239.github.io/interactives/canada-map-challenge/",
+    "links": [],
+    "credit": "",
+    "screenshot": "screenshots/canadamap.jpg",
+    "captured": "2026-10-04"
+  }
+]

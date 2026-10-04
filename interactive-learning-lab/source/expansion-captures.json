@@ -1,0 +1,507 @@
+[
+  {
+    "id": "infospark",
+    "url": "https://maltais239.github.io/interactives/infospark/",
+    "title": "MacGregor Maltais InfoSpark: The Writing Engine"
+  },
+  {
+    "id": "writerpractice",
+    "url": "https://maltais239.github.io/interactives/writersparkpracticeapp/",
+    "title": "Writer Spark Practice App v1.3"
+  },
+  {
+    "id": "morphologyboard",
+    "url": "https://maltais239.github.io/interactives/morphologyboard/",
+    "title": "Magnetic Morphology Boards - 50+ Words"
+  },
+  {
+    "id": "morphologycards2",
+    "url": "https://maltais239.github.io/interactives/morphologycards2/",
+    "title": "Magnetic Morphology Flashcards - 50+ Words"
+  },
+  {
+    "id": "morphologygame",
+    "url": "https://maltais239.github.io/interactives/morphologygame/",
+    "title": "Can I Have a Word?"
+  },
+  {
+    "id": "custommorphologygame",
+    "url": "https://maltais239.github.io/interactives/custommorphologygame/",
+    "title": "Can I Have a Word?"
+  },
+  {
+    "id": "morphemematchup",
+    "url": "https://maltais239.github.io/interactives/morphemematchup/",
+    "title": "Morpheme Match-Up"
+  },
+  {
+    "id": "teachermorphologymaker",
+    "url": "https://maltais239.github.io/interactives/teachermorphologymaker/",
+    "title": "Morpheme Game Generator"
+  },
+  {
+    "id": "heartwords",
+    "url": "https://maltais239.github.io/interactives/heartwords/",
+    "title": "Heart Word Mapper"
+  },
+  {
+    "id": "soundstructurespell",
+    "url": "https://maltais239.github.io/interactives/soundstructurespell/",
+    "title": "Sound, Structure, Spell"
+  },
+  {
+    "id": "sentencebuilding",
+    "url": "https://maltais239.github.io/interactives/flyleaf2.0/",
+    "title": "Sentence Building Version 2.0"
+  },
+  {
+    "id": "readingmaze",
+    "url": "https://maltais239.github.io/interactives/MAZE/",
+    "title": "CORE Reading Maze Comprehension Test"
+  },
+  {
+    "id": "borealforestreading",
+    "url": "https://maltais239.github.io/interactives/readinginteractiveborealforest/",
+    "title": "Boreal Forest Comprehension"
+  },
+  {
+    "id": "ecosystemannotation",
+    "url": "https://maltais239.github.io/interactives/livingsystemsreadingpassage/",
+    "title": "Student Annotation Activity - Ecosystems (Highlighting)"
+  },
+  {
+    "id": "definitiondraw",
+    "url": "https://maltais239.github.io/interactives/definitiondraw/",
+    "title": "Definition Draw"
+  },
+  {
+    "id": "customflashcards",
+    "url": "https://maltais239.github.io/interactives/generateyourownflashcards/",
+    "title": "Interactive Flashcards"
+  },
+  {
+    "id": "vocabmatchbuilder",
+    "url": "https://maltais239.github.io/interactives/vocabmatchbuilder/",
+    "title": "Vocabulary Match Builder"
+  },
+  {
+    "id": "vocaborganizer",
+    "url": "https://maltais239.github.io/interactives/vocabgraphicorganizer/",
+    "title": "Vocabulary Graphic Organizer"
+  },
+  {
+    "id": "dropdownquiz",
+    "url": "https://maltais239.github.io/interactives/dropdownmaker/",
+    "title": "Dropdown Quiz"
+  },
+  {
+    "id": "cacaoquiz",
+    "url": "https://maltais239.github.io/interactives/mcquestions/",
+    "title": "Cacao Passage Quiz"
+  },
+  {
+    "id": "orderingsteps",
+    "url": "https://maltais239.github.io/interactives/orderingsteps/",
+    "title": "Cacao Steps Drag and Drop"
+  },
+  {
+    "id": "math4taskcards",
+    "url": "https://maltais239.github.io/interactives/math4taskcards/",
+    "title": "Interactive Math Task Cards"
+  },
+  {
+    "id": "numberbuilding",
+    "url": "https://maltais239.github.io/interactives/preassess/",
+    "title": "Building & Breaking Numbers App"
+  },
+  {
+    "id": "numbersense6",
+    "url": "https://maltais239.github.io/interactives/numbersense6/",
+    "title": "Number Sense"
+  },
+  {
+    "id": "sciencepat",
+    "url": "https://maltais239.github.io/interactives/PATpracticescience6/",
+    "title": "Science PAT Practice"
+  },
+  {
+    "id": "mathpracticefr",
+    "url": "https://maltais239.github.io/interactives/PATpracticemath6FR/",
+    "title": "Jeu de Révision Mathématiques"
+  },
+  {
+    "id": "bioticsorting",
+    "url": "https://maltais239.github.io/interactives/abioticbioticsort/",
+    "title": "Sorting Game - Abiotic vs. Biotic Components"
+  },
+  {
+    "id": "animaldiets",
+    "url": "https://maltais239.github.io/interactives/animaldiets/",
+    "title": "Sorting Game – Animal Diets"
+  },
+  {
+    "id": "statessort",
+    "url": "https://maltais239.github.io/interactives/statesofmattersort/",
+    "title": "Solid, Liquid, Gas Sorting Activity (Grade 5)"
+  },
+  {
+    "id": "lightsort",
+    "url": "https://maltais239.github.io/interactives/transparentopaque/",
+    "title": "Sorting Game - Transparent vs. Opaque"
+  },
+  {
+    "id": "energysort",
+    "url": "https://maltais239.github.io/interactives/renewablenonrenewable/",
+    "title": "Sorting Game - Renewable vs. Non-Renewable Energy"
+  },
+  {
+    "id": "weathersort",
+    "url": "https://maltais239.github.io/interactives/weathervsclimate/",
+    "title": "Sorting Game - Weather and Climate"
+  },
+  {
+    "id": "naturalprocessedsort",
+    "url": "https://maltais239.github.io/interactives/naturalprocessedsort/",
+    "title": "Sorting Game – OpenMoji Edition"
+  },
+  {
+    "id": "governmentsort",
+    "url": "https://interactives.blackgold.ca/governmentsorting/",
+    "title": "Levels of Government: Sorting Challenge"
+  },
+  {
+    "id": "wantsneeds",
+    "url": "https://maltais239.github.io/interactives/wantsandneedssort/",
+    "title": "Sorting Game - Wants vs. Needs"
+  },
+  {
+    "id": "traderesources",
+    "url": "https://maltais239.github.io/interactives/traderesources2/",
+    "title": "Trade & Resources: Sorting Challenge"
+  },
+  {
+    "id": "sortingcreator",
+    "url": "https://maltais239.github.io/interactives/sortingcreator/",
+    "title": "AI Sorting Game Builder"
+  },
+  {
+    "id": "integerexplorer",
+    "url": "https://interactives.blackgold.ca/integerexplorer/",
+    "title": "Integer Operations Explorer"
+  },
+  {
+    "id": "rationalexplorer",
+    "url": "https://interactives.blackgold.ca/rationalnumbers/",
+    "title": "Rational Numbers Explorer"
+  },
+  {
+    "id": "orderingrational",
+    "url": "https://interactives.blackgold.ca/orderingrationalnumbers/",
+    "title": "Ordering Rational Numbers"
+  },
+  {
+    "id": "irrationalnumbers",
+    "url": "https://interactives.blackgold.ca/irrationalnumbers/",
+    "title": "Grade 8: Irrational Numbers Explorer"
+  },
+  {
+    "id": "numbersorter",
+    "url": "https://interactives.blackgold.ca/numbersorter/",
+    "title": "Rational vs Irrational Number Sort"
+  },
+  {
+    "id": "realnumberdrop",
+    "url": "https://interactives.blackgold.ca/realnumberdrop/",
+    "title": "Real Number Drop"
+  },
+  {
+    "id": "squarescubes",
+    "url": "https://interactives.blackgold.ca/perfectsquaresandcubes/",
+    "title": "Perfect Squares & Cubes Explorer"
+  },
+  {
+    "id": "exponentexplorer",
+    "url": "https://interactives.blackgold.ca/exponentexplorer/",
+    "title": "Exponent Explorer"
+  },
+  {
+    "id": "polynomials",
+    "url": "https://interactives.blackgold.ca/polynomials/",
+    "title": "Polynomial Explorer"
+  },
+  {
+    "id": "financialchoices",
+    "url": "https://interactives.blackgold.ca/grade7life/",
+    "title": "Grade 7 Financial Choices: A Year in the Life"
+  },
+  {
+    "id": "base10",
+    "url": "https://maltais239.github.io/interactives/base10/",
+    "title": "Base 10 Blocks Interactive"
+  },
+  {
+    "id": "oceancounting",
+    "url": "https://maltais239.github.io/interactives/oceancounting/",
+    "title": "Ocean Counting Explorer"
+  },
+  {
+    "id": "anglefinder",
+    "url": "https://maltais239.github.io/interactives/findtheangle1/",
+    "title": "What's the Angle?"
+  },
+  {
+    "id": "forestmath",
+    "url": "https://maltais239.github.io/interactives/forestmath1/",
+    "title": "Forest Math Adventure"
+  },
+  {
+    "id": "patterndetective",
+    "url": "https://maltais239.github.io/interactives/patterndetective3/",
+    "title": "Pattern Detective - Grade 3 Math"
+  },
+  {
+    "id": "moneysort",
+    "url": "https://maltais239.github.io/interactives/moneysorting/",
+    "title": "Money Sorting Activity"
+  },
+  {
+    "id": "spacemaths",
+    "url": "https://maltais239.github.io/interactives/spacesharing/",
+    "title": "Space Math Explorers"
+  },
+  {
+    "id": "photosynthesislab",
+    "url": "https://interactives.blackgold.ca/photosynthesislab/",
+    "title": "Photosynthesis Virtual Lab"
+  },
+  {
+    "id": "scienceinquiry",
+    "url": "https://interactives.blackgold.ca/science-inquiry-builder/",
+    "title": "Science Inquiry Builder v1.0"
+  },
+  {
+    "id": "plantgrower",
+    "url": "https://maltais239.github.io/interactives/planttamagotchi/",
+    "title": "Interactive Plant Grower v7"
+  },
+  {
+    "id": "creaturecare",
+    "url": "https://maltais239.github.io/interactives/animaltamagotchi/",
+    "title": "Interactive Creature Care v4.7: Bear Images"
+  },
+  {
+    "id": "dinodig",
+    "url": "https://maltais239.github.io/interactives/dinodig/",
+    "title": "STRATA — Alberta Field Excavation"
+  },
+  {
+    "id": "lifecycles",
+    "url": "https://maltais239.github.io/interactives/lifecyclesinteractive/",
+    "title": "Life Cycles Activity (Touch Enabled)"
+  },
+  {
+    "id": "seasonsexplorer",
+    "url": "https://maltais239.github.io/interactives/seasonexplorer1/",
+    "title": "Seasons Explorer – Slick Edition"
+  },
+  {
+    "id": "foodchain",
+    "url": "https://maltais239.github.io/interactives/foodchain/",
+    "title": "Circular Food Chain Challenge - Alberta Focus"
+  },
+  {
+    "id": "weatherdashboard",
+    "url": "https://maltais239.github.io/interactives/weatherforecastcreator/",
+    "title": "Weather Dashboard - Student Input"
+  },
+  {
+    "id": "ionicnomenclature",
+    "url": "https://interactives.blackgold.ca/ionicnomenclature/",
+    "title": "Chem 20: Ionic Nomenclature"
+  },
+  {
+    "id": "physicalboundaries",
+    "url": "https://maltais239.github.io/interactives/physicalandpoliticalboundaries/",
+    "title": "Alberta's Boundaries"
+  },
+  {
+    "id": "ancientcivilizations",
+    "url": "https://maltais239.github.io/interactives/ancientcivilizations/",
+    "title": "Civilizations of the World — Alberta Curriculum Map"
+  },
+  {
+    "id": "portroyalmap",
+    "url": "https://maltais239.github.io/interactives/portroyalmap/",
+    "title": "Port-Royal Habitation Interactive"
+  },
+  {
+    "id": "worldexplorer",
+    "url": "https://maltais239.github.io/interactives/Charbonneaumapyouknow/",
+    "title": "World Explorer 1.0"
+  },
+  {
+    "id": "canadageohub",
+    "url": "https://maltais239.github.io/interactives/Canadiangeographyhub/",
+    "title": "Canadian Geography Hub"
+  },
+  {
+    "id": "provincescolouring",
+    "url": "https://maltais239.github.io/interactives/Canadianprovincescoloring/",
+    "title": "Provinces and Territories Coloring Page"
+  },
+  {
+    "id": "regionscolouring",
+    "url": "https://maltais239.github.io/interactives/Canadianregionscoloring/",
+    "title": "Canada Regions Coloring Page"
+  },
+  {
+    "id": "treatiesalberta",
+    "url": "https://maltais239.github.io/interactives/numberedtreatiesAlberta/",
+    "title": "Numbered Treaties of Canada (Alberta Focus)"
+  },
+  {
+    "id": "placenamesgrade3",
+    "url": "https://maltais239.github.io/interactives/placenamesgrade3/",
+    "title": "Place Names of Alberta v2.3: Visual Update"
+  },
+  {
+    "id": "socialstudies789",
+    "url": "https://maltais239.github.io/interactives/social-studies-7-9/",
+    "title": "Social Studies 7–9 · Interactive Activities"
+  },
+  {
+    "id": "ideologyscanner",
+    "url": "https://maltais239.github.io/interactives/ideologyscanner/",
+    "title": "Spectrum Analyzer: Individualism vs Collectivism"
+  },
+  {
+    "id": "rootsofideology",
+    "url": "https://maltais239.github.io/interactives/rootsofideology/",
+    "title": "Roots of Ideology: Individualism vs. Collectivism"
+  },
+  {
+    "id": "culturalcontact",
+    "url": "https://interactives.blackgold.ca/perspectivesoncontact/",
+    "title": "Cultural Contact: Historical Perspectives"
+  },
+  {
+    "id": "furtrade",
+    "url": "https://maltais239.github.io/interactives/furtrade/",
+    "title": "Fur Trade Game"
+  },
+  {
+    "id": "governmentguide",
+    "url": "https://maltais239.github.io/interactives/3levelsofgovernment/",
+    "title": "Three Levels of Government - Canada"
+  },
+  {
+    "id": "governmentsystems",
+    "url": "https://maltais239.github.io/interactives/MMGovernment/",
+    "title": "Systems of Government: Democracy in Canada"
+  },
+  {
+    "id": "albertamemory",
+    "url": "https://maltais239.github.io/interactives/mandrykmemorymatch/",
+    "title": "Symbol of Alberta Memory Matching Game"
+  },
+  {
+    "id": "albertamillionaire",
+    "url": "https://maltais239.github.io/interactives/mandrykmillions/",
+    "title": "Who Wants to Be an Albertan Millionaire?"
+  },
+  {
+    "id": "knowledgespark",
+    "url": "https://maltais239.github.io/interactives/knowledgesparktp4/",
+    "title": "Knowledge Spark: Show What You Know"
+  },
+  {
+    "id": "imagespark",
+    "url": "https://maltais239.github.io/interactives/imagespark/",
+    "title": "Image Spark: Visual Analysis Tool"
+  },
+  {
+    "id": "frayermodel",
+    "url": "https://interactives.blackgold.ca/frayerblankjpg/",
+    "title": "Interactive Frayer Model"
+  },
+  {
+    "id": "venndiagram",
+    "url": "https://maltais239.github.io/interactives/venndiagram/",
+    "title": "Venn Diagram Sorting Activity - Consistent Ghost Dragging"
+  },
+  {
+    "id": "twotruths",
+    "url": "https://interactives.blackgold.ca/twotruthsandalie/",
+    "title": "2 Truths and a Lie - Educator Tool"
+  },
+  {
+    "id": "friendsquestions",
+    "url": "https://interactives.blackgold.ca/myfriendsquestionoftheweek/",
+    "title": "Learn About My Friends! — Landscape Interactive v4"
+  },
+  {
+    "id": "vidsscriptmaker",
+    "url": "https://maltais239.github.io/interactives/vidsscriptmaker/",
+    "title": "Vids Script Creator - Particle Theory"
+  },
+  {
+    "id": "docuclear",
+    "url": "https://interactives.blackgold.ca/docuclear/",
+    "title": "DocuClear - PDF to Accessible Text"
+  },
+  {
+    "id": "aacboard",
+    "url": "https://maltais239.github.io/interactives/AACboard/",
+    "title": "AAC Communication Board"
+  },
+  {
+    "id": "yesnoboard",
+    "url": "https://maltais239.github.io/interactives/yesno/",
+    "title": "Yes / No Board"
+  },
+  {
+    "id": "visualschedule",
+    "url": "https://maltais239.github.io/interactives/visualschedule/",
+    "title": "Visual Schedule"
+  },
+  {
+    "id": "beebot",
+    "url": "https://maltais239.github.io/interactives/beebot/",
+    "title": "🐝 Bee-Bot Adventure"
+  },
+  {
+    "id": "codeandgo",
+    "url": "https://maltais239.github.io/interactives/codeandgo/",
+    "title": "Code & Go Interactive Maze"
+  },
+  {
+    "id": "talebot",
+    "url": "https://maltais239.github.io/interactives/talebotgame/",
+    "title": "Talebot V1's Adventure"
+  },
+  {
+    "id": "italianpractice",
+    "url": "https://maltais239.github.io/interactives/3minuteItalian/",
+    "title": "3 Minute Italian Vocab Trainer"
+  },
+  {
+    "id": "spanishpractice",
+    "url": "https://maltais239.github.io/interactives/Spanishpractice/",
+    "title": "3 Minute Spanish Practice App"
+  },
+  {
+    "id": "frenchpractice",
+    "url": "https://maltais239.github.io/interactives/pratiquefrancais/",
+    "title": "Français Québec — Practice"
+  },
+  {
+    "id": "englishlearning",
+    "url": "https://maltais239.github.io/interactives/Englishlearninggame/",
+    "title": "Fun English Learning Game"
+  },
+  {
+    "id": "riverviewenglish",
+    "url": "https://interactives.blackgold.ca/RiverviewEnglish/",
+    "title": "English for Chinese Students — Practice"
+  }
+]
