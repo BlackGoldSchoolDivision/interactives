@@ -32,6 +32,9 @@ template = (ROOT / 'source/page-template.html').read_text()
 assert template.count('__CATALOGUE__') == 1
 assert template.count('__SCRIPT_VERSION__') == 1
 script_version = hashlib.sha256((ROOT / 'catalogue.js').read_bytes()).hexdigest()[:12]
-template = template.replace('__SCRIPT_VERSION__', script_version)
+style_version = hashlib.sha256((ROOT / 'homepage.css').read_bytes()).hexdigest()[:12]
+assert template.count('__STYLE_VERSION__') == 1
+template = template.replace('__SCRIPT_VERSION__', script_version).replace('__STYLE_VERSION__', style_version)
 (ROOT / 'index.html').write_text(template.replace('__CATALOGUE__', payload))
 print(f"Built {len(data)} catalogue entries; {(ROOT/'index.html').stat().st_size:,} byte HTML")
+
