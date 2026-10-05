@@ -159,7 +159,9 @@ function renderGoals(){
  $('goals').querySelectorAll('button').forEach(b=>b.onclick=()=>{goalId=b.dataset.goal;selected=null;renderGoals();renderRoutines();$('goals').querySelector(`[data-goal="${goalId}"]`).focus({preventScroll:true});});
 }
 function renderRoutines(){
+ const discussionOrder=['socratic-dialogue','socratic-seminar','think-pair-share','fishbowl','last-word','chalk-talk','what-makes-you-say-that','claim-support-question','circle-of-viewpoints','compass-points'];
  const items=routines.filter(r=>r.goals.includes(goalId));
+ if(goalId==='discuss')items.sort((a,b)=>discussionOrder.indexOf(a.id)-discussionOrder.indexOf(b.id));
  $('goalIntro').textContent=goals.find(g=>g.id===goalId).desc;
  $('count').textContent=items.length+' activities';
  $('routines').innerHTML=items.map(r=>`<button class="routine ${r.type==='Discussion structure'?'discussion':''} ${selected===r.id?'on':''}" data-routine="${r.id}" aria-pressed="${selected===r.id}"><span class="selected-dot" aria-hidden="true"></span><span class="type">${r.type} · ${r.tag}</span><h3>${r.name}</h3><p>${r.summary}</p><span class="fit"><b>Choose this when:</b> ${r.fit}</span><span class="foot"><span>${r.time}</span><span>Teacher walkthrough</span></span></button>`).join('');
