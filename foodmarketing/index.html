@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Marketing & You: Interactive Tool</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f0fdf4; /* Light green background */
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .nav-btn.active {
+            background-color: #16a34a; /* green-600 */
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-btn {
+            transition: all 0.2s;
+        }
+        
+        .nav-btn:hover:not(.active) {
+            background-color: #dcfce7; /* green-100 */
+        }
+        
+        /* Custom scrollbar for content areas */
+        .content-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+        .content-scroll::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+            border-radius: 4px;
+        }
+        .content-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        .content-scroll::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen p-4 md:p-8">
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Helper to pull a random selection from our question banks for replayability
+        const getRandomItems = (arr, num) => {
+            const shuffled = [...arr].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, num);
+        };
+
+        // --- DATA SOURCES ---
+        const learnContent = {
+            intro: "Food marketing is advertising that promotes the sale of certain food or food products. Many marketed foods/drinks contribute too much sodium, sugars, or saturated fat to our diets.",
+            forms: [
+                { icon: "fa-bullhorn", title: "Branding & Promos", items: ["Branding", "Sponsorship of events", "Contests and sales promotions"] },
+                { icon: "fa-star", title: "Endorsements", items: ["Celebrity endorsements", "Influencer posts"] },
+                { icon: "fa-hashtag", title: "Social Media", items: ["Sponsored posts (can be hard to recognize)", "Posts on TikTok, Instagram, Snapchat, Facebook, etc."] },
+                { icon: "fa-tv", title: "Commercials & Placements", items: ["TV, radio, internet, before movies", "Product placement in movies, TV, music videos, games"] },
+                { icon: "fa-crosshairs", title: "Targeted Ads", items: ["Based on personal data (age, gender)", "Based on purchasing or web browsing history", "Behavioural advertising tracks your online activities over time"] }
+            ],
+            effects: [
+                "Creates food trends.",
+                "Encourages buying foods to get promotional items (loyalty points, movie tickets, coupons).",
+                "Creates links between certain foods/brands and a particular lifestyle.",
+                "Builds brand loyalty so you keep buying from a specific store or brand."
+            ],
+            tips: [
+                { icon: "fa-tag", text: "Use food labels instead of relying on marketing messages." },
+                { icon: "fa-list-check", text: "Stick to your grocery list and avoid impulse buys." },
+                { icon: "fa-circle-question", text: "Question WHY you want a food. Is it cool? Healthy? Did a sponsored post give you the idea?" },
+                { icon: "fa-shield-halved", text: "Limit screen time, use ad-blockers, and protect your privacy settings." },
+                { icon: "fa-share-nodes", text: "Think before you share or like content promoting a food/drink product online." }
+            ]
+        };
+
+        const identificationScenarios = [
+            { scenario: "You are watching a music video from your favorite singer, and they stop at a clearly labeled 'SodaPop' vending machine to buy a drink.", options: ["Targeted Advertising", "Product Placement", "Sales Promotion", "Sponsorship"], answer: "Product Placement", explanation: "The brand paid to have their product featured within the content of the music video." },
+            { scenario: "You search online for 'cool new sneakers'. Later, while playing a free mobile game, you see an ad for a fast-food burger meal.", options: ["Behavioural Advertising", "Sponsorship", "Celebrity Endorsement", "Branding"], answer: "Behavioural Advertising", explanation: "Your personal data and online activities are tracked over time to deliver targeted ads, even across different apps." },
+            { scenario: "A famous basketball player posts a video on Instagram drinking 'EnergyBlast' sports drink after a game, using the hashtag #ad.", options: ["Branding", "Sales Promotion", "Celebrity Endorsement", "Product Placement"], answer: "Celebrity Endorsement", explanation: "A famous person is being paid to promote the product to their followers." },
+            { scenario: "A cereal box says 'Collect 5 tokens to win a free video game!'", options: ["Sponsorship", "Contests and Sales Promotions", "Targeted Advertising", "Product Placement"], answer: "Contests and Sales Promotions", explanation: "They are encouraging you to buy the food to get a promotional item or enter a contest." },
+            { scenario: "You are at a local skateboarding competition, and the banners around the park are all for a new energy drink.", options: ["Sponsorship", "Product Placement", "Targeted Advertising", "Celebrity Endorsement"], answer: "Sponsorship", explanation: "The brand paid to fund the event in exchange for putting their logo everywhere." },
+            { scenario: "A pop-up ad for a pizza delivery place appears on your screen right around dinnertime.", options: ["Commercial", "Targeted Advertising", "Contest", "Branding"], answer: "Targeted Advertising", explanation: "Ads can be targeted based on data like your location and the time of day." },
+            { scenario: "Your favorite TikTok creator reviews a brand new ultra-spicy chip and tells you to go buy it, with 'Sponsored' in small text.", options: ["Product Placement", "Social Media Sponsored Post", "Contest", "Sponsorship"], answer: "Social Media Sponsored Post", explanation: "This is a paid ad on social media. They can be hard to spot if you don't look for the 'sponsored' tag!" },
+            { scenario: "Before a YouTube video starts, a 15-second unskippable video plays showing a juicy burger.", options: ["Commercial", "Product Placement", "Branding", "Sponsorship"], answer: "Commercial", explanation: "Video ads played before videos on the internet or TV are considered commercials." },
+            { scenario: "A major fast-food chain's logo is bright red and yellow, colors designed to make you feel hungry.", options: ["Targeted Advertising", "Celebrity Endorsement", "Branding", "Sales Promotion"], answer: "Branding", explanation: "Companies use specific logos, colors, and slogans to build a recognizable identity." },
+            { scenario: "A gaming streamer you watch takes a 'break' to eat a specific branded candy bar on camera.", options: ["Contest", "Targeted Advertising", "Product Placement", "Commercial"], answer: "Product Placement", explanation: "The brand is paying to have their product casually placed within the content you are watching." },
+            { scenario: "You sign up for a fast-food app, and it asks for your birthdate. On your birthday, you get a coupon for a free shake.", options: ["Targeted Advertising", "Product Placement", "Celebrity Endorsement", "Sponsorship"], answer: "Targeted Advertising", explanation: "They are using your personal data (age/birthdate) to market directly to you." },
+            { scenario: "A soda company releases a new commercial featuring a group of teens having a fun beach party.", options: ["Creating Lifestyle Links", "Contest", "Product Placement", "Sponsorship"], answer: "Creating Lifestyle Links", explanation: "Marketing often tries to link their food/drink with a desirable, fun lifestyle." },
+            { scenario: "A grocery store has a massive, brightly colored cardboard display of soda cases right at the end of an aisle.", options: ["Branding & Promos", "Targeted Ad", "Product Placement", "Endorsement"], answer: "Branding & Promos", explanation: "In-store displays are a form of branding and promotion designed to catch your eye." },
+            { scenario: "You download an ad-free game, but a character's t-shirt clearly displays a real-world snack logo.", options: ["Product Placement", "Commercial", "Behavioural Advertising", "Contest"], answer: "Product Placement", explanation: "Even in 'ad-free' spaces, products can be placed directly into the media." },
+            { scenario: "An influencer posts a 'Day in the Life' vlog where they start their morning with a specific branded iced coffee.", options: ["Celebrity Endorsement / Influencer", "Targeted Advertising", "Contest", "Sponsorship"], answer: "Celebrity Endorsement / Influencer", explanation: "Influencers often act as modern 'celebrities' to endorse products to their fans." },
+            { scenario: "A candy company offers a 'buy one, get one free' deal at the local convenience store.", options: ["Sponsorship", "Sales Promotion", "Targeted Ad", "Product Placement"], answer: "Sales Promotion", explanation: "Discounts and deals are sales promotions designed to make you buy now." },
+            { scenario: "You fill out an online quiz. The next day, you get an email from a snack company based on your quiz answers.", options: ["Targeted/Behavioural Advertising", "Sponsorship", "Product Placement", "Commercial"], answer: "Targeted/Behavioural Advertising", explanation: "Your data was collected and used to send you specific ads." },
+            { scenario: "A sports stadium is renamed to include the name of a famous fast-food restaurant.", options: ["Contest", "Product Placement", "Sponsorship", "Targeted Ad"], answer: "Sponsorship", explanation: "The company pays massive amounts to sponsor the building for extreme brand visibility." },
+            { scenario: "A radio host interrupts their show to read a 30-second script talking about how much they love a local pizza shop.", options: ["Commercial", "Targeted Advertising", "Contest", "Product Placement"], answer: "Commercial", explanation: "This is a traditional radio commercial, even if the host reads it themselves." },
+            { scenario: "A fast-food app offers you 'Loyalty Points' for every dollar you spend.", options: ["Sales Promotion / Brand Loyalty", "Product Placement", "Sponsorship", "Celebrity Endorsement"], answer: "Sales Promotion / Brand Loyalty", explanation: "Loyalty programs encourage you to keep buying from them to earn rewards." }
+        ];
+
+        const sortingStatements = [
+            { text: "Food marketing only happens on TV commercials.", isFact: false, explanation: "Marketing happens everywhere: social media, games, movies, and through targeted online ads." },
+            { text: "Being aware of marketing can help you decide if a food is healthy using labels, not just ads.", isFact: true, explanation: "This is a key benefit of being aware! Ads often exaggerate health benefits." },
+            { text: "Sponsored posts on social media are always easy to recognize.", isFact: false, explanation: "Newer forms of marketing can be very difficult to recognize, making it hard to know when you're being advertised to." },
+            { text: "Companies can use your age, gender, and browsing history to send you specific ads.", isFact: true, explanation: "This is called targeted or behavioural advertising." },
+            { text: "Food marketing is designed to build 'brand loyalty' so you keep buying their products.", isFact: true, explanation: "Building loyalty is a major goal so you become a repeat customer." },
+            { text: "Food marketing is rarely used to create food trends.", isFact: false, explanation: "Creating food trends is actually one of the primary ways marketing impacts your choices." },
+            { text: "Product placement is when an ad plays before a movie starts.", isFact: false, explanation: "That's a commercial. Product placement is when the product is actually inside the movie (e.g., a character eating it)." },
+            { text: "Loyalty points encourage you to buy more of a certain food.", isFact: true, explanation: "Promotional items like loyalty points are designed to encourage repeated purchases." },
+            { text: "Behavioural advertising tracks your online activities over time.", isFact: true, explanation: "It uses your data, like web history, to deliver targeted ads." },
+            { text: "Celebrities only endorse foods they actually eat every day.", isFact: false, explanation: "Celebrities are paid to endorse products. They may not actually consume them regularly." },
+            { text: "Food marketing has absolutely no impact on what you choose to eat.", isFact: false, explanation: "Marketing heavily influences our choices, often subconsciously." },
+            { text: "Young children and teens are especially vulnerable to food marketing.", isFact: true, explanation: "This is why teaching them about marketing techniques is a valuable food skill." },
+            { text: "You can lessen ad exposure by limiting screen time.", isFact: true, explanation: "Less screen time means fewer chances for digital ads to reach you." },
+            { text: "Sharing a brand's fun quiz on social media is a form of free marketing for them.", isFact: true, explanation: "When you share their content, you are essentially advertising it to your friends." },
+            { text: "Writing a grocery list makes you more likely to buy impulse items.", isFact: false, explanation: "Sticking to a grocery list is actually a great strategy to AVOID impulse buys." },
+            { text: "Asking yourself 'why do I want this?' is a bad strategy for grocery shopping.", isFact: false, explanation: "Questioning your motives helps you figure out if marketing influenced you." },
+            { text: "Ad-blockers can help protect you from targeted internet ads.", isFact: true, explanation: "Software that limits advertising can lessen your exposure." },
+            { text: "Food packaging designs and colors are not considered marketing.", isFact: false, explanation: "Packaging is a huge part of branding and marketing designed to catch your eye." },
+            { text: "You should rely entirely on a commercial to tell you if a food provides nutritional benefits.", isFact: false, explanation: "You should always use the food label (nutrition facts) instead of relying on the ad." },
+            { text: "Marketing often tries to link a food or brand with a cool or fun lifestyle.", isFact: true, explanation: "Ads frequently show happy, attractive people having fun while eating their product." }
+        ];
+
+        const applicationScenarios = [
+            { scenario: "You're at the grocery store feeling hungry. You see a bright display for a new, colorful sugary snack right at the checkout counter.", question: "Which tip is best to use here?", options: ["Check my social media for reviews.", "Stick to my grocery list and avoid impulse buys.", "Download an ad-blocker."], answer: 1, explanation: "Displays at checkouts are designed for impulse buys. Sticking to your list helps you avoid them." },
+            { scenario: "You see a quiz on Snapchat titled 'Which flavor of [Brand Name] chips are you?'. It looks fun and you want to share the results.", question: "What should you ask yourself before sharing?", options: ["Do I really want to share a promotion for this food product with my friends?", "Will taking this quiz improve my mood?", "Is this product placement?"], answer: 0, explanation: "Quizzes by brands are interactive marketing. Sharing them turns YOU into the marketer for them!" },
+            { scenario: "An influencer you follow claims a new protein bar gave them 'instant energy and focus'. You really want to buy it now.", question: "How can you decide if the bar is actually a healthy choice?", options: ["Trust the influencer, they look healthy.", "Buy it to see if it improves your mood.", "Look at the food label (nutrition facts) instead of relying on the message."], answer: 2, explanation: "Marketing messages (like endorsements) are designed to sell. The food label provides the actual facts." },
+            { scenario: "You are trying to watch YouTube videos but keep getting unskippable ads for junk food.", question: "How can you lessen your exposure to these ads?", options: ["Ask yourself if the food is cool.", "Use ad-free platforms or download software that limits ads.", "Read the food labels carefully."], answer: 1, explanation: "Using ad-blockers or ad-free platforms directly limits the amount of digital marketing you see." },
+            { scenario: "You bought a specific brand of soda online once. Now, you see ads for that soda on every website you visit.", question: "What is the best way to handle this?", options: ["Buy more soda so they stop advertising.", "Learn about what you can do to protect your privacy and clear browsing history.", "Only buy food that is on your grocery list."], answer: 1, explanation: "This is behavioural advertising. Managing your privacy settings and cookies can help stop targeted ads." },
+            { scenario: "Your younger sibling begs for a sugary cereal purely because it has a popular cartoon character on the box.", question: "What is a good way to respond?", options: ["Buy it because the cartoon character is cool.", "Teach them that the character is just a marketing technique to sell the food.", "Download an ad-blocker for them."], answer: 1, explanation: "A great benefit of being aware of marketing is teaching vulnerable people, like kids, about these tricks." },
+            { scenario: "A fast-food restaurant offers you a 'Loyalty Card' where you get a free burger after buying 10.", question: "What is the main purpose of this card?", options: ["To ensure you eat healthy.", "To build brand loyalty so you keep buying from them.", "To protect your privacy."], answer: 1, explanation: "Loyalty programs are designed to keep you returning as a customer, building brand loyalty." },
+            { scenario: "A popular singer claims in an interview that a sugary sports drink is the secret to their great singing voice.", question: "What should you question about this?", options: ["Is this a sponsored blog post?", "Does this drink actually provide nutritional benefit, or is it just an endorsement?", "Are they using my personal data?"], answer: 1, explanation: "Always question if the food actually has nutritional benefits, rather than trusting a celebrity endorsement." },
+            { scenario: "You are playing a free mobile game, but a banner ad for a pizza delivery place covers the bottom of the screen constantly.", question: "What tip helps lessen your exposure here?", options: ["Limit your screen time.", "Stick to your grocery list.", "Ask a friend if they want pizza."], answer: 0, explanation: "Simply limiting the time you spend on ad-heavy free games reduces how much marketing you absorb." },
+            { scenario: "You notice an extreme sports competition on TV is entirely sponsored by a fast-food burger chain.", question: "What is the marketing trying to do here?", options: ["Help you read food labels.", "Create a link between the burgers and an active, extreme lifestyle.", "Track your behavioural data."], answer: 1, explanation: "Sponsorships try to associate a brand with the feelings and lifestyle of the event they are sponsoring." },
+            { scenario: "You see a can of soda sitting perfectly with the logo facing the camera in the background of a movie scene.", question: "What should you recognize this as?", options: ["Product placement.", "A behavioural targeted ad.", "A contest promotion."], answer: 0, explanation: "Recognizing product placement is a key food skill to know when you are being advertised to." },
+            { scenario: "A friend shares a post that says: 'Retweet to win a year of free burgers!'", question: "What should you ask before you hit retweet?", options: ["Will this improve my mood?", "Do I really want to spread this food promotion to all my followers?", "Is this an ad-free platform?"], answer: 1, explanation: "Think before you share! Contests rely on you to do the marketing for them." },
+            { scenario: "A product box shouts 'New, Improved, and Healthy!' in massive, colorful letters.", question: "How should you verify this claim?", options: ["Look at the food labels instead of the marketing message.", "Search your web browsing history.", "Ask a celebrity if it's true."], answer: 0, explanation: "Marketing can exaggerate. The nutrition facts and ingredients list (food labels) tell the truth." },
+            { scenario: "You are shopping while feeling tired and cranky, and a bright end-of-aisle display catches your eye.", question: "What is your best defense against buying it?", options: ["Stick strictly to your grocery list and avoid the impulse buy.", "Take a picture and share it online.", "Read the music lyrics nearby."], answer: 0, explanation: "Grocery lists keep you focused and help you ignore flashy in-store branding." },
+            { scenario: "A new app asks for permission to 'track your activity across other companies' apps and websites'.", question: "What should you consider?", options: ["Accepting it so you get better grocery lists.", "Declining it to protect your privacy and limit targeted ads.", "Accepting it to get more loyalty points."], answer: 1, explanation: "Protecting your privacy settings stops companies from gathering behavioural data for ads." },
+            { scenario: "You really want to buy a bright blue sports drink, but you aren't actually thirsty.", question: "What should you ask yourself?", "options": ["Did my browser history cause this?", "Do I want it because it's healthy, or just because I think it looks 'cool'?", "Is this a sponsorship?"], answer: 1, explanation: "Questioning WHY you want a product helps you realize if marketing (like cool colors/branding) influenced you." },
+            { scenario: "You look up a recipe for tacos, and suddenly every ad on your social media is for a specific taco shell brand.", question: "What marketing tactic is this?", options: ["Behavioural/Targeted Advertising.", "Product Placement.", "Celebrity Endorsement."], answer: 0, explanation: "Your web browsing history (looking up tacos) was used to target ads directly to you." },
+            { scenario: "You and a friend realize you both recently bought the exact same trending snack.", question: "What is a good way to be aware of marketing in this situation?", options: ["Talk with each other about whether marketing influenced your choice.", "Download a pop-up blocker.", "Check the snack's privacy settings."], answer: 0, explanation: "Talking with those around you about marketing effects helps everyone become more aware." },
+            { scenario: "A snack package has a fun maze, games, and a link to an online world printed on the back.", question: "What is the purpose of this?", options: ["To provide nutritional benefits.", "It is a marketing technique designed to target kids and teens.", "To limit screen time."], answer: 1, explanation: "Interactive packaging is a form of branding aimed specifically at younger consumers." },
+            { scenario: "You see an ad offering '2 for 1' on giant sugary sodas. It seems like a great deal.", question: "What should you question?", options: ["Does my ad-blocker work?", "Do I actually want/need two sodas, or is the sales promotion creating an impulse?", "Who is the celebrity endorsing this?"], answer: 1, explanation: "Sales promotions create a false sense of urgency, encouraging you to buy things you didn't plan to." }
+        ];
+
+        // --- COMPONENTS ---
+
+        const Header = () => (
+            <header className="text-center mb-8">
+                <h1 className="text-4xl font-extrabold text-green-700 mb-2">
+                    <i className="fa-solid fa-bullhorn mr-3"></i>
+                    Food Marketing & You
+                </h1>
+                <p className="text-lg text-slate-600 font-medium">An interactive guide for smart choices.</p>
+            </header>
+        );
+
+        const Navigation = ({ currentTab, setTab }) => {
+            const tabs = [
+                { id: 'learn', icon: 'fa-book-open', label: 'Learn the Facts' },
+                { id: 'act1', icon: 'fa-magnifying-glass', label: 'Spot the Ad' },
+                { id: 'act2', icon: 'fa-check-double', label: 'Fact or Fiction' },
+                { id: 'act3', icon: 'fa-lightbulb', label: 'Scenario Solver' }
+            ];
+
+            return (
+                <div className="flex flex-wrap justify-center gap-2 mb-6">
+                    {tabs.map(tab => (
+                        <button
+                            key={tab.id}
+                            onClick={() => setTab(tab.id)}
+                            className={`nav-btn px-4 py-2 rounded-full font-bold flex items-center gap-2 border-2 border-green-600 ${currentTab === tab.id ? 'active' : 'text-green-700 bg-white'}`}
+                        >
+                            <i className={`fa-solid ${tab.icon}`}></i>
+                            {tab.label}
+                        </button>
+                    ))}
+                </div>
+            );
+        };
+
+        const LearnSection = () => (
+            <div className="glass-panel p-6 md:p-8 fade-in h-[600px] overflow-y-auto content-scroll">
+                <h2 className="text-2xl font-bold text-green-800 border-b-2 border-green-200 pb-2 mb-4">What is Food Marketing?</h2>
+                <p className="text-lg mb-6 bg-green-50 p-4 rounded-lg border border-green-100">{learnContent.intro}</p>
+                
+                <h3 className="text-xl font-bold text-slate-700 mb-4 mt-8"><i className="fa-solid fa-shapes text-green-600 mr-2"></i>Forms of Marketing</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                    {learnContent.forms.map((form, idx) => (
+                        <div key={idx} className="bg-white p-4 rounded-lg shadow-sm border border-slate-100">
+                            <h4 className="font-bold text-green-700 flex items-center gap-2 mb-2">
+                                <i className={`fa-solid ${form.icon}`}></i> {form.title}
+                            </h4>
+                            <ul className="list-disc pl-5 text-sm text-slate-600 space-y-1">
+                                {form.items.map((item, i) => <li key={i}>{item}</li>)}
+                            </ul>
+                        </div>
+                    ))}
+                </div>
+
+                <div className="flex flex-col md:flex-row gap-6 mb-8">
+                    <div className="flex-1 bg-white p-5 rounded-lg shadow-sm border border-slate-100">
+                        <h3 className="text-xl font-bold text-slate-700 mb-3"><i className="fa-solid fa-brain text-purple-500 mr-2"></i>How it Affects You</h3>
+                        <p className="text-sm mb-2 font-semibold">Marketing is designed to:</p>
+                        <ul className="list-disc pl-5 text-sm text-slate-600 space-y-2">
+                            {learnContent.effects.map((effect, i) => <li key={i}>{effect}</li>)}
+                        </ul>
+                    </div>
+                    <div className="flex-1 bg-white p-5 rounded-lg shadow-sm border border-slate-100">
+                        <h3 className="text-xl font-bold text-slate-700 mb-3"><i className="fa-solid fa-star text-yellow-500 mr-2"></i>Benefits of Awareness</h3>
+                        <p className="text-sm text-slate-600 mb-2">Being aware is a skill! It helps you:</p>
+                        <ul className="list-disc pl-5 text-sm text-slate-600 space-y-2">
+                            <li>Recognize when you're being marketed to.</li>
+                            <li>Decide if food is healthy using <strong>labels</strong>, not just ads.</li>
+                            <li>Teach younger kids about these tricks.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 className="text-xl font-bold text-slate-700 mb-4"><i className="fa-solid fa-shield-cat text-blue-500 mr-2"></i>Tips to Stay Aware</h3>
+                <div className="space-y-3">
+                    {learnContent.tips.map((tip, idx) => (
+                        <div key={idx} className="flex items-start gap-3 bg-blue-50 p-3 rounded border border-blue-100">
+                            <i className={`fa-solid ${tip.icon} text-blue-500 mt-1`}></i>
+                            <p className="text-sm text-slate-700">{tip.text}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+
+        const Activity1 = () => {
+            const [questions, setQuestions] = useState([]);
+            const [currentQ, setCurrentQ] = useState(0);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+            const [showResult, setShowResult] = useState(false);
+            const [score, setScore] = useState(0);
+
+            // Load 5 random questions on component mount
+            useEffect(() => {
+                setQuestions(getRandomItems(identificationScenarios, 5));
+            }, []);
+
+            const handleAnswer = (ans) => {
+                if (showResult) return;
+                setSelectedAnswer(ans);
+                setShowResult(true);
+                if (ans === questions[currentQ].answer) {
+                    setScore(score + 1);
+                }
+            };
+
+            const nextQuestion = () => {
+                setSelectedAnswer(null);
+                setShowResult(false);
+                setCurrentQ(currentQ + 1);
+            };
+
+            const reset = () => {
+                setQuestions(getRandomItems(identificationScenarios, 5));
+                setCurrentQ(0);
+                setScore(0);
+                setSelectedAnswer(null);
+                setShowResult(false);
+            };
+
+            // Loading state check
+            if (questions.length === 0) return null;
+
+            if (currentQ >= questions.length) {
+                return (
+                    <div className="glass-panel p-8 text-center fade-in">
+                        <h2 className="text-3xl font-bold text-green-700 mb-4">Activity Complete!</h2>
+                        <div className="text-6xl mb-4">{score === 5 ? '🏆' : '👍'}</div>
+                        <p className="text-xl mb-6">You scored {score} out of {questions.length}.</p>
+                        <button onClick={reset} className="bg-green-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-700 transition">Play Another Round</button>
+                    </div>
+                );
+            }
+
+            const q = questions[currentQ];
+
+            return (
+                <div className="glass-panel p-6 md:p-8 fade-in min-h-[500px] flex flex-col">
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-2xl font-bold text-slate-800">Spot the Marketing</h2>
+                        <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-bold">
+                            Question {currentQ + 1} of {questions.length}
+                        </span>
+                    </div>
+                    
+                    <div className="bg-white p-6 rounded-xl shadow-inner border border-slate-200 mb-6 flex-grow">
+                        <p className="text-lg text-slate-700 mb-4 italic">"{q.scenario}"</p>
+                        <p className="font-bold text-slate-800 mb-4">What type of marketing is this?</p>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            {q.options.map((opt, idx) => {
+                                let btnClass = "p-3 rounded-lg border-2 text-left font-semibold transition-all ";
+                                if (!showResult) {
+                                    btnClass += "border-slate-200 hover:border-green-400 hover:bg-green-50 text-slate-700";
+                                } else {
+                                    if (opt === q.answer) {
+                                        btnClass += "border-green-500 bg-green-100 text-green-800"; // Correct answer
+                                    } else if (opt === selectedAnswer) {
+                                        btnClass += "border-red-500 bg-red-100 text-red-800"; // Wrong selected answer
+                                    } else {
+                                        btnClass += "border-slate-200 opacity-50"; // Other options
+                                    }
+                                }
+
+                                return (
+                                    <button 
+                                        key={idx} 
+                                        onClick={() => handleAnswer(opt)}
+                                        className={btnClass}
+                                        disabled={showResult}
+                                    >
+                                        {opt}
+                                        {showResult && opt === q.answer && <i className="fa-solid fa-check float-right text-green-600 mt-1"></i>}
+                                        {showResult && opt === selectedAnswer && opt !== q.answer && <i className="fa-solid fa-xmark float-right text-red-600 mt-1"></i>}
+                                    </button>
+                                );
+                            })}
+                        </div>
+
+                        {showResult && (
+                            <div className={`mt-6 p-4 rounded-lg animate-pulse ${selectedAnswer === q.answer ? 'bg-green-50 border border-green-200' : 'bg-orange-50 border border-orange-200'}`}>
+                                <p className="font-bold mb-1">
+                                    {selectedAnswer === q.answer ? 'Correct! 🎉' : 'Not quite. 🤔'}
+                                </p>
+                                <p className="text-sm text-slate-700">{q.explanation}</p>
+                            </div>
+                        )}
+                    </div>
+
+                    {showResult && (
+                        <div className="text-right">
+                            <button onClick={nextQuestion} className="bg-blue-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-700 transition">
+                                Next <i className="fa-solid fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const Activity2 = () => {
+             const [questions, setQuestions] = useState([]);
+             const [currentS, setCurrentS] = useState(0);
+             const [showResult, setShowResult] = useState(false);
+             const [isCorrect, setIsCorrect] = useState(false);
+             const [score, setScore] = useState(0);
+
+             useEffect(() => {
+                 setQuestions(getRandomItems(sortingStatements, 5));
+             }, []);
+
+             const handleGuess = (guess) => {
+                 if (showResult) return;
+                 const correct = guess === questions[currentS].isFact;
+                 setIsCorrect(correct);
+                 setShowResult(true);
+                 if (correct) setScore(score + 1);
+             };
+
+             const nextStatement = () => {
+                 setShowResult(false);
+                 setCurrentS(currentS + 1);
+             };
+             
+             const reset = () => {
+                setQuestions(getRandomItems(sortingStatements, 5));
+                setCurrentS(0);
+                setScore(0);
+                setShowResult(false);
+            };
+
+             if (questions.length === 0) return null;
+
+             if (currentS >= questions.length) {
+                return (
+                    <div className="glass-panel p-8 text-center fade-in">
+                        <h2 className="text-3xl font-bold text-blue-700 mb-4">Sorting Complete!</h2>
+                        <div className="text-6xl mb-4">🧠</div>
+                        <p className="text-xl mb-6">You sorted {score} out of {questions.length} correctly.</p>
+                        <button onClick={reset} className="bg-blue-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-700 transition">Play Another Round</button>
+                    </div>
+                );
+            }
+
+            const statement = questions[currentS];
+
+             return (
+                 <div className="glass-panel p-6 md:p-8 fade-in min-h-[450px] flex flex-col items-center justify-center text-center">
+                    <div className="w-full flex justify-between items-center mb-8 absolute top-6 left-0 px-8">
+                         <h2 className="text-xl font-bold text-slate-800">Fact or Fiction?</h2>
+                         <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-bold">
+                             {currentS + 1} / {questions.length}
+                         </span>
+                     </div>
+
+                    <div className="max-w-2xl w-full mt-12">
+                        <div className="bg-white p-8 rounded-2xl shadow-md border-2 border-slate-100 mb-8 relative">
+                            <i className="fa-solid fa-quote-left absolute top-4 left-4 text-3xl text-slate-200"></i>
+                            <p className="text-2xl font-bold text-slate-700 z-10 relative mt-4">{statement.text}</p>
+                        </div>
+
+                        {!showResult ? (
+                            <div className="flex justify-center gap-6">
+                                <button onClick={() => handleGuess(true)} className="bg-green-500 hover:bg-green-600 text-white w-32 py-4 rounded-xl font-bold text-xl shadow-lg transform transition hover:scale-105">
+                                    FACT
+                                </button>
+                                <button onClick={() => handleGuess(false)} className="bg-red-500 hover:bg-red-600 text-white w-32 py-4 rounded-xl font-bold text-xl shadow-lg transform transition hover:scale-105">
+                                    FICTION
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="fade-in w-full text-left">
+                                <div className={`p-4 rounded-lg mb-4 ${isCorrect ? 'bg-green-100 border border-green-300' : 'bg-red-100 border border-red-300'}`}>
+                                    <h3 className={`font-bold text-lg mb-2 ${isCorrect ? 'text-green-800' : 'text-red-800'}`}>
+                                        {isCorrect ? 'Correct!' : 'Oops!'} It is {statement.isFact ? 'a FACT' : 'FICTION'}.
+                                    </h3>
+                                    <p className="text-slate-700">{statement.explanation}</p>
+                                </div>
+                                <div className="text-center">
+                                    <button onClick={nextStatement} className="bg-slate-800 text-white px-8 py-3 rounded-full font-bold hover:bg-slate-700 transition">
+                                        Next Statement
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                 </div>
+             )
+        };
+
+        const Activity3 = () => {
+            const [questions, setQuestions] = useState([]);
+            const [currentS, setCurrentS] = useState(0);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+            const [showResult, setShowResult] = useState(false);
+
+            useEffect(() => {
+                setQuestions(getRandomItems(applicationScenarios, 5));
+            }, []);
+
+            const handleAnswer = (index) => {
+                if (showResult) return;
+                setSelectedAnswer(index);
+                setShowResult(true);
+            };
+
+            const nextScenario = () => {
+                setSelectedAnswer(null);
+                setShowResult(false);
+                setCurrentS(currentS + 1);
+            };
+
+            const reset = () => {
+                setQuestions(getRandomItems(applicationScenarios, 5));
+                setCurrentS(0);
+                setSelectedAnswer(null);
+                setShowResult(false);
+            };
+
+            if (questions.length === 0) return null;
+
+            if (currentS >= questions.length) {
+                return (
+                    <div className="glass-panel p-8 text-center fade-in">
+                        <h2 className="text-3xl font-bold text-purple-700 mb-4">Great Job!</h2>
+                        <p className="text-xl mb-6">You've successfully applied your food marketing knowledge to real-life scenarios.</p>
+                        <p className="text-md text-slate-600 mb-6">Remember to always question why you want certain foods and use food labels to make healthy choices.</p>
+                        <button onClick={reset} className="bg-purple-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-purple-700 transition">Play Another Round</button>
+                    </div>
+                );
+            }
+
+            const scenario = questions[currentS];
+
+            return (
+                <div className="glass-panel p-6 md:p-8 fade-in min-h-[500px] flex flex-col">
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-2xl font-bold text-slate-800">Scenario Solver</h2>
+                        <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-bold">
+                            Scenario {currentS + 1} of {questions.length}
+                        </span>
+                    </div>
+
+                    <div className="bg-purple-50 p-6 rounded-xl border border-purple-100 mb-6">
+                        <div className="flex gap-4 items-start">
+                            <div className="bg-white p-3 rounded-full shadow-sm text-purple-500 hidden sm:block">
+                                <i className="fa-solid fa-user-ninja text-xl"></i>
+                            </div>
+                            <div>
+                                <p className="text-lg text-slate-800 font-medium mb-2">{scenario.scenario}</p>
+                                <p className="font-bold text-purple-800">{scenario.question}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="space-y-3 flex-grow">
+                        {scenario.options.map((opt, idx) => {
+                             let btnClass = "w-full text-left p-4 rounded-lg border-2 font-medium transition-all ";
+                             if (!showResult) {
+                                 btnClass += "border-slate-200 bg-white hover:border-purple-400 hover:bg-purple-50 text-slate-700";
+                             } else {
+                                 if (idx === scenario.answer) {
+                                     btnClass += "border-green-500 bg-green-100 text-green-800"; 
+                                 } else if (idx === selectedAnswer) {
+                                     btnClass += "border-red-500 bg-red-100 text-red-800"; 
+                                 } else {
+                                     btnClass += "border-slate-200 bg-white opacity-50"; 
+                                 }
+                             }
+
+                            return (
+                                <button 
+                                    key={idx} 
+                                    onClick={() => handleAnswer(idx)}
+                                    className={btnClass}
+                                    disabled={showResult}
+                                >
+                                    <span className="mr-3 font-bold text-slate-400">{String.fromCharCode(65 + idx)}.</span> {opt}
+                                </button>
+                            )
+                        })}
+                    </div>
+
+                    {showResult && (
+                        <div className="mt-6 fade-in">
+                            <div className={`p-4 rounded-lg mb-4 ${selectedAnswer === scenario.answer ? 'bg-green-50' : 'bg-purple-100'}`}>
+                                <p className="text-slate-800"><strong>Why?</strong> {scenario.explanation}</p>
+                            </div>
+                            <div className="text-right">
+                                <button onClick={nextScenario} className="bg-purple-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-purple-700 transition">
+                                    Next Scenario <i className="fa-solid fa-arrow-right ml-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            )
+        };
+
+        // --- MAIN APP ---
+        const App = () => {
+            const [currentTab, setCurrentTab] = useState('learn');
+
+            const renderContent = () => {
+                switch(currentTab) {
+                    case 'learn': return <LearnSection />;
+                    case 'act1': return <Activity1 />;
+                    case 'act2': return <Activity2 />;
+                    case 'act3': return <Activity3 />;
+                    default: return <LearnSection />;
+                }
+            };
+
+            return (
+                <div className="max-w-5xl mx-auto py-8">
+                    <Header />
+                    <Navigation currentTab={currentTab} setTab={setCurrentTab} />
+                    <main className="relative">
+                        {renderContent()}
+                    </main>
+                    <footer className="text-center mt-8 text-sm text-slate-500">
+                        <p>Based on information from Health Canada: Food marketing and you.</p>
+                        <p>Designed for Grade 7-9 educational purposes.</p>
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
