@@ -119,6 +119,24 @@
         .hidden-screen {
             display: none !important;
         }
+
+        @keyframes floatUpFade {
+            0% { opacity: 0; transform: translate(-50%, 5px) scale(0.8); }
+            15% { opacity: 1; transform: translate(-50%, -5px) scale(1.2); }
+            100% { opacity: 0; transform: translate(-50%, -25px) scale(1); }
+        }
+
+        .float-indicator {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: 900;
+            text-shadow: 0px 0px 4px rgba(255,255,255,0.9), 0px 1px 2px rgba(0,0,0,0.2);
+            pointer-events: none;
+            animation: floatUpFade 1.5s ease-out forwards;
+            z-index: 50;
+        }
     </style>
 </head>
 <body class="text-gray-800 antialiased flex flex-col items-center justify-center p-4 sm:p-8">
@@ -197,23 +215,23 @@
             
             <div class="flex-1 grid grid-cols-5 gap-2 sm:gap-4 max-w-2xl w-full">
                 <!-- Mini Stats -->
-                <div class="text-center" title="Fitness">
+                <div id="stat-container-fitness" class="text-center relative" title="Fitness">
                     <i class="fa-solid fa-dumbbell text-health-fitness text-sm mb-1"></i>
                     <div class="stat-bar-container h-1.5"><div id="bar-fitness" class="stat-bar-fill bg-health-fitness" style="width: 50%"></div></div>
                 </div>
-                <div class="text-center" title="Stress (Lower is better)">
+                <div id="stat-container-stress" class="text-center relative" title="Stress (Lower is better)">
                     <i class="fa-solid fa-bolt text-health-stress text-sm mb-1"></i>
                     <div class="stat-bar-container h-1.5"><div id="bar-stress" class="stat-bar-fill bg-health-stress" style="width: 50%"></div></div>
                 </div>
-                <div class="text-center" title="Mood">
+                <div id="stat-container-mood" class="text-center relative" title="Mood">
                     <i class="fa-solid fa-face-smile text-health-mood text-sm mb-1"></i>
                     <div class="stat-bar-container h-1.5"><div id="bar-mood" class="stat-bar-fill bg-health-mood" style="width: 50%"></div></div>
                 </div>
-                <div class="text-center" title="Concentration">
+                <div id="stat-container-focus" class="text-center relative" title="Concentration">
                     <i class="fa-solid fa-brain text-health-focus text-sm mb-1"></i>
                     <div class="stat-bar-container h-1.5"><div id="bar-focus" class="stat-bar-fill bg-health-focus" style="width: 50%"></div></div>
                 </div>
-                <div class="text-center" title="Sleep Hygiene">
+                <div id="stat-container-sleep" class="text-center relative" title="Sleep Hygiene">
                     <i class="fa-solid fa-bed text-health-sleep text-sm mb-1"></i>
                     <div class="stat-bar-container h-1.5"><div id="bar-sleep" class="stat-bar-fill bg-health-sleep" style="width: 50%"></div></div>
                 </div>
@@ -373,7 +391,7 @@
                 category: "Nutrition & Energy",
                 icon: "fa-bolt",
                 color: "text-yellow-500",
-                title: "Thirsty Thursday",
+                title: "The Energy Drink Ad",
                 text: "You see an ad on social media for a new 'Extreme Energy Drink' promising better focus and gaming skills. You're feeling tired...",
                 hint: "Highly processed energy drinks give a quick spike but lead to a massive crash, disrupting sleep and increasing anxiety.",
                 choices: [
@@ -383,13 +401,13 @@
                 ]
             },
             {
-                id: 2,
-                category: "Nutrition & Energy",
-                icon: "fa-bolt",
-                color: "text-yellow-500",
-                title: "The Caffeine Craving",
-                text: "You see an ad on social media for a new 'Extreme Energy Drink' promising better focus and gaming skills. You're feeling tired...",
-                hint: "Highly processed energy drinks give a quick spike but lead to a massive crash, disrupting sleep and increasing anxiety.",
+                id: 3,
+                category: "Sleep Hygiene",
+                icon: "fa-moon",
+                color: "text-indigo-400",
+                title: "Late Night Texting",
+                text: "You are just about to fall asleep when your phone starts buzzing constantly with group chat drama.",
+                hint: "Keeping devices out of the bedroom prevents sleep disruptions. Poor sleep hygiene severely affects mood and focus the next day.",
                 choices: [
                     { text: "Text back for 'just a few minutes' (ends up being an hour).", impact: { fitness: 0, mood: 10, stress: 5, focus: -20, sleep: -25 } },
                     { text: "Put the phone on 'Do Not Disturb' across the room and sleep.", impact: { fitness: 5, mood: -5, stress: -10, focus: 20, sleep: 25 } },
@@ -415,13 +433,13 @@
                 category: "Fitness Principles (FITT)",
                 icon: "fa-stopwatch",
                 color: "text-red-500",
-                title: "The Weekend Warrior",
-                text: "You haven't exercised all week. It's Saturday, and you feel guilty, but your muscles are stiff.",
+                title: "The 'Catch-Up' Workout",
+                text: "You haven't exercised for several days. You feel guilty, but your muscles are stiff from sitting.",
                 hint: "The FITT principle relies on Frequency and consistency. Doing too much at once (overload) increases injury risk.",
                 choices: [
                     { text: "Attempt a brutal 3-hour heavy lifting and running session to 'catch up'.", impact: { fitness: -10, mood: -15, stress: 20, focus: -5, sleep: -10 } },
                     { text: "Do a light 30-min stretch/walk and schedule your workouts for next week.", impact: { fitness: 10, mood: 15, stress: -20, focus: 10, sleep: 10 } },
-                    { text: "Decide it's too late. Stay on the couch all weekend watching movies.", impact: { fitness: -20, mood: -10, stress: 10, focus: -10, sleep: -5 } }
+                    { text: "Decide it's too late. Stay on the couch all day watching movies.", impact: { fitness: -20, mood: -10, stress: 10, focus: -10, sleep: -5 } }
                 ]
             },
             {
@@ -814,6 +832,32 @@
             hintBox.classList.toggle('hidden');
         }
 
+        function showFloatingIndicator(statKey, delta) {
+            const container = document.getElementById(`stat-container-${statKey}`);
+            if (!container) return;
+
+            const indicator = document.createElement('div');
+            indicator.className = 'float-indicator text-sm sm:text-base';
+            
+            const isPositive = delta > 0;
+            const sign = isPositive ? '+' : '';
+            indicator.innerText = `${sign}${Math.round(delta)}`;
+
+            // Color logic: Stress increasing is bad (red), otherwise increasing is good (green)
+            if (statKey === 'stress') {
+                indicator.classList.add(isPositive ? 'text-red-600' : 'text-green-600');
+            } else {
+                indicator.classList.add(isPositive ? 'text-green-600' : 'text-red-600');
+            }
+
+            container.appendChild(indicator);
+
+            // Clean up element after animation finishes
+            setTimeout(() => {
+                indicator.remove();
+            }, 1500);
+        }
+
         function makeChoice(choiceObj) {
             // Save state to history before applying changes
             state.history.push({
@@ -821,9 +865,18 @@
                 turn: state.turn
             });
 
-            // Apply impact
+            // Apply impact and show floating text
             for(let key in choiceObj.impact) {
-                state.stats[key] += choiceObj.impact[key];
+                let oldVal = state.stats[key];
+                let rawNewVal = oldVal + choiceObj.impact[key];
+                let clampedNewVal = Math.max(0, Math.min(100, rawNewVal));
+                let delta = clampedNewVal - oldVal;
+                
+                state.stats[key] = clampedNewVal;
+
+                if (delta !== 0) {
+                    showFloatingIndicator(key, delta);
+                }
             }
 
             // Increment turn
