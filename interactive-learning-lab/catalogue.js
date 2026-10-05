@@ -1,11 +1,12 @@
 'use strict';
 const catalogue = JSON.parse(document.getElementById('catalogue-data').textContent);
-const categories = ['Favourites', 'All activities', 'Reading & writing', 'Morphology', 'Maths', 'Science', 'Geography', 'Social studies', 'Question practice', 'Thinking tools', 'Languages', 'Accessibility', 'Robotics', 'Teacher tools'];
+const categories = ['Favourites', 'All activities', 'Mr. Walker’s Corner', 'Reading & writing', 'Morphology', 'Maths', 'Science', 'Geography', 'Social studies', 'Question practice', 'Thinking tools', 'Languages', 'Accessibility', 'Robotics', 'Teacher tools'];
 const typeNames = ['All types', 'Sorting', 'Flashcards', 'Practice questions', 'Sequencing', 'Matching', 'Word work', 'Writing', 'Reading & annotation', 'Simulations & models', 'Maps & geography', 'Graphic organisers', 'Decision games', 'Builders', 'Printables', 'Drawing', 'Communication', 'Coding & robotics'];
 const groupNames = ['All geography', 'Alberta', 'Canada', 'World', 'Map skills'];
 const descriptions = {
   'Favourites': 'Games, creative tools and hands-on learning.',
   'All activities': 'Browse the full collection, or choose a subject and activity type.',
+  'Mr. Walker’s Corner': 'Three classroom editions inspired by Tyler Walker: investigate functions, test a bridge, and explore plural patterns.',
   'Words & writing': 'Play with words, investigate word parts, and bring your ideas to life.',
   'Reading & writing': 'Build words, develop ideas, and make meaning.',
   'Morphology': 'Build words, investigate families and compare how affixes change meaning. Explore games and printable activities.',
@@ -37,14 +38,14 @@ const typeSelect = document.getElementById('activity-type');
 const tilesNode = document.getElementById('subject-tiles');
 function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c])); }
 function labelCategory(c) { return c === 'Favourites' ? 'Featured' : c === 'Maths' ? 'Math' : c; }
-function inCategory(a,c) { return c === 'All activities' || (c === 'Favourites' ? a.favourite : c === 'Words & writing' ? ['Reading & writing','Morphology'].includes(a.category) : a.category === c); }
+function inCategory(a,c) { return c === 'All activities' || (c === 'Favourites' ? a.favourite : c === 'Mr. Walker’s Corner' ? a.collection === 'walker-corner' : c === 'Words & writing' ? ['Reading & writing','Morphology'].includes(a.category) : a.category === c); }
 function countCategory(c) { return catalogue.filter(a => inCategory(a,c)).length; }
 function matches(a) {
   const category = inCategory(a,chosen);
   const group = chosen !== 'Geography' || chosenGroup === 'All geography' || a.group === chosenGroup;
   const type = chosenType === 'All types' || a.types.includes(chosenType);
   const q = query.trim().toLocaleLowerCase();
-  const words = [a.title, a.description, a.category, a.group, a.original_title, a.status, ...a.tags, ...a.types, ...(a.links || []).map(l => l.label)].join(' ').toLocaleLowerCase();
+  const words = [a.title, a.description, a.category, a.group, a.original_title, a.status, a.credit, a.collection, ...a.tags, ...a.types, ...(a.links || []).map(l => l.label)].join(' ').toLocaleLowerCase();
   return category && group && type && (!q || words.includes(q));
 }
 tilesNode.innerHTML = subjects.map(s => {

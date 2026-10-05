@@ -483,15 +483,17 @@
     "title": "Pirate Mapping",
     "category": "Geography",
     "group": "Map skills",
-    "description": "Follow the captain’s compass directions across a treasure map.",
+    "description": "Follow compass clues, three-stop trails or grid references. Steer across the original island map and collect five hidden treasures.",
     "favourite": false,
     "tags": [
-      "Directions & movement"
+      "Compass directions",
+      "Grid references",
+      "Treasure trails"
     ],
     "url": "https://maltais239.github.io/interactives/piratemapping/",
     "links": [],
     "credit": "",
-    "captured": "2026-10-04",
+    "captured": "2026-10-05",
     "original_title": "Pirate Mapping",
     "original_urls": [
       "https://maltais239.github.io/interactives/piratemapping/"
@@ -500,7 +502,7 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/piratemapping.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/piratemapping.jpg?v=20261005"
   },
   {
     "id": "geo-canadiangeographyfacts1",
@@ -867,15 +869,17 @@
     "title": "Latitude & Longitude",
     "category": "Geography",
     "group": "Map skills",
-    "description": "Find the target location using latitude and longitude coordinates.",
+    "description": "Explore a labelled world grid, find eight target coordinates, and use north/south/east/west feedback to improve each location.",
     "favourite": false,
     "tags": [
-      "Coordinates"
+      "Coordinates",
+      "World grid",
+      "Map skills"
     ],
     "url": "https://maltais239.github.io/interactives/latitudelongitude/",
     "links": [],
     "credit": "",
-    "captured": "2026-10-04",
+    "captured": "2026-10-05",
     "original_title": "Latitide and Longitude Interactive",
     "original_urls": [
       "https://maltais239.github.io/interactives/latitudelongitude/"
@@ -884,7 +888,7 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-latitudelongitude.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-latitudelongitude.jpg?v=20261005"
   },
   {
     "id": "geo-usstates",
@@ -1617,23 +1621,23 @@
     "repo": "personal",
     "title": "Building & Breaking Numbers",
     "category": "Maths",
-    "description": "Build numbers, break them into parts, and practise place-value reasoning.",
+    "description": "Build, break and trade numbers with visual models. Each skill adapts independently, with a hands-on number lab and a teacher progress view.",
     "types": [
       "Practice questions",
       "Simulations & models"
     ],
     "tags": [
       "Place value",
-      "Numeric response",
-      "Model selection"
+      "Adaptive practice",
+      "Number lab"
     ],
     "url": "https://maltais239.github.io/interactives/preassess/",
     "links": [],
     "favourite": true,
     "credit": "",
     "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/numberbuilding.jpg",
-    "captured": "2026-10-04"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/numberbuilding.jpg?v=20261005",
+    "captured": "2026-10-05"
   },
   {
     "id": "numbersense6",
@@ -2518,25 +2522,23 @@
     "repo": "personal",
     "title": "STRATA: Alberta Field Excavation",
     "category": "Science",
-    "description": "Explore an Alberta excavation site, uncover finds, and record observations.",
+    "description": "Excavate eight Alberta sites, inspect real fossil photographs, and save observations, evidence checks and comparisons in your field notebook.",
     "types": [
       "Simulations & models",
       "Decision games"
     ],
     "tags": [
-      "Fossils",
-      "Field investigation"
+      "Alberta fossils",
+      "Evidence & inference",
+      "Field notebook"
     ],
-    "status": "Needs update",
-    "status_note": "The map background needs updating.",
-    "refresh": true,
     "url": "https://maltais239.github.io/interactives/dinodig/",
     "links": [],
     "favourite": false,
     "credit": "",
     "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/dinodig.jpg",
-    "captured": "2026-10-04"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/dinodig.jpg?v=20261005",
+    "captured": "2026-10-05"
   },
   {
     "id": "lifecycles",
@@ -3511,5 +3513,122 @@
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/riverviewenglish.jpg",
     "captured": "2026-10-04"
+  },
+  {
+    "id": "walker-functions",
+    "path": "walker-corner/functions",
+    "repo": "personal",
+    "title": "Function Machine Detective",
+    "category": "Maths",
+    "group": "",
+    "collection": "walker-corner",
+    "description": "Study input/output tables, test equivalent rules, and predict a new output. Build your own machine and print a classroom challenge.",
+    "types": [
+      "Practice questions",
+      "Simulations & models",
+      "Builders",
+      "Printables"
+    ],
+    "tags": [
+      "Functions",
+      "Patterns",
+      "Mr. Walker’s Corner"
+    ],
+    "url": "https://maltais239.github.io/interactives/walker-corner/functions/",
+    "links": [
+      {
+        "label": "Mr. Walker’s Corner",
+        "url": "https://maltais239.github.io/interactives/walker-corner/"
+      },
+      {
+        "label": "Tyler’s original",
+        "url": "https://sites.google.com/gshare.blackgold.ca/creatingfunctions/home"
+      }
+    ],
+    "favourite": false,
+    "credit": "Original idea: Tyler Walker · Improved classroom edition: Engaging Students",
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/walker-functions.jpg?v=20261005",
+    "captured": "2026-10-05",
+    "original_urls": [
+      "https://sites.google.com/gshare.blackgold.ca/creatingfunctions/home"
+    ]
+  },
+  {
+    "id": "walker-bridge",
+    "path": "walker-corner/bridge",
+    "repo": "personal",
+    "title": "Bridge Test Lab",
+    "category": "Science",
+    "group": "",
+    "collection": "walker-corner",
+    "description": "Design a bridge within a budget, test changing conditions, and compare saved trials. Explain what your classroom model shows.",
+    "types": [
+      "Simulations & models",
+      "Decision games",
+      "Builders",
+      "Printables"
+    ],
+    "tags": [
+      "Structures",
+      "Fair tests",
+      "Mr. Walker’s Corner"
+    ],
+    "url": "https://maltais239.github.io/interactives/walker-corner/bridge/",
+    "links": [
+      {
+        "label": "Mr. Walker’s Corner",
+        "url": "https://maltais239.github.io/interactives/walker-corner/"
+      },
+      {
+        "label": "Tyler’s original",
+        "url": "https://sites.google.com/gshare.blackgold.ca/bridgetester/home"
+      }
+    ],
+    "favourite": false,
+    "credit": "Original idea: Tyler Walker · Improved classroom edition: Engaging Students",
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/walker-bridge.jpg?v=20261005",
+    "captured": "2026-10-05",
+    "original_urls": [
+      "https://sites.google.com/gshare.blackgold.ca/bridgetester/home"
+    ]
+  },
+  {
+    "id": "walker-plurals",
+    "path": "walker-corner/plurals",
+    "repo": "personal",
+    "title": "Plural Pattern Lab",
+    "category": "Reading & writing",
+    "group": "",
+    "collection": "walker-corner",
+    "description": "Build plurals, sort words by spelling pattern, and revisit words that need practice. Includes irregular contrasts and printable word pairs.",
+    "types": [
+      "Word work",
+      "Sorting",
+      "Practice questions",
+      "Printables"
+    ],
+    "tags": [
+      "Spelling",
+      "Plural patterns",
+      "Mr. Walker’s Corner"
+    ],
+    "url": "https://maltais239.github.io/interactives/walker-corner/plurals/",
+    "links": [
+      {
+        "label": "Mr. Walker’s Corner",
+        "url": "https://maltais239.github.io/interactives/walker-corner/"
+      },
+      {
+        "label": "Tyler’s original",
+        "url": "https://sites.google.com/gshare.blackgold.ca/plural-practice/home"
+      }
+    ],
+    "favourite": false,
+    "credit": "Original idea: Tyler Walker · Improved classroom edition: Engaging Students",
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/walker-plurals.jpg?v=20261005",
+    "captured": "2026-10-05",
+    "original_urls": [
+      "https://sites.google.com/gshare.blackgold.ca/plural-practice/home"
+    ]
   }
 ]
