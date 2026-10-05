@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeQuest: Teen Health Simulator</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Poppins:wght@500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            100: '#e0e7ff',
+                            400: '#818cf8',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            900: '#312e81',
+                        },
+                        health: {
+                            fitness: '#ef4444', // red
+                            stress: '#8b5cf6', // purple
+                            mood: '#f59e0b', // amber
+                            focus: '#3b82f6', // blue
+                            sleep: '#10b981', // green
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'bounce-slight': 'bounceSlight 2s infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        bounceSlight: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-5px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e0e7ff 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-bar-container {
+            width: 100%;
+            background-color: #e5e7eb;
+            border-radius: 9999px;
+            height: 0.75rem;
+            overflow: hidden;
+        }
+
+        .stat-bar-fill {
+            height: 100%;
+            border-radius: 9999px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s;
+        }
+
+        /* Hide scrollbar for clean UI but keep functionality */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        .choice-btn {
+            transition: all 0.2s;
+        }
+        .choice-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .choice-btn:active {
+            transform: translateY(0);
+        }
+
+        .hidden-screen {
+            display: none !important;
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased flex flex-col items-center justify-center p-4 sm:p-8">
+
+    <!-- Screen: Start -->
+    <div id="screen-start" class="w-full max-w-3xl glass-panel rounded-3xl p-8 sm:p-12 text-center animate-fade-in">
+        <div class="mb-6 inline-block p-4 bg-brand-100 rounded-full">
+            <i class="fa-solid fa-heart-pulse text-5xl text-brand-600 animate-bounce-slight"></i>
+        </div>
+        <h1 class="text-4xl sm:text-5xl font-heading font-black text-gray-900 mb-4 tracking-tight">LifeQuest</h1>
+        <p class="text-lg sm:text-xl text-gray-600 mb-8 max-w-xl mx-auto">
+            Navigate the daily life of a junior high student. Make choices about fitness, nutrition, and mental health based on Canadian guidelines. Can you keep your avatar thriving?
+        </p>
+        <button onclick="showScreen('screen-avatar')" class="bg-brand-600 hover:bg-brand-500 text-white font-bold py-4 px-10 rounded-full text-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+            Start Journey <i class="fa-solid fa-arrow-right ml-2"></i>
+        </button>
+    </div>
+
+    <!-- Screen: Avatar Selection -->
+    <div id="screen-avatar" class="w-full max-w-4xl glass-panel rounded-3xl p-6 sm:p-10 hidden-screen animate-slide-up">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-heading font-bold text-gray-900">Choose Your Avatar</h2>
+            <p class="text-gray-500 mt-2">Select the character you want to guide through this week.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <!-- Avatar 1 -->
+            <button onclick="selectAvatar('fox')" class="group relative bg-white border-2 border-transparent hover:border-orange-400 rounded-2xl p-6 flex flex-col items-center transition-all shadow-sm hover:shadow-md">
+                <div class="w-20 h-20 rounded-full bg-orange-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform text-4xl shadow-inner">
+                    🦊
+                </div>
+                <h3 class="font-bold text-gray-800">The Quick Fox</h3>
+                <p class="text-xs text-gray-500 text-center mt-2">Agile but sometimes gets distracted.</p>
+            </button>
+            <!-- Avatar 2 -->
+            <button onclick="selectAvatar('owl')" class="group relative bg-white border-2 border-transparent hover:border-brand-400 rounded-2xl p-6 flex flex-col items-center transition-all shadow-sm hover:shadow-md">
+                <div class="w-20 h-20 rounded-full bg-brand-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform text-4xl shadow-inner">
+                    🦉
+                </div>
+                <h3 class="font-bold text-gray-800">The Wise Owl</h3>
+                <p class="text-xs text-gray-500 text-center mt-2">Smart choices, but needs to move more.</p>
+            </button>
+            <!-- Avatar 3 -->
+            <button onclick="selectAvatar('bear')" class="group relative bg-white border-2 border-transparent hover:border-amber-700 rounded-2xl p-6 flex flex-col items-center transition-all shadow-sm hover:shadow-md">
+                <div class="w-20 h-20 rounded-full bg-amber-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform text-4xl shadow-inner">
+                    🐻
+                </div>
+                <h3 class="font-bold text-gray-800">The Strong Bear</h3>
+                <p class="text-xs text-gray-500 text-center mt-2">Powerful, loves food, needs balance.</p>
+            </button>
+            <!-- Avatar 4 -->
+            <button onclick="selectAvatar('dolphin')" class="group relative bg-white border-2 border-transparent hover:border-cyan-400 rounded-2xl p-6 flex flex-col items-center transition-all shadow-sm hover:shadow-md">
+                <div class="w-20 h-20 rounded-full bg-cyan-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform text-4xl shadow-inner">
+                    🐬
+                </div>
+                <h3 class="font-bold text-gray-800">The Active Dolphin</h3>
+                <p class="text-xs text-gray-500 text-center mt-2">Highly social and energetic.</p>
+            </button>
+        </div>
+    </div>
+
+    <!-- Screen: Game (Scenarios) -->
+    <div id="screen-game" class="w-full max-w-4xl hidden-screen animate-fade-in flex-col h-full">
+        
+        <!-- Header / Stats Bar -->
+        <div class="glass-panel rounded-2xl p-4 mb-6 flex flex-wrap md:flex-nowrap items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div id="ui-avatar-icon" class="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center text-3xl shadow-inner">
+                    <!-- Icon injected here -->
+                </div>
+                <div>
+                    <h3 id="ui-avatar-name" class="font-bold text-gray-800 leading-tight">Avatar</h3>
+                    <p class="text-xs text-gray-500 font-semibold tracking-wide">DAY: <span id="ui-turn-count">Monday</span></p>
+                </div>
+            </div>
+            
+            <div class="flex-1 grid grid-cols-5 gap-2 sm:gap-4 max-w-2xl w-full">
+                <!-- Mini Stats -->
+                <div class="text-center" title="Fitness">
+                    <i class="fa-solid fa-dumbbell text-health-fitness text-sm mb-1"></i>
+                    <div class="stat-bar-container h-1.5"><div id="bar-fitness" class="stat-bar-fill bg-health-fitness" style="width: 50%"></div></div>
+                </div>
+                <div class="text-center" title="Stress (Lower is better)">
+                    <i class="fa-solid fa-bolt text-health-stress text-sm mb-1"></i>
+                    <div class="stat-bar-container h-1.5"><div id="bar-stress" class="stat-bar-fill bg-health-stress" style="width: 50%"></div></div>
+                </div>
+                <div class="text-center" title="Mood">
+                    <i class="fa-solid fa-face-smile text-health-mood text-sm mb-1"></i>
+                    <div class="stat-bar-container h-1.5"><div id="bar-mood" class="stat-bar-fill bg-health-mood" style="width: 50%"></div></div>
+                </div>
+                <div class="text-center" title="Concentration">
+                    <i class="fa-solid fa-brain text-health-focus text-sm mb-1"></i>
+                    <div class="stat-bar-container h-1.5"><div id="bar-focus" class="stat-bar-fill bg-health-focus" style="width: 50%"></div></div>
+                </div>
+                <div class="text-center" title="Sleep Hygiene">
+                    <i class="fa-solid fa-bed text-health-sleep text-sm mb-1"></i>
+                    <div class="stat-bar-container h-1.5"><div id="bar-sleep" class="stat-bar-fill bg-health-sleep" style="width: 50%"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scenario Card -->
+        <div class="glass-panel rounded-3xl p-6 sm:p-10 mb-6 relative overflow-hidden">
+            <!-- Hint Button -->
+            <button onclick="toggleHint()" class="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 rounded-full bg-yellow-100 text-yellow-600 hover:bg-yellow-200 flex items-center justify-center transition-colors z-10 shadow-sm" title="Get a hint!">
+                <i class="fa-solid fa-lightbulb text-lg"></i>
+            </button>
+            
+            <div id="hint-box" class="hidden absolute top-16 right-4 sm:right-6 bg-yellow-50 border border-yellow-200 text-yellow-800 p-4 rounded-xl shadow-lg w-64 text-sm z-20 animate-fade-in">
+                <strong class="block mb-1"><i class="fa-solid fa-circle-info mr-1"></i> Health Guideline Hint:</strong>
+                <span id="scenario-hint-text">Hint goes here.</span>
+                <button onclick="toggleHint()" class="absolute top-1 right-2 text-yellow-500 hover:text-yellow-700">&times;</button>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-8 items-center mb-8">
+                <div id="scenario-icon-container" class="w-24 h-24 sm:w-32 sm:h-32 rounded-2xl bg-indigo-50 flex items-center justify-center flex-shrink-0 shadow-inner">
+                    <i id="scenario-icon" class="fa-solid fa-school text-5xl sm:text-6xl text-indigo-400"></i>
+                </div>
+                <div>
+                    <span id="scenario-category" class="inline-block px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-xs font-bold tracking-wider mb-2 uppercase">Category</span>
+                    <h2 id="scenario-title" class="text-2xl sm:text-3xl font-heading font-bold text-gray-900 mb-3">Scenario Title</h2>
+                    <p id="scenario-desc" class="text-gray-700 text-lg leading-relaxed">
+                        Scenario description goes here. It describes the situation the avatar is facing right now.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Choices -->
+            <div id="scenario-choices" class="grid grid-cols-1 gap-4">
+                <!-- Buttons injected by JS -->
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="flex justify-between items-center px-2">
+            <button id="btn-undo" onclick="undoLastChoice()" class="text-gray-500 hover:text-brand-600 font-semibold px-4 py-2 rounded-lg hover:bg-white/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                <i class="fa-solid fa-rotate-left mr-2"></i> Change My Mind (Undo)
+            </button>
+        </div>
+    </div>
+
+    <!-- Screen: Report -->
+    <div id="screen-report" class="w-full max-w-4xl glass-panel rounded-3xl p-6 sm:p-10 hidden-screen animate-slide-up">
+        <div class="text-center mb-10">
+            <div class="inline-block p-4 bg-brand-100 rounded-full mb-4">
+                <i class="fa-solid fa-clipboard-check text-4xl text-brand-600"></i>
+            </div>
+            <h2 class="text-3xl font-heading font-black text-gray-900">Weekly Health Report</h2>
+            <p class="text-gray-600 mt-2">Let's see how <span id="report-avatar-name" class="font-bold">your avatar</span> did based on your choices!</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+            <!-- Summary Text -->
+            <div class="bg-white/60 rounded-2xl p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Analysis</h3>
+                <p id="report-summary" class="text-gray-700 leading-relaxed mb-4">
+                    Generating report...
+                </p>
+                <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
+                    <p class="text-sm text-blue-800 font-medium">
+                        <i class="fa-solid fa-book-medical mr-2"></i> 
+                        Remember: True wellness balances the 24-Hour Guidelines (Sweat, Step, Sleep, Sit), proper nutrition, and mental health care!
+                    </p>
+                </div>
+            </div>
+
+            <!-- Chart -->
+            <div class="bg-white/60 rounded-2xl p-6 flex flex-col justify-center">
+                <h3 class="text-xl font-bold text-gray-800 mb-6 border-b pb-2">Final Stats</h3>
+                <div class="space-y-5">
+                    <!-- Fitness -->
+                    <div>
+                        <div class="flex justify-between text-sm font-semibold mb-1">
+                            <span class="text-gray-700"><i class="fa-solid fa-dumbbell text-health-fitness w-5"></i> Fitness</span>
+                            <span id="final-val-fitness">50/100</span>
+                        </div>
+                        <div class="stat-bar-container h-3"><div id="final-bar-fitness" class="stat-bar-fill bg-health-fitness w-0"></div></div>
+                    </div>
+                    <!-- Stress -->
+                    <div>
+                        <div class="flex justify-between text-sm font-semibold mb-1">
+                            <span class="text-gray-700"><i class="fa-solid fa-bolt text-health-stress w-5"></i> Stress (Lower is Better)</span>
+                            <span id="final-val-stress">50/100</span>
+                        </div>
+                        <div class="stat-bar-container h-3"><div id="final-bar-stress" class="stat-bar-fill bg-health-stress w-0"></div></div>
+                    </div>
+                    <!-- Mood -->
+                    <div>
+                        <div class="flex justify-between text-sm font-semibold mb-1">
+                            <span class="text-gray-700"><i class="fa-solid fa-face-smile text-health-mood w-5"></i> Mood</span>
+                            <span id="final-val-mood">50/100</span>
+                        </div>
+                        <div class="stat-bar-container h-3"><div id="final-bar-mood" class="stat-bar-fill bg-health-mood w-0"></div></div>
+                    </div>
+                    <!-- Focus -->
+                    <div>
+                        <div class="flex justify-between text-sm font-semibold mb-1">
+                            <span class="text-gray-700"><i class="fa-solid fa-brain text-health-focus w-5"></i> Concentration</span>
+                            <span id="final-val-focus">50/100</span>
+                        </div>
+                        <div class="stat-bar-container h-3"><div id="final-bar-focus" class="stat-bar-fill bg-health-focus w-0"></div></div>
+                    </div>
+                    <!-- Sleep -->
+                    <div>
+                        <div class="flex justify-between text-sm font-semibold mb-1">
+                            <span class="text-gray-700"><i class="fa-solid fa-bed text-health-sleep w-5"></i> Sleep Hygiene</span>
+                            <span id="final-val-sleep">50/100</span>
+                        </div>
+                        <div class="stat-bar-container h-3"><div id="final-bar-sleep" class="stat-bar-fill bg-health-sleep w-0"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button onclick="restartGame()" class="bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transition-all">
+                <i class="fa-solid fa-rotate-right mr-2"></i> Play Again
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Constants & Definitions
+        const MAX_TURNS = 7;
+        const DAYS_OF_WEEK = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+        
+        const AVATARS = {
+            'fox': { name: 'The Quick Fox', emoji: '🦊', bgClass: 'bg-orange-100' },
+            'owl': { name: 'The Wise Owl', emoji: '🦉', bgClass: 'bg-brand-100' },
+            'bear': { name: 'The Strong Bear', emoji: '🐻', bgClass: 'bg-amber-100' },
+            'dolphin': { name: 'The Active Dolphin', emoji: '🐬', bgClass: 'bg-cyan-100' },
+        };
+
+        // The deep scenario bank based on Canadian guidelines and curriculum
+        const SCENARIO_BANK = [
+            {
+                id: 1,
+                category: "Physical Activity (SWEAT)",
+                icon: "fa-bicycle",
+                color: "text-blue-500",
+                title: "After School Slump",
+                text: "School is out and you're feeling a bit sluggish, but you also have a math assignment due tomorrow. What's your plan?",
+                hint: "Balancing responsibilities with physical activity is key. Moderate activity can actually boost your focus for homework later!",
+                choices: [
+                    { text: "Join an intense 2-hour basketball pickup game. (Ignore the homework for now)", impact: { fitness: 25, mood: 15, stress: 15, focus: -10, sleep: 5 } },
+                    { text: "Go for a quick 30-minute bike ride, then tackle the math assignment.", impact: { fitness: 10, mood: 10, stress: -15, focus: 20, sleep: 5 } },
+                    { text: "Skip exercise. Drink an energy drink and cram math for 4 hours.", impact: { fitness: -15, mood: -10, stress: 20, focus: 10, sleep: -20 } }
+                ]
+            },
+            {
+                id: 2,
+                category: "Nutrition & Energy",
+                icon: "fa-bolt",
+                color: "text-yellow-500",
+                title: "Thirsty Thursday",
+                text: "You see an ad on social media for a new 'Extreme Energy Drink' promising better focus and gaming skills. You're feeling tired...",
+                hint: "Highly processed energy drinks give a quick spike but lead to a massive crash, disrupting sleep and increasing anxiety.",
+                choices: [
+                    { text: "Chug the energy drink. You need the boost!", impact: { fitness: -5, mood: 5, stress: 25, focus: 15, sleep: -30 } },
+                    { text: "Grab an apple and a glass of cold water instead.", impact: { fitness: 10, mood: 5, stress: -10, focus: 10, sleep: 5 } },
+                    { text: "Compromise with a heavily sweetened iced coffee.", impact: { fitness: -5, mood: 10, stress: 10, focus: 10, sleep: -10 } }
+                ]
+            },
+            {
+                id: 2,
+                category: "Nutrition & Energy",
+                icon: "fa-bolt",
+                color: "text-yellow-500",
+                title: "The Caffeine Craving",
+                text: "You see an ad on social media for a new 'Extreme Energy Drink' promising better focus and gaming skills. You're feeling tired...",
+                hint: "Highly processed energy drinks give a quick spike but lead to a massive crash, disrupting sleep and increasing anxiety.",
+                choices: [
+                    { text: "Text back for 'just a few minutes' (ends up being an hour).", impact: { fitness: 0, mood: 10, stress: 5, focus: -20, sleep: -25 } },
+                    { text: "Put the phone on 'Do Not Disturb' across the room and sleep.", impact: { fitness: 5, mood: -5, stress: -10, focus: 20, sleep: 25 } },
+                    { text: "Read the texts, don't reply, and watch Netflix to fall asleep.", impact: { fitness: -5, mood: 5, stress: 0, focus: -10, sleep: -15 } }
+                ]
+            },
+            {
+                id: 4,
+                category: "Nutrition & Food Literacy",
+                icon: "fa-hamburger",
+                color: "text-orange-500",
+                title: "Cafeteria Choices",
+                text: "Lunchtime! You forgot your lunch. The cafeteria line for salad is huge, but the burger/fries line is short.",
+                hint: "Convenience often competes with nutrition. Whole foods provide sustained energy, while fast food can cause a 'food coma'.",
+                choices: [
+                    { text: "Wait in the long line for a balanced chicken and quinoa bowl.", impact: { fitness: 10, mood: -5, stress: 5, focus: 15, sleep: 5 } },
+                    { text: "Grab the double burger and large fries to save time.", impact: { fitness: -15, mood: 15, stress: -5, focus: -15, sleep: -5 } },
+                    { text: "Skip lunch entirely and use the time to play games on your phone.", impact: { fitness: -10, mood: -15, stress: 15, focus: -25, sleep: 0 } }
+                ]
+            },
+            {
+                id: 5,
+                category: "Fitness Principles (FITT)",
+                icon: "fa-stopwatch",
+                color: "text-red-500",
+                title: "The Weekend Warrior",
+                text: "You haven't exercised all week. It's Saturday, and you feel guilty, but your muscles are stiff.",
+                hint: "The FITT principle relies on Frequency and consistency. Doing too much at once (overload) increases injury risk.",
+                choices: [
+                    { text: "Attempt a brutal 3-hour heavy lifting and running session to 'catch up'.", impact: { fitness: -10, mood: -15, stress: 20, focus: -5, sleep: -10 } },
+                    { text: "Do a light 30-min stretch/walk and schedule your workouts for next week.", impact: { fitness: 10, mood: 15, stress: -20, focus: 10, sleep: 10 } },
+                    { text: "Decide it's too late. Stay on the couch all weekend watching movies.", impact: { fitness: -20, mood: -10, stress: 10, focus: -10, sleep: -5 } }
+                ]
+            },
+            {
+                id: 6,
+                category: "Mental Well-Being",
+                icon: "fa-brain",
+                color: "text-pink-500",
+                title: "Group Project Disaster",
+                text: "Your group project partners haven't done their part, and it's due in two days. You are panicking.",
+                hint: "Managing stress involves setting boundaries and communicating, rather than internalizing everything or lashing out.",
+                choices: [
+                    { text: "Do all their work for them while silently resenting them.", impact: { fitness: -10, mood: -20, stress: 30, focus: 15, sleep: -20 } },
+                    { text: "Message them calmly to divide the remaining work, then go for a walk to cool off.", impact: { fitness: 10, mood: 15, stress: -15, focus: 10, sleep: 5 } },
+                    { text: "Yell at them in the group chat and refuse to do the project.", impact: { fitness: 0, mood: -10, stress: 25, focus: -20, sleep: -10 } }
+                ]
+            },
+            {
+                id: 7,
+                category: "Sedentary Behaviour (SIT)",
+                icon: "fa-chair",
+                color: "text-gray-500",
+                title: "The Gamer Marathon",
+                text: "You've been playing an intense online game for 3 hours straight. You are on a winning streak!",
+                hint: "Guidelines recommend breaking up extended periods of sitting. Prolonged screen time affects posture, mood, and sleep.",
+                choices: [
+                    { text: "Keep playing! You can't end on a winning streak.", impact: { fitness: -15, mood: 15, stress: 15, focus: -10, sleep: -15 } },
+                    { text: "Switch to a standing desk setup, but keep playing.", impact: { fitness: 5, mood: 10, stress: 5, focus: -5, sleep: -10 } },
+                    { text: "Log off, stretch your back, and go shoot some hoops outside.", impact: { fitness: 20, mood: -5, stress: -15, focus: 15, sleep: 10 } }
+                ]
+            },
+            {
+                id: 8,
+                category: "Strength & Bone Building",
+                icon: "fa-hand-fist",
+                color: "text-amber-600",
+                title: "Muscle Time",
+                text: "You've done plenty of cardio this week (walking/biking), but no strength training. You have 20 minutes of free time.",
+                hint: "Youth guidelines state that vigorous physical activities and muscle/bone strengthening activities should be done at least 3 days per week.",
+                choices: [
+                    { text: "Do a 20-minute bodyweight routine (pushups, planks, squats) until failure.", impact: { fitness: 20, mood: 10, stress: -5, focus: 10, sleep: 10 } },
+                    { text: "Just go for another walk. Cardio is all that matters.", impact: { fitness: -5, mood: 5, stress: 0, focus: 5, sleep: 0 } },
+                    { text: "Use the time to scroll social media instead.", impact: { fitness: -10, mood: -5, stress: 10, focus: -10, sleep: -5 } }
+                ]
+            },
+            {
+                id: 9,
+                category: "Social Dynamics",
+                icon: "fa-users",
+                color: "text-purple-500",
+                title: "Peer Pressure in Phys Ed",
+                text: "During Phys Ed, your friends decide to hide in the bleachers to skip the fitness circuit. They call you over.",
+                hint: "Healthy relationships involve self-advocacy. Engaging in regular physical activity supports your own mental and physical well-being.",
+                choices: [
+                    { text: "Hide with them. You don't want to look uncool.", impact: { fitness: -20, mood: 5, stress: 15, focus: -5, sleep: 0 } },
+                    { text: "Say 'Nah, I'm gonna do it,' and crush the circuit alone.", impact: { fitness: 20, mood: -5, stress: -10, focus: 15, sleep: 10 } },
+                    { text: "Try to drag them onto the floor, causing an argument.", impact: { fitness: 10, mood: -15, stress: 20, focus: -10, sleep: 0 } }
+                ]
+            },
+            {
+                id: 10,
+                category: "Nutrition Habits",
+                icon: "fa-apple-whole",
+                color: "text-green-500",
+                title: "The Breakfast Rush",
+                text: "You wake up late. The bus is coming in 5 minutes. You're starving.",
+                hint: "Food provides essential energy. Skipping meals negatively impacts concentration, while pure sugar causes a massive crash.",
+                choices: [
+                    { text: "Skip breakfast and sprint to the bus.", impact: { fitness: 5, mood: -15, stress: 15, focus: -25, sleep: 0 } },
+                    { text: "Grab three sugary chocolate chip cookies and run.", impact: { fitness: -10, mood: 10, stress: 10, focus: -15, sleep: 0 } },
+                    { text: "Grab a banana, a handful of almonds, and make the bus.", impact: { fitness: 10, mood: 10, stress: -5, focus: 20, sleep: 0 } }
+                ]
+            },
+            {
+                id: 11,
+                category: "Mental Health Literacy",
+                icon: "fa-comments",
+                color: "text-teal-500",
+                title: "A Friend in Need",
+                text: "Your best friend seems constantly exhausted, withdrawn, and mentions feeling overwhelmed by life.",
+                hint: "Being a supportive peer is great, but knowing your limits and involving trusted adults is a key part of mental health literacy.",
+                choices: [
+                    { text: "Try to solve all their problems yourself and worry about them all night.", impact: { fitness: 0, mood: -10, stress: 30, focus: -15, sleep: -20 } },
+                    { text: "Listen to them, validate their feelings, and suggest talking to a counselor together.", impact: { fitness: 0, mood: 15, stress: 5, focus: 10, sleep: 5 } },
+                    { text: "Tell them to 'just think positive!' and change the subject.", impact: { fitness: 0, mood: -15, stress: 10, focus: 0, sleep: 0 } }
+                ]
+            },
+            {
+                id: 12,
+                category: "Active Transportation",
+                icon: "fa-shoe-prints",
+                color: "text-blue-600",
+                title: "Getting to School",
+                text: "You live 2.5 kilometers away from school. It's lightly raining today.",
+                hint: "Active transportation replaces sedentary behaviour with moderate activity. A little rain won't hurt if you're prepared!",
+                choices: [
+                    { text: "Beg your parents for a ride so you don't get wet.", impact: { fitness: -10, mood: 5, stress: 0, focus: -5, sleep: 0 } },
+                    { text: "Put on a raincoat and bike/walk anyway.", impact: { fitness: 15, mood: 10, stress: -10, focus: 15, sleep: 5 } },
+                    { text: "Take the bus, but get off one stop early to walk the rest.", impact: { fitness: 5, mood: 5, stress: -5, focus: 5, sleep: 0 } }
+                ]
+            },
+            {
+                id: 13,
+                category: "Screen Time Boundaries",
+                icon: "fa-mobile-screen",
+                color: "text-purple-400",
+                title: "The Notification Trap",
+                text: "You're trying to read a book for English class, but your phone keeps buzzing with group chat notifications.",
+                hint: "Constant context-switching heavily drains your focus and increases background stress levels.",
+                choices: [
+                    { text: "Keep checking the phone every time it buzzes so you don't miss out.", impact: { fitness: 0, mood: 5, stress: 15, focus: -25, sleep: -5 } },
+                    { text: "Turn off notifications and put the phone in another room.", impact: { fitness: 0, mood: -5, stress: -15, focus: 25, sleep: 5 } },
+                    { text: "Try to read while texting at the exact same time.", impact: { fitness: 0, mood: 0, stress: 20, focus: -15, sleep: 0 } }
+                ]
+            },
+            {
+                id: 14,
+                category: "Hydration",
+                icon: "fa-glass-water",
+                color: "text-cyan-500",
+                title: "Mid-Day Sluggishness",
+                text: "It's 2:00 PM and you have a headache. You realize you've only drank one juice box all day.",
+                hint: "Dehydration mimics fatigue and hunger, causing drops in concentration and mood.",
+                choices: [
+                    { text: "Go to the fountain and drink a large amount of water.", impact: { fitness: 5, mood: 10, stress: -5, focus: 15, sleep: 5 } },
+                    { text: "Buy a sugary soda from the vending machine.", impact: { fitness: -5, mood: 10, stress: 5, focus: -5, sleep: -10 } },
+                    { text: "Ignore it and take a painkiller.", impact: { fitness: -10, mood: 0, stress: 10, focus: 5, sleep: 0 } }
+                ]
+            },
+            {
+                id: 15,
+                category: "Rest & Recovery",
+                icon: "fa-spa",
+                color: "text-teal-400",
+                title: "Overbooked",
+                text: "You have soccer practice, a piano lesson, and a huge history project all in one evening. You feel exhausted.",
+                hint: "While extracurriculars are great, over-scheduling leads to burnout. Learning to prioritize is healthy.",
+                choices: [
+                    { text: "Push through and do everything perfectly, staying up until 2 AM.", impact: { fitness: 10, mood: -20, stress: 30, focus: -15, sleep: -30 } },
+                    { text: "Talk to your parents about skipping piano tonight to do your project and rest.", impact: { fitness: 0, mood: 15, stress: -20, focus: 15, sleep: 15 } },
+                    { text: "Have a meltdown, cancel everything, and sleep for 14 hours.", impact: { fitness: -10, mood: -10, stress: -10, focus: -10, sleep: 20 } }
+                ]
+            },
+            {
+                id: 16,
+                category: "Injury & Prevention",
+                icon: "fa-crutch",
+                color: "text-red-400",
+                title: "The Sprained Ankle",
+                text: "You tweaked your ankle yesterday. It's a bit swollen, but your friends are meeting up for a big pickup basketball game.",
+                hint: "Listening to your body is crucial. Pushing through acute pain often leads to worse injuries and longer recovery times.",
+                choices: [
+                    { text: "Tape it up tight, take a painkiller, and play hard anyway.", impact: { fitness: -15, mood: 10, stress: 25, focus: -10, sleep: -10 } },
+                    { text: "Go to the court to hang out, but just do some light upper-body stretches.", impact: { fitness: 5, mood: 15, stress: -10, focus: 5, sleep: 5 } },
+                    { text: "Stay home, ice it, and play video games for 6 hours.", impact: { fitness: -10, mood: -5, stress: 5, focus: -15, sleep: 5 } }
+                ]
+            },
+            {
+                id: 17,
+                category: "Nutrition & Sleep",
+                icon: "fa-cookie-bite",
+                color: "text-amber-500",
+                title: "Late Night Cravings",
+                text: "It's 10:30 PM. You're suddenly starving but you know you should be going to sleep soon to get your 8 hours.",
+                hint: "Eating heavy or highly processed sugary meals right before bed can severely disrupt your sleep cycle.",
+                choices: [
+                    { text: "Eat a massive bowl of sugary cereal and watch a show.", impact: { fitness: -5, mood: 10, stress: 10, focus: -5, sleep: -20 } },
+                    { text: "Ignore the hunger and lie in bed tossing and turning for hours.", impact: { fitness: 0, mood: -15, stress: 20, focus: -10, sleep: -15 } },
+                    { text: "Have a small piece of whole-grain toast and read a book to wind down.", impact: { fitness: 5, mood: 10, stress: -15, focus: 10, sleep: 15 } }
+                ]
+            },
+            {
+                id: 18,
+                category: "Environmental Factors",
+                icon: "fa-smog",
+                color: "text-gray-400",
+                title: "Air Quality Warning",
+                text: "There's a wildfire smoke advisory (poor air quality) today, but you really wanted to go for your daily 5km run.",
+                hint: "Environmental factors matter! High AQI (Air Quality Index) can damage your lungs during heavy cardiovascular exercise.",
+                choices: [
+                    { text: "Run outside anyway. You can't break your streak!", impact: { fitness: -15, mood: -5, stress: 20, focus: -10, sleep: -5 } },
+                    { text: "Swap the run for a 45-minute indoor YouTube workout.", impact: { fitness: 15, mood: 10, stress: -10, focus: 15, sleep: 10 } },
+                    { text: "Use it as an excuse to do absolutely nothing all day.", impact: { fitness: -15, mood: -10, stress: 10, focus: -5, sleep: -5 } }
+                ]
+            },
+            {
+                id: 19,
+                category: "Time Management",
+                icon: "fa-clock",
+                color: "text-purple-600",
+                title: "The Part-Time Job",
+                text: "You just got a part-time job! But your shift ends at 9 PM and you have a big biology test tomorrow.",
+                hint: "Balancing work, school, and health is a major life skill. Sacrificing all your sleep to study usually backfires on test day.",
+                choices: [
+                    { text: "Work the shift, then chug coffee and cram until 2 AM.", impact: { fitness: 0, mood: -15, stress: 30, focus: -25, sleep: -30 } },
+                    { text: "Work the shift, do a quick 30-min review, and accept you might not get an A+.", impact: { fitness: 5, mood: 10, stress: -5, focus: 15, sleep: 10 } },
+                    { text: "Fake being sick to get out of your shift so you can study.", impact: { fitness: -5, mood: -20, stress: 25, focus: 10, sleep: 5 } }
+                ]
+            },
+            {
+                id: 20,
+                category: "Mental Health (Media)",
+                icon: "fa-hashtag",
+                color: "text-pink-400",
+                title: "The Comparison Trap",
+                text: "You're scrolling online and see influencers with 'perfect' bodies doing impossible workouts. You start feeling really bad about yourself.",
+                hint: "Media literacy is part of mental health. Many online images are edited, and extreme fitness routines aren't suitable (or healthy) for growing teens.",
+                choices: [
+                    { text: "Try to copy their extreme 2-hour workout immediately.", impact: { fitness: 5, mood: -20, stress: 25, focus: -15, sleep: -10 } },
+                    { text: "Unfollow those accounts and go text a supportive real-life friend.", impact: { fitness: 0, mood: 20, stress: -20, focus: 10, sleep: 5 } },
+                    { text: "Keep scrolling and eat a family-sized bag of chips for comfort.", impact: { fitness: -15, mood: -15, stress: 15, focus: -15, sleep: -10 } }
+                ]
+            },
+            {
+                id: 21,
+                category: "Family Dynamics",
+                icon: "fa-house",
+                color: "text-orange-400",
+                title: "Chores vs. Chilling",
+                text: "You promised your parents you'd clean the garage today, but your friends just invited you to the mall.",
+                hint: "Managing commitments and relationships is stressful. Ignoring responsibilities creates background anxiety that impacts your focus and mood.",
+                choices: [
+                    { text: "Bail on your parents completely and go to the mall.", impact: { fitness: 5, mood: 10, stress: 25, focus: -15, sleep: -5 } },
+                    { text: "Do the chores, skip the mall, but stay angry about it all day.", impact: { fitness: 15, mood: -20, stress: 15, focus: -5, sleep: 5 } },
+                    { text: "Rush through the chores to catch the tail-end of the hangout, skipping lunch.", impact: { fitness: 15, mood: 5, stress: 10, focus: -10, sleep: -5 } }
+                ]
+            },
+            {
+                id: 22,
+                category: "Substance Awareness",
+                icon: "fa-smoking",
+                color: "text-gray-600",
+                title: "The Washroom Crowd",
+                text: "You walk into the school washroom and some older students are vaping. They offer you a hit, saying it 'helps with stress.'",
+                hint: "Vaping introduces nicotine, a highly addictive substance that actually increases baseline anxiety and damages developing lung tissue.",
+                choices: [
+                    { text: "Try it just once so they think you're cool.", impact: { fitness: -20, mood: -10, stress: 20, focus: -15, sleep: -15 } },
+                    { text: "Say 'No thanks, I've got practice later' and walk out.", impact: { fitness: 10, mood: 15, stress: -10, focus: 15, sleep: 5 } },
+                    { text: "Yell at them for breaking the rules and cause a huge scene.", impact: { fitness: 0, mood: -15, stress: 30, focus: -10, sleep: -5 } }
+                ]
+            }
+        ];
+
+        let state = {
+            avatarId: null,
+            stats: {
+                fitness: 50,
+                stress: 50, // Note: Lower stress is better
+                mood: 50,
+                focus: 50,
+                sleep: 50
+            },
+            turn: 0,
+            history: [], // Stack for undo
+            activeScenarios: [], // The 5 randomized scenarios for this run
+            currentScenarioObj: null
+        };
+
+        // Utility: Shuffle Array
+        function shuffle(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex != 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        function showScreen(screenId) {
+            // Hide all screens
+            document.querySelectorAll('div[id^="screen-"]').forEach(el => {
+                el.classList.add('hidden-screen');
+            });
+            // Show target
+            document.getElementById(screenId).classList.remove('hidden-screen');
+            // Scroll to top
+            window.scrollTo(0,0);
+        }
+
+        function updateUIStats() {
+            // Constrain between 0 and 100
+            for(let key in state.stats) {
+                state.stats[key] = Math.max(0, Math.min(100, state.stats[key]));
+            }
+
+            document.getElementById('bar-fitness').style.width = `${state.stats.fitness}%`;
+            document.getElementById('bar-stress').style.width = `${state.stats.stress}%`; // Visually, high bar = high stress
+            document.getElementById('bar-mood').style.width = `${state.stats.mood}%`;
+            document.getElementById('bar-focus').style.width = `${state.stats.focus}%`;
+            document.getElementById('bar-sleep').style.width = `${state.stats.sleep}%`;
+
+            // Color coding based on value (red/yellow/green)
+            setBarColor('bar-fitness', state.stats.fitness);
+            setBarColorInverted('bar-stress', state.stats.stress); // inverted: high stress is bad (red)
+            setBarColor('bar-mood', state.stats.mood);
+            setBarColor('bar-focus', state.stats.focus);
+            setBarColor('bar-sleep', state.stats.sleep);
+            
+            document.getElementById('btn-undo').disabled = state.history.length === 0;
+        }
+
+        function setBarColor(elementId, value) {
+            const el = document.getElementById(elementId);
+            el.className = 'stat-bar-fill'; // reset
+            if(value < 30) el.classList.add('bg-red-500');
+            else if(value < 60) el.classList.add('bg-yellow-400');
+            else el.classList.add('bg-green-500');
+        }
+
+        function setBarColorInverted(elementId, value) {
+            const el = document.getElementById(elementId);
+            el.className = 'stat-bar-fill'; // reset
+            if(value < 30) el.classList.add('bg-green-500'); // Low stress is good
+            else if(value < 70) el.classList.add('bg-yellow-400');
+            else el.classList.add('bg-red-500'); // High stress is bad
+        }
+
+
+        function selectAvatar(id) {
+            state.avatarId = id;
+            
+            // Set UI elements
+            const av = AVATARS[id];
+            const iconContainer = document.getElementById('ui-avatar-icon');
+            iconContainer.className = `w-12 h-12 rounded-full flex items-center justify-center text-3xl shadow-inner ${av.bgClass}`;
+            iconContainer.innerHTML = av.emoji;
+            document.getElementById('ui-avatar-name').innerText = av.name;
+            
+            startGame();
+        }
+
+        function startGame() {
+            // Reset Stats
+            state.stats = { fitness: 50, stress: 50, mood: 50, focus: 50, sleep: 50 };
+            state.turn = 0;
+            state.history = [];
+            
+            // Pick 5 random scenarios from bank
+            let shuffled = shuffle([...SCENARIO_BANK]);
+            state.activeScenarios = shuffled.slice(0, MAX_TURNS);
+            
+            showScreen('screen-game');
+            loadNextScenario();
+        }
+
+        function loadNextScenario() {
+            if (state.turn >= MAX_TURNS) {
+                generateReport();
+                return;
+            }
+
+            state.currentScenarioObj = state.activeScenarios[state.turn];
+            const scenario = state.currentScenarioObj;
+
+            // Update UI Counters
+            document.getElementById('ui-turn-count').innerText = DAYS_OF_WEEK[state.turn];
+            updateUIStats();
+
+            // Populate Scenario Data
+            const iconEl = document.getElementById('scenario-icon');
+            iconEl.className = `fa-solid ${scenario.icon} text-5xl sm:text-6xl ${scenario.color}`;
+            
+            document.getElementById('scenario-category').innerText = scenario.category;
+            document.getElementById('scenario-title').innerText = scenario.title;
+            document.getElementById('scenario-desc').innerText = scenario.text;
+            
+            // Hide hint box on new scenario
+            document.getElementById('hint-box').classList.add('hidden');
+            document.getElementById('scenario-hint-text').innerText = scenario.hint;
+
+            // Populate Choices
+            const choicesContainer = document.getElementById('scenario-choices');
+            choicesContainer.innerHTML = ''; // clear
+
+            // Shuffle choices so positive isn't always top
+            let mappedChoices = scenario.choices.map((c, index) => ({...c, originalIndex: index}));
+            mappedChoices = shuffle(mappedChoices);
+
+            mappedChoices.forEach((choice) => {
+                const btn = document.createElement('button');
+                btn.className = "choice-btn w-full text-left bg-white border border-gray-200 hover:border-brand-300 hover:bg-brand-50 p-4 rounded-xl shadow-sm text-gray-800 font-medium flex items-center justify-between";
+                btn.innerHTML = `<span>${choice.text}</span> <i class="fa-solid fa-chevron-right text-gray-300 text-sm"></i>`;
+                btn.onclick = () => makeChoice(choice);
+                choicesContainer.appendChild(btn);
+            });
+        }
+
+        function toggleHint() {
+            const hintBox = document.getElementById('hint-box');
+            hintBox.classList.toggle('hidden');
+        }
+
+        function makeChoice(choiceObj) {
+            // Save state to history before applying changes
+            state.history.push({
+                stats: { ...state.stats },
+                turn: state.turn
+            });
+
+            // Apply impact
+            for(let key in choiceObj.impact) {
+                state.stats[key] += choiceObj.impact[key];
+            }
+
+            // Increment turn
+            state.turn++;
+            
+            // Load next or end
+            loadNextScenario();
+        }
+
+        function undoLastChoice() {
+            if (state.history.length === 0) return;
+            
+            // Pop last state
+            const lastState = state.history.pop();
+            
+            // Restore
+            state.stats = { ...lastState.stats };
+            state.turn = lastState.turn;
+            
+            loadNextScenario();
+        }
+
+        function generateReport() {
+            updateUIStats(); // Final calculation bounds check
+            
+            const av = AVATARS[state.avatarId];
+            document.getElementById('report-avatar-name').innerText = av.name;
+            
+            // Update Report Bars
+            document.getElementById('final-val-fitness').innerText = `${Math.round(state.stats.fitness)}/100`;
+            document.getElementById('final-bar-fitness').style.width = `${state.stats.fitness}%`;
+            setBarColor('final-bar-fitness', state.stats.fitness);
+
+            document.getElementById('final-val-stress').innerText = `${Math.round(state.stats.stress)}/100`;
+            document.getElementById('final-bar-stress').style.width = `${state.stats.stress}%`;
+            setBarColorInverted('final-bar-stress', state.stats.stress);
+
+            document.getElementById('final-val-mood').innerText = `${Math.round(state.stats.mood)}/100`;
+            document.getElementById('final-bar-mood').style.width = `${state.stats.mood}%`;
+            setBarColor('final-bar-mood', state.stats.mood);
+
+            document.getElementById('final-val-focus').innerText = `${Math.round(state.stats.focus)}/100`;
+            document.getElementById('final-bar-focus').style.width = `${state.stats.focus}%`;
+            setBarColor('final-bar-focus', state.stats.focus);
+
+            document.getElementById('final-val-sleep').innerText = `${Math.round(state.stats.sleep)}/100`;
+            document.getElementById('final-bar-sleep').style.width = `${state.stats.sleep}%`;
+            setBarColor('final-bar-sleep', state.stats.sleep);
+
+            // Generate Summary Text based on stats
+            let summaryText = "";
+            let overallScore = (state.stats.fitness + state.stats.mood + state.stats.focus + state.stats.sleep + (100 - state.stats.stress)) / 5;
+
+            if (overallScore >= 75) {
+                summaryText = `Excellent work! You made fantastic choices that align with the Canadian 24-Hour Movement Guidelines and nutritional recommendations. ${av.name} is thriving, maintaining a great balance of SWEAT, STEP, SLEEP, and SIT.`;
+            } else if (overallScore >= 45) {
+                summaryText = `Good effort! ${av.name} had a fairly balanced week. There were some great choices, but also areas for improvement. Remember that consistency with the FITT principles and limiting highly processed foods can make a big difference in daily energy and mood.`;
+            } else {
+                summaryText = `It was a tough week for ${av.name}. High stress and lower physical activity took a toll. Moving forward, try utilizing the hints to make choices that support better sleep hygiene, reduce screen time, and increase daily physical activity!`;
+            }
+
+            // Add specific observations
+            if (state.stats.stress > 70) {
+                summaryText += "<br><br><strong>Observation:</strong> Stress levels are very high. Don't forget that regular physical activity and connecting with supportive peers are great ways to manage mental well-being.";
+            }
+            if (state.stats.sleep < 40) {
+                summaryText += "<br><br><strong>Observation:</strong> Poor sleep hygiene affected everything else. Try putting screens away an hour before bed to get those recommended 8-10 hours!";
+            }
+            if (state.stats.fitness < 40) {
+                summaryText += "<br><br><strong>Observation:</strong> Fitness fell behind. Try to find 60 minutes a day for moderate to vigorous activity to build a stronger heart and muscles.";
+            }
+
+            document.getElementById('report-summary').innerHTML = summaryText;
+
+            showScreen('screen-report');
+        }
+
+        function restartGame() {
+            showScreen('screen-start');
+        }
+
+    </script>
+</body>
+</html>
