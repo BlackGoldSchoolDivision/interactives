@@ -122,12 +122,12 @@
       "Teacher tools"
     ],
     "group": "",
-    "description": "Learn how to lead thinking routines and discussion activities in any subject. Includes Socratic dialogue, seminar walkthroughs, teacher scripts, student prompts and printable guides.",
+    "description": "Try Socratic Dialogue: a guided conversation built around curious questions. Explore 16 thinking and discussion activities with teacher scripts, student prompts and printable guides for any subject.",
     "favourite": true,
     "tags": [
+      "Socratic Dialogue",
       "Any subject",
-      "Teacher guide",
-      "Socratic dialogue"
+      "Teacher guide"
     ],
     "types": [
       "Communication",
@@ -135,6 +135,10 @@
     ],
     "url": "https://interactives.blackgold.ca/thinkingroutines/",
     "links": [
+      {
+        "label": "Socratic Dialogue",
+        "url": "https://interactives.blackgold.ca/thinkingroutines/#socratic-dialogue"
+      },
       {
         "label": "Discussion skills",
         "url": "https://interactives.blackgold.ca/thinkingroutines/#discussion-skills"

@@ -14,6 +14,8 @@
 /* Keep enlarged text and narrow screens readable. */
 .shell{overflow-wrap:anywhere}.goals>* ,.routines>* ,.after-grid>* ,.step-body>* ,.skill-cards>*{min-width:0}.main-nav button{min-width:0}.action span{min-width:0}
 @media(max-width:650px){.step-head{flex-wrap:wrap}.step-head h4{min-width:0}.step-time{white-space:normal}.goal strong{overflow-wrap:anywhere}}
+
+.socratic-spotlight{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:16px;padding:19px 24px;border:1px solid #ddc58c;border-left:6px solid #bd8a2e;border-radius:17px;background:#fff7e5;box-shadow:var(--shadow)}.socratic-spotlight h2{font-size:1.8rem;margin:5px 0 7px}.socratic-spotlight p{color:#526777;margin:0;max-width:750px;font-size:1rem}.socratic-spotlight .eyebrow{color:#75591e}.socratic-spotlight .primary{flex:0 0 auto}@media(max-width:650px){.socratic-spotlight{flex-direction:column;align-items:stretch;gap:14px;padding:17px}.socratic-spotlight h2{font-size:1.6rem}}@media print{.socratic-spotlight{display:none!important}}
 </style>
 </head>
 <body>
@@ -26,6 +28,10 @@
  <p>Choose what you want students to practise. Get a clear walkthrough for preparing, facilitating, and reflecting—<strong>in any subject.</strong></p>
  <div class="header-bottom"><span class="note">Start with the thinking goal.</span><a href="../thinkingroutines8/">Grade 8 companion</a></div>
 </header>
+<section id="socraticSpotlight" class="socratic-spotlight" aria-label="Try Socratic Dialogue">
+ <div><div class="eyebrow">DISCUSSION SPOTLIGHT · 10–15 MINUTES</div><h2>Socratic Dialogue</h2><p>Use curious questions to explore ideas, examine assumptions, and think together. Start with the teacher walkthrough.</p></div>
+ <button id="socraticShortcut" class="primary">Open Socratic Dialogue</button>
+</section>
 <nav class="main-nav" aria-label="Teacher tools"><button id="browseTab" class="on" aria-pressed="true">Find an activity</button><button id="skillsTab" aria-pressed="false">Teach discussion skills</button></nav>
 <div id="browse">
  <section class="pick" aria-labelledby="goalHeading"><h2 id="goalHeading"><span class="number">1</span> What do you want students to practise?</h2><div id="goals" class="goals"></div></section>
@@ -64,7 +70,7 @@
 <script>const goals = [
  {id:'notice',name:'Notice & wonder',tag:'Start the inquiry',colour:'blue',desc:'Look closely, surface ideas, and find questions worth exploring.'},
  {id:'reason',name:'Reason & explore',tag:'Go deeper',colour:'green',desc:'Support claims, consider perspectives, and examine possibilities.'},
- {id:'discuss',name:'Talk & listen',tag:'Build discussion skills',colour:'rust',desc:'Learn to question, listen, build on ideas, and disagree thoughtfully.'},
+ {id:'discuss',name:'Talk & listen',tag:'Socratic dialogue & more',colour:'rust',desc:'Practise Socratic dialogue, listening, thoughtful questions, and respectful disagreement.'},
  {id:'reflect',name:'Reflect & connect',tag:'Make learning visible',colour:'purple',desc:'Name the big idea and show how understanding has developed.'}
 ];
 const step = (title,minutes,teacher,say,student) => ({title,minutes,teacher,say,student});
@@ -171,6 +177,7 @@ function renderRoutines(){
 }
 function setScreen(value){
  screen=value;
+ $('socraticSpotlight').hidden=value==='guide';
  $('browse').hidden=value!=='browse';$('skillsView').hidden=value!=='skills';$('guide').hidden=value!=='guide';
  $('browseTab').classList.toggle('on',value!=='skills');$('browseTab').setAttribute('aria-pressed',String(value!=='skills'));
  $('skillsTab').classList.toggle('on',value==='skills');$('skillsTab').setAttribute('aria-pressed',String(value==='skills'));
@@ -212,6 +219,7 @@ function renderProjector(){
  const s=current.steps[stepIndex];$('projectName').textContent=current.name;$('projectStep').textContent=`${stepIndex+1}. ${s.title}`;$('projectPrompt').textContent=s.student;
  $('projectProgress').textContent=`Step ${stepIndex+1} of ${current.steps.length}`;$('projectPrev').disabled=stepIndex===0;$('projectNext').disabled=stepIndex===current.steps.length-1;
 }
+$('socraticShortcut').onclick=()=>{goalId='discuss';openGuide('socratic-dialogue');};
 $('openGuide').onclick=()=>openGuide(selected);
 $('back').onclick=()=>backToBrowse();
 $('browseTab').onclick=()=>backToBrowse(false);
@@ -231,3 +239,4 @@ function readHash(){const id=decodeURIComponent(location.hash.slice(1));if(id===
 renderGoals();renderRoutines();readHash();window.addEventListener('hashchange',readHash);
 </script>
 </body></html>
+
