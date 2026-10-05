@@ -84,3 +84,9 @@ The batches include Local Places, Alberta's Boundaries, Boreal Forest Comprehens
 Eight classroom sorts were exercised across all 107 cards: Biotic & Abiotic, Animal Diets, States of Matter, Transparent & Opaque, Renewable Energy, Weather & Climate, Natural & Processed Materials, and Wants & Needs. Checks covered keyboard selection, wrong placement, a correct full sort, reset and control rebinding. The separate 22-item sorting review checks availability and inline syntax; it does not claim full gameplay testing for all 22.
 
 Live screenshot checks include working morphology collection, tap placement in the light-materials sort, protractor answer feedback, current growth controls and original picture cards. The final hub checks cover search, subject/type filters, companion and collection links and desktop preview loading. Responsive CSS has been reviewed; a live narrow-viewport check remains unverified because the available browser cannot open the local test page. Full gameplay and assistive-technology audits of every catalogue entry remain outside this batch. Other follow-ups explicitly listed above, such as Frayer placeholders and the French science practice translation, remain separate work.
+
+
+## Thinking & Dialogue — October 5, 2026
+
+Added the curriculum-neutral teacher field guide with 16 activity walkthroughs and eight discussion skills. The new card appears in Featured, Thinking tools, and Teacher tools through secondary_categories membership. It uses Darren’s supplied screenshot, proportionally scaled into a 900 × 620 JPEG (under 75 KB) in the personal repository’s learning-lab-images/ folder. The original Social Studies Thinking Routines card gains an Any subject companion link. Catalogue, source data, activity-links CSV, and generated index are kept in sync.
+

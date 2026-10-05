@@ -113,6 +113,38 @@
     "captured": "2026-10-04"
   },
   {
+    "id": "thinking-dialogue",
+    "path": "thinkingroutines",
+    "repo": "bgsd",
+    "title": "Thinking & Dialogue",
+    "category": "Thinking tools",
+    "secondary_categories": [
+      "Teacher tools"
+    ],
+    "group": "",
+    "description": "Learn how to lead thinking routines and discussion activities in any subject. Includes Socratic dialogue, seminar walkthroughs, teacher scripts, student prompts and printable guides.",
+    "favourite": true,
+    "tags": [
+      "Any subject",
+      "Teacher guide",
+      "Socratic dialogue"
+    ],
+    "types": [
+      "Communication",
+      "Printables"
+    ],
+    "url": "https://interactives.blackgold.ca/thinkingroutines/",
+    "links": [
+      {
+        "label": "Discussion skills",
+        "url": "https://interactives.blackgold.ca/thinkingroutines/#discussion-skills"
+      }
+    ],
+    "credit": "",
+    "captured": "2026-10-05",
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/thinking-dialogue.jpg"
+  },
+  {
     "id": "thinkingroutines",
     "title": "Thinking Routines",
     "category": "Thinking tools",
@@ -132,6 +164,10 @@
       {
         "label": "Grade 9",
         "url": "https://interactives.blackgold.ca/thinkingroutines9/"
+      },
+      {
+        "label": "Any subject",
+        "url": "https://interactives.blackgold.ca/thinkingroutines/"
       }
     ],
     "credit": "",
@@ -844,3 +880,4 @@
     "captured": "2026-10-04"
   }
 ]
+

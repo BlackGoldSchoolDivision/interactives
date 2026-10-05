@@ -28,7 +28,7 @@ const subjects = [
   {label:'Geography',category:'Geography',id:'mackwoodmapping',colour:'#2674b8',ink:'#fff'},
   {label:'Thinking tools',category:'Thinking tools',id:'thinkingroutines',colour:'#9651ac',ink:'#fff'}
 ];
-const featuredOrder = ['morpheme-missions','vocabularyarcade','mackwoodmapping','word-detective','numberbuilding','moonphases','writerspark'];
+const featuredOrder = ['morpheme-missions','vocabularyarcade','mackwoodmapping','word-detective','numberbuilding','moonphases','writerspark','thinking-dialogue'];
 let chosen = 'Favourites', chosenGroup = 'All geography', chosenType = 'All types', query = '';
 const cardsNode = document.getElementById('cards');
 const filters = document.getElementById('filters');
@@ -38,7 +38,7 @@ const typeSelect = document.getElementById('activity-type');
 const tilesNode = document.getElementById('subject-tiles');
 function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c])); }
 function labelCategory(c) { return c === 'Favourites' ? 'Featured' : c === 'Maths' ? 'Math' : c; }
-function inCategory(a,c) { return c === 'All activities' || (c === 'Favourites' ? a.favourite : c === 'Mr. Walker’s Corner' ? a.collection === 'walker-corner' : c === 'Words & writing' ? ['Reading & writing','Morphology'].includes(a.category) : a.category === c); }
+function inCategory(a,c) { return c === 'All activities' || (c === 'Favourites' ? a.favourite : c === 'Mr. Walker’s Corner' ? a.collection === 'walker-corner' : c === 'Words & writing' ? ['Reading & writing','Morphology'].includes(a.category) : a.category === c || (a.secondary_categories || []).includes(c)); }
 function countCategory(c) { return catalogue.filter(a => inCategory(a,c)).length; }
 function matches(a) {
   const category = inCategory(a,chosen);
@@ -68,7 +68,7 @@ function renderFilters() {
   typeSelect.value = chosenType;
   document.querySelectorAll('.quick-type').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.type === chosenType)));
 }
-function launchLabel(a) { return a.type === 'template' ? 'Open template' : a.type === 'printable' ? 'Open printable' : a.id === 'thinkingroutines' ? 'Open Grade 8' : 'Try it'; }
+function launchLabel(a) { return a.type === 'template' ? 'Open template' : a.type === 'printable' ? 'Open printable' : a.id === 'thinkingroutines' ? 'Open Grade 8' : a.id === 'thinking-dialogue' ? 'Open teacher guide' : 'Try it'; }
 function render() {
   renderFilters();
   const featured = chosen === 'Favourites' && chosenType === 'All types' && !query.trim();
@@ -106,4 +106,5 @@ document.getElementById('focus-search').addEventListener('click', () => { search
 // A failed screenshot stays clearly labelled; never substitute invented game imagery.
 document.addEventListener('error', e => { if (e.target instanceof HTMLImageElement) { e.target.hidden = true; const parent = e.target.parentElement; if (!parent.querySelector('.preview-unavailable')) { const label = document.createElement('span'); label.className = 'preview-unavailable'; label.textContent = 'Preview unavailable'; parent.appendChild(label); } } }, true);
 render();
+
 
