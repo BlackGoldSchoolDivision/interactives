@@ -26,7 +26,7 @@ const subjects = [
   {label:'Math',category:'Maths',id:'makechange',colour:'#ffc63b',ink:'#5b3c05'},
   {label:'Science',category:'Science',id:'moonphases',colour:'#007c80',ink:'#fff'},
   {label:'Geography',category:'Geography',id:'mackwoodmapping',colour:'#2674b8',ink:'#fff'},
-  {label:'Social Studies',category:'Social studies',id:'culturalcontact',colour:'#d88732',ink:'#362008'},
+  {label:'Social Studies',category:'Social studies',id:'geo-numberedtreaties',colour:'#d88732',ink:'#362008'},
   {label:'Thinking tools',category:'Thinking tools',id:'thinkingroutines',colour:'#9651ac',ink:'#fff'}
 ];
 const featuredOrder = ['morpheme-missions','vocabularyarcade','mackwoodmapping','word-detective','numberbuilding','moonphases','writerspark','thinking-dialogue'];
@@ -107,3 +107,4 @@ document.getElementById('focus-search').addEventListener('click', () => { search
 // A failed screenshot stays clearly labelled; never substitute invented game imagery.
 document.addEventListener('error', e => { if (e.target instanceof HTMLImageElement) { e.target.hidden = true; const parent = e.target.parentElement; if (!parent.querySelector('.preview-unavailable')) { const label = document.createElement('span'); label.className = 'preview-unavailable'; label.textContent = 'Preview unavailable'; parent.appendChild(label); } } }, true);
 render();
+
