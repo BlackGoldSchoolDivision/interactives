@@ -22,7 +22,7 @@ The six earlier morphology entries have now been reviewed and upgraded. The obso
 
 ## Then: sorting, flashcards and question formats
 
-Keep the useful formats and update individual activities as we go. The current catalogue exposes 21 sorting entries, 7 flashcard entries and 77 entries with some question practice. These groups overlap and include hubs, models and printables.
+Keep the useful formats and update individual activities as we go. The current catalogue exposes 22 sorting entries, 7 flashcard entries and 79 entries with some question practice. These groups overlap and include hubs, models and printables.
 
 - Sorting: touch and keyboard controls, clear target areas, useful feedback, reset/replay and content accuracy.
 - Flashcards: editable sets, flip/navigation controls, readable text and optional audio. Printable cards should remain clearly identified.
@@ -83,4 +83,4 @@ The batches include Local Places, Alberta's Boundaries, Boreal Forest Comprehens
 
 Eight classroom sorts were exercised across all 107 cards: Biotic & Abiotic, Animal Diets, States of Matter, Transparent & Opaque, Renewable Energy, Weather & Climate, Natural & Processed Materials, and Wants & Needs. Checks covered keyboard selection, wrong placement, a correct full sort, reset and control rebinding. The separate 22-item sorting review checks availability and inline syntax; it does not claim full gameplay testing for all 22.
 
-Live screenshot checks include working morphology collection, tap placement in the light-materials sort, protractor answer feedback, current growth controls and original picture cards. The final hub checks cover search, subject/type filters, companion and collection links, updated previews and a narrow embedded viewport. Full gameplay and assistive-technology audits of every catalogue entry remain outside this batch. Other follow-ups explicitly listed above, such as Frayer placeholders and the French science practice translation, remain separate work.
+Live screenshot checks include working morphology collection, tap placement in the light-materials sort, protractor answer feedback, current growth controls and original picture cards. The final hub checks cover search, subject/type filters, companion and collection links and desktop preview loading. Responsive CSS has been reviewed; a live narrow-viewport check remains unverified because the available browser cannot open the local test page. Full gameplay and assistive-technology audits of every catalogue entry remain outside this batch. Other follow-ups explicitly listed above, such as Frayer placeholders and the French science practice translation, remain separate work.
