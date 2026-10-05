@@ -1088,7 +1088,10 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-numberedtreaties.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-numberedtreaties.jpg",
+    "secondary_categories": [
+      "Social studies"
+    ]
   },
   {
     "id": "geo-grade3numberedtreaties",
@@ -1112,7 +1115,10 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-grade3numberedtreaties.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-grade3numberedtreaties.jpg",
+    "secondary_categories": [
+      "Social studies"
+    ]
   },
   {
     "id": "mapmastersubregions",
@@ -1758,21 +1764,22 @@
     "repo": "personal",
     "title": "Animal Diets Sort",
     "category": "Science",
-    "description": "Classify animals as herbivores, carnivores or omnivores. Use the original picture cards with tap, keyboard or drag controls.",
+    "description": "Sort real photographs of 12 animals in two challenges. Use diet clues, explain your choices and revise with feedback.",
     "types": [
       "Sorting"
     ],
     "tags": [
-      "Herbivores",
-      "Carnivores & omnivores"
+      "Real animal photos",
+      "Two challenges",
+      "Explain & revise"
     ],
     "url": "https://maltais239.github.io/interactives/animaldiets/",
     "links": [],
     "favourite": false,
     "credit": "",
     "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/animaldiets.jpg",
-    "captured": "2026-10-04"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/animaldiets.jpg?v=607d2a2b69aa",
+    "captured": "2026-10-05"
   },
   {
     "id": "statessort",
@@ -1972,6 +1979,32 @@
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/traderesources.jpg",
     "captured": "2026-10-04"
+  },
+  {
+    "id": "natural-resources-depot",
+    "path": "naturalresourcessort2",
+    "repo": "personal",
+    "title": "Natural Resources: Resource Depot",
+    "category": "Social studies",
+    "secondary_categories": [
+      "Science"
+    ],
+    "description": "Stock a Minecraft-style depot by matching resources to industries. Then sort resources and products separately from tools and equipment. Two challenges with clues and explanatory feedback.",
+    "types": [
+      "Sorting"
+    ],
+    "tags": [
+      "Minecraft-style",
+      "Two challenges",
+      "Resources & industries"
+    ],
+    "url": "https://maltais239.github.io/interactives/naturalresourcessort2/",
+    "links": [],
+    "favourite": false,
+    "credit": "",
+    "group": "",
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/natural-resources-depot.jpg?v=3e7c3812a0b3",
+    "captured": "2026-10-05"
   },
   {
     "id": "sortingcreator",
@@ -2706,7 +2739,10 @@
     "favourite": false,
     "credit": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/ancientcivilizations.jpg?v=20261005-repair1",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "secondary_categories": [
+      "Social studies"
+    ]
   },
   {
     "id": "portroyalmap",
@@ -2749,7 +2785,10 @@
     "favourite": false,
     "credit": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/worldexplorer.jpg?v=20261005-repair1",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "secondary_categories": [
+      "Social studies"
+    ]
   },
   {
     "id": "canadageohub",
@@ -2840,7 +2879,10 @@
     "favourite": false,
     "credit": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/treatiesalberta.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "secondary_categories": [
+      "Social studies"
+    ]
   },
   {
     "id": "placenamesgrade3",

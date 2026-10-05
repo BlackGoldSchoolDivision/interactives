@@ -90,3 +90,10 @@ Live screenshot checks include working morphology collection, tap placement in t
 
 Added the curriculum-neutral teacher field guide with 16 activity walkthroughs and eight discussion skills. The new card appears in Featured, Thinking tools, and Teacher tools through secondary_categories membership. It uses Darren’s supplied screenshot, proportionally scaled into a 900 × 620 JPEG (under 75 KB) in the personal repository’s learning-lab-images/ folder. The original Social Studies Thinking Routines card gains an Any subject companion link. Catalogue, source data, activity-links CSV, and generated index are kept in sync.
 
+
+
+## Social Studies discovery and sorting upgrades — 5 October 2026
+
+The catalogue now includes 151 activities. Social Studies has a homepage subject tile. The two treaty maps, Alberta treaty map and two civilization maps retain their Geography category and also appear in Social Studies. Natural Resources: Resource Depot is listed in Social Studies and Science. Search includes secondary subject labels.
+
+Animal Diets and Resource Depot share `sorting-lab/sort-lab.js` and `sorting-lab/sort-lab.css` in the personal repository. Both offer two challenges, field notes, explanatory feedback and tap, drag and keyboard controls. The animal photographs and original block-style artwork are individual optimized JPEG assets, with animal photograph credits in `animaldiets/photo-credits.json` and the activity’s teacher notes. Game content is editable in each activity’s JSON source; rebuild using `python sorting-lab/build.py`.
