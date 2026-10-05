@@ -9,9 +9,9 @@ The October 2026 catalogue includes 149 entries, with 105 additions to the earli
 
 Research and sources are documented in morphology-resources/RESEARCH_NOTES.md. These games support word-level practice; they are not validated interventions or diagnostic assessments.
 
-## Earlier morphology tools: update backlog
+## Earlier morphology tools: October 5 upgrades
 
-Darren reports that these earlier tools do not work well enough yet. Revisit word-part accuracy, instructions, feedback, controls and usability before describing them as finished classroom activities. The catalogue labels the six earlier morphology entries “Update planned”.
+The six earlier morphology entries have now been reviewed and upgraded. The obsolete “Update planned” labels are removed after the activity changes were committed. Rooting For You and WordWorks provide structured word journeys, family comparisons and feedback. The magnetic boards and cards retain the original printable materials and add on-screen practice and review. The tile games have reachable word-family targets, spelling notes, explicit completion and restart controls. Morpheme Match-Up includes an optional timer; the custom game validates imported families before play.
 
 - [Rooting For You!](https://maltais239.github.io/interactives/rootwords/)
 - [WordWorks Lab](https://interactives.blackgold.ca/wordworks-lab/)
@@ -32,8 +32,8 @@ Keep the useful formats and update individual activities as we go. The current c
 
 | Entry | Follow-up |
 |---|---|
-| [Morpheme Game Generator](https://maltais239.github.io/interactives/teachermorphologymaker/) | Automatic generation relies on an unfinished AI connection. |
-| [Sorting Game Builder](https://maltais239.github.io/interactives/sortingcreator/) | Automatic asset generation relies on unfinished AI/image connections. |
+| [Morpheme Game Generator](https://maltais239.github.io/interactives/teachermorphologymaker/) | Repaired: editable word-family presets, clues, meanings and spelling notes; preview and portable student-game download. |
+| [Sorting Game Builder](https://maltais239.github.io/interactives/sortingcreator/) | Repaired: editable card categories, optional teacher-supplied images, student preview, portable game and project downloads. |
 | [STRATA: Alberta Field Excavation](https://maltais239.github.io/interactives/dinodig/) | Map background repaired and field notebook added in the October 5 batch. |
 | [Civilizations of the World](https://maltais239.github.io/interactives/ancientcivilizations/) | Map background repaired in the October 4 batch. A deeper learning-design review remains planned. |
 | [Civilizations & Trade Routes](https://maltais239.github.io/interactives/Charbonneaumapyouknow/) | Map background repaired in the October 4 batch. A deeper learning-design review remains planned. |
@@ -60,7 +60,7 @@ Edit catalogue.json, refresh the relevant image in the personal repository’s l
 
 Repaired Canada Map Challenge, Canadian Geography Hub, Civilizations of the World, Civilizations & Trade Routes, and Place Names of Alberta: Grade 3. Their existing launch URLs are retained. Shared background configuration and regression checks are in the personal repository's geography-shared/ folder; Canada boundaries are served from that repository. The hub preserves progress when switching modes, and the trade-route quiz now gives explicit answer feedback. Catalogue previews are refreshed from the live apps.
 
-The following October 5 batch extends the repair work. Other writing, word-work, science and builder activities remain on the refresh list.
+The following October 5 batches extend the repair work. Verification applies to the named activities and interaction paths, with the broader catalogue preserved.
 
 
 ## Seven activity upgrades — October 5, 2026
@@ -74,3 +74,13 @@ The following October 5 batch extends the repair work. Other writing, word-work,
 Local checks covered generated question correctness, adaptive transitions, coordinate boundaries, treasure routes, equivalent function parsing, bridge challenge solvability and plural patterns. DOM checks exercised complete rounds, saved records and key feedback paths. Live checks and actual screenshot previews supplement these checks; this is not a full audit of every device, assistive technology or all 149 activities.
 
 Edit the catalogue entries and the source/page-template.html template, then run python3 source/build.py. Keep screenshots in the personal repository’s learning-lab-images/ folder. Collection membership for the three Walker entries is collection: walker-corner.
+
+## Further activity upgrades and hub refresh — October 5, 2026
+
+Twenty-nine catalogue descriptions now reflect the committed activity upgrades. The eight obsolete morphology/builder status labels have been removed, and the activity-links CSV is refreshed. All 149 launch entries, companion links, geography groups and Walker collection entries are retained. Twenty-nine new actual screenshot previews are prepared, scaled proportionally into 900 × 620 JPEGs under 75 KB each, with content-based cache versions. Image publishing remains pending after automatic approval review rejected the upload; the live catalogue retains the existing image references and capture dates until that batch is approved.
+
+The batches include Local Places, Alberta's Boundaries, Boreal Forest Comprehension, Writer Spark and Writer Spark Practice, Heart Word Mapper, Definition Draw, custom flashcards, cashier and angle rounds, Photosynthesis Virtual Lab, plant and creature observation notebooks, earlier morphology tools and their generator, and the sorting builder.
+
+Eight classroom sorts were exercised across all 107 cards: Biotic & Abiotic, Animal Diets, States of Matter, Transparent & Opaque, Renewable Energy, Weather & Climate, Natural & Processed Materials, and Wants & Needs. Checks covered keyboard selection, wrong placement, a correct full sort, reset and control rebinding. The separate 22-item sorting review checks availability and inline syntax; it does not claim full gameplay testing for all 22.
+
+Live screenshot checks include working morphology collection, tap placement in the light-materials sort, protractor answer feedback, current growth controls and original picture cards. The final hub checks cover search, subject/type filters, companion and collection links, updated previews and a narrow embedded viewport. Full gameplay and assistive-technology audits of every catalogue entry remain outside this batch. Other follow-ups explicitly listed above, such as Frayer placeholders and the French science practice translation, remain separate work.

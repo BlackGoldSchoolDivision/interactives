@@ -1,0 +1,318 @@
+{
+  "date": "2026-10-05",
+  "entries": 149,
+  "updated_descriptions": 29,
+  "prepared_previews": 29,
+  "published_preview_updates": 0,
+  "preview_status": "Image upload rejected by automatic approval review; existing live references and capture dates retained.",
+  "all_launch_urls_preserved": true,
+  "companion_links_preserved": true,
+  "removed_obsolete_labels": 8,
+  "checks": [
+    "canonical/embedded catalogue equality",
+    "unique IDs",
+    "all 149 launch URLs, companion links, categories, groups and collection membership unchanged",
+    "search and revised generator description",
+    "morphology and teacher filters",
+    "sorting type filter",
+    "three Walker entries",
+    "Alberta geography subgroup",
+    "29 existing preview references preserved",
+    "hero destinations and five subject tiles",
+    "updated footer"
+  ],
+  "preview_total_bytes": 1379054,
+  "preview_max_bytes": 74798,
+  "preview_manifest": [
+    {
+      "id": "writerspark",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 44207,
+      "version": "1a8763ba6e7b",
+      "path": "learning-lab-images/writerspark.jpg"
+    },
+    {
+      "id": "writerpractice",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 41875,
+      "version": "eca5b6c8bbd6",
+      "path": "learning-lab-images/writerpractice.jpg"
+    },
+    {
+      "id": "rootwords",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 50899,
+      "version": "2e5fcafb650d",
+      "path": "learning-lab-images/rootwords.jpg"
+    },
+    {
+      "id": "makechange",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 60523,
+      "version": "ac95e434cc17",
+      "path": "learning-lab-images/makechange.jpg"
+    },
+    {
+      "id": "wordworks",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 53599,
+      "version": "2ac7a20da1ac",
+      "path": "learning-lab-images/wordworks.jpg"
+    },
+    {
+      "id": "geo-canadiangeochallenge1",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 61588,
+      "version": "79f70357ee43",
+      "path": "learning-lab-images/geo-canadiangeochallenge1.jpg"
+    },
+    {
+      "id": "heartwords",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 21167,
+      "version": "dfc7a588b676",
+      "path": "learning-lab-images/heartwords.jpg"
+    },
+    {
+      "id": "borealforestreading",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 74798,
+      "version": "c87b37f7e989",
+      "path": "learning-lab-images/borealforestreading.jpg"
+    },
+    {
+      "id": "definitiondraw",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 30270,
+      "version": "3aded3b18211",
+      "path": "learning-lab-images/definitiondraw.jpg"
+    },
+    {
+      "id": "customflashcards",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 58988,
+      "version": "a5c47b953b32",
+      "path": "learning-lab-images/customflashcards.jpg"
+    },
+    {
+      "id": "morphologyboard",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 39320,
+      "version": "9c876ad33795",
+      "path": "learning-lab-images/morphologyboard.jpg"
+    },
+    {
+      "id": "morphologycards2",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 31412,
+      "version": "6631f2d8a1ee",
+      "path": "learning-lab-images/morphologycards2.jpg"
+    },
+    {
+      "id": "custommorphologygame",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 38366,
+      "version": "54746bc7de26",
+      "path": "learning-lab-images/custommorphologygame.jpg"
+    },
+    {
+      "id": "morphemematchup",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 49380,
+      "version": "06eeb01580e1",
+      "path": "learning-lab-images/morphemematchup.jpg"
+    },
+    {
+      "id": "teachermorphologymaker",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 55515,
+      "version": "1cc154e6b418",
+      "path": "learning-lab-images/teachermorphologymaker.jpg"
+    },
+    {
+      "id": "bioticsorting",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 44004,
+      "version": "501fd00a947c",
+      "path": "learning-lab-images/bioticsorting.jpg"
+    },
+    {
+      "id": "animaldiets",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 43216,
+      "version": "1a003e883f0c",
+      "path": "learning-lab-images/animaldiets.jpg"
+    },
+    {
+      "id": "statessort",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 42939,
+      "version": "a5b64c877e75",
+      "path": "learning-lab-images/statessort.jpg"
+    },
+    {
+      "id": "lightsort",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 35021,
+      "version": "18cc7fff7c48",
+      "path": "learning-lab-images/lightsort.jpg"
+    },
+    {
+      "id": "energysort",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 37197,
+      "version": "ac3b533044c4",
+      "path": "learning-lab-images/energysort.jpg"
+    },
+    {
+      "id": "weathersort",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 39697,
+      "version": "f329601acee8",
+      "path": "learning-lab-images/weathersort.jpg"
+    },
+    {
+      "id": "naturalprocessedsort",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 34320,
+      "version": "2c2ddb88429f",
+      "path": "learning-lab-images/naturalprocessedsort.jpg"
+    },
+    {
+      "id": "wantsneeds",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 43200,
+      "version": "54c1554c5f9a",
+      "path": "learning-lab-images/wantsneeds.jpg"
+    },
+    {
+      "id": "sortingcreator",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 65605,
+      "version": "27eb7d717228",
+      "path": "learning-lab-images/sortingcreator.jpg"
+    },
+    {
+      "id": "anglefinder",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 47178,
+      "version": "b30b1ad350f7",
+      "path": "learning-lab-images/anglefinder.jpg"
+    },
+    {
+      "id": "photosynthesislab",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 49862,
+      "version": "ea76d77985f3",
+      "path": "learning-lab-images/photosynthesislab.jpg"
+    },
+    {
+      "id": "plantgrower",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 52908,
+      "version": "7787a940d6f9",
+      "path": "learning-lab-images/plantgrower.jpg"
+    },
+    {
+      "id": "creaturecare",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 61075,
+      "version": "190df525dc67",
+      "path": "learning-lab-images/creaturecare.jpg"
+    },
+    {
+      "id": "physicalboundaries",
+      "dimensions": [
+        900,
+        620
+      ],
+      "bytes": 70925,
+      "version": "bf8303565571",
+      "path": "learning-lab-images/physicalboundaries.jpg"
+    }
+  ]
+}

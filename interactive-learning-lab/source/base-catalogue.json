@@ -21,7 +21,7 @@
     "title": "Writer Spark",
     "category": "Reading & writing",
     "group": "",
-    "description": "Find a story starter, map your ideas, organise a narrative, or open a freewriting space.",
+    "description": "Choose a story starter, map ideas, organise a narrative, or freewrite. Save and reopen your project as you develop it.",
     "favourite": true,
     "tags": [
       "Storytelling",
@@ -101,7 +101,7 @@
     "title": "Rooting For You!",
     "category": "Reading & writing",
     "group": "",
-    "description": "Reveal roots, use context clues, and work out what a whole word means.",
+    "description": "Reveal roots, use context clues, and work out what a whole word means. Complete a 20-word journey and revisit words you found tricky.",
     "favourite": true,
     "tags": [
       "Roots & meaning"
@@ -143,11 +143,11 @@
     "title": "Cashier Change Challenge",
     "category": "Maths",
     "group": "",
-    "description": "Calculate change and drag Canadian bills and coins from the till to pay the customer.",
+    "description": "Calculate change using real Canadian bills and coins. Work through eight transactions with drag, tap or keyboard controls and an optional timer.",
     "favourite": true,
     "tags": [
       "Canadian money",
-      "Three levels"
+      "Optional timer"
     ],
     "url": "https://maltais239.github.io/interactives/makechange/",
     "links": [],
@@ -160,7 +160,7 @@
     "title": "WordWorks Lab",
     "category": "Reading & writing",
     "group": "",
-    "description": "Explore word families and see how prefixes, base words, and suffixes change meaning.",
+    "description": "Explore word families, compare affix meanings and spelling changes, then build words in an eight-question quest with clues and feedback.",
     "favourite": false,
     "tags": [
       "Word building",
@@ -295,7 +295,7 @@
     "title": "Canadian Geography: Local Places",
     "category": "Geography",
     "group": "Canada",
-    "description": "Find your community and explore places across Canada.",
+    "description": "Start in your community, then follow direction clues to find Canadian places. Use the map or place list, take hints, and explore freely.",
     "favourite": false,
     "tags": [
       "Communities"

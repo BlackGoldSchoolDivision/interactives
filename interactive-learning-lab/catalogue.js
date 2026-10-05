@@ -19,7 +19,7 @@ const descriptions = {
   'Languages': 'Build vocabulary, listen, match, and practise useful language.',
   'Accessibility': 'Tools for communication, routines, and access to text.',
   'Robotics': 'Plan commands and explore paths with familiar classroom robots.',
-  'Teacher tools': 'Build classroom resources and prepare activities. Earlier prototypes are labelled.'
+  'Teacher tools': 'Build classroom resources, preview student games, and prepare activities.'
 };
 const subjects = [
   {label:'Words & writing',category:'Words & writing',id:'vocabularyarcade',colour:'#f76967',ink:'#552024'},
@@ -106,3 +106,4 @@ document.getElementById('focus-search').addEventListener('click', () => { search
 // A failed screenshot stays clearly labelled; never substitute invented game imagery.
 document.addEventListener('error', e => { if (e.target instanceof HTMLImageElement) { e.target.hidden = true; const parent = e.target.parentElement; if (!parent.querySelector('.preview-unavailable')) { const label = document.createElement('span'); label.className = 'preview-unavailable'; label.textContent = 'Preview unavailable'; parent.appendChild(label); } } }, true);
 render();
+

@@ -72,7 +72,7 @@
     "title": "Writer Spark",
     "category": "Reading & writing",
     "group": "",
-    "description": "Find a story starter, map your ideas, organise a narrative, or open a freewriting space.",
+    "description": "Choose a story starter, map ideas, organise a narrative, or freewrite. Save and reopen your project as you develop it.",
     "favourite": true,
     "tags": [
       "Storytelling",
@@ -117,7 +117,7 @@
     "repo": "personal",
     "title": "Writer Spark Practice",
     "category": "Reading & writing",
-    "description": "Upgrade ordinary sentences, explore synonym webs, and build richer scenes with precise word choices.",
+    "description": "Upgrade sentences, explore synonym webs, and build richer scenes. Keep saved vocabulary and scene notebooks or download your writing.",
     "types": [
       "Writing",
       "Practice questions"
@@ -139,7 +139,7 @@
     "title": "Rooting For You!",
     "category": "Morphology",
     "group": "",
-    "description": "Reveal roots, use context clues, and work out what a whole word means.",
+    "description": "Reveal roots, use context clues, and work out what a whole word means. Complete a 20-word journey and revisit words you found tricky.",
     "favourite": true,
     "tags": [
       "Roots & meaning"
@@ -152,9 +152,6 @@
       "Word work",
       "Practice questions"
     ],
-    "status": "Update planned",
-    "status_note": "An earlier version; improvements are planned.",
-    "refresh": true,
     "image": "https://maltais239.github.io/interactives/learning-lab-images/rootwords.jpg"
   },
   {
@@ -267,11 +264,11 @@
     "title": "Cashier Change Challenge",
     "category": "Maths",
     "group": "",
-    "description": "Calculate change and drag Canadian bills and coins from the till to pay the customer.",
+    "description": "Calculate change using real Canadian bills and coins. Work through eight transactions with drag, tap or keyboard controls and an optional timer.",
     "favourite": true,
     "tags": [
       "Canadian money",
-      "Three levels"
+      "Optional timer"
     ],
     "url": "https://maltais239.github.io/interactives/makechange/",
     "links": [],
@@ -288,7 +285,7 @@
     "title": "WordWorks Lab",
     "category": "Morphology",
     "group": "",
-    "description": "Explore word families and see how prefixes, base words, and suffixes change meaning.",
+    "description": "Explore word families, compare affix meanings and spelling changes, then build words in an eight-question quest with clues and feedback.",
     "favourite": false,
     "tags": [
       "Word building",
@@ -302,9 +299,6 @@
       "Word work",
       "Practice questions"
     ],
-    "status": "Update planned",
-    "status_note": "An earlier version; improvements are planned.",
-    "refresh": true,
     "image": "https://maltais239.github.io/interactives/learning-lab-images/wordworks.jpg"
   },
   {
@@ -459,7 +453,7 @@
     "title": "Canadian Geography: Local Places",
     "category": "Geography",
     "group": "Canada",
-    "description": "Find your community and explore places across Canada.",
+    "description": "Start in your community, then follow direction clues to find Canadian places. Use the map or place list, take hints, and explore freely.",
     "favourite": false,
     "tags": [
       "Communities"
@@ -1130,14 +1124,14 @@
     "repo": "personal",
     "title": "Heart Word Mapper",
     "category": "Reading & writing",
-    "description": "Map the sounds in a word and identify the parts that need to be learned by heart.",
+    "description": "Map sounds and mark the parts learned by heart. Practise a checked starter set or review and edit mappings from the full teacher library.",
     "types": [
       "Word work",
       "Flashcards"
     ],
     "tags": [
-      "Early literacy",
-      "Sound mapping"
+      "Sound mapping",
+      "Teacher-reviewed words"
     ],
     "url": "https://maltais239.github.io/interactives/heartwords/",
     "links": [],
@@ -1227,7 +1221,7 @@
     "repo": "personal",
     "title": "Boreal Forest Comprehension",
     "category": "Reading & writing",
-    "description": "Read about Alberta's forest animals and highlight words or phrases that carry the important ideas.",
+    "description": "Investigate energy and nutrients in Alberta’s boreal forest. Select five key ideas, explain their importance, and check your understanding.",
     "types": [
       "Reading & annotation"
     ],
@@ -1283,7 +1277,7 @@
     "repo": "personal",
     "title": "Definition Draw",
     "category": "Reading & writing",
-    "description": "Connect a word's meaning with a drawing, then explain your thinking.",
+    "description": "Draw a word’s meaning, compare it with the definition, and explain your thinking. Use undo and redo, import a set, or save your drawing.",
     "types": [
       "Drawing",
       "Word work"
@@ -1305,7 +1299,7 @@
     "repo": "personal",
     "title": "Make Your Own Flashcards",
     "category": "Reading & writing",
-    "description": "Load your own terms and definitions, then move through the deck and flip cards to check understanding.",
+    "description": "Create or import your own term-and-definition deck. Flip cards, mark words to revisit, and export or print your set.",
     "types": [
       "Flashcards",
       "Builders"
@@ -1385,18 +1379,16 @@
     "repo": "personal",
     "title": "Magnetic Morphology Boards",
     "category": "Morphology",
-    "description": "Print word challenges and compare prefixes, bases and suffixes with the supplied answer boards.",
+    "description": "Reveal and explain the parts of 52 words, mark tricky words for review, or print the original paired challenge-and-answer boards.",
     "types": [
       "Word work",
       "Printables"
     ],
     "tags": [
       "Word parts",
+      "On-screen practice",
       "Printable boards"
     ],
-    "refresh": true,
-    "status": "Update planned",
-    "status_note": "An earlier version; improvements are planned.",
     "url": "https://maltais239.github.io/interactives/morphologyboard/",
     "links": [],
     "favourite": false,
@@ -1412,7 +1404,7 @@
     "repo": "personal",
     "title": "Magnetic Morphology Flashcards",
     "category": "Morphology",
-    "description": "Print two-sided word cards for building and discussing prefixes, roots and suffixes.",
+    "description": "Practise 52 word constructions with meanings and spelling notes, then print two-sided cards for magnetic-letter word building.",
     "types": [
       "Word work",
       "Flashcards",
@@ -1420,11 +1412,9 @@
     ],
     "tags": [
       "Word parts",
+      "Review tricky words",
       "Printable cards"
     ],
-    "refresh": true,
-    "status": "Update planned",
-    "status_note": "An earlier version; improvements are planned.",
     "url": "https://maltais239.github.io/interactives/morphologycards2/",
     "links": [],
     "favourite": false,
@@ -1440,16 +1430,16 @@
     "repo": "personal",
     "title": "Can I Have a Word?",
     "category": "Morphology",
-    "description": "Choose word-part tiles to build words around a base. Try the preset levels or create your own challenge.",
+    "description": "Select word-part tiles to collect words across six families. Use clues, restart a family, or create and save a custom set with reachable targets.",
     "types": [
       "Word work",
       "Builders"
     ],
     "tags": [
       "Build words",
-      "Custom sets"
+      "Custom sets",
+      "Family clues"
     ],
-    "refresh": true,
     "variants": [
       {
         "label": "Original version",
@@ -1457,8 +1447,6 @@
         "repo": "personal"
       }
     ],
-    "status": "Update planned",
-    "status_note": "An earlier version; improvements are planned.",
     "url": "https://maltais239.github.io/interactives/custommorphologygame/",
     "links": [
       {
@@ -1478,18 +1466,16 @@
     "repo": "personal",
     "title": "Morpheme Match-Up",
     "category": "Morphology",
-    "description": "Drag word parts together in a timed word-building challenge.",
+    "description": "Build and collect words in four root families. Use collected words as new bases, investigate spelling changes, and choose an optional timed challenge.",
     "types": [
       "Word work",
       "Matching"
     ],
     "tags": [
       "Word building",
-      "Timed challenge"
+      "Word families",
+      "Optional timer"
     ],
-    "refresh": true,
-    "status": "Update planned",
-    "status_note": "An earlier version; improvements are planned.",
     "url": "https://maltais239.github.io/interactives/morphemematchup/",
     "links": [],
     "favourite": false,
@@ -1504,18 +1490,16 @@
     "repo": "personal",
     "title": "Morpheme Game Generator",
     "category": "Teacher tools",
-    "description": "A prototype for turning a root-word list into a student game. Its AI connection needs an update.",
+    "description": "Load editable word-family clues, add meanings and spelling notes, then preview and download a student game you can open or share.",
     "types": [
       "Word work",
       "Builders"
     ],
     "tags": [
       "Morphology",
-      "Generator prototype"
+      "Editable clues",
+      "Export a game"
     ],
-    "refresh": true,
-    "status": "Needs update",
-    "status_note": "Automatic game generation needs updating.",
     "url": "https://maltais239.github.io/interactives/teachermorphologymaker/",
     "links": [],
     "favourite": false,
@@ -1712,7 +1696,7 @@
     "repo": "personal",
     "title": "Biotic & Abiotic Sort",
     "category": "Science",
-    "description": "Sort ecosystem examples into living and non-living components.",
+    "description": "Sort ecosystem components into biotic and abiotic groups. Select and place cards or drag them, then check and revise your choices.",
     "types": [
       "Sorting"
     ],
@@ -1720,7 +1704,6 @@
       "Ecosystems",
       "Living & non-living"
     ],
-    "refresh": true,
     "url": "https://maltais239.github.io/interactives/abioticbioticsort/",
     "links": [],
     "favourite": false,
@@ -1735,7 +1718,7 @@
     "repo": "personal",
     "title": "Animal Diets Sort",
     "category": "Science",
-    "description": "Classify animals by what they eat: plants, other animals, or both.",
+    "description": "Classify animals as herbivores, carnivores or omnivores. Use the original picture cards with tap, keyboard or drag controls.",
     "types": [
       "Sorting"
     ],
@@ -1743,7 +1726,6 @@
       "Herbivores",
       "Carnivores & omnivores"
     ],
-    "refresh": true,
     "url": "https://maltais239.github.io/interactives/animaldiets/",
     "links": [],
     "favourite": false,
@@ -1758,7 +1740,7 @@
     "repo": "personal",
     "title": "States of Matter Sort",
     "category": "Science",
-    "description": "Sort familiar examples into solids, liquids and gases.",
+    "description": "Sort particle-model clues and properties into solids, liquids and gases. Check your placements and move cards to revise them.",
     "types": [
       "Sorting"
     ],
@@ -1766,7 +1748,6 @@
       "Matter",
       "Three categories"
     ],
-    "refresh": true,
     "url": "https://maltais239.github.io/interactives/statesofmattersort/",
     "links": [],
     "favourite": false,
@@ -1781,7 +1762,7 @@
     "repo": "personal",
     "title": "Transparent & Opaque Sort",
     "category": "Science",
-    "description": "Compare materials and classify how they let light pass through.",
+    "description": "Compare pictured materials and classify how they let light pass through. Place cards, check your choices, and try again.",
     "types": [
       "Sorting"
     ],
@@ -1789,7 +1770,6 @@
       "Light",
       "Materials"
     ],
-    "refresh": true,
     "url": "https://maltais239.github.io/interactives/transparentopaque/",
     "links": [],
     "favourite": false,
@@ -1804,14 +1784,13 @@
     "repo": "personal",
     "title": "Renewable Energy Sort",
     "category": "Science",
-    "description": "Classify energy sources as renewable or non-renewable.",
+    "description": "Classify energy sources as renewable or non-renewable. Use picture cards with drag, tap or keyboard placement, then check your reasoning.",
     "types": [
       "Sorting"
     ],
     "tags": [
       "Energy sources"
     ],
-    "refresh": true,
     "url": "https://maltais239.github.io/interactives/renewablenonrenewable/",
     "links": [],
     "favourite": false,
@@ -1826,7 +1805,7 @@
     "repo": "personal",
     "title": "Weather & Climate Sort",
     "category": "Science",
-    "description": "Decide which examples describe short-term weather and which describe climate.",
+    "description": "Separate short-term weather observations from climate patterns. Place the cards, check your answers, and revise tricky examples.",
     "types": [
       "Sorting"
     ],
@@ -1834,7 +1813,6 @@
       "Weather",
       "Climate"
     ],
-    "refresh": true,
     "url": "https://maltais239.github.io/interactives/weathervsclimate/",
     "links": [],
     "favourite": false,
@@ -1849,7 +1827,7 @@
     "repo": "personal",
     "title": "Natural & Processed Materials",
     "category": "Science",
-    "description": "Sort pictured materials into natural and processed groups.",
+    "description": "Sort pictured materials into natural and processed groups. Select a card and category, or drag it, then check your placements.",
     "types": [
       "Sorting"
     ],
@@ -1857,7 +1835,6 @@
       "Materials",
       "Picture cards"
     ],
-    "refresh": true,
     "url": "https://maltais239.github.io/interactives/naturalprocessedsort/",
     "links": [],
     "favourite": false,
@@ -1906,14 +1883,13 @@
     "repo": "personal",
     "title": "Wants & Needs Sort",
     "category": "Social studies",
-    "description": "Sort everyday choices into wants and needs, then discuss your reasoning.",
+    "description": "Sort everyday examples into wants and needs, then discuss how circumstances can affect the choices. Check, revise and restart the sort.",
     "types": [
       "Sorting"
     ],
     "tags": [
       "Needs & wants"
     ],
-    "refresh": true,
     "url": "https://maltais239.github.io/interactives/wantsandneedssort/",
     "links": [],
     "favourite": false,
@@ -1963,18 +1939,16 @@
     "repo": "personal",
     "title": "Sorting Game Builder",
     "category": "Teacher tools",
-    "description": "A prototype for generating and exporting custom sorting games. Its AI connection needs an update.",
+    "description": "Build a custom card sort, add optional images, and test the student game. Download the complete game or a project you can edit later.",
     "types": [
       "Sorting",
       "Builders"
     ],
     "tags": [
-      "Generator prototype",
-      "Export HTML"
+      "Custom card sets",
+      "Optional images",
+      "Export a game"
     ],
-    "refresh": true,
-    "status": "Needs update",
-    "status_note": "Automatic asset generation needs updating.",
     "url": "https://maltais239.github.io/interactives/sortingcreator/",
     "links": [],
     "favourite": false,
@@ -2305,7 +2279,7 @@
     "repo": "personal",
     "title": "What's the Angle?",
     "category": "Maths",
-    "description": "Estimate and identify angles, then check your answers.",
+    "description": "Construct eight target angles on a protractor. Adjust the arm by pointer or keyboard, use optional support, and compare your measurement.",
     "types": [
       "Practice questions",
       "Simulations & models"
@@ -2431,7 +2405,7 @@
     "repo": "bg",
     "title": "Photosynthesis Virtual Lab",
     "category": "Science",
-    "description": "Change growing conditions and investigate how they affect photosynthesis.",
+    "description": "Change one growing condition at a time and compare photosynthesis model results. Save trials, inspect graphs, and export your observations.",
     "types": [
       "Simulations & models"
     ],
@@ -2477,7 +2451,7 @@
     "repo": "personal",
     "title": "Interactive Plant Grower",
     "category": "Science",
-    "description": "Care for a virtual plant and observe how its needs affect growth.",
+    "description": "Care for a virtual plant, step through growth at your own pace, and record observations about its needs. Save notes and export the growth log.",
     "types": [
       "Simulations & models",
       "Decision games"
@@ -2500,7 +2474,7 @@
     "repo": "personal",
     "title": "Interactive Creature Care",
     "category": "Science",
-    "description": "Care for a virtual animal and connect your choices with its survival needs.",
+    "description": "Care for the original virtual bear, observe its needs, and step through growth. Record notes and export the observation log.",
     "types": [
       "Simulations & models",
       "Decision games"
@@ -2657,7 +2631,7 @@
     "title": "Alberta's Boundaries",
     "category": "Geography",
     "group": "Alberta",
-    "description": "Read about Alberta’s physical and political boundaries and identify important vocabulary in the passage.",
+    "description": "Read about Alberta’s physical and political boundaries, investigate four vocabulary terms, and answer questions using evidence from the passage.",
     "types": [
       "Reading & annotation",
       "Word work"
