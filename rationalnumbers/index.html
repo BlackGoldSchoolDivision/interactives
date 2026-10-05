@@ -13,6 +13,7 @@
                         primary: '#0ea5e9', // Sky 500
                         primaryDark: '#0369a1', // Sky 700
                         natural: '#22c55e', // Green 500
+                        whole: '#a855f7', // Purple 500
                         integer: '#f59e0b', // Amber 500
                         rational: '#3b82f6', // Blue 500
                     },
@@ -24,7 +25,7 @@
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
         .math-font { font-family: 'Fira Code', monospace; }
@@ -59,6 +60,7 @@
             transition: all 0.2s;
         }
         .drag-over-natural { background-color: #dcfce7; border-color: #22c55e; }
+        .drag-over-whole { background-color: #f3e8ff; border-color: #a855f7; }
         .drag-over-integer { background-color: #fef3c7; border-color: #f59e0b; }
         .drag-over-rational { background-color: #eff6ff; border-color: #3b82f6; }
 
@@ -68,15 +70,6 @@
         @keyframes popIn {
             0% { transform: scale(0.8); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
-        }
-
-        /* Nested Sets Visual */
-        .set-container {
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px dashed;
         }
     </style>
 </head>
@@ -115,19 +108,23 @@
                 <div class="grid md:grid-cols-2 gap-6 mt-8">
                     <!-- Properties -->
                     <div class="bg-sky-50 p-5 rounded-lg border border-sky-100">
-                        <h3 class="font-semibold text-sky-900 mb-3 text-lg">Subsets of Rational Numbers</h3>
-                        <ul class="space-y-4 text-slate-700 text-sm">
-                            <li class="flex items-start gap-2">
-                                <div class="w-3 h-3 rounded-full bg-natural mt-1 flex-shrink-0"></div>
-                                <div><strong>Natural Numbers:</strong> Counting numbers like 1, 2, 3, 4... (Can be written as 1/1, 2/1).</div>
+                        <h3 class="font-semibold text-sky-900 mb-4 text-lg">Subsets of Rational Numbers</h3>
+                        <ul class="space-y-5 text-slate-700 text-sm">
+                            <li class="flex items-start gap-3">
+                                <div class="w-7 h-7 rounded-full bg-rational text-white flex items-center justify-center font-serif italic text-sm shadow-sm flex-shrink-0 mt-0.5">Q</div>
+                                <div><strong>Rational Numbers:</strong> Fractions and decimals that fall between integers (like 1/2, -0.75, 0.333...) as well as all sets below.</div>
                             </li>
-                            <li class="flex items-start gap-2">
-                                <div class="w-3 h-3 rounded-full bg-integer mt-1 flex-shrink-0"></div>
-                                <div><strong>Integers:</strong> Natural numbers, their negatives, and zero (..., -2, -1, 0, 1, 2...).</div>
+                            <li class="flex items-start gap-3">
+                                <div class="w-7 h-7 rounded-full bg-integer text-white flex items-center justify-center font-serif italic text-sm shadow-sm flex-shrink-0 mt-0.5">Z</div>
+                                <div><strong>Integers:</strong> Whole numbers and their negative counterparts (..., -2, -1, 0, 1, 2...).</div>
                             </li>
-                            <li class="flex items-start gap-2">
-                                <div class="w-3 h-3 rounded-full bg-rational mt-1 flex-shrink-0"></div>
-                                <div><strong>Other Rationals:</strong> Fractions and decimals that fall between integers (like 1/2, -0.75, 0.333...).</div>
+                            <li class="flex items-start gap-3">
+                                <div class="w-7 h-7 rounded-full bg-whole text-white flex items-center justify-center font-serif italic text-sm shadow-sm flex-shrink-0 mt-0.5">W</div>
+                                <div><strong>Whole Numbers:</strong> The natural numbers, plus the number zero (0, 1, 2, 3...).</div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-7 h-7 rounded-full bg-natural text-white flex items-center justify-center font-serif italic text-sm shadow-sm flex-shrink-0 mt-0.5">N</div>
+                                <div><strong>Natural Numbers:</strong> Positive counting numbers starting from one (1, 2, 3, 4...).</div>
                             </li>
                         </ul>
                     </div>
@@ -156,7 +153,7 @@
 
         <!-- SECTION 2: Classify (Nested Sets) -->
         <section id="classify" class="tab-content">
-            <div class="bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6 border-t-4 border-natural">
+            <div class="bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6 border-t-4 border-purple-500">
                 <h2 class="text-2xl font-bold text-slate-800 mb-2">Classify: Find the Most Specific Set</h2>
                 <p class="text-slate-600 mb-6 text-sm">Drag the numbers into their <strong>most specific</strong> category. For example, '5' is a rational number, but it's more specifically a Natural Number. Watch out for fractions that simplify to integers!</p>
 
@@ -167,29 +164,36 @@
                         <div id="numbers-pool" class="flex flex-wrap gap-2 justify-center min-h-[100px]">
                             <!-- Generated via JS -->
                         </div>
-                        <button onclick="resetSortGame()" class="mt-6 w-full py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded transition text-sm font-medium">Reset Game</button>
+                        <button onclick="resetSortGame()" class="mt-6 w-full py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded transition text-sm font-medium">Reset Game & Get New Numbers</button>
                     </div>
 
                     <!-- Drop Zones (Nested conceptually, but distinct boxes for UI ease) -->
-                    <div class="w-full lg:w-3/4 flex flex-col gap-4">
+                    <div class="w-full lg:w-3/4 flex flex-col gap-3">
                         
-                        <!-- Rational -->
-                        <div id="zone-rational" class="drop-zone border-2 border-dashed border-blue-300 rounded-lg p-4 bg-blue-50/50 min-h-[120px]" ondragover="allowDrop(event)" ondrop="drop(event, 'rational')" ondragenter="dragEnter(event, 'rational')" ondragleave="dragLeave(event, 'rational')">
-                            <h3 class="font-bold text-blue-700 mb-1">Rational Numbers Only</h3>
+                        <!-- Rational (Q) -->
+                        <div id="zone-rational" class="drop-zone border-2 border-dashed border-blue-300 rounded-lg p-3 bg-blue-50/50 min-h-[90px]" ondragover="allowDrop(event)" ondrop="drop(event, 'rational')" ondragenter="dragEnter(event, 'rational')" ondragleave="dragLeave(event, 'rational')">
+                            <h3 class="font-bold text-blue-700 mb-0.5 flex items-center gap-2"><span class="font-serif italic">Q</span> General Rational Numbers</h3>
                             <p class="text-[11px] text-blue-600 mb-2">Fractions and decimals that cannot be simplified to an integer.</p>
                             <div class="flex flex-wrap gap-2 items-start" id="container-rational"></div>
                         </div>
 
-                        <!-- Integer -->
-                        <div id="zone-integer" class="drop-zone border-2 border-dashed border-amber-300 rounded-lg p-4 bg-amber-50/50 min-h-[120px]" ondragover="allowDrop(event)" ondrop="drop(event, 'integer')" ondragenter="dragEnter(event, 'integer')" ondragleave="dragLeave(event, 'integer')">
-                            <h3 class="font-bold text-amber-700 mb-1">Integers</h3>
-                            <p class="text-[11px] text-amber-600 mb-2">Whole numbers and their negatives (..., -2, -1, 0). <em>Must not be a Natural number.</em></p>
+                        <!-- Integer (Z) -->
+                        <div id="zone-integer" class="drop-zone border-2 border-dashed border-amber-300 rounded-lg p-3 bg-amber-50/50 min-h-[90px]" ondragover="allowDrop(event)" ondrop="drop(event, 'integer')" ondragenter="dragEnter(event, 'integer')" ondragleave="dragLeave(event, 'integer')">
+                            <h3 class="font-bold text-amber-700 mb-0.5 flex items-center gap-2"><span class="font-serif italic">Z</span> Integers</h3>
+                            <p class="text-[11px] text-amber-600 mb-2">Negative whole numbers (..., -3, -2, -1). <em>Must not be a Whole or Natural number.</em></p>
                             <div class="flex flex-wrap gap-2 items-start" id="container-integer"></div>
                         </div>
+
+                        <!-- Whole (W) -->
+                        <div id="zone-whole" class="drop-zone border-2 border-dashed border-purple-300 rounded-lg p-3 bg-purple-50/50 min-h-[90px]" ondragover="allowDrop(event)" ondrop="drop(event, 'whole')" ondragenter="dragEnter(event, 'whole')" ondragleave="dragLeave(event, 'whole')">
+                            <h3 class="font-bold text-purple-700 mb-0.5 flex items-center gap-2"><span class="font-serif italic">W</span> Whole Numbers</h3>
+                            <p class="text-[11px] text-purple-600 mb-2">Zero (0) is the only Whole number that is not also a Natural number.</p>
+                            <div class="flex flex-wrap gap-2 items-start" id="container-whole"></div>
+                        </div>
                         
-                        <!-- Natural -->
-                        <div id="zone-natural" class="drop-zone border-2 border-dashed border-green-300 rounded-lg p-4 bg-green-50/50 min-h-[120px]" ondragover="allowDrop(event)" ondrop="drop(event, 'natural')" ondragenter="dragEnter(event, 'natural')" ondragleave="dragLeave(event, 'natural')">
-                            <h3 class="font-bold text-green-700 mb-1">Natural Numbers</h3>
+                        <!-- Natural (N) -->
+                        <div id="zone-natural" class="drop-zone border-2 border-dashed border-green-300 rounded-lg p-3 bg-green-50/50 min-h-[90px]" ondragover="allowDrop(event)" ondrop="drop(event, 'natural')" ondragenter="dragEnter(event, 'natural')" ondragleave="dragLeave(event, 'natural')">
+                            <h3 class="font-bold text-green-700 mb-0.5 flex items-center gap-2"><span class="font-serif italic">N</span> Natural Numbers</h3>
                             <p class="text-[11px] text-green-600 mb-2">Positive counting numbers (1, 2, 3...).</p>
                             <div class="flex flex-wrap gap-2 items-start" id="container-natural"></div>
                         </div>
@@ -276,6 +280,7 @@
             }
         }
 
+        // --- STREAMING_CHUNK:Updating fraction to decimal logic... ---
         // --- Tab 1: Learn - Fraction to Decimal Converter ---
         function calculateDecimal() {
             const numEl = document.getElementById('frac-num');
@@ -302,20 +307,15 @@
 
             const decimal = n / d;
             
-            // Check if terminating or repeating
-            // Simple check: reduce fraction, then check if prime factors of denom are only 2 and 5.
             function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
             let reducedD = Math.abs(d) / gcd(Math.abs(n), Math.abs(d));
             
-            // Remove factors of 2 and 5
             while (reducedD % 2 === 0) reducedD /= 2;
             while (reducedD % 5 === 0) reducedD /= 5;
 
             const isTerminating = (reducedD === 1);
             
-            // Format result
             let displayRes = decimal.toString();
-            // If the string representation is very long, it's likely repeating (JS precision limits)
             if(displayRes.length > 12 && !isTerminating) {
                  displayRes = displayRes.substring(0, 12) + "...";
             }
@@ -331,17 +331,38 @@
             }
         }
 
+        // --- STREAMING_CHUNK:Expanding the game items bank and sorting logic... ---
         // --- Tab 2: Classification Game ---
-        const gameItems = [
-            { id: 'i1', type: 'natural', display: '8' },
-            { id: 'i2', type: 'integer', display: '-5' },
-            { id: 'i3', type: 'rational', display: '3/4' },
-            { id: 'i4', type: 'integer', display: '0' }, // 0 is integer (not natural counting number)
-            { id: 'i5', type: 'rational', display: '-4.25' },
-            { id: 'i6', type: 'natural', display: '10/2' }, // evaluates to 5 (natural)
-            { id: 'i7', type: 'rational', display: '0.333...' },
-            { id: 'i8', type: 'rational', display: '1/3' },
-            { id: 'i9', type: 'integer', display: '-12/4' } // evaluates to -3 (integer)
+        // Expanded Bank of Numbers
+        const fullGameItemsBank = [
+            // Natural
+            { id: 'n1', type: 'natural', display: '8' },
+            { id: 'n2', type: 'natural', display: '10/2' }, // evaluates to 5
+            { id: 'n3', type: 'natural', display: '1' },
+            { id: 'n4', type: 'natural', display: '42' },
+            { id: 'n5', type: 'natural', display: '100/10' }, // evaluates to 10
+            { id: 'n6', type: 'natural', display: '3' },
+            // Whole (0 is the only unique Whole number)
+            { id: 'w1', type: 'whole', display: '0' },
+            { id: 'w2', type: 'whole', display: '0/5' },
+            { id: 'w3', type: 'whole', display: '0.0' },
+            // Integer
+            { id: 'z1', type: 'integer', display: '-5' },
+            { id: 'z2', type: 'integer', display: '-12/4' }, // evaluates to -3
+            { id: 'z3', type: 'integer', display: '-1' },
+            { id: 'z4', type: 'integer', display: '-10' },
+            { id: 'z5', type: 'integer', display: '-4/2' }, // evaluates to -2
+            { id: 'z6', type: 'integer', display: '-42' },
+            // Rational
+            { id: 'q1', type: 'rational', display: '3/4' },
+            { id: 'q2', type: 'rational', display: '-4.25' },
+            { id: 'q3', type: 'rational', display: '0.333...' },
+            { id: 'q4', type: 'rational', display: '1/3' },
+            { id: 'q5', type: 'rational', display: '0.5' },
+            { id: 'q6', type: 'rational', display: '-7/8' },
+            { id: 'q7', type: 'rational', display: '2.71' },
+            { id: 'q8', type: 'rational', display: '-0.1' },
+            { id: 'q9', type: 'rational', display: '9/4' }
         ];
 
         let draggedItem = null;
@@ -350,15 +371,19 @@
             const pool = document.getElementById('numbers-pool');
             pool.innerHTML = '';
             document.getElementById('container-natural').innerHTML = '';
+            document.getElementById('container-whole').innerHTML = '';
             document.getElementById('container-integer').innerHTML = '';
             document.getElementById('container-rational').innerHTML = '';
             document.getElementById('sort-feedback').textContent = '';
             
-            const shuffled = [...gameItems].sort(() => 0.5 - Math.random());
+            // Shuffle the large bank and pick only the first 9 items
+            const shuffledBank = [...fullGameItemsBank].sort(() => 0.5 - Math.random());
+            const selectedItems = shuffledBank.slice(0, 9);
 
-            shuffled.forEach(item => {
+            selectedItems.forEach((item, index) => {
                 const el = document.createElement('div');
-                el.id = item.id;
+                // Give a unique ID for this specific round to prevent DOM conflicts
+                el.id = `item-round-${index}-${item.id}`;
                 el.className = 'draggable-item bg-white border border-slate-300 rounded shadow-sm px-3 py-2 text-lg font-bold math-font select-none text-slate-700';
                 el.draggable = true;
                 el.innerHTML = item.display;
@@ -373,7 +398,7 @@
                 el.addEventListener('dragend', (e) => {
                     e.target.classList.remove('opacity-50');
                     document.querySelectorAll('.drop-zone').forEach(z => {
-                        z.classList.remove('drag-over-natural', 'drag-over-integer', 'drag-over-rational');
+                        z.classList.remove('drag-over-natural', 'drag-over-whole', 'drag-over-integer', 'drag-over-rational');
                     });
                 });
 
@@ -381,9 +406,14 @@
             });
         }
 
+        // --- STREAMING_CHUNK:Enhancing drag and drop validation with Whole Numbers... ---
         function allowDrop(e) { e.preventDefault(); }
         function dragEnter(e, type) { e.preventDefault(); e.currentTarget.classList.add(`drag-over-${type}`); }
         function dragLeave(e, type) { e.currentTarget.classList.remove(`drag-over-${type}`); }
+
+        // Define hierarchy to provide intelligent hints
+        const hierarchy = { 'natural': 1, 'whole': 2, 'integer': 3, 'rational': 4 };
+        const setNames = { 'natural': 'Natural number', 'whole': 'Whole number', 'integer': 'Integer', 'rational': 'Rational number' };
 
         function drop(e, targetType) {
             e.preventDefault();
@@ -409,15 +439,23 @@
                     feedbackEl.className = 'mt-4 text-center font-bold h-6 text-lg text-green-600 feedback-pop';
                     
                     if (document.getElementById('numbers-pool').children.length === 0) {
-                        feedbackEl.textContent = '🎉 All sorted perfectly!';
+                        feedbackEl.textContent = '🎉 All 9 numbers sorted perfectly!';
                         feedbackEl.className = 'mt-4 text-center font-bold h-6 text-lg text-primaryDark feedback-pop';
                     }
                 } else {
                     let hint = "Not quite.";
-                    if(itemType === 'natural' && targetType === 'rational') hint = "That's rational, but there is a MORE specific set for it!";
-                    if(itemType === 'natural' && targetType === 'integer') hint = "That's an integer, but there is a MORE specific set for it!";
-                    if(itemType === 'integer' && targetType === 'natural') hint = "Careful! Natural numbers are positive counting numbers only.";
-                    if(itemType === 'rational' && (targetType === 'natural' || targetType === 'integer')) hint = "Does that evaluate to a whole number? If not, it stays in the general rational pool.";
+                    
+                    // Intelligent Hinting System
+                    if (hierarchy[itemType] < hierarchy[targetType]) {
+                        // The user placed a more specific number in a general bucket (e.g. 5 into Rational)
+                        hint = `That evaluates to a ${setNames[itemType]}. Even though it is technically a ${setNames[targetType]}, there is a MORE specific set for it!`;
+                    } else {
+                        // The user placed a general number in a specific bucket (e.g. -1 into Natural)
+                        if(itemType === 'rational') hint = "Does that evaluate to a whole number or integer? If not, it stays in the general rational pool.";
+                        if(itemType === 'integer' && targetType === 'whole') hint = "Careful! Whole numbers don't include negatives.";
+                        if(itemType === 'integer' && targetType === 'natural') hint = "Careful! Natural numbers don't include negatives.";
+                        if(itemType === 'whole' && targetType === 'natural') hint = "Natural numbers are strictly positive counting numbers (1, 2, 3...). Zero isn't one!";
+                    }
 
                     feedbackEl.textContent = hint;
                     feedbackEl.className = 'mt-4 text-center font-bold h-6 text-sm text-red-500 feedback-pop';
@@ -429,6 +467,7 @@
         }
         function resetSortGame() { initSortGame(); }
 
+        // --- STREAMING_CHUNK:Retaining Number Line and Word Problem logic... ---
         // --- Tab 3: The In-Between Game (Number Line) ---
         const canvas = document.getElementById('numberLineCanvas');
         const ctx = canvas.getContext('2d');
@@ -461,12 +500,10 @@
             drawNumberLine();
         }
 
-        // Helper to parse string "3/4" or "0.75" or "-2"
         function parseRationalInput(str) {
             str = str.trim();
             if (str === "") return NaN;
             
-            // Check if fraction format
             if (str.includes('/')) {
                 const parts = str.split('/');
                 if (parts.length === 2) {
@@ -478,8 +515,6 @@
                 }
                 return NaN;
             }
-            
-            // Else try normal float
             return parseFloat(str);
         }
 
@@ -518,7 +553,6 @@
         function resizeCanvas() {
             const rect = canvas.parentElement.getBoundingClientRect();
             canvas.width = rect.width;
-            // Height is set via CSS, update internal height to match
             canvas.height = 160; 
             drawNumberLine();
         }
@@ -539,12 +573,10 @@
             
             ctx.clearRect(0, 0, w, h);
             
-            // Determine Scale Bounds (give 20% padding around the challenge bounds)
             let minC = Math.min(currentChallenge.aVal, currentChallenge.bVal);
             let maxC = Math.max(currentChallenge.aVal, currentChallenge.bVal);
             let range = maxC - minC;
             
-            // If student plot is way outside, zoom out to show it
             let viewMin = minC - (range * 0.3);
             let viewMax = maxC + (range * 0.3);
             
@@ -553,42 +585,34 @@
                 if (studentPlot.val > viewMax) viewMax = studentPlot.val + Math.abs(studentPlot.val - maxC)*0.2;
             }
 
-            // Draw main axis line
             ctx.beginPath();
             ctx.moveTo(padding/2, centerY);
             ctx.lineTo(w - padding/2, centerY);
-            ctx.strokeStyle = '#94a3b8'; // slate-400
+            ctx.strokeStyle = '#94a3b8';
             ctx.lineWidth = 3;
             ctx.stroke();
 
-            // Draw arrows on ends
             ctx.beginPath(); ctx.moveTo(padding/2 + 10, centerY - 5); ctx.lineTo(padding/2, centerY); ctx.lineTo(padding/2 + 10, centerY + 5); ctx.stroke();
             ctx.beginPath(); ctx.moveTo(w - padding/2 - 10, centerY - 5); ctx.lineTo(w - padding/2, centerY); ctx.lineTo(w - padding/2 - 10, centerY + 5); ctx.stroke();
 
-            // Highlight the valid region
             const ax = valToX(currentChallenge.aVal, viewMin, viewMax, w, padding);
             const bx = valToX(currentChallenge.bVal, viewMin, viewMax, w, padding);
             
-            ctx.fillStyle = 'rgba(14, 165, 233, 0.15)'; // Sky 500 low opacity
+            ctx.fillStyle = 'rgba(14, 165, 233, 0.15)';
             ctx.fillRect(Math.min(ax, bx), centerY - 15, Math.abs(ax - bx), 30);
 
-            // Draw Bound A
             drawTickMark(ax, centerY, currentChallenge.aStr, '#0369a1');
-            // Draw Bound B
             drawTickMark(bx, centerY, currentChallenge.bStr, '#0369a1');
 
-            // Draw Student Plot
             if (studentPlot !== null) {
                 const estX = valToX(studentPlot.val, viewMin, viewMax, w, padding);
                 
-                // Draw point
                 ctx.beginPath();
                 ctx.arc(estX, centerY, 7, 0, 2 * Math.PI);
                 
-                // Color based on correctness
-                let pColor = '#f43f5e'; // Rose 500 (wrong)
-                if (studentPlot.val > minC && studentPlot.val < maxC) pColor = '#22c55e'; // Green (correct)
-                else if (studentPlot.val === minC || studentPlot.val === maxC) pColor = '#f59e0b'; // Amber (edge)
+                let pColor = '#f43f5e';
+                if (studentPlot.val > minC && studentPlot.val < maxC) pColor = '#22c55e';
+                else if (studentPlot.val === minC || studentPlot.val === maxC) pColor = '#f59e0b';
                 
                 ctx.fillStyle = pColor;
                 ctx.fill();
@@ -596,7 +620,6 @@
                 ctx.strokeStyle = '#ffffff';
                 ctx.stroke();
                 
-                // Draw label above
                 ctx.font = 'bold 14px "Inter", sans-serif';
                 ctx.textAlign = 'center';
                 const labelY = centerY - 25;
@@ -623,7 +646,6 @@
             ctx.textBaseline = 'top';
             ctx.fillStyle = color;
             
-            // bg box for text readability
             const tw = ctx.measureText(label).width;
             ctx.fillStyle = 'rgba(255,255,255,0.8)';
             ctx.fillRect(x - tw/2 - 2, y + 15 - 2, tw + 4, 20);
@@ -636,8 +658,7 @@
             if(document.getElementById('in-between').classList.contains('active')) resizeCanvas();
         });
 
-        // --- STREAMING_CHUNK:Javascript for Word Problems Section... ---
-        // --- Tab 4: Word Problems (Rational Numbers) ---
+        // --- Tab 4: Word Problems ---
         const wordProblems = [
             {
                 q: "A recipe calls for 3/4 cup of sugar. If you want to make half of the recipe, how much sugar do you need?",
@@ -722,11 +743,9 @@
             currentProblemAttempts++;
 
             feedbackEl.classList.remove('hidden');
-            // reset classes
             feedbackEl.className = 'mt-4 p-4 rounded-lg';
 
             if (selectedIndex === p.correctIndex) {
-                // Correct Answer
                 buttons.forEach(btn => {
                     btn.disabled = true;
                     btn.classList.add('cursor-not-allowed', 'opacity-70');
@@ -739,7 +758,6 @@
                 feedbackEl.classList.add('bg-green-100', 'text-green-800', 'border', 'border-green-300');
                 feedbackEl.innerHTML = `<strong>Correct! 🎉</strong> <p class="text-sm mt-1">${p.explanation}</p>`;
             } else {
-                // Incorrect Answer
                 btnElement.classList.replace('border-slate-300', 'border-red-500');
                 btnElement.classList.remove('hover:border-primary', 'hover:bg-slate-100');
                 btnElement.classList.add('bg-red-50', 'text-red-800', 'border-red-500');
@@ -747,11 +765,9 @@
                 btnElement.classList.add('cursor-not-allowed');
 
                 if (currentProblemAttempts === 1) {
-                    // First incorrect attempt - show hint
                     feedbackEl.classList.add('bg-amber-100', 'text-amber-800', 'border', 'border-amber-300');
                     feedbackEl.innerHTML = `<strong>Not quite. Try again!</strong> <p class="text-sm mt-1">${p.hint}</p>`;
                 } else {
-                    // Second (or more) incorrect attempt - show full explanation and correct answer
                     buttons.forEach(btn => {
                         btn.disabled = true;
                         btn.classList.add('cursor-not-allowed', 'opacity-70');
@@ -776,7 +792,6 @@
             calculateDecimal();
             loadNewProblem();
             
-            // Ensure resize canvas runs accurately on load if tab is active
             setTimeout(() => {
                 if(document.getElementById('in-between').classList.contains('active')) resizeCanvas();
             }, 100);
