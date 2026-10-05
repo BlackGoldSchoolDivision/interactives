@@ -27,7 +27,7 @@ const subjects = [
   {label:'Geography',category:'Geography',id:'mackwoodmapping',colour:'#2674b8',ink:'#fff'},
   {label:'Thinking tools',category:'Thinking tools',id:'thinkingroutines',colour:'#9651ac',ink:'#fff'}
 ];
-const featuredOrder = ['morpheme-missions','vocabularyarcade','mackwoodmapping','word-detective','writerspark','moonphases'];
+const featuredOrder = ['morpheme-missions','vocabularyarcade','mackwoodmapping','word-detective','numberbuilding','moonphases','writerspark'];
 let chosen = 'Favourites', chosenGroup = 'All geography', chosenType = 'All types', query = '';
 const cardsNode = document.getElementById('cards');
 const filters = document.getElementById('filters');

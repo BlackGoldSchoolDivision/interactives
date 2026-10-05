@@ -35,9 +35,9 @@ Keep the useful formats and update individual activities as we go. The current c
 | [Morpheme Game Generator](https://maltais239.github.io/interactives/teachermorphologymaker/) | Automatic generation relies on an unfinished AI connection. |
 | [Sorting Game Builder](https://maltais239.github.io/interactives/sortingcreator/) | Automatic asset generation relies on unfinished AI/image connections. |
 | [STRATA: Alberta Field Excavation](https://maltais239.github.io/interactives/dinodig/) | Map tiles display a CARTO API-key-required message. |
-| [Civilizations of the World](https://maltais239.github.io/interactives/ancientcivilizations/) | Map tiles display a CARTO API-key-required message. |
-| [Civilizations & Trade Routes](https://maltais239.github.io/interactives/Charbonneaumapyouknow/) | Map tiles display a CARTO API-key-required message. |
-| [Place Names of Alberta: Grade 3](https://maltais239.github.io/interactives/placenamesgrade3/) | Map tiles display a CARTO API-key-required message. |
+| [Civilizations of the World](https://maltais239.github.io/interactives/ancientcivilizations/) | Map background repaired in the October 4 batch. A deeper learning-design review remains planned. |
+| [Civilizations & Trade Routes](https://maltais239.github.io/interactives/Charbonneaumapyouknow/) | Map background repaired in the October 4 batch. A deeper learning-design review remains planned. |
+| [Place Names of Alberta: Grade 3](https://maltais239.github.io/interactives/placenamesgrade3/) | Map background repaired in the October 4 batch. A deeper learning-design review remains planned. |
 | [Interactive Frayer Model](https://interactives.blackgold.ca/frayerblankjpg/) | Replace the “Is this working now” editing placeholders and review the entry flow. |
 
 The file named PATpracticescience6FR currently renders English questions. Its French companion link was omitted pending a translation review. Optional AI features in otherwise usable tools also need separate review; an empty AI connection does not by itself mean the whole activity is unusable.
@@ -54,3 +54,10 @@ The file named PATpracticescience6FR currently renders English questions. Its Fr
 ## Updating the catalogue
 
 Edit catalogue.json, refresh the relevant image in the personal repository’s learning-lab-images/ folder, and run python3 source/build.py. The same hosted catalogue URL can stay embedded in Google Sites when future updates are published.
+
+
+## Geography repairs — October 4, 2026
+
+Repaired Canada Map Challenge, Canadian Geography Hub, Civilizations of the World, Civilizations & Trade Routes, and Place Names of Alberta: Grade 3. Their existing launch URLs are retained. Shared background configuration and regression checks are in the personal repository's geography-shared/ folder; Canada boundaries are served from that repository. The hub preserves progress when switching modes, and the trade-route quiz now gives explicit answer feedback. Catalogue previews are refreshed from the live apps.
+
+Next major development priority: Building & Breaking Numbers, with clearer adaptive questions, models and feedback. STRATA remains a separate planned dinosaur-interactive redesign; its map dependency has not been repaired in this five-app batch. The writing, word-work, science and builder upgrades, and Mr. Walker's Corner, remain future batches.
