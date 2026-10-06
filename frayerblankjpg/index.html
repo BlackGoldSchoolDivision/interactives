@@ -478,7 +478,8 @@
             const modalCancelBtn = document.getElementById('modalCancelBtn');
 
             // --- State Management (Local Storage) ---
-            const STORAGE_KEY = 'frayer_model_data';
+            // Changed the storage key so it starts completely fresh!
+            const STORAGE_KEY = 'frayer_model_data_fresh';
 
             // Load saved data on startup
             function loadData() {
