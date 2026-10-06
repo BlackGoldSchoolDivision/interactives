@@ -1,5 +1,13 @@
 # Interactive Learning Lab — refresh list
 
+## Make it my own — 6 October 2026
+
+Every activity card has a teacher-copy button. The panel offers a fresh source-based HTML download, HTML copy, an AI adaptation prompt with HTML, a preview and a full project ZIP. Owned companion editions and the 22 Social Studies child activities are selectable; the three Slides resources use native template-copy links. Original author and data-source credits are retained.
+
+`source-files.json` maps the 152 catalogue entries to their published repository files (149 HTML activities and three Slides templates). Its public file index supports complete project downloads. Refresh this manifest when adding or moving project files. Main-branch source is fetched at copy time. A single HTML copy includes owned styles and compatible classic app scripts while keeping online asset links; modules and external libraries retain their original URLs. Some maps and data apps need hosting and an internet connection. ZIPs preserve the folder structure and include a START-HERE.txt guide.
+
+Feature assets are `copy-engine.js`, `make-own.js` and `make-own.css`. The source template and `source/build.py` include content-based cache versions; rebuild with `python3 source/build.py`. `learning-shared/copy-checks.html` provides an export-test fixture. The copy process reads source HTML, never a student's live state, and removes the marked original-site analytics loader from exports.
+
 The October 2026 catalogue includes 149 entries, with 105 additions to the earlier 44-entry draft. All original geography links are retained. The catalogue refresh now includes two new research-informed morphology activities.
 
 ## New morphology activities

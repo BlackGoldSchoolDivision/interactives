@@ -35,6 +35,8 @@ script_version = hashlib.sha256((ROOT / 'catalogue.js').read_bytes()).hexdigest(
 style_version = hashlib.sha256((ROOT / 'homepage.css').read_bytes()).hexdigest()[:12]
 assert template.count('__STYLE_VERSION__') == 1
 template = template.replace('__SCRIPT_VERSION__', script_version).replace('__STYLE_VERSION__', style_version)
+own_version = hashlib.sha256(b''.join((ROOT / p).read_bytes() for p in ['copy-engine.js', 'make-own.js', 'make-own.css', 'source-files.json'])).hexdigest()[:12]
+assert template.count('__OWN_VERSION__') == 4
+template = template.replace('__OWN_VERSION__', own_version)
 (ROOT / 'index.html').write_text(template.replace('__CATALOGUE__', payload))
 print(f"Built {len(data)} catalogue entries; {(ROOT/'index.html').stat().st_size:,} byte HTML")
-

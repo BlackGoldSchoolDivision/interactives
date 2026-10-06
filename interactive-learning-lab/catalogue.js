@@ -92,6 +92,16 @@ function render() {
     const accent = a.category === 'Morphology' ? '#76508d' : a.category === 'Reading & writing' ? '#ad3f45' : a.category === 'Maths' ? '#845d09' : a.category === 'Geography' ? '#226aab' : '#00767b';
     return `<article class="card" data-id="${esc(a.id)}" style="--accent:${accent}"><a class="shot" href="${esc(a.url)}" target="_blank" rel="noopener noreferrer" aria-label="Try ${esc(a.title)} (opens in a new tab)"><img src="${esc(a.image)}" alt="${a.type === 'template' ? 'Preview' : 'Screenshot'} of ${esc(a.title)}" loading="${i < 3 ? 'eager' : 'lazy'}" width="900" height="620"></a><div class="card-body"><div class="subject">${esc(labelCategory(a.category))}${a.category === 'Geography' && a.group ? ' · ' + esc(a.group) : ''}</div>${a.status ? `<span class="status-label">${esc(a.status)}</span>` : ''}<h3>${esc(a.title)}</h3><p class="description">${esc(a.description)}</p><p class="activity-types">${a.types.map(esc).join(' · ')}</p><div class="tags">${a.tags.map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>${a.status_note ? `<p class="status-note">${esc(a.status_note)}</p>` : ''}<a class="launch" aria-label="${esc(launchLabel(a))}: ${esc(a.title)} (opens in a new tab)" href="${esc(a.url)}" target="_blank" rel="noopener noreferrer"><span>${esc(launchLabel(a))}</span><span aria-hidden="true">→</span></a>${a.links.length ? `<div class="secondary">${a.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${esc(l.label)} <span aria-hidden="true">↗</span></a>`).join('')}</div>` : ''}${a.credit ? `<p class="credit">${esc(a.credit)}</p>` : ''}</div></article>`;
   }).join('');
+  cardsNode.querySelectorAll('article[data-id]').forEach(card => {
+    const button = document.createElement('button');
+    button.type = 'button'; button.className = 'make-own';
+    button.dataset.ownId = card.dataset.id;
+    button.setAttribute('aria-haspopup','dialog');
+    button.setAttribute('aria-controls','make-own-dialog');
+    button.setAttribute('aria-label','Make it my own: ' + card.querySelector('h3').textContent);
+    button.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M15 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3"></path></svg><span>Make it my own</span>';
+    card.querySelector('.launch').insertAdjacentElement('afterend',button);
+  });
   document.getElementById('empty').hidden = visible.length > 0;
   document.querySelector('.clear').hidden = !query;
 }

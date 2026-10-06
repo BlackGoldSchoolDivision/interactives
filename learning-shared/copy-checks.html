@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Teacher copy checks</title>
+<link rel="stylesheet" href="../interactive-learning-lab/make-own.css?v=20261006-1">
+<style>body{margin:0;padding:20px;font:16px/1.5 system-ui;color:#18383d;background:#f5f4ef}main{max-width:900px;margin:auto}select,button{font:inherit;min-height:44px;padding:9px;border-radius:8px}select{max-width:100%}article{padding:20px;background:white;border-radius:18px;margin:18px 0}pre{white-space:pre-wrap;background:white;padding:15px;border-radius:10px}iframe{width:100%;min-height:120px;border:1px solid #aac2bf}.controls{display:flex;gap:12px;flex-wrap:wrap}h1{font-size:1.7rem}.make-own{width:auto}</style></head>
+<body><main><h1>Teacher copy checks</h1><div class="controls"><label>Activity <select id="activity"></select></label><button id="run" type="button">Run export checks</button></div><article id="sample"><h3></h3><button type="button" class="make-own" data-own-id="wantsneeds">Make it my own</button></article><pre id="results" role="status">Choose an activity or run the export checks.</pre><iframe id="execution" title="Export execution check"></iframe></main>
+<script src="../interactive-learning-lab/copy-engine.js?v=20261006-1"></script><script src="../interactive-learning-lab/make-own.js?v=20261006-1" data-source-manifest="../interactive-learning-lab/source-files.json?v=20261006-1"></script>
+<script>
+const select=document.getElementById('activity'), sample=document.getElementById('sample'), output=document.getElementById('results');
+fetch('../interactive-learning-lab/source-files.json').then(r=>r.json()).then(m=>{
+ for(const [id,a] of Object.entries(m.activities)){const o=document.createElement('option');o.value=id;o.textContent=a.title;select.append(o);}select.value='wantsneeds';change();
+});
+function change(){sample.querySelector('h3').textContent=select.selectedOptions[0]?.textContent;sample.querySelector('button').dataset.ownId=select.value;}
+select.addEventListener('change',change);
+const entry={repo:'BlackGoldSchoolDivision/interactives',path:'fixture/index.html',url:'https://interactives.blackgold.ca/fixture/'};
+async function transform(files){return LabCopy.prepare(entry,{title:'Export fixture'},undefined,async(repo,path)=>{if(!(path in files))throw Error('Missing fixture '+path);return files[path];});}
+function assert(value,message){if(!value)throw Error(message);}
+document.getElementById('run').addEventListener('click',async()=>{
+ const results=[];output.textContent='Running…';
+ async function test(name,fn){try{await fn();results.push('PASS · '+name);}catch(e){results.push('FAIL · '+name+' · '+e.message);}output.textContent=results.join('\n');}
+ await test('Styles keep their original image URL base',async()=>{
+  const r=await transform({'fixture/index.html':'<html><head><link rel="stylesheet" href="css/app.css"></head><body>hello</body></html>','fixture/css/app.css':'.x{background:url(../picture.webp)}'});
+  assert(r.html.includes('https://interactives.blackgold.ca/fixture/picture.webp'),'Relative CSS image lost');assert(r.styles===1,'Style not included');
+ });
+ await test('Complete classic deferred chain retains library → app order',async()=>{
+  const r=await transform({'fixture/index.html':'<html><head><script src="vendor/test.min.js" defer><\/script><script src="app.js" defer><\/script></head><body><div id="done"></div></body></html>','fixture/app.js':'document.getElementById("done").textContent="body-ready";'});
+  const d=new DOMParser().parseFromString(r.html,'text/html');const scripts=Array.from(d.body.querySelectorAll('script'));
+  assert(scripts.length===2,'Deferred chain incomplete');assert(scripts[0].src.endsWith('vendor/test.min.js'),'Library order changed');assert(!scripts[0].hasAttribute('defer'),'Library still deferred before synchronous app');assert(scripts[1].textContent.includes('body-ready'),'App code absent');
+ });
+ await test('Original-site analytics is removed from copies',async()=>{
+  const r=await transform({'fixture/index.html':'<html><head><script data-lab-analytics src="../learning-shared/analytics.js"><\/script></head><body>hello</body></html>'});assert(!r.html.includes('analytics.js'),'Tracking followed the copy');
+ });
+ await test('Modules keep their native URLs and timing',async()=>{
+  const r=await transform({'fixture/index.html':'<html><head><script type="module" src="module.js"><\/script><script defer src="classic.js"><\/script></head><body>hello</body></html>'});
+  assert(r.html.includes('src="https://interactives.blackgold.ca/fixture/module.js"'),'Module source URL lost');assert(r.scripts===0,'Mixed module chain was rewritten');
+ });
+ await test('Missing app files cause an explicit export failure',async()=>{
+  let rejected=false;try{await transform({'fixture/index.html':'<html><head><script src="missing.js"><\/script></head><body>hello</body></html>'});}catch{rejected=true;}assert(rejected,'Incomplete HTML was offered as ready');
+ });
+ await test('Copied scripts execute after body, before DOMContentLoaded',async()=>{
+  const r=await transform({'fixture/index.html':'<html><head><script defer src="app.js"><\/script></head><body><p id="done">pending</p><a href="#done">Local jump</a><svg><defs><pattern id="paint"></pattern></defs><rect fill="url(#paint)"></rect></svg></body></html>','fixture/app.js':'document.getElementById("done").textContent="ready";document.addEventListener("DOMContentLoaded",()=>document.getElementById("done").dataset.loaded="yes");'});
+  const frame=document.getElementById('execution');await new Promise(resolve=>{frame.onload=resolve;frame.srcdoc=r.html;});
+  const d=frame.contentDocument;assert(d.getElementById('done').textContent==='ready','Body access failed');assert(d.getElementById('done').dataset.loaded==='yes','DOMContentLoaded timing failed');
+  assert(d.querySelector('a').getAttribute('href')==='about:srcdoc#done','Jump points back at original');assert(d.querySelector('rect').getAttribute('fill').includes('about:srcdoc#paint'),'SVG paint points at original');
+ });
+ output.textContent=results.join('\n')+'\n\n'+results.filter(r=>r.startsWith('PASS')).length+' of '+results.length+' passed.';
+});
+</script></body></html>
