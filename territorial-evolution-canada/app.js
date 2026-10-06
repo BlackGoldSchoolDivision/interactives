@@ -120,13 +120,42 @@
     } catch (error) { $('announcement').textContent = 'The GeoJSON download could not be prepared. Please try again.'; }
   }
 
-  // RFC 7946 exteriors are counterclockwise. D3's spherical paths use the
-  // opposite winding; reverse for drawing, without changing download files.
+  // GeoJSON edges are linear in longitude/latitude. D3 connects vertices with
+  // great-circle arcs: a long 60°N edge would bow differently from the shorter
+  // edges in neighbouring provinces. Add drawing vertices along the source
+  // segment so shared borders meet, without changing the downloadable data.
+  function densifyRing(ring) {
+    if (!ring.length) return ring;
+    const points = [ring[0]];
+    for (let i = 1; i < ring.length; i++) {
+      const start = ring[i - 1], end = ring[i];
+      let longitude = end[0] - start[0];
+      // Keep neighbouring context polygons continuous across the dateline.
+      if (longitude > 180) longitude -= 360;
+      if (longitude < -180) longitude += 360;
+      const latitude = end[1] - start[1];
+      const steps = Math.max(1, Math.ceil(Math.max(Math.abs(longitude), Math.abs(latitude)) / .2));
+      for (let step = 1; step < steps; step++) {
+        const fraction = step / steps;
+        let x = start[0] + longitude * fraction;
+        if (x > 180) x -= 360;
+        if (x < -180) x += 360;
+        points.push([x, start[1] + latitude * fraction]);
+      }
+      points.push(end);
+    }
+    return points;
+  }
+
+  // RFC 7946 exteriors are counterclockwise; D3 uses the opposite winding.
   function drawable(feature) {
     if (drawCache.has(feature)) return drawCache.get(feature);
     const geometry = feature.geometry;
     let result = feature;
-    const wind = rings => d3.geoArea({type: 'Polygon', coordinates: rings}) > 2 * Math.PI ? rings.map(r => [...r].reverse()) : rings;
+    const wind = sourceRings => {
+      const rings = sourceRings.map(densifyRing);
+      return d3.geoArea({type: 'Polygon', coordinates: rings}) > 2 * Math.PI ? rings.map(r => [...r].reverse()) : rings;
+    };
     if (geometry.type === 'Polygon') result = {...feature, geometry: {...geometry, coordinates: wind(geometry.coordinates)}};
     if (geometry.type === 'MultiPolygon') result = {...feature, geometry: {...geometry, coordinates: geometry.coordinates.map(wind)}};
     drawCache.set(feature, result);
