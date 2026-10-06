@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StrategySim: Grade 9 Version</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#4f46e5',
+                        secondary: '#10b981',
+                        danger: '#ef4444',
+                        dark: '#0f172a',
+                        light: '#f8fafc'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+        .fade-in { animation: fadeIn 0.4s ease-in-out; }
+        .slide-up { animation: slideUp 0.5s ease-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .btn-choice {
+            transition: all 0.2s;
+        }
+        .btn-choice:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .hidden-view { display: none !important; }
+    </style>
+</head>
+<body class="text-slate-800 h-screen flex flex-col overflow-hidden">
+
+    <!-- Header -->
+    <header class="bg-dark text-white p-4 shadow-md z-10 flex justify-between items-center shrink-0">
+        <div class="flex items-center gap-3">
+            <i class="fa-solid fa-shield-heart text-2xl text-secondary"></i>
+            <h1 class="text-xl md:text-2xl font-bold tracking-tight">Strategy<span class="text-secondary">Sim</span><span class="text-sm font-normal text-slate-300 ml-2 hidden md:inline-block">Grade 9 Version</span></h1>
+        </div>
+        <nav class="flex gap-2">
+            <button onclick="switchTab('playbook')" id="btn-playbook" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-white/10 hover:bg-white/20">
+                <i class="fa-solid fa-book-open mr-2"></i>Playbook
+            </button>
+            <button onclick="switchTab('simulation')" id="btn-simulation" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-primary hover:bg-indigo-500">
+                <i class="fa-solid fa-gamepad mr-2"></i>Simulation
+            </button>
+            <button onclick="switchTab('game')" id="btn-game" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-white/10 hover:bg-white/20 text-yellow-400">
+                <i class="fa-solid fa-trophy mr-2"></i>Challenge
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto p-4 md:p-8 relative">
+        
+        <!-- VIEW: Playbook -->
+        <div id="view-playbook" class="max-w-5xl mx-auto fade-in hidden-view">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-10">
+                <h2 class="text-3xl font-bold text-dark mb-2">Strategy Playbook</h2>
+                <p class="text-slate-500 mb-8 text-lg">Your toolkit for handling peer pressure, making safe decisions, and setting boundaries.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Strategy Cards -->
+                    <div class="bg-indigo-50 p-5 rounded-xl border border-indigo-100">
+                        <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-primary mb-3">
+                            <i class="fa-solid fa-hand"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2">1. Direct Refusal</h3>
+                        <p class="text-sm text-slate-600">Saying "No" clearly and firmly without apologizing. Keep body language confident.</p>
+                    </div>
+
+                    <div class="bg-emerald-50 p-5 rounded-xl border border-emerald-100">
+                        <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 mb-3">
+                            <i class="fa-solid fa-rotate-right"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2">2. Broken Record</h3>
+                        <p class="text-sm text-slate-600">Repeating your refusal over and over without engaging in an argument. "No thanks. Like I said, no thanks."</p>
+                    </div>
+
+                    <div class="bg-amber-50 p-5 rounded-xl border border-amber-100">
+                        <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 mb-3">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2">3. Blame the Rules/Adults</h3>
+                        <p class="text-sm text-slate-600">Using consequences as a shield. "My coach will bench me," or "My parents check my location."</p>
+                    </div>
+
+                    <div class="bg-blue-50 p-5 rounded-xl border border-blue-100">
+                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mb-3">
+                            <i class="fa-solid fa-brain"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2">4. Give a Fact/Reason</h3>
+                        <p class="text-sm text-slate-600">Explaining why based on health or safety. "I have asthma," or "That stuff causes anxiety."</p>
+                    </div>
+
+                    <div class="bg-purple-50 p-5 rounded-xl border border-purple-100">
+                        <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 mb-3">
+                            <i class="fa-solid fa-shuffle"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2">5. Distraction / Humor</h3>
+                        <p class="text-sm text-slate-600">Changing the subject or making a joke to defuse the tension and move the conversation away.</p>
+                    </div>
+
+                    <div class="bg-rose-50 p-5 rounded-xl border border-rose-100">
+                        <div class="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 mb-3">
+                            <i class="fa-solid fa-person-running"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2">6. The Exit Strategy</h3>
+                        <p class="text-sm text-slate-600">Physically leaving the situation. "I gotta go to the bathroom," or "My mom is outside."</p>
+                    </div>
+
+                    <div class="bg-red-50 p-5 rounded-xl border border-red-100 md:col-span-2 lg:col-span-3">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-600 shrink-0">
+                                <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-1 text-red-800">7. Involving a Trusted Adult</h3>
+                                <p class="text-sm text-slate-700"><strong>Crucial for Emergencies:</strong> When someone's physical safety is at immediate risk (medical distress, impaired driving, severe bullying), secrecy is no longer an option. You must contact a parent, teacher, counselor, or 911 immediately.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-10 text-center">
+                    <button onclick="switchTab('simulation')" class="bg-primary hover:bg-indigo-600 text-white px-8 py-3 rounded-full font-bold shadow-lg transition-transform hover:scale-105">
+                        Start Simulation
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW: Simulation Dashboard -->
+        <div id="view-simulation" class="max-w-6xl mx-auto fade-in">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-dark">Scenario Simulator</h2>
+                <p class="text-slate-600">Select a scenario below to test your decision-making skills.</p>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Category 1 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4 flex items-center text-indigo-700">
+                        <i class="fa-solid fa-users mr-2"></i> Category 1: Social Factors & Peer Pressure
+                    </h3>
+                    <div class="flex flex-col gap-3" id="cat1-list">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Category 2 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4 flex items-center text-rose-700">
+                        <i class="fa-solid fa-triangle-exclamation mr-2"></i> Category 2: Risky Behaviors & Boundaries
+                    </h3>
+                    <div class="flex flex-col gap-3" id="cat2-list">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW: Active Scenario -->
+        <div id="view-active-scenario" class="max-w-3xl mx-auto fade-in hidden-view slide-up">
+            <button onclick="switchTab('simulation')" class="text-slate-500 hover:text-dark mb-4 font-medium flex items-center transition-colors">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Back to Dashboard
+            </button>
+            
+            <div class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+                <div class="bg-dark p-6 text-white relative">
+                    <span id="scenario-category-badge" class="absolute top-6 right-6 text-xs font-bold px-3 py-1 rounded-full bg-white/20">Category 1</span>
+                    <h2 id="scenario-title" class="text-2xl font-bold mb-2 w-5/6">Scenario Title</h2>
+                </div>
+                
+                <div class="p-6 md:p-8">
+                    <p id="scenario-desc" class="text-lg text-slate-700 mb-8 leading-relaxed">
+                        Scenario description goes here.
+                    </p>
+
+                    <h3 class="font-bold text-slate-500 text-sm uppercase tracking-wider mb-4">What do you do?</h3>
+                    <div id="scenario-choices" class="flex flex-col gap-3">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW: Feedback Modal (Inlined) -->
+        <div id="view-feedback" class="max-w-3xl mx-auto fade-in hidden-view slide-up">
+            <!-- ... existing feedback content ... -->
+            <div class="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 text-center mt-12">
+                <div id="feedback-icon" class="text-5xl mb-4">
+                    <!-- Icon populated by JS -->
+                </div>
+                <h2 id="feedback-title" class="text-2xl font-bold mb-4 text-dark">Result Title</h2>
+                <p id="feedback-text" class="text-lg text-slate-700 mb-6 bg-slate-50 p-6 rounded-xl border border-slate-100">
+                    Feedback text goes here.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button onclick="retryScenario()" class="px-6 py-3 rounded-xl border-2 border-slate-200 text-slate-700 font-bold hover:bg-slate-50 transition-colors">
+                        <i class="fa-solid fa-rotate-left mr-2"></i>Try Another Strategy
+                    </button>
+                    <button onclick="switchTab('simulation')" class="px-6 py-3 rounded-xl bg-primary text-white font-bold hover:bg-indigo-600 transition-colors shadow-md">
+                        <i class="fa-solid fa-list mr-2"></i>Next Scenario
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW: Gamified Challenge Mode -->
+        <div id="view-game" class="max-w-4xl mx-auto fade-in hidden-view">
+            <!-- Game Header -->
+            <div class="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-6">
+                <h2 class="text-2xl font-bold text-dark flex items-center"><i class="fa-solid fa-trophy text-yellow-500 mr-3"></i> Challenge Mode</h2>
+                <div class="bg-slate-800 text-white px-5 py-2 rounded-xl font-bold text-lg shadow-inner">
+                    XP: <span id="game-xp-display" class="text-yellow-400">0</span>
+                </div>
+            </div>
+
+            <!-- Game Content Area (Dynamic) -->
+            <div id="game-content-area" class="bg-white rounded-2xl shadow-lg border border-slate-200 p-6 md:p-10 slide-up">
+                <!-- Content injected via JS -->
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Database of Scenarios
+        const scenarios = [
+            // CATEGORY 1: Social Factors & Peer Pressure
+            {
+                id: 1,
+                category: 1,
+                title: "The 'Viral' Fitness Challenge",
+                description: "You’ve been trying to get in shape for track season. Your friends start a highly restrictive diet and extreme workout challenge they found on TikTok. They constantly post their 'progress' in a group chat and tag you, asking why you aren’t joining. You know the diet is unhealthy and makes you exhausted.",
+                choices: [
+                    {
+                        text: "Give in and join the challenge so you don't look uncommitted to the team.",
+                        strategy: "Yielding to Social Pressure",
+                        isGood: false,
+                        feedback: "Yielding to social pressure here compromises your physical health. Remember, what looks popular online isn't always safe or effective for your body."
+                    },
+                    {
+                        text: "Reply: 'I tried it, but my doctor told me I need more calories to perform in track. I'm sticking to my own plan.'",
+                        strategy: "Give a Fact / Blame the Adults",
+                        isGood: true,
+                        feedback: "Excellent! You used a combination of giving a health fact and blaming a trusted adult (doctor) to set a firm boundary without attacking their choices."
+                    },
+                    {
+                        text: "Change the subject: 'Have you guys seen the new spikes Nike is dropping this weekend?'",
+                        strategy: "Distraction",
+                        isGood: true,
+                        feedback: "Good strategy. Distraction works well in group chats to deflect pressure and move the conversation to safer, neutral ground."
+                    }
+                ]
+            },
+            {
+                id: 2,
+                category: 1,
+                title: "The Group Chat Blackout",
+                description: "Your popular friends are mad at a new student. They create a new group chat explicitly leaving the new student out of weekend plans. A close friend texts you: 'If you invite them, none of us are going.'",
+                choices: [
+                    {
+                        text: "Agree to leave the new student out. You don't want to lose your core friend group over this.",
+                        strategy: "Fear of Isolation",
+                        isGood: false,
+                        feedback: "Fear of social isolation is a strong factor, but participating in exclusion is a form of bullying. It violates personal values of kindness."
+                    },
+                    {
+                        text: "Reply: 'I'm not comfortable leaving them out like that. I'm just going to stay home this weekend.'",
+                        strategy: "Direct Refusal + Exit",
+                        isGood: true,
+                        feedback: "Strong choice. You directly refused to participate in the bullying and removed yourself from the toxic situation."
+                    },
+                    {
+                        text: "Tell a teacher immediately that your friends are being mean in a group chat.",
+                        strategy: "Trusted Adult",
+                        isGood: false, // In this specific non-emergency context, trying to handle it peer-to-peer first is usually the expected step before escalating, though not necessarily "wrong".
+                        feedback: "While adults can help with bullying, in this specific instance, trying a direct refusal to participate is a great first step to build your own assertiveness skills before escalating."
+                    }
+                ]
+            },
+            {
+                id: 3,
+                category: 1,
+                title: "The 'Just This Once' Exam Cheat",
+                description: "Your best friend will get kicked off the basketball team if they fail Science. During lunch, they beg you to take photos of the test paper if you finish early and airdrop them. 'Real friends help each other out,' they say.",
+                choices: [
+                    {
+                        text: "Reply: 'No way, I'm not doing that. If we get caught, we both get zeroes. I'll help you cram right now instead.'",
+                        strategy: "Give a Reason + Offer Alternative",
+                        isGood: true,
+                        feedback: "Perfect. You set a boundary based on facts (consequences) but still showed loyalty by offering to help them study."
+                    },
+                    {
+                        text: "Do it. The social factor of loyalty to a best friend is more important than a school rule.",
+                        strategy: "Compromising Integrity",
+                        isGood: false,
+                        feedback: "Misplaced loyalty can lead to severe consequences for both of you. A true friend wouldn't ask you to risk your academic record."
+                    },
+                    {
+                        text: "Keep repeating: 'I can't do it. No, I just can't do it.'",
+                        strategy: "Broken Record",
+                        isGood: true,
+                        feedback: "Good use of the Broken Record strategy. Sometimes you don't need to explain yourself, just hold your ground firmly."
+                    }
+                ]
+            },
+            {
+                id: 4,
+                category: 1,
+                title: "The Lunch-Hour Escape",
+                description: "Your school has a closed-campus policy for Grade 9s. Your friends want to sneak to the convenience store. They pressure you: 'The teachers literally never check, don't be a stress-case.'",
+                choices: [
+                    {
+                        text: "Reply: 'My mom tracks my phone location on Life360. If I leave the school, she'll text me immediately.'",
+                        strategy: "Blame the Parents",
+                        isGood: true,
+                        feedback: "Smart! Using your parents as a shield is a highly effective way to refuse without losing face with your peers."
+                    },
+                    {
+                        text: "Make a joke: 'Yeah, and with my luck, I'd be the one who trips and gets caught by the principal. I'm going to the caf.'",
+                        strategy: "Humor + Exit",
+                        isGood: true,
+                        feedback: "Great job using humor to defuse the pressure, followed by an exit strategy to physically leave the situation."
+                    },
+                    {
+                        text: "Go with them. The social proof ('everyone else does it') makes it seem safe.",
+                        strategy: "Yielding to Peer Pressure",
+                        isGood: false,
+                        feedback: "Just because 'everyone' is supposedly doing it doesn't mean it's safe or free of consequences."
+                    }
+                ]
+            },
+            {
+                id: 5,
+                category: 1,
+                title: "The Unsafe Stunt",
+                description: "At the skatepark, someone starts filming a compilation of dangerous jumps without helmets. They pressure you to go next, hyping you up and saying it will get hundreds of views online.",
+                choices: [
+                    {
+                        text: "Do the jump. The validation of going viral is a powerful social reward.",
+                        strategy: "Risking Safety for Attention",
+                        isGood: false,
+                        feedback: "The presence of a camera changes our brain chemistry to take more risks. Prioritize your physical safety over online views."
+                    },
+                    {
+                        text: "Reply: 'No thanks, I literally just recovered from a concussion. Not risking it.'",
+                        strategy: "Give a Fact / Direct Refusal",
+                        isGood: true,
+                        feedback: "Excellent. Providing a concrete physical reason is hard for peers to argue against."
+                    },
+                    {
+                        text: "Laugh and say: 'I'm just the camera man today, give me the phone, let me film you.'",
+                        strategy: "Distraction / Role Shift",
+                        isGood: true,
+                        feedback: "Very clever! You removed yourself from the dangerous situation by shifting your role in the group activity."
+                    }
+                ]
+            },
+            
+            // CATEGORY 2: Risky Behaviors & Boundaries
+            {
+                id: 6,
+                category: 2,
+                title: "The Washroom Vape",
+                description: "During a spare, two friends are in the washroom stall vaping. They pass it to you and say, 'Try it, it’s just mango flavour, no nicotine.' You promised yourself you wouldn't start vaping.",
+                choices: [
+                    {
+                        text: "Take a small puff just so they stop bothering you about it.",
+                        strategy: "Yielding Boundary",
+                        isGood: false,
+                        feedback: "Yielding once teaches them that your boundaries are flexible. Also, vapes often contain hidden nicotine and harmful chemicals."
+                    },
+                    {
+                        text: "Hand it back and say, 'Nah, I'm good.' and immediately wash your hands and leave.",
+                        strategy: "Direct Refusal + Exit",
+                        isGood: true,
+                        feedback: "Perfect execution. A quick, direct refusal followed by physically leaving the environment gives them no time to argue."
+                    },
+                    {
+                        text: "Reply: 'My asthma has been acting up lately, I can't breathe that stuff in.'",
+                        strategy: "Give a Medical Reason",
+                        isGood: true,
+                        feedback: "Great strategy. Using a health reason makes it difficult for them to push back without seeming uncaring."
+                    }
+                ]
+            },
+            {
+                id: 7,
+                category: 2,
+                title: "The Unsafe Ride Home",
+                description: "The older sibling supposed to drive you and your friends home has been drinking alcohol and smoking cannabis. Your friends say, 'It's only a five-minute drive, it's fine.'",
+                choices: [
+                    {
+                        text: "Get in the car. It's a short drive and you don't want to make a scene.",
+                        strategy: "Life-Threatening Decision",
+                        isGood: false,
+                        feedback: "DANGER! Never get into a car with an impaired driver. Social awkwardness is infinitely better than a fatal accident."
+                    },
+                    {
+                        text: "Tell your friends: 'I'm not getting in that car. I'm texting my parents right now to come get us.'",
+                        strategy: "Firm Boundary + Trusted Adult",
+                        isGood: true,
+                        feedback: "Outstanding. You recognized a severe safety risk, set an immovable boundary, and initiated an emergency strategy (calling adults)."
+                    },
+                    {
+                        text: "Make a joke: 'I think I'd rather walk and get some steps in.'",
+                        strategy: "Humor (Ineffective Here)",
+                        isGood: false,
+                        feedback: "Humor is too weak for this situation. This is a life-threatening emergency. You need a firm refusal and to intervene for your friends' safety too."
+                    }
+                ]
+            },
+            {
+                id: 8,
+                category: 2,
+                title: "The Sleepover Edible Emergency",
+                description: "At a sleepover, your friend eats a cannabis edible they found. An hour later, they are panicking, chest hurting, and dizzy. They beg you not to wake their parents because they will be grounded.",
+                choices: [
+                    {
+                        text: "Respect their wishes. Give them some water and wait it out.",
+                        strategy: "Dangerous Loyalty",
+                        isGood: false,
+                        feedback: "Medical emergencies override promises of secrecy. You are not equipped to handle an adverse reaction to substances."
+                    },
+                    {
+                        text: "Tell them: 'I have to wake your parents. I don't care if you're mad at me, you need help.'",
+                        strategy: "Trusted Adult Intervention",
+                        isGood: true,
+                        feedback: "Exactly right. A true friend prioritizes safety over avoiding trouble. Involving a trusted adult was the only correct choice here."
+                    },
+                    {
+                        text: "Call another Grade 9 friend to ask for advice on what to do.",
+                        strategy: "Ineffective Action",
+                        isGood: false,
+                        feedback: "Other 14-year-olds do not have the medical knowledge to help. You must go directly to the adults in the house."
+                    }
+                ]
+            },
+            {
+                id: 9,
+                category: 2,
+                title: "The 'Study Pill'",
+                description: "You're stressed about homework. A classmate offers you a pill, saying it’s their brother's ADHD medication. 'It completely locks you in, half the school uses them,' they claim.",
+                choices: [
+                    {
+                        text: "Reply: 'No thanks, my heart is already racing from coffee, I don't want to mess with unprescribed meds.'",
+                        strategy: "Give a Fact / Direct Refusal",
+                        isGood: true,
+                        feedback: "Good refusal. You cited a physical reason. Note: Distributing prescription medication is highly dangerous and should likely be reported to a school counselor."
+                    },
+                    {
+                        text: "Take it. The social pressure of keeping up academically is overwhelming.",
+                        strategy: "Risky Substance Use",
+                        isGood: false,
+                        feedback: "Taking unprescribed medication can have severe, unpredictable effects on your heart and brain."
+                    },
+                    {
+                        text: "Walk away and immediately go tell the school guidance counselor about the student distributing pills.",
+                        strategy: "Trusted Adult Intervention",
+                        isGood: true,
+                        feedback: "Brave and correct. A student distributing medication is putting the whole school at risk. Informing a trusted adult protects others."
+                    }
+                ]
+            },
+            {
+                id: 10,
+                category: 2,
+                title: "The Bush Party Pressure",
+                description: "You're at a rural fire with older kids. Someone hands you a cup smelling of alcohol and yells, 'Drink up! You're in Grade 9 now!' You have spotty cell service and feel very uncomfortable.",
+                choices: [
+                    {
+                        text: "Pretend to sip it but pour it out when no one is looking.",
+                        strategy: "Avoidance",
+                        isGood: false, // Often considered acceptable by teens, but doesn't build boundary skills.
+                        feedback: "While this avoids drinking, it doesn't establish your boundaries. Plus, holding the cup makes you look like you're participating."
+                    },
+                    {
+                        text: "Reply loudly: 'No thanks, I'm the designated walker tonight.' then walk to a different group of people.",
+                        strategy: "Humor + Exit Strategy",
+                        isGood: true,
+                        feedback: "Great combo. A quick, confident joke deflects the pressure, and moving away changes your environment entirely."
+                    },
+                    {
+                        text: "Use your pre-planned 'Code Word' text to your parents so they call you with a fake emergency requiring you to go home.",
+                        strategy: "Pre-planned Escape / Trusted Adult",
+                        isGood: true,
+                        feedback: "Brilliant. Having a pre-arranged exit strategy with your parents is one of the safest ways to escape high-pressure, isolated situations."
+                    }
+                ]
+            }
+        ];
+
+        // State
+        let currentScenarioId = null;
+
+        // --- NEW: Gamified Challenge State & Data ---
+        let gameScore = 0;
+        let currentGameIndex = 0;
+        let gameStrategyTally = {};
+        let activeGameScenarios = []; // Holds the 5 random scenarios for the current run
+        
+        const allGameScenarios = [
+            {
+                title: "The Locker Room Supplement",
+                description: "A teammate offers you an unmarked pre-workout powder before a big game. They say, 'It’s perfectly safe, everyone on the senior team uses it to get hyped. Don't you want to win?'",
+                choices: [
+                    { text: "Take a scoop. You need the energy and don't want to seem uncommitted.", xp: -30, strategy: "Risking Health for Performance", feedback: "Taking unmarked substances is highly dangerous. You never know what's in them." },
+                    { text: "Say: 'No thanks, my coach explicitly banned unregulated supplements. I'm not risking a suspension.'", xp: 50, strategy: "Blame the Rules/Adults", feedback: "Excellent! You used the coach's rules as a shield to refuse safely." },
+                    { text: "Say: 'I'll pass. Has anyone seen my other cleat?'", xp: 30, strategy: "Direct Refusal + Distraction", feedback: "Good pivot. You refused and immediately changed the subject." }
+                ]
+            },
+            {
+                title: "The Uncomfortable Lift",
+                description: "An older peer offers to drive you home. Once on the road, they start speeding excessively and swerving while checking their phone.",
+                choices: [
+                    { text: "Stay quiet and grip the seat. It's almost over and you don't want to make them mad.", xp: -40, strategy: "Avoidance", feedback: "Your physical safety is at immediate risk. Silence is dangerous here." },
+                    { text: "Say: 'Hey, I get carsick really easily. Can you pull over here? I'll walk the rest of the way.'", xp: 50, strategy: "Give a Fact + The Exit Strategy", feedback: "Smart! You de-escalated the tension with a physical excuse to safely exit a dangerous vehicle." },
+                    { text: "Text a parent your pre-arranged 'Code Red' word so they call you immediately with a fake emergency.", xp: 50, strategy: "Pre-planned Escape / Trusted Adult", feedback: "Brilliant use of a pre-planned strategy to get adult intervention without confronting the driver." }
+                ]
+            },
+            {
+                title: "The Party Post",
+                description: "At a hangout, friends take a photo of you holding an unlit vape as a 'joke'. They open Snapchat and say, 'I'm posting this to our story, it's going to be hilarious.'",
+                choices: [
+                    { text: "Let them post it. It's just a joke and you don't want to ruin the fun.", xp: -30, strategy: "Yielding to Social Pressure", feedback: "Digital footprints matter. Even a joke can harm your reputation or cause issues with school/parents." },
+                    { text: "Say: 'Delete that right now. Seriously, do not post that.'", xp: 40, strategy: "Direct Refusal / Firm Boundary", feedback: "Good job being firm and clear about your digital boundaries." },
+                    { text: "Grab the phone, delete the photo yourself, and say, 'I'm heading home.'", xp: 50, strategy: "The Exit Strategy", feedback: "Taking immediate action to protect yourself and leaving a disrespectful environment is a very strong choice." }
+                ]
+            },
+            {
+                title: "The Intoxicated Friend",
+                description: "Your friend sneaks alcohol into a school dance. Halfway through the night, they are stumbling, slurring their words, and look like they might pass out. They beg you to hide them in the bathroom so they don't get suspended.",
+                choices: [
+                    { text: "Hide them in a stall and give them water. You promised you'd have their back.", xp: -50, strategy: "Dangerous Secrecy", feedback: "Alcohol poisoning is a medical emergency. You cannot handle this alone." },
+                    { text: "Leave them in the bathroom and go back to dancing. You don't want to get in trouble by association.", xp: -40, strategy: "Abandonment", feedback: "Leaving an incapacitated person alone puts their life at risk." },
+                    { text: "Tell them: 'I have to get a chaperone. You need medical help, I don't care if we get in trouble.'", xp: 50, strategy: "Involving a Trusted Adult", feedback: "Outstanding! A true friend prioritizes a life over a school suspension. This was an emergency requiring an adult." }
+                ]
+            },
+            {
+                title: "The 'Skip Day' Pressure",
+                description: "Your friends decide to skip afternoon classes to go to the mall. They tell you, 'If you stay at school, you're a total try-hard. Come on, live a little.'",
+                choices: [
+                    { text: "Go with them. Missing one afternoon won't hurt, and you hate being called a try-hard.", xp: -20, strategy: "Yielding to Peer Pressure", feedback: "You let fear of a minor insult override your own schedule and responsibilities." },
+                    { text: "Say: 'I literally can't, the school app notifies my parents if I miss attendance. I'd be grounded.'", xp: 40, strategy: "Blame the Rules/Adults", feedback: "Very effective. Using parents as an excuse is an easy way to refuse without losing social standing." },
+                    { text: "Say: 'No way, we have the Science review today and I need to pass. See you guys tomorrow.'", xp: 40, strategy: "Direct Refusal + Reason", feedback: "Strong boundary setting. You stated your priorities clearly and confidently." }
+                ]
+            },
+            {
+                title: "The Energy Drink Binge",
+                description: "Your gaming group is seeing who can drink the most high-caffeine energy drinks before a tournament. You feel incredibly jittery and nauseous after just one, but they tell you to keep going.",
+                choices: [
+                    { text: "Force yourself to drink another one to keep up with the team.", xp: -30, strategy: "Risking Health for Social Validation", feedback: "Excessive caffeine can cause severe heart palpitations and anxiety. Don't sacrifice your body for a game." },
+                    { text: "Say: 'My stomach is in knots, I have to switch to water or I'll throw up on my keyboard.'", xp: 50, strategy: "Give a Medical Fact", feedback: "Great! Stating a clear physical symptom makes it very hard for them to pressure you further." },
+                    { text: "Say: 'No thanks, caffeine actually wrecks my aim. I need steady hands.'", xp: 40, strategy: "Give a Reason", feedback: "Smart approach. You framed the refusal around wanting to perform better, which fits their goals." }
+                ]
+            },
+            {
+                title: "The Change Room Gossip",
+                description: "Teammates are in the locker room spreading a highly damaging and completely false rumor about a player who isn't there. They turn to you and ask, 'You heard about that, right?'",
+                choices: [
+                    { text: "Nod and pretend you heard it to avoid becoming their next target.", xp: -30, strategy: "Complicity in Bullying", feedback: "Agreeing validates the rumor and contributes to a toxic environment." },
+                    { text: "Say: 'I don't really care about rumors. Anyway, did you see the highlights from last night's game?'", xp: 40, strategy: "Distraction", feedback: "Good pivot. You refused to participate and swiftly changed the subject to neutral ground." },
+                    { text: "Say: 'That's messed up and probably not true. I'm going to head out.'", xp: 50, strategy: "Direct Refusal + Exit", feedback: "Very strong boundary. You called out the bad behavior and removed yourself from the space." }
+                ]
+            },
+            {
+                title: "The Unauthorized Party",
+                description: "You arrive at a friend's house to find out their parents are out of town. The 'small hangout' is actually a massive party, and older kids are bringing in crates of alcohol.",
+                choices: [
+                    { text: "Stay, but promise yourself you'll just drink pop and stay out of the way.", xp: -20, strategy: "Risking Proximity to Danger", feedback: "Even if you don't drink, you are in an unchaperoned environment where things can escalate rapidly." },
+                    { text: "Text your parents your family's 'Code Word' so they call you and demand you come home.", xp: 50, strategy: "Pre-planned Escape / Trusted Adult", feedback: "Perfect execution. This strategy gets you out immediately without losing face in front of peers." },
+                    { text: "Tell your friends: 'I suddenly have a massive migraine, I'm just going to walk home.'", xp: 40, strategy: "The Exit Strategy", feedback: "A solid excuse to get yourself safely out of an uncontrolled environment." }
+                ]
+            },
+            {
+                title: "The Shared Password",
+                description: "A close friend demands your Instagram password to 'prove you trust them' so they can see if a mutual friend is talking behind their back in your DMs.",
+                choices: [
+                    { text: "Give them the password just this once to prove you are a loyal friend.", xp: -40, strategy: "Yielding Digital Boundaries", feedback: "Never share passwords. It compromises your privacy and the privacy of everyone who messages you." },
+                    { text: "Say: 'My parents randomly check my accounts and they change the passwords, I literally can't share it.'", xp: 50, strategy: "Blame the Parents", feedback: "Excellent use of parents as a shield to maintain your digital security without an argument." },
+                    { text: "Say: 'No, I don't share passwords with anyone, ever. That's just my rule.'", xp: 40, strategy: "Direct Refusal", feedback: "Strong, assertive boundary setting." }
+                ]
+            },
+            {
+                title: "The Vandalism Dare",
+                description: "Walking home late, a group of friends dares you to smash a park lamppost with a rock. They start chanting your name and calling you a coward if you don't.",
+                choices: [
+                    { text: "Throw the rock, but try to miss on purpose so you don't actually break it.", xp: -30, strategy: "Yielding to Peer Pressure", feedback: "Even trying to miss validates the behavior and keeps you involved in illegal activity." },
+                    { text: "Say: 'I'm not risking a police record over a lightbulb. See ya tomorrow.' and walk away.", xp: 50, strategy: "Give a Fact + The Exit Strategy", feedback: "Outstanding. You cited legal consequences and immediately removed yourself from the peer pressure." },
+                    { text: "Say: 'Let's just go to 7-Eleven and get food instead, I'm starving.'", xp: 30, strategy: "Distraction", feedback: "A decent attempt to redirect the group's energy away from vandalism." }
+                ]
+            },
+            {
+                title: "The Concert Substance",
+                description: "At an all-ages outdoor concert, a stranger offers your group a small bag of pills, saying it will 'make the music sound insane.' Your friend reaches out to take one.",
+                choices: [
+                    { text: "Let your friend take it, but firmly refuse to take one yourself.", xp: -40, strategy: "Dangerous Bystander", feedback: "Refusing for yourself is good, but letting a friend take an unknown substance from a stranger is a massive safety risk." },
+                    { text: "Grab your friend's arm, pull them away, and go alert event security.", xp: 50, strategy: "The Exit Strategy + Trusted Adult", feedback: "Heroic choice. You protected your friend and alerted authorities to someone endangering the crowd." },
+                    { text: "Slap the bag out of the stranger's hand and yell at them.", xp: -10, strategy: "Escalation", feedback: "While well-intentioned, aggressively escalating with a stranger who may be intoxicated puts you in physical danger." }
+                ]
+            },
+            {
+                title: "The Pressured Send",
+                description: "Someone you are dating pressures you via text to send a compromising, private photo, saying 'If you really cared about me, you would do this.'",
+                choices: [
+                    { text: "Send something blurry or ambiguous just to get them to stop asking.", xp: -50, strategy: "Yielding Digital Boundaries", feedback: "Once a photo is sent, you lose total control over it. Never compromise on this boundary." },
+                    { text: "Reply: 'No. And asking me like that makes me feel really disrespected and uncomfortable.'", xp: 50, strategy: "Direct Refusal + Stating Feelings", feedback: "Extremely strong boundary. You refused clearly and called out the toxic manipulation tactic." },
+                    { text: "Ignore the text completely and bring up a different topic.", xp: 30, strategy: "Avoidance", feedback: "It avoids the immediate action, but doesn't set the firm boundary needed to stop future pressure." }
+                ]
+            },
+            {
+                title: "The Plagiarism Plea",
+                description: "A teammate begs to copy your entire Social Studies essay the morning it's due. They say, 'If I get a zero, I'm off the team. Please, just this once.'",
+                choices: [
+                    { text: "Let them copy it. You don't want to be the reason the team loses a player.", xp: -30, strategy: "Misplaced Loyalty", feedback: "Academic dishonesty hurts both of you. You both risk getting zeroes or suspensions." },
+                    { text: "Say: 'Mr. Smith runs these through a plagiarism checker online. We'll both get caught. I can't.'", xp: 50, strategy: "Give a Fact / Consequence", feedback: "Smart! Citing the teacher's technology takes the blame off you and puts it on the system." },
+                    { text: "Say: 'No way, I worked all weekend on this. You should talk to the teacher about an extension.'", xp: 40, strategy: "Direct Refusal + Offer Alternative", feedback: "Good boundary, followed by sound advice." }
+                ]
+            },
+            {
+                title: "The Dangerous TikTok Trend",
+                description: "Friends want to film a viral social media trend where they hold their breath until they pass out. They want you to be the one to film it so they can post it.",
+                choices: [
+                    { text: "Agree to just film them. As long as you aren't doing it, you're safe.", xp: -30, strategy: "Bystander to Danger", feedback: "Filming encourages the behavior. This trend can cause brain damage or death. Don't participate in any capacity." },
+                    { text: "Say: 'That literally starves your brain of oxygen. I'm not watching you guys hurt yourselves.'", xp: 50, strategy: "Give a Medical Fact", feedback: "Excellent. You called out the severe biological danger of the trend and refused to participate." },
+                    { text: "Say: 'Let's do the dancing trend instead, it usually gets way more views anyway.'", xp: 40, strategy: "Distraction / Re-direction", feedback: "A clever way to pivot their desire for views into a harmless activity." }
+                ]
+            },
+            {
+                title: "The Shoplifting Game",
+                description: "In a convenience store, your friends are seeing who can sneak small items into their pockets. One of them tosses a $2 candy bar to you and whispers, 'Hide it!'",
+                choices: [
+                    { text: "Hide it. It's just a cheap candy bar and everyone else is doing it.", xp: -40, strategy: "Yielding to Group Crime", feedback: "Theft is a crime, regardless of value. Following the group here risks serious legal and school consequences." },
+                    { text: "Put the candy bar back on the shelf and walk straight out of the store.", xp: 50, strategy: "The Exit Strategy", feedback: "Perfect non-verbal boundary. You fixed the situation and immediately removed yourself from the risky environment." },
+                    { text: "Whisper back: 'My mom knows the manager here, I'm not risking it.'", xp: 40, strategy: "Give a Reason / Blame Adults", feedback: "A highly effective excuse to get out of doing something illegal." }
+                ]
+            },
+            {
+                title: "The Online Gamer Threat",
+                description: "While playing a multiplayer game, an older player gets angry and aggressively demands your real name and city, threatening to 'swat' or hack you if you don't comply.",
+                choices: [
+                    { text: "Give them a fake name and city to make them go away.", xp: -20, strategy: "Engaging the Threat", feedback: "Even giving fake info keeps the engagement going. Never converse with someone making cyber threats." },
+                    { text: "Mute them, report their account, leave the lobby, and tell your parents.", xp: 50, strategy: "Digital Boundary + Trusted Adult", feedback: "The ultimate digital safety protocol. Shut down access and inform an adult immediately." },
+                    { text: "Turn on your mic and start yelling back to show them you aren't scared.", xp: 0, strategy: "Escalation", feedback: "Yelling back gives them the reaction they want and escalates the harassment." }
+                ]
+            },
+            {
+                title: "The Sneak Out",
+                description: "It's 1:00 AM on a Tuesday. Your phone buzzes; your friends are outside your window telling you to sneak out so you can all walk to the park and hang out.",
+                choices: [
+                    { text: "Go out for just 20 minutes so they don't call you boring.", xp: -30, strategy: "Risking Safety for Approval", feedback: "Sneaking out compromises your physical safety, your sleep, and breaks parental trust." },
+                    { text: "Text back: 'My dad installed a ring camera pointing at the street, I'm completely trapped.'", xp: 50, strategy: "Blame the Parents/Tech", feedback: "A flawless excuse. Blaming technology gives you an 'out' that your peers can't argue with." },
+                    { text: "Text back: 'No way, I'm exhausted and we have school tomorrow. Go to sleep.'", xp: 40, strategy: "Direct Refusal", feedback: "A clear, honest refusal." }
+                ]
+            },
+            {
+                title: "The Pushed Limit in Gym",
+                description: "During a competitive gym class floor hockey tournament, you badly twist your ankle. Your team is losing and they yell, 'Tape it up and play through the pain, we need you!'",
+                choices: [
+                    { text: "Limp back onto the floor. You don't want to let the team down.", xp: -40, strategy: "Ignoring Physical Boundaries", feedback: "Playing on an injury can cause permanent damage. Never prioritize a gym game over your bodily health." },
+                    { text: "Say: 'I can't walk on it. I'm going to tell Mr. Davis I need to sub out.'", xp: 50, strategy: "Trusted Adult / Direct Refusal", feedback: "Excellent. You prioritized your health, communicated clearly, and sought out the teacher." },
+                    { text: "Stand in the corner of the court and pretend to play without running.", xp: 10, strategy: "Avoidance", feedback: "While slightly safer, you are still on the floor and at risk of getting hit or tripping." }
+                ]
+            },
+            {
+                title: "The Second-Hand Smoke",
+                description: "You get a ride from an older cousin. It's freezing outside, so they roll up the windows and start chain-smoking cigarettes. You have asthma.",
+                choices: [
+                    { text: "Hold your breath as much as possible and suffer in silence.", xp: -30, strategy: "Yielding Health Boundaries", feedback: "Second-hand smoke in an enclosed space is highly toxic, especially with asthma. Speak up." },
+                    { text: "Say: 'Hey, my asthma is acting up instantly. Can we crack the windows, or can I get out here?'", xp: 50, strategy: "Give a Medical Fact / Exit Strategy", feedback: "Brilliant. You stated a serious medical fact and offered a solution/boundary." },
+                    { text: "Start coughing dramatically until they notice and stop.", xp: 20, strategy: "Passive Communication", feedback: "It might work, but it's passive. Learning to verbally assert your health boundaries is a stronger skill." }
+                ]
+            },
+            {
+                title: "The Over-the-Counter High",
+                description: "During lunch, a classmate pulls out a bottle of cough syrup. They say, 'Drinking half of this gives you a crazy floaty feeling.' They pour some into a cup and hand it to you.",
+                choices: [
+                    { text: "Take a tiny sip just to appease them and show you aren't scared.", xp: -50, strategy: "Yielding to Substance Abuse", feedback: "Abusing over-the-counter medicine can cause fatal liver damage or respiratory failure." },
+                    { text: "Say: 'That stuff literally destroys your liver, no thanks.'", xp: 40, strategy: "Give a Fact", feedback: "Good refusal based on the harsh physical realities of substance abuse." },
+                    { text: "Walk away, go straight to the office, and anonymously alert a school counselor.", xp: 50, strategy: "Trusted Adult Intervention", feedback: "The safest choice. A student abusing medication at school is a severe medical emergency waiting to happen." }
+                ]
+            }
+        ];
+        // ---------------------------------------------
+
+        // Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            renderDashboard();
+            switchTab('playbook'); // Start on playbook
+        });
+
+        function renderDashboard() {
+            const cat1List = document.getElementById('cat1-list');
+            const cat2List = document.getElementById('cat2-list');
+            
+            cat1List.innerHTML = '';
+            cat2List.innerHTML = '';
+
+            scenarios.forEach(scen => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md cursor-pointer transition-all flex items-center justify-between group";
+                card.onclick = () => loadScenario(scen.id);
+                
+                card.innerHTML = `
+                    <div class="font-medium text-slate-800 group-hover:text-primary transition-colors">
+                        ${scen.id}. ${scen.title}
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-slate-400 group-hover:text-primary transition-colors"></i>
+                `;
+
+                if (scen.category === 1) {
+                    cat1List.appendChild(card);
+                } else {
+                    cat2List.appendChild(card);
+                }
+            });
+        }
+
+        function switchTab(tab) {
+            // Reset views
+            document.getElementById('view-playbook').classList.add('hidden-view');
+            document.getElementById('view-simulation').classList.add('hidden-view');
+            document.getElementById('view-active-scenario').classList.add('hidden-view');
+            document.getElementById('view-feedback').classList.add('hidden-view');
+            document.getElementById('view-game').classList.add('hidden-view');
+            
+            // Reset buttons
+            const defaultBtnClass = "px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-white/10 hover:bg-white/20";
+            document.getElementById('btn-playbook').className = defaultBtnClass;
+            document.getElementById('btn-simulation').className = defaultBtnClass;
+            document.getElementById('btn-game').className = defaultBtnClass + " text-yellow-400";
+
+            if (tab === 'playbook') {
+                document.getElementById('view-playbook').classList.remove('hidden-view');
+                document.getElementById('btn-playbook').classList.replace('bg-white/10', 'bg-primary');
+                document.getElementById('btn-playbook').classList.replace('hover:bg-white/20', 'hover:bg-indigo-500');
+            } else if (tab === 'simulation') {
+                document.getElementById('view-simulation').classList.remove('hidden-view');
+                document.getElementById('btn-simulation').classList.replace('bg-white/10', 'bg-primary');
+                document.getElementById('btn-simulation').classList.replace('hover:bg-white/20', 'hover:bg-indigo-500');
+            } else if (tab === 'game') {
+                document.getElementById('view-game').classList.remove('hidden-view');
+                document.getElementById('btn-game').classList.replace('bg-white/10', 'bg-primary');
+                document.getElementById('btn-game').classList.replace('hover:bg-white/20', 'hover:bg-indigo-500');
+                renderGameStart();
+            }
+        }
+
+        function loadScenario(id) {
+            currentScenarioId = id;
+            const scenario = scenarios.find(s => s.id === id);
+            
+            // Hide dashboard, show active scenario
+            document.getElementById('view-simulation').classList.add('hidden-view');
+            document.getElementById('view-active-scenario').classList.remove('hidden-view');
+            document.getElementById('view-active-scenario').classList.remove('slide-up');
+            void document.getElementById('view-active-scenario').offsetWidth; // trigger reflow
+            document.getElementById('view-active-scenario').classList.add('slide-up');
+            document.getElementById('view-feedback').classList.add('hidden-view');
+
+            // Populate data
+            const badge = document.getElementById('scenario-category-badge');
+            badge.innerText = scenario.category === 1 ? "Cat 1: Social Pressure" : "Cat 2: Risky Behaviour";
+            badge.className = scenario.category === 1 
+                ? "absolute top-6 right-6 text-xs font-bold px-3 py-1 rounded-full bg-indigo-500 text-white" 
+                : "absolute top-6 right-6 text-xs font-bold px-3 py-1 rounded-full bg-rose-500 text-white";
+                
+            document.getElementById('scenario-title').innerText = scenario.title;
+            document.getElementById('scenario-desc').innerText = scenario.description;
+
+            const choicesContainer = document.getElementById('scenario-choices');
+            choicesContainer.innerHTML = '';
+
+            scenario.choices.forEach((choice, index) => {
+                const btn = document.createElement('button');
+                btn.className = "btn-choice text-left p-4 rounded-xl border-2 border-slate-200 bg-slate-50 hover:border-primary hover:bg-indigo-50 text-slate-800 font-medium";
+                btn.innerHTML = `<span class="inline-block w-6 font-bold text-primary mr-2">${String.fromCharCode(65 + index)}.</span> ${choice.text}`;
+                btn.onclick = () => selectChoice(scenario, index);
+                choicesContainer.appendChild(btn);
+            });
+        }
+
+        function selectChoice(scenario, choiceIndex) {
+            const choice = scenario.choices[choiceIndex];
+            
+            // Hide active scenario, show feedback
+            document.getElementById('view-active-scenario').classList.add('hidden-view');
+            const feedbackView = document.getElementById('view-feedback');
+            feedbackView.classList.remove('hidden-view');
+            feedbackView.classList.remove('slide-up');
+            void feedbackView.offsetWidth; // reflow
+            feedbackView.classList.add('slide-up');
+
+            // Populate feedback
+            const icon = document.getElementById('feedback-icon');
+            const title = document.getElementById('feedback-title');
+            const text = document.getElementById('feedback-text');
+
+            if (choice.isGood) {
+                icon.innerHTML = '<i class="fa-solid fa-circle-check text-secondary drop-shadow-md"></i>';
+                title.innerText = "Strong Decision!";
+                title.className = "text-2xl font-bold mb-4 text-secondary";
+            } else {
+                icon.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-danger drop-shadow-md"></i>';
+                title.innerText = "Re-evaluate Your Strategy";
+                title.className = "text-2xl font-bold mb-4 text-danger";
+            }
+
+            text.innerHTML = `
+                <div class="mb-3"><span class="font-bold text-slate-800">Strategy Used:</span> ${choice.strategy}</div>
+                <div class="text-slate-600">${choice.feedback}</div>
+            `;
+        }
+
+        function retryScenario() {
+            if(currentScenarioId) {
+                loadScenario(currentScenarioId);
+            }
+        }
+
+        // --- NEW: Gamified Challenge Logic ---
+
+        function updateGameXpDisplay() {
+            const xpDisplay = document.getElementById('game-xp-display');
+            xpDisplay.innerText = gameScore;
+            
+            // Add a little pop animation
+            xpDisplay.classList.remove('scale-100');
+            xpDisplay.classList.add('scale-125');
+            setTimeout(() => {
+                xpDisplay.classList.remove('scale-125');
+                xpDisplay.classList.add('scale-100', 'transition-transform');
+            }, 200);
+        }
+
+        function renderGameStart() {
+            gameScore = 0;
+            currentGameIndex = 0;
+            gameStrategyTally = {};
+            
+            // Shuffle the 20 scenarios and pick 5 for this playthrough
+            const shuffled = [...allGameScenarios].sort(() => 0.5 - Math.random());
+            activeGameScenarios = shuffled.slice(0, 5);
+
+            updateGameXpDisplay();
+            
+            const content = document.getElementById('game-content-area');
+            content.innerHTML = `
+                <div class="text-center py-8">
+                    <div class="w-20 h-20 bg-yellow-100 text-yellow-500 rounded-full flex items-center justify-center text-4xl mx-auto mb-6">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold mb-4 text-dark">Ready for the Challenge?</h3>
+                    <p class="text-slate-600 text-lg mb-8 max-w-2xl mx-auto">Test your decision-making skills in 5 randomized rapid-fire scenarios. Earn XP for safe, boundary-setting choices. Lose XP for risking your health or yielding to peer pressure.</p>
+                    <button onclick="nextGameScenario()" class="bg-primary hover:bg-indigo-600 text-white px-8 py-3 rounded-full font-bold shadow-lg transition-transform hover:scale-105 text-lg">
+                        Start Challenge
+                    </button>
+                </div>
+            `;
+        }
+
+        function nextGameScenario() {
+            if (currentGameIndex >= activeGameScenarios.length) {
+                renderGameReport();
+                return;
+            }
+
+            const scenario = activeGameScenarios[currentGameIndex];
+            const content = document.getElementById('game-content-area');
+            
+            let choicesHtml = scenario.choices.map((choice, idx) => `
+                <button onclick="handleGameChoice(${idx})" class="text-left p-4 rounded-xl border-2 border-slate-200 bg-slate-50 hover:border-primary hover:bg-indigo-50 text-slate-800 font-medium transition-all group">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="inline-block w-6 font-bold text-primary mr-2">${String.fromCharCode(65 + idx)}.</span> 
+                            ${choice.text}
+                        </div>
+                        <i class="fa-solid fa-arrow-right opacity-0 group-hover:opacity-100 text-primary transition-opacity"></i>
+                    </div>
+                </button>
+            `).join('');
+
+            content.innerHTML = `
+                <div class="fade-in">
+                    <div class="flex justify-between items-center mb-4 text-sm font-bold text-slate-400 uppercase tracking-wider">
+                        <span>Scenario ${currentGameIndex + 1} of ${activeGameScenarios.length}</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-dark">${scenario.title}</h3>
+                    <p class="text-lg text-slate-700 mb-8 leading-relaxed bg-slate-50 p-6 rounded-xl border border-slate-100">
+                        ${scenario.description}
+                    </p>
+                    <h4 class="font-bold text-slate-500 text-sm uppercase tracking-wider mb-4">Make Your Choice:</h4>
+                    <div class="flex flex-col gap-3">
+                        ${choicesHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleGameChoice(choiceIdx) {
+            const scenario = activeGameScenarios[currentGameIndex];
+            const choice = scenario.choices[choiceIdx];
+            
+            // Update Score & Tally
+            gameScore += choice.xp;
+            if(gameScore < 0) gameScore = 0; // Prevent negative score
+            
+            if (gameStrategyTally[choice.strategy]) {
+                gameStrategyTally[choice.strategy]++;
+            } else {
+                gameStrategyTally[choice.strategy] = 1;
+            }
+
+            updateGameXpDisplay();
+
+            // Render Feedback
+            const content = document.getElementById('game-content-area');
+            const isGood = choice.xp > 0;
+            const iconClass = isGood ? 'fa-circle-check text-secondary' : 'fa-triangle-exclamation text-danger';
+            const xpTextClass = isGood ? 'text-secondary' : 'text-danger';
+            const xpSymbol = isGood ? '+' : '';
+
+            content.innerHTML = `
+                <div class="text-center py-6 fade-in">
+                    <div class="text-6xl mb-4"><i class="fa-solid ${iconClass} drop-shadow-md"></i></div>
+                    <h3 class="text-3xl font-bold mb-2 ${xpTextClass}">${xpSymbol}${choice.xp} XP</h3>
+                    <h4 class="text-xl font-medium text-dark mb-6">Strategy: ${choice.strategy}</h4>
+                    
+                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-100 mb-8 max-w-2xl mx-auto text-left">
+                        <p class="text-lg text-slate-700"><strong>Analysis:</strong> ${choice.feedback}</p>
+                    </div>
+
+                    <button onclick="advanceGame()" class="px-8 py-3 rounded-xl bg-primary text-white font-bold hover:bg-indigo-600 transition-colors shadow-md">
+                        Continue Challenge <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            `;
+        }
+
+        function advanceGame() {
+            currentGameIndex++;
+            nextGameScenario();
+        }
+
+        function renderGameReport() {
+            const content = document.getElementById('game-content-area');
+            const maxScore = activeGameScenarios.length * 50; // Dynamic based on pool size
+            const percentage = (gameScore / maxScore) * 100;
+            
+            let performanceMessage = "";
+            let medalIcon = "";
+            
+            if (percentage >= 90) {
+                performanceMessage = "Outstanding! You demonstrated exceptional boundary-setting and prioritization of health and safety.";
+                medalIcon = '<i class="fa-solid fa-medal text-yellow-400"></i>';
+            } else if (percentage >= 70) {
+                performanceMessage = "Great job! You made mostly safe choices, but there's room to refine your refusal strategies.";
+                medalIcon = '<i class="fa-solid fa-medal text-slate-400"></i>'; // Silver
+            } else {
+                performanceMessage = "You survived, but yielded to risky pressures. Review the Strategy Playbook to strengthen your boundaries.";
+                medalIcon = '<i class="fa-solid fa-medal text-amber-700"></i>'; // Bronze
+            }
+
+            // Generate Strategy Tally HTML
+            let tallyHtml = "";
+            for (const [strategy, count] of Object.entries(gameStrategyTally)) {
+                tallyHtml += `
+                    <div class="flex justify-between items-center py-2 border-b border-slate-100 last:border-0">
+                        <span class="font-medium text-slate-700">${strategy}</span>
+                        <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2 py-1 rounded-full">Used ${count}x</span>
+                    </div>
+                `;
+            }
+
+            content.innerHTML = `
+                <div class="text-center py-4 fade-in">
+                    <h2 class="text-3xl font-bold mb-6 text-dark">Challenge Complete!</h2>
+                    
+                    <div class="flex flex-col md:flex-row gap-6 justify-center mb-8">
+                        <!-- Score Card -->
+                        <div class="bg-slate-50 p-6 rounded-2xl border-2 border-slate-200 flex-1 max-w-sm mx-auto">
+                            <div class="text-5xl mb-3 drop-shadow-sm">${medalIcon}</div>
+                            <div class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Final Score</div>
+                            <div class="text-4xl font-black text-dark mb-4">${gameScore} XP</div>
+                            <p class="text-slate-600 text-sm leading-relaxed">${performanceMessage}</p>
+                        </div>
+                        
+                        <!-- Strategies Used Card -->
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex-1 max-w-sm mx-auto text-left">
+                            <h3 class="font-bold text-lg mb-4 text-dark border-b border-slate-100 pb-2">Strategies Deployed</h3>
+                            <div class="flex flex-col">
+                                ${tallyHtml || '<div class="text-slate-400 text-sm italic">No valid strategies recorded.</div>'}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center gap-4 mt-8">
+                        <button onclick="renderGameStart()" class="px-6 py-3 rounded-xl border-2 border-slate-200 text-slate-700 font-bold hover:bg-slate-50 transition-colors">
+                            <i class="fa-solid fa-rotate-left mr-2"></i>Play Again
+                        </button>
+                        <button onclick="switchTab('playbook')" class="px-6 py-3 rounded-xl bg-primary text-white font-bold hover:bg-indigo-600 transition-colors shadow-md">
+                            <i class="fa-solid fa-book-open mr-2"></i>Review Playbook
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
