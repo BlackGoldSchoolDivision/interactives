@@ -2914,7 +2914,7 @@
     "repo": "personal",
     "title": "Social Studies 7–9 Activities",
     "category": "Social studies",
-    "description": "Open a hub of 22 activities: sorting, matching, sequencing, comparisons and spectrum tasks for Social Studies 7–9.",
+    "description": "Choose from 22 illustrated activity buttons, grouped by grade: sorting, matching, sequencing, comparisons and spectrum tasks for Social Studies 7–9.",
     "types": [
       "Sorting",
       "Matching",
@@ -2931,8 +2931,8 @@
     "favourite": false,
     "credit": "",
     "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/socialstudies789.jpg",
-    "captured": "2026-10-04"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/socialstudies789.jpg?v=e672333f3fa9",
+    "captured": "2026-10-06"
   },
   {
     "id": "territorial-evolution-canada",

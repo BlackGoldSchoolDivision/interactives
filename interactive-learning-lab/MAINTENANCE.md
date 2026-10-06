@@ -118,3 +118,11 @@ The replacement actual live screenshot is `learning-lab-images/wantsneeds.jpg?v=
 ## Canada Through Time in Social Studies — 6 October 2026
 
 Added the published territorial evolution interactive with 23 Atlas snapshots (1867–2003), using a real screenshot of its 1999 Nunavut milestone. Its card sits at position 11 of 20 in the Social Studies list, immediately after Social Studies 7–9, and is also available in Geography → Canada. The actual 900 × 620 preview is saved separately as `learning-lab-images/territorial-evolution-canada.jpg?v=a310613ad303` (67,134 bytes). The catalogue has 152 entries. Wants & Needs was verified against the latest `20261006-flat` game script and all 14 separately saved images; its current Lab preview remains `wantsneeds.jpg?v=b424ae666f1c`.
+
+## Social Studies 7–9 picture menu — 6 October 2026
+
+The interactive's own main page now has 22 large illustrated picture buttons, grouped by grade with grade shortcuts, readable titles, activity types and DOK levels. Its child activities and shared game engine are unchanged. The separate optimized 720 × 480 flat WebP images total 678,404 bytes in `social-studies-7-9/assets/menu/`, with the built-in image-generation prompt set beside them. `source/menu-template.html`, `assets/menu.css`, and `build.py --menu-only` preserve this menu when regenerated.
+
+Live iframe checks at 1024 × 540, 1366 × 650, 768 × 900, 390 × 667, 320 × 568 and 640 × 360 found zero horizontal overflow, contained images and labels, large link targets and preserved teacher-note state during resizing. All 22 images loaded, the Grade 9 shortcut reached its section, and a picture button opened Confederation: Key Terms and returned to the illustrated hub. Full child-game rounds were not re-audited; native browser zoom remains unverified. The scoped results are saved in `social-studies-7-9/verification.json`.
+
+The Lab card uses an actual screenshot of the new menu, proportionally scaled to 900 × 620, at `learning-lab-images/socialstudies789.jpg?v=e672333f3fa9` (64,259 bytes). Its description and activity-links CSV match the new menu. The boundary map remains at position 11 of 20 in Social Studies, and the catalogue remains at 152 entries.
