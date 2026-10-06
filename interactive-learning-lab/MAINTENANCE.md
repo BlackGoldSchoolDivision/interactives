@@ -105,3 +105,10 @@ Image Spark and Venn Diagram Sorting now precede HEX-Thinker in the Thinking too
 Wants & Needs uses 14 original generated pictures saved individually as transparent WebP assets in the personal repository's `wantsandneedssort/assets/` folder. The original prompt set is `assets/image-prompts.json`. Larger picture cards, a charcoal backdrop, teal and coral categories, explicit feedback and explanatory review replace the emoji labels. The existing 14 examples and contextual discussion are retained. Drag, tap and keyboard placement, return to tray, revision, a full round and restart were checked. Live checks at six viewport sizes confirmed no horizontal overflow, loaded and contained artwork, clear labels, touch target sizes and preserved selections and placements during resizing. Verification details and the browser zoom limitation are recorded in `wantsandneedssort/verification.json`.
 
 The Lab entry and links CSV reflect the refresh. Its actual live screenshot is `learning-lab-images/wantsneeds.jpg`, with a content-based cache version.
+
+
+## Simple flat Wants & Needs artwork — 6 October 2026
+
+Darren selected the simple flat schoolbook illustration preview. All 14 picture assets were replaced individually under the same `wantsandneedssort/assets/` filenames, with a new image and script cache version. The built-in image generator prompt set is stored in `assets/image-prompts.json`. The full icon set is 221,190 bytes; game structure, categories, contextual explanations and interactions are retained.
+
+The replacement actual live screenshot is `learning-lab-images/wantsneeds.jpg?v=b424ae666f1c` (900 × 620, 63,805 bytes). Six rendered screen checks passed with no horizontal overflow, all artwork loaded and contained, clear labels, and preserved selection and placement. A full live 14-card round, keyboard placement, explanatory review and reset passed. Actual browser zoom retains the limitation documented in `verification.json`. The catalogue still has 151 entries and retains the existing Thinking Tools order.
