@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Risk Lab: The Science of Calculated Courage</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .font-display {
+      font-family: 'Fredoka', cursive, sans-serif;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 8px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 8px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    @keyframes pulse-subtle {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+    .pulse-card {
+      animation: pulse-subtle 3s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-md shadow-indigo-100">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="font-display text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
+            Risk Lab <span class="text-xs bg-indigo-100 text-indigo-700 font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">Grade 7 Edition</span>
+          </h1>
+          <p class="text-xs text-slate-500 font-medium hidden sm:block">Testing smart risks, avoiding regrets, building grit</p>
+        </div>
+      </div>
+
+      <!-- Live Player Stats -->
+      <div class="flex items-center space-x-3 sm:space-x-5">
+        <div class="flex items-center gap-1.5 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-xl text-amber-800 text-sm font-semibold shadow-xs">
+          <span class="text-base">⚡</span>
+          <span>Courage XP: <span id="statCourage" class="font-bold text-amber-900">0</span></span>
+        </div>
+        <div class="flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-xl text-emerald-800 text-sm font-semibold shadow-xs">
+          <span class="text-base">🧠</span>
+          <span>Wisdom XP: <span id="statWisdom" class="font-bold text-emerald-900">0</span></span>
+        </div>
+        <button id="soundToggleBtn" onclick="toggleMute()" class="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition" title="Toggle Sound">
+          <svg id="soundIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-6 flex-1 w-full">
+    <!-- Sub-navigation tabs -->
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-6 bg-slate-100/80 p-1.5 rounded-2xl border border-slate-200">
+      <div class="flex flex-wrap gap-1.5">
+        <button onclick="switchTab('framework')" id="tabBtnFramework" class="nav-tab px-4 py-2 rounded-xl text-sm font-bold bg-white text-indigo-700 shadow-sm transition">
+          🧭 The 3-Filter Guide
+        </button>
+        <button onclick="switchTab('scenarios')" id="tabBtnScenarios" class="nav-tab px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:text-slate-900 transition">
+          🎯 Simulation Scenarios
+        </button>
+        <button onclick="switchTab('realLife')" id="tabBtnRealLife" class="nav-tab px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:text-slate-900 transition">
+          ✍️ My Real-Life Risk Decider
+        </button>
+        <button onclick="switchTab('journal')" id="tabBtnJournal" class="nav-tab px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5">
+          📖 Reflection Log <span id="journalCountBadge" class="bg-indigo-600 text-white text-xs px-1.5 py-0.2 rounded-full">0</span>
+        </button>
+      </div>
+
+      <!-- Quick Concept definition pill -->
+      <div class="hidden lg:flex items-center gap-2 text-xs text-slate-600 px-3 py-1 bg-white rounded-xl border border-slate-200">
+        <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+        <span class="font-medium"><strong class="text-slate-900">Measured Risk:</strong> Stepping out of your comfort zone with a safety plan.</span>
+      </div>
+    </div>
+
+    <!-- Framework Section displayed first -->
+    <section id="sectionFramework" class="space-y-6">
+      <div class="bg-gradient-to-br from-indigo-900 via-indigo-800 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="max-w-2xl relative z-10">
+          <span class="inline-block px-3 py-1 bg-indigo-500/30 text-indigo-200 border border-indigo-400/30 rounded-full text-xs font-bold uppercase tracking-wider mb-3">Core Concept</span>
+          <h2 class="font-display text-2xl sm:text-3xl font-bold tracking-tight mb-3">Reckless vs. Safe Zone vs. Measured Risk</h2>
+          <p class="text-indigo-100 text-sm sm:text-base leading-relaxed">
+            In Grade 7, your brain is rewiring to love novelty and excitement. That is completely normal! The secret isn't never taking risks—it's learning how to take <strong>positive, measured risks</strong> that unlock your potential while dodging irreversible mistakes.
+          </p>
+        </div>
+      </div>
+
+      <!-- The 3 Tiers Comparison Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <!-- Bubble 1: Over-Safe -->
+        <div class="bg-white rounded-2xl p-5 border-2 border-slate-200 hover:border-slate-300 transition shadow-xs flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center text-2xl mb-4">
+              🛡️
+            </div>
+            <h3 class="font-display text-lg font-bold text-slate-900 mb-1">The "Too Safe" Bubble</h3>
+            <span class="text-xs font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700">Zero Risk, Zero Growth</span>
+            <p class="text-slate-600 text-sm mt-3 leading-relaxed">
+              Never raising your hand, not trying out because you might fail, or staying silent when someone is unfair.
+            </p>
+            <div class="mt-4 p-3 bg-slate-50 rounded-xl text-xs space-y-1.5 border border-slate-100">
+              <div class="text-emerald-700 font-medium">✓ Upside: No immediate embarrassment.</div>
+              <div class="text-rose-700 font-medium">✕ Downside: Boredom, missed friendships, stagnation, self-doubt.</div>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-400 font-medium">
+            Verdict: Safe in the moment, costly long-term.
+          </div>
+        </div>
+
+        <!-- Bubble 2: Measured Risk (Hero) -->
+        <div class="bg-indigo-50/70 rounded-2xl p-5 border-2 border-indigo-400 shadow-md relative flex flex-col justify-between">
+          <div class="absolute -top-3 right-4 bg-indigo-600 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow">
+            The Sweet Spot
+          </div>
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-2xl mb-4 shadow-sm shadow-indigo-200">
+              🎯
+            </div>
+            <h3 class="font-display text-lg font-bold text-indigo-950 mb-1">Measured (Calculated) Risk</h3>
+            <span class="text-xs font-semibold px-2 py-0.5 rounded-md bg-indigo-100 text-indigo-800">Smart Bravery</span>
+            <p class="text-slate-700 text-sm mt-3 leading-relaxed">
+              Stepping out of what's comfortable with a plan: auditioning, defending someone, apologizing first, sharing original ideas.
+            </p>
+            <div class="mt-4 p-3 bg-white/80 rounded-xl text-xs space-y-1.5 border border-indigo-200/60 shadow-xs">
+              <div class="text-emerald-700 font-medium">✓ Upside: Resilience, real confidence, respect, discovery.</div>
+              <div class="text-slate-700 font-medium">ℹ️ Downside: Temporary butterflies or failure you can easily recover from.</div>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-indigo-100 text-xs text-indigo-700 font-bold">
+            Verdict: This is how humans grow strong!
+          </div>
+        </div>
+
+        <!-- Bubble 3: Reckless Risk -->
+        <div class="bg-white rounded-2xl p-5 border-2 border-rose-200 hover:border-rose-300 transition shadow-xs flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center text-2xl mb-4">
+              ⚠️
+            </div>
+            <h3 class="font-display text-lg font-bold text-slate-900 mb-1">Reckless Risk</h3>
+            <span class="text-xs font-semibold px-2 py-0.5 rounded-md bg-rose-100 text-rose-800">Dangerous Impulsivity</span>
+            <p class="text-slate-600 text-sm mt-3 leading-relaxed">
+              Doing a dangerous TikTok challenge, sharing someone else's secrets, cheating, or risking permanent injury for 30 seconds of clout.
+            </p>
+            <div class="mt-4 p-3 bg-rose-50/50 rounded-xl text-xs space-y-1.5 border border-rose-100">
+              <div class="text-slate-600 font-medium">✕ Upside: Cheap 5-second thrill or fake popularity.</div>
+              <div class="text-rose-700 font-medium">✕ Downside: Physical injury, lost trust, legal or school suspension, digital footprint.</div>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 text-xs text-rose-600 font-medium">
+            Verdict: High permanent danger for low reward.
+          </div>
+        </div>
+      </div>
+
+      <!-- The 3 Decision Checklist Filters -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+        <h3 class="font-display text-xl font-bold text-slate-900 mb-2">The "3-Second Filter" to use before any choice</h3>
+        <p class="text-slate-600 text-sm mb-6">Ask yourself these three questions whenever your heart races:</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="flex items-start space-x-3.5">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-sm">1</span>
+            <div>
+              <h4 class="font-bold text-slate-900 text-sm mb-1">Is the worst case reversible?</h4>
+              <p class="text-xs text-slate-600 leading-relaxed">If things go wrong, will it matter in 6 months? Can an apology or practice fix it? If yes, it's safer to try.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-3.5">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-sm">2</span>
+            <div>
+              <h4 class="font-bold text-slate-900 text-sm mb-1">Am I doing this for ME or peer pressure?</h4>
+              <p class="text-xs text-slate-600 leading-relaxed">Measured risks align with who you want to be. Reckless risks are usually done so people don't laugh at you.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-3.5">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-sm">3</span>
+            <div>
+              <h4 class="font-bold text-slate-900 text-sm mb-1">Do I have a safety net or Plan B?</h4>
+              <p class="text-xs text-slate-600 leading-relaxed">Measured risk-takers prepare! They practice with a friend, set an exit strategy, or ask a trusted adult.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 pt-5 border-t border-slate-100 flex justify-end">
+          <button onclick="switchTab('scenarios')" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs transition flex items-center gap-2 shadow-xs">
+            <span>Ready? Try the 10 Simulation Scenarios</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scenarios Section now positioned second -->
+    <section id="sectionScenarios" class="hidden space-y-6">
+      <!-- Category Filter Pills -->
+      <div class="flex items-center justify-between flex-wrap gap-3">
+        <div class="flex items-center gap-2 overflow-x-auto pb-1 max-w-full">
+          <span class="text-xs font-semibold text-slate-500 uppercase tracking-wide mr-1">Topic:</span>
+          <button onclick="filterCategory('all')" class="cat-pill active-cat px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white transition">All Topics</button>
+          <button onclick="filterCategory('Social')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 transition">👥 Social & Friends</button>
+          <button onclick="filterCategory('Academic')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 transition">📚 Class & Learning</button>
+          <button onclick="filterCategory('Extracurricular')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 transition">⚽ Teams & Clubs</button>
+          <button onclick="filterCategory('Digital')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 transition">📱 Online & Media</button>
+        </div>
+        <div class="text-xs text-slate-500 font-medium">
+          Completed: <span id="completedScenariosCounter" class="font-bold text-slate-800">0</span> / 10
+        </div>
+      </div>
+
+      <!-- Scenarios Grid -->
+      <div id="scenariosCardGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Rendered via JavaScript -->
+      </div>
+
+      <!-- Scenario Player Modal Container (In-Page View) -->
+      <div id="scenarioActiveContainer" class="hidden transition-all duration-300">
+        <!-- Dynamic active scenario content injected here -->
+      </div>
+    </section>
+
+    <section id="sectionRealLife" class="hidden space-y-6">
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+        <div class="max-w-2xl mb-6">
+          <span class="inline-block px-3 py-1 bg-violet-100 text-violet-700 rounded-full text-xs font-bold uppercase tracking-wider mb-2">Personal Strategy Tool</span>
+          <h2 class="font-display text-2xl font-bold text-slate-900">My Real-Life Risk Decider</h2>
+          <p class="text-slate-600 text-sm mt-1">
+            Got an actual decision you're nervous about right now? (e.g. talking to someone new, trying for track & field, speaking up in science class). Test it here.
+          </p>
+        </div>
+
+        <form id="deciderForm" onsubmit="calculateRealLifeRisk(event)" class="space-y-6">
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">1. What opportunity or risk are you considering?</label>
+            <input type="text" id="rlDilemma" required placeholder="e.g., Asking if I can join the lunch table with the robotics kids" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm transition outline-none">
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">2. What is the BEST thing that could happen?</label>
+              <textarea id="rlBestCase" required rows="3" placeholder="e.g., I make cool new friends who share my hobby and have fun lunch chats." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm transition outline-none"></textarea>
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">3. What is the realistic WORST case?</label>
+              <textarea id="rlWorstCase" required rows="3" placeholder="e.g., They say they are saving seats for someone else and I feel awkward for 2 minutes." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm transition outline-none"></textarea>
+            </div>
+          </div>
+
+          <!-- Evaluation Checkboxes -->
+          <div class="bg-slate-50 p-4 sm:p-5 rounded-2xl border border-slate-200/80 space-y-3">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700">Safety & Ethics Check (Answer honestly):</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+              <label class="flex items-center gap-2.5 cursor-pointer text-slate-700 select-none">
+                <input type="checkbox" id="rlHarm" class="rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
+                <span>Could this cause physical harm or hospital visits?</span>
+              </label>
+              <label class="flex items-center gap-2.5 cursor-pointer text-slate-700 select-none">
+                <input type="checkbox" id="rlIllegal" class="rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
+                <span>Does it break major school rules or laws?</span>
+              </label>
+              <label class="flex items-center gap-2.5 cursor-pointer text-slate-700 select-none">
+                <input type="checkbox" id="rlReversible" checked class="rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
+                <span>If it doesn't work out, is it reversible or fixable?</span>
+              </label>
+              <label class="flex items-center gap-2.5 cursor-pointer text-slate-700 select-none">
+                <input type="checkbox" id="rlGrowth" checked class="rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
+                <span>Will taking this step help me learn, grow, or improve?</span>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">4. What is your "Safety Net" or backup plan?</label>
+            <input type="text" id="rlPlanB" required placeholder="e.g., If they are full, I smile, say 'no worries!', and sit with my friend Sam." class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm transition outline-none">
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button type="submit" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-sm transition shadow-sm hover:shadow">
+              Analyze My Risk Level 🚀
+            </button>
+            <button type="button" onclick="clearDeciderForm()" class="px-4 py-3 text-slate-600 hover:text-slate-800 font-semibold text-sm transition">
+              Reset Form
+            </button>
+          </div>
+        </form>
+
+        <!-- Decider Diagnostic Result Output -->
+        <div id="deciderResultCard" class="hidden mt-6 pt-6 border-t border-slate-200">
+          <!-- Injected via calculateRealLifeRisk -->
+        </div>
+      </div>
+    </section>
+
+    <section id="sectionJournal" class="hidden space-y-6">
+      <div class="flex items-center justify-between flex-wrap gap-4">
+        <div>
+          <h2 class="font-display text-2xl font-bold text-slate-900">Your Reflection Journal</h2>
+          <p class="text-slate-600 text-sm">Every measured risk gives you data, whether it succeeds or stumbles.</p>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="exportJournalAsText()" class="px-4 py-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-xl transition flex items-center gap-2 shadow-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+            Export/Copy Log
+          </button>
+          <button onclick="clearJournalHistory()" class="px-3 py-2 text-rose-600 hover:bg-rose-50 text-xs font-semibold rounded-xl transition">
+            Clear All
+          </button>
+        </div>
+      </div>
+
+      <div id="journalEntriesList" class="space-y-4">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+  </main>
+
+  <div id="modalBackdrop" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 transform transition-all text-center">
+      <div id="modalIcon" class="w-12 h-12 mx-auto rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-2xl mb-3">
+        🎉
+      </div>
+      <h3 id="modalTitle" class="font-display text-lg font-bold text-slate-900 mb-2">Notification</h3>
+      <p id="modalBody" class="text-sm text-slate-600 mb-6 leading-relaxed">Message details go here.</p>
+      <button onclick="closeModal()" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-sm transition">
+        Got it!
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // State management
+    const state = {
+      courageXP: 0,
+      wisdomXP: 0,
+      soundMuted: false,
+      completedScenarios: new Set(),
+      currentCategory: 'all',
+      journalEntries: []
+    };
+
+    // Scenario Data designed specifically for 12-13 year olds (Grade 7) - 10 Relatable Scenarios
+    const scenarios = [
+      {
+        id: 'audition-drama',
+        title: 'The Spring Musical Audition',
+        category: 'Extracurricular',
+        emoji: '🎭',
+        tagline: 'Singing or acting in front of peers vs fear of messing up',
+        context: 'Auditions for the school play are tomorrow. You love singing in your room and really want the supporting role, but three classmates from your lunch table said school plays are "cringey". Your stomach has butterflies.',
+        scanner: {
+          potentialGains: 'Make new drama friends, discover stage talent, huge confidence boost, have fun rehearsals.',
+          realisticDownside: 'Might voice-crack, might not get the part (cast in ensemble or stage crew instead).',
+          safetyNet: 'Practice 3 times in front of your sibling, remember nobody remembers auditions after a week.'
+        },
+        choices: [
+          {
+            id: 'opt1',
+            text: 'Skip auditions completely and sit quietly in the back row during the show next semester.',
+            type: 'comfort',
+            badge: 'Avoidance Zone',
+            couragePoints: 0,
+            wisdomPoints: 5,
+            resultHeadline: 'Safe, but you felt a pang of regret',
+            feedback: 'You avoided feeling vulnerable, but watching your friends have a blast on opening night made you wish you had taken the chance. Regret usually hurts longer than stage fright.',
+            learningPrompt: 'What was the real reason you held back? Was the fear realistic?'
+          },
+          {
+            id: 'opt2',
+            text: 'Sign up for auditions, prepare your song with your music teacher, and remind yourself that trying is the win.',
+            type: 'measured',
+            badge: 'Measured Smart Risk',
+            couragePoints: 25,
+            wisdomPoints: 25,
+            resultHeadline: 'Awesome courage! You owned the moment',
+            feedback: 'Your knees shook slightly, but you hit the notes. The drama teacher praised your bravery! Even if you get ensemble, you just unlocked a brand new world of friends and stage grit.',
+            learningPrompt: 'How did preparing a safety net (music teacher help) make the butterflies easier to handle?'
+          },
+          {
+            id: 'opt3',
+            text: 'Sign up without practicing, and plan to crack goofy jokes to make it look like you don\'t care if you mess up.',
+            type: 'reckless',
+            badge: 'Masked Insecurity',
+            couragePoints: 5,
+            wisdomPoints: 0,
+            resultHeadline: 'The audition fell flat',
+            feedback: 'Acting like you do not care was a defense shield. The director felt you were disrespecting the other actors, and you didn\'t give your real talent an honest shot.',
+            learningPrompt: 'Why do we sometimes mock things we actually care about to protect our pride?'
+          }
+        ]
+      },
+      {
+        id: 'math-question',
+        title: 'The "Dumb Question" Dilemma',
+        category: 'Academic',
+        emoji: '📐',
+        tagline: 'Asking for clarification when the whole class pretends to understand',
+        context: 'Mr. Henderson is explaining two-step algebra equations on the board. He asks, "Everyone got that?" Everyone nods silently, but you have no clue how -3 became +12. The test is this Friday.',
+        scanner: {
+          potentialGains: 'Understand the concept immediately, ace the Friday test, save 2 hours of confused homework.',
+          realisticDownside: 'A 4-second awkward silence where someone might look around.',
+          safetyNet: 'Frame it positively: "Could you walk through that middle negative sign step one more time?"'
+        },
+        choices: [
+          {
+            id: 'opt1',
+            text: 'Stay silent, nod with everyone else, and hope YouTube explains it tonight.',
+            type: 'comfort',
+            badge: 'Playing It Safe',
+            couragePoints: 0,
+            wisdomPoints: 5,
+            resultHeadline: 'Homework was an agonizing puzzle',
+            feedback: 'You spent 90 minutes frustrated at home guessing answers. At least 6 other kids in class were also confused but were waiting for someone else to be brave first.',
+            learningPrompt: 'Have you ever noticed how relieved other people look when someone finally asks for help?'
+          },
+          {
+            id: 'opt2',
+            text: 'Raise your hand firmly and ask: "Can we review how the signs flipped in step two?"',
+            type: 'measured',
+            badge: 'Calculated Academic Risk',
+            couragePoints: 20,
+            wisdomPoints: 25,
+            resultHeadline: 'Class hero move!',
+            feedback: 'Mr. Henderson beamed and said, "Great question! That trips up almost everyone." You noticed two classmates exhale and quickly scribble notes. You mastered the concept on the spot.',
+            learningPrompt: 'Why does vulnerability in learning actually demonstrate intellectual power?'
+          },
+          {
+            id: 'opt3',
+            text: 'Whisper loudly across the aisle to distract your friend and complain that the teacher is terrible.',
+            type: 'reckless',
+            badge: 'Defensive Distraction',
+            couragePoints: -5,
+            wisdomPoints: 0,
+            resultHeadline: 'Lost recess and still confused',
+            feedback: 'You got called out for side-talking, felt embarrassed in front of everyone anyway, and still don\'t know how to solve equation number four.',
+            learningPrompt: 'How can fear of looking dumb lead to choices that actually cause more embarrassment?'
+          }
+        ]
+      },
+      {
+        id: 'lunch-exclusion',
+        title: 'The Standing Alone Teammate',
+        category: 'Social',
+        emoji: '🥪',
+        tagline: 'Inviting an excluded classmate vs fear of awkward group dynamics',
+        context: 'A new student, Alex, is wandering the cafeteria holding their tray looking lost. Your friend group table has two empty chairs, but your friend Tyler likes to keep the table "exclusive".',
+        scanner: {
+          potentialGains: 'Help someone avoid a painful memory, make a loyal friend, set a tone of kindness.',
+          realisticDownside: 'Tyler might roll his eyes or make a snide comment.',
+          safetyNet: 'You don\'t need permission: "Hey Alex, we have room over here!"'
+        },
+        choices: [
+          {
+            id: 'opt1',
+            text: 'Look down at your phone and pretend you didn\'t notice Alex searching.',
+            type: 'comfort',
+            badge: 'Silent Bystander',
+            couragePoints: 0,
+            wisdomPoints: 5,
+            resultHeadline: 'Easy lunch, uneasy conscience',
+            feedback: 'Alex ended up sitting alone by the garbage cans. Tyler didn\'t complain, but you felt a quiet sinker in your stomach knowing you could have easily changed someone\'s day.',
+            learningPrompt: 'When is staying comfortable actually unfair to other people?'
+          },
+          {
+            id: 'opt2',
+            text: 'Wave Alex over: "Hey, grab a chair here!" If Tyler sighs, say "Come on, plenty of room."',
+            type: 'measured',
+            badge: 'Moral Courage',
+            couragePoints: 30,
+            wisdomPoints: 25,
+            resultHeadline: 'Social leadership unlocked',
+            feedback: 'Alex looked visibly relieved and turns out they play the same video game you love. Even Tyler chilled out once Alex cracked a joke. You showed your table what real confidence looks like.',
+            learningPrompt: 'Why do people naturally respect leaders who include others over those who gatekeep?'
+          },
+          {
+            id: 'opt3',
+            text: 'Loudly scream across the cafeteria: "Tyler, stop being so mean and let Alex sit here!"',
+            type: 'reckless',
+            badge: 'Aggressive Escalation',
+            couragePoints: 10,
+            wisdomPoints: -10,
+            resultHeadline: 'Unnecessary cafeteria drama',
+            feedback: 'You made a scene that embarrassed Alex even more, started an argument with Tyler, and had a lunch supervisor walk over. Good intention, but zero tactical tact.',
+            learningPrompt: 'How can we defend others firmly without turning it into a public showdown?'
+          }
+        ]
+      },
+      {
+        id: 'groupchat-roast',
+        title: 'The Runaway Group Chat Dare',
+        category: 'Digital',
+        emoji: '📱',
+        tagline: 'Standing against cyberbullying vs fear of becoming the next target',
+        context: 'In your class Discord/Snap group, someone posted a meme making fun of a classmate\'s presentation outfit. Laugh emojis are flooding in, and someone tags you: "Bro isn\'t that hilarious??"',
+        scanner: {
+          potentialGains: 'Halt the mob mentality, protect someone from cruel screenshots, maintain digital integrity.',
+          realisticDownside: 'Someone might reply "You can\'t take a joke" or drop a clown emoji.',
+          safetyNet: 'Send a firm, low-drama redirect: "Nah, that\'s a bit much guys. Let\'s drop it."'
+        },
+        choices: [
+          {
+            id: 'opt1',
+            text: 'Send a skull emoji "💀" just so you don\'t stand out as boring or soft.',
+            type: 'reckless',
+            badge: 'Peer Pressure Trap',
+            couragePoints: -10,
+            wisdomPoints: -10,
+            resultHeadline: 'Part of the digital footprint',
+            feedback: 'The meme got screenshotted and sent to the vice principal. Your name is now right in the middle of a cyber-harassment investigation, and the victim saw you laughed along.',
+            learningPrompt: 'Why do things online feel less dangerous in the moment than they actually are?'
+          },
+          {
+            id: 'opt2',
+            text: 'Silently mute the group chat and close the app.',
+            type: 'comfort',
+            badge: 'Passive Exit',
+            couragePoints: 5,
+            wisdomPoints: 10,
+            resultHeadline: 'Clean hands, but the bullying rolled on',
+            feedback: 'You didn\'t participate in the cruelty, which is good! But your silence gave the instigators silent permission to keep roasting.',
+            learningPrompt: 'What is one small sentence that can stop an online mob without starting a flame war?'
+          },
+          {
+            id: 'opt3',
+            text: 'Reply: "Honestly, that\'s too harsh. Let\'s not roast people\'s clothes." Then DM the creator to cool it.',
+            type: 'measured',
+            badge: 'Digital Integrity',
+            couragePoints: 25,
+            wisdomPoints: 25,
+            resultHeadline: 'The roasting immediately slowed down',
+            feedback: 'Two other quiet friends immediately chimed in: "Yeah agree tbh." You broke the bystander effect! The meme was deleted 10 minutes later.',
+            learningPrompt: 'Why does it only take one person speaking up for others to follow?'
+          }
+        ]
+      },
+      {
+        id: 'skate-trick',
+        title: 'The Staircase Bike/Skate Dare',
+        category: 'Extracurricular',
+        emoji: '🛹',
+        tagline: 'Distinguishing between a skill jump and a hospital stunt',
+        context: 'At the park with older kids, someone points their phone at you: "Bet you won\'t ollie down that 6-stair concrete set without a helmet! We\'ll post it on TikTok!" You have only ever cleared 2 stairs before.',
+        scanner: {
+          potentialGains: '30 seconds of approval from kids who might forget you tomorrow.',
+          realisticDownside: 'Broken wrist, concussion, destroyed gear, weeks in a cast.',
+          safetyNet: 'Master the 3-stair with safety gear first before jumping 6 stairs.'
+        },
+        choices: [
+          {
+            id: 'opt1',
+            text: 'Charge down the 6-stair anyway because you don\'t want to look chicken.',
+            type: 'reckless',
+            badge: 'Reckless Hazard',
+            couragePoints: 5,
+            wisdomPoints: -25,
+            resultHeadline: 'Wipeout and urgent care trip',
+            feedback: 'Your board clipped the 4th step. You suffered a sprained wrist and cracked your phone screen. The older kids laughed and posted your wipeout. Real courage isn\'t foolishness.',
+            learningPrompt: 'What is the biological difference between genuine courage and reckless adrenaline?'
+          },
+          {
+            id: 'opt2',
+            text: 'Grin and say: "I haven\'t cleared 4 yet. Watch me clean the 2-stair curb, I\'m working my way up."',
+            type: 'measured',
+            badge: 'True Athletic Mindset',
+            couragePoints: 25,
+            wisdomPoints: 25,
+            resultHeadline: 'Earned legitimate respect',
+            feedback: 'An older skater nodded: "Smart. Progression is how you don\'t break yourself." You landed your trick cleanly. Knowing your edge and training for it is what pro athletes do.',
+            learningPrompt: 'How is systematic practice actually braver than reckless bravado?'
+          },
+          {
+            id: 'opt3',
+            text: 'Make an excuse that your mom is texting you and run home immediately.',
+            type: 'comfort',
+            badge: 'Panicked Retreat',
+            couragePoints: 0,
+            wisdomPoints: 10,
+            resultHeadline: 'Body safe, confidence dented',
+            feedback: 'You saved your bones (which is way better than a hospital trip!), but you felt embarrassed for running away instead of simply owning your boundary with confidence.',
+            learningPrompt: 'How can you practice saying "No, that\'s dumb" without feeling like you need an excuse?'
+          }
+        ]
+      },
+      {
+        id: 'creative-project',
+        title: 'The Unconventional History Project',
+        category: 'Academic',
+        emoji: '🎨',
+        tagline: 'Choosing a creative podcast format vs a safe standard poster board',
+        context: 'Your history teacher allows any medium for your ancient civilization project. Most students are making standard poster boards with printed Wikipedia text. You secretly want to write and record a comedic historical "radio news broadcast", but nobody else is doing that.',
+        scanner: {
+          potentialGains: 'Actually enjoy doing homework, get top marks for originality, build media editing skills.',
+          realisticDownside: 'Takes more trial-and-error; might get a tough critique on audio levels.',
+          safetyNet: 'Show the teacher your script outline 3 days before due date for early feedback.'
+        },
+        choices: [
+          {
+            id: 'opt1',
+            text: 'Stick to the standard trifold poster board. It\'s boring, but guaranteed safe B+ grade.',
+            type: 'comfort',
+            badge: 'Creative Hibernation',
+            couragePoints: 0,
+            wisdomPoints: 5,
+            resultHeadline: 'The assignment was a chore',
+            feedback: 'You spent Sunday cutting colored paper and gluing Wikipedia summaries. You got an 84%, but learned nothing new and felt zero pride in your work.',
+            learningPrompt: 'When is a "safe" path actually a waste of your creative potential?'
+          },
+          {
+            id: 'opt2',
+            text: 'Record the comedic podcast! Check in with your teacher early to ensure rubric points are covered.',
+            type: 'measured',
+            badge: 'Creative Breakthrough',
+            couragePoints: 25,
+            wisdomPoints: 25,
+            resultHeadline: 'Standing ovation from the class!',
+            feedback: 'The class was howling with laughter while learning about ancient Egypt. The teacher kept your audio file as an exemplar for future years. Taking a calculated creative risk made you shine.',
+            learningPrompt: 'Why did checking in with the rubric make this a smart risk instead of a reckless one?'
+          },
+          {
+            id: 'opt3',
+            text: 'Start making the podcast at 11 PM the night before without reading the history grading rubric.',
+            type: 'reckless',
+            badge: 'Unprepared Gamble',
+            couragePoints: 5,
+            wisdomPoints: -10,
+            resultHeadline: 'Funny audio, but failed the history facts',
+            feedback: 'The audio was hilarious, but you forgot to include dates, sources, and cultural impact. Your teacher gave you a D because core requirements were missing.',
+            learningPrompt: 'Why is preparation the main difference between an innovation and a flop?'
+          }
+        ]
+      },
+      {
+        id: 'rookie-tryout',
+        title: 'The Beginner Sports Tryout',
+        category: 'Extracurricular',
+        emoji: '🏐',
+        tagline: 'Trying out for the school volleyball team when everyone else has club experience',
+        context: 'Grade 7 volleyball tryouts are this week. You have never played on a real team, but you loved playing in gym class. During warmups, you notice half the gym is wearing club jerseys and doing spike drills.',
+        scanner: {
+          potentialGains: 'Learn a sport rapidly, make athletic friends, build endurance and team spirit.',
+          realisticDownside: 'Might shank a pass, miss a serve, or not make the cut this year.',
+          safetyNet: 'Ask the coach what to practice at home if you get cut, or join intramurals.'
+        },
+        choices: [
+          {
+            id: 'opt1',
+            text: 'Walk out before attendance is taken and tell your friends you just weren\'t interested.',
+            type: 'comfort',
+            badge: 'Self-Sabotage Safe Zone',
+            couragePoints: 0,
+            wisdomPoints: 5,
+            resultHeadline: 'Protected your pride, lost the season',
+            feedback: 'You saved yourself the fear of making a mistake, but you also guaranteed a 0% chance of making the team or improving your game.',
+            learningPrompt: 'Why do we often quit before we even start just to protect our ego?'
+          },
+          {
+            id: 'opt2',
+            text: 'Hustle hard, listen intently to coach directions, call every ball loudly, and focus on effort over perfection.',
+            type: 'measured',
+            badge: 'Growth Mindset Athlete',
+            couragePoints: 25,
+            wisdomPoints: 25,
+            resultHeadline: 'Coach noticed your coachability!',
+            feedback: 'You missed two serves, but you dove for loose balls and cheered on teammates. Coach told you: "I can teach technique, but I can\'t teach hustle. You made developmental squad!"',
+            learningPrompt: 'Why do coaches and teachers care more about attitude and grit than existing talent?'
+          },
+          {
+            id: 'opt3',
+            text: 'Try to impress everyone by swinging wildly as hard as you can at every single ball without technique.',
+            type: 'reckless',
+            badge: 'Show-Off Blunder',
+            couragePoints: 10,
+            wisdomPoints: -10,
+            resultHeadline: 'Balls hit the gym ceiling',
+            feedback: 'Three balls flew out of bounds into the bleachers and you almost collided with a teammate because you refused to play your position. You were cut after the first round.',
+            learningPrompt: 'What is the difference between showing genuine effort and showing off?'
+          }
+        ]
+      },
+      {
+        id: 'locker-rumor',
+        title: 'The Locker Hallway Rumor',
+        category: 'Social',
+        emoji: '🤫',
+        tagline: 'Confronting an escalating rumor vs participating to look "in the know"',
+        context: 'Between 4th and 5th period, someone whispers that Maya got caught shoplifting at the convenience store. You actually know Maya was home sick taking care of her little sister yesterday.',
+        scanner: {
+          potentialGains: 'Save an innocent person from a vicious rumor, establish yourself as trustworthy.',
+          realisticDownside: 'People might call you a buzzkill or ask why you care so much.',
+          safetyNet: 'Keep it simple: "That’s actually false, Maya was home babysitting. Don’t spread that."'
+        },
+        choices: [
+          {
+            id: 'opt1',
+            text: 'Nod and say: "Whoa really?? Tell me more!" and pass it along to your locker neighbor.',
+            type: 'reckless',
+            badge: 'Gossip Conspirator',
+            couragePoints: -10,
+            wisdomPoints: -20,
+            resultHeadline: 'Maya broke down in tears at lunch',
+            feedback: 'The rumor spiraled out of control. By 6th period the counselor called Maya in. When it was proven false, everyone knew you helped fuel a lie that destroyed a friendship.',
+            learningPrompt: 'Why does passing on juicy gossip feel so tempting, even when we suspect it might not be true?'
+          },
+          {
+            id: 'opt2',
+            text: 'Stay quiet and say nothing, hoping Maya figures it out on her own.',
+            type: 'comfort',
+            badge: 'Passive Complicity',
+            couragePoints: 0,
+            wisdomPoints: 10,
+            resultHeadline: 'Safe for you, painful for Maya',
+            feedback: 'You didn’t tell the lie yourself, but your silence allowed the rumor to spread to 20 more people throughout the afternoon.',
+            learningPrompt: 'Can silence sometimes cause almost as much harm as spreading the words?'
+          },
+          {
+            id: 'opt3',
+            text: 'Say calmly: "That’s actually completely false. I talked to Maya yesterday, she was babysitting. Let\'s drop it."',
+            type: 'measured',
+            badge: 'Truth Defender',
+            couragePoints: 25,
+            wisdomPoints: 25,
+            resultHeadline: 'The rumor died right there in the hallway',
+            feedback: 'The group looked slightly sheepish and changed the topic. Maya later heard that you stuck up for her and thanked you with genuine gratitude. You earned a reputation for integrity.',
+            learningPrompt: 'Why does factual truth spoken calmly possess so much power over group gossip?'
+          }
+        ]
+      },
+      {
+        id: 'borrowed-item',
+        title: 'The Borrowed Tablet Fumble',
+        category: 'Social',
+        emoji: '📱',
+        tagline: 'Owning an honest mistake immediately vs hiding the damage',
+        context: 'During a science lab partner project, you were holding your partner Jordan’s tablet while jotting down beaker measurements. Your elbow bumped the table edge and the screen got a hairline scratch.',
+        scanner: {
+          potentialGains: 'Maintain honest friendship, resolve problem cleanly, prove your integrity.',
+          realisticDownside: 'Jordan will be upset at first; you might need to offer a screen protector replacement.',
+          safetyNet: 'Own it before they notice it: "Jordan, I am so sorry. Here is what happened and here is how I can make it right."'
+        },
+        choices: [
+          {
+            id: 'opt1',
+            text: 'Slip the tablet face down on the desk and pretend it was already like that when they pick it up.',
+            type: 'reckless',
+            badge: 'Cover-Up Disaster',
+            couragePoints: -15,
+            wisdomPoints: -20,
+            resultHeadline: 'Accused of lying and losing a close friend',
+            feedback: 'Jordan noticed the scratch immediately. When another student said they saw you drop it, Jordan felt betrayed not by the scratch, but by the lie. Trust is very hard to rebuild.',
+            learningPrompt: 'Why is the lie or cover-up almost always worse than the original mistake?'
+          },
+          {
+            id: 'opt2',
+            text: 'Wait nervously in fear until the end of the day, feeling sick to your stomach.',
+            type: 'comfort',
+            badge: 'Anxious Procrastination',
+            couragePoints: 5,
+            wisdomPoints: 5,
+            resultHeadline: 'A whole day of dread',
+            feedback: 'You couldn\'t focus during English, Math, or PE because guilt was eating you up. Delaying the conversation only made having it ten times more terrifying.',
+            learningPrompt: 'How does delaying an apology multiply our internal stress?'
+          },
+          {
+            id: 'opt3',
+            text: 'Take a breath immediately: "Jordan, I was careless with my elbow and put a scratch on your screen. I am so sorry. Let me pay for a replacement protector or check with my parents."',
+            type: 'measured',
+            badge: 'Calculated Accountability',
+            couragePoints: 30,
+            wisdomPoints: 25,
+            resultHeadline: 'Total respect earned',
+            feedback: 'Jordan took a deep breath: "Man, that sucks, but thanks for telling me right away." Jordan\'s parents were so impressed by your prompt honesty that they didn\'t even make you pay. You proved you are dependable.',
+            learningPrompt: 'How does taking immediate ownership actually defuse anger faster than any excuse?'
+          }
+        ]
+      },
+      {
+        id: 'student-rep',
+        title: 'Running for Homeroom Representative',
+        category: 'Academic',
+        emoji: '🗳️',
+        tagline: 'Giving a 60-second speech to represent your grade vs fear of popularity contest',
+        context: 'Student Council nominations are open. You have great ideas for better lunch activities and homework clubs. However, the most popular kid in 7th grade is also running and making funny meme posters.',
+        scanner: {
+          potentialGains: 'Actual leadership experience, impact on school policies, speaking confidence.',
+          realisticDownside: 'Might get fewer votes; public speaking jitters.',
+          safetyNet: 'Write 3 clear bullet points on index cards and practice your 60-second pitch twice with a parent or friend.'
+        },
+        choices: [
+          {
+            id: 'opt1',
+            text: 'Tear up your nomination slip. There\'s no point if someone popular is running.',
+            type: 'comfort',
+            badge: 'Premature Surrender',
+            couragePoints: 0,
+            wisdomPoints: 5,
+            resultHeadline: 'Your great ideas stayed in your head',
+            feedback: 'The election ended up having only one candidate with no real ideas. Several friends told you later: "Why didn\'t you run? We would have voted for you!"',
+            learningPrompt: 'Why do we often assume the odds are against us before we even put our name in?'
+          },
+          {
+            id: 'opt2',
+            text: 'Prepare your 60-second speech focused on real ideas (recess sports gear & study snacks), smile, and deliver it with sincerity.',
+            type: 'measured',
+            badge: 'Authentic Leadership',
+            couragePoints: 30,
+            wisdomPoints: 25,
+            resultHeadline: 'You won the election!',
+            feedback: 'While the other candidate just told jokes, the class actually appreciated that you took their everyday school lives seriously. You delivered your speech smoothly and earned the role.',
+            learningPrompt: 'Why does substance and genuine care often beat shallow popularity in the long run?'
+          },
+          {
+            id: 'opt3',
+            text: 'Post an anonymous burn account attacking the popular kid\'s grades to make them look bad.',
+            type: 'reckless',
+            badge: 'Toxic Sabotage',
+            couragePoints: -20,
+            wisdomPoints: -25,
+            resultHeadline: 'Disqualified and sent to the Principal',
+            feedback: 'The school IT coordinator tracked the IP address within hours. You were disqualified from all council activities for the year and had a meeting with your parents and administration.',
+            learningPrompt: 'Why do dirty shortcuts to winning always lead to a catastrophic loss of character?'
+          }
+        ]
+      }
+    ];
+
+    const audioCtx = (window.AudioContext || window.webkitAudioContext) ? new (window.AudioContext || window.webkitAudioContext)() : null;
+    
+    function playBeep(freq = 440, type = 'sine', duration = 0.15) {
+      if (state.soundMuted || !audioCtx) return;
+      try {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        console.warn('Audio feedback error', e);
+      }
+    }
+
+    function playSuccessChime() {
+      if (state.soundMuted || !audioCtx) return;
+      playBeep(523.25, 'triangle', 0.1);
+      setTimeout(() => playBeep(659.25, 'triangle', 0.1), 100);
+      setTimeout(() => playBeep(783.99, 'triangle', 0.2), 200);
+    }
+
+    function toggleMute() {
+      state.soundMuted = !state.soundMuted;
+      const icon = document.getElementById('soundIcon');
+      if (state.soundMuted) {
+        icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />`;
+      } else {
+        icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />`;
+        playBeep(520, 'sine', 0.1);
+      }
+    }
+
+    function renderScenarioCards() {
+      const grid = document.getElementById('scenariosCardGrid');
+      const filtered = state.currentCategory === 'all' 
+        ? scenarios 
+        : scenarios.filter(s => s.category.toLowerCase() === state.currentCategory.toLowerCase());
+
+      grid.innerHTML = filtered.map(sc => {
+        const isDone = state.completedScenarios.has(sc.id);
+        return `
+          <div class="bg-white rounded-2xl p-5 border ${isDone ? 'border-emerald-300 ring-2 ring-emerald-100' : 'border-slate-200'} hover:border-indigo-300 hover:shadow-md transition-all flex flex-col justify-between group">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-3">
+                <span class="text-2xl">${sc.emoji}</span>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700">${sc.category}</span>
+                  ${isDone ? '<span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800">Done ✓</span>' : ''}
+                </div>
+              </div>
+              <h3 class="font-display text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition mb-1">${sc.title}</h3>
+              <p class="text-xs text-slate-500 line-clamp-2 mb-3">${sc.tagline}</p>
+            </div>
+            <button onclick="launchScenario('${sc.id}')" class="w-full mt-3 py-2.5 px-4 rounded-xl text-xs font-bold ${isDone ? 'bg-slate-100 hover:bg-slate-200 text-slate-700' : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs'} transition flex items-center justify-center gap-2">
+              <span>${isDone ? 'Replay Dilemma' : 'Analyze & Choose'}</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('completedScenariosCounter').innerText = state.completedScenarios.size;
+    }
+
+    function filterCategory(cat) {
+      playBeep(480, 'sine', 0.05);
+      state.currentCategory = cat;
+      document.querySelectorAll('.cat-pill').forEach(btn => {
+        btn.classList.remove('bg-indigo-600', 'text-white');
+        btn.classList.add('bg-white', 'text-slate-700');
+      });
+      event.target.classList.remove('bg-white', 'text-slate-700');
+      event.target.classList.add('bg-indigo-600', 'text-white');
+      renderScenarioCards();
+    }
+
+    function launchScenario(id) {
+      playBeep(560, 'triangle', 0.1);
+      const sc = scenarios.find(item => item.id === id);
+      if (!sc) return;
+
+      const container = document.getElementById('scenarioActiveContainer');
+      const grid = document.getElementById('scenariosCardGrid');
+      grid.classList.add('hidden');
+      container.classList.remove('hidden');
+
+      container.innerHTML = `
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-md space-y-6">
+          <!-- Header Bar -->
+          <div class="flex items-center justify-between flex-wrap gap-3 pb-4 border-b border-slate-100">
+            <div class="flex items-center gap-3">
+              <span class="text-3xl p-2 bg-indigo-50 rounded-2xl">${sc.emoji}</span>
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">${sc.category} Zone</span>
+                <h2 class="font-display text-2xl font-bold text-slate-900">${sc.title}</h2>
+              </div>
+            </div>
+            <button onclick="closeActiveScenario()" class="px-3 py-1.5 rounded-xl text-xs font-bold text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition flex items-center gap-1">
+              ✕ Back to Grid
+            </button>
+          </div>
+
+          <!-- Situation Context -->
+          <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200/80">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">The Situation:</h4>
+            <p class="text-slate-800 text-sm sm:text-base leading-relaxed font-medium">${sc.context}</p>
+          </div>
+
+          <!-- The Risk Scanner Tool -->
+          <div class="border border-indigo-200 bg-gradient-to-r from-indigo-50/60 to-purple-50/40 rounded-2xl p-5">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-2">
+                <span class="flex h-2.5 w-2.5 relative">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-indigo-600"></span>
+                </span>
+                <h3 class="font-bold text-sm text-indigo-950">Pre-Action Risk Scanner</h3>
+              </div>
+              <span class="text-[11px] text-indigo-700 font-semibold bg-white/80 px-2 py-0.5 rounded-md border border-indigo-100">Smart Habit: Weigh Before Leaping</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+              <div class="bg-white/90 p-3 rounded-xl border border-emerald-100">
+                <div class="font-bold text-emerald-800 mb-1 flex items-center gap-1">
+                  <span>🚀</span> Potential Growth:
+                </div>
+                <p class="text-slate-600 leading-snug">${sc.scanner.potentialGains}</p>
+              </div>
+              <div class="bg-white/90 p-3 rounded-xl border border-amber-100">
+                <div class="font-bold text-amber-800 mb-1 flex items-center gap-1">
+                  <span>📉</span> Realistic Worst Case:
+                </div>
+                <p class="text-slate-600 leading-snug">${sc.scanner.realisticDownside}</p>
+              </div>
+              <div class="bg-white/90 p-3 rounded-xl border border-indigo-100">
+                <div class="font-bold text-indigo-800 mb-1 flex items-center gap-1">
+                  <span>🦺</span> Smart Safety Net:
+                </div>
+                <p class="text-slate-600 leading-snug">${sc.scanner.safetyNet}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Choices Section -->
+          <div>
+            <h3 class="font-display text-lg font-bold text-slate-900 mb-3">What choice would you make?</h3>
+            <div class="space-y-3" id="choiceOptionsContainer">
+              ${sc.choices.map((ch, idx) => `
+                <div onclick="selectScenarioChoice('${sc.id}', '${ch.id}')" class="p-4 rounded-2xl border-2 border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/20 cursor-pointer transition flex items-center justify-between group">
+                  <div class="flex items-center gap-3.5 pr-4">
+                    <span class="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 font-bold flex items-center justify-center text-xs group-hover:bg-indigo-600 group-hover:text-white transition">
+                      ${String.fromCharCode(65 + idx)}
+                    </span>
+                    <span class="text-sm font-semibold text-slate-800 leading-relaxed">${ch.text}</span>
+                  </div>
+                  <span class="text-xs text-indigo-600 font-bold opacity-0 group-hover:opacity-100 transition whitespace-nowrap">Choose →</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- Feedback & Reflection Card (Hidden until choice) -->
+          <div id="choiceResultDisplay" class="hidden pt-4 border-t border-slate-200 space-y-5">
+            <!-- Dynamic feedback injected -->
+          </div>
+        </div>
+      `;
+
+      // Smooth scroll into view
+      container.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function closeActiveScenario() {
+      playBeep(400, 'sine', 0.05);
+      document.getElementById('scenarioActiveContainer').classList.add('hidden');
+      document.getElementById('scenariosCardGrid').classList.remove('hidden');
+      renderScenarioCards();
+    }
+
+    function selectScenarioChoice(scenarioId, choiceId) {
+      const sc = scenarios.find(s => s.id === scenarioId);
+      const choice = sc.choices.find(c => c.id === choiceId);
+      if (!sc || !choice) return;
+
+      // Update XP
+      state.courageXP = Math.max(0, state.courageXP + choice.couragePoints);
+      state.wisdomXP = Math.max(0, state.wisdomXP + choice.wisdomPoints);
+      state.completedScenarios.add(sc.id);
+
+      document.getElementById('statCourage').innerText = state.courageXP;
+      document.getElementById('statWisdom').innerText = state.wisdomXP;
+
+      if (choice.type === 'measured') {
+        playSuccessChime();
+      } else {
+        playBeep(320, 'square', 0.15);
+      }
+
+      // Render Feedback & Reflection Prompt
+      const resultBox = document.getElementById('choiceResultDisplay');
+      resultBox.classList.remove('hidden');
+
+      let badgeBg = 'bg-indigo-100 text-indigo-800';
+      if (choice.type === 'comfort') badgeBg = 'bg-slate-200 text-slate-800';
+      if (choice.type === 'reckless') badgeBg = 'bg-rose-100 text-rose-800';
+
+      resultBox.innerHTML = `
+        <div class="rounded-2xl p-5 ${choice.type === 'measured' ? 'bg-emerald-50 border border-emerald-200' : (choice.type === 'comfort' ? 'bg-slate-100 border border-slate-200' : 'bg-rose-50 border border-rose-200')}">
+          <div class="flex items-center justify-between gap-2 flex-wrap mb-2">
+            <span class="text-xs font-bold px-2.5 py-1 rounded-full ${badgeBg} uppercase tracking-wider">${choice.badge}</span>
+            <div class="text-xs font-bold text-slate-700">
+              Reward: <span class="text-amber-700">+${choice.couragePoints} Courage</span>, <span class="text-emerald-700">+${choice.wisdomPoints} Wisdom</span>
+            </div>
+          </div>
+          <h3 class="font-display text-lg font-bold text-slate-900 mb-1">${choice.resultHeadline}</h3>
+          <p class="text-sm text-slate-700 leading-relaxed">${choice.feedback}</p>
+        </div>
+
+        <!-- Reflection Mini Form -->
+        <div class="bg-indigo-50/50 p-5 rounded-2xl border border-indigo-100">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-lg">💭</span>
+            <h4 class="font-bold text-sm text-indigo-950">Quick Student Reflection:</h4>
+          </div>
+          <p class="text-xs text-indigo-900 mb-3 font-medium">${choice.learningPrompt}</p>
+          <textarea id="reflectionAnswerInput" rows="2" placeholder="Write 1-2 sentences in your own words..." class="w-full text-xs p-3 rounded-xl border border-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"></textarea>
+          <div class="flex items-center justify-between mt-3">
+            <button onclick="saveScenarioReflection('${sc.id}', '${choice.id}')" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs transition shadow-xs">
+              Save to My Journal 📖
+            </button>
+            <span id="savedConfirmMessage" class="text-xs font-bold text-emerald-600 hidden">Saved to Reflection Log! ✓</span>
+          </div>
+        </div>
+      `;
+
+      resultBox.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function saveScenarioReflection(scId, chId) {
+      const sc = scenarios.find(s => s.id === scId);
+      const ch = sc.choices.find(c => c.id === chId);
+      const text = document.getElementById('reflectionAnswerInput').value.trim();
+
+      const entry = {
+        id: 'entry_' + Date.now(),
+        date: new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
+        title: sc.title,
+        category: sc.category,
+        choiceMade: ch.text,
+        choiceType: ch.badge,
+        reflectionText: text || 'Reviewed the consequences and debriefed on calculated risk strategy.',
+        type: 'scenario'
+      };
+
+      state.journalEntries.unshift(entry);
+      updateJournalBadge();
+      
+      const conf = document.getElementById('savedConfirmMessage');
+      if (conf) conf.classList.remove('hidden');
+      playBeep(700, 'sine', 0.1);
+    }
+
+    function updateJournalBadge() {
+      const badge = document.getElementById('journalCountBadge');
+      if (badge) badge.innerText = state.journalEntries.length;
+    }
+
+    function calculateRealLifeRisk(e) {
+      e.preventDefault();
+      playBeep(520, 'triangle', 0.1);
+
+      const dilemma = document.getElementById('rlDilemma').value.trim();
+      const bestCase = document.getElementById('rlBestCase').value.trim();
+      const worstCase = document.getElementById('rlWorstCase').value.trim();
+      const planB = document.getElementById('rlPlanB').value.trim();
+
+      const harm = document.getElementById('rlHarm').checked;
+      const illegal = document.getElementById('rlIllegal').checked;
+      const reversible = document.getElementById('rlReversible').checked;
+      const growth = document.getElementById('rlGrowth').checked;
+
+      const outCard = document.getElementById('deciderResultCard');
+      outCard.classList.remove('hidden');
+
+      let riskVerdict = '';
+      let scoreColor = '';
+      let advice = '';
+
+      if (harm || illegal) {
+        riskVerdict = '⛔ RECKLESS / RED-LIGHT RISK';
+        scoreColor = 'text-rose-600 bg-rose-50 border-rose-300';
+        advice = 'This idea involves physical danger or serious policy violations. The downside is permanent or legal. This is NOT a measured risk. Walk away and talk with a trusted adult.';
+      } else if (!reversible && !growth) {
+        riskVerdict = '⚠️️ UNSTABLE RISK (High Disadvantage)';
+        scoreColor = 'text-amber-700 bg-amber-50 border-amber-300';
+        advice = 'The potential growth is low and the mistakes are hard to fix. Consider revising your approach or finding another way to reach your goal.';
+      } else {
+        riskVerdict = '✅ MEASURED RISK: GREEN LIGHT!';
+        scoreColor = 'text-emerald-700 bg-emerald-50 border-emerald-300';
+        advice = 'This is an ideal calculated risk! It offers meaningful growth, manageable mistakes, and you already defined a solid Plan B. Go for it!';
+        state.wisdomXP += 20;
+        state.courageXP += 15;
+        document.getElementById('statCourage').innerText = state.courageXP;
+        document.getElementById('statWisdom').innerText = state.wisdomXP;
+      }
+
+      outCard.innerHTML = `
+        <div class="p-5 rounded-2xl border ${scoreColor} space-y-4">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <span class="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-white shadow-xs">Risk Diagnosis</span>
+            <span class="text-xs font-bold">Tested on ${new Date().toLocaleDateString()}</span>
+          </div>
+          <h3 class="font-display text-xl font-bold">${riskVerdict}</h3>
+          <p class="text-xs sm:text-sm leading-relaxed">${advice}</p>
+
+          <div class="bg-white/80 p-4 rounded-xl text-xs space-y-2 border border-slate-200">
+            <div><strong class="text-slate-800">Your Plan B Safety Net:</strong> "${planB}"</div>
+            <div><strong class="text-slate-800">Top Potential Gain:</strong> "${bestCase}"</div>
+          </div>
+
+          <div class="pt-2 flex gap-3">
+            <button onclick="saveRealLifeToJournal('${encodeURIComponent(dilemma)}', '${encodeURIComponent(riskVerdict)}', '${encodeURIComponent(planB)}')" class="px-4 py-2 bg-slate-900 text-white text-xs font-bold rounded-xl hover:bg-slate-800 transition">
+              Save Diagnosis to Journal
+            </button>
+          </div>
+        </div>
+      `;
+
+      outCard.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function saveRealLifeToJournal(dilemmaEnc, verdictEnc, planBEnc) {
+      const dilemma = decodeURIComponent(dilemmaEnc);
+      const verdict = decodeURIComponent(verdictEnc);
+      const planB = decodeURIComponent(planBEnc);
+
+      state.journalEntries.unshift({
+        id: 'entry_' + Date.now(),
+        date: new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
+        title: dilemma,
+        category: 'Personal Dilemma',
+        choiceMade: 'Plan B: ' + planB,
+        choiceType: verdict,
+        reflectionText: 'Evaluated safety filters and prepared backup strategy before acting.',
+        type: 'reallife'
+      });
+
+      updateJournalBadge();
+      openModal('Saved to Journal!', 'Your real-life risk diagnosis has been recorded in your Reflection Log.', '🎯');
+    }
+
+    function clearDeciderForm() {
+      document.getElementById('deciderForm').reset();
+      document.getElementById('deciderResultCard').classList.add('hidden');
+    }
+
+    function renderJournal() {
+      const list = document.getElementById('journalEntriesList');
+      if (state.journalEntries.length === 0) {
+        list.innerHTML = `
+          <div class="bg-white rounded-2xl p-8 text-center border border-slate-200 text-slate-400">
+            <span class="text-4xl block mb-2">📝</span>
+            <p class="text-sm font-semibold text-slate-600">Your log is currently empty.</p>
+            <p class="text-xs text-slate-400 mt-1">Play through scenarios or run the Real-Life Decider to collect actionable insights.</p>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = state.journalEntries.map(entry => `
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between space-y-3">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700">${entry.category}</span>
+              <span class="text-xs font-semibold text-slate-400">• ${entry.date}</span>
+            </div>
+            <span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-800">${entry.choiceType}</span>
+          </div>
+
+          <div>
+            <h4 class="font-bold text-slate-900 text-sm mb-1">${entry.title}</h4>
+            <div class="text-xs text-slate-500 mb-2"><strong>Decision / Path:</strong> ${entry.choiceMade}</div>
+            <p class="text-xs text-slate-700 bg-slate-50 p-3 rounded-xl border border-slate-100 italic leading-relaxed">
+              "${entry.reflectionText}"
+            </p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function exportJournalAsText() {
+      if (state.journalEntries.length === 0) {
+        openModal('Empty Journal', 'Complete a few dilemmas first before copying your log!', 'ℹ️');
+        return;
+      }
+
+      let content = `RISK LAB: GRADE 7 REFLECTION REPORT\n`;
+      content += `Generated: ${new Date().toLocaleDateString()}\n`;
+      content += `Courage XP: ${state.courageXP} | Wisdom XP: ${state.wisdomXP}\n`;
+      content += `====================================================\n\n`;
+
+      state.journalEntries.forEach((entry, i) => {
+        content += `${i + 1}. [${entry.category}] ${entry.title}\n`;
+        content += `   Type: ${entry.choiceType}\n`;
+        content += `   Action/Safety Net: ${entry.choiceMade}\n`;
+        content += `   Reflection: ${entry.reflectionText}\n\n`;
+      });
+
+      // Fallback copy using textarea
+      const el = document.createElement('textarea');
+      el.value = content;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+
+      openModal('Copied to Clipboard!', 'Your reflection journal summary has been copied! You can paste it into Google Classroom, Word, or an email to your teacher.', '📋');
+    }
+
+    function clearJournalHistory() {
+      if (state.journalEntries.length === 0) return;
+      state.journalEntries = [];
+      updateJournalBadge();
+      renderJournal();
+      openModal('Cleared', 'Your journal has been cleared.', '🗑️');
+    }
+
+    function switchTab(tab) {
+      playBeep(450, 'sine', 0.05);
+
+      const tabs = ['framework', 'scenarios', 'realLife', 'journal'];
+      tabs.forEach(t => {
+        const sec = document.getElementById('section' + t.charAt(0).toUpperCase() + t.slice(1));
+        const btn = document.getElementById('tabBtn' + t.charAt(0).toUpperCase() + t.slice(1));
+        if (sec && btn) {
+          sec.classList.add('hidden');
+          btn.classList.remove('bg-white', 'text-indigo-700', 'shadow-sm');
+          btn.classList.add('text-slate-600');
+        }
+      });
+
+      const activeSec = document.getElementById('section' + tab.charAt(0).toUpperCase() + tab.slice(1));
+      const activeBtn = document.getElementById('tabBtn' + tab.charAt(0).toUpperCase() + tab.slice(1));
+
+      if (activeSec && activeBtn) {
+        activeSec.classList.remove('hidden');
+        activeBtn.classList.add('bg-white', 'text-indigo-700', 'shadow-sm');
+        activeBtn.classList.remove('text-slate-600');
+      }
+
+      if (tab === 'journal') {
+        renderJournal();
+      }
+    }
+
+    // Modal Notification helper
+    function openModal(title, text, icon = '💡') {
+      document.getElementById('modalTitle').innerText = title;
+      document.getElementById('modalBody').innerText = text;
+      document.getElementById('modalIcon').innerText = icon;
+      document.getElementById('modalBackdrop').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('modalBackdrop').classList.add('hidden');
+    }
+
+    // Initial page load bootstrapping
+    window.onload = function() {
+      renderScenarioCards();
+    };
+  </script>
+</body>
+</html>
