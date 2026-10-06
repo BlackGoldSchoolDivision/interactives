@@ -393,6 +393,8 @@
       const data = await fetchYear(timeline[nextIndex].year);
       if (token !== renderToken) return false;
       const changedView = timeline[currentIndex]?.sourceMap !== timeline[nextIndex].sourceMap || !!timeline[currentIndex]?.context !== !!timeline[nextIndex].context;
+      if (timeline[nextIndex].context && !timeline[currentIndex]?.context) $('show-geography').checked = true;
+      if (timeline[currentIndex]?.early && !timeline[nextIndex].early) $('show-geography').checked = false;
       currentIndex = nextIndex; currentMap = data;
       if (changedView) svg.interrupt().call(zoom.transform,d3.zoomIdentity);
       if (!visibleFeatures().some(f => f.properties.name === selectedName)) selectedName = null;
@@ -501,7 +503,12 @@
       ['left','right'].forEach((side,j)=>{
         const event=timeline[indexes[j]],holder=$(`compare-map-${side}`);holder.replaceChildren();
         if(event.sourceMap){const img=document.createElement('img');img.src=`assets/atlas-${event.sourceMap}.webp`;img.alt=`Atlas of Canada source map dated ${event.sourceMap}`;holder.append(img);}
-        else {const canvas=d3.select(holder).append('svg').attr('viewBox',`0 0 ${WIDTH} ${HEIGHT}`).attr('role','img').attr('aria-label',event.context?'Geographic context, no provincial boundaries':`Political boundaries in ${event.year}`);canvas.selectAll('path').data(event.context?latestLand.features:maps[j].features).join('path').attr('d',f=>path(drawable(f))).attr('fill',event.context?'#d9e4e8':fill).attr('stroke',event.context?'#d9e4e8':'white').attr('stroke-width',1);}
+        else {const canvas=d3.select(holder).append('svg').attr('viewBox',`0 0 ${WIDTH} ${HEIGHT}`).attr('role','img').attr('aria-label',event.context?'Geographic context, no provincial boundaries':`Political boundaries in ${event.year}`);canvas.append('defs').html($('map').querySelector('defs').innerHTML);
+          canvas.selectAll('path').data(event.context?latestLand.features:maps[j].features).join('path').attr('d',f=>path(drawable(f))).attr('fill',event.context?'#d9e4e8':fill).attr('stroke',event.context?'#d9e4e8':'white').attr('stroke-width',1);
+          if(!event.context) {
+            canvas.selectAll('.region-label').data(maps[j].features.filter(f=>f.properties.name!=='Disputed area')).join('text').attr('class','region-label').attr('transform',f=>{const p=projection(f.properties.label);return `translate(${p[0]},${p[1]})`;}).each(function(f){const lines=labelLines(f.properties.name);lines.forEach((line,i)=>d3.select(this).append('tspan').attr('x',0).attr('dy',i===0?'0': '1.12em').text(line));});
+            if(event.year>=1912 && event.year<1999) {const p=projection([-106,69]);canvas.append('text').attr('class','nwt-title').attr('x',p[0]).attr('y',p[1]-12).text('Northwest Territories');}
+          }}
         $(`compare-heading-${side}`).textContent=`${dateLabel(event)} · ${event.title}`;
         $(`compare-note-${side}`).textContent=event.mapNote || event.summary;
       });$('compare-status').textContent='Comparison ready.';

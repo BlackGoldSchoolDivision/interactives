@@ -1,0 +1,5 @@
+# Validation
+
+Run `npm install` and `npm test` in this directory. The jsdom tests execute the real app code against its local data, covering all 30 dates, source image existence, correct date labels and qualifications, place notes, Grade 4/7 prompts, vector boundaries, NWT district grouping, comparisons, previous boundaries, playback, keyboard navigation, and preserving date/selection/zoom on a resize event. `validation.txt` records the completed results. The JPEGs are rendered map previews, not browser screenshots.
+
+Actual browser layout checks remain pending because the cloud browser cannot open local file URLs and default-branch publication requires approval. Once the separate app is published, use `../screen-checks.html` to inspect 1024×540, 1366×650, 768×900, 390×667, 320×568, 640×360 and 512×270 (a narrow/short zoom approximation). Confirm text, controls, dialogs and maps remain legible, no page-wide horizontal scrolling appears, and state survives resizing. Run these checks immediately after authorized publication, before adding the new map to the Lab catalog.

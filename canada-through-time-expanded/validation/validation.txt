@@ -1,0 +1,41 @@
+PASS Indigenous-homelands context has no colonial colours or provincial boundaries, and geography markers open notes
+PASS date Before 1600
+PASS date 1667
+PASS date 1713
+PASS date 1763
+PASS date 1774
+PASS date 1791
+PASS date 1840 / 1841
+PASS date 1867
+PASS date 1870
+PASS date 1871
+PASS date 1873
+PASS date 1874
+PASS date 1876
+PASS date 1880
+PASS date 1881
+PASS date 1882
+PASS date 1886
+PASS date 1889
+PASS date 1895
+PASS date 1897
+PASS date 1898
+PASS date 1901
+PASS date 1905
+PASS date 1912
+PASS date 1920
+PASS date 1927
+PASS date 1949
+PASS date 1999
+PASS date 2001
+PASS date 2003
+PASS Act of Union distinguishes law, effective date and later reference map
+PASS Grade 4 / Grade 7 inquiry switch
+PASS Previous vector snapshot is drawn, and raster/vector transition is protected
+PASS Source-map and vector-map two-date comparisons
+PASS Resize event preserves date, selection and pan/zoom (DOM simulation)
+PASS Labels and geography controls
+PASS Playback, pause and keyboard date navigation
+PASS No application runtime errors across all 30 stops and tested controls
+
+Layout verification at actual browser viewport sizes remains pending: local file URLs are blocked by the cloud browser, and production publication requires approval.
