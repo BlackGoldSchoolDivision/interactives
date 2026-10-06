@@ -112,3 +112,9 @@ The Lab entry and links CSV reflect the refresh. Its actual live screenshot is `
 Darren selected the simple flat schoolbook illustration preview. All 14 picture assets were replaced individually under the same `wantsandneedssort/assets/` filenames, with a new image and script cache version. The built-in image generator prompt set is stored in `assets/image-prompts.json`. The full icon set is 221,190 bytes; game structure, categories, contextual explanations and interactions are retained.
 
 The replacement actual live screenshot is `learning-lab-images/wantsneeds.jpg?v=b424ae666f1c` (900 × 620, 63,805 bytes). Six rendered screen checks passed with no horizontal overflow, all artwork loaded and contained, clear labels, and preserved selection and placement. A full live 14-card round, keyboard placement, explanatory review and reset passed. Actual browser zoom retains the limitation documented in `verification.json`. The catalogue still has 151 entries and retains the existing Thinking Tools order.
+
+
+
+## Canada Through Time in Social Studies — 6 October 2026
+
+Added the published territorial evolution interactive with 23 Atlas snapshots (1867–2003), using a real screenshot of its 1999 Nunavut milestone. Its card sits at position 11 of 20 in the Social Studies list, immediately after Social Studies 7–9, and is also available in Geography → Canada. The actual 900 × 620 preview is saved separately as `learning-lab-images/territorial-evolution-canada.jpg?v=a310613ad303` (67,134 bytes). The catalogue has 152 entries. Wants & Needs was verified against the latest `20261006-flat` game script and all 14 separately saved images; its current Lab preview remains `wantsneeds.jpg?v=b424ae666f1c`.

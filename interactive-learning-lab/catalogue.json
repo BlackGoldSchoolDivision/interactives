@@ -2935,6 +2935,33 @@
     "captured": "2026-10-04"
   },
   {
+    "id": "territorial-evolution-canada",
+    "path": "territorial-evolution-canada",
+    "repo": "org",
+    "title": "Canada Through Time: Changing Boundaries",
+    "category": "Social studies",
+    "secondary_categories": [
+      "Geography"
+    ],
+    "description": "Explore 23 historical maps from 1867–2003. Play the timeline, compare earlier boundaries, and select provinces, territories and historical districts to investigate how Canada changed.",
+    "types": [
+      "Maps & geography",
+      "Simulations & models"
+    ],
+    "tags": [
+      "Canada through time",
+      "1867–2003",
+      "Historical boundaries"
+    ],
+    "url": "https://interactives.blackgold.ca/territorial-evolution-canada/",
+    "links": [],
+    "favourite": false,
+    "credit": "Boundary data: Natural Resources Canada",
+    "group": "Canada",
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/territorial-evolution-canada.jpg?v=a310613ad303",
+    "captured": "2026-10-06"
+  },
+  {
     "id": "ideologyscanner",
     "path": "ideologyscanner",
     "repo": "personal",
