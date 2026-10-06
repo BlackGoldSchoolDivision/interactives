@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SafeChoices: Social-Emotional Skills & Safety Lab</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome for crisp iconography -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+              800: '#115e59',
+              900: '#134e4a',
+            },
+            accent: {
+              amber: '#f59e0b',
+              indigo: '#6366f1',
+              rose: '#f43f5e',
+              emerald: '#10b981'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .fade-in {
+      animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased">
+  <!-- Top Navigation & Grade Banner -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-600 to-emerald-400 flex items-center justify-center text-white shadow-md shadow-teal-500/20">
+          <i class="fa-solid fa-shield-heart text-xl"></i>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <h1 class="text-lg font-bold text-slate-900 leading-tight">SafeChoices Lab</h1>
+            <span class="bg-teal-100 text-teal-800 text-xs px-2 py-0.5 rounded-full font-semibold border border-teal-200">Grade 8 Health</span>
+          </div>
+          <p class="text-xs text-slate-500">Connecting Social & Emotional Skills to Personal Safety</p>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="flex items-center bg-slate-100 p-1 rounded-xl text-xs sm:text-sm font-medium">
+        <button id="tab-nav-contexts" onclick="switchMainTab('contexts')" class="px-3.5 py-1.5 rounded-lg transition-all text-slate-700 bg-white shadow-sm font-semibold">
+          <i class="fa-solid fa-earth-americas mr-1.5 text-teal-600"></i>Module 1: Safety & SEL (10)
+        </button>
+        <button id="tab-nav-peer" onclick="switchMainTab('peer')" class="px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-slate-900 font-medium">
+          <i class="fa-solid fa-user-shield mr-1.5 text-rose-500"></i>Module 2: Peer Pressure (10)
+        </button>
+        <button id="tab-nav-reflection" onclick="switchMainTab('reflection')" class="px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-slate-900 font-medium">
+          <i class="fa-solid fa-book-bookmark mr-1.5 text-indigo-600"></i>SEL Reflection Sheet
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-grow max-w-6xl w-full mx-auto p-4 sm:p-6">
+
+    <!-- SEL Competency Quick Reference Ribbon -->
+    <section class="mb-6 bg-gradient-to-r from-teal-900 via-slate-900 to-indigo-950 text-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-800">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div>
+          <span class="text-teal-300 uppercase tracking-widest text-[11px] font-bold">Curriculum Focus • 20 Interactive Scenarios</span>
+          <h2 class="text-base sm:text-lg font-bold text-white mt-0.5">Examine Social & Emotional Skills in Relation to Health and Safety</h2>
+          <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl">
+            Learn how skills like emotional self-regulation, recognizing internal intuition, assertive boundary setting, and seeking trusted help keep you and others physically and emotionally secure.
+          </p>
+        </div>
+        <div class="flex items-center gap-2 self-stretch md:self-auto justify-between md:justify-end bg-white/10 px-3.5 py-2 rounded-xl backdrop-blur-sm border border-white/10 text-xs">
+          <div class="text-center px-2">
+            <span class="block text-slate-300 text-[10px] uppercase">Completed</span>
+            <span id="stat-completed-scenarios" class="font-bold text-teal-300 text-sm">0 / 20</span>
+          </div>
+          <div class="h-6 w-px bg-white/20"></div>
+          <div class="text-center px-2">
+            <span class="block text-slate-300 text-[10px] uppercase">SEL Mastery</span>
+            <span id="stat-badges-earned" class="font-bold text-amber-300 text-sm">0 / 5</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Module 1: Unsafe Situations Across Contexts -->
+    <div id="module-contexts" class="space-y-6">
+      <div class="flex items-center justify-between flex-wrap gap-2 pb-1">
+        <div>
+          <h3 class="text-base font-bold text-slate-900">Module 1: Explore Unsafe Situations & Apply SEL Skills</h3>
+          <p class="text-xs text-slate-500">10 scenarios across four environments: Online, Home, School, and Community.</p>
+        </div>
+        <div class="inline-flex bg-white p-1 rounded-xl border border-slate-200 shadow-sm flex-wrap gap-1" id="context-filters">
+          <button onclick="setContextCategory('all')" data-cat="all" class="cat-pill active px-3 py-1 rounded-lg text-xs font-semibold bg-teal-600 text-white">All (10)</button>
+          <button onclick="setContextCategory('online')" data-cat="online" class="cat-pill px-3 py-1 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900">Online & Digital</button>
+          <button onclick="setContextCategory('home')" data-cat="home" class="cat-pill px-3 py-1 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900">At Home</button>
+          <button onclick="setContextCategory('school')" data-cat="school" class="cat-pill px-3 py-1 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900">At School</button>
+          <button onclick="setContextCategory('community')" data-cat="community" class="cat-pill px-3 py-1 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900">In the Community</button>
+        </div>
+      </div>
+
+      <!-- Scenarios Grid & Active Scenario Workspace -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Scenario List Column -->
+        <div class="lg:col-span-5 space-y-3 max-h-[720px] overflow-y-auto pr-1 custom-scrollbar" id="scenarios-list-container">
+          <!-- Dynamic scenario cards will render here -->
+        </div>
+
+        <!-- Active Scenario Card Detail -->
+        <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm flex flex-col justify-between" id="scenario-viewer">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Module 2: Peer Pressure & Harmful Situations -->
+    <div id="module-peer" class="hidden space-y-6">
+      <div class="bg-gradient-to-r from-rose-50 to-orange-50 border border-rose-100 rounded-2xl p-5">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div class="flex items-center space-x-3.5">
+            <div class="w-12 h-12 rounded-xl bg-rose-500 text-white flex items-center justify-center text-xl shadow-md shadow-rose-500/20">
+              <i class="fa-solid fa-users-slash"></i>
+            </div>
+            <div>
+              <span class="text-rose-600 font-semibold text-xs tracking-wider uppercase">High-Risk Decision Simulator</span>
+              <h3 class="text-lg font-bold text-slate-900">Module 2: Peer Pressure, Substances & Harmful Behaviors (10 Scenarios)</h3>
+              <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Evaluate social manipulation tactics, analyze health consequences, and practice assertive refusal skills.</p>
+            </div>
+          </div>
+          <!-- Refusal Strategy Guide Popout Button -->
+          <button onclick="openRefusalStrategiesModal()" class="px-3.5 py-2 bg-white text-rose-700 hover:bg-rose-50 border border-rose-200 rounded-xl text-xs font-bold transition flex items-center shadow-sm">
+            <i class="fa-solid fa-shield mr-1.5"></i>Refusal Skills Toolkit
+          </button>
+        </div>
+      </div>
+
+      <!-- Interactive Simulation Area -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Scenario Selector for Peer Pressure -->
+        <div class="lg:col-span-5 space-y-3 max-h-[720px] overflow-y-auto pr-1 custom-scrollbar" id="peer-scenarios-list">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Active Peer Pressure Interactive Arena -->
+        <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm flex flex-col justify-between" id="peer-viewer">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Module 3: Reflection Sheet (Without Name/Class & Print Button) -->
+    <div id="module-reflection" class="hidden space-y-6">
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+          <div>
+            <span class="text-indigo-600 text-xs font-bold uppercase tracking-wider">Independent Student Reflection</span>
+            <h3 class="text-xl font-bold text-slate-900">Health & Safety SEL Synthesis</h3>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">Reflect on your decisions, recognize personal emotional triggers, and document your personal safety action plan.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="copyReflectionReport()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl transition flex items-center shadow-sm">
+              <i class="fa-solid fa-copy mr-1.5"></i>Copy Reflection Text
+            </button>
+            <button onclick="clearReflectionInputs()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-semibold rounded-xl transition flex items-center">
+              <i class="fa-solid fa-rotate-left mr-1.5"></i>Reset Form
+            </button>
+          </div>
+        </div>
+
+        <form id="reflection-form" class="mt-6 space-y-6" onsubmit="event.preventDefault();">
+          <!-- Section 1 Reflection -->
+          <div class="bg-slate-50 rounded-xl p-4 sm:p-5 border border-slate-200 space-y-3">
+            <h4 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-teal-600 text-white text-xs flex items-center justify-center font-bold">1</span>
+              Connecting Social-Emotional Skills to Safety
+            </h4>
+            <label class="block text-xs sm:text-sm text-slate-700 leading-relaxed">
+              When encountering an unexpected danger (such as an online stranger, an unvetted party, or a home emergency), <strong>how does paying attention to your physical body signals (Self-Awareness) help protect your personal safety before a crisis escalates?</strong>
+            </label>
+            <textarea id="ref-q1" rows="3" class="w-full text-sm border border-slate-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white" placeholder="Describe physical cues like an uneasy stomach, racing pulse, or intuition, and how honoring them keeps you out of harm's way..."></textarea>
+          </div>
+
+          <!-- Section 2 Reflection -->
+          <div class="bg-slate-50 rounded-xl p-4 sm:p-5 border border-slate-200 space-y-3">
+            <h4 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-rose-600 text-white text-xs flex items-center justify-center font-bold">2</span>
+              Peer Pressure & Harm Reduction Strategies
+            </h4>
+            <label class="block text-xs sm:text-sm text-slate-700 leading-relaxed">
+              When peers push someone to vape, consume unknown substances, or participate in a dangerous viral stunt, direct refusal can feel socially uncomfortable. <strong>Which refusal or boundary tactic do you find most reliable, and why?</strong>
+            </label>
+            <textarea id="ref-q2" rows="3" class="w-full text-sm border border-slate-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-rose-500 bg-white" placeholder="e.g., The Pre-Arranged Code Word, the Clear Direct 'I' Statement, Light Humor Deflection, or Walking Away to Safety..."></textarea>
+          </div>
+
+          <!-- Section 3 Reflection -->
+          <div class="bg-slate-50 rounded-xl p-4 sm:p-5 border border-slate-200 space-y-3">
+            <h4 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-indigo-600 text-white text-xs flex items-center justify-center font-bold">3</span>
+              Personal Safety Network (Seeking Support)
+            </h4>
+            <label class="block text-xs sm:text-sm text-slate-700 leading-relaxed">
+              Identify at least <strong>two trusted adults</strong> (at school, at home, or in your community) you can turn to if you or a peer are experiencing harmful pressures or feel unsafe:
+            </label>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+              <div>
+                <span class="text-[11px] font-semibold text-slate-500 block mb-1">Support Person 1</span>
+                <input type="text" id="ref-adult-1" placeholder="e.g., School Counselor, Aunt, Coach, Older Cousin" class="w-full text-sm border border-slate-300 rounded-xl px-3.5 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              </div>
+              <div>
+                <span class="text-[11px] font-semibold text-slate-500 block mb-1">Support Person 2</span>
+                <input type="text" id="ref-adult-2" placeholder="e.g., Parent/Guardian, Teacher, Youth Leader, Social Worker" class="w-full text-sm border border-slate-300 rounded-xl px-3.5 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- Refusal Skills Modal -->
+  <div id="refusal-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white max-w-xl w-full rounded-2xl p-6 shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto custom-scrollbar">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-8 h-8 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center text-sm font-bold">
+            <i class="fa-solid fa-lightbulb"></i>
+          </div>
+          <h3 class="text-base font-bold text-slate-900">Proven Peer Refusal Tactics (C.L.E.A.R)</h3>
+        </div>
+        <button onclick="closeRefusalStrategiesModal()" class="text-slate-400 hover:text-slate-600 text-lg p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3.5 my-4 text-xs sm:text-sm text-slate-700">
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <span class="font-bold text-rose-600 text-xs uppercase tracking-wider block">1. The Direct & Firm "No"</span>
+          <p class="text-slate-600 mt-1">"No thanks, that's not for me." Keep posture relaxed, tone calm, and make steady eye contact without hostility.</p>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <span class="font-bold text-amber-600 text-xs uppercase tracking-wider block">2. The Plausible Excuse or Exit Call</span>
+          <p class="text-slate-600 mt-1">"I have sports practice early tomorrow, need my lungs." Or text a pre-arranged emergency code word to a guardian to get an immediate phone call home.</p>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <span class="font-bold text-teal-600 text-xs uppercase tracking-wider block">3. The Better Alternative</span>
+          <p class="text-slate-600 mt-1">"I'm not doing that. Let's go grab smoothies or hit the basketball court instead." Pivot the group to something constructive.</p>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <span class="font-bold text-indigo-600 text-xs uppercase tracking-wider block">4. The Broken Record</span>
+          <p class="text-slate-600 mt-1">Repeat the same simple refusal calmly without getting defensive: "Nah, I'm good." "Still nah." Eventually the pressure dissipates.</p>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <span class="font-bold text-emerald-600 text-xs uppercase tracking-wider block">5. Body Language & Walking Away</span>
+          <p class="text-slate-600 mt-1">If peers don't respect your boundaries, physically walking away is strength, not weakness. Reconnect with a safer group.</p>
+        </div>
+      </div>
+
+      <div class="pt-2 text-right">
+        <button onclick="closeRefusalStrategiesModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold rounded-xl">Got It</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Banner / Toast for Feedback -->
+  <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white text-xs px-4 py-3 rounded-xl shadow-lg border border-slate-700 flex items-center space-x-2 transform translate-y-20 opacity-0 transition-all duration-300 z-50 pointer-events-none">
+    <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400"></i>
+    <span id="toast-msg">Notification text</span>
+  </div>
+
+  <script>
+    // -------------------------------------------------------------
+    // DATA: Module 1 - 10 Scenarios across Online, Home, School, Community
+    // -------------------------------------------------------------
+    const contextScenarios = [
+      {
+        id: 'c1',
+        category: 'online',
+        categoryName: 'Online / Digital',
+        icon: 'fa-shield-halved',
+        color: 'teal',
+        title: 'The Exclusive Gaming Group & Private Geolocation',
+        description: 'You join a multiplayer Discord server. A high-ranking older gamer offers rare in-game items, but demands your real name, school, and home address to "verify eligibility".',
+        hazard: 'Digital Grooming, Privacy Violation & Identity Exploitation',
+        selFocus: 'Self-Awareness & Impulse Control',
+        selExplanation: 'Listening to an uneasy gut instinct that informs you when digital boundaries are being crossed for exploitation.',
+        choices: [
+          {
+            text: 'Send the address and info so you get the rare items and prestige in the gaming server.',
+            isBest: false,
+            selUsed: 'Impulse-Driven / Status Seeking',
+            consequence: 'Severe hazard! Sharing identifying home details with anonymous online figures exposes you to physical security breaches.',
+            selTip: 'Self-awareness requires pausing when excitement tries to override caution.'
+          },
+          {
+            text: 'Politely decline the offer, capture screenshots, block the user, and inform a parent or moderator.',
+            isBest: true,
+            selUsed: 'Emotional Regulation & Seeking Trusted Support',
+            consequence: 'Outstanding choice! You preserved boundaries and prevented potential extortion or grooming.',
+            selTip: 'Self-regulation protects your digital footprint and physical privacy.'
+          },
+          {
+            text: 'Provide a neighbor\'s address to mess with them and mock them in the public chat.',
+            isBest: false,
+            selUsed: 'Conflict Escalation',
+            consequence: 'Unsafe! Antagonizing online strangers can result in doxxing attacks and swatting.',
+            selTip: 'Social management involves de-escalating rather than instigating online fights.'
+          }
+        ]
+      },
+      {
+        id: 'c2',
+        category: 'home',
+        categoryName: 'At Home',
+        icon: 'fa-house-chimney',
+        color: 'amber',
+        title: 'Home Alone: Stovetop Grease Smoke & Aggressive Knocker',
+        description: 'You are home alone heating cooking oil when the pan begins smoking furiously, triggering the loud alarm. At that exact moment, someone knocks loudly on the front door.',
+        hazard: 'Kitchen Grease Fire & Unauthorized Home Entry',
+        selFocus: 'Self-Management & Emotional Composure Under Stress',
+        selExplanation: 'Regulating acute panic so you can prioritize hazards methodically without freezing.',
+        choices: [
+          {
+            text: 'Open the door immediately to ask whoever is outside to come in and help with the smoke.',
+            isBest: false,
+            selUsed: 'Impulsive Reaction to Panic',
+            consequence: 'Extremely dangerous! Never open the door to unvetted strangers when home alone, as you leave the fire unattended.',
+            selTip: 'Take a deep breath to manage stress before making impulsive physical decisions.'
+          },
+          {
+            text: 'Turn off the heat source, slide a lid over the pan to smother the oxygen, leave the door locked, and contact a guardian.',
+            isBest: true,
+            selUsed: 'Calm Execution & Safety Protocol',
+            consequence: 'Perfect safety response! Smothering stops grease fires, and keeping the door locked protects home safety.',
+            selTip: 'Self-management allows clear procedural thinking under pressure.'
+          },
+          {
+            text: 'Run up to your bedroom and hide with headphones until both things stop.',
+            isBest: false,
+            selUsed: 'Avoidance & Freezing',
+            consequence: 'High danger! A smoking pan can ignite into an open fire within minutes if unmanaged.',
+            selTip: 'Emotional regulation empowers proactive problem-solving rather than withdrawal.'
+          }
+        ]
+      },
+      {
+        id: 'c3',
+        category: 'school',
+        categoryName: 'At School',
+        icon: 'fa-school',
+        color: 'indigo',
+        title: 'Hallway Harassment & Bystander Filming',
+        description: 'Between classes, a group corners a student by the lockers, shoving them and recording it for social media while cheering.',
+        hazard: 'Bullying, Physical Assault & Bystander Complicity',
+        selFocus: 'Social Awareness & Upstander Empathy',
+        selExplanation: 'Empathizing with victim distress, resisting the crowd bystander effect, and mobilizing intervention safely.',
+        choices: [
+          {
+            text: 'Pull out your phone to film it too so you have the video to share with friends.',
+            isBest: false,
+            selUsed: 'Peer Conformity & Bystander Complicity',
+            consequence: 'Harmful! Recording humiliates the victim, encourages the bullies, and violates school policies.',
+            selTip: 'Social awareness asks: "How would I feel if I were being targeted like that?"'
+          },
+          {
+            text: 'Immediately step into the nearest classroom or office to notify staff, or shout "The principal is coming!"',
+            isBest: true,
+            selUsed: 'Upstander Intervention & Strategic Action',
+            consequence: 'Excellent upstander move! You halted the assault quickly without putting yourself in physical danger.',
+            selTip: 'Relationship skills include protecting collective school safety through smart advocacy.'
+          },
+          {
+            text: 'Jump into the fight physically and begin throwing punches at the aggressors.',
+            isBest: false,
+            selUsed: 'Aggressive Escalation',
+            consequence: 'High risk of physical injury, school suspension, and worsening violent conflict.',
+            selTip: 'Emotional regulation keeps you from responding to violence with reckless chaos.'
+          }
+        ]
+      },
+      {
+        id: 'c4',
+        category: 'community',
+        categoryName: 'In the Community',
+        icon: 'fa-tree-city',
+        color: 'emerald',
+        title: 'Abandoned Construction Site at Dusk',
+        description: 'At dusk in the park, two friends urge you to climb through a gap in the fence of an active construction demolition site to explore a rooftop crane.',
+        hazard: 'Catastrophic Falls, Structural Collapse & Trespassing',
+        selFocus: 'Assertive Boundary Setting & Self-Worth',
+        selExplanation: 'Valuing your own safety over the fear of being labeled "boring" by peers.',
+        choices: [
+          {
+            text: 'Follow them inside because you cannot bear being mocked as afraid or cowardly.',
+            isBest: false,
+            selUsed: 'Fear of Social Rejection',
+            consequence: 'Critical danger! Construction sites contain open shafts, exposed wiring, and unstable footing.',
+            selTip: 'Self-worth means your physical health is worth far more than temporary peer approval.'
+          },
+          {
+            text: 'Firmly declare: "No way, that site is dangerous. I\'m heading to the court for basketball—let\'s go shoot hoops instead."',
+            isBest: true,
+            selUsed: 'Assertive Communication & Alternative Redirection',
+            consequence: 'Outstanding leadership! Often friends are quietly nervous too; one confident voice keeps everyone safe.',
+            selTip: 'Relationship leadership offers fun, safe alternatives without aggressive arguments.'
+          },
+          {
+            text: 'Pretend to trip and fake a sprained ankle to avoid going in without admitting you are scared.',
+            isBest: false,
+            selUsed: 'Passive Avoidance',
+            consequence: 'While it keeps you out, it leaves your friends to face severe hazards without warning.',
+            selTip: 'Social responsibility means honestly communicating genuine safety risks.'
+          }
+        ]
+      },
+      {
+        id: 'c5',
+        category: 'online',
+        categoryName: 'Online / Digital',
+        icon: 'fa-camera',
+        color: 'teal',
+        title: 'Private Photo Request & Webcam Coercion',
+        description: 'An online acquaintance you have talked to for two weeks insists you send a private, sensitive webcam photo, claiming: "If you really trust me, you will send it right now."',
+        hazard: 'Online Sexual Exploitation, Blackmail & Cyber Extortion',
+        selFocus: 'Recognizing Manipulation & Boundary Enforcement',
+        selExplanation: 'Discerning that emotional guilt-tripping is a predatory control tactic.',
+        choices: [
+          {
+            text: 'Send the photo because you don\'t want to lose their friendship or hurt their feelings.',
+            isBest: false,
+            selUsed: 'People-Pleasing & Boundary Collapse',
+            consequence: 'Extremely unsafe! Digital photos can be saved, shared, and weaponized for ongoing extortion.',
+            selTip: 'True friends will never pressure you to compromise your boundaries or safety.'
+          },
+          {
+            text: 'Refuse firmly, preserve screenshots, block communication, and inform a trusted adult right away.',
+            isBest: true,
+            selUsed: 'Assertive Refusal & Proactive Protection',
+            consequence: 'Superb response! You eliminated the threat before escalation and sought appropriate guidance.',
+            selTip: 'Setting firm digital boundaries is an essential protective health habit.'
+          },
+          {
+            text: 'Promise you will send it next week if they give you their passwords first.',
+            isBest: false,
+            selUsed: 'False Bargaining',
+            consequence: 'Dangerous. Bargaining prolongs manipulative contact and increases pressure.',
+            selTip: 'Clear, unequivocal boundaries prevent predatory cycles from continuing.'
+          }
+        ]
+      },
+      {
+        id: 'c6',
+        category: 'home',
+        categoryName: 'At Home',
+        icon: 'fa-smog',
+        color: 'amber',
+        title: 'Suspected Natural Gas Odor & Dizziness',
+        description: 'You and a younger sibling are doing homework when you notice a strong rotten-egg smell in the house and start feeling lightheaded.',
+        hazard: 'Natural Gas Leak, Asphyxiation & Explosion Hazard',
+        selFocus: 'Protective Responsibility & Decisive Action',
+        selExplanation: 'Prioritizing immediate physical safety over confusion or hesitation.',
+        choices: [
+          {
+            text: 'Turn on all ceiling fans and light switches to see if you can blow the odor out.',
+            isBest: false,
+            selUsed: 'Uninformed Action Under Stress',
+            consequence: 'Deadly hazard! Flipping light switches or electrical appliances can spark an immediate gas explosion.',
+            selTip: 'Recognizing emergency safety protocols saves lives.'
+          },
+          {
+            text: 'Immediately take your sibling outside into fresh air, leave doors open, and call emergency services or a neighbor from outside.',
+            isBest: true,
+            selUsed: 'Decisive Safety Protocol & Care for Others',
+            consequence: 'Life-saving action! Evacuating immediately prevents inhalation poisoning and spark hazards.',
+            selTip: 'Responsible decision-making means putting personal and sibling safety first.'
+          },
+          {
+            text: 'Light a scented candle in the living room to cover up the bad smell.',
+            isBest: false,
+            selUsed: 'Dangerous Misjudgment',
+            consequence: 'Catastrophic danger! An open flame in an environment with leaking natural gas can trigger an explosion.',
+            selTip: 'Always verify environmental hazards before acting.'
+          }
+        ]
+      },
+      {
+        id: 'c7',
+        category: 'school',
+        categoryName: 'At School',
+        icon: 'fa-flask-vial',
+        color: 'indigo',
+        title: 'Science Lab Chemical Spill & Spreading Vapor',
+        description: 'During a chemistry lab, a classmate accidentally knocks over a beaker of corrosive acid that starts smoking and splashing near other students who are joking around.',
+        hazard: 'Chemical Burns, Inhalation of Toxic Fumes',
+        selFocus: 'Self-Regulation & Situational Alertness',
+        selExplanation: 'Managing sensory overload to execute laboratory safety rules promptly.',
+        choices: [
+          {
+            text: 'Try to wipe up the bubbling liquid with paper towels yourself without alerting anyone.',
+            isBest: false,
+            selUsed: 'Misplaced Independence / Fear of Trouble',
+            consequence: 'Dangerous! Direct contact with corrosive acids causes severe skin burns and toxic vapors.',
+            selTip: 'Self-awareness means knowing your limits and seeking help during hazardous events.'
+          },
+          {
+            text: 'Step back immediately, warn peers to back away from the vapor, and alert the science teacher loudly and clearly.',
+            isBest: true,
+            selUsed: 'Communication Under Stress & Hazard Mitigation',
+            consequence: 'Outstanding! The teacher can neutralize the spill safely while preventing student injuries.',
+            selTip: 'Clear communication protects everyone in shared academic spaces.'
+          },
+          {
+            text: 'Dare another classmate to touch the bubbling foam with their finger.',
+            isBest: false,
+            selUsed: 'Reckless Impulsivity',
+            consequence: 'Severe hazard. Encouraging injury in a lab leads to permanent tissue damage.',
+            selTip: 'Empathy and responsibility must always replace careless dare games.'
+          }
+        ]
+      },
+      {
+        id: 'c8',
+        category: 'community',
+        categoryName: 'In the Community',
+        icon: 'fa-person-hiking',
+        color: 'emerald',
+        title: 'Isolated Trail at Twilight with Dead Phone Battery',
+        description: 'You and a classmate took a remote hiking trail off the main path. The sun is setting fast, your phone battery has died, and you hear unfamiliar voices calling out aggressively behind you.',
+        hazard: 'Stranding, Exposure, Potential Physical Threat',
+        selFocus: 'Stress Management & Strategic Problem Solving',
+        selExplanation: 'Overcoming panic to navigate back to populated, illuminated zones.',
+        choices: [
+          {
+            text: 'Confront the voices aggressively in the dark to prove you aren\'t intimidated.',
+            isBest: false,
+            selUsed: 'Adrenaline-Driven Aggression',
+            consequence: 'High danger! Confronting unknown figures in secluded dark areas risks physical violence.',
+            selTip: 'Self-regulation helps calm irrational bravery that creates real bodily danger.'
+          },
+          {
+            text: 'Stay together, move briskly toward the well-lit main road or trailhead business, and enter a public shop for help.',
+            isBest: true,
+            selUsed: 'Composure & Environmental Navigation',
+            consequence: 'Smart survival choice! Reaching populated public spaces eliminates isolation risks.',
+            selTip: 'Prioritize physical safety and public visibility whenever feeling cornered.'
+          },
+          {
+            text: 'Split up and run in opposite directions into deep brush to hide in the dark.',
+            isBest: false,
+            selUsed: 'Disorganized Panic',
+            consequence: 'Unsafe! Splitting up in an unfamiliar forest at night invites injury, hypothermia, and disorientation.',
+            selTip: 'Keep peer communication cohesive during an emergency.'
+          }
+        ]
+      },
+      {
+        id: 'c9',
+        category: 'school',
+        categoryName: 'At School',
+        icon: 'fa-gun',
+        color: 'indigo',
+        title: 'Weapon / Threat Rumor in School Chat',
+        description: 'A student posts a picture of a hunting knife in their locker on a private group story with the caption: "Someone is going to pay for what happened at lunch tomorrow."',
+        hazard: 'Imminent Physical Violence & Weapons on Campus',
+        selFocus: 'Ethical Courage & Community Responsibility',
+        selExplanation: 'Overcoming the fear of being seen as a "snitch" when human lives are at risk.',
+        choices: [
+          {
+            text: 'Dismiss it as a joke or edgy meme because you do not want to be called a snitch.',
+            isBest: false,
+            selUsed: 'Fear of Social Retaliation',
+            consequence: 'Catastrophic risk! Ignoring weapon threats has resulted in preventable tragedies.',
+            selTip: 'Distinguish between harmless gossip and genuine threats to life safety.'
+          },
+          {
+            text: 'Immediately report the post with screenshots to a school administrator, counselor, or anonymous safety tip line.',
+            isBest: true,
+            selUsed: 'Moral Courage & Protecting Community Wellbeing',
+            consequence: 'Life-saving leadership! School staff and professionals can evaluate and intervene immediately.',
+            selTip: 'Reporting safety threats is an act of courage, not tattling.'
+          },
+          {
+            text: 'Reply publicly on the story challenging the student to meet you behind the gym instead.',
+            isBest: false,
+            selUsed: 'Hostile Confrontation',
+            consequence: 'Extremely dangerous! Engaging directly with armed or volatile individuals escalates lethal risk.',
+            selTip: 'Leave weapons intervention to trained professionals and adults.'
+          }
+        ]
+      },
+      {
+        id: 'c10',
+        category: 'home',
+        categoryName: 'At Home',
+        icon: 'fa-pills',
+        color: 'amber',
+        title: 'Unlabeled Prescription Bottle & Sibling Ingestion',
+        description: 'You walk into the bathroom and find your 6-year-old sibling holding an open bottle of prescription heart medication, with several colorful pills scattered on the floor and in their mouth.',
+        hazard: 'Accidental Poisoning & Medical Overdose',
+        selFocus: 'Rapid Emotional Stabilization & Immediate Emergency Protocol',
+        selExplanation: 'Managing shock immediately to initiate life-saving emergency medical contact.',
+        choices: [
+          {
+            text: 'Yell at your sibling, put them in time-out, and wait for your parents to come home in two hours to see if they get sick.',
+            isBest: false,
+            selUsed: 'Denial & Panic Reaction',
+            consequence: 'Critical hazard! Medication toxicity can cause heart failure or respiratory arrest rapidly in children.',
+            selTip: 'Regulate personal anger so you can treat the medical situation as urgent.'
+          },
+          {
+            text: 'Immediately remove remaining pills from their mouth, call 911 or Poison Control, and keep the medication bottle in hand.',
+            isBest: true,
+            selUsed: 'Composure & Life-Saving Protocol',
+            consequence: 'Exemplary emergency action! Fast medical dispatch prevents fatal toxicity.',
+            selTip: 'Clear-headed composure under pressure directly saves lives.'
+          },
+          {
+            text: 'Make them drink large amounts of salty water and soap to force vomiting.',
+            isBest: false,
+            selUsed: 'Dangerous Home Remedy',
+            consequence: 'High danger! Inducing vomiting without poison control guidance can cause airway aspiration.',
+            selTip: 'Always follow verified medical protocol from emergency operators.'
+          }
+        ]
+      }
+    ];
+
+    // -------------------------------------------------------------
+    // DATA: Module 2 - 10 Peer Pressure & Harmful Scenarios
+    // -------------------------------------------------------------
+    const peerScenarios = [
+      {
+        id: 'p1',
+        title: 'The Locker Room Vaping Circle',
+        tag: 'Substance & Health Risk',
+        icon: 'fa-lungs',
+        peerTactic: 'The "Everyone Does It" Social Normalizer',
+        prompt: 'After gym class, two older eighth graders corner you by the back lockers with a high-nicotine flavored vape: "Take a hit, don\'t be a baby. Everyone on the team does it before games."',
+        healthRisks: 'Rapid nicotine addiction, irreversible airway inflammation, toxic heavy metal inhalation, and athletic suspension.',
+        options: [
+          {
+            tacticName: 'The Clear Direct Pivot',
+            dialogue: '"No thanks, I need my lungs for track. Not into it."',
+            effectScore: 100,
+            feedback: 'Direct, clear, and uses an assertive "I" statement tied to personal goals. Leaves no room for debate.',
+            outcome: 'Successful Refusal! The peers scoff once but move on because you didn\'t show hesitation.'
+          },
+          {
+            tacticName: 'Giving In to "Fit In"',
+            dialogue: '"Well... maybe just one tiny puff so you guys don\'t think I\'m lame."',
+            effectScore: 15,
+            feedback: 'Submitting reinforces that your personal boundaries can be broken with mild mockery.',
+            outcome: 'Health Hazard! Nicotine dependence can begin within days of initial adolescent use.'
+          },
+          {
+            tacticName: 'Aggressive Retaliation',
+            dialogue: '"You guys are toxic losers and I am telling the principal right now!"',
+            effectScore: 50,
+            feedback: 'While reporting safety hazards is good, starting verbal hostility in an isolated locker room can provoke physical assault.',
+            outcome: 'Tense Escalation. Better to state your refusal, exit to a public hallway, then report safely.'
+          }
+        ]
+      },
+      {
+        id: 'p2',
+        title: 'The Unsupervised Basement Party & Alcohol',
+        tag: 'Harmful Behaviour & Safety',
+        icon: 'fa-wine-bottle',
+        peerTactic: 'The "Prove You\'re Cool" Pressure Tactic',
+        prompt: 'At a classmate\'s home with no parents around, someone pours hard liquor into plastic cups: "Chug it! If you don\'t drink, why did you even come?"',
+        healthRisks: 'Acute alcohol poisoning, loss of consciousness, compromised decision-making, and vulnerability to assault.',
+        options: [
+          {
+            tacticName: 'The "Code Word" Parent Exit',
+            dialogue: 'Hold a soda can, then text an agreed code word to your parent: "Can you call me with an emergency pick-up?"',
+            effectScore: 95,
+            feedback: 'Brilliant personal safety planning! Using a pre-arranged exit relieves social pressure instantly.',
+            outcome: 'Safety Secured! You preserved your boundaries and safely left an unmonitored high-risk environment.'
+          },
+          {
+            tacticName: 'The Humorous Deflection',
+            dialogue: '"Bro, I already have zero coordination sober. If I drink that, I\'ll break your furniture. I\'m good with water."',
+            effectScore: 90,
+            feedback: 'Using light humor disarms the tension without putting anyone on the defensive.',
+            outcome: 'Effective Diffusion! The group laughs, the pressure drops, and you keep your autonomy.'
+          },
+          {
+            tacticName: 'Pretending to Drink to Placate Them',
+            dialogue: 'Take the cup and fake sips throughout the night to blend in.',
+            effectScore: 40,
+            feedback: 'Risky. Cups can be tampered with, and maintaining the facade keeps you in an unsafe environment.',
+            outcome: 'Vulnerable Position. Unsupervised drinking spaces can become rapidly volatile.'
+          }
+        ]
+      },
+      {
+        id: 'p3',
+        title: 'Viral "Subway / Traffic Dare" Stunt',
+        tag: 'Severe Physical Danger',
+        icon: 'fa-person-falling',
+        peerTactic: 'The "Dare & Social Media Clout" Tactic',
+        prompt: 'Waiting at a transit platform, peers dare you to lie down on the active tracks for 5 seconds while they shoot a TikTok video: "It will get 50,000 views easy! Stop being cowardly!"',
+        healthRisks: 'Electrocution from third rail, blunt impact trauma, instant death, transit police arrest, criminal charges.',
+        options: [
+          {
+            tacticName: 'Firm Boundary + Physical Step-Back',
+            dialogue: '"Are you insane? That can kill someone in two seconds. Step back from the edge right now."',
+            effectScore: 100,
+            feedback: 'Zero tolerance for life-threatening dares. Calling out the insanity of the stunt is critical leadership.',
+            outcome: 'Life Saved! High shock value shakes friends out of viral tunnel vision.'
+          },
+          {
+            tacticName: 'The Dangerous Compromise',
+            dialogue: '"I won\'t lie on the tracks, but I\'ll lean way over the yellow line while the train approaches."',
+            effectScore: 20,
+            feedback: 'Compromising on lethal hazards is an illusion of safety. Trains generate drafts that pull people under.',
+            outcome: 'Critical Hazard! Never bargain with physical survival.'
+          },
+          {
+            tacticName: 'Station Agent Intervention',
+            dialogue: 'Immediately walk over to the emergency help intercom or station booth.',
+            effectScore: 95,
+            feedback: 'When peers are actively about to jump onto live tracks, rapid adult intervention is necessary.',
+            outcome: 'Proactive Prevention! Authorities intervened before tragedy occurred.'
+          }
+        ]
+      },
+      {
+        id: 'p4',
+        title: 'Targeted Cyber-Bullying & Doxxing Raid',
+        tag: 'Online Harm & Relationship Safety',
+        icon: 'fa-at',
+        peerTactic: 'Group Pack Mentality & Fear of Ostracization',
+        prompt: 'In a private Discord channel, your gaming squad coordinates a mass harassment raid against a student, leaking their phone number: "Everyone spam them with insults or you\'re kicked from the squad."',
+        healthRisks: 'Victim severe mental distress, self-harm risk, cyber-harassment legal penalties, permanent loss of integrity.',
+        options: [
+          {
+            tacticName: 'Refusal & Direct Private Support',
+            dialogue: '"Count me out. Harassing people is wrong. I\'m not posting anyone\'s private info."',
+            effectScore: 95,
+            feedback: 'Demonstrates moral courage and empathy. Standing against group cruelty protects human dignity.',
+            outcome: 'Integrity Preserved! You reach out to the victim privately and report the server to trusted staff.'
+          },
+          {
+            tacticName: 'Passive Bystander',
+            dialogue: 'Say nothing, do not post, but stay in the channel watching everything unfold.',
+            effectScore: 45,
+            feedback: 'Silent bystanders allow cruelty to grow unopposed. Bullies interpret silence as tacit agreement.',
+            outcome: 'Unresolved Harm. The victim suffers alone when a simple report could have intervened.'
+          },
+          {
+            tacticName: 'Posting from an "Alt" Account',
+            dialogue: 'Make a fake account so you won\'t get caught, but post anyway to satisfy your squad.',
+            effectScore: 10,
+            feedback: 'Participating in bullying destroys empathy and carries digital liability.',
+            outcome: 'Harm Multiplied. Digital records are easily tracked by school administrators and authorities.'
+          }
+        ]
+      },
+      {
+        id: 'p5',
+        title: 'The THC Edible "Gummy" Candy',
+        tag: 'Substance & Health Risk',
+        icon: 'fa-candy-cane',
+        peerTactic: 'The "It\'s Just Candy" Deception',
+        prompt: 'At an outdoor soccer tournament, a teammate pulls out unlabeled gummy candies: "Eat three of these before second half. It\'s just weed candy, it calms your nerves and makes you play better."',
+        healthRisks: 'Uncontrolled cannabinoid overdose, paranoia, psychosis, vomiting, cardiac arrhythmia, disqualification.',
+        options: [
+          {
+            tacticName: 'Clear Health Defense',
+            dialogue: '"No thanks, I never eat unlabeled stuff. I need my reflexes 100% sharp for the match."',
+            effectScore: 100,
+            feedback: 'Clear, self-confident boundary anchored in physical performance and personal safety.',
+            outcome: 'Boundary Upheld! Teammates see that you take personal health and sports seriously.'
+          },
+          {
+            tacticName: 'Curiosity Submission',
+            dialogue: '"Well, if it\'s just candy, maybe I\'ll chew half of one to test it."',
+            effectScore: 25,
+            feedback: 'Edibles take up to two hours to metabolize; ingesting unknown doses often leads to emergency room visits.',
+            outcome: 'Medical Vulnerability! Acute cannabis toxicity causes severe disorientation.'
+          },
+          {
+            tacticName: 'Deflection to Coach',
+            dialogue: '"Coach is walking over here right now, you better put that away."',
+            effectScore: 85,
+            feedback: 'Deflecting attention to authority breaks peer momentum in the moment.',
+            outcome: 'Tension Defused. The substance is hidden, allowing you to walk away safely.'
+          }
+        ]
+      },
+      {
+        id: 'p6',
+        title: 'Shoplifting "Five-Finger Discount" Dare',
+        tag: 'Harmful Behaviour & Legal Risk',
+        icon: 'fa-basket-shopping',
+        peerTactic: 'The "Prove You\'re Brave" Challenge',
+        prompt: 'Inside a convenience store, two friends slip snacks into their hoodies and whisper to you: "Grab those energy drinks and walk out. If you pay, you\'re a sucker."',
+        healthRisks: 'Criminal record, police arrest, school disciplinary suspension, loss of parental and community trust.',
+        options: [
+          {
+            tacticName: 'Direct Refusal & Public Exit',
+            dialogue: '"I\'m not stealing anything. If you do it, that\'s on you. I\'m walking outside right now."',
+            effectScore: 95,
+            feedback: 'Separates yourself physically and legally from the crime before store security gets involved.',
+            outcome: 'Clean Record Preserved! You avoided being charged as an accomplice to shoplifting.'
+          },
+          {
+            tacticName: 'Giving In Under Pressure',
+            dialogue: 'Grab the drinks quickly with trembling hands and rush out behind them.',
+            effectScore: 15,
+            feedback: 'Allowing peers to drag you into criminal acts damages your self-worth and future opportunities.',
+            outcome: 'Legal Consequences! Security cameras captured the theft, leading to police contact.'
+          },
+          {
+            tacticName: 'The "Broken Record" Dismissal',
+            dialogue: '"Nope, not my style. Nope, not doing it."',
+            effectScore: 90,
+            feedback: 'Calm repetition neutralizes the argument without getting flustered.',
+            outcome: 'Pressure Broken! Friends see you cannot be pushed into theft.'
+          }
+        ]
+      },
+      {
+        id: 'p7',
+        title: 'Prescription "Study Drug" (ADHD Medication) Sharing',
+        tag: 'Substance & Health Risk',
+        icon: 'fa-capsules',
+        peerTactic: 'Academic Pressure & False Performance Claims',
+        prompt: 'Before final exams, a friend offers you their older brother\'s prescription stimulant pill: "Take this, you will focus for 8 hours straight and ace the test. Everyone in high school uses them."',
+        healthRisks: 'Cardiovascular strain, panic attacks, illegal drug distribution felony, stimulant addiction.',
+        options: [
+          {
+            tacticName: 'Firm Boundary on Prescription Safety',
+            dialogue: '"No way, taking unprescribed medication messes up your heart. I\'ll study with flashcards instead."',
+            effectScore: 100,
+            feedback: 'Accurate health knowledge combined with a healthy alternative response.',
+            outcome: 'Safe & Grounded! You rely on honest academic skills without chemical risks.'
+          },
+          {
+            tacticName: 'Desperation Acceptance',
+            dialogue: '"I\'m so stressed about failing that I\'ll take whatever will help me pass."',
+            effectScore: 20,
+            feedback: 'Using unprescribed stimulants under stress often triggers severe anxiety and physical distress.',
+            outcome: 'Medical & Academic Hazard! Prescription misuse can disqualify exam results.'
+          },
+          {
+            tacticName: 'Offer to Hold It for Later',
+            dialogue: '"Just put it in my backpack and I\'ll decide tonight if I want it."',
+            effectScore: 10,
+            feedback: 'Carrying controlled prescription substances in school is a serious legal and disciplinary offense.',
+            outcome: 'Severe Liability! Being in possession of controlled drugs carries automatic suspension.'
+          }
+        ]
+      },
+      {
+        id: 'p8',
+        title: 'Overcrowded Car Joyride with Unlicensed Teen Driver',
+        tag: 'Severe Physical Danger',
+        icon: 'fa-car-burst',
+        peerTactic: 'Fear of Being Left Behind',
+        prompt: 'An older 15-year-old neighbor with only a learner\'s permit invites five kids into their parent\'s car without permission: "Cram in the back, two people sit on laps. We\'re speeding down the highway!"',
+        healthRisks: 'High-speed motor vehicle collision, traumatic brain injury, ejection from vehicle, fatality.',
+        options: [
+          {
+            tacticName: 'Immediate Refusal & Safety Intervention',
+            dialogue: '"No way am I getting in an overcrowded car without seatbelts. That\'s a death trap. I\'m walking home."',
+            effectScore: 100,
+            feedback: 'Vehicle crashes are the leading cause of injury for adolescents. Refusing unsafe rides saves lives.',
+            outcome: 'Life Saved! You refuse the ride and call a family member for a safe ride home.'
+          },
+          {
+            tacticName: 'Getting in to Avoid Missing Out (FOMO)',
+            dialogue: 'Squeeze onto someone\'s lap in the back without a seatbelt because everyone else is laughing.',
+            effectScore: 10,
+            feedback: 'Zero seatbelt protection in an inexperienced driver\'s car multiplies fatal accident risk exponentially.',
+            outcome: 'Critical Hazard! Unrestrained passengers face extreme trauma in minor collisions.'
+          },
+          {
+            tacticName: 'The Code Word Text',
+            dialogue: 'Step back, pretend to answer a phone call, and immediately text your guardian for a pickup.',
+            effectScore: 95,
+            feedback: 'Discrete, smart self-preservation that avoids an escalating argument on the street.',
+            outcome: 'Safe Departure! You smoothly exit the dangerous situation without drama.'
+          }
+        ]
+      },
+      {
+        id: 'p9',
+        title: 'Spray Paint Vandalism on School Property',
+        tag: 'Harmful Behaviour & Legal Risk',
+        icon: 'fa-spray-can',
+        peerTactic: 'The "Tag It or You\'re a Traitor" Coercion',
+        prompt: 'Late on a Friday evening, friends pull cans of spray paint from a backpack outside the school gym: "Spray an offensive slogan on the principal\'s window. If you don\'t, you can\'t hang with us anymore."',
+        healthRisks: 'Criminal vandalism charges, thousands in restitution fines, school expulsion, court record.',
+        options: [
+          {
+            tacticName: 'Boundary Enforcement & Group Departure',
+            dialogue: '"Destroying our own school is stupid. I\'m not ruining my record for graffiti. I\'m out."',
+            effectScore: 95,
+            feedback: 'Strong values-driven boundary that calls out toxic group behavior clearly.',
+            outcome: 'Dignity Preserved! You walk away from malicious destruction of community property.'
+          },
+          {
+            tacticName: 'Holding the Flashlight as Lookout',
+            dialogue: '"I won\'t spray, but I\'ll stand by the gate and watch for police cars for you."',
+            effectScore: 30,
+            feedback: 'Being a lookout legally classifies you as an accomplice to criminal vandalism.',
+            outcome: 'Legal Jeopardy! Lookouts face the same criminal charges as the taggers.'
+          },
+          {
+            tacticName: 'Submitting to the Threat',
+            dialogue: 'Take the can and spray the wall so the group doesn\'t abandon you.',
+            effectScore: 10,
+            feedback: 'Giving into extortionate friendship conditions means you are being controlled by bullies.',
+            outcome: 'Severe Disciplinary Action! Security cameras ensure full identification.'
+          }
+        ]
+      },
+      {
+        id: 'p10',
+        title: 'High-Altitude Bridge / Quarry Cliff Jump',
+        tag: 'Severe Physical Danger',
+        icon: 'fa-water',
+        peerTactic: 'Macho Bravado & Mockery',
+        prompt: 'At a flooded quarry with "Danger: Submerged Rocks" signs, friends dare you to jump 50 feet into murky water: "Don\'t chicken out now! Prove you have guts!"',
+        healthRisks: 'Spinal fracture, paralysis, drowning, hypothermia, blunt force trauma from submerged boulders.',
+        options: [
+          {
+            tacticName: 'Uncompromising Safety Boundary',
+            dialogue: '"There are literal warning signs for rocks. Paralyzing myself isn\'t brave, it\'s reckless. I\'m staying on the bank."',
+            effectScore: 100,
+            feedback: 'Unflinching adherence to real physical reality over artificial social dares.',
+            outcome: 'Survival Priority! Real courage means refusing to gamble with paralysis or death.'
+          },
+          {
+            tacticName: 'Leaping Under Ridicule',
+            dialogue: 'Plug your nose and leap off the high ledge to silence their laughter.',
+            effectScore: 10,
+            feedback: 'Jumping into unverified water depths is a leading cause of adolescent spinal paralysis.',
+            outcome: 'Severe Catastrophic Risk! Submerged objects cannot be seen from 50 feet up.'
+          },
+          {
+            tacticName: 'The Group Alternative',
+            dialogue: '"Let\'s go over to the certified community pool where there\'s an actual deep diving board."',
+            effectScore: 90,
+            feedback: 'Offers a safe adrenaline alternative that satisfies the thrill safely.',
+            outcome: 'Hazard Averted! Redirection moves the group to regulated recreation.'
+          }
+        ]
+      }
+    ];
+
+    // -------------------------------------------------------------
+    // STATE MANAGEMENT
+    // -------------------------------------------------------------
+    let currentMainTab = 'contexts';
+    let currentContextFilter = 'all';
+    let activeContextId = 'c1';
+    let selectedChoiceIndex = null;
+    let completedScenarios = new Set();
+    let earnedBadges = new Set();
+
+    let activePeerId = 'p1';
+    let selectedPeerOptionIndex = null;
+    let completedPeerScenarios = new Set();
+  </script>
+
+  <script>
+    function switchMainTab(tab) {
+      currentMainTab = tab;
+      
+      const tabContexts = document.getElementById('tab-nav-contexts');
+      const tabPeer = document.getElementById('tab-nav-peer');
+      const tabReflection = document.getElementById('tab-nav-reflection');
+
+      const modContexts = document.getElementById('module-contexts');
+      const modPeer = document.getElementById('module-peer');
+      const modReflection = document.getElementById('module-reflection');
+
+      // Reset styling
+      [tabContexts, tabPeer, tabReflection].forEach(btn => {
+        btn.className = "px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-slate-900 font-medium";
+      });
+
+      modContexts.classList.add('hidden');
+      modPeer.classList.add('hidden');
+      modReflection.classList.add('hidden');
+
+      if (tab === 'contexts') {
+        tabContexts.className = "px-3.5 py-1.5 rounded-lg transition-all text-slate-800 bg-white shadow-sm font-semibold";
+        modContexts.classList.remove('hidden');
+        renderContextsList();
+        renderActiveContext();
+      } else if (tab === 'peer') {
+        tabPeer.className = "px-3.5 py-1.5 rounded-lg transition-all text-rose-700 bg-white shadow-sm font-semibold";
+        modPeer.classList.remove('hidden');
+        renderPeerList();
+        renderActivePeer();
+      } else if (tab === 'reflection') {
+        tabReflection.className = "px-3.5 py-1.5 rounded-lg transition-all text-indigo-700 bg-white shadow-sm font-semibold";
+        modReflection.classList.remove('hidden');
+      }
+    }
+
+    function setContextCategory(cat) {
+      currentContextFilter = cat;
+      document.querySelectorAll('.cat-pill').forEach(btn => {
+        if (btn.getAttribute('data-cat') === cat) {
+          btn.className = "cat-pill px-3 py-1 rounded-lg text-xs font-semibold bg-teal-600 text-white shadow-sm";
+        } else {
+          btn.className = "cat-pill px-3 py-1 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900";
+        }
+      });
+
+      const filtered = getFilteredContexts();
+      if (filtered.length > 0 && !filtered.some(s => s.id === activeContextId)) {
+        activeContextId = filtered[0].id;
+        selectedChoiceIndex = null;
+      }
+      renderContextsList();
+      renderActiveContext();
+    }
+
+    function getFilteredContexts() {
+      if (currentContextFilter === 'all') return contextScenarios;
+      return contextScenarios.filter(s => s.category === currentContextFilter);
+    }
+
+    function selectContextScenario(id) {
+      activeContextId = id;
+      selectedChoiceIndex = null;
+      renderContextsList();
+      renderActiveContext();
+    }
+
+    function renderContextsList() {
+      const container = document.getElementById('scenarios-list-container');
+      const list = getFilteredContexts();
+
+      if (list.length === 0) {
+        container.innerHTML = `<div class="p-6 text-center text-xs text-slate-400">No scenarios found.</div>`;
+        return;
+      }
+
+      container.innerHTML = list.map((item, index) => {
+        const isActive = item.id === activeContextId;
+        const isCompleted = completedScenarios.has(item.id);
+
+        let borderClass = isActive 
+          ? "border-teal-500 bg-teal-50/70 shadow-sm ring-1 ring-teal-400" 
+          : "border-slate-200 bg-white hover:border-slate-300";
+
+        return `
+          <div onclick="selectContextScenario('${item.id}')" 
+               class="p-3.5 rounded-xl border ${borderClass} cursor-pointer transition-all duration-150">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 flex items-center gap-1">
+                <i class="fa-solid ${item.icon}"></i> ${item.categoryName}
+              </span>
+              ${isCompleted ? '<span class="text-emerald-600 text-[11px] font-bold"><i class="fa-solid fa-circle-check"></i> Mastered</span>' : '<span class="text-slate-400 text-[11px]"><i class="fa-regular fa-circle"></i> Ready</span>'}
+            </div>
+            <h4 class="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1">${item.title}</h4>
+            <p class="text-[11px] text-slate-500 mt-0.5 line-clamp-1">${item.hazard}</p>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderActiveContext() {
+      const viewer = document.getElementById('scenario-viewer');
+      const scenario = contextScenarios.find(s => s.id === activeContextId);
+      if (!scenario) return;
+
+      viewer.innerHTML = `
+        <div class="fade-in space-y-4">
+          <!-- Top Badges -->
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+            <div class="flex items-center space-x-2">
+              <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-teal-100 text-teal-800 flex items-center gap-1.5">
+                <i class="fa-solid ${scenario.icon}"></i> ${scenario.categoryName}
+              </span>
+              <span class="text-xs text-rose-700 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-md font-medium">
+                <i class="fa-solid fa-triangle-exclamation mr-1"></i>${scenario.hazard}
+              </span>
+            </div>
+            <div class="text-xs text-slate-400 font-medium">
+              Scenario ${contextScenarios.findIndex(s => s.id === scenario.id) + 1} of 10
+            </div>
+          </div>
+
+          <!-- Scenario Title & Prompt -->
+          <div>
+            <h3 class="text-lg font-bold text-slate-900">${scenario.title}</h3>
+            <p class="text-xs sm:text-sm text-slate-700 mt-2 bg-slate-50 p-3.5 rounded-xl border border-slate-200/70 leading-relaxed">
+              ${scenario.description}
+            </p>
+          </div>
+
+          <!-- Social-Emotional Link Ribbon -->
+          <div class="p-3 rounded-xl bg-gradient-to-r from-teal-50 to-indigo-50 border border-teal-100 flex items-start gap-2.5">
+            <div class="w-7 h-7 rounded-lg bg-teal-600 text-white flex-shrink-0 flex items-center justify-center text-xs shadow-sm">
+              <i class="fa-solid fa-heart-pulse"></i>
+            </div>
+            <div>
+              <span class="text-[11px] font-bold text-teal-900 uppercase tracking-wide">SEL Competency in Focus: ${scenario.selFocus}</span>
+              <p class="text-xs text-slate-600 mt-0.5 leading-snug">${scenario.selExplanation}</p>
+            </div>
+          </div>
+
+          <!-- Decision Options -->
+          <div class="space-y-2.5">
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+              Choose your response to navigate this situation safely:
+            </label>
+            ${scenario.choices.map((choice, idx) => {
+              const isSelected = selectedChoiceIndex === idx;
+              let choiceStyle = "bg-white border-slate-200 hover:border-teal-400 hover:bg-slate-50/50";
+              
+              if (selectedChoiceIndex !== null) {
+                if (isSelected) {
+                  choiceStyle = choice.isBest 
+                    ? "border-emerald-500 bg-emerald-50/70 ring-2 ring-emerald-400" 
+                    : "border-rose-400 bg-rose-50/70 ring-2 ring-rose-400";
+                } else if (choice.isBest) {
+                  choiceStyle = "border-emerald-300 bg-emerald-50/40 opacity-70";
+                } else {
+                  choiceStyle = "opacity-40 border-slate-200 bg-slate-50";
+                }
+              }
+
+              return `
+                <div onclick="selectContextChoice(${idx})" 
+                     class="p-3 rounded-xl border ${choiceStyle} cursor-pointer transition-all duration-150 flex items-start gap-3">
+                  <div class="w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center text-xs font-bold mt-0.5 flex-shrink-0 ${isSelected ? (choice.isBest ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-rose-600 text-white border-rose-600') : 'text-slate-500'}">
+                    ${String.fromCharCode(65 + idx)}
+                  </div>
+                  <div class="flex-grow">
+                    <p class="text-xs sm:text-sm font-medium text-slate-800">${choice.text}</p>
+                    <span class="inline-block mt-0.5 text-[10px] font-semibold text-slate-500">Mindset: ${choice.selUsed}</span>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+
+          <!-- Feedback Box -->
+          <div id="choice-feedback-area">
+            ${selectedChoiceIndex !== null ? renderChoiceFeedback(scenario, selectedChoiceIndex) : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    function selectContextChoice(index) {
+      selectedChoiceIndex = index;
+      const scenario = contextScenarios.find(s => s.id === activeContextId);
+      const choice = scenario.choices[index];
+
+      if (choice.isBest) {
+        completedScenarios.add(scenario.id);
+        earnedBadges.add(scenario.category);
+        showToast("Great choice! Social-emotional skill applied effectively.", "success");
+      } else {
+        showToast("Review the feedback to see how emotional reactions impact physical safety.", "warning");
+      }
+      updateStats();
+      renderContextsList();
+      renderActiveContext();
+    }
+
+    function renderChoiceFeedback(scenario, idx) {
+      const choice = scenario.choices[idx];
+      const isBest = choice.isBest;
+
+      return `
+        <div class="p-3.5 rounded-xl border ${isBest ? 'bg-emerald-50 border-emerald-200 text-emerald-950' : 'bg-amber-50 border-amber-200 text-amber-950'} fade-in mt-3 space-y-2">
+          <div class="flex items-center space-x-2 font-bold text-xs sm:text-sm ${isBest ? 'text-emerald-800' : 'text-amber-800'}">
+            <i class="fa-solid ${isBest ? 'fa-circle-check text-emerald-600' : 'fa-triangle-exclamation text-amber-600'}"></i>
+            <span>${isBest ? 'Safe & Resilient Decision' : 'Safety Risk Detected'}</span>
+          </div>
+          <p class="text-xs sm:text-sm font-medium leading-relaxed">${choice.consequence}</p>
+          <div class="pt-1.5 border-t ${isBest ? 'border-emerald-200/60' : 'border-amber-200/60'} text-xs flex items-start gap-1.5 text-slate-700">
+            <i class="fa-solid fa-lightbulb text-amber-500 mt-0.5"></i>
+            <div><strong>SEL Takeaway:</strong> ${choice.selTip}</div>
+          </div>
+        </div>
+      `;
+    }
+  </script>
+
+  <script>
+    function selectPeerScenario(id) {
+      activePeerId = id;
+      selectedPeerOptionIndex = null;
+      renderPeerList();
+      renderActivePeer();
+    }
+
+    function renderPeerList() {
+      const container = document.getElementById('peer-scenarios-list');
+      container.innerHTML = peerScenarios.map((item, idx) => {
+        const isActive = item.id === activePeerId;
+        const isDone = completedPeerScenarios.has(item.id);
+
+        let border = isActive 
+          ? "border-rose-500 bg-rose-50/70 shadow-sm ring-1 ring-rose-400" 
+          : "border-slate-200 bg-white hover:border-slate-300";
+
+        return `
+          <div onclick="selectPeerScenario('${item.id}')" 
+               class="p-3.5 rounded-xl border ${border} cursor-pointer transition-all">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-rose-100 text-rose-800">
+                <i class="fa-solid ${item.icon} mr-1"></i>${item.tag}
+              </span>
+              ${isDone ? '<span class="text-emerald-600 text-[11px] font-bold"><i class="fa-solid fa-circle-check"></i> Mastered</span>' : '<span class="text-slate-400 text-[11px]"><i class="fa-regular fa-circle"></i> Try</span>'}
+            </div>
+            <h4 class="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1">${item.title}</h4>
+            <p class="text-[11px] text-slate-500 mt-0.5 line-clamp-1">Tactic: ${item.peerTactic}</p>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderActivePeer() {
+      const viewer = document.getElementById('peer-viewer');
+      const item = peerScenarios.find(p => p.id === activePeerId);
+      if (!item) return;
+
+      viewer.innerHTML = `
+        <div class="fade-in space-y-4">
+          <!-- Header and Pressure Tag -->
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+            <div class="flex items-center space-x-2">
+              <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-rose-100 text-rose-800 flex items-center gap-1.5">
+                <i class="fa-solid ${item.icon}"></i> ${item.tag}
+              </span>
+              <span class="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md font-medium border border-slate-200">
+                Tactic: <strong>${item.peerTactic}</strong>
+              </span>
+            </div>
+            <span class="text-xs text-slate-400 font-medium">Scenario ${peerScenarios.findIndex(p => p.id === item.id) + 1} of 10</span>
+          </div>
+
+          <!-- Scenario Dialogue Card -->
+          <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-700">
+            <span class="text-rose-400 text-[10px] font-bold uppercase tracking-wider">The Scene & Social Pressure</span>
+            <h3 class="text-base sm:text-lg font-bold text-white mt-1">${item.title}</h3>
+            <p class="text-xs sm:text-sm text-slate-200 mt-2 italic leading-relaxed bg-white/10 p-3 rounded-xl border border-white/10">
+              "${item.prompt}"
+            </p>
+            <div class="mt-2.5 flex items-center gap-2 text-xs text-rose-300">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              <span><strong>Health & Safety Risks:</strong> ${item.healthRisks}</span>
+            </div>
+          </div>
+
+          <!-- Refusal Choices -->
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between">
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                Select your response tactic:
+              </label>
+              <button onclick="openRefusalStrategiesModal()" class="text-xs text-rose-600 hover:text-rose-800 underline font-semibold">
+                Refusal Toolkit
+              </button>
+            </div>
+
+            ${item.options.map((opt, idx) => {
+              const isSelected = selectedPeerOptionIndex === idx;
+              let btnClass = "bg-white border-slate-200 hover:border-rose-400";
+              
+              if (selectedPeerOptionIndex !== null) {
+                if (isSelected) {
+                  btnClass = opt.effectScore >= 80 
+                    ? "border-emerald-500 bg-emerald-50/70 ring-2 ring-emerald-400" 
+                    : "border-rose-400 bg-rose-50/70 ring-2 ring-rose-400";
+                } else {
+                  btnClass = "opacity-50 border-slate-200 bg-slate-50";
+                }
+              }
+
+              return `
+                <div onclick="selectPeerChoice(${idx})"
+                     class="p-3 rounded-xl border ${btnClass} cursor-pointer transition-all flex items-start gap-3">
+                  <div class="w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center text-xs font-bold mt-0.5 flex-shrink-0 ${isSelected ? (opt.effectScore >= 80 ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-rose-600 text-white border-rose-600') : 'text-slate-500'}">
+                    ${idx + 1}
+                  </div>
+                  <div class="flex-grow">
+                    <span class="text-xs font-bold text-slate-900 block">${opt.tacticName}</span>
+                    <p class="text-xs sm:text-sm text-slate-700 italic mt-0.5">${opt.dialogue}</p>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+
+          <!-- Peer Result Simulation Feedback -->
+          <div>
+            ${selectedPeerOptionIndex !== null ? renderPeerFeedback(item, selectedPeerOptionIndex) : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    function selectPeerChoice(idx) {
+      selectedPeerOptionIndex = idx;
+      const scenario = peerScenarios.find(p => p.id === activePeerId);
+      const opt = scenario.options[idx];
+
+      if (opt.effectScore >= 80) {
+        completedPeerScenarios.add(scenario.id);
+        earnedBadges.add('peer_mastery');
+        showToast("Assertive boundary maintained! High SEL refusal score.", "success");
+      } else {
+        showToast("Notice how compromising boundaries damages personal safety.", "warning");
+      }
+
+      updateStats();
+      renderPeerList();
+      renderActivePeer();
+    }
+
+    function renderPeerFeedback(scenario, idx) {
+      const opt = scenario.options[idx];
+      const isHigh = opt.effectScore >= 80;
+
+      return `
+        <div class="p-3.5 rounded-xl border ${isHigh ? 'bg-emerald-50 border-emerald-200 text-emerald-950' : 'bg-rose-50 border-rose-200 text-rose-950'} fade-in mt-3 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs sm:text-sm flex items-center gap-1.5 ${isHigh ? 'text-emerald-800' : 'text-rose-800'}">
+              <i class="fa-solid ${isHigh ? 'fa-shield-halved' : 'fa-circle-xmark'}"></i>
+              ${opt.outcome}
+            </span>
+            <span class="text-xs font-bold px-2 py-0.5 rounded-full ${isHigh ? 'bg-emerald-200 text-emerald-900' : 'bg-rose-200 text-rose-900'}">
+              Effectiveness: ${opt.effectScore}%
+            </span>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">${opt.feedback}</p>
+        </div>
+      `;
+    }
+  </script>
+
+  <script>
+    function updateStats() {
+      const totalCompleted = completedScenarios.size + completedPeerScenarios.size;
+      const totalPossible = contextScenarios.length + peerScenarios.length; // 20
+      document.getElementById('stat-completed-scenarios').innerText = `${totalCompleted} / ${totalPossible}`;
+      
+      const badgeCount = Math.min(earnedBadges.size, 5);
+      document.getElementById('stat-badges-earned').innerText = `${badgeCount} / 5`;
+    }
+
+    function openRefusalStrategiesModal() {
+      document.getElementById('refusal-modal').classList.remove('hidden');
+    }
+
+    function closeRefusalStrategiesModal() {
+      document.getElementById('refusal-modal').classList.add('hidden');
+    }
+
+    function showToast(message, type = "success") {
+      const toast = document.getElementById('toast');
+      const icon = document.getElementById('toast-icon');
+      const msg = document.getElementById('toast-msg');
+
+      msg.innerText = message;
+      if (type === "success") {
+        icon.className = "fa-solid fa-circle-check text-emerald-400";
+      } else if (type === "warning") {
+        icon.className = "fa-solid fa-triangle-exclamation text-amber-400";
+      }
+
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3000);
+    }
+
+    function clearReflectionInputs() {
+      document.getElementById('ref-q1').value = '';
+      document.getElementById('ref-q2').value = '';
+      document.getElementById('ref-adult-1').value = '';
+      document.getElementById('ref-adult-2').value = '';
+      showToast("Reflection form cleared.", "warning");
+    }
+
+    function copyReflectionReport() {
+      const q1 = document.getElementById('ref-q1').value.trim() || 'Not yet answered.';
+      const q2 = document.getElementById('ref-q2').value.trim() || 'Not yet answered.';
+      const adult1 = document.getElementById('ref-adult-1').value.trim() || 'None listed';
+      const adult2 = document.getElementById('ref-adult-2').value.trim() || 'None listed';
+
+      const totalDone = completedScenarios.size + completedPeerScenarios.size;
+      const totalMax = contextScenarios.length + peerScenarios.length;
+
+      const reportText = [
+        "===========================================================",
+        "GRADE 8 HEALTH & SAFETY: SOCIAL-EMOTIONAL SKILLS REFLECTION",
+        "===========================================================",
+        `Scenarios Completed: ${totalDone} / ${totalMax}`,
+        "",
+        "[1] Body Signals & Physical Intuition (Self-Awareness):",
+        q1,
+        "",
+        "[2] Preferred Refusal Strategy for Peer Pressure / Harmful Risks:",
+        q2,
+        "",
+        "[3] Personal Trusted Adult Network:",
+        `• Support 1: ${adult1}`,
+        `• Support 2: ${adult2}`,
+        "==========================================================="
+      ].join("\n");
+
+      const textArea = document.createElement("textarea");
+      textArea.value = reportText;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showToast("Reflection responses copied to clipboard!", "success");
+      } catch (err) {
+        showToast("Could not copy automatically. Please copy text manually.", "warning");
+      }
+      document.body.removeChild(textArea);
+    }
+
+    // Initialize application on load
+    window.addEventListener('DOMContentLoaded', () => {
+      renderContextsList();
+      renderActiveContext();
+      renderPeerList();
+      renderActivePeer();
+      updateStats();
+    });
+  </script>
+</body>
+</html>
