@@ -2,6 +2,8 @@
 
 ## Make it my own — 6 October 2026
 
+Verification is recorded in `copy-verification.json`: all 152 live buttons, six responsive viewports, six export behavior checks, a working copied Wants & Needs activity with all 14 pictures, a selected Social Studies child export, a native Slides-copy link and the complete large Vocabulary Arcade HTML. The ZIP builder completed a 20-file archive. The cloud browser did not report a saved-file path for generated downloads; actual file saving is not claimed as verified. Clipboard denial exercised the selected-text copy fallback successfully. Native browser zoom was unavailable.
+
 Every activity card has a teacher-copy button. The panel offers a fresh source-based HTML download, HTML copy, an AI adaptation prompt with HTML, a preview and a full project ZIP. Owned companion editions and the 22 Social Studies child activities are selectable; the three Slides resources use native template-copy links. Original author and data-source credits are retained.
 
 `source-files.json` maps the 152 catalogue entries to their published repository files (149 HTML activities and three Slides templates). Its public file index supports complete project downloads. Refresh this manifest when adding or moving project files. Main-branch source is fetched at copy time. A single HTML copy includes owned styles and compatible classic app scripts while keeping online asset links; modules and external libraries retain their original URLs. Some maps and data apps need hosting and an internet connection. ZIPs preserve the folder structure and include a START-HERE.txt guide.

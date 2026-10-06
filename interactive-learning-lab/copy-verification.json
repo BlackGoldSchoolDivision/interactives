@@ -1,0 +1,27 @@
+{
+  "feature_commit": "411e59481c7c5d819db4b9cbdcad46e7add4322c",
+  "download_update_commit": "ed68ea15dda3e009f7fa97ae75c62347089a2457",
+  "export_behavior_checks": "6/6 passed live",
+  "viewports": [
+    "1024x540",
+    "1366x650",
+    "768x900",
+    "390x667",
+    "320x568",
+    "640x360"
+  ],
+  "horizontal_overflow_px": 0,
+  "minimum_touch_height": 44,
+  "prepared_html_characters_preserved": 22167,
+  "clipboard": "automatic write denied in cloud browser; selected-text Ctrl+C fallback verified, 22547 characters including prompt and HTML",
+  "native_browser_zoom": "not available in this browser API; viewport and iframe resize checked",
+  "analytics": "separate disabled local draft, excluded from feature commits",
+  "live_cards_with_copy_buttons": 152,
+  "social_studies_version_options": 23,
+  "social_child_export_characters": 21145,
+  "slides": "Native Alberta template-copy link checked; focus returns to opener",
+  "large_vocabulary_export_characters": 2742943,
+  "copied_wants_needs": "14 of 14 pictures loaded; Food placement and restart passed in exported srcdoc",
+  "project_zip": "Builder completed a 20-file Wants & Needs archive including START-HERE.txt",
+  "download_limitation": "The cloud browser reported no download event or saved-file path for generated HTML, including native link and keyboard activation. Saved HTML and ZIP downloads remain unverified; generated HTML, copy fallback, source links and runtime preview were checked."
+}
