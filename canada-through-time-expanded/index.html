@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Explore 30 timeline stops from Indigenous homelands before 1600 through French and British colonial changes to Canada in 2003. Published Atlas maps, local boundary data, and Grade 4 and 7 inquiry prompts.">
+  <meta name="theme-color" content="#17334c">
+  <title>Canada through time: homelands, colonies & Confederation · Engaging Students</title>
+  <link rel="stylesheet" href="styles.css?v=expanded1">
+  <script src="vendor/fflate.min.js" defer></script>
+  <script src="vendor/d3.min.js" defer></script>
+  <script src="app.js?v=expanded1" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#timeline">Skip to timeline</a>
+  <header class="app-header">
+    <div class="identity">
+      <span class="brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"/><path d="M9 3v15M15 6v15"/></svg></span>
+      <div><div class="eyebrow">Engaging Students</div><h1>Canada through time</h1></div>
+    </div>
+    <div class="header-end"><span class="subtitle">Homelands, colonies & Confederation <span>Before 1600–2003</span></span><button class="quiet-button" id="sources-button">Sources & data</button></div>
+  </header>
+
+  <main>
+    <section class="timeline-card" id="timeline" aria-label="Historical timeline">
+      <div class="timeline-controls">
+        <div class="transport">
+          <button id="previous" class="icon-button" aria-label="Previous date" title="Previous date"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5v14M18 6l-9 6 9 6V6Z"/></svg></button>
+          <button id="play" class="play-button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"/></svg><span>Play timeline</span></button>
+          <button id="next" class="icon-button" aria-label="Next date" title="Next date"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 5v14M6 6l9 6-9 6V6Z"/></svg></button>
+        </div>
+        <div class="date-picker"><label for="year-select">Jump to</label><select id="year-select" aria-label="Choose a historical date"></select></div>
+        <div class="speed-picker"><label for="speed">Playback</label><select id="speed"><option value="6500">Slow · 6.5 sec</option><option value="4000" selected>Steady · 4 sec</option><option value="2000">Quick · 2 sec</option></select></div>
+        <button id="restart" class="quiet-button">Back to the beginning</button>
+      </div>
+      <div class="scrubber"><label class="sr-only" for="year-range">Historical date</label><input id="year-range" type="range" min="0" max="22" step="1" value="0" aria-valuetext="1867, Confederation"><div class="range-labels"><span>Before 1600 · Homelands</span><span>2003 · Yukon</span></div></div>
+      <div class="era-tabs" aria-label="Timeline chapters"><button id="early-chapter">Homelands & colonies</button><button id="canada-chapter">Confederation onward</button></div><div class="milestones" id="milestones" aria-label="Major milestones"></div>
+    </section>
+
+    <div class="workspace">
+      <section class="map-card" aria-label="Historical political map">
+        <div class="map-toolbar"><div><span class="map-heading" id="map-heading">Political boundaries in 1867</span><span class="map-instruction">Select a region to explore it.</span></div><div class="map-toggles"><label><input type="checkbox" id="show-geography" checked> Geography</label><label><input type="checkbox" id="show-labels" checked> Labels</label><label><input type="checkbox" id="show-previous"> Previous boundaries</label></div></div>
+        <div class="map-surface" id="map-surface">
+          <svg id="map" viewBox="0 0 1060 690" role="group" aria-label="Canada’s political regions. Drag to pan. Use the region list below to select a region." tabindex="0">
+            <defs><pattern id="disputed-hatch" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#eadbba"/><path d="M-2 2 2-2M0 8 8 0M6 10 10 6" fill="none" stroke="#a1743d" stroke-width="1.5"/></pattern></defs>
+            <g id="map-world"><g id="graticule"></g><g id="context-land"></g><g id="source-map"></g><g id="geography"></g><g id="regions"></g><g id="previous-regions"></g><g id="region-labels"></g></g>
+          </svg>
+          <div class="year-stamp" aria-hidden="true"><span id="stamp-year">1867</span><small id="stamp-caption">Confederation</small></div>
+          <div class="zoom-tools"><button id="zoom-in" aria-label="Zoom in">+</button><button id="zoom-out" aria-label="Zoom out">−</button><button id="fit-map" aria-label="Reset map view" title="Reset map view"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3H3v6m12-6h6v6M3 15v6h6m12-6v6h-6"/></svg></button></div>
+          <div class="loading" id="loading" role="status">Loading historical boundaries…</div>
+          <div class="map-tooltip" id="map-tooltip" role="tooltip" hidden></div>
+          <div class="map-credit">Boundaries: Natural Resources Canada · Lambert projection</div>
+        </div>
+        <p class="source-map-note" id="map-note" hidden></p><div class="map-legend"><span id="canada-legend"><i class="legend-swatch province"></i> Part of Canada · region colours</span><span id="outside-legend"><i class="legend-swatch outside"></i> Outside Canada at this date</span><span id="source-legend" hidden>Printed colours and stripes follow the source map’s legend. Numbered markers open place notes.</span><span id="previous-legend" hidden><i class="legend-line"></i> Previous snapshot</span></div>
+      </section>
+
+      <aside class="story-panel" aria-label="About the selected date">
+        <section class="story-card">
+          <div class="date-line"><span id="story-year">1867</span><span class="event-tag" id="event-type">Confederation</span></div>
+          <h2 id="event-title">Four provinces form Canada</h2>
+          <p id="event-summary">Loading the historical timeline…</p>
+          <div class="province-count" id="province-count"></div>
+          <div class="notice-card"><span class="eyebrow">Pause & notice</span><p id="notice"></p></div>
+          <div id="key-idea-card" class="key-idea" hidden><span class="eyebrow">A closer look</span><p id="key-idea"></p><a id="key-source" target="_blank" rel="noopener">Read the source</a></div><div class="inquiry"><label for="grade-prompt">Classroom question</label><select id="grade-prompt"><option value="grade4">Grade 4 · Time and Place</option><option value="grade7" selected>Grade 7 · Time and Place</option></select><p id="inquiry-question"></p></div><a id="event-source" class="event-source" target="_blank" rel="noopener">Read about this date</a><button id="focus-change" class="focus-button">Zoom to this change</button><button id="compare-button" class="focus-button">Compare two dates</button>
+        </section>
+        <section class="region-card" id="region-card" aria-label="Selected region">
+          <div class="region-card-top"><span class="eyebrow">On the map</span><button id="clear-region" class="small-button" hidden>Clear</button></div>
+          <h3 id="region-title">Explore a region</h3><div id="region-details"><p>Select a coloured or grey region, or use the list below the map.</p></div>
+        </section>
+      </aside>
+    </div>
+
+    <section class="regions-card" aria-labelledby="regions-heading"><div class="regions-header"><h2 id="regions-heading">Regions in <span id="region-list-year">1867</span></h2><span>Select any region, including the small ones.</span></div><div id="region-list" class="region-list"></div></section>
+    <footer><p>These maps show colonial and Canadian political boundaries. First Nations, Métis, and Inuit histories and homelands extend beyond these lines.</p><span>30 timeline stops · Before 1600–2003</span></footer>
+    <div class="sr-only" role="status" aria-live="polite" id="announcement"></div>
+    <noscript><p>This interactive needs JavaScript. You can also explore the <a href="https://atlas.gc.ca/ette/en/index.html">original Atlas of Canada map</a>.</p></noscript>
+  </main>
+
+  <dialog id="sources-dialog" aria-labelledby="sources-title"><div class="dialog-header"><h2 id="sources-title">Sources & map data</h2><button id="close-sources" class="icon-button" aria-label="Close sources">×</button></div>
+    <p>This expanded edition uses two published <strong>Natural Resources Canada Atlas of Canada</strong> resources, under the <a href="https://open.canada.ca/en/open-government-licence-canada" target="_blank" rel="noopener">Open Government Licence – Canada</a>.</p>
+    <ul><li><strong>Before 1600:</strong> geographic context with modern coastlines, without provincial borders or invented Indigenous boundary polygons.</li><li><strong>1667–1791:</strong> cropped map panels from the fourth edition’s Territorial Evolution, 1667–1873 sheet. Printed claims, dates, colours and disputed areas are preserved. Numbered place markers are classroom annotations.</li><li><strong>1840 / 1841:</strong> the Act of Union passes in 1840 and takes effect in 1841. The map is explicitly a <strong>1849 reference map</strong>, showing the united Province of Canada alongside later changes. It is not an exact 1841 snapshot.</li><li><strong>1867–2003:</strong> the original 23 Atlas boundary snapshots, rendered as selectable political regions.</li></ul>
+    <p>Colonial colours represent European claims and administrative boundaries. They do not mean that Indigenous nations disappeared, consented to these claims, or surrendered all rights. Historic source terminology is retained in the printed maps and explained in the place notes.</p>
+    <ul class="source-links">
+      <li><a href="https://open.canada.ca/data/en/dataset/ae607339-800b-50d7-8d1e-4309d17d10c3" target="_blank" rel="noopener">Atlas of Canada, 4th edition: Territorial Evolution, 1667–1873</a></li>
+      <li><a href="https://ftp.geogratis.gc.ca/pub/nrcan_rncan/raster/atlas_4_ed/eng/historical/083_84.jpg" target="_blank" rel="noopener">Full original map sheet</a></li>
+      <li><a href="https://atlas.gc.ca/ette/en/index.html" target="_blank" rel="noopener">Atlas of Canada: territorial evolution, 1867–2003</a></li>
+      <li><a href="https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html" target="_blank" rel="noopener">Canadian Heritage: historical boundaries and Act of Union dates</a></li>
+      <li><a href="https://www.rcaanc.gc.ca/eng/1307460755710/1536862806124" target="_blank" rel="noopener">CIRNAC: First Nations in Canada</a></li>
+      <li><a href="https://www.rcaanc.gc.ca/eng/1370355181092/1607905122267" target="_blank" rel="noopener">CIRNAC: Royal Proclamation and treaty relationships</a></li>
+      <li><a href="https://www.clo-ocol.gc.ca/en/passage-quebec-act" target="_blank" rel="noopener">Commissioner of Official Languages: Quebec Act</a></li>
+      <li><a href="https://www.pwnhc.ca/en/evolution-des-territories-du-nord-ouest" target="_blank" rel="noopener">NWT government: territorial evolution</a></li>
+      <li><a href="https://www.ourcommons.ca/DocumentViewer/en/36-2/CLAR/meeting-5/evidence" target="_blank" rel="noopener">House of Commons evidence: Act of Union and French-language records</a></li>
+    </ul>
+    <h3>Download this view</h3><div class="data-downloads"><a id="download-year" class="button-link" href="data/timeline.json" download>Download classroom notes</a><a href="data/sources.json" target="_blank" rel="noopener">Data notes</a></div>
+    <details><summary>Maps and GeoJSON by date</summary><div class="all-downloads" id="all-downloads"></div></details>
+    <p class="source-small">Early map panels retain the source’s original resolution. Zoom helps inspection but cannot add detail. Later boundaries are simplified historical snapshots, not legal surveys. Surrounding land: Natural Earth, public domain. Map rendering: D3, ISC licence. This classroom adaptation is independent of the Government of Canada.</p>
+  </dialog>
+  <dialog id="compare-dialog" aria-labelledby="compare-title"><div class="dialog-header"><h2 id="compare-title">Compare two dates</h2><button id="close-compare" class="icon-button" aria-label="Close comparison">×</button></div><p>Look for changes in control and boundaries. Early source maps use their own scales and extents; compare named places rather than the size of coloured areas on screen.</p><div class="compare-grid"><section><label for="compare-left">Earlier view</label><select id="compare-left"></select><div id="compare-map-left" class="compare-map"></div><h3 id="compare-heading-left"></h3><p id="compare-note-left"></p></section><section><label for="compare-right">Later view</label><select id="compare-right"></select><div id="compare-map-right" class="compare-map"></div><h3 id="compare-heading-right"></h3><p id="compare-note-right"></p></section></div><p id="compare-status" role="status"></p></dialog>
+</body>
+</html>
