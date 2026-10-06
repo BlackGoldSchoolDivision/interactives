@@ -1930,11 +1930,12 @@
     "repo": "personal",
     "title": "Wants & Needs Sort",
     "category": "Social studies",
-    "description": "Sort everyday examples into wants and needs, then discuss how circumstances can affect the choices. Check, revise and restart the sort.",
+    "description": "Sort 14 colourful picture cards into everyday needs and fun wants. Drag, tap or use the keyboard, check your choices, and discuss how circumstances can change the answer.",
     "types": [
       "Sorting"
     ],
     "tags": [
+      "Picture cards",
       "Needs & wants"
     ],
     "url": "https://maltais239.github.io/interactives/wantsandneedssort/",
@@ -1942,8 +1943,8 @@
     "favourite": false,
     "credit": "",
     "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/wantsneeds.jpg",
-    "captured": "2026-10-04"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/wantsneeds.jpg?v=66c15956a914",
+    "captured": "2026-10-06"
   },
   {
     "id": "traderesources",

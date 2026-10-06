@@ -97,3 +97,11 @@ Added the curriculum-neutral teacher field guide with 16 activity walkthroughs a
 The catalogue now includes 151 activities. Social Studies has a homepage subject tile. The two treaty maps, Alberta treaty map and two civilization maps retain their Geography category and also appear in Social Studies. Natural Resources: Resource Depot is listed in Social Studies and Science. Search includes secondary subject labels.
 
 Animal Diets and Resource Depot share `sorting-lab/sort-lab.js` and `sorting-lab/sort-lab.css` in the personal repository. Both offer two challenges, field notes, explanatory feedback and tap, drag and keyboard controls. The animal photographs and original block-style artwork are individual optimized JPEG assets, with animal photograph credits in `animaldiets/photo-credits.json` and the activity’s teacher notes. Game content is editable in each activity’s JSON source; rebuild using `python sorting-lab/build.py`.
+
+## Wants & Needs pictures and Thinking Tools order — 6 October 2026
+
+Image Spark and Venn Diagram Sorting now precede HEX-Thinker in the Thinking tools filter. The other subject and featured orders remain as before.
+
+Wants & Needs uses 14 original generated pictures saved individually as transparent WebP assets in the personal repository's `wantsandneedssort/assets/` folder. The original prompt set is `assets/image-prompts.json`. Larger picture cards, a charcoal backdrop, teal and coral categories, explicit feedback and explanatory review replace the emoji labels. The existing 14 examples and contextual discussion are retained. Drag, tap and keyboard placement, return to tray, revision, a full round and restart were checked. Live checks at six viewport sizes confirmed no horizontal overflow, loaded and contained artwork, clear labels, touch target sizes and preserved selections and placements during resizing. Verification details and the browser zoom limitation are recorded in `wantsandneedssort/verification.json`.
+
+The Lab entry and links CSV reflect the refresh. Its actual live screenshot is `learning-lab-images/wantsneeds.jpg`, with a content-based cache version.
