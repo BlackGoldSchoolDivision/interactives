@@ -1,7 +1,7 @@
 (function () {
   'use strict';
   const config = document.currentScript.dataset;
-  let manifestPromise,activity,version,prepared,controller,request=0,opener;
+  let manifestPromise,activity,version,prepared,controller,request=0,opener,downloadURL;
   const dialog=document.createElement('dialog');
   dialog.id='make-own-dialog'; dialog.className='own-dialog';
   dialog.setAttribute('aria-labelledby','own-title');
@@ -9,7 +9,7 @@
     <div class="own-content"><p class="own-intro" id="own-intro">Get an editable HTML copy, then change the topic, questions or vocabulary for your class.</p>
       <label class="own-field" id="own-version-field" hidden>Choose an activity or version<select id="own-version"></select></label>
       <p class="own-status" id="own-status" role="status" aria-live="polite">Preparing your copy…</p>
-      <div class="own-actions" id="own-html-actions"><button type="button" class="own-action primary" id="own-download" disabled>Download HTML ↓</button><button type="button" class="own-action" id="own-copy" disabled>Copy HTML</button><button type="button" class="own-action" id="own-prompt" disabled>Copy AI prompt + HTML</button><button type="button" class="own-action" id="own-preview" disabled>Preview my copy ↗</button></div>
+      <div class="own-actions" id="own-html-actions"><a class="own-action primary" id="own-download" role="button" aria-disabled="true" tabindex="-1">Download HTML ↓</a><button type="button" class="own-action" id="own-copy" disabled>Copy HTML</button><button type="button" class="own-action" id="own-prompt" disabled>Copy AI prompt + HTML</button><button type="button" class="own-action" id="own-preview" disabled>Preview my copy ↗</button></div>
       <a class="own-action primary" id="own-slides-copy" target="_blank" rel="noopener noreferrer" hidden>Make a copy in Google Slides ↗</a>
       <p class="own-help" id="own-help">Paste the code or upload the HTML into Gemini Canvas and describe your changes. Pictures, maps, fonts and some data still load online.</p>
       <details class="own-details" id="own-project"><summary>Get the complete project</summary><p>Download the source files and pictures together. Keep the folders intact; apps that fetch data may need to be hosted online.</p><button type="button" class="own-action" id="own-zip">Download project ZIP ↓</button></details>
@@ -25,7 +25,8 @@
     if(!manifestPromise)manifestPromise=fetch(config.sourceManifest,{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error('The source list could not load. Please try again.');return r.json();}).catch(e=>{manifestPromise=null;throw e;});
     return manifestPromise;
   }
-  function disable(value){buttons.forEach(b=>b.disabled=value);find('zip').disabled=value;}
+  function disable(value){buttons.forEach(b=>{if(b.tagName==='A'){b.setAttribute('aria-disabled',String(value));b.tabIndex=value?-1:0;if(value)b.removeAttribute('href');}else b.disabled=value;});find('zip').disabled=value;}
+  function releaseDownload(){if(downloadURL){const old=downloadURL;downloadURL=null;setTimeout(()=>URL.revokeObjectURL(old),30000);}}
   function filename(ext){const slug=(version?.path.split('/').pop().replace(/\.html?$/i,'')||activity.id);return 'my-'+activity.id+(slug==='index'?'':'-'+slug)+ext;}
   function sourceLink(){
     const folder=version.path.slice(0,version.path.lastIndexOf('/'));
@@ -33,7 +34,7 @@
   }
   async function loadVersion(index){
     controller?.abort();controller=new AbortController();const token=++request;
-    version=activity.versions[index];prepared=null;disable(true);find('code').value='';sourceLink();
+    releaseDownload();version=activity.versions[index];prepared=null;disable(true);find('code').value='';sourceLink();
     status('Preparing your copy…');
     const activeController=controller;
     const timeout=setTimeout(()=>activeController.abort(),30000);
@@ -41,6 +42,7 @@
       const result=await LabCopy.prepare(version,activity,controller.signal);
       if(token!==request||!dialog.open)return;
       prepared=result;find('code').value=result.html;disable(false);
+      downloadURL=URL.createObjectURL(new Blob([result.html],{type:'text/html;charset=utf-8'}));find('download').href=downloadURL;find('download').download=filename('.html');
       status('Ready. Your copy includes the activity HTML'+(result.styles||result.scripts?', styles and app code.':'.'));
     }catch(error){
       if(token!==request||!dialog.open)return;
@@ -49,7 +51,7 @@
     }finally{clearTimeout(timeout);}
   }
   async function open(id,button){
-    opener=button;prepared=null;version=null;controller?.abort();++request;activity={id,title:button.closest('article')?.querySelector('h3')?.textContent||'Activity'};
+    releaseDownload();opener=button;prepared=null;version=null;controller?.abort();++request;activity={id,title:button.closest('article')?.querySelector('h3')?.textContent||'Activity'};
     find('activity-title').textContent=activity.title;find('version-field').hidden=true;disable(true);status('Finding the source files…');
     find('source').removeAttribute('href');find('slides-copy').hidden=true;
     ['html-actions','help','project','code-details'].forEach(id=>find(id).hidden=false);
@@ -86,8 +88,9 @@
   document.addEventListener('click',e=>{const button=e.target.closest('button[data-own-id]');if(button)open(button.dataset.ownId,button);});
   find('version').addEventListener('change',()=>loadVersion(Number(find('version').value)));
   dialog.querySelector('.own-close').addEventListener('click',()=>dialog.close());
-  dialog.addEventListener('close',()=>{controller?.abort();++request;prepared=null;opener?.focus({preventScroll:true});});
-  find('download').addEventListener('click',()=>{if(prepared){LabCopy.download(filename('.html'),prepared.html,'text/html;charset=utf-8');status('HTML downloaded. Your original activity is unchanged.');track('html_download');}});
+  dialog.addEventListener('close',()=>{releaseDownload();controller?.abort();++request;prepared=null;opener?.focus({preventScroll:true});});
+  find('download').addEventListener('click',e=>{if(!prepared){e.preventDefault();return;}status('HTML download started. Your original activity is unchanged.');track('html_download');});
+  find('download').addEventListener('keydown',e=>{if(e.key===' '){e.preventDefault();if(prepared)find('download').click();}});
   find('copy').addEventListener('click',()=>{if(prepared)copy(prepared.html,'HTML','html_copy');});
   find('prompt').addEventListener('click',()=>{
     if(!prepared)return;
