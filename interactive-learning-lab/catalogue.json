@@ -2481,28 +2481,6 @@
     "captured": "2026-10-04"
   },
   {
-    "id": "photosynthesislab",
-    "path": "photosynthesislab",
-    "repo": "bg",
-    "title": "Photosynthesis Virtual Lab",
-    "category": "Science",
-    "description": "Change one growing condition at a time and compare photosynthesis model results. Save trials, inspect graphs, and export your observations.",
-    "types": [
-      "Simulations & models"
-    ],
-    "tags": [
-      "Experiment",
-      "Plant processes"
-    ],
-    "url": "https://interactives.blackgold.ca/photosynthesislab/",
-    "links": [],
-    "favourite": false,
-    "credit": "",
-    "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/photosynthesislab.jpg",
-    "captured": "2026-10-04"
-  },
-  {
     "id": "scienceinquiry",
     "path": "science-inquiry-builder",
     "repo": "bg",
@@ -3016,31 +2994,6 @@
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/ideologyscanner.jpg",
     "captured": "2026-10-04"
-  },
-  {
-    "id": "rootsofideology",
-    "path": "rootsofideology",
-    "repo": "personal",
-    "title": "Roots of Ideology",
-    "category": "Social studies",
-    "description": "Explore individualism and collectivism through six illustrated policy decisions, a value sorting game, historical sources and an argument builder.",
-    "types": [
-      "Decision games",
-      "Sorting",
-      "Reading & annotation",
-      "Writing"
-    ],
-    "tags": [
-      "Individualism & collectivism",
-      "Values & tradeoffs"
-    ],
-    "url": "https://maltais239.github.io/interactives/rootsofideology/",
-    "links": [],
-    "favourite": false,
-    "credit": "",
-    "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/rootsofideology.jpg?v=5f731f304258",
-    "captured": "2026-10-07"
   },
   {
     "id": "culturalcontact",
