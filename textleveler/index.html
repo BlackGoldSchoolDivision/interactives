@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Text Releveling</title>
+    <title>AI Text Releveling Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom scrollbar for better aesthetics */
@@ -11,23 +11,46 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Utility class to hide highlights when toggled off */
+        .hide-highlights span.bg-amber-100, 
+        .hide-highlights span.bg-emerald-100 {
+            background-color: transparent !important;
+            color: inherit !important;
+            padding: 0 !important;
+            border: none !important;
+        }
+
+        /* Smooth fade transitions */
+        .fade-enter {
+            opacity: 0;
+            transform: translateY(4px);
+        }
+        .fade-enter-active {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 300ms, transform 300ms;
+        }
     </style>
 </head>
 <body class="min-h-screen bg-slate-50 text-slate-800 font-sans p-4 md:p-8">
 
-    <div class="max-w-5xl mx-auto space-y-6">
+    <div class="max-w-6xl mx-auto space-y-6">
         
         <!-- Header -->
-        <header class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex items-center gap-4">
-            <div class="bg-blue-600 p-3 rounded-xl text-white shadow-inner">
-                <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-                </svg>
-            </div>
-            <div class="flex-grow">
-                <h1 class="text-2xl font-bold text-slate-900 tracking-tight">AI Text Releveling</h1>
-                <p class="text-slate-500 font-medium mt-1">Paste any text and adapt its readability dynamically.</p>
+        <header class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="h-2 w-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"></div>
+            <div class="p-6 flex items-center gap-5">
+                <div class="bg-gradient-to-br from-blue-500 to-indigo-600 p-3.5 rounded-xl text-white shadow-lg shadow-blue-200">
+                    <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                    </svg>
+                </div>
+                <div class="flex-grow">
+                    <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">AI Text Releveling Pro</h1>
+                    <p class="text-slate-500 font-medium mt-1">Paste, upload, or fetch text from a URL to dynamically adapt its readability.</p>
+                </div>
             </div>
         </header>
 
@@ -49,16 +72,16 @@
                 <div class="space-y-4">
                     <div class="flex justify-between items-end">
                         <label for="gradeLevel" class="font-semibold text-slate-700 flex items-center gap-2">
-                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" class="text-blue-500">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" class="text-indigo-500">
                                 <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
                                 <polyline points="2 17 12 22 22 17"></polyline>
                                 <polyline points="2 12 12 17 22 12"></polyline>
                             </svg>
                             Target Reading Level
                         </label>
-                        <span class="text-2xl font-black text-blue-600" id="gradeDisplay">Grade 12</span>
+                        <span class="text-2xl font-black text-indigo-600" id="gradeDisplay">Grade 12</span>
                     </div>
-                    <input type="range" id="gradeLevel" min="3" max="12" step="1" value="12" class="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                    <input type="range" id="gradeLevel" min="3" max="12" step="1" value="12" class="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-300">
                     <div class="flex justify-between text-xs font-semibold text-slate-400 px-1">
                         <span>Elementary (3)</span>
                         <span>Middle (8)</span>
@@ -69,19 +92,19 @@
                 <!-- Focus Mode Selector -->
                 <div class="space-y-4">
                     <label for="focusMode" class="font-semibold text-slate-700 flex items-center gap-2">
-                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" class="text-blue-500">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" class="text-indigo-500">
                             <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                         </svg>
                         Differentiation Focus
                     </label>
-                    <div class="relative">
-                        <select id="focusMode" class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block p-3 pr-10 appearance-none font-medium shadow-sm transition-all outline-none">
+                    <div class="relative group">
+                        <select id="focusMode" class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block p-3.5 pr-10 appearance-none font-medium transition-all outline-none group-hover:border-indigo-300 cursor-pointer">
                             <option value="vocabulary">Simplify Vocabulary</option>
                             <option value="structure">Adapt Sentence Structure</option>
                             <option value="summary">Bullet Point Summary</option>
                         </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
-                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+                            <svg class="fill-current h-4 w-4 transition-transform group-hover:translate-y-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                 <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
                             </svg>
                         </div>
@@ -89,8 +112,16 @@
                 </div>
             </div>
 
-            <div class="flex justify-end border-t border-slate-100 pt-6">
-                <button id="transformBtn" class="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-xl shadow-md transition-all flex items-center gap-2">
+            <div class="flex justify-between border-t border-slate-100 pt-6">
+                <!-- Reset Button -->
+                <button id="resetBtn" class="text-slate-500 hover:text-slate-700 hover:bg-slate-100 active:scale-95 font-semibold py-3 px-6 rounded-xl transition-all flex items-center gap-2" title="Reset all settings and text">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                        <path d="M3 3v5h5"></path>
+                    </svg>
+                    Reset
+                </button>
+                <button id="transformBtn" class="bg-indigo-600 hover:bg-indigo-700 active:scale-95 disabled:bg-slate-300 disabled:active:scale-100 disabled:cursor-not-allowed text-white font-bold py-3 px-8 rounded-xl shadow-md transition-all flex items-center gap-2">
                     <span id="btnIconWand">
                         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
                             <path d="M15 4V2"></path><path d="M15 16v-2"></path><path d="M8 9h2"></path><path d="M20 9h2"></path>
@@ -110,59 +141,126 @@
         </section>
 
         <!-- Error Message Display -->
-        <div id="errorContainer" class="hidden bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl flex items-start gap-3">
+        <div id="errorContainer" class="hidden bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl flex items-start gap-3 shadow-sm transition-all">
             <svg class="text-red-500 flex-shrink-0 mt-0.5" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
                 <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>
             </svg>
-            <p id="errorText" class="text-red-700 font-medium"></p>
+            <div class="flex-grow">
+                <h4 class="text-red-800 font-bold text-sm">Error</h4>
+                <p id="errorText" class="text-red-700 text-sm mt-1"></p>
+            </div>
+            <button id="closeErrorBtn" class="text-red-400 hover:text-red-600 transition-colors">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
         </div>
 
         <!-- Input & Output Panes -->
         <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
             
             <!-- Original Text Input Panel -->
-            <div class="bg-white border border-slate-200 rounded-2xl shadow-sm flex flex-col overflow-hidden">
-                <div class="bg-slate-100 border-b border-slate-200 p-4 px-6">
-                    <h3 class="font-bold text-slate-700">Source Text</h3>
-                    <p class="text-xs text-slate-500 font-medium">Paste your text here</p>
+            <div class="bg-white border border-slate-200 rounded-2xl shadow-sm flex flex-col overflow-hidden transition-all focus-within:border-indigo-400 focus-within:ring-1 focus-within:ring-indigo-400">
+                <div class="bg-slate-50 border-b border-slate-200 p-4 px-6 flex justify-between items-center">
+                    <div>
+                        <h3 class="font-bold text-slate-800">Source Text</h3>
+                        <p class="text-xs text-slate-500 font-medium">Paste, upload, or fetch text</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <!-- Hidden File Input -->
+                        <input type="file" id="fileInput" accept=".txt,.md,.csv" class="hidden">
+                        
+                        <button id="uploadBtn" class="text-xs bg-white border border-slate-300 hover:bg-slate-100 hover:text-indigo-600 text-slate-700 py-1.5 px-3 rounded-lg shadow-sm transition-colors flex items-center gap-1.5 font-medium" title="Upload a text file">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                            <span class="hidden sm:inline">Upload</span>
+                        </button>
+                        
+                        <button id="urlToggleBtn" class="text-xs bg-white border border-slate-300 hover:bg-slate-100 hover:text-indigo-600 text-slate-700 py-1.5 px-3 rounded-lg shadow-sm transition-colors flex items-center gap-1.5 font-medium" title="Fetch text from URL">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                            <span class="hidden sm:inline">URL</span>
+                        </button>
+                    </div>
                 </div>
+                
+                <!-- URL Input Container (Hidden by default) -->
+                <div id="urlInputContainer" class="hidden bg-indigo-50/50 border-b border-slate-200 p-3 px-6 flex gap-3 items-center shadow-inner">
+                    <div class="relative flex-grow">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+                        </div>
+                        <input type="url" id="urlInput" placeholder="https://en.wikipedia.org/wiki/Cellular_respiration" class="block w-full pl-10 pr-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-indigo-500 focus:border-indigo-500 bg-white outline-none transition-shadow">
+                    </div>
+                    <button id="urlFetchActionBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm py-2 px-4 rounded-lg shadow-sm transition-colors font-medium whitespace-nowrap min-w-[90px]">
+                        Fetch Text
+                    </button>
+                </div>
+                
                 <div class="p-0 flex-grow relative">
-                    <textarea id="inputText" placeholder="Paste the text you want to adapt here..." class="w-full h-full min-h-[300px] p-6 text-lg text-slate-700 leading-relaxed resize-none focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">Cellular respiration is a complex metabolic pathway that breaks down glucose and produces adenosine triphosphate (ATP). The stages of aerobic cellular respiration include glycolysis, pyruvate oxidation, the citric acid cycle, and oxidative phosphorylation.</textarea>
+                    <textarea id="inputText" placeholder="Paste the text you want to adapt here..." class="w-full h-full min-h-[350px] p-6 text-lg text-slate-700 leading-relaxed resize-none focus:outline-none">Cellular respiration is a complex metabolic pathway that breaks down glucose and produces adenosine triphosphate (ATP). The stages of aerobic cellular respiration include glycolysis, pyruvate oxidation, the citric acid cycle, and oxidative phosphorylation. This biological process is vital for providing the energy required for cellular functions and maintaining homeostasis within the organism.</textarea>
+                </div>
+                
+                <!-- Input Panel Footer (Stats) -->
+                <div class="bg-slate-50 border-t border-slate-200 px-4 py-2 flex justify-between items-center text-xs text-slate-500">
+                    <span id="inputWordCount">Words: 43</span>
+                    <span id="inputReadingTime" class="flex items-center gap-1">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        ~1 min read
+                    </span>
                 </div>
             </div>
 
             <!-- Adapted Text Panel -->
-            <div class="bg-white border-2 border-blue-100 rounded-2xl shadow-md flex flex-col overflow-hidden relative min-h-[300px]">
-                <div class="absolute top-4 right-4 text-blue-200 opacity-50 pointer-events-none">
-                    <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                        <line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline>
+            <div class="bg-white border-2 border-indigo-100 rounded-2xl shadow-md flex flex-col overflow-hidden relative min-h-[350px]">
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-indigo-50 opacity-20 pointer-events-none">
+                    <svg width="120" height="120" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
                     </svg>
                 </div>
                 
-                <div class="bg-blue-50 border-b border-blue-100 p-4 px-6 flex justify-between items-center z-10">
+                <!-- Output Toolbar -->
+                <div class="bg-indigo-50 border-b border-indigo-100 p-4 px-6 flex justify-between items-center z-10">
                     <div>
-                        <h3 class="font-bold text-blue-900">Adapted Output</h3>
-                        <p id="outputGradeTarget" class="text-xs text-blue-600 font-bold uppercase tracking-wider mt-1">Target: Grade 12</p>
+                        <h3 class="font-bold text-indigo-900 flex items-center gap-2">
+                            Adapted Output
+                            <span id="outputModeBadge" class="bg-indigo-600 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm">Vocabulary Mode</span>
+                        </h3>
+                        <p id="outputGradeTarget" class="text-xs text-indigo-600 font-bold uppercase tracking-wider mt-1">Target: Grade 12</p>
                     </div>
-                    <span id="outputModeBadge" class="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
-                        Vocabulary Mode
-                    </span>
+                    
+                    <div class="flex items-center gap-3">
+                        <!-- Toggle Highlights -->
+                        <label class="flex items-center gap-2 cursor-pointer text-sm font-medium text-indigo-700" title="Toggle highlight styles">
+                            <span class="hidden sm:inline">Highlights</span>
+                            <div class="relative">
+                                <input type="checkbox" id="toggleHighlights" class="sr-only" checked>
+                                <div class="block bg-indigo-200 w-10 h-6 rounded-full transition-colors"></div>
+                                <div class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform transform translate-x-4"></div>
+                            </div>
+                        </label>
+                        
+                        <div class="h-6 w-px bg-indigo-200 hidden sm:block"></div>
+                        
+                        <!-- Copy Button -->
+                        <button id="copyBtn" class="text-indigo-600 hover:text-indigo-800 hover:bg-indigo-100 p-1.5 rounded transition-colors flex items-center gap-1 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed" title="Copy text to clipboard" disabled>
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            <span class="hidden sm:inline" id="copyBtnText">Copy</span>
+                        </button>
+                    </div>
                 </div>
                 
                 <!-- Output Content Area -->
-                <div class="p-6 text-lg text-slate-800 leading-relaxed flex-grow z-10 relative">
+                <div class="p-6 text-lg text-slate-800 leading-relaxed flex-grow z-10 relative overflow-y-auto">
                     <!-- Loading State -->
-                    <div id="loadingState" class="hidden absolute inset-0 bg-white/90 w-full h-full flex flex-col items-center justify-center text-slate-400 space-y-4">
-                        <svg class="animate-spin text-blue-500 w-12 h-12" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <div id="loadingState" class="hidden absolute inset-0 bg-white/90 backdrop-blur-sm w-full h-full flex flex-col items-center justify-center text-slate-500 space-y-4 z-20">
+                        <svg class="animate-spin text-indigo-600 w-12 h-12" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        <p class="font-medium animate-pulse">AI is rewriting text...</p>
+                        <p class="font-medium animate-pulse tracking-wide">AI is rewriting text...</p>
                     </div>
                     
                     <!-- Empty State -->
-                    <div id="emptyState" class="w-full h-full flex items-center justify-center text-slate-400 italic">
-                        Output will appear here after clicking "Transform Text".
+                    <div id="emptyState" class="w-full h-full flex flex-col items-center justify-center text-slate-400 italic space-y-2">
+                        <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" class="opacity-50" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        <span>Output will appear here after clicking "Transform Text".</span>
                     </div>
                     
                     <!-- Content State -->
@@ -174,12 +272,21 @@
                     <strong class="text-slate-800">Legend:</strong>
                     <div class="flex items-center gap-1.5">
                         <span class="w-3 h-3 rounded-full bg-amber-200 border border-amber-300 inline-block"></span>
-                        <span>Vocabulary changes</span>
+                        <span>Vocabulary change</span>
                     </div>
                     <div class="flex items-center gap-1.5">
                         <span class="w-3 h-3 rounded-full bg-emerald-200 border border-emerald-300 inline-block"></span>
-                        <span>Structural changes</span>
+                        <span>Structural change</span>
                     </div>
+                </div>
+
+                <!-- Output Panel Footer (Stats) -->
+                <div class="bg-indigo-50/50 border-t border-indigo-100 px-4 py-2 flex justify-between items-center text-xs text-indigo-700">
+                    <span id="outputWordCount">Words: 0</span>
+                    <span id="outputReadingTime" class="flex items-center gap-1">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        -- min read
+                    </span>
                 </div>
             </div>
         </section>
@@ -195,8 +302,11 @@
         const btnText = document.getElementById('btnText');
         const btnIconWand = document.getElementById('btnIconWand');
         const btnIconSpinner = document.getElementById('btnIconSpinner');
+        const resetBtn = document.getElementById('resetBtn');
+        
         const errorContainer = document.getElementById('errorContainer');
         const errorText = document.getElementById('errorText');
+        const closeErrorBtn = document.getElementById('closeErrorBtn');
         
         // Output Elements
         const outputGradeTarget = document.getElementById('outputGradeTarget');
@@ -204,6 +314,47 @@
         const loadingState = document.getElementById('loadingState');
         const emptyState = document.getElementById('emptyState');
         const adaptedContent = document.getElementById('adaptedContent');
+        
+        // Stats Elements
+        const inputWordCount = document.getElementById('inputWordCount');
+        const inputReadingTime = document.getElementById('inputReadingTime');
+        const outputWordCount = document.getElementById('outputWordCount');
+        const outputReadingTime = document.getElementById('outputReadingTime');
+        
+        // Toolbar Elements
+        const toggleHighlights = document.getElementById('toggleHighlights');
+        const toggleDot = document.querySelector('.dot');
+        const toggleBg = toggleHighlights.nextElementSibling;
+        const copyBtn = document.getElementById('copyBtn');
+        const copyBtnText = document.getElementById('copyBtnText');
+
+        // New Input Features Elements
+        const fileInput = document.getElementById('fileInput');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const urlToggleBtn = document.getElementById('urlToggleBtn');
+        const urlInputContainer = document.getElementById('urlInputContainer');
+        const urlInput = document.getElementById('urlInput');
+        const urlFetchActionBtn = document.getElementById('urlFetchActionBtn');
+
+        // Utility: Calculate words and reading time
+        function updateStats(text, wordCountEl, readingTimeEl) {
+            const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+            const count = words.length;
+            wordCountEl.textContent = `Words: ${count}`;
+            
+            // Average reading speed ~200 wpm
+            const time = Math.max(1, Math.ceil(count / 200));
+            readingTimeEl.innerHTML = `<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" class="inline mr-1"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> ~${time} min read`;
+            return count;
+        }
+
+        // Setup real-time input stats
+        inputText.addEventListener('input', () => {
+            updateStats(inputText.value, inputWordCount, inputReadingTime);
+        });
+
+        // Initialize input stats on load
+        updateStats(inputText.value, inputWordCount, inputReadingTime);
 
         // Update UI dynamically when inputs change
         function updateUILabel() {
@@ -220,22 +371,153 @@
 
         gradeLevel.addEventListener('input', updateUILabel);
         focusMode.addEventListener('change', updateUILabel);
+        updateUILabel();
 
-        // UI State management
-        function setLoading(isLoading) {
-            transformBtn.disabled = isLoading;
-            if (isLoading) {
-                btnText.textContent = "Adapting Text...";
-                btnIconWand.classList.add('hidden');
-                btnIconSpinner.classList.remove('hidden');
-                loadingState.classList.remove('hidden');
-            } else {
-                btnText.textContent = "Transform Text";
-                btnIconWand.classList.remove('hidden');
-                btnIconSpinner.classList.add('hidden');
-                loadingState.classList.add('hidden');
+
+        // 1. Reset Functionality
+        resetBtn.addEventListener('click', () => {
+            // Reset Input
+            inputText.value = '';
+            updateStats('', inputWordCount, inputReadingTime);
+            
+            // Reset Output
+            adaptedContent.innerHTML = '';
+            adaptedContent.classList.add('hidden');
+            emptyState.classList.remove('hidden');
+            updateStats('', outputWordCount, outputReadingTime);
+            
+            // Reset Controls
+            gradeLevel.value = 12;
+            focusMode.value = 'vocabulary';
+            updateUILabel();
+            
+            // Reset UI states
+            hideError();
+            urlInputContainer.classList.add('hidden');
+            urlInput.value = '';
+            copyBtn.disabled = true;
+        });
+
+        // 2. File Upload Functionality
+        uploadBtn.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                inputText.value = event.target.result;
+                updateStats(inputText.value, inputWordCount, inputReadingTime);
+                hideError();
+            };
+            reader.onerror = () => showError("Failed to read the uploaded file.");
+            reader.readAsText(file);
+            
+            // Clear input value to allow uploading the same file again
+            e.target.value = '';
+        });
+
+        // 3. URL Fetch Functionality
+        urlToggleBtn.addEventListener('click', () => {
+            urlInputContainer.classList.toggle('hidden');
+            if(!urlInputContainer.classList.contains('hidden')) {
+                urlInput.focus();
             }
-        }
+        });
+
+        // Trigger fetch on "Enter" keypress in URL input
+        urlInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                urlFetchActionBtn.click();
+            }
+        });
+
+        urlFetchActionBtn.addEventListener('click', async () => {
+            const url = urlInput.value.trim();
+            if(!url) {
+                showError("Please enter a valid URL.");
+                return;
+            }
+            
+            // Basic URL validation
+            try {
+                new URL(url);
+            } catch (err) {
+                showError("Please enter a valid, complete URL including http:// or https://");
+                return;
+            }
+
+            // Set loading state for the fetch button
+            const oldText = urlFetchActionBtn.innerText;
+            urlFetchActionBtn.innerHTML = `<svg class="animate-spin h-4 w-4 text-white inline mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Loading...`;
+            urlFetchActionBtn.disabled = true;
+            inputText.disabled = true;
+            hideError();
+
+            try {
+                // Using AllOrigins as a reliable proxy to bypass standard browser CORS restrictions
+                const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+                const response = await fetch(proxyUrl);
+                
+                if (!response.ok) throw new Error(`Network error: ${response.status}`);
+                
+                const data = await response.json();
+                
+                if (data && data.contents) {
+                    // Extract text if the fetched content is HTML
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(data.contents, 'text/html');
+                    
+                    // Remove noisy HTML elements to isolate the main reading text
+                    doc.querySelectorAll('script, style, noscript, nav, footer, header, iframe, svg, img, form, button').forEach(el => el.remove());
+                    
+                    // Extract text content and clean up whitespace
+                    const cleanText = doc.body.textContent.replace(/\s+/g, ' ').trim();
+                    
+                    if (!cleanText) {
+                        throw new Error("Could not find readable text on this page.");
+                    }
+                    
+                    inputText.value = cleanText;
+                    updateStats(inputText.value, inputWordCount, inputReadingTime);
+                    
+                    // Close the URL container on success
+                    urlInputContainer.classList.add('hidden');
+                    urlInput.value = '';
+                } else {
+                    throw new Error("Empty response received from the URL.");
+                }
+            } catch (error) {
+                console.error("Fetch error:", error);
+                showError("Could not fetch text from the URL. The website might be unreachable or blocking automated requests.");
+            } finally {
+                // Restore button state
+                urlFetchActionBtn.innerText = oldText;
+                urlFetchActionBtn.disabled = false;
+                inputText.disabled = false;
+            }
+        });
+
+        // Custom Toggle Styling Logic (Tailwind peer-checked is sometimes finicky, manipulating manually for smooth UX)
+        toggleHighlights.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                toggleDot.classList.add('translate-x-4');
+                toggleDot.classList.remove('translate-x-0');
+                toggleBg.classList.add('bg-indigo-500');
+                toggleBg.classList.remove('bg-slate-300');
+                adaptedContent.classList.remove('hide-highlights');
+            } else {
+                toggleDot.classList.remove('translate-x-4');
+                toggleDot.classList.add('translate-x-0');
+                toggleBg.classList.remove('bg-indigo-500');
+                toggleBg.classList.add('bg-slate-300');
+                adaptedContent.classList.add('hide-highlights');
+            }
+        });
+        // Initial setup for toggle visual
+        toggleDot.classList.add('translate-x-4');
+        toggleBg.classList.add('bg-indigo-500');
 
         function showError(message) {
             errorText.textContent = message;
@@ -245,16 +527,101 @@
         function hideError() {
             errorContainer.classList.add('hidden');
         }
+        
+        closeErrorBtn.addEventListener('click', hideError);
 
-        // Initialize UI labels on load
-        updateUILabel();
+        // Copy to clipboard functionality
+        copyBtn.addEventListener('click', () => {
+            if (!adaptedContent.innerText || adaptedContent.classList.contains('hidden')) return;
+            
+            // Create temporary textarea for reliable copying avoiding html tags
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = adaptedContent.innerText.trim();
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            
+            try {
+                document.execCommand('copy');
+                // Temporary success state
+                const originalText = copyBtnText.innerText;
+                copyBtnText.innerText = 'Copied!';
+                copyBtn.classList.add('text-emerald-600');
+                copyBtn.classList.remove('text-indigo-600');
+                
+                setTimeout(() => {
+                    copyBtnText.innerText = originalText;
+                    copyBtn.classList.remove('text-emerald-600');
+                    copyBtn.classList.add('text-indigo-600');
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+                showError("Could not copy text to clipboard.");
+            } finally {
+                document.body.removeChild(tempTextArea);
+            }
+        });
+
+        function setLoading(isLoading) {
+            transformBtn.disabled = isLoading;
+            inputText.disabled = isLoading;
+            gradeLevel.disabled = isLoading;
+            focusMode.disabled = isLoading;
+            
+            if (isLoading) {
+                btnText.textContent = "Adapting Text...";
+                btnIconWand.classList.add('hidden');
+                btnIconSpinner.classList.remove('hidden');
+                loadingState.classList.remove('hidden');
+                
+                // Hide current content slightly but keep empty state hidden if there's content
+                if (!emptyState.classList.contains('hidden')) {
+                     emptyState.classList.add('hidden');
+                } else {
+                     adaptedContent.classList.add('opacity-30');
+                }
+            } else {
+                btnText.textContent = "Transform Text";
+                btnIconWand.classList.remove('hidden');
+                btnIconSpinner.classList.add('hidden');
+                loadingState.classList.add('hidden');
+                adaptedContent.classList.remove('opacity-30');
+            }
+        }
+
+        // Resilient Fetch with Exponential Backoff handling rate limits
+        async function fetchWithBackoff(url, options, maxRetries = 3) {
+            let delay = 1000; // Start with 1s delay
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    
+                    if (!response.ok) {
+                        // 429 Too Many Requests -> Rate limited
+                        if (response.status === 429 && i < maxRetries - 1) {
+                            console.warn(`Rate limited (429). Retrying in ${delay}ms...`);
+                            await new Promise(res => setTimeout(res, delay));
+                            delay *= 2; // Exponentially increase delay
+                            continue;
+                        }
+                        throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+                    }
+                    return response;
+                } catch (e) {
+                    if (i === maxRetries - 1) throw e;
+                    console.warn(`Network error. Retrying in ${delay}ms...`, e);
+                    await new Promise(res => setTimeout(res, delay));
+                    delay *= 2;
+                }
+            }
+        }
 
         // Main action: call API and render response
         transformBtn.addEventListener('click', async () => {
             const textToAdapt = inputText.value.trim();
             
             if (!textToAdapt) {
-                showError("Please enter some text to adapt.");
+                showError("Please enter some source text to adapt.");
+                inputText.focus();
                 return;
             }
 
@@ -267,19 +634,23 @@
                 let modeInstructions = "";
                 
                 if (mode === 'vocabulary') {
-                    modeInstructions = "Simplify complex words. Highlight changed/simplified words using this exact HTML tag: <span class='bg-amber-100 text-amber-900 px-1 rounded font-medium'>simplified word</span>";
+                    modeInstructions = "Simplify complex words while keeping sentence structure relatively similar. Highlight changed/simplified words using this exact HTML tag: <span class='bg-amber-100 text-amber-900 px-1.5 py-0.5 rounded font-medium shadow-sm'>simplified word</span>";
                 } else if (mode === 'structure') {
-                    modeInstructions = "Use shorter, simpler sentences. Highlight significantly changed sentences using this exact HTML tag: <span class='bg-emerald-100 text-emerald-900 px-1 rounded font-medium'>simplified sentence</span>";
+                    modeInstructions = "Break down long sentences and use shorter, simpler structures. Highlight significantly changed or split sentences using this exact HTML tag: <span class='bg-emerald-100 text-emerald-900 px-1.5 py-0.5 rounded font-medium shadow-sm'>simplified sentence structure</span>";
                 } else if (mode === 'summary') {
-                    modeInstructions = "Output an HTML unordered list summarizing the text. Format it as: <ul class='list-disc pl-5 space-y-2'><li>point 1</li></ul>. You can highlight simplified terms using the <span class='bg-amber-100 text-amber-900 px-1 rounded font-medium'> class.";
+                    modeInstructions = "Output a clear HTML unordered list summarizing the key points of the text. Format it as: <ul class='list-disc pl-5 space-y-3 mb-4'><li>point 1</li></ul>. You can highlight simplified terms using the <span class='bg-amber-100 text-amber-900 px-1.5 py-0.5 rounded font-medium shadow-sm'> class.";
                 }
 
+                // Construct strict prompt to enforce HTML output without markdown wrapping
                 const prompt = `
-                    You are an expert reading intervention specialist. Rewrite the following text to a Grade ${gradeLevel.value} reading level.
+                    You are an expert reading intervention specialist and educational text adapter. 
+                    Rewrite the following text to perfectly match a Grade ${gradeLevel.value} reading comprehension level.
                     
                     CRITICAL RULES:
-                    1. Output ONLY raw HTML. Do not include markdown formatting (do NOT wrap in \`\`\`html).
-                    2. ${modeInstructions}
+                    1. Output ONLY raw HTML. Do absolutely NOT wrap the output in markdown code blocks (e.g., do NOT start with \`\`\`html).
+                    2. Use standard semantic HTML tags like <p>, <ul>, <li>, <strong> where appropriate.
+                    3. ${modeInstructions}
+                    4. Ensure the final text flows naturally and remains factually accurate to the source.
                     
                     Original Text:
                     "${textToAdapt}"
@@ -289,17 +660,16 @@
                 const apiKey = ""; 
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
 
-                const response = await fetch(apiUrl, {
+                const response = await fetchWithBackoff(apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        contents: [{ parts: [{ text: prompt }] }]
+                        contents: [{ parts: [{ text: prompt }] }],
+                        generationConfig: {
+                            temperature: 0.4 // Slightly low temperature for consistent, accurate releveling
+                        }
                     })
                 });
-
-                if (!response.ok) {
-                    throw new Error(`API Error: ${response.status}`);
-                }
 
                 const result = await response.json();
                 const candidate = result.candidates?.[0];
@@ -307,20 +677,42 @@
                 if (candidate && candidate.content?.parts?.[0]?.text) {
                     let textResult = candidate.content.parts[0].text;
                     
-                    // Clean up potential markdown code fences just in case
-                    textResult = textResult.replace(/```html/gi, '').replace(/```/g, '');
+                    // Clean up potential markdown code fences just in case the model ignored rule #1
+                    textResult = textResult.replace(/^```html\s*/i, '').replace(/```\s*$/i, '');
                     
-                    // Update DOM
+                    // Update DOM content
                     adaptedContent.innerHTML = textResult;
+                    
+                    // UI State updates
                     emptyState.classList.add('hidden');
                     adaptedContent.classList.remove('hidden');
+                    copyBtn.disabled = false;
+                    
+                    // Add fade-in animation
+                    adaptedContent.classList.add('fade-enter');
+                    requestAnimationFrame(() => {
+                        adaptedContent.classList.add('fade-enter-active');
+                        setTimeout(() => {
+                            adaptedContent.classList.remove('fade-enter', 'fade-enter-active');
+                        }, 300);
+                    });
+
+                    // Update Output stats based on generated text
+                    updateStats(adaptedContent.innerText, outputWordCount, outputReadingTime);
+                    
                 } else {
                     throw new Error("Unexpected API response structure.");
                 }
 
             } catch (err) {
-                console.error(err);
-                showError("Failed to generate adapted text. Please try again.");
+                console.error("Transformation Error:", err);
+                showError("Failed to generate adapted text. Please try again in a moment.");
+                
+                // If it failed and we had no previous content, show empty state again
+                if (adaptedContent.innerHTML.trim() === "") {
+                    emptyState.classList.remove('hidden');
+                    adaptedContent.classList.add('hidden');
+                }
             } finally {
                 setLoading(false);
             }
