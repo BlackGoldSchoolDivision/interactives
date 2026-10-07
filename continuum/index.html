@@ -310,40 +310,13 @@
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // Safely parse environment variables
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'demo-app-id';
-        let firebaseConfig = {};
-        try {
-            firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-                // Fallback dummy config for local viewing without errors, though DB calls will fail.
-                apiKey: "dummy", projectId: "dummy" 
-            };
-        } catch (e) {
-            console.error("Error parsing firebase config", e);
-        }
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-        let auth, db;
-        try {
-            const app = initializeApp(firebaseConfig);
-            auth = getAuth(app);
-            db = getFirestore(app);
-        } catch(e) {
-            console.error("Firebase initialization failed:", e);
-        }
-
+        
         // Global State
         const state = {
-            user: null,
             teacherTerms: [],
             assignmentTerms: [],
             studentResponses: [],
-            currentTermIndex: 0,
-            isSaving: false
+            currentTermIndex: 0
         };
 
         // DOM Elements
@@ -405,61 +378,37 @@
             }, 5000);
         }
 
-        async function initApp() {
-            if (!auth) {
-                showError("Database configuration missing.");
-                showView('home');
-                return;
-            }
-
-            try {
-                // RULE 3: Auth Before Queries
-                if (initialAuthToken) {
-                    await signInWithCustomToken(auth, initialAuthToken);
-                } else {
-                    await signInAnonymously(auth);
-                }
-            } catch (error) {
-                console.error("Auth error:", error);
-                showError("Failed to connect to the database. Trying in offline mode.");
-            }
-
+        function initApp() {
             // Check URL for student assignment routing
             const urlParams = new URLSearchParams(window.location.search);
-            const assignmentId = urlParams.get('assignment');
+            const assignmentData = urlParams.get('assignment');
             
-            if (assignmentId) {
-                await loadAssignment(assignmentId);
+            if (assignmentData) {
+                loadAssignment(assignmentData);
             } else {
                 showView('home');
             }
-
-            onAuthStateChanged(auth, (user) => {
-                state.user = user;
-            });
         }
 
-        async function loadAssignment(assignmentId) {
+        function loadAssignment(encodedData) {
             showView('loading');
             try {
-                // RULE 1: Strict Paths
-                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'assignments', assignmentId);
-                const docSnap = await getDoc(docRef);
+                // Safely decode the base64 string back into a JavaScript array
+                const decodedJson = decodeURIComponent(atob(encodedData));
+                const terms = JSON.parse(decodedJson);
                 
-                if (docSnap.exists()) {
-                    state.assignmentTerms = docSnap.data().terms || [];
-                    if (state.assignmentTerms.length === 0) throw new Error("Assignment is empty.");
+                if (Array.isArray(terms) && terms.length > 0) {
+                    state.assignmentTerms = terms;
                     state.currentTermIndex = 0;
                     state.studentResponses = [];
                     setupStudentQuestion();
                     showView('student');
                 } else {
-                    showError("Assignment not found. Please check your link.");
-                    showView('home');
+                    throw new Error("Invalid assignment data.");
                 }
             } catch (err) {
                 console.error("Load error:", err);
-                showError("Failed to load assignment.");
+                showError("Assignment not found or link is broken. Please check your link.");
                 showView('home');
             }
         }
@@ -518,35 +467,32 @@
             renderTeacherTerms();
         });
 
-        DOM.createAssBtn.addEventListener('click', async () => {
-            if (state.teacherTerms.length === 0 || !state.user || state.isSaving) return;
-            state.isSaving = true;
-            DOM.createAssBtn.textContent = 'Saving...';
+        DOM.createAssBtn.addEventListener('click', () => {
+            if (state.teacherTerms.length === 0) return;
+            
+            DOM.createAssBtn.textContent = 'Generating Link...';
+            DOM.createAssBtn.disabled = true;
             
             try {
-                const newId = Math.random().toString(36).substring(2, 9);
-                // RULE 1: Strict Paths
-                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'assignments', newId);
+                // Encode the terms into a safe base64 string to store directly in the URL
+                const jsonString = JSON.stringify(state.teacherTerms);
+                const encodedData = btoa(encodeURIComponent(jsonString));
                 
-                await setDoc(docRef, {
-                    terms: state.teacherTerms,
-                    teacherId: state.user.uid,
-                    createdAt: new Date().toISOString()
-                });
-
-                const currentUrl = new URL(window.location.href);
-                currentUrl.searchParams.set('assignment', newId);
+                // Build the shareable URL
+                const currentUrl = new URL(window.location.origin + window.location.pathname);
+                currentUrl.searchParams.set('assignment', encodedData);
                 
                 DOM.urlDisplay.textContent = currentUrl.toString();
                 DOM.teacherSetupArea.classList.add('hidden');
                 DOM.teacherSuccessArea.classList.remove('hidden');
 
             } catch(e) {
-                console.error("Save error:", e);
-                showError("Failed to create assignment.");
+                console.error("Link generation error:", e);
+                showError("Failed to create assignment link.");
             }
-            state.isSaving = false;
+            
             DOM.createAssBtn.innerHTML = 'Create Assignment & Get Link';
+            DOM.createAssBtn.disabled = false;
         });
 
         // Other Navigation Listeners
