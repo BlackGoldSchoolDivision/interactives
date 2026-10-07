@@ -8245,20 +8245,40 @@
     ],
     "Maltais239/interactives/walker-corner": [
       {
-        "path": "walker-corner/README.md",
-        "bytes": 1448
+        "path": "walker-corner/bridge/app.js",
+        "bytes": 30670
       },
       {
-        "path": "walker-corner/bridge/app.js",
-        "bytes": 8441
+        "path": "walker-corner/bridge/assets/valley.webp",
+        "bytes": 262578
+      },
+      {
+        "path": "walker-corner/bridge/assets/vehicles.webp",
+        "bytes": 183878
       },
       {
         "path": "walker-corner/bridge/engine.js",
-        "bytes": 2239
+        "bytes": 8192
+      },
+      {
+        "path": "walker-corner/bridge/game.css",
+        "bytes": 14997
       },
       {
         "path": "walker-corner/bridge/index.html",
-        "bytes": 5721
+        "bytes": 10026
+      },
+      {
+        "path": "walker-corner/bridge/README.md",
+        "bytes": 2577
+      },
+      {
+        "path": "walker-corner/bridge/verification/engine.test.js",
+        "bytes": 2323
+      },
+      {
+        "path": "walker-corner/bridge/verification/screen-checks.html",
+        "bytes": 2072
       },
       {
         "path": "walker-corner/functions/app.js",
@@ -8274,7 +8294,7 @@
       },
       {
         "path": "walker-corner/index.html",
-        "bytes": 4200
+        "bytes": 4232
       },
       {
         "path": "walker-corner/plurals/app.js",
@@ -8291,6 +8311,10 @@
       {
         "path": "walker-corner/plurals/words.js",
         "bytes": 3662
+      },
+      {
+        "path": "walker-corner/README.md",
+        "bytes": 1448
       },
       {
         "path": "walker-corner/sources/bridge.html",

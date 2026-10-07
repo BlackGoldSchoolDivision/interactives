@@ -3611,7 +3611,7 @@
     "category": "Science",
     "group": "",
     "collection": "walker-corner",
-    "description": "Design a bridge within a budget, test changing conditions, and compare saved trials. Explain what your classroom model shows.",
+    "description": "Build a bridge across a painted mountain canyon. Connect wood and steel, test moving vehicles, watch stress and collapse, and compare saved trials.",
     "types": [
       "Simulations & models",
       "Decision games",
@@ -3636,8 +3636,8 @@
     ],
     "favourite": false,
     "credit": "Original idea: Tyler Walker · Improved classroom edition: Engaging Students",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/walker-bridge.jpg?v=20261005",
-    "captured": "2026-10-05",
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/walker-bridge.jpg?v=20261007-game",
+    "captured": "2026-10-07",
     "original_urls": [
       "https://sites.google.com/gshare.blackgold.ca/bridgetester/home"
     ]
