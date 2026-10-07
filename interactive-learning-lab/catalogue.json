@@ -3023,22 +3023,24 @@
     "repo": "personal",
     "title": "Roots of Ideology",
     "category": "Social studies",
-    "description": "Explore the values and ideas that shape individualist and collectivist perspectives.",
+    "description": "Explore individualism and collectivism through six illustrated policy decisions, a value sorting game, historical sources and an argument builder.",
     "types": [
+      "Decision games",
+      "Sorting",
       "Reading & annotation",
-      "Practice questions"
+      "Writing"
     ],
     "tags": [
-      "Ideology",
-      "Perspectives"
+      "Individualism & collectivism",
+      "Values & tradeoffs"
     ],
     "url": "https://maltais239.github.io/interactives/rootsofideology/",
     "links": [],
     "favourite": false,
     "credit": "",
     "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/rootsofideology.jpg",
-    "captured": "2026-10-04"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/rootsofideology.jpg?v=5f731f304258",
+    "captured": "2026-10-07"
   },
   {
     "id": "culturalcontact",

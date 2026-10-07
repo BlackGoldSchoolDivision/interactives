@@ -4389,8 +4389,44 @@
     ],
     "Maltais239/interactives/rootsofideology": [
       {
+        "path": "rootsofideology/README.md",
+        "bytes": 2300
+      },
+      {
+        "path": "rootsofideology/app.js",
+        "bytes": 32084
+      },
+      {
+        "path": "rootsofideology/assets/community.webp",
+        "bytes": 127990
+      },
+      {
+        "path": "rootsofideology/assets/image-prompts.json",
+        "bytes": 3376
+      },
+      {
+        "path": "rootsofideology/assets/market.webp",
+        "bytes": 96360
+      },
+      {
+        "path": "rootsofideology/assets/school.webp",
+        "bytes": 55840
+      },
+      {
+        "path": "rootsofideology/data.js",
+        "bytes": 17374
+      },
+      {
         "path": "rootsofideology/index.html",
-        "bytes": 121732
+        "bytes": 5550
+      },
+      {
+        "path": "rootsofideology/styles.css",
+        "bytes": 18335
+      },
+      {
+        "path": "rootsofideology/validation.json",
+        "bytes": 1925
       }
     ],
     "Maltais239/interactives/rootwords": [

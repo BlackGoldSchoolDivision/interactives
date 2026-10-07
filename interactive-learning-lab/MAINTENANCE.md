@@ -171,3 +171,10 @@ Validation: every answer and both animal rounds, retry feedback, completion/rese
 Restored Writer Spark’s original 2.3 page from Maltais239/interactives commit d8b789b3de12dfa2ae06788cd683a58815e8699c, before the October 5 styling and draft updates. InfoSpark remains the original February 24 writing engine; repository history confirms it had no October rewrite. Existing original screenshot previews and launch links are retained.
 
 Writer Spark and InfoSpark appear first, in that order, when browsing Words & writing or Reading & writing. Other cards keep their existing relative order. Writer Spark Practice is removed from the visible catalogue, activity-links CSV and project-copy manifest. The Writer Spark copy manifest points to its original standalone HTML.
+
+
+## Roots of Ideology redesign — 7 October 2026
+
+Rebuilt the personal-repository activity around two lenses, twelve values, six fictional policy decisions, a sorting game, attributed historical sources and a scaffolded argument builder. Three generated editorial illustrations are stored in rootsofideology/assets with their exact prompts. The app supports local progress, portable project JSON, printing, browser read aloud and a complete HTML export with all three images embedded. The teacher guide identifies the Alberta Grade 8 draft context. Policy choices are not used to assign political identities.
+
+Updated this catalogue entry, its actual-app screenshot, activity types, description, CSV and project-copy manifest. All other cards and their order are preserved. Interaction, export and six-viewport responsive results are recorded in the app's validation.json.
