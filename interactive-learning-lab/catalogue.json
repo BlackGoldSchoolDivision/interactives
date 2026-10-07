@@ -112,29 +112,6 @@
     "captured": "2026-10-04"
   },
   {
-    "id": "writerpractice",
-    "path": "writersparkpracticeapp",
-    "repo": "personal",
-    "title": "Writer Spark Practice",
-    "category": "Reading & writing",
-    "description": "Upgrade sentences, explore synonym webs, and build richer scenes. Keep saved vocabulary and scene notebooks or download your writing.",
-    "types": [
-      "Writing",
-      "Practice questions"
-    ],
-    "tags": [
-      "Sentence improvement",
-      "Vocabulary webs"
-    ],
-    "favourite": true,
-    "url": "https://maltais239.github.io/interactives/writersparkpracticeapp/",
-    "links": [],
-    "credit": "",
-    "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/writerpractice.jpg",
-    "captured": "2026-10-04"
-  },
-  {
     "id": "rootwords",
     "title": "Rooting For You!",
     "category": "Morphology",

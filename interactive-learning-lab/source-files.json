@@ -72,20 +72,6 @@
         }
       ]
     },
-    "writerpractice": {
-      "kind": "html",
-      "title": "Writer Spark Practice",
-      "credit": "",
-      "category": "Reading & writing",
-      "versions": [
-        {
-          "label": "Writer Spark Practice",
-          "repo": "Maltais239/interactives",
-          "path": "writersparkpracticeapp/index.html",
-          "url": "https://maltais239.github.io/interactives/writersparkpracticeapp/"
-        }
-      ]
-    },
     "rootwords": {
       "kind": "html",
       "title": "Rooting For You!",
@@ -8439,38 +8425,8 @@
     ],
     "Maltais239/interactives/writerspark": [
       {
-        "path": "writerspark/app-source.jsx",
-        "bytes": 95037
-      },
-      {
-        "path": "writerspark/app.css",
-        "bytes": 32776
-      },
-      {
-        "path": "writerspark/app.js",
-        "bytes": 64859
-      },
-      {
         "path": "writerspark/index.html",
-        "bytes": 4108
-      }
-    ],
-    "Maltais239/interactives/writersparkpracticeapp": [
-      {
-        "path": "writersparkpracticeapp/app-source.jsx",
-        "bytes": 125827
-      },
-      {
-        "path": "writersparkpracticeapp/app.css",
-        "bytes": 26099
-      },
-      {
-        "path": "writersparkpracticeapp/app.js",
-        "bytes": 95939
-      },
-      {
-        "path": "writersparkpracticeapp/index.html",
-        "bytes": 5001
+        "bytes": 95768
       }
     ],
     "Maltais239/interactives/yesno": [

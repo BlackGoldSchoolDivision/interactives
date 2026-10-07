@@ -164,3 +164,10 @@ Animal Diets retains its twelve photographs, licenses and two evidence challenge
 Resource Depot and its original shared CSS/JavaScript, data, screenshot, catalogue card and file manifest remain unchanged. Biotic & Abiotic also remains unchanged. Analytics is still deferred.
 
 Validation: every answer and both animal rounds, retry feedback, completion/reset/native drop, seven viewport sizes with retained answers, narrow 200% text, and portable animal HTML with all twelve pictures and credits.
+
+
+## Writing originals and card order — 7 October 2026
+
+Restored Writer Spark’s original 2.3 page from Maltais239/interactives commit d8b789b3de12dfa2ae06788cd683a58815e8699c, before the October 5 styling and draft updates. InfoSpark remains the original February 24 writing engine; repository history confirms it had no October rewrite. Existing original screenshot previews and launch links are retained.
+
+Writer Spark and InfoSpark appear first, in that order, when browsing Words & writing or Reading & writing. Other cards keep their existing relative order. Writer Spark Practice is removed from the visible catalogue, activity-links CSV and project-copy manifest. The Writer Spark copy manifest points to its original standalone HTML.

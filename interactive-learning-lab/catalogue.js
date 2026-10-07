@@ -30,6 +30,7 @@ const subjects = [
   {label:'Thinking tools',category:'Thinking tools',id:'thinkingroutines',colour:'#9651ac',ink:'#fff'}
 ];
 const featuredOrder = ['morpheme-missions','vocabularyarcade','mackwoodmapping','word-detective','numberbuilding','moonphases','writerspark','thinking-dialogue'];
+const writingOrder = ['writerspark','infospark'];
 const thinkingOrder = ['thinking-dialogue','thinkingroutines','imagespark','venndiagram','hexthinker','asctriangle','frayermodel'];
 let chosen = 'Favourites', chosenGroup = 'All geography', chosenType = 'All types', query = '';
 const cardsNode = document.getElementById('cards');
@@ -75,6 +76,10 @@ function render() {
   renderFilters();
   const featured = chosen === 'Favourites' && chosenType === 'All types' && !query.trim();
   const visible = catalogue.filter(matches);
+  if (['Words & writing','Reading & writing'].includes(chosen)) visible.sort((a,b) => {
+    const ai = writingOrder.indexOf(a.id), bi = writingOrder.indexOf(b.id);
+    return (ai < 0 ? 100 : ai) - (bi < 0 ? 100 : bi);
+  });
   if (chosen === 'Social studies') visible.sort((a,b) => Number(b.id === 'railways-and-immigration') - Number(a.id === 'railways-and-immigration'));
   if (chosen === 'Thinking tools') visible.sort((a,b) => {
     const ai = thinkingOrder.indexOf(a.id), bi = thinkingOrder.indexOf(b.id);
