@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ideology Continuum</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for the range slider to make it look premium */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]:focus {
+            outline: none;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 28px;
+            width: 28px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 4px solid #4f46e5;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-top: -10px;
+            position: relative;
+            z-index: 10;
+        }
+        input[type=range]::-moz-range-thumb {
+            height: 28px;
+            width: 28px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 4px solid #4f46e5;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            cursor: pointer;
+            background: linear-gradient(to right, #3b82f6, #cbd5e1, #f97316);
+            border-radius: 4px;
+        }
+        input[type=range]::-moz-range-track {
+            width: 100%;
+            height: 8px;
+            cursor: pointer;
+            background: linear-gradient(to right, #3b82f6, #cbd5e1, #f97316);
+            border-radius: 4px;
+        }
+
+        /* Print-specific styles */
+        @media print {
+            body { background: white !important; }
+            .print-hidden { display: none !important; }
+            .print-border { border: 1px solid #000 !important; }
+            .print-text-black { color: black !important; }
+            .print-shadow-none { box-shadow: none !important; }
+            .print-break-inside-avoid { break-inside: avoid; }
+            .print-bg-transparent { background-color: transparent !important; }
+            .print-continuum-track { background: #e2e8f0 !important; border: 1px solid #94a3b8; }
+            .print-marker { background: black !important; border-color: white !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen font-sans text-slate-800">
+
+    <div id="app" class="w-full">
+        
+        <!-- Loading State -->
+        <div id="loading-view" class="flex flex-col items-center justify-center min-h-screen">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mb-4"></div>
+            <p class="text-slate-600 font-medium">Loading...</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="error-view" class="hidden bg-red-50 border-l-4 border-red-500 p-4 mx-auto max-w-2xl mt-8 rounded-md shadow-sm">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p id="error-message" class="text-sm text-red-700"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Home View -->
+        <div id="home-view" class="hidden min-h-screen flex-col items-center justify-center p-6">
+            <div class="max-w-2xl w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100">
+                <div class="bg-indigo-600 p-8 text-center">
+                    <svg class="w-16 h-16 text-white mx-auto mb-4 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    <h1 class="text-3xl font-bold text-white mb-2">Ideology Continuum</h1>
+                    <p class="text-indigo-100 text-lg">Explore where concepts fall between Collectivism and Individualism.</p>
+                </div>
+                
+                <div class="p-8 text-center space-y-8">
+                    <p class="text-slate-600 text-lg">
+                        Are you a teacher creating a new assignment, or a student looking for your work?
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <button id="btn-goto-teacher" class="flex flex-col items-center p-6 bg-slate-50 hover:bg-indigo-50 border-2 border-slate-200 hover:border-indigo-300 rounded-xl transition-all group cursor-pointer text-left w-full">
+                            <div class="bg-indigo-100 p-4 rounded-full mb-4 group-hover:scale-110 transition-transform">
+                                <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <h2 class="text-xl font-bold text-slate-800 mb-2">Teacher Mode</h2>
+                            <p class="text-slate-500 text-sm text-center">Create word banks and generate assignment links for students.</p>
+                        </button>
+                        
+                        <div class="flex flex-col items-center p-6 bg-slate-50 border-2 border-slate-200 rounded-xl opacity-70">
+                            <div class="bg-slate-200 p-4 rounded-full mb-4">
+                                <svg class="w-8 h-8 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                            </div>
+                            <h2 class="text-xl font-bold text-slate-800 mb-2">Student Mode</h2>
+                            <p class="text-slate-500 text-sm text-center">To access a student assignment, please use the link provided by your teacher.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teacher View -->
+        <div id="teacher-view" class="hidden min-h-screen p-6 md:p-12">
+            <div class="max-w-4xl mx-auto">
+                <button id="btn-teacher-back" class="flex items-center text-slate-500 hover:text-indigo-600 mb-6 transition-colors font-medium">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg> Back to Home
+                </button>
+                
+                <div class="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden">
+                    <div class="bg-slate-800 p-6 md:px-10 border-b border-slate-700">
+                        <h1 class="text-2xl md:text-3xl font-bold text-white">Teacher Dashboard</h1>
+                        <p class="text-slate-300 mt-2">Create a new Collectivist vs. Individualist assignment</p>
+                    </div>
+                    
+                    <div class="p-6 md:p-10">
+                        
+                        <!-- Teacher Setup Area -->
+                        <div id="teacher-setup-area" class="space-y-8">
+                            <div>
+                                <h2 class="text-lg font-semibold text-slate-800 mb-4">1. Build your Word Bank</h2>
+                                <p class="text-slate-500 mb-4 text-sm">
+                                    Add terms, policies, or concepts that students will evaluate (e.g., "Universal Healthcare", "Free Market", "Crown Corporations").
+                                </p>
+                                
+                                <form id="add-term-form" class="flex gap-3">
+                                    <input type="text" id="term-input" placeholder="Enter a term..." class="flex-1 px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all">
+                                    <button type="submit" id="add-term-btn" disabled class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg disabled:opacity-50 transition-colors flex items-center">
+                                        <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg> Add
+                                    </button>
+                                </form>
+                            </div>
+
+                            <div id="word-bank-container" class="hidden bg-slate-50 rounded-xl p-6 border border-slate-200">
+                                <h3 class="font-medium text-slate-700 mb-4 flex justify-between items-center">
+                                    <span>Current Word Bank (<span id="term-count">0</span>)</span>
+                                    <button id="btn-clear-all" class="text-red-500 hover:text-red-700 text-sm font-medium hover:underline flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                        Clear All
+                                    </button>
+                                </h3>
+                                <ul id="term-list" class="space-y-2">
+                                    <!-- Terms injected here via JS -->
+                                </ul>
+                            </div>
+
+                            <div class="pt-6 border-t border-slate-200">
+                                <button id="btn-create-assignment" disabled class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg rounded-xl shadow-md disabled:opacity-50 disabled:cursor-not-allowed transition-all flex justify-center items-center">
+                                    Create Assignment & Get Link
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Teacher Success Area -->
+                        <div id="teacher-success-area" class="hidden text-center py-8 space-y-6">
+                            <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <svg class="w-10 h-10 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <h2 class="text-3xl font-bold text-slate-800">Assignment Created!</h2>
+                            <p class="text-slate-600 max-w-lg mx-auto">
+                                Share this unique link with your students. When they click it, they will begin the activity with the terms you selected.
+                            </p>
+                            
+                            <div class="bg-slate-100 p-4 rounded-xl border border-slate-200 flex items-center justify-between max-w-2xl mx-auto">
+                                <code id="assignment-url-display" class="text-sm md:text-base text-slate-800 overflow-x-auto whitespace-nowrap p-2 select-all">
+                                    <!-- URL inserted here -->
+                                </code>
+                                <button id="btn-copy-link" class="ml-4 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center flex-shrink-0 font-medium text-sm">
+                                    <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg> Copy Link
+                                </button>
+                            </div>
+                            
+                            <div class="pt-8">
+                                <button id="btn-create-another" class="text-indigo-600 font-medium hover:underline">
+                                    Create another assignment
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student View -->
+        <div id="student-view" class="hidden min-h-screen flex-col">
+            <header class="bg-white border-b border-slate-200 p-4 sticky top-0 z-20 shadow-sm">
+                <div class="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+                    <h1 class="font-bold text-slate-800 flex items-center text-lg">
+                        <svg class="w-5 h-5 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                        Ideology Continuum Assignment
+                    </h1>
+                    <div class="flex items-center gap-3 w-full md:w-64">
+                        <div id="student-progress-text" class="text-sm font-medium text-slate-500 whitespace-nowrap">
+                            Term 1 of X
+                        </div>
+                        <div class="w-full bg-slate-200 rounded-full h-2.5">
+                            <div id="student-progress-bar" class="bg-indigo-600 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="flex-grow p-4 md:p-8 flex items-center justify-center">
+                <div class="max-w-4xl w-full bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden">
+                    
+                    <div class="p-8 md:p-12 text-center bg-slate-800 text-white">
+                        <p class="text-slate-300 font-medium mb-2 text-sm uppercase tracking-wider">Current Concept to Evaluate</p>
+                        <h2 id="current-term-display" class="text-3xl md:text-5xl font-bold">Term Name</h2>
+                    </div>
+
+                    <div class="p-6 md:p-10 space-y-12">
+                        
+                        <!-- Continuum Slider -->
+                        <div class="space-y-6">
+                            <h3 class="text-xl font-bold text-slate-800 text-center">Where does this belong?</h3>
+                            
+                            <div class="relative pt-8 pb-4 px-4">
+                                <!-- Slider Input -->
+                                <input type="range" id="continuum-slider" min="0" max="100" value="50">
+                                
+                                <!-- Labels -->
+                                <div class="flex justify-between mt-6 px-1">
+                                    <div class="text-left max-w-[120px]">
+                                        <span class="font-bold text-blue-700 block text-lg">Collectivist</span>
+                                        <span class="text-xs text-slate-500 leading-tight block mt-1 hidden md:block">Focus on group, cooperation, common good</span>
+                                    </div>
+                                    <div class="text-right max-w-[120px]">
+                                        <span class="font-bold text-orange-700 block text-lg">Individualist</span>
+                                        <span class="text-xs text-slate-500 leading-tight block mt-1 hidden md:block">Focus on self, competition, private property</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Value Indicator -->
+                                <div id="slider-indicator" class="text-center mt-4 text-sm font-medium text-slate-500">
+                                    Mixed / Centrist
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Justification -->
+                        <div class="space-y-4 bg-slate-50 p-6 rounded-xl border border-slate-200">
+                            <label for="justification-input" class="block text-lg font-bold text-slate-800">
+                                Justification <span class="text-red-500">*</span>
+                            </label>
+                            <p class="text-sm text-slate-600">Explain why you placed this concept at this specific point on the continuum.</p>
+                            <textarea id="justification-input" placeholder="I placed this here because..." class="w-full p-4 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none min-h-[120px] resize-y transition-shadow"></textarea>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="flex justify-end pt-4">
+                            <button id="btn-next-term" disabled class="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center text-lg">
+                                Save & Next Term
+                                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Report View -->
+        <div id="report-view" class="hidden min-h-screen p-4 md:p-8 print:p-0">
+            <div class="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden print-shadow-none print-border-none">
+                
+                <div class="bg-indigo-800 p-8 text-white flex justify-between items-center print-bg-transparent print-text-black print:border-b-2 print:border-slate-800 print:p-4">
+                    <div>
+                        <h1 class="text-3xl font-bold mb-2">Ideology Continuum Report</h1>
+                        <p id="report-date" class="text-indigo-200 print-text-black"></p>
+                    </div>
+                    <button id="btn-print" class="print-hidden flex items-center bg-white text-indigo-800 px-6 py-3 rounded-lg font-bold hover:bg-indigo-50 transition-colors shadow-sm">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg> Export to PDF / Print
+                    </button>
+                </div>
+
+                <div class="p-8 md:p-12 space-y-16">
+                    
+                    <!-- Visual Overview -->
+                    <section>
+                        <h2 class="text-2xl font-bold text-slate-800 mb-8 border-b pb-4">Continuum Overview</h2>
+                        
+                        <div class="relative pt-12 pb-24 px-4 max-w-4xl mx-auto">
+                            <!-- Background Track -->
+                            <div class="absolute top-1/2 left-0 right-0 h-4 -mt-2 rounded-full bg-gradient-to-r from-blue-200 via-slate-200 to-orange-200 print-continuum-track"></div>
+                            <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-slate-300 -mt-0.5 print:bg-slate-500"></div>
+
+                            <!-- Plotted Markers (Injected via JS) -->
+                            <div id="report-plot-container" class="absolute top-1/2 left-0 right-0 h-0 w-full"></div>
+
+                            <!-- Labels -->
+                            <div class="absolute top-full left-0 mt-10 text-left w-32">
+                                <span class="font-bold text-blue-700 text-lg print-text-black">Collectivist</span>
+                            </div>
+                            <div class="absolute top-full right-0 mt-10 text-right w-32">
+                                <span class="font-bold text-orange-700 text-lg print-text-black">Individualist</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Detailed Justifications -->
+                    <section class="mt-24">
+                        <h2 class="text-2xl font-bold text-slate-800 mb-6 border-b pb-4">Detailed Justifications</h2>
+                        <div id="report-justifications-container" class="space-y-6">
+                            <!-- Responses injected here -->
+                        </div>
+                    </section>
+                    
+                    <!-- Footer Area for Print -->
+                    <div class="hidden print:block mt-16 pt-8 border-t border-slate-400">
+                        <p class="text-lg mb-4"><strong>Student Name:</strong> _________________________________________________</p>
+                        <p class="text-lg"><strong>Class / Date:</strong> _________________________________________________</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global configuration injected by environment
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        // Firebase Initialization
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Application State
+        const state = {
+            user: null,
+            teacherTerms: [],
+            assignmentTerms: [],
+            studentResponses: [],
+            currentTermIndex: 0,
+            isSaving: false
+        };
+
+        // DOM Elements
+        const views = {
+            loading: document.getElementById('loading-view'),
+            error: document.getElementById('error-view'),
+            home: document.getElementById('home-view'),
+            teacher: document.getElementById('teacher-view'),
+            student: document.getElementById('student-view'),
+            report: document.getElementById('report-view')
+        };
+        const errorMessage = document.getElementById('error-message');
+
+        // Main initialization
+        async function init() {
+            try {
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (err) {
+                console.error("Auth error:", err);
+                showError("Failed to authenticate with database.");
+            }
+
+            onAuthStateChanged(auth, (user) => {
+                state.user = user;
+                if (user) {
+                    checkUrlForAssignment();
+                }
+            });
+            
+            setupEventListeners();
+        }
+
+        // Navigation & Routing
+        function showView(viewName) {
+            Object.values(views).forEach(v => v.classList.add('hidden'));
+            if (views[viewName]) {
+                views[viewName].classList.remove('hidden');
+                views[viewName].classList.add(viewName === 'home' || viewName === 'student' ? 'flex' : 'block');
+            }
+        }
+
+        function showError(msg) {
+            errorMessage.textContent = msg;
+            views.error.classList.remove('hidden');
+            setTimeout(() => views.error.classList.add('hidden'), 5000);
+        }
+
+        async function checkUrlForAssignment() {
+            const params = new URLSearchParams(window.location.search);
+            const assignmentId = params.get('assignment');
+            
+            if (assignmentId) {
+                await loadAssignment(assignmentId);
+            } else {
+                showView('home');
+            }
+        }
+
+        async function loadAssignment(assignmentId) {
+            showView('loading');
+            try {
+                // Rule 1: Strict Paths
+                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'assignments', assignmentId);
+                const docSnap = await getDoc(docRef);
+                
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    state.assignmentTerms = data.terms || [];
+                    state.currentTermIndex = 0;
+                    state.studentResponses = [];
+                    renderStudentQuestion();
+                    showView('student');
+                } else {
+                    showError("Assignment not found. Please check your link.");
+                    showView('home');
+                }
+            } catch (err) {
+                console.error("Error loading assignment:", err);
+                showError("Failed to load the assignment.");
+                showView('home');
+            }
+        }
+
+        async function createAssignment() {
+            if (state.teacherTerms.length === 0 || !state.user || state.isSaving) return;
+            
+            state.isSaving = true;
+            document.getElementById('btn-create-assignment').textContent = "Creating...";
+            
+            try {
+                const newAssignmentId = Math.random().toString(36).substring(2, 9);
+                // Rule 1: Strict Paths
+                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'assignments', newAssignmentId);
+                
+                await setDoc(docRef, {
+                    terms: state.teacherTerms,
+                    teacherId: state.user.uid,
+                    createdAt: new Date().toISOString()
+                });
+                
+                const currentUrl = new URL(window.location.href);
+                currentUrl.searchParams.set('assignment', newAssignmentId);
+                const assignmentUrl = currentUrl.toString();
+                
+                document.getElementById('assignment-url-display').textContent = assignmentUrl;
+                document.getElementById('teacher-setup-area').classList.add('hidden');
+                document.getElementById('teacher-success-area').classList.remove('hidden');
+                
+            } catch (err) {
+                console.error("Error creating assignment:", err);
+                showError("Failed to create assignment.");
+            }
+            
+            state.isSaving = false;
+            document.getElementById('btn-create-assignment').textContent = "Create Assignment & Get Link";
+        }
+
+        function setupEventListeners() {
+            // Home Navigation
+            document.getElementById('btn-goto-teacher').addEventListener('click', () => showView('teacher'));
+            document.getElementById('btn-teacher-back').addEventListener('click', () => showView('home'));
+
+            // Teacher - Add Term
+            const termInput = document.getElementById('term-input');
+            const addBtn = document.getElementById('add-term-btn');
+            
+            termInput.addEventListener('input', (e) => {
+                addBtn.disabled = e.target.value.trim() === '';
+            });
+
+            document.getElementById('add-term-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const term = termInput.value.trim();
+                if (term && !state.teacherTerms.includes(term)) {
+                    state.teacherTerms.push(term);
+                    termInput.value = '';
+                    addBtn.disabled = true;
+                    renderTeacherTerms();
+                }
+            });
+
+            // Teacher - Clear All (NEW)
+            document.getElementById('btn-clear-all').addEventListener('click', () => {
+                state.teacherTerms = [];
+                renderTeacherTerms();
+            });
+
+            // Teacher - Create Assignment
+            document.getElementById('btn-create-assignment').addEventListener('click', createAssignment);
+
+            // Teacher - Copy Link
+            document.getElementById('btn-copy-link').addEventListener('click', (e) => {
+                const url = document.getElementById('assignment-url-display').textContent;
+                navigator.clipboard.writeText(url).then(() => {
+                    const btn = e.currentTarget;
+                    const originalHtml = btn.innerHTML;
+                    btn.innerHTML = '<svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Copied!';
+                    setTimeout(() => { btn.innerHTML = originalHtml; }, 2000);
+                }).catch(err => {
+                    // Fallback for iframe restrictions
+                    const textArea = document.createElement("textarea");
+                    textArea.value = url;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    try {
+                        document.execCommand('copy');
+                        const btn = e.currentTarget;
+                        const originalHtml = btn.innerHTML;
+                        btn.innerHTML = '<svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Copied!';
+                        setTimeout(() => { btn.innerHTML = originalHtml; }, 2000);
+                    } catch (err) {
+                        console.error('Fallback copy failed', err);
+                    }
+                    document.body.removeChild(textArea);
+                });
+            });
+
+            // Teacher - Reset
+            document.getElementById('btn-create-another').addEventListener('click', () => {
+                state.teacherTerms = [];
+                renderTeacherTerms();
+                document.getElementById('teacher-setup-area').classList.remove('hidden');
+                document.getElementById('teacher-success-area').classList.add('hidden');
+                
+                // Clear URL param to prevent accidental reload into student mode
+                const url = new URL(window.location.href);
+                url.searchParams.delete('assignment');
+                window.history.replaceState({}, document.title, url);
+            });
+
+            // Student - Slider & Input
+            const slider = document.getElementById('continuum-slider');
+            const indicator = document.getElementById('slider-indicator');
+            const justification = document.getElementById('justification-input');
+            const nextBtn = document.getElementById('btn-next-term');
+
+            slider.addEventListener('input', (e) => {
+                const val = parseInt(e.target.value);
+                if (val < 40) indicator.textContent = "Leans Collectivist";
+                else if (val > 60) indicator.textContent = "Leans Individualist";
+                else indicator.textContent = "Mixed / Centrist";
+            });
+
+            justification.addEventListener('input', (e) => {
+                nextBtn.disabled = e.target.value.trim() === '';
+            });
+
+            // Student - Next Button
+            nextBtn.addEventListener('click', () => {
+                const val = parseInt(slider.value);
+                const justText = justification.value.trim();
+                
+                if (!justText) return;
+
+                state.studentResponses.push({
+                    term: state.assignmentTerms[state.currentTermIndex],
+                    value: val,
+                    justification: justText
+                });
+
+                if (state.currentTermIndex < state.assignmentTerms.length - 1) {
+                    state.currentTermIndex++;
+                    renderStudentQuestion();
+                } else {
+                    generateReport();
+                }
+            });
+
+            // Report - Print
+            document.getElementById('btn-print').addEventListener('click', () => window.print());
+        }
+
+        // Render functions
+        function renderTeacherTerms() {
+            const container = document.getElementById('word-bank-container');
+            const list = document.getElementById('term-list');
+            const count = document.getElementById('term-count');
+            const createBtn = document.getElementById('btn-create-assignment');
+
+            if (state.teacherTerms.length === 0) {
+                container.classList.add('hidden');
+                createBtn.disabled = true;
+                return;
+            }
+
+            container.classList.remove('hidden');
+            count.textContent = state.teacherTerms.length;
+            createBtn.disabled = false;
+
+            list.innerHTML = '';
+            state.teacherTerms.forEach((term) => {
+                const li = document.createElement('li');
+                li.className = 'flex justify-between items-center bg-white p-3 rounded-md border border-slate-200 shadow-sm';
+                
+                const span = document.createElement('span');
+                span.className = 'font-medium text-slate-800';
+                span.textContent = term;
+
+                const btn = document.createElement('button');
+                btn.className = 'text-slate-400 hover:text-red-500 transition-colors p-1';
+                btn.title = 'Remove term';
+                btn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>';
+                
+                btn.onclick = () => {
+                    state.teacherTerms = state.teacherTerms.filter(t => t !== term);
+                    renderTeacherTerms();
+                };
+
+                li.appendChild(span);
+                li.appendChild(btn);
+                list.appendChild(li);
+            });
+        }
+
+        function renderStudentQuestion() {
+            const currentTerm = state.assignmentTerms[state.currentTermIndex];
+            const totalTerms = state.assignmentTerms.length;
+            const progress = (state.currentTermIndex / totalTerms) * 100;
+
+            document.getElementById('current-term-display').textContent = currentTerm;
+            document.getElementById('student-progress-text').textContent = `Term ${state.currentTermIndex + 1} of ${totalTerms}`;
+            document.getElementById('student-progress-bar').style.width = `${progress}%`;
+
+            const slider = document.getElementById('continuum-slider');
+            const indicator = document.getElementById('slider-indicator');
+            const justification = document.getElementById('justification-input');
+            const nextBtn = document.getElementById('btn-next-term');
+
+            slider.value = 50;
+            indicator.textContent = "Mixed / Centrist";
+            justification.value = '';
+            nextBtn.disabled = true;
+
+            if (state.currentTermIndex === totalTerms - 1) {
+                nextBtn.innerHTML = 'Finish & View Report <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+            } else {
+                nextBtn.innerHTML = 'Save & Next Term <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>';
+            }
+        }
+
+        function generateReport() {
+            document.getElementById('report-date').textContent = `Generated on ${new Date().toLocaleDateString()}`;
+            
+            const plotContainer = document.getElementById('report-plot-container');
+            const justContainer = document.getElementById('report-justifications-container');
+            
+            plotContainer.innerHTML = '';
+            justContainer.innerHTML = '';
+
+            state.studentResponses.forEach((response, idx) => {
+                // 1. Build Plot Marker
+                const markerContainer = document.createElement('div');
+                markerContainer.className = 'absolute top-0 flex flex-col items-center group';
+                // Center the marker precisely on the percentage
+                markerContainer.style.left = `${response.value}%`;
+                markerContainer.style.transform = 'translate(-50%, -14px)';
+
+                const dot = document.createElement('div');
+                dot.className = 'w-7 h-7 bg-indigo-600 border-2 border-white rounded-full shadow-md z-10 print-marker';
+                
+                const label = document.createElement('div');
+                const isTop = idx % 2 === 0;
+                label.className = `absolute whitespace-nowrap bg-white px-3 py-1.5 rounded shadow border border-slate-200 text-sm font-bold text-slate-700 print-border z-20 ${isTop ? 'bottom-full mb-3' : 'top-full mt-3'}`;
+                label.textContent = response.term;
+                
+                const arrow = document.createElement('div');
+                arrow.className = `absolute left-1/2 -ml-2 w-0 h-0 border-4 border-transparent ${isTop ? 'border-t-white border-t-8 top-full' : 'border-b-white border-b-8 bottom-full'}`;
+                label.appendChild(arrow);
+
+                markerContainer.appendChild(dot);
+                markerContainer.appendChild(label);
+                plotContainer.appendChild(markerContainer);
+
+                // 2. Build Justification Block
+                let leanText = "Mixed / Centrist";
+                let leanColor = "bg-slate-200 text-slate-800";
+                if (response.value < 40) {
+                    leanText = "Leans Collectivist";
+                    leanColor = "bg-blue-100 text-blue-800";
+                } else if (response.value > 60) {
+                    leanText = "Leans Individualist";
+                    leanColor = "bg-orange-100 text-orange-800";
+                }
+
+                const card = document.createElement('div');
+                card.className = 'bg-slate-50 border border-slate-200 rounded-xl p-6 print-border print-bg-transparent print-break-inside-avoid';
+                
+                card.innerHTML = `
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
+                        <h3 class="text-xl font-bold text-slate-800">${response.term}</h3>
+                        <div class="flex items-center gap-2 text-sm font-medium">
+                            <span class="text-slate-500 print-text-black">Placement:</span>
+                            <span class="px-3 py-1 rounded-full ${leanColor} print-border print-bg-transparent print-text-black">
+                                ${leanText} (${response.value}/100)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="prose prose-slate max-w-none">
+                        <p class="text-slate-700 leading-relaxed print-text-black whitespace-pre-wrap">${response.justification}</p>
+                    </div>
+                `;
+                
+                justContainer.appendChild(card);
+            });
+
+            showView('report');
+        }
+
+        // Run application
+        init();
+
+    </script>
+</body>
+</html>
