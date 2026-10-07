@@ -38,4 +38,14 @@ PASS Labels and geography controls
 PASS Playback, pause and keyboard date navigation
 PASS No application runtime errors across all 30 stops and tested controls
 
-Layout verification at actual browser viewport sizes remains pending: local file URLs are blocked by the cloud browser, and production publication requires approval.
+Live browser checks completed 2026-10-07 UTC after authorized publication.
+PASS All 30 dates load in the published app
+PASS Viewports 1024x540, 1366x650, 768x900, 390x667, 320x568, 640x360, 512x270
+PASS No page-wide horizontal overflow; tested controls are at least 44px high
+PASS Live resize preserves date, selection and zoom
+PASS Two-date vector comparison
+PASS Colonial-source comparison
+PASS Label toggle
+PASS Desktop and phone map views visually inspected
+PASS Phone comparison dialog visually inspected; no horizontal overflow
+ALL LIVE BROWSER CHECKS PASSED
