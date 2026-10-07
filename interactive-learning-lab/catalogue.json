@@ -3250,29 +3250,6 @@
     "captured": "2026-10-04"
   },
   {
-    "id": "frayermodel",
-    "path": "frayerblankjpg",
-    "repo": "bg",
-    "title": "Interactive Frayer Model",
-    "category": "Thinking tools",
-    "description": "Explore a concept through its definition, characteristics, examples and non-examples.",
-    "types": [
-      "Graphic organisers",
-      "Writing"
-    ],
-    "tags": [
-      "Concept development",
-      "Save as image"
-    ],
-    "url": "https://interactives.blackgold.ca/frayerblankjpg/",
-    "links": [],
-    "favourite": false,
-    "credit": "",
-    "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/frayermodel.jpg",
-    "captured": "2026-10-04"
-  },
-  {
     "id": "venndiagram",
     "path": "venndiagram",
     "repo": "personal",
