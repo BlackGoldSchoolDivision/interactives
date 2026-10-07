@@ -570,7 +570,7 @@
       bindControls();
       const requested = Number(new URL(location.href).searchParams.get('year'));
       const initial = timeline.findIndex(e => e.year === requested);
-      await showYear(initial < 0 ? 0 : initial);
+      await showYear(initial < 0 ? timeline.findIndex(e => e.year === 1867) : initial);
       document.documentElement.dataset.ready = 'true';
     } catch (error) {
       $('loading').classList.add('error'); $('loading').textContent = 'The map files could not load. Refresh this page to try again.'; console.error(error);
