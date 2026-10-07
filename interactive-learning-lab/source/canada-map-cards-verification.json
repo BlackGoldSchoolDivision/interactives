@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-07",
+  "catalogue_commit": "ffe7a22bd314de662e21c06d72a654de8c4d77a6",
+  "preview_commit": "8e844448fd50abf0afbec96fbaf5b1ed94e6cd4e",
+  "catalogue_entries": 153,
+  "social_studies_entries": 21,
+  "cards": [
+    "territorial-evolution-canada",
+    "canada-through-time-expanded"
+  ],
+  "category": "Social studies",
+  "live_previews_loaded": true,
+  "launch_links_correct": true,
+  "expanded_copy_panel": "Ready. Your copy includes the activity HTML, styles and app code.",
+  "original_app_tree_unchanged": "b25d635589a2f8e75058fd4ee8d5676b771a0ea9",
+  "all_previous_catalogue_and_copy_entries_unchanged": true,
+  "live_width": 1363,
+  "horizontal_overflow": false,
+  "screenshot": "canada-map-cards-live-20261007.jpg",
+  "scope": "Catalogue discovery, live image loading, launch targets and copy preparation; this check does not re-audit map gameplay."
+}
