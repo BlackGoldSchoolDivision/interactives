@@ -366,7 +366,7 @@
     const provinces = provinceCount();
     $('province-count').textContent = event.early ? 'Before Confederation · Canada is not yet a country' : `${provinces} Canadian province${provinces === 1 ? '' : 's'}${event.year >= 1999 ? ' · 3 territories' : event.year >= 1898 ? ' · 2 territories' : event.year>=1870 ? ' · 1 territory':''}`;
     $('year-select').value = String(currentIndex); $('year-range').value = currentIndex;
-    $('year-range').setAttribute('aria-valuetext', `${event.year}, ${event.title}`);
+    $('year-range').setAttribute('aria-valuetext', `${dateLabel(event)}, ${event.title}`);
     $('previous').disabled = currentIndex === 0; $('next').disabled = currentIndex === timeline.length - 1;
     $('show-previous').disabled = currentIndex === 0 || event.early || timeline[currentIndex-1].early;
     for (const button of $('milestones').querySelectorAll('button')) {
@@ -387,7 +387,7 @@
     const nextIndex = Math.max(0, Math.min(timeline.length - 1, Number(index)));
     const token = ++renderToken;
     lastFinished = false;
-    $('loading').classList.remove('error'); $('loading').textContent = `Loading ${timeline[nextIndex].year}…`; $('loading').hidden = false;
+    $('loading').classList.remove('error'); $('loading').textContent = `Loading ${dateLabel(timeline[nextIndex])}…`; $('loading').hidden = false;
     $('map').setAttribute('aria-busy', 'true');
     try {
       const data = await fetchYear(timeline[nextIndex].year);
@@ -537,7 +537,7 @@
           const button = document.createElement('button'); button.className = 'milestone'; button.dataset.index = i;
           button.append(document.createTextNode(dateLabel(event)));
           const label = document.createElement('span'); label.textContent = shortNames[event.year] || event.type; button.append(label);
-          button.setAttribute('aria-label', `${event.year}: ${event.title}`); button.addEventListener('click', () => { resetView(); showYear(i); }); $('milestones').append(button);
+          button.setAttribute('aria-label', `${dateLabel(event)}: ${event.title}`); button.addEventListener('click', () => { resetView(); showYear(i); }); $('milestones').append(button);
         }
       });
       $('year-range').max = timeline.length - 1;
