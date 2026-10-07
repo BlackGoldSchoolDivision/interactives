@@ -2962,6 +2962,33 @@
     "captured": "2026-10-06"
   },
   {
+    "id": "canada-through-time-expanded",
+    "path": "canada-through-time-expanded",
+    "repo": "org",
+    "title": "Canada Through Time: Homelands, Colonies & Confederation",
+    "category": "Social studies",
+    "secondary_categories": [
+      "Geography"
+    ],
+    "description": "Explore 30 dates from before 1600 to 2003. Select digital colonial regions, compare changing boundaries and investigate French and British claims, the Royal Proclamation, the Quebec Act and Confederation. Opens at 1867; early boundaries are generalized classroom reconstructions.",
+    "types": [
+      "Maps & geography",
+      "Simulations & models"
+    ],
+    "tags": [
+      "Before 1600–2003",
+      "Digital colonial maps",
+      "Grades 4 & 7"
+    ],
+    "url": "https://interactives.blackgold.ca/canada-through-time-expanded/",
+    "links": [],
+    "favourite": false,
+    "credit": "Sources: Atlas of Canada / Natural Resources Canada and historical references",
+    "group": "Canada",
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/canada-through-time-expanded.jpg?v=a479515856f0",
+    "captured": "2026-10-07"
+  },
+  {
     "id": "ideologyscanner",
     "path": "ideologyscanner",
     "repo": "personal",

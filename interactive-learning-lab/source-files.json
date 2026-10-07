@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated": "2026-10-06",
+  "generated": "2026-10-07",
   "activities": {
     "morpheme-missions": {
       "kind": "html",
@@ -2352,6 +2352,20 @@
           "repo": "Maltais239/interactives",
           "path": "walker-corner/index.html",
           "url": "https://maltais239.github.io/interactives/walker-corner/"
+        }
+      ]
+    },
+    "canada-through-time-expanded": {
+      "kind": "html",
+      "title": "Canada Through Time: Homelands, Colonies & Confederation",
+      "credit": "Sources: Atlas of Canada / Natural Resources Canada and historical references",
+      "category": "Social studies",
+      "versions": [
+        {
+          "label": "Canada Through Time: Homelands, Colonies & Confederation",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "canada-through-time-expanded/index.html",
+          "url": "https://interactives.blackgold.ca/canada-through-time-expanded/"
         }
       ]
     }
@@ -9064,10 +9078,108 @@
         "path": "wordworks-lab/index.html",
         "bytes": 30922
       }
+    ],
+    "BlackGoldSchoolDivision/interactives/canada-through-time-expanded": [
+      {
+        "path": "canada-through-time-expanded/README.md",
+        "bytes": 1998
+      },
+      {
+        "path": "canada-through-time-expanded/app.js",
+        "bytes": 41837
+      },
+      {
+        "path": "canada-through-time-expanded/assets/atlas-1667.webp",
+        "bytes": 105860
+      },
+      {
+        "path": "canada-through-time-expanded/assets/atlas-1713.webp",
+        "bytes": 106122
+      },
+      {
+        "path": "canada-through-time-expanded/assets/atlas-1763.webp",
+        "bytes": 111574
+      },
+      {
+        "path": "canada-through-time-expanded/assets/atlas-1774.webp",
+        "bytes": 107428
+      },
+      {
+        "path": "canada-through-time-expanded/assets/atlas-1791.webp",
+        "bytes": 108826
+      },
+      {
+        "path": "canada-through-time-expanded/assets/atlas-1849.webp",
+        "bytes": 203802
+      },
+      {
+        "path": "canada-through-time-expanded/data/build-colonial-boundaries.py",
+        "bytes": 22525
+      },
+      {
+        "path": "canada-through-time-expanded/data/colonial-boundaries.json.gz",
+        "bytes": 441757
+      },
+      {
+        "path": "canada-through-time-expanded/data/colonial-digitization.json",
+        "bytes": 1947
+      },
+      {
+        "path": "canada-through-time-expanded/data/context.geojson",
+        "bytes": 25683
+      },
+      {
+        "path": "canada-through-time-expanded/data/crop-records.json",
+        "bytes": 682
+      },
+      {
+        "path": "canada-through-time-expanded/data/historical-boundaries.geojson.gz",
+        "bytes": 772617
+      },
+      {
+        "path": "canada-through-time-expanded/data/sources.json",
+        "bytes": 2830
+      },
+      {
+        "path": "canada-through-time-expanded/data/timeline.json",
+        "bytes": 33160
+      },
+      {
+        "path": "canada-through-time-expanded/index.html",
+        "bytes": 14371
+      },
+      {
+        "path": "canada-through-time-expanded/styles.css",
+        "bytes": 19765
+      },
+      {
+        "path": "canada-through-time-expanded/vendor/D3-LICENSE.txt",
+        "bytes": 731
+      },
+      {
+        "path": "canada-through-time-expanded/vendor/FFLATE-LICENSE.txt",
+        "bytes": 1069
+      },
+      {
+        "path": "canada-through-time-expanded/vendor/NUNITO-OFL.txt",
+        "bytes": 4385
+      },
+      {
+        "path": "canada-through-time-expanded/vendor/d3.min.js",
+        "bytes": 279706
+      },
+      {
+        "path": "canada-through-time-expanded/vendor/fflate.min.js",
+        "bytes": 32665
+      },
+      {
+        "path": "canada-through-time-expanded/vendor/nunito.ttf",
+        "bytes": 276932
+      }
     ]
   },
   "repository_heads": {
     "Maltais239/interactives": "4529635e136349603bd3742c38d93c03cdb25371",
-    "BlackGoldSchoolDivision/interactives": "83bec4c40a0054f0da6c2ac14a4d4e101f415770"
+    "BlackGoldSchoolDivision/interactives": "b75276e9533f74eb2c076900c6f25b4bd36200c3"
   }
 }

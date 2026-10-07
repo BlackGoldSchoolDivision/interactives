@@ -136,3 +136,9 @@ The interactive's own main page now has 22 large illustrated picture buttons, gr
 Live iframe checks at 1024 × 540, 1366 × 650, 768 × 900, 390 × 667, 320 × 568 and 640 × 360 found zero horizontal overflow, contained images and labels, large link targets and preserved teacher-note state during resizing. All 22 images loaded, the Grade 9 shortcut reached its section, and a picture button opened Confederation: Key Terms and returned to the illustrated hub. Full child-game rounds were not re-audited; native browser zoom remains unverified. The scoped results are saved in `social-studies-7-9/verification.json`.
 
 The Lab card uses an actual screenshot of the new menu, proportionally scaled to 900 × 620, at `learning-lab-images/socialstudies789.jpg?v=e672333f3fa9` (64,259 bytes). Its description and activity-links CSV match the new menu. The boundary map remains at position 11 of 20 in Social Studies, and the catalogue remains at 152 entries.
+
+
+
+## Expanded Canada map in Social Studies — 7 October 2026
+
+Added a separate Canada Through Time: Homelands, Colonies & Confederation card immediately after the original. Both appear in Social Studies and Geography → Canada. The expanded card uses an actual screenshot of the current digital 1713 map, saved as learning-lab-images/canada-through-time-expanded.jpg with a content-based cache version. Its launch link opens at the default 1867 date. The original card, screenshot and app remain unchanged. Catalogue and links CSV now contain 153 entries; Social Studies has 21. The copy manifest includes the expanded app and its map data, reference images and bundled libraries.
