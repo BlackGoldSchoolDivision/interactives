@@ -142,3 +142,8 @@ The Lab card uses an actual screenshot of the new menu, proportionally scaled to
 ## Expanded Canada map in Social Studies — 7 October 2026
 
 Added a separate Canada Through Time: Homelands, Colonies & Confederation card immediately after the original. Both appear in Social Studies and Geography → Canada. The expanded card uses an actual screenshot of the current digital 1713 map, saved as learning-lab-images/canada-through-time-expanded.jpg with a content-based cache version. Its launch link opens at the default 1867 date. The original card, screenshot and app remain unchanged. Catalogue and links CSV now contain 153 entries; Social Studies has 21. The copy manifest includes the expanded app and its map data, reference images and bundled libraries.
+
+
+## Alberta treaty map preview — 7 October 2026
+
+Replaced the stale Numbered Treaties: Alberta Focus screenshot that contained an API-key-required watermark. The live app already uses the shared OpenStreetMap basemap; 25 background tiles and 11 selectable treaty shapes loaded in the live browser. The new actual 900 × 620 preview is learning-lab-images/treatiesalberta.jpg?v=9a30e16c9470 (63,921 bytes). Catalogue and embedded page data reference the same cache version. No activity code or other catalogue cards were changed.
