@@ -108,7 +108,7 @@
             padding: 0.5rem;
         }
         
-        #arrow-group { transform-origin: 400px 400px; transition: filter 0.2s; }
+        #arrow-group { transition: filter 0.2s; }
         #arrow-group:hover { filter: drop-shadow(0 0 8px rgba(6,182,212,0.6)); }
 
         /* Print mode: Transform dark sci-fi into clean black & white paper worksheet */
@@ -169,7 +169,7 @@
         
         <div class="flex flex-wrap items-center justify-center gap-3">
             <!-- Mode Toggle -->
-            <button onclick="toggleMode()" class="group relative px-5 py-2.5 rounded-full bg-slate-800/80 border border-slate-600 hover:border-cyan-400/50 transition-all flex items-center gap-2 backdrop-blur-md overflow-hidden">
+            <button id="mode-toggle-btn" onclick="toggleMode()" class="group relative px-5 py-2.5 rounded-full bg-slate-800/80 border border-slate-600 hover:border-cyan-400/50 transition-all flex items-center gap-2 backdrop-blur-md overflow-hidden">
                 <svg id="mode-icon-teacher" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-cyan-400"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
                 <svg id="mode-icon-student" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-indigo-400 hidden"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                 <span id="mode-text" class="text-sm font-medium text-slate-200 tracking-wide uppercase">Teacher Mode</span>
@@ -269,7 +269,7 @@
                 <g id="headings-container"></g>
 
                 <!-- The Interactive Arrow -->
-                <g id="arrow-group" class="cursor-pointer" transform="rotate(0)">
+                <g id="arrow-group" class="cursor-pointer" transform="rotate(0, 400, 400)">
                     <!-- Invisible hit area for easier grabbing -->
                     <rect x="360" y="80" width="80" height="320" fill="transparent" />
                     
@@ -518,6 +518,9 @@
             e.preventDefault();
         });
 
+        // Prevent browser's native drag-and-drop ghosting
+        arrowGroup.addEventListener('dragstart', (e) => e.preventDefault());
+
         svgElement.addEventListener('pointermove', (e) => {
             if (isDragging) {
                 currentArrowAngle = calculateAngle(e.clientX, e.clientY);
@@ -547,6 +550,10 @@
                     if (params.has('h'+i)) headings[i] = decodeURIComponent(params.get('h'+i));
                 }
                 setMode(false); // Force into student mode if parameters exist
+                
+                // Hide the mode toggle button so students cannot revert to teacher mode
+                const modeToggleBtn = document.getElementById('mode-toggle-btn');
+                if (modeToggleBtn) modeToggleBtn.style.display = 'none';
             } else {
                 setMode(true); // Default to teacher mode
             }
