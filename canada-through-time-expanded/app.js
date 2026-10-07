@@ -36,11 +36,10 @@
   let playing = false, timer = null, renderToken = 0, lastFinished = true;
   const cache = new Map();
   const drawCache = new WeakMap();
-  let bundlePromise, latestLand;
+  let bundlePromise, colonialPromise, latestLand;
   const geography = [{name:"Hudson Bay",label:[-85,58],note:"A major inland sea connected to the Arctic and Atlantic. European fur-trading companies made claims around its shores."},{name:"Great Lakes",label:[-84,44],note:"These interconnected lakes link inland communities and form part of the later Canada–United States boundary."},{name:"St. Lawrence River",label:[-69,48],note:"A route between the Great Lakes and the Atlantic. Upper and Lower Canada are named in relation to this river system."},{name:"Rocky Mountains",label:[-116,53],note:"A major mountain range in western North America. Physical features can influence travel and political boundaries."},{name:"Atlantic Ocean",label:[-54,47],note:"A route for voyages, fishing and trade between Europe and the eastern coasts of North America."},{name:"Pacific Ocean",label:[-133,50],note:"The western ocean coast connects many Indigenous communities and later trading and colonial settlements."}];
   const dateLabel = event => event.label || String(event.year);
-  function visibleFeatures() { return [...currentMap.features, ...(!timeline[currentIndex].sourceMap && $("show-geography").checked ? geography.map(p => ({type:"Feature",geometry:{type:"Point",coordinates:p.label},properties:{...p,kind:"Geographic reference",in_canada:false,colour:"#287b8b"}})) : [])]; }
-  function imageBox(event) { const w = event.sourceMap === 1849 ? 684 : event.sourceMap === 1667 ? 383 : 380; const h = event.sourceMap === 1849 ? 544 : 534; const k = Math.min((WIDTH - 100)/w,(HEIGHT - 42)/h); return {x:(WIDTH-w*k)/2,y:20,w:w*k,h:h*k}; }
+  function visibleFeatures() { return [...currentMap.features, ...($("show-geography").checked ? geography.map(p => ({type:"Feature",geometry:{type:"Point",coordinates:p.label},properties:{...p,kind:"Geographic reference",in_canada:false,colour:"#287b8b"}})) : [])]; }
   const svg = d3.select('#map');
   const world = d3.select('#map-world');
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -95,10 +94,15 @@
   function fetchYear(year) {
     const event = timeline.find(e => e.year === year);
     if (event?.early) {
-      if (!cache.has(year)) cache.set(year, (async () => {
-        if (event.sourceMap) { const img = new Image(); img.src = `assets/atlas-${event.sourceMap}.webp`; await img.decode(); }
-        return {type:'FeatureCollection', features: (event.markers || []).map((p,i) => ({type:'Feature',geometry:{type:'Point',coordinates:[0,0]},properties:{...p,number:i+1,in_canada:false}}))};
-      })().catch(error => {cache.delete(year);throw error;}));
+      if (!cache.has(year)) cache.set(year, event.context
+        ? Promise.resolve({type:'FeatureCollection',features:[]})
+        : (colonialPromise ||= json('data/colonial-boundaries.json.gz').catch(error => {colonialPromise=null;throw error;}))
+          .then(bundle => {
+            const data=bundle.maps[String(year)]; if(!data?.features?.length)throw new Error(`Missing colonial regions for ${year}.`);
+            const expand = indexes => typeof indexes === 'number' ? bundle.coordinate_pool[indexes] : indexes.map(expand);
+            return {...data,features:data.features.map(f=>({...f,geometry:{type:f.geometry.type,coordinates:expand(f.geometry.coordinate_indexes)}}))};
+          })
+          .catch(error => {cache.delete(year);throw error;}));
       return cache.get(year);
     }
     if (!cache.has(year)) {
@@ -176,6 +180,8 @@
 
   function fill(feature) {
     const p = feature.properties;
+    if (p.pattern === 'colonial-dispute') return 'url(#colonial-dispute)';
+    if (p.colour) return p.colour;
     if (p.name === 'Disputed area') return 'url(#disputed-hatch)';
     return p.in_canada ? (colours[p.name] || '#9bbdcc') : '#d0dbe2';
   }
@@ -183,6 +189,24 @@
   function labelLines(name) {
     const overrides = {
       'North-Western Territory': ['North-Western', 'Territory'],
+      'Rupert’s Land · HBC claim': ['Rupert’s Land', 'HBC claim'],
+      'Hudson Bay · disputed claims': ['Hudson Bay', 'disputed claims'],
+      'Hudson Bay · disputed limits': ['Hudson Bay', 'disputed limits'],
+      'Acadia · disputed mainland': ['Acadia', 'disputed limits'],
+      'Newfoundland · disputed claims': ['Newfoundland', 'disputed claims'],
+      'Île Royale and Île Saint-Jean': ['Île Royale /', 'Île Saint-Jean'],
+      'Nova Scotia / Acadia': ['Nova Scotia /', 'Acadia'],
+      'Province of Quebec': ['Province of', 'Quebec'],
+      'Expanded Province of Quebec': ['Expanded', 'Quebec'],
+      'Newfoundland and Labrador coast': ['Newfoundland /', 'Labrador coast'],
+      'Lands reserved under the Proclamation': ['Proclamation', 'reserved lands'],
+      'Lands outside colonial settlement': ['Indigenous', 'lands'],
+      'Saint-Pierre and Miquelon': ['St-Pierre /', 'Miquelon'],
+      'Upper Canada': ['Upper', 'Canada'], 'Lower Canada': ['Lower', 'Canada'],
+      'Province of Canada': ['Province of', 'Canada'],
+      'Oregon country · joint occupation': ['Oregon country', 'joint occupation'],
+      'Northeastern frontier · disputed': ['Disputed', 'frontier'],
+      'North-Western Territory / New Caledonia': ['North-Western Territory /', 'New Caledonia'],
       'Northwest Territories': ['Northwest', 'Territories'],
       "Rupert's Land": ['Rupert’s Land'], 'British Columbia': ['British', 'Columbia'],
       'Newfoundland and Labrador': ['Newfoundland', '& Labrador'], 'Yukon Territory': ['Yukon', 'Territory'],
@@ -194,8 +218,9 @@
 
   function labelLocation(feature) {
     const p = feature.properties;
-    if (p.position) { const b = imageBox(timeline[currentIndex]); return [b.x+p.position[0]*b.w,b.y+p.position[1]*b.h]; }
     let point = projection(p.label);
+    if (p.point_reference) point = [point[0]+48,point[1]+30];
+    if (p.label_offset) point=[point[0]+p.label_offset[0],point[1]+p.label_offset[1]];
     // Tiny Atlantic provinces use callouts, rather than oversized map targets.
     if (p.name === 'Prince Edward Island') point = [point[0] + 32, point[1] - 30];
     if (p.name === 'Nova Scotia') point = [point[0] + 49, point[1] + 22];
@@ -206,12 +231,12 @@
   function drawLabels(features) {
     const labels = d3.select('#region-labels');
     labels.selectAll('*').remove();
-    const visible = features.filter(f => f.properties.name !== 'Disputed area');
-    const callouts = visible.filter(f => !f.properties.position && ['Nova Scotia', 'Prince Edward Island'].includes(f.properties.name));
+    const visible = features.filter(f => f.properties.name !== 'Disputed area' && !f.properties.context && (f.geometry.type !== 'Point' || f.properties.point_reference));
+    const callouts = visible.filter(f => f.properties.label_offset || f.properties.point_reference || (!f.properties.position && ['Nova Scotia', 'Prince Edward Island'].includes(f.properties.name)));
     labels.selectAll('.label-line').data(callouts).join('path').attr('class', 'label-line')
       .attr('d', f => { const a = projection(f.properties.label), b = labelLocation(f); return `M${a[0]},${a[1]}L${b[0]},${b[1]}`; });
     const groups = labels.selectAll('.label-anchor').data(visible).join('g').attr('class', 'label-anchor');
-    groups.append('text').attr('class', f => `region-label${!f.properties.in_canada ? ' outside-label' : ''}${f.properties.area_km2 < 85000 ? ' small-label' : ''}`)
+    groups.append('text').attr('class', f => `region-label${!f.properties.in_canada && !timeline[currentIndex].early ? ' outside-label' : ''}${f.properties.area_km2 < 85000 ? ' small-label' : ''}`)
       .attr('transform', f => { const p = labelLocation(f); return `translate(${p[0]},${p[1]})`; })
       .each(function(f) {
         const lines = f.properties.number ? [String(f.properties.number)] : labelLines(f.properties.name);
@@ -231,7 +256,7 @@
   function showTooltip(event, feature) {
     const bounds = $('map-surface').getBoundingClientRect();
     const tooltip = $('map-tooltip');
-    tooltip.textContent = `${feature.properties.name} · ${feature.properties.note ? feature.properties.kind : feature.properties.in_canada ? feature.properties.kind : 'outside Canada'}`;
+    tooltip.textContent = `${feature.properties.name} · ${feature.properties.kind || 'geographic context'}`;
     tooltip.hidden = false;
     const width = tooltip.offsetWidth;
     tooltip.style.left = Math.max(8, Math.min(bounds.width - width - 8, event.clientX - bounds.left + 12)) + 'px';
@@ -241,22 +266,22 @@
   function drawRegions() {
     const event = timeline[currentIndex], allFeatures = visibleFeatures();
     const raster = d3.select('#source-map'); raster.selectAll('*').remove();
-    d3.select('#context-land').attr('display',event.sourceMap ? 'none':null);
-    d3.select('#graticule').attr('display',event.sourceMap ? 'none':null);
-    if (event.sourceMap) { const b=imageBox(event); raster.append('image').attr('href',`assets/atlas-${event.sourceMap}.webp`).attr('x',b.x).attr('y',b.y).attr('width',b.w).attr('height',b.h).append('title').text(`Published Atlas map dated ${event.sourceMap}`); }
+    d3.select('#context-land').attr('display',null);
+    d3.select('#graticule').attr('display',null);
+    // Every date uses geographic vector regions. Printed panels remain references.
     if (event.context) raster.selectAll('path').data(latestLand.features).join('path').attr('d',f=>path(drawable(f))).attr('fill','#d9e4e8').attr('stroke','#d9e4e8').attr('stroke-width',.4);
     const points = allFeatures.filter(f=>f.geometry.type==='Point');
     d3.select('#geography').selectAll('circle').data(points,f=>f.properties.name).join('circle').attr('class','region place-marker')
-      .attr('cx',f=>labelLocation(f)[0]).attr('cy',f=>labelLocation(f)[1]).attr('r',f=>f.properties.number ? 16:10).attr('fill',f=>f.properties.colour || '#a64856')
+      .attr('cx',f=>projection(f.properties.label)[0]).attr('cy',f=>projection(f.properties.label)[1]).attr('r',f=>f.properties.number ? 16:10).attr('fill',f=>f.properties.colour || '#a64856')
       .attr('role','button').attr('tabindex',0).attr('aria-label',f=>`${f.properties.number ? f.properties.number+'. ':''}${f.properties.name}`).attr('aria-pressed',f=>String(f.properties.name===selectedName))
       .on('click',(ev,f)=>{ev.stopPropagation();selectRegion(f.properties.name);}).on('keydown',(ev,f)=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();ev.stopPropagation();selectRegion(f.properties.name);}}).on('pointermove',showTooltip).on('pointerleave',()=>{$('map-tooltip').hidden=true;});
     const features = allFeatures.filter(f=>f.geometry.type!=='Point');
     const drawing = d3.select('#regions').selectAll('path').data(features, f => f.properties.name);
     drawing.exit().remove();
     const merged = drawing.enter().append('path').attr('class', 'region').merge(drawing)
-      .attr('d', f => path(drawable(f))).attr('fill', fill)
+      .attr('d', f => path(drawable(f))).attr('fill', fill).attr('stroke', f=>f.properties.context ? f.properties.colour : null)
       .attr('role', 'button').attr('tabindex', 0)
-      .attr('aria-label', f => `${f.properties.name}, ${f.properties.in_canada ? f.properties.kind : 'outside Canada at this date'}`)
+      .attr('aria-label', f => `${f.properties.name}, ${event.early ? f.properties.kind : f.properties.in_canada ? f.properties.kind : 'outside Canada at this date'}`)
       .attr('aria-pressed', f => f.properties.name === selectedName ? 'true' : 'false')
       .classed('selected', f => f.properties.name === selectedName)
       .on('click', (event, f) => { event.stopPropagation(); selectRegion(f.properties.name); })
@@ -270,7 +295,7 @@
   async function drawPrevious(token = renderToken) {
     const group = d3.select('#previous-regions');
     group.selectAll('*').remove();
-    const allowed = currentIndex > 0 && !timeline[currentIndex].early && !timeline[currentIndex-1].early;
+    const allowed = currentIndex > 0 && !timeline[currentIndex].context && !timeline[currentIndex-1].context;
     $('previous-legend').hidden = !$('show-previous').checked || !allowed;
     if (!$('show-previous').checked || !allowed) return;
     try {
@@ -279,7 +304,7 @@
       if (token !== renderToken || index !== currentIndex || !$('show-previous').checked) return;
       // Only show geometry that differs; name-only changes have no dashed edge.
       const currentShapes = new Set(currentMap.features.map(f => f.properties.shape_key));
-      const changed = oldMap.features.filter(f => !currentShapes.has(f.properties.shape_key));
+      const changed = oldMap.features.filter(f => f.geometry.type!=='Point' && !f.properties.context && !currentShapes.has(f.properties.shape_key));
       group.selectAll('path').data(changed).join('path').attr('class', 'previous-region').attr('d', f => path(drawable(f)));
     } catch (error) {
       $('announcement').textContent = 'The previous snapshot could not be loaded. The selected map is still available.';
@@ -322,7 +347,7 @@
     $('clear-region').hidden = !feature;
     if (!feature) {
       selectedName = null; $('region-title').textContent = 'Explore a region';
-      details.append(paragraph(timeline[currentIndex].early ? 'Choose a numbered place or geographic marker, or use the place list below the map.' : 'Select a region or geographic marker, or use the list below the map.')); return;
+      details.append(paragraph(timeline[currentIndex].early ? 'Select a coloured region, a hatched claim or a geographic marker, or use the region list below the map.' : 'Select a region or geographic marker, or use the list below the map.')); return;
     }
     const p = feature.properties;
     $('region-title').textContent = p.name;
@@ -350,32 +375,33 @@
     $('story-year').textContent = dateLabel(event); $('stamp-year').textContent = dateLabel(event);
     $('stamp-caption').textContent = event.type; $('event-type').textContent = event.type;
     $('event-title').textContent = event.title; $('event-summary').textContent = event.summary;
-    $('notice').textContent = event.watch; $('map-heading').textContent = event.context ? 'Land and water before colonial borders' : event.sourceMap ? `Published source map · ${event.sourceMap}${event.year===1840 ? ' reference':''}` : `Political boundaries in ${event.year}`;
+    $('notice').textContent = event.watch; $('map-heading').textContent = event.context ? 'Land and water before colonial borders' : event.early ? `Digital colonial map · ${event.year===1840 ? '1841 union' : event.year}` : `Political boundaries in ${event.year}`;
     $('region-list-year').textContent = dateLabel(event);
-    $('regions-heading').firstChild.textContent = event.early ? 'Places in ' : 'Regions in ';
+    $('regions-heading').firstChild.textContent = 'Regions in ';
     $('map-note').textContent = event.mapNote || (event.sourceMap ? 'Printed colours show European claims and administrative boundaries. Indigenous homelands and rights continue across these lines.' : ''); $('map-note').hidden = !$('map-note').textContent;
     $('key-idea-card').hidden = !event.keyIdea; $('key-idea').textContent = event.keyIdea || '';
     $('key-source').hidden = !event.keySource; $('key-source').href = event.keySource || event.source;
     $('event-source').href = event.source; $('event-source').textContent = event.sourceLabel;
     $('inquiry-question').textContent = event[$('grade-prompt').value];
-    $('canada-legend').hidden = event.early; $('outside-legend').hidden = event.early; $('source-legend').hidden = !event.sourceMap;
-    $('show-geography').disabled = !!event.sourceMap; $('show-geography').closest('label').title = event.sourceMap ? 'Geographic names are already printed on the source map.' : '';
-    $('map-surface').classList.toggle('early-map', !!event.sourceMap);
-    document.querySelector('.map-credit').textContent = event.sourceMap ? 'Source: Atlas of Canada, 4th edition · printed map' : event.context ? 'Geographic reference: Natural Earth · modern coastlines' : 'Boundaries: Natural Resources Canada · Lambert projection';
+    $('canada-legend').hidden = event.early; $('outside-legend').hidden = event.early; $('source-legend').hidden = !event.early || event.context;
+    $('reference-map').hidden = !event.sourceMap; $('reference-map').href = event.sourceMap ? `assets/atlas-${event.sourceMap}.webp` : '#'; $('reference-map').textContent = event.year===1840 ? 'View the later 1849 Atlas reference' : `View the ${event.sourceMap} Atlas reference`;
+    $('show-geography').disabled = false; $('show-geography').closest('label').title = '';
+    $('map-surface').classList.remove('early-map');
+    document.querySelector('.map-credit').textContent = event.context ? 'Geographic context · modern coastlines' : event.early ? 'Colonial regions: generalized classroom reconstruction' : 'Boundaries: Natural Resources Canada · Lambert projection';
     $('focus-change').disabled = !event.focus.length;
     const provinces = provinceCount();
     $('province-count').textContent = event.early ? 'Before Confederation · Canada is not yet a country' : `${provinces} Canadian province${provinces === 1 ? '' : 's'}${event.year >= 1999 ? ' · 3 territories' : event.year >= 1898 ? ' · 2 territories' : event.year>=1870 ? ' · 1 territory':''}`;
     $('year-select').value = String(currentIndex); $('year-range').value = currentIndex;
     $('year-range').setAttribute('aria-valuetext', `${dateLabel(event)}, ${event.title}`);
     $('previous').disabled = currentIndex === 0; $('next').disabled = currentIndex === timeline.length - 1;
-    $('show-previous').disabled = currentIndex === 0 || event.early || timeline[currentIndex-1].early;
+    $('show-previous').disabled = currentIndex === 0 || event.context || timeline[currentIndex-1].context;
     for (const button of $('milestones').querySelectorAll('button')) {
       const active = Number(button.dataset.index) === currentIndex;
       button.classList.toggle('current', active); button.setAttribute('aria-pressed', String(active));
     }
-    $('download-year').textContent = event.sourceMap ? `Download ${event.sourceMap} source map` : event.context ? 'Download classroom timeline notes' : `Download ${event.year} GeoJSON`;
-    $('download-year').href = event.sourceMap ? `assets/atlas-${event.sourceMap}.webp` : event.context ? 'data/timeline.json':'data/historical-boundaries.geojson.gz';
-    $('download-year').download = event.sourceMap ? `atlas-${event.sourceMap}.webp` : event.context ? 'canada-timeline.json': '';
+    $('download-year').textContent = event.context ? 'Download classroom timeline notes' : `Download ${dateLabel(event)} GeoJSON`;
+    $('download-year').href = event.context ? 'data/timeline.json' : event.early ? 'data/colonial-boundaries.json.gz' : 'data/historical-boundaries.geojson.gz';
+    $('download-year').download = event.context ? 'canada-timeline.json' : '';
     $('early-chapter').setAttribute('aria-pressed',String(!!event.early)); $('canada-chapter').setAttribute('aria-pressed',String(!event.early));
     try { const url = new URL(location.href); url.searchParams.set('year', event.year); history.replaceState(null, '', url); } catch (_) { /* Some embedded previews restrict history changes. */ }
     $('announcement').textContent = `${dateLabel(event)}. ${event.title}.${event.early?'':` ${provinces} Canadian provinces.`}`;
@@ -392,11 +418,9 @@
     try {
       const data = await fetchYear(timeline[nextIndex].year);
       if (token !== renderToken) return false;
-      const changedView = timeline[currentIndex]?.sourceMap !== timeline[nextIndex].sourceMap || !!timeline[currentIndex]?.context !== !!timeline[nextIndex].context;
       if (timeline[nextIndex].context && !timeline[currentIndex]?.context) $('show-geography').checked = true;
       if (timeline[currentIndex]?.early && !timeline[nextIndex].early) $('show-geography').checked = false;
       currentIndex = nextIndex; currentMap = data;
-      if (changedView) svg.interrupt().call(zoom.transform,d3.zoomIdentity);
       if (!visibleFeatures().some(f => f.properties.name === selectedName)) selectedName = null;
       updateStory(); drawRegions(); drawRegionList(); selectRegion(selectedName, false);
       $('loading').hidden = true; $('map').setAttribute('aria-busy', 'false'); lastFinished = true;
@@ -450,8 +474,7 @@
     const features = currentMap.features.filter(f => names.includes(f.properties.name));
     if (!features.length) return;
     const collection = {type: 'FeatureCollection', features: features.map(drawable)};
-    const pts = features.map(labelLocation);
-    const bounds = timeline[currentIndex].sourceMap ? [[d3.min(pts,p=>p[0])-75,d3.min(pts,p=>p[1])-75],[d3.max(pts,p=>p[0])+75,d3.max(pts,p=>p[1])+75]] : path.bounds(collection), dx = bounds[1][0] - bounds[0][0], dy = bounds[1][1] - bounds[0][1];
+    const bounds = path.bounds(collection), dx = bounds[1][0] - bounds[0][0], dy = bounds[1][1] - bounds[0][1];
     const k = Math.max(1, Math.min(10, .78 / Math.max(dx / WIDTH, dy / HEIGHT)));
     const x = (bounds[0][0] + bounds[1][0]) / 2, y = (bounds[0][1] + bounds[1][1]) / 2;
     svg.interrupt().transition().duration(reduceMotion ? 0 : 450).call(zoom.transform, d3.zoomIdentity.translate(WIDTH / 2 - k * x, HEIGHT / 2 - k * y).scale(k));
@@ -481,7 +504,7 @@
     $('fit-map').addEventListener('click', resetView);
     $('sources-button').addEventListener('click', () => $('sources-dialog').showModal());
     $('close-sources').addEventListener('click', () => $('sources-dialog').close());
-    $('download-year').addEventListener('click', event => { if (!timeline[currentIndex].early) { event.preventDefault(); downloadYear(timeline[currentIndex].year); } });
+    $('download-year').addEventListener('click', event => { if (!timeline[currentIndex].context) { event.preventDefault(); downloadYear(timeline[currentIndex].year); } });
     $('sources-dialog').addEventListener('click', event => { if (event.target === $('sources-dialog')) { const r = event.target.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) event.target.close(); } });
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape') { pause(); return; }
@@ -502,13 +525,15 @@
       if(token!==compareToken || !$('compare-dialog').open)return;
       ['left','right'].forEach((side,j)=>{
         const event=timeline[indexes[j]],holder=$(`compare-map-${side}`);holder.replaceChildren();
-        if(event.sourceMap){const img=document.createElement('img');img.src=`assets/atlas-${event.sourceMap}.webp`;img.alt=`Atlas of Canada source map dated ${event.sourceMap}`;holder.append(img);}
-        else {const canvas=d3.select(holder).append('svg').attr('viewBox',`0 0 ${WIDTH} ${HEIGHT}`).attr('role','img').attr('aria-label',event.context?'Geographic context, no provincial boundaries':`Political boundaries in ${event.year}`);canvas.append('defs').html($('map').querySelector('defs').innerHTML);
-          canvas.selectAll('path').data(event.context?latestLand.features:maps[j].features).join('path').attr('d',f=>path(drawable(f))).attr('fill',event.context?'#d9e4e8':fill).attr('stroke',event.context?'#d9e4e8':'white').attr('stroke-width',1);
-          if(!event.context) {
-            canvas.selectAll('.region-label').data(maps[j].features.filter(f=>f.properties.name!=='Disputed area')).join('text').attr('class','region-label').attr('transform',f=>{const p=projection(f.properties.label);return `translate(${p[0]},${p[1]})`;}).each(function(f){const lines=labelLines(f.properties.name);lines.forEach((line,i)=>d3.select(this).append('tspan').attr('x',0).attr('dy',i===0?'0': '1.12em').text(line));});
-            if(event.year>=1912 && event.year<1999) {const p=projection([-106,69]);canvas.append('text').attr('class','nwt-title').attr('x',p[0]).attr('y',p[1]-12).text('Northwest Territories');}
-          }}
+        const canvas=d3.select(holder).append('svg').attr('viewBox',`0 0 ${WIDTH} ${HEIGHT}`).attr('role','img').attr('aria-label',event.context?'Geographic context, no provincial boundaries':`${event.early?'Generalized colonial':'Political'} boundaries in ${dateLabel(event)}`);
+        canvas.append('defs').html($('map').querySelector('defs').innerHTML);
+        canvas.selectAll('.comparison-land').data(latestLand.features).join('path').attr('class','comparison-land').attr('d',f=>path(drawable(f))).attr('fill','#d9e4e8').attr('stroke','#d9e4e8').attr('stroke-width',.3);
+        if(!event.context) {
+          canvas.selectAll('.comparison-region').data(maps[j].features.filter(f=>f.geometry.type!=='Point')).join('path').attr('class','comparison-region').attr('d',f=>path(drawable(f))).attr('fill',fill).attr('stroke','white').attr('stroke-width',1);
+          canvas.selectAll('.comparison-point').data(maps[j].features.filter(f=>f.geometry.type==='Point')).join('circle').attr('class','comparison-point').attr('cx',f=>projection(f.geometry.coordinates)[0]).attr('cy',f=>projection(f.geometry.coordinates)[1]).attr('r',8).attr('fill',fill);
+          canvas.selectAll('.region-label').data(maps[j].features.filter(f=>f.properties.name!=='Disputed area'&&!f.properties.context)).join('text').attr('class','region-label').attr('transform',f=>{const p=projection(f.properties.label);return `translate(${p[0]},${p[1]})`;}).each(function(f){const lines=labelLines(f.properties.name);lines.forEach((line,i)=>d3.select(this).append('tspan').attr('x',0).attr('dy',i===0?'0':'1.12em').text(line));});
+          if(event.year>=1912 && event.year<1999) {const p=projection([-106,69]);canvas.append('text').attr('class','nwt-title').attr('x',p[0]).attr('y',p[1]-12).text('Northwest Territories');}
+        }
         $(`compare-heading-${side}`).textContent=`${dateLabel(event)} · ${event.title}`;
         $(`compare-note-${side}`).textContent=event.mapNote || event.summary;
       });$('compare-status').textContent='Comparison ready.';
@@ -531,8 +556,9 @@
         const option = document.createElement('option'); option.value = i; option.textContent = `${dateLabel(event)} · ${event.type}`; $('year-select').append(option);
         $('compare-left').append(option.cloneNode(true));$('compare-right').append(option.cloneNode(true));
         const link = document.createElement('a'); link.href = 'data/historical-boundaries.geojson.gz'; link.textContent = dateLabel(event);
-        if (event.early) {link.href=event.sourceMap ? `assets/atlas-${event.sourceMap}.webp`:'data/timeline.json';link.download=event.sourceMap ? `atlas-${event.sourceMap}.webp`:'canada-timeline.json';}
-        link.addEventListener('click', click => { if(!event.early){click.preventDefault(); downloadYear(event.year);} }); $('all-downloads').append(link);
+        if (event.context) {link.href='data/timeline.json';link.download='canada-timeline.json';}
+        else if(event.early) link.href='data/colonial-boundaries.json.gz';
+        link.addEventListener('click', click => { if(!event.context){click.preventDefault(); downloadYear(event.year);} }); $('all-downloads').append(link);
         if (event.major) {
           const button = document.createElement('button'); button.className = 'milestone'; button.dataset.index = i;
           button.append(document.createTextNode(dateLabel(event)));

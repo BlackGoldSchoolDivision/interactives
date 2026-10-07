@@ -29,23 +29,11 @@ PASS date 1949
 PASS date 1999
 PASS date 2001
 PASS date 2003
-PASS Act of Union distinguishes law, effective date and later reference map
+PASS Digital Act of Union view distinguishes 1840 law, 1841 union and later 1849 reference
 PASS Grade 4 / Grade 7 inquiry switch
-PASS Previous vector snapshot is drawn, and raster/vector transition is protected
-PASS Source-map and vector-map two-date comparisons
+PASS Previous digital boundaries are available across the colonial/Confederation transition
+PASS Early and later maps both use geographic vector comparisons
 PASS Resize event preserves date, selection and pan/zoom (DOM simulation)
 PASS Labels and geography controls
 PASS Playback, pause and keyboard date navigation
 PASS No application runtime errors across all 30 stops and tested controls
-
-Live browser checks completed 2026-10-07 UTC after authorized publication.
-PASS All 30 dates load in the published app
-PASS Viewports 1024x540, 1366x650, 768x900, 390x667, 320x568, 640x360, 512x270
-PASS No page-wide horizontal overflow; tested controls are at least 44px high
-PASS Live resize preserves date, selection and zoom
-PASS Two-date vector comparison
-PASS Colonial-source comparison
-PASS Label toggle
-PASS Desktop and phone map views visually inspected
-PASS Phone comparison dialog visually inspected; no horizontal overflow
-ALL LIVE BROWSER CHECKS PASSED

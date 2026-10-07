@@ -1,0 +1,29 @@
+{
+  "licence": "Classroom adaptation of Open Government Licence – Canada map data and public-domain geographic context",
+  "method": "Generalized classroom reconstruction of colonial claims and administrative regions. Inland lines and disputed limits are approximate; modern geographic coastlines are used. These are not legal surveys or Indigenous territorial boundaries.",
+  "build_script": "build-colonial-boundaries.py",
+  "primary_sources": [
+    "https://open.canada.ca/data/en/dataset/ae607339-800b-50d7-8d1e-4309d17d10c3",
+    "https://www.cirnac.gc.ca/eng/1370355181092/1607905122267",
+    "https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html",
+    "https://www.pc.gc.ca/apps/dfhd/page_nhs_eng.aspx?id=924",
+    "https://www.paricilademocratie.com/approfondir/territoire-et-constitutions/4934-repertoire-des-cartes"
+  ],
+  "notes": [
+    "Colonial extent masks are authored generalized interpretations, not a government pre-1867 GeoJSON dataset.",
+    "Coastline/reference polygons use the app’s existing simplified Atlas 1867/2003 and Natural Earth data.",
+    "Hudson drainage extents are generalized from the later Rupert’s Land reference; early disputed limits are hatched. Before 1818 the southern drainage extends beyond the later 49th-parallel border.",
+    "The 1840/1841 digital view shows the union effective in 1841; Oregon is jointly occupied and the northeastern frontier unsettled.",
+    "Before 1600 uses border-free geographic context and does not invent Indigenous nation polygons.",
+    "Reference context: https://www.canada.ca/en/canadian-heritage/services/provincial-territorial-symbols-canada/nova-scotia.html",
+    "Labrador administration: https://www.gov.nl.ca/education/files/k12_curriculum_documents_socialstudies_2010_nls2205-09ch4pp285-381.pdf"
+  ],
+  "feature_counts": {
+    "1667": 6,
+    "1713": 9,
+    "1763": 8,
+    "1774": 9,
+    "1791": 11,
+    "1840": 12
+  }
+}

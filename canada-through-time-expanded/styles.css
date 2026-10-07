@@ -41,3 +41,5 @@ dialog{border:0;border-radius:18px;max-width:660px;width:calc(100% - 32px);max-h
 .early-map .year-stamp{display:none}
 
 @media screen{.quiet-button{min-height:44px}}
+
+.reference-map{display:block;padding:10px 17px;min-height:44px;font-size:.8125rem;font-weight:800;background:#f4f7fa;border-top:1px solid var(--border)}.reference-map[hidden]{display:none}.legend-swatch.french{background:#83a9d7}.legend-swatch.british{background:#df9095}.legend-swatch.colonial-dispute{background:repeating-linear-gradient(135deg,#e2d6b7 0 4px,#957643 4px 6px)}#source-legend{display:flex;gap:6px;align-items:center;flex-wrap:wrap}#source-legend[hidden]{display:none}

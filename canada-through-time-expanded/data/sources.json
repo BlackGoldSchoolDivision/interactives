@@ -76,11 +76,12 @@
         1849
       ],
       "licence": "Open Government Licence – Canada",
-      "processing": "Published panels cropped without redrawing boundaries; classroom place annotations are separate."
+      "processing": "Reference panels retained; active maps are generalized authored vector reconstructions. See colonial-digitization.json."
     },
-    "act_of_union": "Passed 1840, effective 1841; explicitly dated 1849 reference map includes later changes.",
+    "act_of_union": "Digital view of the union effective 1841; Oregon joint occupation and unsettled northeastern frontier. The 1849 image is reference only.",
     "before_1600": "Modern geographic context. No invented Indigenous polygons or European colonial colours.",
     "nwt": "1912–1998 display one Northwest Territories label over retained historical district colours and boundaries. Districts are administrative, not separate territories.",
-    "original_preserved": "../territorial-evolution-canada/"
+    "original_preserved": "../territorial-evolution-canada/",
+    "early_digital_maps": "colonial-boundaries.json.gz stores shared coordinate indexes; the app reconstructs ordinary per-year GeoJSON."
   }
 }

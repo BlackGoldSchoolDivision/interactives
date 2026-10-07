@@ -22,7 +22,7 @@
     "year": 1667,
     "type": "Colonial competition",
     "title": "French and English colonies compete",
-    "summary": "French settlements grow along the St. Lawrence and in Acadia, while English colonies develop on the Atlantic coast. Fur trade routes and alliances connect European settlements with Indigenous nations. This Atlas map shows European claims and disputed areas, not the disappearance of Indigenous homelands.",
+    "summary": "French settlements grow along the St. Lawrence and in Acadia, while English colonies develop on the Atlantic coast. Fur trade routes and alliances connect European settlements with Indigenous nations. This generalized digital map shows European claims and disputed areas, not the disappearance of Indigenous homelands.",
     "watch": "Find New France, Acadia and the English colonies. Compare these colours with 1713.",
     "grade4": "Locate New France and Acadia. Which waters connect these places?",
     "grade7": "Compare 1667 with 1713. Which claims change, and which areas are shown as disputed?",
@@ -33,40 +33,11 @@
     "source": "https://open.canada.ca/data/en/dataset/ae607339-800b-50d7-8d1e-4309d17d10c3",
     "sourceLabel": "Atlas of Canada, 4th edition · 1667",
     "focus": [
+      "New France",
       "Acadia"
     ],
-    "markers": [
-      {
-        "name": "New France",
-        "position": [
-          0.53,
-          0.43
-        ],
-        "note": "A French colonial claim extending through the St. Lawrence and Great Lakes region. Indigenous nations continued to live and govern throughout these lands.",
-        "kind": "French colonial claim",
-        "colour": "#416e9d"
-      },
-      {
-        "name": "Acadia",
-        "position": [
-          0.81,
-          0.4
-        ],
-        "note": "French and English powers contested Acadia. Its colonial boundaries changed and were disputed.",
-        "kind": "Contested colonial region",
-        "colour": "#416e9d"
-      },
-      {
-        "name": "English colonies",
-        "position": [
-          0.56,
-          0.65
-        ],
-        "note": "English colonies developed along the Atlantic coast south of Acadia.",
-        "kind": "English colonial claims",
-        "colour": "#c65b6e"
-      }
-    ]
+    "digital": true,
+    "mapNote": "Generalized digital reconstruction · colonial claims and inland limits are approximate. Indigenous nations and rights continue throughout these lands."
   },
   {
     "year": 1713,
@@ -83,61 +54,13 @@
     "source": "https://open.canada.ca/data/en/dataset/ae607339-800b-50d7-8d1e-4309d17d10c3",
     "sourceLabel": "Atlas of Canada, 4th edition · 1713",
     "focus": [
-      "Nova Scotia / Acadia"
+      "Nova Scotia / Acadia",
+      "Acadia · disputed mainland",
+      "Île Royale and Île Saint-Jean"
     ],
-    "markers": [
-      {
-        "name": "Nova Scotia / Acadia",
-        "position": [
-          0.8,
-          0.44
-        ],
-        "note": "France cedes Acadia under the treaty. Britain and France interpret its limits differently, and First Nations do not recognize the transfer as settling their rights.",
-        "kind": "Colonial region",
-        "colour": "#a64856"
-      },
-      {
-        "name": "Newfoundland",
-        "position": [
-          0.91,
-          0.28
-        ],
-        "note": "France relinquishes interests in Newfoundland while retaining fishing rights. The island is shown with British colonial colours.",
-        "kind": "Colonial region",
-        "colour": "#a64856"
-      },
-      {
-        "name": "Hudson Bay / Rupert’s Land",
-        "position": [
-          0.22,
-          0.3
-        ],
-        "note": "The treaty recognizes British rights in Rupert’s Land and restores Hudson Bay forts. Stripes on the Atlas map show disputed claims.",
-        "kind": "Claim and dispute",
-        "colour": "#b5884e"
-      },
-      {
-        "name": "New France",
-        "position": [
-          0.53,
-          0.43
-        ],
-        "note": "France retains its colony of Canada in New France. The blue colour represents a French claim.",
-        "kind": "French colonial claim",
-        "colour": "#416e9d"
-      },
-      {
-        "name": "Île Royale and Île Saint-Jean",
-        "position": [
-          0.84,
-          0.415
-        ],
-        "note": "France retains these Gulf islands: today’s Cape Breton Island and Prince Edward Island.",
-        "kind": "French colonial claim",
-        "colour": "#416e9d"
-      }
-    ],
-    "keySource": "https://www.canada.ca/en/parks-canada/news/2017/09/beaubassin_fort_lawrencenovascotia.html"
+    "keySource": "https://www.canada.ca/en/parks-canada/news/2017/09/beaubassin_fort_lawrencenovascotia.html",
+    "digital": true,
+    "mapNote": "Generalized digital reconstruction · colonial claims and inland limits are approximate. Indigenous nations and rights continue throughout these lands."
   },
   {
     "year": 1763,
@@ -157,58 +80,8 @@
     "focus": [
       "Province of Quebec"
     ],
-    "markers": [
-      {
-        "name": "Province of Quebec",
-        "position": [
-          0.61,
-          0.65
-        ],
-        "note": "The Royal Proclamation creates a smaller Province of Quebec around the St. Lawrence. British control of former French territory is broader than this colony’s boundary.",
-        "kind": "Colonial region",
-        "colour": "#a64856"
-      },
-      {
-        "name": "Lands outside the colony",
-        "position": [
-          0.42,
-          0.58
-        ],
-        "note": "The old source labels some areas “Indian Country.” These are Indigenous lands, not empty land. The Royal Proclamation restricts settlement and private land purchases.",
-        "kind": "First Nations lands",
-        "colour": "#547e66"
-      },
-      {
-        "name": "Newfoundland and Labrador coast",
-        "position": [
-          0.84,
-          0.47
-        ],
-        "note": "The Proclamation places the Labrador coast and nearby islands under Newfoundland’s administration.",
-        "kind": "Colonial region",
-        "colour": "#a64856"
-      },
-      {
-        "name": "Nova Scotia and Gulf islands",
-        "position": [
-          0.8,
-          0.73
-        ],
-        "note": "Cape Breton and Île Saint-Jean are attached to Nova Scotia at this stage.",
-        "kind": "Colonial region",
-        "colour": "#a64856"
-      },
-      {
-        "name": "Saint-Pierre and Miquelon",
-        "position": [
-          0.91,
-          0.62
-        ],
-        "note": "France retains these small islands near Newfoundland under the Treaty of Paris.",
-        "kind": "French territory",
-        "colour": "#416e9d"
-      }
-    ]
+    "digital": true,
+    "mapNote": "Generalized digital reconstruction · colonial claims and inland limits are approximate. Indigenous nations and rights continue throughout these lands."
   },
   {
     "year": 1774,
@@ -226,50 +99,10 @@
     "source": "https://open.canada.ca/data/en/dataset/ae607339-800b-50d7-8d1e-4309d17d10c3",
     "sourceLabel": "Atlas of Canada, 4th edition · 1774",
     "focus": [
-      "Expanded Quebec"
+      "Expanded Province of Quebec"
     ],
-    "markers": [
-      {
-        "name": "Expanded Quebec",
-        "position": [
-          0.46,
-          0.67
-        ],
-        "note": "Quebec’s colonial boundary extends toward the Great Lakes and Ohio Valley. First Nations continue to live in these lands; changing colonial jurisdiction does not erase their rights.",
-        "kind": "Colonial region",
-        "colour": "#a64856"
-      },
-      {
-        "name": "Labrador and Gulf islands",
-        "position": [
-          0.79,
-          0.45
-        ],
-        "note": "Labrador, Anticosti and the Îles de la Madeleine are attached to Quebec under the Act.",
-        "kind": "Colonial region",
-        "colour": "#a64856"
-      },
-      {
-        "name": "Ohio Valley",
-        "position": [
-          0.28,
-          0.82
-        ],
-        "note": "The expanded boundary reaches the Ohio Valley, south of the Great Lakes. This is outside present-day Canada.",
-        "kind": "Colonial region",
-        "colour": "#a64856"
-      },
-      {
-        "name": "St. Lawrence communities",
-        "position": [
-          0.64,
-          0.69
-        ],
-        "note": "The Act restores French civil law and protects Catholic practice for the colony’s largely Francophone population.",
-        "kind": "Colonial region",
-        "colour": "#a64856"
-      }
-    ]
+    "digital": true,
+    "mapNote": "Generalized digital reconstruction · colonial claims and inland limits are approximate. Indigenous nations and rights continue throughout these lands."
   },
   {
     "year": 1791,
@@ -289,58 +122,8 @@
       "Upper Canada",
       "Lower Canada"
     ],
-    "markers": [
-      {
-        "name": "Upper Canada",
-        "position": [
-          0.34,
-          0.83
-        ],
-        "note": "A British colony mainly upstream along the Great Lakes. Its historical extent differs from modern Ontario.",
-        "kind": "Colonial region",
-        "colour": "#a64856"
-      },
-      {
-        "name": "Lower Canada",
-        "position": [
-          0.66,
-          0.78
-        ],
-        "note": "A British colony mainly downstream along the St. Lawrence, with a Francophone majority. Its historical extent differs from modern Quebec.",
-        "kind": "Colonial region",
-        "colour": "#a64856"
-      },
-      {
-        "name": "Ottawa River",
-        "position": [
-          0.5,
-          0.865
-        ],
-        "note": "The division between Upper and Lower Canada follows the Ottawa River in this area.",
-        "kind": "Geographic reference",
-        "colour": "#287b8b"
-      },
-      {
-        "name": "New Brunswick",
-        "position": [
-          0.64,
-          0.885
-        ],
-        "note": "A separate British colony, created in 1784. It is not part of Upper or Lower Canada.",
-        "kind": "Colonial region",
-        "colour": "#a64856"
-      },
-      {
-        "name": "United States",
-        "position": [
-          0.56,
-          0.96
-        ],
-        "note": "The United States is separate from the British colonies after the 1783 peace settlement.",
-        "kind": "Neighbouring country",
-        "colour": "#b99038"
-      }
-    ]
+    "digital": true,
+    "mapNote": "Generalized digital reconstruction · colonial claims and inland limits are approximate. Indigenous nations and rights continue throughout these lands."
   },
   {
     "year": 1840,
@@ -352,68 +135,17 @@
     "grade4": "Which two colonies are united? Which colonies shown on the reference map remain separate?",
     "grade7": "Explain the difference between this political union and Confederation in 1867. What does a boundary map tell us, and what can it not tell us about government?",
     "keyIdea": "The Act initially restricts French in the legislature’s official records; that restriction is repealed in 1848. A union on the map does not guarantee equal treatment.",
-    "mapNote": "1849 reference map: it shows the Province of Canada created in 1841, plus later changes including the 1846 Oregon Treaty and the 1849 Vancouver Island colony. It is not an exact 1841 snapshot.",
+    "mapNote": "1841 union · a generalized digital view. Oregon remains jointly occupied until 1846 and the northeastern frontier unsettled until 1842. The separate 1849 Atlas panel is a later reference.",
     "early": true,
     "major": true,
     "sourceMap": 1849,
-    "source": "https://open.canada.ca/data/en/dataset/ae607339-800b-50d7-8d1e-4309d17d10c3",
-    "sourceLabel": "Atlas of Canada, 4th edition · 1849 reference map",
+    "source": "https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html",
+    "sourceLabel": "Canadian Heritage · Act of Union, 1840 / 1841",
     "focus": [
       "Province of Canada"
     ],
-    "markers": [
-      {
-        "name": "Province of Canada",
-        "position": [
-          0.77,
-          0.8
-        ],
-        "note": "Upper and Lower Canada are united in 1841. The two sections, Canada West and Canada East, share one legislature.",
-        "kind": "Colonial region",
-        "colour": "#a64856"
-      },
-      {
-        "name": "Canada West",
-        "position": [
-          0.66,
-          0.89
-        ],
-        "note": "Former Upper Canada, now the western section of the Province of Canada.",
-        "kind": "Colonial region",
-        "colour": "#a64856"
-      },
-      {
-        "name": "Canada East",
-        "position": [
-          0.82,
-          0.76
-        ],
-        "note": "Former Lower Canada, now the eastern section of the Province of Canada.",
-        "kind": "Colonial region",
-        "colour": "#a64856"
-      },
-      {
-        "name": "Separate Atlantic colonies",
-        "position": [
-          0.89,
-          0.82
-        ],
-        "note": "New Brunswick, Nova Scotia, Prince Edward Island and Newfoundland remain separate from the Province of Canada.",
-        "kind": "Colonial region",
-        "colour": "#a64856"
-      },
-      {
-        "name": "Later western changes",
-        "position": [
-          0.1,
-          0.66
-        ],
-        "note": "This reference map is dated 1849. It includes the Oregon Treaty boundary of 1846 and the Vancouver Island colony of 1849.",
-        "kind": "Reading the source",
-        "colour": "#5f6b88"
-      }
-    ],
-    "keySource": "https://www.ourcommons.ca/DocumentViewer/en/36-2/CLAR/meeting-5/evidence"
+    "keySource": "https://www.ourcommons.ca/DocumentViewer/en/36-2/CLAR/meeting-5/evidence",
+    "digital": true
   },
   {
     "year": 1867,
