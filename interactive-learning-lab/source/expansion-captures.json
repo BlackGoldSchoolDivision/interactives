@@ -138,32 +138,38 @@
   {
     "id": "animaldiets",
     "url": "https://maltais239.github.io/interactives/animaldiets/",
-    "title": "Sorting Game – Animal Diets"
+    "title": "Animal Diets · Field Notebook",
+    "captured": "2026-10-07"
   },
   {
     "id": "statessort",
     "url": "https://maltais239.github.io/interactives/statesofmattersort/",
-    "title": "Solid, Liquid, Gas Sorting Activity (Grade 5)"
+    "title": "States of Matter · Field Notebook",
+    "captured": "2026-10-07"
   },
   {
     "id": "lightsort",
     "url": "https://maltais239.github.io/interactives/transparentopaque/",
-    "title": "Sorting Game - Transparent vs. Opaque"
+    "title": "Transparent & Opaque · Field Notebook",
+    "captured": "2026-10-07"
   },
   {
     "id": "energysort",
     "url": "https://maltais239.github.io/interactives/renewablenonrenewable/",
-    "title": "Sorting Game - Renewable vs. Non-Renewable Energy"
+    "title": "Renewable Energy · Field Notebook",
+    "captured": "2026-10-07"
   },
   {
     "id": "weathersort",
     "url": "https://maltais239.github.io/interactives/weathervsclimate/",
-    "title": "Sorting Game - Weather and Climate"
+    "title": "Weather & Climate · Field Notebook",
+    "captured": "2026-10-07"
   },
   {
     "id": "naturalprocessedsort",
     "url": "https://maltais239.github.io/interactives/naturalprocessedsort/",
-    "title": "Sorting Game – OpenMoji Edition"
+    "title": "Natural & Processed Materials · Field Notebook",
+    "captured": "2026-10-07"
   },
   {
     "id": "governmentsort",
@@ -303,7 +309,8 @@
   {
     "id": "seasonsexplorer",
     "url": "https://maltais239.github.io/interactives/seasonexplorer1/",
-    "title": "Seasons Explorer – Slick Edition"
+    "title": "Seasons Explorer · Field Notebook",
+    "captured": "2026-10-07"
   },
   {
     "id": "foodchain",

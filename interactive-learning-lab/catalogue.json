@@ -1764,7 +1764,7 @@
     "repo": "personal",
     "title": "Animal Diets Sort",
     "category": "Science",
-    "description": "Sort real photographs of 12 animals in two challenges. Use diet clues, explain your choices and revise with feedback.",
+    "description": "Sort real animal photographs in two wildlife notebook challenges, using clues and explanations.",
     "types": [
       "Sorting"
     ],
@@ -1778,8 +1778,8 @@
     "favourite": false,
     "credit": "",
     "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/animaldiets.jpg?v=607d2a2b69aa",
-    "captured": "2026-10-05"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/animaldiets.jpg?v=12d5406b93b1",
+    "captured": "2026-10-07"
   },
   {
     "id": "statessort",
@@ -1787,7 +1787,7 @@
     "repo": "personal",
     "title": "States of Matter Sort",
     "category": "Science",
-    "description": "Sort particle-model clues and properties into solids, liquids and gases. Check your placements and move cards to revise them.",
+    "description": "Sort everyday examples and exact particle models into solids, liquids and gases.",
     "types": [
       "Sorting"
     ],
@@ -1800,8 +1800,8 @@
     "favourite": false,
     "credit": "",
     "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/statessort.jpg",
-    "captured": "2026-10-04"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/statessort.jpg?v=1150a0df736a",
+    "captured": "2026-10-07"
   },
   {
     "id": "lightsort",
@@ -1809,7 +1809,7 @@
     "repo": "personal",
     "title": "Transparent & Opaque Sort",
     "category": "Science",
-    "description": "Compare pictured materials and classify how they let light pass through. Place cards, check your choices, and try again.",
+    "description": "Sort clear materials and opaque objects in a colourful light notebook.",
     "types": [
       "Sorting"
     ],
@@ -1822,8 +1822,8 @@
     "favourite": false,
     "credit": "",
     "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/lightsort.jpg",
-    "captured": "2026-10-04"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/lightsort.jpg?v=ee0bb06526fe",
+    "captured": "2026-10-07"
   },
   {
     "id": "energysort",
@@ -1831,7 +1831,7 @@
     "repo": "personal",
     "title": "Renewable Energy Sort",
     "category": "Science",
-    "description": "Classify energy sources as renewable or non-renewable. Use picture cards with drag, tap or keyboard placement, then check your reasoning.",
+    "description": "Sort ten energy sources by whether they are replenished naturally on human timescales.",
     "types": [
       "Sorting"
     ],
@@ -1843,8 +1843,8 @@
     "favourite": false,
     "credit": "",
     "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/energysort.jpg",
-    "captured": "2026-10-04"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/energysort.jpg?v=ddfddea0804b",
+    "captured": "2026-10-07"
   },
   {
     "id": "weathersort",
@@ -1852,7 +1852,7 @@
     "repo": "personal",
     "title": "Weather & Climate Sort",
     "category": "Science",
-    "description": "Separate short-term weather observations from climate patterns. Place the cards, check your answers, and revise tricky examples.",
+    "description": "Use explicit timescale clues to distinguish short-term weather from long-term climate patterns.",
     "types": [
       "Sorting"
     ],
@@ -1865,8 +1865,8 @@
     "favourite": false,
     "credit": "",
     "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/weathersort.jpg",
-    "captured": "2026-10-04"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/weathersort.jpg?v=64c0c00ef448",
+    "captured": "2026-10-07"
   },
   {
     "id": "naturalprocessedsort",
@@ -1874,7 +1874,7 @@
     "repo": "personal",
     "title": "Natural & Processed Materials",
     "category": "Science",
-    "description": "Sort pictured materials into natural and processed groups. Select a card and category, or drag it, then check your placements.",
+    "description": "Sort twelve clearly pictured materials by whether people have manufactured or substantially changed them.",
     "types": [
       "Sorting"
     ],
@@ -1887,8 +1887,8 @@
     "favourite": false,
     "credit": "",
     "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/naturalprocessedsort.jpg",
-    "captured": "2026-10-04"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/naturalprocessedsort.jpg?v=f6d8353b65f9",
+    "captured": "2026-10-07"
   },
   {
     "id": "governmentsort",
@@ -2615,7 +2615,7 @@
     "repo": "personal",
     "title": "Seasons Explorer",
     "category": "Science",
-    "description": "Sort seasonal objects and changes into spring, summer, autumn and winter.",
+    "description": "Sort twelve seasonal observations in an Alberta nature notebook.",
     "types": [
       "Sorting"
     ],
@@ -2627,8 +2627,8 @@
     "favourite": false,
     "credit": "",
     "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/seasonsexplorer.jpg",
-    "captured": "2026-10-04"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/seasonsexplorer.jpg?v=4d3fe0ba17cf",
+    "captured": "2026-10-07"
   },
   {
     "id": "foodchain",

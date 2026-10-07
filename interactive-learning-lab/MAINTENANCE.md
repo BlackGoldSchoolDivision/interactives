@@ -152,3 +152,15 @@ Replaced the stale Numbered Treaties: Alberta Focus screenshot that contained an
 ## 2026-10-07 — Biotic & Abiotic notebook
 
 Updated the existing Science activity in place with the agreed Field Notebook design, sixteen embedded specimen illustrations, immediate explanatory feedback, keyboard/tap sorting and reset. Direct Make it my own exports the published standalone HTML. Rocks replaces the ambiguous Soil & Rocks card. Refreshed the Lab preview from the live game, catalogue description, capture metadata and game project file list. Other activities and card order are preserved.
+
+
+
+## 2026-10-07 — Science sorting notebooks
+
+Revamped Transparent & Opaque, Renewable Energy, States of Matter, Natural & Processed Materials, Weather & Climate, Animal Diets and Seasons Explorer in three small app batches. Each has a topic palette, accessible tap/keyboard/native drag, immediate explanatory feedback, reset and Make it my own. Updated the seven actual-app screenshots and catalogue descriptions without changing card ordering. Updated only those entry HTML byte counts in the project-copy manifest.
+
+Animal Diets retains its twelve photographs, licenses and two evidence challenges; native HTML export embeds all photographs. States of Matter uses exact SVG particle models, and Seasons gives typical Alberta observations with variability explained. The new field-notebook-sort builder is separate from Sorting Lab; do not run the old Sorting Lab builder to regenerate Animal Diets.
+
+Resource Depot and its original shared CSS/JavaScript, data, screenshot, catalogue card and file manifest remain unchanged. Biotic & Abiotic also remains unchanged. Analytics is still deferred.
+
+Validation: every answer and both animal rounds, retry feedback, completion/reset/native drop, seven viewport sizes with retained answers, narrow 200% text, and portable animal HTML with all twelve pictures and credits.
