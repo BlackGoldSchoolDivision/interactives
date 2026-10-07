@@ -1742,7 +1742,7 @@
     "repo": "personal",
     "title": "Biotic & Abiotic Sort",
     "category": "Science",
-    "description": "Sort ecosystem components into biotic and abiotic groups. Select and place cards or drag them, then check and revise your choices.",
+    "description": "Sort 16 illustrated ecosystem cards into biotic and abiotic groups in a field notebook. Choose a picture and a group, or drag it, with helpful feedback after each choice.",
     "types": [
       "Sorting"
     ],
@@ -1755,8 +1755,8 @@
     "favourite": false,
     "credit": "",
     "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/bioticsorting.jpg",
-    "captured": "2026-10-04"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/bioticsorting.jpg?v=bd31abb296ad",
+    "captured": "2026-10-07"
   },
   {
     "id": "animaldiets",

@@ -147,3 +147,8 @@ Added a separate Canada Through Time: Homelands, Colonies & Confederation card i
 ## Alberta treaty map preview — 7 October 2026
 
 Replaced the stale Numbered Treaties: Alberta Focus screenshot that contained an API-key-required watermark. The live app already uses the shared OpenStreetMap basemap; 25 background tiles and 11 selectable treaty shapes loaded in the live browser. The new actual 900 × 620 preview is learning-lab-images/treatiesalberta.jpg?v=9a30e16c9470 (63,921 bytes). Catalogue and embedded page data reference the same cache version. No activity code or other catalogue cards were changed.
+
+
+## 2026-10-07 — Biotic & Abiotic notebook
+
+Updated the existing Science activity in place with the agreed Field Notebook design, sixteen embedded specimen illustrations, immediate explanatory feedback, keyboard/tap sorting and reset. Direct Make it my own exports the published standalone HTML. Rocks replaces the ambiguous Soil & Rocks card. Refreshed the Lab preview from the live game, catalogue description, capture metadata and game project file list. Other activities and card order are preserved.
