@@ -1,0 +1,801 @@
+[
+  {
+    "year": 1500,
+    "label": "Before 1600",
+    "type": "Indigenous homelands",
+    "title": "This land already has many nations",
+    "summary": "Long before French and British colonies, Indigenous peoples lived in diverse societies across these lands. They had languages, laws, governments, trade networks and relationships with the land. European voyages and coastal trade were under way in the 1500s; colonial claims did not make these lands empty.",
+    "watch": "Begin with the land and water. Why might rivers, coasts and lakes matter for travel, trade and community?",
+    "grade4": "Describe how a river or coast could connect communities. What does this map leave out about the people who lived here?",
+    "grade7": "A political map depends on whose perspective it shows. What information would you need to represent Indigenous homelands, relationships and governments?",
+    "keyIdea": "No French or British colonial colours are used in this context view. The modern coastline is a geographic reference; it is not a map of precise Indigenous boundaries.",
+    "mapNote": "Geographic context · modern coastlines, no provincial borders. Indigenous territories and relationships are not drawn as fixed polygons.",
+    "early": true,
+    "context": true,
+    "major": true,
+    "focus": [],
+    "source": "https://www.rcaanc.gc.ca/eng/1307460755710/1536862806124",
+    "sourceLabel": "CIRNAC: First Nations in Canada",
+    "markers": []
+  },
+  {
+    "year": 1667,
+    "type": "Colonial competition",
+    "title": "French and English colonies compete",
+    "summary": "French settlements grow along the St. Lawrence and in Acadia, while English colonies develop on the Atlantic coast. Fur trade routes and alliances connect European settlements with Indigenous nations. This Atlas map shows European claims and disputed areas, not the disappearance of Indigenous homelands.",
+    "watch": "Find New France, Acadia and the English colonies. Compare these colours with 1713.",
+    "grade4": "Locate New France and Acadia. Which waters connect these places?",
+    "grade7": "Compare 1667 with 1713. Which claims change, and which areas are shown as disputed?",
+    "keyIdea": "Colonial claims and settlement are different. A large coloured area does not mean European settlers occupied or governed every part of it.",
+    "early": true,
+    "major": false,
+    "sourceMap": 1667,
+    "source": "https://open.canada.ca/data/en/dataset/ae607339-800b-50d7-8d1e-4309d17d10c3",
+    "sourceLabel": "Atlas of Canada, 4th edition · 1667",
+    "focus": [
+      "Acadia"
+    ],
+    "markers": [
+      {
+        "name": "New France",
+        "position": [
+          0.53,
+          0.43
+        ],
+        "note": "A French colonial claim extending through the St. Lawrence and Great Lakes region. Indigenous nations continued to live and govern throughout these lands.",
+        "kind": "French colonial claim",
+        "colour": "#416e9d"
+      },
+      {
+        "name": "Acadia",
+        "position": [
+          0.81,
+          0.4
+        ],
+        "note": "French and English powers contested Acadia. Its colonial boundaries changed and were disputed.",
+        "kind": "Contested colonial region",
+        "colour": "#416e9d"
+      },
+      {
+        "name": "English colonies",
+        "position": [
+          0.56,
+          0.65
+        ],
+        "note": "English colonies developed along the Atlantic coast south of Acadia.",
+        "kind": "English colonial claims",
+        "colour": "#c65b6e"
+      }
+    ]
+  },
+  {
+    "year": 1713,
+    "type": "Treaty of Utrecht",
+    "title": "France gives up several colonial claims",
+    "summary": "The Treaty of Utrecht shifts claims to Acadia, Newfoundland and the Hudson Bay region toward Britain. France retains Canada in New France and the Gulf islands, including Île Royale (Cape Breton) and Île Saint-Jean (Prince Edward Island). The limits of Acadia remain contested.",
+    "watch": "Compare with 1667. Find Nova Scotia, Newfoundland and the Hudson Bay region. Where do French claims remain?",
+    "grade4": "Name two areas whose colonial control changes. Find a place still associated with France.",
+    "grade7": "Why could a treaty between European powers leave a boundary disputed? Whose agreement is missing from this map?",
+    "keyIdea": "Parks Canada notes that the treaty was not recognized by First Nations and left boundaries unclear in Acadia. European agreements did not settle Indigenous rights.",
+    "early": true,
+    "major": true,
+    "sourceMap": 1713,
+    "source": "https://open.canada.ca/data/en/dataset/ae607339-800b-50d7-8d1e-4309d17d10c3",
+    "sourceLabel": "Atlas of Canada, 4th edition · 1713",
+    "focus": [
+      "Nova Scotia / Acadia"
+    ],
+    "markers": [
+      {
+        "name": "Nova Scotia / Acadia",
+        "position": [
+          0.8,
+          0.44
+        ],
+        "note": "France cedes Acadia under the treaty. Britain and France interpret its limits differently, and First Nations do not recognize the transfer as settling their rights.",
+        "kind": "Colonial region",
+        "colour": "#a64856"
+      },
+      {
+        "name": "Newfoundland",
+        "position": [
+          0.91,
+          0.28
+        ],
+        "note": "France relinquishes interests in Newfoundland while retaining fishing rights. The island is shown with British colonial colours.",
+        "kind": "Colonial region",
+        "colour": "#a64856"
+      },
+      {
+        "name": "Hudson Bay / Rupert’s Land",
+        "position": [
+          0.22,
+          0.3
+        ],
+        "note": "The treaty recognizes British rights in Rupert’s Land and restores Hudson Bay forts. Stripes on the Atlas map show disputed claims.",
+        "kind": "Claim and dispute",
+        "colour": "#b5884e"
+      },
+      {
+        "name": "New France",
+        "position": [
+          0.53,
+          0.43
+        ],
+        "note": "France retains its colony of Canada in New France. The blue colour represents a French claim.",
+        "kind": "French colonial claim",
+        "colour": "#416e9d"
+      },
+      {
+        "name": "Île Royale and Île Saint-Jean",
+        "position": [
+          0.84,
+          0.415
+        ],
+        "note": "France retains these Gulf islands: today’s Cape Breton Island and Prince Edward Island.",
+        "kind": "French colonial claim",
+        "colour": "#416e9d"
+      }
+    ],
+    "keySource": "https://www.canada.ca/en/parks-canada/news/2017/09/beaubassin_fort_lawrencenovascotia.html"
+  },
+  {
+    "year": 1763,
+    "type": "Treaty & proclamation",
+    "title": "British control expands; Quebec is defined",
+    "summary": "The Treaty of Paris ends the Seven Years’ War. France cedes Canada to Britain, while keeping Saint-Pierre and Miquelon. In October, the Royal Proclamation organizes the Province of Quebec around the St. Lawrence and sets rules for colonial settlement and Crown purchases of First Nations lands.",
+    "watch": "Find the small Province of Quebec. Why is it smaller than the former French claims? Locate the St. Lawrence and Great Lakes.",
+    "grade4": "What changes in colonial control? Explain one reason the Royal Proclamation matters to First Nations.",
+    "grade7": "Separate the two events: what does the Treaty of Paris transfer, and what does the Royal Proclamation organize and protect?",
+    "keyIdea": "The Royal Proclamation recognizes that First Nations lands cannot simply be taken or privately purchased by settlers. It establishes Crown procedures for land agreements and remains foundational to treaty relationships.",
+    "keySource": "https://www.rcaanc.gc.ca/eng/1370355181092/1607905122267",
+    "early": true,
+    "major": true,
+    "sourceMap": 1763,
+    "source": "https://open.canada.ca/data/en/dataset/ae607339-800b-50d7-8d1e-4309d17d10c3",
+    "sourceLabel": "Atlas of Canada, 4th edition · 1763",
+    "focus": [
+      "Province of Quebec"
+    ],
+    "markers": [
+      {
+        "name": "Province of Quebec",
+        "position": [
+          0.61,
+          0.65
+        ],
+        "note": "The Royal Proclamation creates a smaller Province of Quebec around the St. Lawrence. British control of former French territory is broader than this colony’s boundary.",
+        "kind": "Colonial region",
+        "colour": "#a64856"
+      },
+      {
+        "name": "Lands outside the colony",
+        "position": [
+          0.42,
+          0.58
+        ],
+        "note": "The old source labels some areas “Indian Country.” These are Indigenous lands, not empty land. The Royal Proclamation restricts settlement and private land purchases.",
+        "kind": "First Nations lands",
+        "colour": "#547e66"
+      },
+      {
+        "name": "Newfoundland and Labrador coast",
+        "position": [
+          0.84,
+          0.47
+        ],
+        "note": "The Proclamation places the Labrador coast and nearby islands under Newfoundland’s administration.",
+        "kind": "Colonial region",
+        "colour": "#a64856"
+      },
+      {
+        "name": "Nova Scotia and Gulf islands",
+        "position": [
+          0.8,
+          0.73
+        ],
+        "note": "Cape Breton and Île Saint-Jean are attached to Nova Scotia at this stage.",
+        "kind": "Colonial region",
+        "colour": "#a64856"
+      },
+      {
+        "name": "Saint-Pierre and Miquelon",
+        "position": [
+          0.91,
+          0.62
+        ],
+        "note": "France retains these small islands near Newfoundland under the Treaty of Paris.",
+        "kind": "French territory",
+        "colour": "#416e9d"
+      }
+    ]
+  },
+  {
+    "year": 1774,
+    "type": "Quebec Act",
+    "title": "Quebec grows; French civil law is restored",
+    "summary": "Passed in 1774 and effective in 1775, the Quebec Act expands the colony into the Great Lakes and Ohio Valley and adds Labrador and nearby islands. It restores French civil law for property and civil rights and protects the practice of Catholicism, while British criminal law remains.",
+    "watch": "Compare Quebec in 1763 and 1774. Follow the expansion toward the Great Lakes and the Ohio Valley.",
+    "grade4": "Describe how Quebec’s territory changes. How did the Act help Francophone people maintain important parts of their lives?",
+    "grade7": "Connect geography and rights: how did the Act change the colony’s extent, legal system and religious protections?",
+    "keyIdea": "Francophone rights involve more than a boundary. The Act restores French civil law and protects Catholic religious practice; continued French language use is supported implicitly, rather than through a modern language-rights clause.",
+    "keySource": "https://www.clo-ocol.gc.ca/en/passage-quebec-act",
+    "early": true,
+    "major": true,
+    "sourceMap": 1774,
+    "source": "https://open.canada.ca/data/en/dataset/ae607339-800b-50d7-8d1e-4309d17d10c3",
+    "sourceLabel": "Atlas of Canada, 4th edition · 1774",
+    "focus": [
+      "Expanded Quebec"
+    ],
+    "markers": [
+      {
+        "name": "Expanded Quebec",
+        "position": [
+          0.46,
+          0.67
+        ],
+        "note": "Quebec’s colonial boundary extends toward the Great Lakes and Ohio Valley. First Nations continue to live in these lands; changing colonial jurisdiction does not erase their rights.",
+        "kind": "Colonial region",
+        "colour": "#a64856"
+      },
+      {
+        "name": "Labrador and Gulf islands",
+        "position": [
+          0.79,
+          0.45
+        ],
+        "note": "Labrador, Anticosti and the Îles de la Madeleine are attached to Quebec under the Act.",
+        "kind": "Colonial region",
+        "colour": "#a64856"
+      },
+      {
+        "name": "Ohio Valley",
+        "position": [
+          0.28,
+          0.82
+        ],
+        "note": "The expanded boundary reaches the Ohio Valley, south of the Great Lakes. This is outside present-day Canada.",
+        "kind": "Colonial region",
+        "colour": "#a64856"
+      },
+      {
+        "name": "St. Lawrence communities",
+        "position": [
+          0.64,
+          0.69
+        ],
+        "note": "The Act restores French civil law and protects Catholic practice for the colony’s largely Francophone population.",
+        "kind": "Colonial region",
+        "colour": "#a64856"
+      }
+    ]
+  },
+  {
+    "year": 1791,
+    "type": "Constitutional Act",
+    "title": "Quebec becomes Upper and Lower Canada",
+    "summary": "The Constitutional Act divides the Province of Quebec into Upper Canada and Lower Canada, each with its own legislature. Upper Canada lies upstream along the Great Lakes; Lower Canada lies downstream along the St. Lawrence. These are British colonies, not the modern provinces of Ontario and Quebec.",
+    "watch": "Find the Ottawa River and the St. Lawrence. “Upper” and “Lower” refer to the river system, not north and south.",
+    "grade4": "Use the rivers to explain the names Upper Canada and Lower Canada.",
+    "grade7": "Compare 1774 and 1791. What does the new internal boundary do, and why do these colonies differ from modern Ontario and Quebec?",
+    "keyIdea": "By 1791, the 1783 peace settlement has also changed the boundary with the United States. Not every difference from the 1774 map was caused by the Constitutional Act.",
+    "early": true,
+    "major": true,
+    "sourceMap": 1791,
+    "source": "https://open.canada.ca/data/en/dataset/ae607339-800b-50d7-8d1e-4309d17d10c3",
+    "sourceLabel": "Atlas of Canada, 4th edition · 1791",
+    "focus": [
+      "Upper Canada",
+      "Lower Canada"
+    ],
+    "markers": [
+      {
+        "name": "Upper Canada",
+        "position": [
+          0.34,
+          0.83
+        ],
+        "note": "A British colony mainly upstream along the Great Lakes. Its historical extent differs from modern Ontario.",
+        "kind": "Colonial region",
+        "colour": "#a64856"
+      },
+      {
+        "name": "Lower Canada",
+        "position": [
+          0.66,
+          0.78
+        ],
+        "note": "A British colony mainly downstream along the St. Lawrence, with a Francophone majority. Its historical extent differs from modern Quebec.",
+        "kind": "Colonial region",
+        "colour": "#a64856"
+      },
+      {
+        "name": "Ottawa River",
+        "position": [
+          0.5,
+          0.865
+        ],
+        "note": "The division between Upper and Lower Canada follows the Ottawa River in this area.",
+        "kind": "Geographic reference",
+        "colour": "#287b8b"
+      },
+      {
+        "name": "New Brunswick",
+        "position": [
+          0.64,
+          0.885
+        ],
+        "note": "A separate British colony, created in 1784. It is not part of Upper or Lower Canada.",
+        "kind": "Colonial region",
+        "colour": "#a64856"
+      },
+      {
+        "name": "United States",
+        "position": [
+          0.56,
+          0.96
+        ],
+        "note": "The United States is separate from the British colonies after the 1783 peace settlement.",
+        "kind": "Neighbouring country",
+        "colour": "#b99038"
+      }
+    ]
+  },
+  {
+    "year": 1840,
+    "label": "1840 / 1841",
+    "type": "Act of Union",
+    "title": "Two colonies become the Province of Canada",
+    "summary": "The Act of Union passes in July 1840 and takes effect on February 10, 1841. It joins Upper Canada and Lower Canada into one Province of Canada with one legislature. Their two sections become known as Canada West and Canada East. Other British colonies remain separate.",
+    "watch": "Find the Province of Canada, then identify Canada West and Canada East. One political union does not mean every British colony has joined.",
+    "grade4": "Which two colonies are united? Which colonies shown on the reference map remain separate?",
+    "grade7": "Explain the difference between this political union and Confederation in 1867. What does a boundary map tell us, and what can it not tell us about government?",
+    "keyIdea": "The Act initially restricts French in the legislature’s official records; that restriction is repealed in 1848. A union on the map does not guarantee equal treatment.",
+    "mapNote": "1849 reference map: it shows the Province of Canada created in 1841, plus later changes including the 1846 Oregon Treaty and the 1849 Vancouver Island colony. It is not an exact 1841 snapshot.",
+    "early": true,
+    "major": true,
+    "sourceMap": 1849,
+    "source": "https://open.canada.ca/data/en/dataset/ae607339-800b-50d7-8d1e-4309d17d10c3",
+    "sourceLabel": "Atlas of Canada, 4th edition · 1849 reference map",
+    "focus": [
+      "Province of Canada"
+    ],
+    "markers": [
+      {
+        "name": "Province of Canada",
+        "position": [
+          0.77,
+          0.8
+        ],
+        "note": "Upper and Lower Canada are united in 1841. The two sections, Canada West and Canada East, share one legislature.",
+        "kind": "Colonial region",
+        "colour": "#a64856"
+      },
+      {
+        "name": "Canada West",
+        "position": [
+          0.66,
+          0.89
+        ],
+        "note": "Former Upper Canada, now the western section of the Province of Canada.",
+        "kind": "Colonial region",
+        "colour": "#a64856"
+      },
+      {
+        "name": "Canada East",
+        "position": [
+          0.82,
+          0.76
+        ],
+        "note": "Former Lower Canada, now the eastern section of the Province of Canada.",
+        "kind": "Colonial region",
+        "colour": "#a64856"
+      },
+      {
+        "name": "Separate Atlantic colonies",
+        "position": [
+          0.89,
+          0.82
+        ],
+        "note": "New Brunswick, Nova Scotia, Prince Edward Island and Newfoundland remain separate from the Province of Canada.",
+        "kind": "Colonial region",
+        "colour": "#a64856"
+      },
+      {
+        "name": "Later western changes",
+        "position": [
+          0.1,
+          0.66
+        ],
+        "note": "This reference map is dated 1849. It includes the Oregon Treaty boundary of 1846 and the Vancouver Island colony of 1849.",
+        "kind": "Reading the source",
+        "colour": "#5f6b88"
+      }
+    ],
+    "keySource": "https://www.ourcommons.ca/DocumentViewer/en/36-2/CLAR/meeting-5/evidence"
+  },
+  {
+    "year": 1867,
+    "title": "Four provinces form Canada",
+    "type": "Confederation",
+    "summary": "On July 1, Ontario, Quebec, New Brunswick, and Nova Scotia form the new Dominion of Canada. Ontario and Quebec are much smaller than they are today. The grey regions have not joined Canada.",
+    "watch": "Find the four coloured provinces. How different is this from the Canada you know?",
+    "focus": [
+      "Ontario",
+      "Quebec",
+      "New Brunswick",
+      "Nova Scotia"
+    ],
+    "major": true,
+    "source": "https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html",
+    "sourceLabel": "Canadian Heritage · historical boundaries",
+    "grade4": "Find the four coloured provinces. How different is this from the Canada you know?",
+    "grade7": "Find the four coloured provinces. How different is this from the Canada you know? What political decision or agreement helps explain the change?"
+  },
+  {
+    "year": 1870,
+    "title": "Manitoba and the Northwest Territories",
+    "type": "New province & territory",
+    "summary": "Rupert’s Land and the North-Western Territory are transferred to Canada. Most of this land becomes the Northwest Territories. Manitoba enters Confederation as a small province around the Red River, following negotiations led by the Métis provisional government.",
+    "watch": "Look for the original Manitoba. Why is it sometimes called the “postage-stamp province”?",
+    "focus": [
+      "Manitoba",
+      "Northwest Territories"
+    ],
+    "major": true,
+    "extraSource": "https://www.gov.mb.ca/chc/ourdept/origin_name_manitoba.html",
+    "source": "https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html",
+    "sourceLabel": "Canadian Heritage · historical boundaries",
+    "grade4": "Look for the original Manitoba. Why is it sometimes called the “postage-stamp province”?",
+    "grade7": "Look for the original Manitoba. Why is it sometimes called the “postage-stamp province”? What political decision or agreement helps explain the change?"
+  },
+  {
+    "year": 1871,
+    "title": "British Columbia joins",
+    "type": "New province",
+    "summary": "British Columbia becomes Canada’s sixth province. Its boundary is the one established for the united colony in 1866. Canada now reaches the Pacific coast.",
+    "watch": "Find British Columbia. Is all the land between it and Ontario part of a province?",
+    "focus": [
+      "British Columbia"
+    ],
+    "major": true,
+    "source": "https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html",
+    "sourceLabel": "Canadian Heritage · historical boundaries",
+    "grade4": "Find British Columbia. Is all the land between it and Ontario part of a province?",
+    "grade7": "Find British Columbia. Is all the land between it and Ontario part of a province? What political decision or agreement helps explain the change?"
+  },
+  {
+    "year": 1873,
+    "title": "Prince Edward Island joins",
+    "type": "New province",
+    "summary": "Prince Edward Island becomes the seventh province. The agreement includes Canada taking on the island’s railway debt, buying land from absentee landlords, and providing a connection with the mainland.",
+    "watch": "Find the small island in the Gulf of St. Lawrence. Use the region list if it is hard to click.",
+    "focus": [
+      "Prince Edward Island"
+    ],
+    "major": true,
+    "source": "https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html",
+    "sourceLabel": "Canadian Heritage · historical boundaries",
+    "grade4": "Find the small island in the Gulf of St. Lawrence. Use the region list if it is hard to click.",
+    "grade7": "Find the small island in the Gulf of St. Lawrence. Use the region list if it is hard to click. What political decision or agreement helps explain the change?"
+  },
+  {
+    "year": 1874,
+    "title": "Ontario’s provisional boundary grows",
+    "type": "Boundary change",
+    "summary": "The federal government sets provisional northern and western boundaries for Ontario. Ontario’s western boundary remains a source of disagreement with Manitoba.",
+    "watch": "Compare Ontario with 1873. In which directions has its boundary moved?",
+    "focus": [
+      "Ontario"
+    ],
+    "major": false,
+    "source": "https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html",
+    "sourceLabel": "Canadian Heritage · historical boundaries",
+    "grade4": "Compare Ontario with 1873. In which directions has its boundary moved?",
+    "grade7": "Compare Ontario with 1873. In which directions has its boundary moved? What political decision or agreement helps explain the change?"
+  },
+  {
+    "year": 1876,
+    "title": "The District of Keewatin is created",
+    "type": "Historical district",
+    "summary": "A portion of the Northwest Territories becomes the District of Keewatin. This separate federal district is intended to provide temporary administration for land north and east of Manitoba and west of Ontario.",
+    "watch": "Find Keewatin. A district is an administrative area; it is not a new province.",
+    "focus": [
+      "District of Keewatin",
+      "Northwest Territories"
+    ],
+    "major": false,
+    "source": "https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html",
+    "sourceLabel": "Canadian Heritage · historical boundaries",
+    "grade4": "Find Keewatin. A district is an administrative area; it is not a new province.",
+    "grade7": "Find Keewatin. A district is an administrative area; it is not a new province. What political decision or agreement helps explain the change?"
+  },
+  {
+    "year": 1880,
+    "title": "The Arctic islands become part of Canada",
+    "type": "Territorial transfer",
+    "summary": "Britain transfers its remaining Arctic territories and islands to Canada. Newfoundland remains outside Confederation. The transferred islands become part of the Northwest Territories.",
+    "watch": "Look north. Which large grey region has changed to a Canadian territory?",
+    "focus": [
+      "Northwest Territories"
+    ],
+    "major": true,
+    "source": "https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html",
+    "sourceLabel": "Canadian Heritage · historical boundaries",
+    "grade4": "Look north. Which large grey region has changed to a Canadian territory?",
+    "grade7": "Look north. Which large grey region has changed to a Canadian territory? What political decision or agreement helps explain the change?"
+  },
+  {
+    "year": 1881,
+    "title": "Manitoba expands",
+    "type": "Boundary change",
+    "summary": "Manitoba’s boundaries move west, north, and east. Ontario objects to the eastern extension, so the map marks a disputed area between the two provinces.",
+    "watch": "Find the striped disputed area. How can a map show that a boundary is not agreed upon?",
+    "focus": [
+      "Manitoba",
+      "Disputed area"
+    ],
+    "major": false,
+    "source": "https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html",
+    "sourceLabel": "Canadian Heritage · historical boundaries",
+    "grade4": "Find the striped disputed area. How can a map show that a boundary is not agreed upon?",
+    "grade7": "Find the striped disputed area. How can a map show that a boundary is not agreed upon? What political decision or agreement helps explain the change?"
+  },
+  {
+    "year": 1882,
+    "title": "Four western districts are established",
+    "type": "Historical districts",
+    "summary": "Assiniboia, Saskatchewan, Alberta, and Athabasca become provisional districts within the Northwest Territories. These districts help administer the region as settlement and railway construction increase.",
+    "watch": "Find the Alberta district. Does it have the same outline as the province today?",
+    "focus": [
+      "District of Assiniboia",
+      "District of Saskatchewan",
+      "District of Alberta",
+      "District of Athabaska"
+    ],
+    "major": false,
+    "source": "https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html",
+    "sourceLabel": "Canadian Heritage · historical boundaries",
+    "grade4": "Find the Alberta district. Does it have the same outline as the province today?",
+    "grade7": "Find the Alberta district. Does it have the same outline as the province today? What political decision or agreement helps explain the change?"
+  },
+  {
+    "year": 1886,
+    "title": "Keewatin’s boundary is adjusted",
+    "type": "Boundary change",
+    "summary": "The southwestern boundary of the District of Keewatin is adjusted to fit the boundaries of the western districts created in 1882.",
+    "watch": "Turn on previous boundaries and look at Keewatin’s southwestern edge.",
+    "focus": [
+      "District of Keewatin"
+    ],
+    "major": false,
+    "source": "https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html",
+    "sourceLabel": "Canadian Heritage · historical boundaries",
+    "grade4": "Turn on previous boundaries and look at Keewatin’s southwestern edge.",
+    "grade7": "Turn on previous boundaries and look at Keewatin’s southwestern edge. What political decision or agreement helps explain the change?"
+  },
+  {
+    "year": 1889,
+    "title": "Ontario and Manitoba’s dispute is settled",
+    "type": "Boundary settlement",
+    "summary": "The Ontario Boundary Act settles the Ontario–Manitoba boundary dispute. Ontario extends west to Lake of the Woods and north to the Albany River.",
+    "watch": "Compare 1881 and 1889. What has happened to the striped area?",
+    "focus": [
+      "Ontario",
+      "Manitoba"
+    ],
+    "major": false,
+    "source": "https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html",
+    "sourceLabel": "Canadian Heritage · historical boundaries",
+    "grade4": "Compare 1881 and 1889. What has happened to the striped area?",
+    "grade7": "Compare 1881 and 1889. What has happened to the striped area? What political decision or agreement helps explain the change?"
+  },
+  {
+    "year": 1895,
+    "title": "The northern districts are reorganized",
+    "type": "Historical districts",
+    "summary": "Ungava, Mackenzie, Yukon, and Franklin are established as additional districts in the Northwest Territories. Athabasca and Keewatin are enlarged.",
+    "watch": "Locate Yukon and Ungava. What are these areas called on a later map?",
+    "focus": [
+      "District of Ungava",
+      "District of Mackenzie",
+      "District of Yukon",
+      "District of Franklin",
+      "District of Athabaska",
+      "District of Keewatin"
+    ],
+    "major": false,
+    "source": "https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html",
+    "sourceLabel": "Canadian Heritage · historical boundaries",
+    "grade4": "Locate Yukon and Ungava. What are these areas called on a later map?",
+    "grade7": "Locate Yukon and Ungava. What are these areas called on a later map? What political decision or agreement helps explain the change?"
+  },
+  {
+    "year": 1897,
+    "title": "Northern district boundaries change",
+    "type": "Boundary change",
+    "summary": "The boundaries of Franklin, Keewatin, Mackenzie, Ungava, and Yukon districts are adjusted. These are changes to administrative districts rather than the creation of provinces.",
+    "watch": "Use previous boundaries to compare the northern districts with 1895.",
+    "focus": [
+      "District of Franklin",
+      "District of Keewatin",
+      "District of Mackenzie",
+      "District of Ungava",
+      "District of Yukon"
+    ],
+    "major": false,
+    "source": "https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html",
+    "sourceLabel": "Canadian Heritage · historical boundaries",
+    "grade4": "Use previous boundaries to compare the northern districts with 1895.",
+    "grade7": "Use previous boundaries to compare the northern districts with 1895. What political decision or agreement helps explain the change?"
+  },
+  {
+    "year": 1898,
+    "title": "Yukon becomes a separate territory",
+    "type": "New territory & boundary change",
+    "summary": "Yukon is separated from the Northwest Territories to become Yukon Territory. Quebec’s northern boundary extends to the Eastmain River.",
+    "watch": "Find Yukon Territory, then compare Quebec with the previous map.",
+    "focus": [
+      "Yukon Territory",
+      "Quebec"
+    ],
+    "major": true,
+    "source": "https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html",
+    "sourceLabel": "Canadian Heritage · historical boundaries",
+    "grade4": "Find Yukon Territory, then compare Quebec with the previous map.",
+    "grade7": "Find Yukon Territory, then compare Quebec with the previous map. What political decision or agreement helps explain the change?"
+  },
+  {
+    "year": 1901,
+    "title": "Yukon’s boundary is adjusted",
+    "type": "Boundary change",
+    "summary": "Yukon Territory’s boundaries are adjusted to the outline shown in later Atlas snapshots.",
+    "watch": "Look closely at Yukon with previous boundaries switched on. Some changes are much smaller than others.",
+    "focus": [
+      "Yukon Territory"
+    ],
+    "major": false,
+    "source": "https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html",
+    "sourceLabel": "Canadian Heritage · historical boundaries",
+    "grade4": "Look closely at Yukon with previous boundaries switched on. Some changes are much smaller than others.",
+    "grade7": "Look closely at Yukon with previous boundaries switched on. Some changes are much smaller than others. What political decision or agreement helps explain the change?"
+  },
+  {
+    "year": 1905,
+    "title": "Alberta and Saskatchewan become provinces",
+    "type": "Two new provinces",
+    "summary": "Alberta and Saskatchewan are created from the Northwest Territories. Canada now has nine provinces. Keewatin is returned to the Northwest Territories and continues as one of its districts.",
+    "watch": "Compare the new provinces with the earlier western districts. Which boundaries have disappeared?",
+    "focus": [
+      "Alberta",
+      "Saskatchewan",
+      "District of Keewatin"
+    ],
+    "major": true,
+    "source": "https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html",
+    "sourceLabel": "Canadian Heritage · historical boundaries",
+    "grade4": "Compare the new provinces with the earlier western districts. Which boundaries have disappeared?",
+    "grade7": "Compare the new provinces with the earlier western districts. Which boundaries have disappeared? What political decision or agreement helps explain the change?"
+  },
+  {
+    "year": 1912,
+    "title": "Three provinces extend north",
+    "type": "Boundary change",
+    "summary": "Manitoba, Ontario, and Quebec extend northward. Ungava becomes part of Quebec, and Keewatin loses much of its land. Offshore islands are not included in Quebec’s extension. The remaining northern districts belong to a single Northwest Territories.",
+    "watch": "Look at the large Northwest Territories label. How do the smaller district labels show parts of one territory?",
+    "focus": [
+      "Manitoba",
+      "Ontario",
+      "Quebec"
+    ],
+    "major": true,
+    "source": "https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html",
+    "sourceLabel": "Canadian Heritage · historical boundaries",
+    "grade4": "Compare these three provinces with 1905. Which reaches Hudson Strait?",
+    "grade7": "Compare these three provinces with 1905. Which reaches Hudson Strait? What political decision or agreement helps explain the change?",
+    "keyIdea": "Mackenzie, Keewatin and Franklin are historical districts within one Northwest Territories. Their colours distinguish districts; they do not represent separate territories.",
+    "keySource": "https://www.pwnhc.ca/en/evolution-des-territories-du-nord-ouest"
+  },
+  {
+    "year": 1920,
+    "title": "Northern district boundaries are defined",
+    "type": "Boundary clarification",
+    "summary": "The boundaries of districts within the Northwest Territories are formally redescribed. This records changes following the creation of Alberta and Saskatchewan and the northern extensions of Manitoba, Ontario, and Quebec.",
+    "watch": "Look at Mackenzie, Keewatin, and Franklin. These are districts within the Northwest Territories.",
+    "focus": [
+      "District of Mackenzie",
+      "District of Keewatin",
+      "District of Franklin"
+    ],
+    "major": false,
+    "source": "https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html",
+    "sourceLabel": "Canadian Heritage · historical boundaries",
+    "grade4": "Look at Mackenzie, Keewatin, and Franklin. These are districts within the Northwest Territories.",
+    "grade7": "Look at Mackenzie, Keewatin, and Franklin. These are districts within the Northwest Territories. What political decision or agreement helps explain the change?",
+    "keyIdea": "Mackenzie, Keewatin and Franklin are historical districts within one Northwest Territories. Their colours distinguish districts; they do not represent separate territories.",
+    "keySource": "https://www.pwnhc.ca/en/evolution-des-territories-du-nord-ouest"
+  },
+  {
+    "year": 1927,
+    "title": "The Labrador boundary is defined",
+    "type": "Boundary settlement",
+    "summary": "The British Privy Council defines the boundary between Canada and Newfoundland in Labrador. Newfoundland is still outside Confederation at this point. The Atlas shows the boundary established by this decision.",
+    "watch": "Compare Labrador with 1920. Why is Newfoundland still grey?",
+    "focus": [
+      "Newfoundland",
+      "Quebec"
+    ],
+    "major": false,
+    "source": "https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html",
+    "sourceLabel": "Canadian Heritage · historical boundaries",
+    "grade4": "Compare Labrador with 1920. Why is Newfoundland still grey?",
+    "grade7": "Compare Labrador with 1920. Why is Newfoundland still grey? What political decision or agreement helps explain the change?",
+    "keyIdea": "Mackenzie, Keewatin and Franklin are historical districts within one Northwest Territories. Their colours distinguish districts; they do not represent separate territories.",
+    "keySource": "https://www.pwnhc.ca/en/evolution-des-territories-du-nord-ouest"
+  },
+  {
+    "year": 1949,
+    "title": "Newfoundland joins Canada",
+    "type": "New province",
+    "summary": "On March 31, Newfoundland enters Confederation as Canada’s tenth province. It includes the island of Newfoundland and Labrador on the mainland.",
+    "watch": "Find both parts of the new province. What has changed since 1927?",
+    "focus": [
+      "Newfoundland"
+    ],
+    "major": true,
+    "source": "https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html",
+    "sourceLabel": "Canadian Heritage · historical boundaries",
+    "grade4": "Find both parts of the new province. What has changed since 1927?",
+    "grade7": "Find both parts of the new province. What has changed since 1927? What political decision or agreement helps explain the change?",
+    "keyIdea": "Mackenzie, Keewatin and Franklin are historical districts within one Northwest Territories. Their colours distinguish districts; they do not represent separate territories.",
+    "keySource": "https://www.pwnhc.ca/en/evolution-des-territories-du-nord-ouest"
+  },
+  {
+    "year": 1999,
+    "title": "Nunavut is created",
+    "type": "New territory",
+    "summary": "On April 1, the eastern part of the Northwest Territories becomes Nunavut. Its creation follows years of Inuit work and negotiations, including the 1993 Nunavut Land Claims Agreement. Canada now has three territories.",
+    "watch": "Compare Nunavut with the remaining Northwest Territories. Why might new boundaries matter to the people living there?",
+    "focus": [
+      "Nunavut",
+      "Northwest Territories"
+    ],
+    "major": true,
+    "extraSource": "https://assembly.nu.ca/faq/how-was-nunavut-created",
+    "source": "https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html",
+    "sourceLabel": "Canadian Heritage · historical boundaries",
+    "grade4": "Compare Nunavut with the remaining Northwest Territories. Why might new boundaries matter to the people living there?",
+    "grade7": "Compare Nunavut with the remaining Northwest Territories. Why might new boundaries matter to the people living there? What political decision or agreement helps explain the change?"
+  },
+  {
+    "year": 2001,
+    "title": "Newfoundland and Labrador",
+    "type": "Name change",
+    "summary": "On December 6, the province’s official name changes from Newfoundland to Newfoundland and Labrador. This is a name change, not a boundary change.",
+    "watch": "Look at the province’s outline and its label. Which has changed?",
+    "focus": [
+      "Newfoundland and Labrador"
+    ],
+    "major": false,
+    "source": "https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html",
+    "sourceLabel": "Canadian Heritage · historical boundaries",
+    "grade4": "Look at the province’s outline and its label. Which has changed?",
+    "grade7": "Look at the province’s outline and its label. Which has changed? What political decision or agreement helps explain the change?"
+  },
+  {
+    "year": 2003,
+    "title": "Yukon’s official name changes",
+    "type": "Name change",
+    "summary": "The new Yukon Act takes effect on April 1. The official name changes from Yukon Territory to Yukon. The territorial boundary remains the same.",
+    "watch": "Compare Yukon with 2001. Can a map change even when its boundary stays the same?",
+    "focus": [
+      "Yukon"
+    ],
+    "major": false,
+    "source": "https://www.canada.ca/en/canadian-heritage/services/historical-boundaries-canada.html",
+    "sourceLabel": "Canadian Heritage · historical boundaries",
+    "grade4": "Compare Yukon with 2001. Can a map change even when its boundary stays the same?",
+    "grade7": "Compare Yukon with 2001. Can a map change even when its boundary stays the same? What political decision or agreement helps explain the change?"
+  }
+]

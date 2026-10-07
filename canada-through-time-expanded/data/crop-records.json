@@ -1,0 +1,46 @@
+{
+  "source": "https://ftp.geogratis.gc.ca/pub/nrcan_rncan/raster/atlas_4_ed/eng/historical/083_84.jpg",
+  "source_dimensions": [
+    3030,
+    2130
+  ],
+  "crops": {
+    "1667": [
+      121,
+      146,
+      504,
+      680
+    ],
+    "1713": [
+      518,
+      146,
+      897,
+      680
+    ],
+    "1763": [
+      913,
+      146,
+      1294,
+      680
+    ],
+    "1774": [
+      1310,
+      146,
+      1692,
+      680
+    ],
+    "1791": [
+      2103,
+      146,
+      2481,
+      680
+    ],
+    "1849": [
+      812,
+      781,
+      1496,
+      1325
+    ]
+  },
+  "processing": "Individual map panels cropped from the published sheet; colours, shapes, dates and legends retained."
+}
