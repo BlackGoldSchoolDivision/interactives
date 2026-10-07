@@ -75,6 +75,7 @@ function render() {
   renderFilters();
   const featured = chosen === 'Favourites' && chosenType === 'All types' && !query.trim();
   const visible = catalogue.filter(matches);
+  if (chosen === 'Social studies') visible.sort((a,b) => Number(b.id === 'railways-and-immigration') - Number(a.id === 'railways-and-immigration'));
   if (chosen === 'Thinking tools') visible.sort((a,b) => {
     const ai = thinkingOrder.indexOf(a.id), bi = thinkingOrder.indexOf(b.id);
     return (ai < 0 ? 100 : ai) - (bi < 0 ? 100 : bi);
@@ -93,6 +94,17 @@ function render() {
     return `<article class="card" data-id="${esc(a.id)}" style="--accent:${accent}"><a class="shot" href="${esc(a.url)}" target="_blank" rel="noopener noreferrer" aria-label="Try ${esc(a.title)} (opens in a new tab)"><img src="${esc(a.image)}" alt="${a.type === 'template' ? 'Preview' : 'Screenshot'} of ${esc(a.title)}" loading="${i < 3 ? 'eager' : 'lazy'}" width="900" height="620"></a><div class="card-body"><div class="subject">${esc(labelCategory(a.category))}${a.category === 'Geography' && a.group ? ' · ' + esc(a.group) : ''}</div>${a.status ? `<span class="status-label">${esc(a.status)}</span>` : ''}<h3>${esc(a.title)}</h3><p class="description">${esc(a.description)}</p><p class="activity-types">${a.types.map(esc).join(' · ')}</p><div class="tags">${a.tags.map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>${a.status_note ? `<p class="status-note">${esc(a.status_note)}</p>` : ''}<a class="launch" aria-label="${esc(launchLabel(a))}: ${esc(a.title)} (opens in a new tab)" href="${esc(a.url)}" target="_blank" rel="noopener noreferrer"><span>${esc(launchLabel(a))}</span><span aria-hidden="true">→</span></a>${a.links.length ? `<div class="secondary">${a.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${esc(l.label)} <span aria-hidden="true">↗</span></a>`).join('')}</div>` : ''}${a.credit ? `<p class="credit">${esc(a.credit)}</p>` : ''}</div></article>`;
   }).join('');
   cardsNode.querySelectorAll('article[data-id]').forEach(card => {
+    const activity = catalogue.find(a => a.id === card.dataset.id);
+    if (activity.own_html_url) {
+      const link = document.createElement('a');
+      link.className = 'make-own';
+      link.href = activity.own_html_url;
+      link.download = 'Railways-and-Immigration.html';
+      link.setAttribute('aria-label', 'Download HTML: ' + activity.title);
+      link.textContent = 'Make it my own ↓';
+      card.querySelector('.launch').insertAdjacentElement('afterend', link);
+      return;
+    }
     const button = document.createElement('button');
     button.type = 'button'; button.className = 'make-own';
     button.dataset.ownId = card.dataset.id;
@@ -122,4 +134,5 @@ document.getElementById('focus-search').addEventListener('click', () => { search
 // A failed screenshot stays clearly labelled; never substitute invented game imagery.
 document.addEventListener('error', e => { if (e.target instanceof HTMLImageElement) { e.target.hidden = true; const parent = e.target.parentElement; if (!parent.querySelector('.preview-unavailable')) { const label = document.createElement('span'); label.className = 'preview-unavailable'; label.textContent = 'Preview unavailable'; parent.appendChild(label); } } }, true);
 render();
+
 

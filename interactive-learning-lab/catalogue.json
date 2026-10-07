@@ -1891,6 +1891,34 @@
     "captured": "2026-10-07"
   },
   {
+    "id": "railways-and-immigration",
+    "path": "railways-and-immigration",
+    "repo": "org",
+    "title": "Railways & Immigration in Canada",
+    "category": "Social studies",
+    "secondary_categories": [
+      "Geography"
+    ],
+    "group": "Canada",
+    "description": "Explore Canadian railways, immigration and population from 1867–1914. Move the year flag to see changing borders and railway routes, switch map layers, and investigate historical posters.",
+    "types": [
+      "Maps & geography",
+      "Simulations & models"
+    ],
+    "tags": [
+      "1867–1914",
+      "Railways & immigration",
+      "Restored LearnAlberta interactive"
+    ],
+    "url": "https://interactives.blackgold.ca/railways-and-immigration/",
+    "links": [],
+    "own_html_url": "https://interactives.blackgold.ca/railways-and-immigration/index.html",
+    "favourite": false,
+    "credit": "Original artwork and historical content: LearnAlberta",
+    "image": "https://interactives.blackgold.ca/interactive-learning-lab/images/railways-and-immigration.jpg?v=20261007",
+    "captured": "2026-10-07"
+  },
+  {
     "id": "governmentsort",
     "path": "governmentsorting",
     "repo": "bg",
