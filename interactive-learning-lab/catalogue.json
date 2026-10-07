@@ -207,6 +207,32 @@
     "image": "https://maltais239.github.io/interactives/learning-lab-images/mackwoodmapping.jpg"
   },
   {
+    "id": "mapmastersubregions",
+    "title": "World Subregion Challenge",
+    "category": "Geography",
+    "group": "World",
+    "description": "Study countries by world region or smaller subregion, then test yourself on the map. Includes a separate Middle East region and shuffled challenges.",
+    "favourite": false,
+    "tags": [
+      "Study & game",
+      "Regions & subregions",
+      "Middle East"
+    ],
+    "url": "https://interactives.blackgold.ca/mapmastersubregions/",
+    "links": [],
+    "credit": "",
+    "captured": "2026-10-07",
+    "original_title": "Mapmaster with Subregions",
+    "original_urls": [
+      "https://interactives.blackgold.ca/mapmastersubregions/"
+    ],
+    "types": [
+      "Maps & geography",
+      "Practice questions"
+    ],
+    "image": "images/mapmastersubregions-20261007.jpg"
+  },
+  {
     "id": "thinking-dialogue",
     "path": "thinkingroutines",
     "repo": "bgsd",
@@ -1096,30 +1122,6 @@
     "secondary_categories": [
       "Social studies"
     ]
-  },
-  {
-    "id": "mapmastersubregions",
-    "title": "Mapmaster with Subregions",
-    "category": "Geography",
-    "group": "World",
-    "description": "Study or identify countries in world regions and smaller subregions, including the Middle East.",
-    "favourite": false,
-    "tags": [
-      "Study & game"
-    ],
-    "url": "https://interactives.blackgold.ca/mapmastersubregions/",
-    "links": [],
-    "credit": "",
-    "captured": "2026-10-04",
-    "original_title": "Mapmaster with Subregions",
-    "original_urls": [
-      "https://interactives.blackgold.ca/mapmastersubregions/"
-    ],
-    "types": [
-      "Maps & geography",
-      "Practice questions"
-    ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/mapmastersubregions.jpg"
   },
   {
     "id": "canadamap",
