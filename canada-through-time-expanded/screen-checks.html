@@ -17,4 +17,6 @@ d.querySelector('#compare-button').click();for(let i=0;i<150&&d.querySelector('#
 select.value=timelineIndex(1713);select.dispatchEvent(new Event('change',{bubbles:true}));await ready();d.querySelector('#compare-button').click();for(let i=0;i<150&&d.querySelector('#compare-status').textContent!=='Comparison ready.';i++)await delay(75);check(d.querySelector('#compare-map-left img')&&d.querySelector('#compare-map-right img'),'Source comparison missing');d.querySelector('#close-compare').click();report('PASS colonial source comparison');
 d.querySelector('#show-labels').click();check(d.querySelector('#region-labels').getAttribute('display')==='none','Labels toggle failed');d.querySelector('#show-labels').click();report('PASS label toggle');report('ALL CHECKS PASSED');function timelineIndex(year){return [...select.options].findIndex(o=>o.textContent.startsWith(year+' ·'));}
 }catch(e){report('FAIL: '+e.message);}};
+// Request a fresh app document so deployment checks do not reuse an earlier cached HTML page.
+frame.src='./?year=1713&check='+Date.now();
 </script></html>
