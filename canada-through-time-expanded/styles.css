@@ -39,3 +39,5 @@ dialog{border:0;border-radius:18px;max-width:660px;width:calc(100% - 32px);max-h
 
 /* The printed source date remains visible; the selected event date is in the story. */
 .early-map .year-stamp{display:none}
+
+@media screen{.quiet-button{min-height:44px}}
