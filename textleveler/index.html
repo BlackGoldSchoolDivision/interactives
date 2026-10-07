@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Text Releveling Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
     <script>
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
     </script>
     <style>
         /* Custom scrollbar for better aesthetics */
@@ -170,9 +171,9 @@
                 </div>
                 <div class="flex items-center gap-2">
                     <!-- Hidden File Input -->
-                    <input type="file" id="fileInput" class="hidden">
+                    <input type="file" id="fileInput" class="sr-only">
                     
-                    <button id="uploadBtn" class="text-xs bg-white border border-slate-300 hover:bg-slate-100 hover:text-indigo-600 text-slate-700 py-1.5 px-3 rounded-lg shadow-sm transition-colors flex items-center gap-1.5 font-medium" title="Upload a text file">
+                    <button type="button" id="uploadBtn" class="text-xs bg-white border border-slate-300 hover:bg-slate-100 hover:text-indigo-600 text-slate-700 py-1.5 px-3 rounded-lg shadow-sm transition-colors flex items-center gap-1.5 font-medium" title="Upload a text file">
                         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
                         <span class="hidden sm:inline">Upload</span>
                     </button>
@@ -355,6 +356,19 @@
         focusMode.addEventListener('change', updateUILabel);
         updateUILabel();
 
+        // Error Handling Functions
+        function showError(message) {
+            errorText.textContent = message;
+            errorContainer.classList.remove('hidden');
+        }
+
+        function hideError() {
+            errorContainer.classList.add('hidden');
+        }
+
+        if (closeErrorBtn) {
+            closeErrorBtn.addEventListener('click', hideError);
+        }
 
         // 1. Reset Functionality
         resetBtn.addEventListener('click', () => {
@@ -385,14 +399,17 @@
             if (!file) return;
             
             hideError();
+            inputText.value = `Extracting text from ${file.name}, please wait...`;
+            inputText.disabled = true;
 
-            if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
-                try {
-                    inputText.value = "Extracting text from PDF, please wait...";
-                    inputText.disabled = true;
+            try {
+                const fileName = file.name.toLowerCase();
 
+                if (file.type === 'application/pdf' || fileName.endsWith('.pdf')) {
+                    if (typeof pdfjsLib === 'undefined') throw new Error("PDF library failed to load.");
                     const arrayBuffer = await file.arrayBuffer();
-                    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                    const typedarray = new Uint8Array(arrayBuffer);
+                    const pdf = await pdfjsLib.getDocument(typedarray).promise;
                     let fullText = '';
                     
                     for (let i = 1; i <= pdf.numPages; i++) {
@@ -402,31 +419,41 @@
                         fullText += pageText + '\n\n';
                     }
                     
-                    if (!fullText.trim()) {
-                        throw new Error("No readable text found. The PDF might be image-based.");
-                    }
-
+                    if (!fullText.trim()) throw new Error("No readable text found. The PDF might be image-based.");
                     inputText.value = fullText.trim();
-                    updateStats(inputText.value, inputWordCount, inputReadingTime);
-                } catch (error) {
-                    console.error("PDF Extraction Error:", error);
-                    showError("Failed to extract text from the PDF. It might be corrupted or scanned/image-based.");
-                    inputText.value = "";
-                } finally {
-                    inputText.disabled = false;
+
+                } else if (fileName.endsWith('.docx')) {
+                    if (typeof mammoth === 'undefined') throw new Error("Word Document library failed to load.");
+                    const arrayBuffer = await file.arrayBuffer();
+                    const result = await mammoth.extractRawText({ arrayBuffer: arrayBuffer });
+                    if (!result.value.trim()) throw new Error("No readable text found in DOCX.");
+                    inputText.value = result.value.trim();
+
+                } else {
+                    const text = await new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = (event) => resolve(event.target.result);
+                        reader.onerror = () => reject(new Error("Failed to read the file."));
+                        reader.readAsText(file);
+                    });
+                    
+                    // Warning check if we just read scrambled binary garbage as text (like uploading an image)
+                    if (text.includes('\x00\x00') || text.includes('')) {
+                        throw new Error("Unsupported binary format. Please upload text, PDF, or Word files.");
+                    }
+                    inputText.value = text;
                 }
-            } else {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    inputText.value = event.target.result;
-                    updateStats(inputText.value, inputWordCount, inputReadingTime);
-                };
-                reader.onerror = () => showError("Failed to read the uploaded file.");
-                reader.readAsText(file);
+
+                updateStats(inputText.value, inputWordCount, inputReadingTime);
+            } catch (error) {
+                console.error("File Extraction Error:", error);
+                showError(`Upload failed: ${error.message}`);
+                inputText.value = "";
+                updateStats("", inputWordCount, inputReadingTime);
+            } finally {
+                inputText.disabled = false;
+                e.target.value = ''; // Clear input value to allow uploading the same file again
             }
-            
-            // Clear input value to allow uploading the same file again
-            e.target.value = '';
         });
 
         // Toggle Highlights Logic
