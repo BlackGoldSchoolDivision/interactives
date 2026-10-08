@@ -1,5 +1,13 @@
 # River Routes: A Fur Trade Journey
 
+## Checkpoint 7A — researched inland destination and new arrival art
+
+The next actual journey destination is the North West Company's **Fort Lac La Pluie / Rainy Lake House**, operating in the 1809 setting. A new smaller riverside depot illustration is ready in `assets/post-rainy-lake.webp`, with a canoe landing, visible cargo exchange, stocked shelves and an open trading counter. This asset is prepared for the next gameplay chunk and is not yet wired into the application. The live game remains at Checkpoint 6.
+
+`JOURNEY-HISTORY.md` records the destination evidence, naming limits, simplified inland-route representation and the next implementation boundary. Onward travel will use the completed portage's remaining manifest, including spent repairs and canoe condition. Actual accepted exchanges will update one saved journey inventory; the existing two-post comparison practices remain separate. The illustration is source-informed, with imagined architecture and people rather than a documented 1809 view.
+
+**Pause point:** review the inland arrival scene and route direction with Darren. Next chunk builds the short map journey and real arrival; the following chunk completes gameplay and responsive verification before publishing.
+
 ## Checkpoint 6 — illustrated posts and hands-on trading practice
 
 **Posts** opens two separately saved practice visits. Fort William (North West Company) has a busy canoe landing, workshops, wooden palisade and wild rice as well as fish. York Factory (Hudson’s Bay Company) has river boats, flat marshy lowlands and a scene inspired by its earlier Old Octagon, rather than the white depot built from 1831. Both scenes have stocked shelves framing a clear counter. The new transparent object atlas provides wool cloth, nested brass kettles, iron tools, white/blue/red glass beads, smoked fish, wild rice, pelts and canoe materials. Archaeological bead colours, food provisioning and other object types are linked to sources in **Look closer**; see `POST-HISTORY.md` and `ARTWORK.md` for evidence and illustration limits.
@@ -98,4 +106,5 @@ The remote browser did not apply browser-zoom keyboard shortcuts, so actual brow
 ## Next checkpoint
 
 Review the illustrated trading posts and bargaining with Darren, then connect a real inland arrival and the next journey leg. Stop after each chunk to talk with Darren.
+
 

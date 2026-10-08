@@ -71,3 +71,25 @@ Do not render eight cards: render objects alone. Match their apparent scale with
 
 Production files: `assets/post-fort-william.webp` and `assets/post-york-factory.webp` (1536×1024); `assets/trade-goods.webp` (1774×887, alpha transparency). Format encoding only; no creative image edits. Original generated files are `exec-50361e4e-6e54-4b12-b12c-9ed1adff6f6d.png`, `exec-606f850d-00e7-40fc-96e2-b403247d81d9.png`, and `exec-104e9a57-1cff-492d-9d60-30bf9d25c6c5.png`.
 
+
+
+# Rainy Lake inland arrival — October 8, 2026
+
+New asset: `assets/post-rainy-lake.webp` (1536×1024, 520,896 bytes), prepared for the next journey chunk. Generated with the built-in image-generation tool using `post-fort-william.webp` as a style reference. Original: `generated_images/exec-86e494c5-55b0-4dcd-b323-61f579149597.png`. WebP encoding at quality 85 changes format only. The environment is not yet wired into gameplay.
+
+The destination is supported by the Town of Fort Frances's NWC provincial plaque. Architecture, people, clothing, display shelves, goods, weather and season are imagined. This picture is not an exact reconstruction or a documented local assemblage. See `JOURNEY-HISTORY.md` for naming, route, food-evidence and inventory-continuity boundaries.
+
+## Production prompt
+
+Use case: historical-scene.
+Asset type: full-bleed landscape 3:2 environment illustration for River Routes, a visually rich Canadian fur-trade educational adventure game.
+Input image 1 is a STYLE REFERENCE only: match its luminous painterly realism, gorgeous tactile materials, inviting golden light, sparkling teal water and depth. Create a NEW composition, not an edited copy.
+Primary request: an engaging smaller North West Company inland supply depot, inspired by Fort Lac La Pluie / Rainy Lake House on the Rainy River circa 1809. Ontario's official plaque confirms this NWC depot existed between the late 1700s and 1821 and exchanged cargo between brigades. Exact building layout is unknown; this is an illustrative game scene, not a measured reconstruction.
+Scene: view from an open timber store porch toward a modest riverside depot on a slightly raised wooded bank. A few low utilitarian log storehouses with shingle roofs and a partly visible simple timber enclosure, much smaller and quieter than Fort William. The broad calm Rainy River stretches behind a small canoe landing; distant low tree-lined horizon, pines and birches, no mountains, cliffs, waterfall or modern dam. Birchbark canoes, tied cargo packs, coopered wooden kegs and paddles show this is a transshipment and provisioning stop.
+People: a small group of ordinary adult workers and Anishinaabe trading partners at the landing, engaged equally in checking a cargo bundle and discussing provisions; dignified everyday practical early-1800s clothing, no ceremonial dress, no costume stereotypes. Human figures should be readable but not dominant. No invented named historical people.
+Foreground: stocked handmade wooden shelves frame the left and right 12% edges under the porch, with folded plain red/cream wool cloth, nested hammered brass cooking kettles with iron bails, simple iron tool heads, and a small container of white/blue/red glass beads. A sack of dark wild rice grains and a tied smoked-fish bundle near the edge suggest the game's provisioning theme, not a documented 1809 inventory. A broad warmly lit EMPTY wooden counter spans the bottom 18%, leaving the centre clear for actual interactive goods and controls.
+Composition: eye-height view; clear bright open central landing, calm teal river and modest buildings in the middle; one arriving birchbark canoe visibly close to shore, but do not bake variable player inventory into the picture. Beautiful storytelling details without clutter. Visually distinct from the large Fort William palisade and the marshy HBC York Factory scene.
+Lighting and mood: luminous late-summer afternoon, warm sunlight through green/gold birch foliage, turquoise reflections, welcome after a long journey, lively and inviting sophisticated painterly adventure art.
+Constraints: landscape art ONLY. No letters, numbers, labels, logos, flags, UI panels, maps, borders, modern branded blanket stripes, guns or watermarks. No military castle or tall lookout towers. No generic feather headdresses or tipis. Source-informed illustration with imagined architecture, people, weather and display shelves.
+
+
