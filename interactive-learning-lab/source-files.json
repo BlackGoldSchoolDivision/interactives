@@ -8298,7 +8298,7 @@
     "Maltais239/interactives/walker-corner": [
       {
         "path": "walker-corner/bridge/app.js",
-        "bytes": 47868
+        "bytes": 48163
       },
       {
         "path": "walker-corner/bridge/assets/semi.webp",
@@ -8330,7 +8330,7 @@
       },
       {
         "path": "walker-corner/bridge/game.css",
-        "bytes": 24533
+        "bytes": 25022
       },
       {
         "path": "walker-corner/bridge/index.html",
@@ -8370,7 +8370,7 @@
       },
       {
         "path": "walker-corner/index.html",
-        "bytes": 4299
+        "bytes": 4293
       },
       {
         "path": "walker-corner/plurals/app.js",

@@ -3611,7 +3611,7 @@
     "category": "Science",
     "group": "",
     "collection": "walker-corner",
-    "description": "Start with a car and a road-only deck. Study view-only bridge examples, build supports, and unlock seven challenges with heavier vehicles. Keep improving your bridge, meet each budget and compare saved trials.",
+    "description": "Start with a car and a road-only deck. Build your own supports and unlock 12 challenges, from heavier vehicles to truss, beam, arch, suspension and gusty-wind missions. Use design hints, meet each budget and compare saved trials.",
     "types": [
       "Simulations & models",
       "Decision games",
@@ -3639,7 +3639,7 @@
     ],
     "favourite": false,
     "credit": "Original idea: Tyler Walker · Improved classroom edition: Engaging Students",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/walker-bridge.jpg?v=20261008-journey2",
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/walker-bridge.jpg?v=20261008-design3",
     "captured": "2026-10-08",
     "original_urls": [
       "https://sites.google.com/gshare.blackgold.ca/bridgetester/home"
