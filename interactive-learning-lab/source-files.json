@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated": "2026-10-08T03:28:33.545Z",
+  "generated": "2026-10-08T22:27:07.741Z",
   "activities": {
     "morpheme-missions": {
       "kind": "html",
@@ -3526,7 +3526,7 @@
       },
       {
         "path": "learning-lab-images/makechange.jpg",
-        "bytes": 40182
+        "bytes": 71992
       },
       {
         "path": "learning-lab-images/manifest.json",
@@ -3974,11 +3974,75 @@
     "Maltais239/interactives/makechange": [
       {
         "path": "makechange/app.js",
-        "bytes": 18225
+        "bytes": 9857
+      },
+      {
+        "path": "makechange/assets/Atkinson-Hyperlegible-OFL.txt",
+        "bytes": 4352
+      },
+      {
+        "path": "makechange/assets/Baloo-2-OFL.txt",
+        "bytes": 4384
+      },
+      {
+        "path": "makechange/assets/font-0.woff",
+        "bytes": 13244
+      },
+      {
+        "path": "makechange/assets/font-1.woff",
+        "bytes": 13520
+      },
+      {
+        "path": "makechange/assets/font-2.woff",
+        "bytes": 15164
+      },
+      {
+        "path": "makechange/assets/money-0.webp",
+        "bytes": 43682
+      },
+      {
+        "path": "makechange/assets/money-1.webp",
+        "bytes": 43040
+      },
+      {
+        "path": "makechange/assets/money-2.webp",
+        "bytes": 36322
+      },
+      {
+        "path": "makechange/assets/money-3.webp",
+        "bytes": 38468
+      },
+      {
+        "path": "makechange/assets/money-4.webp",
+        "bytes": 47088
+      },
+      {
+        "path": "makechange/assets/money-5.webp",
+        "bytes": 16340
+      },
+      {
+        "path": "makechange/assets/money-6.webp",
+        "bytes": 16426
+      },
+      {
+        "path": "makechange/assets/money-7.webp",
+        "bytes": 13036
+      },
+      {
+        "path": "makechange/assets/money-8.webp",
+        "bytes": 16442
+      },
+      {
+        "path": "makechange/assets/money-9.webp",
+        "bytes": 15898
       },
       {
         "path": "makechange/index.html",
-        "bytes": 3878
+        "bytes": 5539
+      },
+      {
+        "path": "makechange/screen.css",
+        "bytes": 13786
       }
     ],
     "Maltais239/interactives/mandrykmemorymatch": [
@@ -9275,7 +9339,7 @@
     ]
   },
   "repository_heads": {
-    "Maltais239/interactives": "3286ffacf841da0e640793ff4ce93fb7d51c7453",
+    "Maltais239/interactives": "6c72111326a5637e8f370e56c56244b7392b34f2",
     "BlackGoldSchoolDivision/interactives": "699204ec0c40b32d4382cd44c7ff8ff7529b56d3"
   }
 }
