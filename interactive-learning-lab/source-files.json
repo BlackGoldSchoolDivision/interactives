@@ -2799,20 +2799,64 @@
     ],
     "Maltais239/interactives/dinodig": [
       {
+        "path": "dinodig/dig-layout.js",
+        "bytes": 7415
+      },
+      {
+        "path": "dinodig/excavation-art.json",
+        "bytes": 11553
+      },
+      {
+        "path": "dinodig/excavation.js",
+        "bytes": 13267
+      },
+      {
         "path": "dinodig/field-study.css",
-        "bytes": 3372
+        "bytes": 12823
       },
       {
         "path": "dinodig/field-study.js",
-        "bytes": 10276
+        "bytes": 10042
       },
       {
         "path": "dinodig/image-credits.html",
-        "bytes": 5391
+        "bytes": 5695
       },
       {
         "path": "dinodig/image-credits.json",
         "bytes": 5436
+      },
+      {
+        "path": "dinodig/images/excavation-albertosaurus.webp",
+        "bytes": 176720
+      },
+      {
+        "path": "dinodig/images/excavation-borealopelta.webp",
+        "bytes": 174842
+      },
+      {
+        "path": "dinodig/images/excavation-centrosaurus.webp",
+        "bytes": 189510
+      },
+      {
+        "path": "dinodig/images/excavation-corythosaurus.webp",
+        "bytes": 189754
+      },
+      {
+        "path": "dinodig/images/excavation-edmontosaurus.webp",
+        "bytes": 182316
+      },
+      {
+        "path": "dinodig/images/excavation-euoplocephalus.webp",
+        "bytes": 183964
+      },
+      {
+        "path": "dinodig/images/excavation-hypacrosaurus-nest.webp",
+        "bytes": 151052
+      },
+      {
+        "path": "dinodig/images/excavation-pachyrhinosaurus.webp",
+        "bytes": 198650
       },
       {
         "path": "dinodig/images/image-01.jpg",
@@ -2872,7 +2916,15 @@
       },
       {
         "path": "dinodig/index.html",
-        "bytes": 157520
+        "bytes": 155413
+      },
+      {
+        "path": "dinodig/restart.js",
+        "bytes": 1960
+      },
+      {
+        "path": "dinodig/screen-checks.html",
+        "bytes": 1644
       }
     ],
     "Maltais239/interactives/dropdownmaker": [
