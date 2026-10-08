@@ -142,7 +142,7 @@
   $('walkPortage').addEventListener('click',toggle);
   $('stepRoots').addEventListener('click',()=>{const n=rootIndex();if(n<0)return;stop();state.roots.push(n);state.energy=Math.max(0,state.energy-(state.trail==='ridge'?7:4));render();save();announce(state.energy===0?'Roots crossed. Rest before continuing.':'A careful step! The roots are behind you. Continue walking.');$('portageBoard').focus({preventScroll:true});});
   $('restPortage').addEventListener('click',()=>{if(!state||$('restPortage').disabled)return;stop();state.energy=100;state.rests++;render();save();announce('Crew rested. Your load stays with you. Continue when ready.');});
-  $('returnPortage').addEventListener('click',()=>{if(!state||state.phase!=='far'||allAcross())return;state.phase='returning';state.p=0;drawStacks();toggle();});
+  $('returnPortage').addEventListener('click',()=>{if(!state||state.phase!=='far'||allAcross())return;state.phase='returning';state.p=0;drawStacks();render();toggle();});
   $('reloadPortage').addEventListener('click',()=>{if(!state||state.phase!=='far'||!allAcross())return;state.phase='complete';stop();drawStacks();announce('Portage complete! The canoe and every remaining bundle are ready for the water.');$('portageResult').scrollIntoView({block:'nearest',behavior:'instant'});});
   $('portageBoard').addEventListener('keydown',e=>{if(e.repeat)return;if([' ','ArrowUp','r','R'].includes(e.key)){e.preventDefault();if(e.key===' ')toggle();else $(e.key==='ArrowUp'?'stepRoots':'restPortage').click();}});
   $('portageBack').addEventListener('click',()=>{stop();api.openView('river');$('startPortage').focus({preventScroll:true});});
