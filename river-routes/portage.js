@@ -87,7 +87,7 @@
     for(const b of document.querySelectorAll('[data-trail]')){b.disabled=!near;b.setAttribute('aria-pressed',String(b.dataset.trail===state.trail));}
     const path=$('portageTrail'),position=near?0:far||done?1:carrying?state.p:1-state.p;
     const point=path.getPointAtLength(position*path.getTotalLength()),w=$('portageBoard').clientWidth;
-    const scale=clamp(600/Math.max(240,w),.8,1.65);
+    const scale=Math.min(clamp(600/Math.max(240,w),.8,1.65),(point.y-16)/85);
     $('portageCrew').setAttribute('transform',`translate(${point.x} ${point.y-8}) scale(${scale})`);
     const step=running?Math.sin(state.time*10)*7:0;
     $('portageLegs').setAttribute('d',`M-9 5L${-14+step} 25M7 5l${12-step} 19`);
