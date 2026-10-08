@@ -86,6 +86,7 @@ function render() {
     const ai = thinkingOrder.indexOf(a.id), bi = thinkingOrder.indexOf(b.id);
     return (ai < 0 ? 100 : ai) - (bi < 0 ? 100 : bi);
   });
+  if (chosen === 'Maths') visible.sort((a,b) => Number(b.id === 'makechange') - Number(a.id === 'makechange'));
   if (chosen === 'Science') visible.sort((a,b) => {
     const ai = scienceOrder.indexOf(a.id), bi = scienceOrder.indexOf(b.id);
     return (ai < 0 ? 100 : ai) - (bi < 0 ? 100 : bi);
