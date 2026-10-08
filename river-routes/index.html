@@ -6,11 +6,13 @@
   <meta name="description" content="Explore Canada's fur-trade waterways and plan a journey from Fort William. A developing classroom adventure from BGSD's Interactive Learning Lab.">
   <title>River Routes · A Fur Trade Journey</title>
   <link rel="preload" as="image" href="assets/river-camp.webp">
-  <link rel="stylesheet" href="styles.css?v=20261008-art1">
-  <link rel="stylesheet" href="adventure.css?v=20261008-art1">
-  <script defer src="map-data.js?v=20261008-art1"></script>
-  <script defer src="app.js?v=20261008-art1"></script>
-  <script defer src="camp.js?v=20261008-art1"></script>
+  <link rel="stylesheet" href="styles.css?v=20261008-pack1">
+  <link rel="stylesheet" href="adventure.css?v=20261008-pack1">
+  <script defer src="map-data.js?v=20261008-pack1"></script>
+  <script defer src="app.js?v=20261008-pack1"></script>
+  <script defer src="camp.js?v=20261008-pack1"></script>
+  <link rel="stylesheet" href="packing.css?v=20261008-pack1">
+  <script defer src="packing.js?v=20261008-pack1"></script>
 </head>
 <body>
   <a class="skip-link" href="#workspace">Skip to the adventure</a>
@@ -40,9 +42,38 @@
           <div class="discovery-progress"><div class="discovery-count"><strong id="discoveryCount">0 of 5 discovered</strong><button id="resetDiscoveries" class="small-reset" aria-label="Reset camp discoveries">↺</button></div><div class="discovery-dots" id="discoveryDots" aria-hidden="true"></div></div>
           <p class="sr-only" id="campStatus" role="status" aria-live="polite" aria-atomic="true"></p>
           <details class="object-details" id="objectDetails" hidden><summary>Look closer</summary><p id="objectDetailText"></p><a id="objectSource" target="_blank" rel="noopener">History source ↗</a></details>
-          <button class="primary-button journey-button" id="seeRoute">See your route <span aria-hidden="true">→</span></button>
+          <button class="primary-button journey-button" id="startPacking">Pack your canoe <span aria-hidden="true">→</span></button>
+          <button class="text-button camp-route" id="seeRoute">See your route <span aria-hidden="true">→</span></button>
           <div class="journey-ribbon" aria-label="The journey will include packing, paddling, portage, and trading"><span>Pack</span><i>›</i><span>Paddle</span><i>›</i><span>Portage</span><i>›</i><span>Trade</span></div>
-          <p class="art-preview-note">Camp discovery · Adventure preview</p>
+          <p class="art-preview-note">Explore the camp · Then pack your canoe</p>
+        </aside>
+      </div>
+    </section>
+    <section id="packingView" class="packing-view" hidden aria-label="Pack your canoe">
+      <div class="packing-heading"><div><span class="eyebrow">FORT WILLIAM · 1809</span><h2>What will you take?</h2></div><button id="backToCamp" class="pack-secondary">← Camp</button></div>
+      <div class="packing-grid">
+        <div class="packing-workspace">
+          <div class="packing-scene">
+            <img src="assets/river-camp.webp" alt="The river camp where your canoe is being prepared." width="1536" height="1024">
+            <span class="packing-stamp">YOUR CANOE · YOUR CHOICES</span>
+            <div class="canoe-dock"><svg id="loadedCanoe" viewBox="0 0 720 240" role="img" aria-labelledby="canoeLoadTitle"><title id="canoeLoadTitle">Your empty canoe</title></svg></div>
+            <div class="pack-load-label" id="loadLabel">An empty canoe. Add your first bundle.</div>
+          </div>
+          <div id="cargoChoices" class="cargo-choices" role="group" aria-label="Cargo choices"></div>
+        </div>
+        <aside class="packing-panel" aria-label="Journey supplies and capacity">
+          <span class="eyebrow">MAKE ROOM FOR THE JOURNEY</span><h3 id="packTitle">Load it wisely.</h3>
+          <div class="capacity-heading"><strong id="spaceCount">0 / 12 spaces</strong><span id="weightCount">0 / 130 kg</span></div>
+          <div id="capacitySlots" class="capacity-slots" aria-label="Canoe space"></div>
+          <div class="weight-track"><span id="weightFill"></span></div>
+          <div id="packingNeeds" class="packing-needs"></div>
+          <div class="journey-effects"><div><span>Food supply</span><strong id="foodDays">0 days</strong></div><div><span>Cargo carrying trips</span><strong id="carryTrips">0 trips</strong></div><div><span>Trade choices</span><strong id="tradeVariety">0 kinds</strong></div></div>
+          <p class="pack-feedback" id="packFeedback" role="status" aria-live="polite">Start with food and a repair kit.</p>
+          <button id="finishPacking" class="primary-button">Secure the cargo <span aria-hidden="true">✓</span></button>
+          <div id="packedResult" class="packed-result" hidden><strong>Canoe packed!</strong><p>Your supplies are saved for the river journey.</p><button id="packingRoute" class="pack-secondary">See your route →</button></div>
+          <div class="pack-footer-controls"><button id="clearCargo" class="pack-secondary">Empty canoe</button><button id="packingHelp" class="pack-secondary" aria-expanded="false" aria-controls="packHelpText">Hint</button></div>
+          <p id="packHelpText" class="pack-help" hidden>Take 3 food bundles and 1 repair kit. Then mix at least 4 trade bundles. Small bundles help fill gaps; heavy goods may mean more carrying trips.</p>
+          <details class="pack-rules"><summary>How the journey works</summary><p>This first leg needs 6 days of food, a repair kit and 4 bundles to trade. A food bundle lasts 2 days. Each cargo carrying trip holds up to 40 kg; the canoe needs a separate trip. Space, weights and journey needs are simplified game rules.</p></details>
         </aside>
       </div>
     </section>
