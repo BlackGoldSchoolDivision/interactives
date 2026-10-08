@@ -95,11 +95,11 @@
     renderMap();renderLocation();save();
   }
   function chooseTab(tab) {
-    if(!['adventure','packing','river','map','journal'].includes(tab)) return;
+    if(!['adventure','packing','river','portage','map','journal'].includes(tab)) return;
     state.tab=tab;
     document.body.dataset.view=tab;
-    $('adventureView').hidden=tab!=='adventure';$('packingView').hidden=tab!=='packing';$('riverView').hidden=tab!=='river';$('mapIntro').hidden=tab!=='map';$('mapView').hidden=tab!=='map';$('placesSection').hidden=tab!=='map';$('journalView').hidden=tab!=='journal';
-    for(const [id,t] of [['adventureTab','adventure'],['mapTab','map'],['journalTab','journal']]) {$(id).classList.toggle('active',tab===t||(t==='adventure'&&['packing','river'].includes(tab)));if(t===tab||(t==='adventure'&&['packing','river'].includes(tab)))$(id).setAttribute('aria-current','page');else $(id).removeAttribute('aria-current');}
+    $('adventureView').hidden=tab!=='adventure';$('packingView').hidden=tab!=='packing';$('riverView').hidden=tab!=='river';$('portageView').hidden=tab!=='portage';$('mapIntro').hidden=tab!=='map';$('mapView').hidden=tab!=='map';$('placesSection').hidden=tab!=='map';$('journalView').hidden=tab!=='journal';
+    for(const [id,t] of [['adventureTab','adventure'],['mapTab','map'],['journalTab','journal']]) {$(id).classList.toggle('active',tab===t||(t==='adventure'&&['packing','river','portage'].includes(tab)));if(t===tab||(t==='adventure'&&['packing','river','portage'].includes(tab)))$(id).setAttribute('aria-current','page');else $(id).removeAttribute('aria-current');}
     $('pageTitle').textContent='Find your way inland.';
     if(tab==='map') requestAnimationFrame(renderMap);
     save();window.dispatchEvent(new CustomEvent('river-routes-view',{detail:tab}));
@@ -129,3 +129,4 @@
   chooseTab('adventure');renderMap();renderLocation();
   window.RiverRoutesPreview={getState:()=>({...state}),places:places.map(p=>({...p})),selectPlace:chooseLocation,selectView:chooseView,openView:chooseTab,setTravelProgress:value=>{travelProgress=value;drawTravelMarker();}};
 })();
+

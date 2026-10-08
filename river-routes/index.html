@@ -6,15 +6,17 @@
   <meta name="description" content="Explore Canada's fur-trade waterways and plan a journey from Fort William. A developing classroom adventure from BGSD's Interactive Learning Lab.">
   <title>River Routes · A Fur Trade Journey</title>
   <link rel="preload" as="image" href="assets/river-camp.webp">
-  <link rel="stylesheet" href="styles.css?v=20261008-river1">
-  <link rel="stylesheet" href="adventure.css?v=20261008-river1">
-  <script defer src="map-data.js?v=20261008-river1"></script>
-  <script defer src="app.js?v=20261008-river1"></script>
-  <script defer src="camp.js?v=20261008-river1"></script>
-  <link rel="stylesheet" href="packing.css?v=20261008-river1">
-  <script defer src="packing.js?v=20261008-river1"></script>
-  <link rel="stylesheet" href="river.css?v=20261008-river1">
-  <script defer src="river.js?v=20261008-river1"></script>
+  <link rel="stylesheet" href="styles.css?v=20261008-portage1">
+  <link rel="stylesheet" href="adventure.css?v=20261008-portage1">
+  <script defer src="map-data.js?v=20261008-portage1"></script>
+  <script defer src="app.js?v=20261008-portage1"></script>
+  <script defer src="camp.js?v=20261008-portage1"></script>
+  <link rel="stylesheet" href="packing.css?v=20261008-portage1">
+  <script defer src="packing.js?v=20261008-portage1"></script>
+  <link rel="stylesheet" href="river.css?v=20261008-portage1">
+  <script defer src="river.js?v=20261008-portage1"></script>
+  <link rel="stylesheet" href="portage.css?v=20261008-portage1">
+  <script defer src="portage.js?v=20261008-portage1"></script>
 </head>
 <body>
   <a class="skip-link" href="#workspace">Skip to the adventure</a>
@@ -45,6 +47,7 @@
           <p class="sr-only" id="campStatus" role="status" aria-live="polite" aria-atomic="true"></p>
           <details class="object-details" id="objectDetails" hidden><summary>Look closer</summary><p id="objectDetailText"></p><a id="objectSource" target="_blank" rel="noopener">History source ↗</a></details>
           <button class="primary-button journey-button" id="startPacking">Pack your canoe <span aria-hidden="true">→</span></button>
+          <button class="text-button camp-route" id="resumePortage" hidden>Resume portage →</button>
           <button class="text-button camp-route" id="resumeRiver" hidden>Resume river journey →</button>
           <button class="text-button camp-route" id="seeRoute">See your route <span aria-hidden="true">→</span></button>
           <div class="journey-ribbon" aria-label="The journey will include packing, paddling, portage, and trading"><span>Pack</span><i>›</i><span>Paddle</span><i>›</i><span>Portage</span><i>›</i><span>Trade</span></div>
@@ -98,10 +101,40 @@
           <div class="river-stats"><div><span>Canoe condition</span><strong id="riverHull">100%</strong></div><div><span>Load</span><strong id="riverLoad">0 kg</strong></div><div><span>Travel time</span><strong id="riverTime">0:00</strong></div></div>
           <p id="riverFeedback" class="river-feedback" role="status" aria-live="polite">Start paddling, then steer around the rocks.</p>
           <button id="landCanoe" class="river-primary" disabled>Land at the portage</button>
-          <div id="riverResult" class="river-result" hidden><strong>Safe on shore!</strong><p>Your canoe and cargo are saved at the portage landing.</p><button id="riverShowMap" class="river-secondary">See where you landed →</button></div>
+          <div id="riverResult" class="river-result" hidden><strong>Safe on shore!</strong><p>Your canoe and cargo are saved at the portage landing.</p><button id="startPortage" class="river-primary">Carry around the falls →</button><button id="riverShowMap" class="river-secondary">See where you landed →</button></div>
           <div class="river-actions"><button id="repairCanoe" class="river-secondary" disabled>Use repair kit</button><button id="restartRiver" class="river-secondary">Restart river</button><button id="riverHint" class="river-secondary" aria-expanded="false" aria-controls="riverHintText">Hint</button></div>
           <p id="riverHintText" class="river-hint" hidden>Paddle upstream and use small steering changes. Gold ripples point to the landing on your left near the falls. A heavier load moves more slowly. You can pause to plan.</p>
           <details class="river-notes"><summary>About this river leg</summary><p>This is a short, illustrative river challenge—not a precise map of the historical channel. The overview marker follows the simplified Fort William–Kakabeka connection. Speed, damage and carrying capacity are game rules. Stop at the landing to carry around the falls.</p></details>
+        </aside>
+      </div>
+    </section>
+    <section id="portageView" class="portage-view" hidden aria-label="Carry around Kakabeka Falls">
+      <div class="portage-heading"><div><span class="eyebrow">KAKABEKA · AROUND THE FALLS</span><h2>Water ends. Teamwork carries on.</h2></div><button id="portageBack" class="portage-secondary">← Landing</button></div>
+      <div class="portage-grid">
+        <div class="portage-play-card">
+          <div class="portage-board" id="portageBoard" tabindex="0" role="group" aria-label="Portage trail. Space walks or pauses. R rests. Up arrow steps over roots." aria-describedby="portageInstructions">
+            <svg id="portageWorld" viewBox="0 0 900 520" role="img" aria-labelledby="portageWorldTitle"></svg>
+            <span class="portage-stage" id="portageStage">THE PORTAGE TRAIL</span>
+            <div class="portage-scene-label near-label">LANDING</div><div class="portage-scene-label far-label">UPPER WATER</div>
+          </div>
+          <div class="portage-controls"><button id="walkPortage" class="portage-primary">Carry this load →</button><button id="stepRoots" class="portage-secondary" disabled>Step over roots ↑</button><button id="restPortage" class="portage-secondary" disabled>Rest · R</button></div>
+          <p id="portageInstructions" class="portage-instructions">Choose a load. Walk the trail. Watch for roots. <span>Space · Walk / pause &nbsp; ↑ · Careful step &nbsp; R · Rest</span></p>
+          <div class="portage-inventory-heading"><h3 id="shoreTitle">Choose what to carry.</h3><strong id="portageLoad">0 / 40 kg</strong></div>
+          <div id="portageCargo" class="portage-cargo" role="group" aria-label="Choose bundles for this carrying trip"></div>
+          <button id="selectCanoe" class="portage-canoe-choice" aria-pressed="false"><svg viewBox="0 0 120 50" aria-hidden="true"><path d="M5 17Q60 50 115 17L104 35Q60 57 16 35Z" fill="#dfb46e" stroke="#5d432a" stroke-width="3"/><path d="M5 17Q60 0 115 17Q60 36 5 17" fill="#8c6942" stroke="#eecb8c" stroke-width="3"/></svg><span><strong>Carry the canoe</strong><small>Separate trip · Two crew members</small></span><b id="canoeChoiceMark">＋</b></button>
+        </div>
+        <aside class="portage-panel" aria-label="Your portage progress">
+          <span class="eyebrow">MAKE EVERY TRIP COUNT</span><h3 id="portageTitle">All hands on shore.</h3>
+          <div class="portage-trails" role="group" aria-label="Trail choices"><button data-trail="forest" aria-pressed="true"><span aria-hidden="true">♧</span><strong>Forest trail</strong><small>Longer · Gentler</small></button><button data-trail="ridge" aria-pressed="false"><span aria-hidden="true">△</span><strong>Rocky ridge</strong><small>Shorter · More effort</small></button></div>
+          <div class="portage-energy-label"><span>Crew energy</span><strong id="portageEnergy">100%</strong></div><div class="portage-energy-track"><i id="portageEnergyFill"></i></div>
+          <div class="portage-stats"><div><span>Cargo across</span><strong id="portageDelivered">0 / 0</strong></div><div><span>Canoe across</span><strong id="portageCanoeStatus">Waiting</strong></div><div><span>Carrying trips</span><strong id="portageTrips">0</strong></div></div>
+          <p id="portageFeedback" class="portage-feedback" role="status" aria-live="polite" aria-atomic="true">Take up to 40 kg of cargo, or carry the canoe on its own.</p>
+          <button id="returnPortage" class="portage-primary" hidden>Return for the next load ↩</button>
+          <button id="reloadPortage" class="portage-primary" hidden>Reload the canoe ✓</button>
+          <div id="portageResult" class="portage-result" hidden><strong>Ready for the water!</strong><p>Every bundle is across. Your canoe and supplies are saved for the next leg.</p><button id="portageMap" class="portage-secondary">See where you are →</button></div>
+          <div class="portage-actions"><button id="restartPortage" class="portage-secondary">Restart portage</button><button id="portageHint" class="portage-secondary" aria-expanded="false" aria-controls="portageHintText">Hint</button></div>
+          <p id="portageHintText" class="portage-hint" hidden>Combine bundles up to 40 kg. Lighter loads use less energy. The forest trail has fewer roots. Rest when energy runs low, then continue. Carry the canoe on its own, and return until nothing is left behind.</p>
+          <details class="portage-notes"><summary>Look closer</summary><p>People carried canoes and cargo around obstacles using known overland routes. This scene and its two trail choices are imagined. The 40 kg limit, canoe weight, energy and trip times are game rules—not instructions for a real carrying activity.</p><p>Indigenous route knowledge and canoe technology helped the inland trade work.</p><a href="https://www.ontarioparks.ca/park/Kakabekafalls/activities" target="_blank" rel="noopener">The historic portage ↗</a></details>
         </aside>
       </div>
     </section>
@@ -124,3 +157,4 @@
   <dialog id="sourcesDialog"><div class="dialog-heading"><h2>History & map sources</h2><button id="closeSources" class="close-button" aria-label="Close sources">×</button></div><p>The camp artwork is an illustrative setting, not a reconstruction of one named site. Locations are approximate waypoints. The map uses modern geography; trading connections are set in 1809.</p><ul><li><a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth</a> · Canada outline, neighbours, and major lakes; Albers equal-area projection.</li><li><a href="https://fwhp.ca/about-us/our-history/" target="_blank" rel="noopener">Fort William Historical Park</a> · inland network, Anishinaabe contributions, and Fort William’s name from 1807.</li><li><a href="https://parks.canada.ca/lhn-nhs/mb/yorkfactory/culture/histoire-history" target="_blank" rel="noopener">Parks Canada: York Factory</a> · Hudson Bay, Indigenous trade, and inland expansion.</li><li><a href="https://www.ontarioparks.ca/park/Kakabekafalls/activities" target="_blank" rel="noopener">Ontario Parks: Kakabeka Falls</a> · historic portage around the falls.</li><li><a href="https://recherche-collection-search.bac-lac.gc.ca/eng/home/record?app=fonandcol&idnumber=2962865" target="_blank" rel="noopener">Library and Archives Canada</a> · Cumberland House and its inland role.</li></ul><button id="doneSources" class="primary-button">Back to exploring</button></dialog>
 </body>
 </html>
+

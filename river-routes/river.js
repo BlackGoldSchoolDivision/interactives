@@ -8,10 +8,11 @@
   const mapStart=window.RIVER_MAP.points['fort-william'],mapEnd=window.RIVER_MAP.points.kakabeka;
   const legBox=[Math.min(mapStart[0],mapEnd[0])-2,Math.min(mapStart[1],mapEnd[1])-2.7,Math.abs(mapStart[0]-mapEnd[0])+4,5.4];
   const rocks=[{p:510,o:-.5,r:30},{p:820,o:.4,r:34},{p:1110,o:0,r:36},{p:1440,o:-.4,r:31},{p:1740,o:.45,r:35},{p:2070,o:0,r:35}];
-  const fresh=manifest=>({p:100,o:0,hull:100,time:0,hits:0,repairs:0,status:'ready',manifest:JSON.parse(JSON.stringify(manifest))});
+  const fresh=manifest=>({journeyId:Date.now()+'-'+Math.random().toString(36).slice(2,8),p:100,o:0,hull:100,time:0,hits:0,repairs:0,status:'ready',manifest:JSON.parse(JSON.stringify(manifest))});
   let state=null,running=false,direction=0,lastFrame=0,frame=0,lastSave=0,cooldown=0,lastAnnouncement='';
   try{const s=JSON.parse(localStorage.getItem(storageKey));if(s&&Number.isFinite(s.p)&&Number.isFinite(s.o)&&Number.isFinite(s.hull)&&Number.isFinite(s.time)&&Number.isFinite(s.manifest?.kg)&&s.manifest?.counts&&['ready','landed','stranded'].includes(s.status))state={...s,p:clamp(s.p,100,finish),o:clamp(s.o,-.88,.88),hull:clamp(s.hull,0,100),time:Math.max(0,s.time),repairs:clamp(Number(s.repairs)||0,0,6),hits:Math.max(0,Number(s.hits)||0)};}catch{}
   const save=()=>{if(state)try{localStorage.setItem(storageKey,JSON.stringify(state));}catch{}};
+  if(state&&!state.journeyId){state.journeyId='saved-'+JSON.stringify(state.manifest.counts)+'-'+state.time;save();}
   const boatScale=()=>Math.max(1,32*1000/Math.max(200,$('riverBoard').clientWidth)/50);
   const progress=()=>state?clamp((state.p-100)/(finish-100),0,1):0;
   const canLand=()=>state&&state.status==='ready'&&state.p>=2370&&state.o<=-.45;
@@ -106,3 +107,4 @@
   const previous=api.getState;api.getState=()=>({...previous(),travel:state?{...state,manifest:{...state.manifest,counts:{...state.manifest.counts}},running,progress:progress(),canLand:canLand()}:null});
   makeWorld();drawCargo();render();
 })();
+

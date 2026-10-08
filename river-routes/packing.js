@@ -64,6 +64,8 @@
   $('backToCamp').addEventListener('click',()=>{window.RiverRoutesPreview.openView('adventure');$('startPacking').focus({preventScroll:true});});
   $('packingRoute').addEventListener('click',()=>{window.RiverRoutesPreview.openView('map');window.RiverRoutesPreview.selectView('journey');$('mapTab').focus({preventScroll:true});$('mapIntro').scrollIntoView({block:'start',behavior:'instant'});});
   const previous=window.RiverRoutesPreview.getState;
+  window.RiverRoutesPreview.cargoItems=items.map(i=>({...i}));
   window.RiverRoutesPreview.getState=()=>({...previous(),cargo:{counts:{...state.counts},secured:state.secured,...summary()}});
   render();
 })();
+
