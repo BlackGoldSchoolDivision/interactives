@@ -3611,7 +3611,7 @@
     "category": "Science",
     "group": "",
     "collection": "walker-corner",
-    "description": "Build beam, truss, arch and suspension bridges across a painted canyon. Test cars, pickups with trailers, semis and a tank; compare stress, cost and saved trials.",
+    "description": "Start with a car and a road-only deck. Study view-only bridge examples, build supports, and unlock seven challenges with heavier vehicles. Keep improving your bridge, meet each budget and compare saved trials.",
     "types": [
       "Simulations & models",
       "Decision games",
@@ -3623,7 +3623,8 @@
       "Fair tests",
       "Mr. Walker’s Corner",
       "Vehicle loads",
-      "Suspension"
+      "Suspension",
+      "Progressive challenges"
     ],
     "url": "https://maltais239.github.io/interactives/walker-corner/bridge/",
     "links": [
@@ -3638,7 +3639,7 @@
     ],
     "favourite": false,
     "credit": "Original idea: Tyler Walker · Improved classroom edition: Engaging Students",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/walker-bridge.jpg?v=20261008-fleet2",
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/walker-bridge.jpg?v=20261008-journey2",
     "captured": "2026-10-08",
     "original_urls": [
       "https://sites.google.com/gshare.blackgold.ca/bridgetester/home"
