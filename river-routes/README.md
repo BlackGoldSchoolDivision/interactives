@@ -1,5 +1,19 @@
 # River Routes: A Fur Trade Journey
 
+## Checkpoint 6 — illustrated posts and hands-on trading practice
+
+**Posts** opens two separately saved practice visits. Fort William (North West Company) has a busy canoe landing, workshops, wooden palisade and wild rice as well as fish. York Factory (Hudson’s Bay Company) has river boats, flat marshy lowlands and a scene inspired by its earlier Old Octagon, rather than the white depot built from 1831. Both scenes have stocked shelves framing a clear counter. The new transparent object atlas provides wool cloth, nested brass kettles, iron tools, white/blue/red glass beads, smoked fish, wild rice, pelts and canoe materials. Archaeological bead colours, food provisioning and other object types are linked to sources in **Look closer**; see `POST-HISTORY.md` and `ARTWORK.md` for evidence and illustration limits.
+
+Learners take pictured goods from their shelf and the traders’ shelf to build both halves of an offer. Selected quantities move off the shelf onto the table. Make an offer can produce an agreement or alternatives: add a more useful good, or request fewer goods. Selecting a counter-offer stages it for review; **Exchange these goods** changes both inventories, clears the table, records the exchange and puts received goods into the visible cargo rack. New arrivals change demand after the first exchange. The first wanted bundle is more useful than repeated bundles of the same kind. A 130 kg load limit prevents an otherwise affordable exchange from overloading the canoe. The practice goal is four food days and four pelts, with a visible count of trade goods retained; there are multiple workable exchanges.
+
+The quantities, needs, exchange values, weights and goal are invented game rules. Both networks handled overlapping goods, so company differences come from place, logistics and the scenario’s changing demand. The game does not turn the companies into uniformly strict/easy traders or treat pictured items as exact replicas of excavated objects.
+
+A completed and current portage enables **Practise with my carried cargo**. This creates a separate practice copy, preserving the remaining food and repair kit count. These visits do not advance the route to York Factory or spend the saved journey’s goods. Connecting a real inland post arrival to this trading interaction is the next chunk.
+
+Validation: seven model checks passed for conservation of every good, rejection of overdrawn/empty offers, valid counter-offers, multiple successful exchanges, save restoration, copied cargo isolation and overload prevention. Browser testing completed the food-and-fur goal at both posts, used both counter-offer choices, restored an unfinished negotiation after reload, and retained staged and completed exchanges through all six required sizes. The carried-cargo practice preserved the three food bundles, used-up repair kit, seven delivered portage bundles, four carrying trips and 98% canoe condition. Final rendered checks passed at 1024×540, 1366×650, 768×900, 390×667, 320×568 and 640×360 for both a pending counter-offer and a completed visit, with no horizontal overflow and visible buttons at least 44 CSS pixels high. At 1024×540 the complete shelf/table workspace fits inside the viewport. Keyboard-only rice trading, focus after exchange, cancellation of stale agreements, post/map navigation, historical object inspection and source-dialog Escape dismissal passed. No application JavaScript errors were recorded. Native browser zoom remains a manual check because the remote browser does not apply its zoom shortcuts.
+
+**Next: review this trading checkpoint with Darren, then connect the next inland journey and an actual post arrival.** Keep the illustrated shelves, visible exchanges and changing needs; continue in small chunks and pause after the next playable section.
+
 ## Checkpoint 5 — playable portage around the falls
 
 The completed river landing opens **Carry around the falls**. The new painterly trail illustration follows the camp's approved visual style. Learners select their actual remaining cargo, up to 40 kg per trip, or carry the canoe separately with two crew members. The choice moves on the trail, while bundles and the canoe visibly accumulate on the far shore. Forest and ridge trails trade distance against effort and root crossings; both are imagined game paths.
@@ -83,5 +97,5 @@ The remote browser did not apply browser-zoom keyboard shortcuts, so actual brow
 
 ## Next checkpoint
 
-Review the completed portage, then build the visual trading interaction. Stop after each chunk to talk with Darren.
+Review the illustrated trading posts and bargaining with Darren, then connect a real inland arrival and the next journey leg. Stop after each chunk to talk with Darren.
 
