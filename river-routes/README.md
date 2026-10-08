@@ -1,5 +1,15 @@
 # River Routes: A Fur Trade Journey
 
+## Checkpoint 3 — cargo packing
+
+The approved illustrated camp now leads to **Pack your canoe**. Learners add or remove food, repair supplies, cloth, kettles, tools and beads. Each added bundle moves into the load (with reduced-motion support). Both 12 cargo spaces and a 130 kg limit constrain the choice. Securing the load requires three food bundles, one repair kit and four trade bundles; multiple cargo mixes work. Choices report food days, cargo carrying trips and trade variety. These are simplified game rules, not historical measurements.
+
+Cargo quantities and the secured state survive reloads, map/camp navigation and live resizing. Changing cargo reopens the packing decision. Empty canoe clears the saved load. A hint explains the requirements without filling the canoe for the learner. The original furtrade activity is unchanged.
+
+Validated adding/removing cargo, space and weight overloads independently, supply requirements, securing/reopening a load, clearing and reload persistence, keyboard activation, hints, route navigation and camp discovery. Rendered checks at all six required sizes found no horizontal overflow and no visible buttons under 44 CSS pixels. The secured load remained intact throughout live resizing. A 200% CSS zoom rendering check passed; this is not a substitute for a native browser-zoom check. No browser JavaScript errors were recorded.
+
+**Next: Chunk 4, canoe travel.** Use the actual saved cargo in a controllable canoe journey, with movement along the map route, visible progress, current, obstacles and landing. Later post interactions must remain hands-on: a visual trading table, selectable goods, partner needs, offers/counter-offers and consequences for both parties. Neither canoe travel nor post trading is implemented by this cargo checkpoint.
+
 ## Checkpoint 2 — an illustrated, interactive opening
 
 The adventure now opens on a detailed river-camp illustration in the approved visual style. Five glowing scene objects and matching picture buttons invite discovery. Each reveals one short fact, a cropped illustration, and an optional history note. Discoveries persist across resizing and reloading; finding all five completes the camp exploration.
@@ -49,4 +59,4 @@ The remote browser did not apply browser-zoom keyboard shortcuts, so actual brow
 
 ## Next checkpoint
 
-Review the illustrated opening, then build cargo selection and canoe packing.
+Review cargo packing, then build canoe movement and river travel. Stop after each chunk to talk with Darren.

@@ -87,11 +87,11 @@
     renderMap();renderLocation();save();
   }
   function chooseTab(tab) {
-    if(!['adventure','map','journal'].includes(tab)) return;
+    if(!['adventure','packing','map','journal'].includes(tab)) return;
     state.tab=tab;
     document.body.dataset.view=tab;
-    $('adventureView').hidden=tab!=='adventure';$('mapIntro').hidden=tab!=='map';$('mapView').hidden=tab!=='map';$('placesSection').hidden=tab!=='map';$('journalView').hidden=tab!=='journal';
-    for(const [id,t] of [['adventureTab','adventure'],['mapTab','map'],['journalTab','journal']]) {$(id).classList.toggle('active',tab===t);if(t===tab)$(id).setAttribute('aria-current','page');else $(id).removeAttribute('aria-current');}
+    $('adventureView').hidden=tab!=='adventure';$('packingView').hidden=tab!=='packing';$('mapIntro').hidden=tab!=='map';$('mapView').hidden=tab!=='map';$('placesSection').hidden=tab!=='map';$('journalView').hidden=tab!=='journal';
+    for(const [id,t] of [['adventureTab','adventure'],['mapTab','map'],['journalTab','journal']]) {$(id).classList.toggle('active',tab===t||(t==='adventure'&&tab==='packing'));if(t===tab||(t==='adventure'&&tab==='packing'))$(id).setAttribute('aria-current','page');else $(id).removeAttribute('aria-current');}
     $('pageTitle').textContent='Find your way inland.';
     if(tab==='map') requestAnimationFrame(renderMap);
     save();
