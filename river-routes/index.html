@@ -6,13 +6,15 @@
   <meta name="description" content="Explore Canada's fur-trade waterways and plan a journey from Fort William. A developing classroom adventure from BGSD's Interactive Learning Lab.">
   <title>River Routes · A Fur Trade Journey</title>
   <link rel="preload" as="image" href="assets/river-camp.webp">
-  <link rel="stylesheet" href="styles.css?v=20261008-pack1">
-  <link rel="stylesheet" href="adventure.css?v=20261008-pack1">
-  <script defer src="map-data.js?v=20261008-pack1"></script>
-  <script defer src="app.js?v=20261008-pack1"></script>
-  <script defer src="camp.js?v=20261008-pack1"></script>
-  <link rel="stylesheet" href="packing.css?v=20261008-pack1">
-  <script defer src="packing.js?v=20261008-pack1"></script>
+  <link rel="stylesheet" href="styles.css?v=20261008-river1">
+  <link rel="stylesheet" href="adventure.css?v=20261008-river1">
+  <script defer src="map-data.js?v=20261008-river1"></script>
+  <script defer src="app.js?v=20261008-river1"></script>
+  <script defer src="camp.js?v=20261008-river1"></script>
+  <link rel="stylesheet" href="packing.css?v=20261008-river1">
+  <script defer src="packing.js?v=20261008-river1"></script>
+  <link rel="stylesheet" href="river.css?v=20261008-river1">
+  <script defer src="river.js?v=20261008-river1"></script>
 </head>
 <body>
   <a class="skip-link" href="#workspace">Skip to the adventure</a>
@@ -43,6 +45,7 @@
           <p class="sr-only" id="campStatus" role="status" aria-live="polite" aria-atomic="true"></p>
           <details class="object-details" id="objectDetails" hidden><summary>Look closer</summary><p id="objectDetailText"></p><a id="objectSource" target="_blank" rel="noopener">History source ↗</a></details>
           <button class="primary-button journey-button" id="startPacking">Pack your canoe <span aria-hidden="true">→</span></button>
+          <button class="text-button camp-route" id="resumeRiver" hidden>Resume river journey →</button>
           <button class="text-button camp-route" id="seeRoute">See your route <span aria-hidden="true">→</span></button>
           <div class="journey-ribbon" aria-label="The journey will include packing, paddling, portage, and trading"><span>Pack</span><i>›</i><span>Paddle</span><i>›</i><span>Portage</span><i>›</i><span>Trade</span></div>
           <p class="art-preview-note">Explore the camp · Then pack your canoe</p>
@@ -70,10 +73,35 @@
           <div class="journey-effects"><div><span>Food supply</span><strong id="foodDays">0 days</strong></div><div><span>Cargo carrying trips</span><strong id="carryTrips">0 trips</strong></div><div><span>Trade choices</span><strong id="tradeVariety">0 kinds</strong></div></div>
           <p class="pack-feedback" id="packFeedback" role="status" aria-live="polite">Start with food and a repair kit.</p>
           <button id="finishPacking" class="primary-button">Secure the cargo <span aria-hidden="true">✓</span></button>
-          <div id="packedResult" class="packed-result" hidden><strong>Canoe packed!</strong><p>Your supplies are saved for the river journey.</p><button id="packingRoute" class="pack-secondary">See your route →</button></div>
+          <div id="packedResult" class="packed-result" hidden><strong>Canoe packed!</strong><p>Your supplies are saved for the river journey.</p><button id="launchRiver" class="primary-button">Launch canoe →</button><button id="packingRoute" class="pack-secondary">See your route →</button></div>
           <div class="pack-footer-controls"><button id="clearCargo" class="pack-secondary">Empty canoe</button><button id="packingHelp" class="pack-secondary" aria-expanded="false" aria-controls="packHelpText">Hint</button></div>
           <p id="packHelpText" class="pack-help" hidden>Take 3 food bundles and 1 repair kit. Then mix at least 4 trade bundles. Small bundles help fill gaps; heavy goods may mean more carrying trips.</p>
           <details class="pack-rules"><summary>How the journey works</summary><p>This first leg needs 6 days of food, a repair kit and 4 bundles to trade. A food bundle lasts 2 days. Each cargo carrying trip holds up to 40 kg; the canoe needs a separate trip. Space, weights and journey needs are simplified game rules.</p></details>
+        </aside>
+      </div>
+    </section>
+    <section id="riverView" class="river-view" hidden aria-label="Paddle to the portage landing">
+      <div class="river-heading"><div><span class="eyebrow">THE FIRST RIVER LEG</span><h2>Paddle into the interior.</h2></div><button id="riverBack" class="river-secondary">← Cargo</button></div>
+      <div class="river-grid">
+        <div class="river-play-card">
+          <div class="river-board" id="riverBoard" tabindex="0" role="group" aria-label="River game. Use left and right arrows or A and D to steer. Space starts or pauses paddling." aria-describedby="riverInstructions">
+            <svg id="riverWorld" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="riverWorldTitle" preserveAspectRatio="xMidYMid meet"></svg>
+            <span class="river-stage">KAMINISTIQUIA · UPSTREAM</span><div class="river-toast" id="riverToast" aria-hidden="true"></div>
+          </div>
+          <div class="river-controls"><button id="steerLeft" aria-label="Steer left">← <span>Left</span></button><button id="paddleToggle">Start paddling ▶</button><button id="steerRight" aria-label="Steer right"><span>Right</span> →</button></div>
+          <p id="riverInstructions" class="river-instructions">Steer around rocks. Follow the river to the gold landing. <span>← → or A / D · Space pauses</span></p>
+        </div>
+        <aside class="river-panel" aria-label="Journey progress">
+          <span class="eyebrow">FORT WILLIAM → KAKABEKA</span><h3 id="riverTitle">Your journey begins.</h3>
+          <svg id="riverRouteMini" class="river-route-mini" role="img" aria-label="Your canoe's progress from Fort William toward Kakabeka Falls"></svg>
+          <div class="river-progress-line"><strong id="riverPercent">0%</strong><span>to the landing</span></div><div class="river-progress-track"><i id="riverProgressFill"></i></div>
+          <div class="river-stats"><div><span>Canoe condition</span><strong id="riverHull">100%</strong></div><div><span>Load</span><strong id="riverLoad">0 kg</strong></div><div><span>Travel time</span><strong id="riverTime">0:00</strong></div></div>
+          <p id="riverFeedback" class="river-feedback" role="status" aria-live="polite">Start paddling, then steer around the rocks.</p>
+          <button id="landCanoe" class="river-primary" disabled>Land at the portage</button>
+          <div id="riverResult" class="river-result" hidden><strong>Safe on shore!</strong><p>Your canoe and cargo are saved at the portage landing.</p><button id="riverShowMap" class="river-secondary">See where you landed →</button></div>
+          <div class="river-actions"><button id="repairCanoe" class="river-secondary" disabled>Use repair kit</button><button id="restartRiver" class="river-secondary">Restart river</button><button id="riverHint" class="river-secondary" aria-expanded="false" aria-controls="riverHintText">Hint</button></div>
+          <p id="riverHintText" class="river-hint" hidden>Paddle upstream and use small steering changes. Gold ripples point to the landing on your left near the falls. A heavier load moves more slowly. You can pause to plan.</p>
+          <details class="river-notes"><summary>About this river leg</summary><p>This is a short, illustrative river challenge—not a precise map of the historical channel. The overview marker follows the simplified Fort William–Kakabeka connection. Speed, damage and carrying capacity are game rules. Stop at the landing to carry around the falls.</p></details>
         </aside>
       </div>
     </section>
