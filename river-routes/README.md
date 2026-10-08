@@ -1,5 +1,13 @@
 # River Routes: A Fur Trade Journey
 
+## Checkpoint 2 — an illustrated, interactive opening
+
+The adventure now opens on a detailed river-camp illustration in the approved visual style. Five glowing scene objects and matching picture buttons invite discovery. Each reveals one short fact, a cropped illustration, and an optional history note. Discoveries persist across resizing and reloading; finding all five completes the camp exploration.
+
+The map remains available through its own tab and the **See your route** action. Location cards now show a short summary with longer reading folded into **Look closer**. The journal retains the fuller historical context.
+
+Artwork provenance and the production prompt are recorded in `ARTWORK.md`. This checkpoint adds exploration, not the later cargo, paddling, portage, or trading simulations.
+
 ## Checkpoint 1 — map and game layout
 
 An isolated preview for Darren Maltais and the BGSD Interactive Learning Lab. This new directory preserves the original `furtrade/` activity.
@@ -37,4 +45,4 @@ The remote browser did not apply browser-zoom keyboard shortcuts, so actual brow
 
 ## Next checkpoint
 
-Integrate river, portage, post, canoe, and cargo artwork in the accepted visual direction, then pause for review.
+Review the illustrated opening, then build cargo selection and canoe packing.

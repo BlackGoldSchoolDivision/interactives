@@ -13,11 +13,11 @@
   ];
   const byId = Object.fromEntries(places.map(p => [p.id,p]));
   const missionIds = new Set(['fort-william','kakabeka','rainy-lake']);
-  let state = {view:'canada',filter:'both',selected:'fort-william',tab:'map'};
+  let state = {view:'canada',filter:'both',selected:'fort-william',tab:'adventure'};
   try {
     const saved = JSON.parse(localStorage.getItem(storageKey));
     if(saved && ['canada','journey'].includes(saved.view) && ['both','nwc','hbc'].includes(saved.filter) && byId[saved.selected]) {
-      state = {...state,...saved,tab:'map'};
+      state = {...state,...saved,tab:'adventure'};
       if(state.view==='journey' && state.filter==='hbc') state.view='canada';
     }
   } catch {}
@@ -66,7 +66,8 @@
   }
   function renderLocation() {
     const p=byId[state.selected];
-    $('locationCard').innerHTML=`<div class="location-top"><span class="eyebrow">${p.kind}</span><span class="company-tag ${p.company}">${p.company==='local'?'WATERWAY':p.company.toUpperCase()}</span></div><h3>${p.name}</h3><p>${p.body}</p><p class="location-question">Think about it: ${p.question}</p><a href="${p.source}" target="_blank" rel="noopener">${p.sourceName} ↗</a>`;
+    const brief={ 'fort-william':'Canoes from Montreal meet canoes from the interior.',kakabeka:'Carry the canoe and cargo around the waterfall.','rainy-lake':'A link to waterways farther west.',montreal:'Eastern supplies for the North West Company’s canoe network.','york-factory':'Ocean ships connect with inland trade.',cumberland:'Hudson’s Bay Company expands inland.' };
+    $('locationCard').innerHTML=`<div class="location-top"><span class="eyebrow">${p.kind}</span><span class="company-tag ${p.company}">${p.company==='local'?'WATERWAY':p.company.toUpperCase()}</span></div><h3>${p.name}</h3><p>${brief[p.id]}</p><details class="map-location-details"><summary>Look closer</summary><p>${p.body}</p><p class="location-question">Think about it: ${p.question}</p><a href="${p.source}" target="_blank" rel="noopener">${p.sourceName} ↗</a></details>`;
     $('placeList').innerHTML=places.map(p=>`<button class="place-button${p.id===state.selected?' selected':''}" data-place="${p.id}" aria-pressed="${p.id===state.selected}"><i class="dot ${p.company==='hbc'?'hbc':'nwc'}" aria-hidden="true"></i><span><strong>${p.name}</strong><small>${p.company==='local'?p.short:p.company.toUpperCase()+' · '+(p.id==='fort-william'?'1807 name':p.id==='montreal'?'1779':p.id==='cumberland'?'1774':'1684')}</small></span></button>`).join('');
   }
   function chooseLocation(id) {
@@ -86,11 +87,12 @@
     renderMap();renderLocation();save();
   }
   function chooseTab(tab) {
+    if(!['adventure','map','journal'].includes(tab)) return;
     state.tab=tab;
-    $('mapView').hidden=tab!=='map';$('placesSection').hidden=tab!=='map';$('journalView').hidden=tab!=='journal';
-    $('mapTab').classList.toggle('active',tab==='map');$('journalTab').classList.toggle('active',tab==='journal');
-    for(const [id,t] of [['mapTab','map'],['journalTab','journal']]) {if(t===tab)$(id).setAttribute('aria-current','page');else $(id).removeAttribute('aria-current');}
-    $('pageTitle').textContent=tab==='map'?'Every journey starts with a map.':'The story behind the journey.';
+    document.body.dataset.view=tab;
+    $('adventureView').hidden=tab!=='adventure';$('mapIntro').hidden=tab!=='map';$('mapView').hidden=tab!=='map';$('placesSection').hidden=tab!=='map';$('journalView').hidden=tab!=='journal';
+    for(const [id,t] of [['adventureTab','adventure'],['mapTab','map'],['journalTab','journal']]) {$(id).classList.toggle('active',tab===t);if(t===tab)$(id).setAttribute('aria-current','page');else $(id).removeAttribute('aria-current');}
+    $('pageTitle').textContent='Find your way inland.';
     if(tab==='map') requestAnimationFrame(renderMap);
     save();
   }
@@ -108,6 +110,7 @@
   $('exploreJourney').addEventListener('click',()=>{chooseView('journey');chooseLocation('kakabeka');$('mapSurface').scrollIntoView({behavior:'instant',block:'nearest'});});
   $('resetMap').addEventListener('click',()=>{state={view:'canada',filter:'both',selected:'fort-william',tab:'map'};chooseTab('map');renderMap();renderLocation();save();});
   $('mapTab').addEventListener('click',()=>chooseTab('map'));
+  $('adventureTab').addEventListener('click',()=>chooseTab('adventure'));
   $('journalTab').addEventListener('click',()=>chooseTab('journal'));
   $('backToMap').addEventListener('click',()=>{chooseTab('map');$('mapTab').focus();});
   const sources=$('sourcesDialog');
@@ -115,6 +118,6 @@
   $('closeSources').addEventListener('click',()=>sources.close());$('doneSources').addEventListener('click',()=>sources.close());
   sources.addEventListener('click',event=>{if(event.target===sources){const r=sources.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)sources.close();}});
   const resizeObserver=new ResizeObserver(()=>requestAnimationFrame(renderMap));resizeObserver.observe($('mapSurface'));
-  renderMap();renderLocation();
-  window.RiverRoutesPreview={getState:()=>({...state}),places:places.map(p=>({...p})),selectPlace:chooseLocation,selectView:chooseView};
+  chooseTab('adventure');renderMap();renderLocation();
+  window.RiverRoutesPreview={getState:()=>({...state}),places:places.map(p=>({...p})),selectPlace:chooseLocation,selectView:chooseView,openView:chooseTab};
 })();
