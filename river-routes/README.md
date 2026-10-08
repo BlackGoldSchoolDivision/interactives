@@ -27,6 +27,14 @@ Serve the repository root or this folder using any static web server. The map, s
 
 Every public asset reference has a cache version. Advance it when changing published assets.
 
+## Validation at this checkpoint
+
+Rendered in Chrome at 1024×540, 1366×650, 768×900, 390×667, 320×568, and 640×360 using `qa.html`. All six reported no horizontal overflow and visible buttons at least 44 CSS pixels high. A selected Kakabeka Falls journey remained intact throughout live iframe resizing.
+
+Checked both company filters, all six location cards, keyboard activation of a location and map marker, field journal navigation, source-dialog Escape dismissal, reset, and saved location after reload. JavaScript syntax checks passed. Paddling and trading round states do not exist at this stage.
+
+The remote browser did not apply browser-zoom keyboard shortcuts, so actual browser zoom remains a manual check. Zoom is enabled in the viewport declaration.
+
 ## Next checkpoint
 
 Integrate river, portage, post, canoe, and cargo artwork in the accepted visual direction, then pause for review.

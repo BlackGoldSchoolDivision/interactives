@@ -36,9 +36,12 @@
     const mobile = width<530;
     const focused = document.activeElement?.closest?.('.marker')?.dataset.location;
     let connections = '';
-    if(state.filter!=='hbc') connections += line(['montreal','fort-william'],'nwc') + line(['fort-william','kakabeka','rainy-lake'],'local');
-    if(state.filter!=='nwc') connections += line(['york-factory','cumberland'],'hbc');
-    const markers = places.filter(visiblePlace).filter(p => !(state.view==='canada' && p.id==='kakabeka')).map(p => {
+    if(state.filter!=='hbc') {
+      if(state.view==='canada') connections += line(['montreal','fort-william'],'nwc');
+      connections += line(['fort-william','kakabeka','rainy-lake'],'local');
+    }
+    if(state.view==='canada' && state.filter!=='nwc') connections += line(['york-factory','cumberland'],'hbc');
+    const markers = places.filter(visiblePlace).filter(p => state.view==='journey'?missionIds.has(p.id):p.id!=='kakabeka').map(p => {
       const [x,y] = point(p.id), selected=p.id===state.selected;
       const inJourney = state.view==='journey' && missionIds.has(p.id);
       const showLabel = !mobile || selected || inJourney;
