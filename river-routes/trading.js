@@ -19,14 +19,15 @@
   function render(){
     const s=visit(),p=M.posts[state.active],done=M.goal(s);
     $('tradingView').dataset.company=state.active;$('tradePostName').textContent=p.name;$('tradeCompany').textContent=p.company;
-    const art=$('tradePostArt');if(!art.getAttribute('src')?.endsWith(p.image)){art.src=p.image;art.alt=p.alt;}
+    const art=$('tradePostArt');if(!art.getAttribute('src')?.endsWith(p.image))art.src=p.image;art.alt=p.alt;
     document.querySelectorAll('[data-trade-post]').forEach(b=>{b.setAttribute('aria-pressed',String(b.dataset.tradePost===state.active));});
     $('tradePartner').textContent=p.visitors[Math.min(1,s.deals)];
     $('tradeNeeds').innerHTML=M.wanted(state.active,s).map(id=>`<span title="${byId[id].name}">${picture(id)}<b>${byId[id].short}</b></span>`).join('');
     shelf('yourTradeShelf',M.giveIds,'give');shelf('theirTradeShelf',M.takeIds,'take');tray('yourOffer',s.give,'give');tray('theirOffer',s.take,'take');
     $('tradeReply').textContent=s.reply;$('tradeReply').dataset.kind=s.replyKind;$('makeTradeOffer').disabled=!M.valid(s);$('acceptTrade').hidden=s.replyKind!=='agreement';$('makeTradeOffer').hidden=s.replyKind==='agreement';
     counterOptions=s.replyKind==='counter'?M.counters(state.active,s):[];
-    $('tradeCounters').innerHTML=counterOptions.map((c,n)=>`<button data-counter="${n}" class="trade-counter">${picture(c.id)}<span>${c.kind==='add'?'Add':'Ask for'} ${c.count}${c.kind==='reduce'?' fewer':''} ${byId[c.id].short.toLowerCase()}</span><b aria-hidden="true">→</b></button>`).join('');
+    const single={cloth:'cloth',kettle:'kettle',tools:'tool',beads:'bead',fish:'fish',rice:'rice',pelt:'pelt'};
+    $('tradeCounters').innerHTML=counterOptions.map((c,n)=>`<button data-counter="${n}" class="trade-counter">${picture(c.id)}<span>${c.kind==='add'?'Add':'Ask for'} ${c.count}${c.kind==='reduce'?' fewer':''} ${single[c.id]} ${c.count===1?'bundle':'bundles'}</span><b aria-hidden="true">→</b></button>`).join('');
     $('tradeFood').textContent=M.food(s)*2+' days';$('tradeFurs').textContent=s.own.pelt+' / 4';$('tradeWeight').textContent=M.weight(s)+' / 130 kg';
     $('tradeReceived').innerHTML=M.takeIds.filter(id=>s.own[id]).map(id=>`<span>${picture(id)}<b>×${s.own[id]}</b></span>`).join('');$('tradeReceived').hidden=!M.takeIds.some(id=>s.own[id]);
     $('tradeGoodsKept').textContent=M.giveIds.reduce((n,id)=>n+s.own[id],0)+' trade bundles kept';
@@ -56,7 +57,7 @@
     render();save();
   });
   $('acceptTrade').addEventListener('click',()=>{
-    const s=visit();if(s.replyKind!=='agreement')return;const next=M.exchange(state.active,s);if(!next)return;state.visits[state.active]=next;render();save();$('tradeExchangeFlash').classList.remove('exchange-pop');void $('tradeExchangeFlash').offsetWidth;$('tradeExchangeFlash').classList.add('exchange-pop');
+    const s=visit();if(s.replyKind!=='agreement')return;const next=M.exchange(state.active,s);if(!next)return;state.visits[state.active]=next;render();save();$('tradeExchangeFlash').classList.remove('exchange-pop');void $('tradeExchangeFlash').offsetWidth;$('tradeExchangeFlash').classList.add('exchange-pop');$('yourTradeShelf').querySelector('button:not(:disabled)')?.focus({preventScroll:true});
   });
   $('clearTradeTable').addEventListener('click',()=>{const s=visit();s.give=M.empty();s.take=M.empty();changed();});
   $('restartTrading').addEventListener('click',()=>{state.visits[state.active]=M.fresh(state.active);render();save();});
@@ -70,7 +71,7 @@
   function inspect(){const i=byId[$('tradeInspectSelect').value];$('tradeInspectPicture').innerHTML=picture(i.id);$('tradeItemDetail').textContent=i.detail;$('tradeItemSource').href=i.source;}
   $('tradeInspectSelect').addEventListener('change',inspect);inspect();
   window.addEventListener('river-routes-view',e=>{if(e.detail==='trading')render();});
-  function fit(){const top=$('tradePostScene').getBoundingClientRect().top;document.documentElement.style.setProperty('--trade-workspace-height',Math.max(260,window.innerHeight-top-24)+'px');}
+  function fit(){const offset=$('tradePostScene').getBoundingClientRect().top-$('tradingView').getBoundingClientRect().top;document.documentElement.style.setProperty('--trade-workspace-height',Math.max(180,window.innerHeight-offset-24)+'px');}
   const observer=new ResizeObserver(()=>{if(!$('tradingView').hidden)fit();});observer.observe($('tradingView'));window.addEventListener('resize',fit);window.addEventListener('river-routes-view',e=>{if(e.detail==='trading')requestAnimationFrame(fit);});
   const previous=api.getState;api.getState=()=>({...previous(),trading:{active:state.active,...structuredClone(visit()),food:M.food(visit()),weight:M.weight(visit()),complete:M.goal(visit())}});
   render();
