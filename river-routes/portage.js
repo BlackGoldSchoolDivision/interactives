@@ -130,6 +130,16 @@
     announce(state.phase==='complete'?'Portage complete. Your canoe and all remaining supplies are ready.':state.phase==='far'?allAcross()?'Nothing left behind. Reload the canoe.':'Return for your next load.':state.phase==='near'?'Take up to 40 kg of cargo, or carry the canoe on its own.':rootIndex()>=0?'Roots ahead. Step carefully before continuing.':'Your carrying trip is saved. Continue when you are ready.');
     $('portageView').scrollIntoView({block:'start',behavior:'instant'});$('portageBoard').focus({preventScroll:true});
   }
+  function stepForward(){
+    if(!state||!['near','carrying','returning'].includes(state.phase))return;
+    if(rootIndex()>=0){announce('Roots ahead. Step over them before moving farther.');return;}
+    if(state.phase==='near'&&(!state.selected.length||loadKg()>40)){announce('Choose a load up to 40 kg, or choose the canoe.');return;}
+    if(state.energy===0&&state.phase!=='returning'){announce('Rest to recover energy before continuing.');return;}
+    stop();
+    if(state.phase==='near'){state.phase='carrying';state.p=0;state.roots=[];drawStacks();}
+    update(.8);save();
+    if(['carrying','returning'].includes(state.phase)&&rootIndex()<0&&state.energy>0)announce('One step farther. Tap the trail again, or choose Continue walking.');
+  }
   for(const id of ['startPortage','resumePortage'])$(id).addEventListener('click',enter);
   $('portageCargo').addEventListener('click',e=>{
     const b=e.target.closest('[data-unit]');if(!b||!state||state.phase!=='near'||b.disabled)return;
@@ -144,7 +154,8 @@
   $('restPortage').addEventListener('click',()=>{if(!state||$('restPortage').disabled)return;stop();state.energy=100;state.rests++;render();save();announce('Crew rested. Your load stays with you. Continue when ready.');});
   $('returnPortage').addEventListener('click',()=>{if(!state||state.phase!=='far'||allAcross())return;state.phase='returning';state.p=0;drawStacks();render();toggle();});
   $('reloadPortage').addEventListener('click',()=>{if(!state||state.phase!=='far'||!allAcross())return;state.phase='complete';stop();drawStacks();announce('Portage complete! The canoe and every remaining bundle are ready for the water.');$('portageResult').scrollIntoView({block:'nearest',behavior:'instant'});});
-  $('portageBoard').addEventListener('keydown',e=>{if(e.repeat)return;if([' ','ArrowUp','r','R'].includes(e.key)){e.preventDefault();if(e.key===' ')toggle();else $(e.key==='ArrowUp'?'stepRoots':'restPortage').click();}});
+  $('portageBoard').addEventListener('click',()=>{$('portageBoard').focus({preventScroll:true});stepForward();});
+  $('portageBoard').addEventListener('keydown',e=>{if(e.repeat)return;if([' ','ArrowUp','ArrowRight','r','R'].includes(e.key)){e.preventDefault();if(e.key===' ')toggle();else if(e.key==='ArrowRight')stepForward();else $(e.key==='ArrowUp'?'stepRoots':'restPortage').click();}});
   $('portageBack').addEventListener('click',()=>{stop();api.openView('river');$('startPortage').focus({preventScroll:true});});
   $('portageMap').addEventListener('click',()=>{stop();api.openView('map');api.selectView('journey');api.selectPlace('kakabeka');$('mapTab').focus({preventScroll:true});$('mapIntro').scrollIntoView({block:'start',behavior:'instant'});});
   $('restartPortage').addEventListener('click',()=>{const t=landing();if(!t)return;stop();state=fresh(t);lastSave=0;makeUnits();drawChoices();drawTrail();drawStacks();render();save();announce('Portage restarted. All remaining cargo is back at the landing.');});

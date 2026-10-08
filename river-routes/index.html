@@ -6,17 +6,17 @@
   <meta name="description" content="Explore Canada's fur-trade waterways and plan a journey from Fort William. A developing classroom adventure from BGSD's Interactive Learning Lab.">
   <title>River Routes · A Fur Trade Journey</title>
   <link rel="preload" as="image" href="assets/river-camp.webp">
-  <link rel="stylesheet" href="styles.css?v=20261008-portage4">
-  <link rel="stylesheet" href="adventure.css?v=20261008-portage4">
-  <script defer src="map-data.js?v=20261008-portage4"></script>
-  <script defer src="app.js?v=20261008-portage4"></script>
-  <script defer src="camp.js?v=20261008-portage4"></script>
-  <link rel="stylesheet" href="packing.css?v=20261008-portage4">
-  <script defer src="packing.js?v=20261008-portage4"></script>
-  <link rel="stylesheet" href="river.css?v=20261008-portage4">
-  <script defer src="river.js?v=20261008-portage4"></script>
-  <link rel="stylesheet" href="portage.css?v=20261008-portage4">
-  <script defer src="portage.js?v=20261008-portage4"></script>
+  <link rel="stylesheet" href="styles.css?v=20261008-portage5">
+  <link rel="stylesheet" href="adventure.css?v=20261008-portage5">
+  <script defer src="map-data.js?v=20261008-portage5"></script>
+  <script defer src="app.js?v=20261008-portage5"></script>
+  <script defer src="camp.js?v=20261008-portage5"></script>
+  <link rel="stylesheet" href="packing.css?v=20261008-portage5">
+  <script defer src="packing.js?v=20261008-portage5"></script>
+  <link rel="stylesheet" href="river.css?v=20261008-portage5">
+  <script defer src="river.js?v=20261008-portage5"></script>
+  <link rel="stylesheet" href="portage.css?v=20261008-portage5">
+  <script defer src="portage.js?v=20261008-portage5"></script>
 </head>
 <body>
   <a class="skip-link" href="#workspace">Skip to the adventure</a>
@@ -112,13 +112,13 @@
       <div class="portage-heading"><div><span class="eyebrow">KAKABEKA · AROUND THE FALLS</span><h2>Water ends. Teamwork carries on.</h2></div><button id="portageBack" class="portage-secondary">← Landing</button></div>
       <div class="portage-grid">
         <div class="portage-play-card">
-          <div class="portage-board" id="portageBoard" tabindex="0" role="group" aria-label="Portage trail. Space walks or pauses. R rests. Up arrow steps over roots." aria-describedby="portageInstructions">
+          <div class="portage-board" id="portageBoard" tabindex="0" role="group" aria-label="Portage trail. Tap the trail or use Right arrow to take a step. Space walks or pauses. R rests. Up arrow steps over roots." aria-describedby="portageInstructions">
             <svg id="portageWorld" viewBox="0 0 900 600" role="img" aria-labelledby="portageWorldTitle"></svg>
             <span class="portage-stage" id="portageStage">THE PORTAGE TRAIL</span>
             <div class="portage-scene-label near-label">LANDING</div><div class="portage-scene-label far-label">UPPER WATER</div>
           </div>
           <div class="portage-controls"><button id="walkPortage" class="portage-primary">Carry this load →</button><button id="stepRoots" class="portage-secondary" disabled>Step over roots ↑</button><button id="restPortage" class="portage-secondary" disabled>Rest · R</button></div>
-          <p id="portageInstructions" class="portage-instructions">Choose a load. Walk the trail. Watch for roots. <span>Space · Walk / pause &nbsp; ↑ · Careful step &nbsp; R · Rest</span></p>
+          <p id="portageInstructions" class="portage-instructions">Choose a load. Tap the trail to walk. Watch for roots. <span>→ · One step &nbsp; Space · Walk / pause &nbsp; ↑ · Careful step &nbsp; R · Rest</span></p>
           <div class="portage-inventory-heading"><h3 id="shoreTitle">Choose what to carry.</h3><strong id="portageLoad">0 / 40 kg</strong></div>
           <div id="portageCargo" class="portage-cargo" role="group" aria-label="Choose bundles for this carrying trip"></div>
           <button id="selectCanoe" class="portage-canoe-choice" aria-pressed="false"><svg viewBox="0 0 120 50" aria-hidden="true"><path d="M5 17Q60 50 115 17L104 35Q60 57 16 35Z" fill="#dfb46e" stroke="#5d432a" stroke-width="3"/><path d="M5 17Q60 0 115 17Q60 36 5 17" fill="#8c6942" stroke="#eecb8c" stroke-width="3"/></svg><span><strong>Carry the canoe</strong><small>Separate trip · Two crew members</small></span><b id="canoeChoiceMark">＋</b></button>
