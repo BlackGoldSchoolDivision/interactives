@@ -178,3 +178,8 @@ Writer Spark and InfoSpark appear first, in that order, when browsing Words & wr
 Rebuilt the personal-repository activity around two lenses, twelve values, six fictional policy decisions, a sorting game, attributed historical sources and a scaffolded argument builder. Three generated editorial illustrations are stored in rootsofideology/assets with their exact prompts. The app supports local progress, portable project JSON, printing, browser read aloud and a complete HTML export with all three images embedded. The teacher guide identifies the Alberta Grade 8 draft context. Policy choices are not used to assign political identities.
 
 Updated this catalogue entry, its actual-app screenshot, activity types, description, CSV and project-copy manifest. All other cards and their order are preserved. Interaction, export and six-viewport responsive results are recorded in the app's validation.json.
+
+
+## Separate Renaissance maps — 8 October 2026
+
+Renaissance Atlas retains its original hub card, screenshot and 37-step activity. A separate Renaissance Atlas: Illustrated Map card now opens the approved illustrated atlas with a fully labeled Explore mode and three map questions without place names. Both are available in Social studies, Geography → World and Accessibility. The illustrated card uses its actual labeled Explore screenshot at renaissance-map/scene-explore-preview.jpg. Catalogue source, embedded data, activity links and teacher-copy entries include both versions.

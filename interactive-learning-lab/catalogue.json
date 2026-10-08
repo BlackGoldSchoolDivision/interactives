@@ -1870,6 +1870,69 @@
     "captured": "2026-10-07"
   },
   {
+    "id": "renaissance-map",
+    "path": "renaissance-map",
+    "repo": "bgsd",
+    "title": "Renaissance Atlas",
+    "category": "Social studies",
+    "secondary_categories": [
+      "Geography",
+      "Accessibility"
+    ],
+    "group": "World",
+    "description": "Build a historical atlas with rich blue seas, medieval territories, city stars and Renaissance routes. LIAM mode uses two large choices and simple phrase responses.",
+    "favourite": true,
+    "tags": [
+      "Medieval Europe",
+      "LIAM mode",
+      "Save & print"
+    ],
+    "url": "https://interactives.blackgold.ca/renaissance-map/?v=20261008-atlas9",
+    "links": [
+      {
+        "label": "Open in LIAM mode",
+        "url": "https://interactives.blackgold.ca/renaissance-map/?liam=1&v=20261008-atlas9"
+      }
+    ],
+    "credit": "Engaging Students · classroom Renaissance mapping assignment",
+    "captured": "2026-10-08",
+    "types": [
+      "Maps & geography",
+      "Practice questions",
+      "Writing",
+      "Printables"
+    ],
+    "image": "../renaissance-map/preview.jpg?v=20261008-atlas9"
+  },
+  {
+    "id": "renaissance-illustrated-map",
+    "path": "renaissance-map/illustrated-scene.html",
+    "repo": "bgsd",
+    "title": "Renaissance Atlas: Illustrated Map",
+    "category": "Social studies",
+    "secondary_categories": [
+      "Geography",
+      "Accessibility"
+    ],
+    "group": "World",
+    "description": "Explore a fully labeled illustrated map of medieval Europe, then try three map questions with place names hidden. LIAM mode offers two large answer buttons.",
+    "favourite": true,
+    "tags": [
+      "Medieval Europe",
+      "Explore & 3 map questions",
+      "LIAM mode"
+    ],
+    "url": "https://interactives.blackgold.ca/renaissance-map/illustrated-scene.html?v=scene4",
+    "links": [],
+    "credit": "Engaging Students · historical geography and illustrated atlas artwork",
+    "captured": "2026-10-08",
+    "types": [
+      "Maps & geography",
+      "Practice questions"
+    ],
+    "image": "../renaissance-map/scene-explore-preview.jpg?v=scene4"
+  },
+  {
     "id": "railways-and-immigration",
     "path": "railways-and-immigration",
     "repo": "org",

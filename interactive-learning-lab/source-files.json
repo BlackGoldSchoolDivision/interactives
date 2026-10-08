@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated": "2026-10-08T22:27:07.741Z",
+  "generated": "2026-10-08T23:51:08.945Z",
   "activities": {
     "morpheme-missions": {
       "kind": "html",
@@ -2352,6 +2352,34 @@
           "repo": "BlackGoldSchoolDivision/interactives",
           "path": "canada-through-time-expanded/index.html",
           "url": "https://interactives.blackgold.ca/canada-through-time-expanded/"
+        }
+      ]
+    },
+    "renaissance-map": {
+      "kind": "html",
+      "title": "Renaissance Atlas",
+      "credit": "Engaging Students · classroom Renaissance mapping assignment",
+      "category": "Social studies",
+      "versions": [
+        {
+          "label": "Renaissance Atlas",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "renaissance-map/index.html",
+          "url": "https://interactives.blackgold.ca/renaissance-map/?v=20261008-atlas9"
+        }
+      ]
+    },
+    "renaissance-illustrated-map": {
+      "kind": "html",
+      "title": "Renaissance Atlas: Illustrated Map",
+      "credit": "Engaging Students · historical geography and illustrated atlas artwork",
+      "category": "Social studies",
+      "versions": [
+        {
+          "label": "Renaissance Atlas: Illustrated Map",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "renaissance-map/illustrated-scene.html",
+          "url": "https://interactives.blackgold.ca/renaissance-map/illustrated-scene.html?v=scene4"
         }
       ]
     }
@@ -9336,10 +9364,124 @@
         "path": "canada-through-time-expanded/vendor/nunito.ttf",
         "bytes": 276932
       }
+    ],
+    "BlackGoldSchoolDivision/interactives/renaissance-map": [
+      {
+        "path": "renaissance-map/HISTORICAL-DATA-LICENSE.txt",
+        "bytes": 35147
+      },
+      {
+        "path": "renaissance-map/ILLUSTRATED-SCENE.md",
+        "bytes": 4487
+      },
+      {
+        "path": "renaissance-map/assets/atlas-compass.svg",
+        "bytes": 746
+      },
+      {
+        "path": "renaissance-map/assets/atlas-grain.svg",
+        "bytes": 374
+      },
+      {
+        "path": "renaissance-map/assets/atlas-ocean.webp",
+        "bytes": 291682
+      },
+      {
+        "path": "renaissance-map/assets/atlas-ship.webp",
+        "bytes": 408014
+      },
+      {
+        "path": "renaissance-map/assets/scene-mountains.webp",
+        "bytes": 383208
+      },
+      {
+        "path": "renaissance-map/assets/scene-sea.webp",
+        "bytes": 598840
+      },
+      {
+        "path": "renaissance-map/assets/scene-vellum.webp",
+        "bytes": 501030
+      },
+      {
+        "path": "renaissance-map/basemap.js",
+        "bytes": 2193
+      },
+      {
+        "path": "renaissance-map/data/README.md",
+        "bytes": 3556
+      },
+      {
+        "path": "renaissance-map/data/context-1400.geojson",
+        "bytes": 125414
+      },
+      {
+        "path": "renaissance-map/data/europe-1400.geojson",
+        "bytes": 34148
+      },
+      {
+        "path": "renaissance-map/data/land.geojson",
+        "bytes": 138160
+      },
+      {
+        "path": "renaissance-map/data/ottoman-1683.geojson",
+        "bytes": 11926
+      },
+      {
+        "path": "renaissance-map/data/scene-land-50m.geojson",
+        "bytes": 142712
+      },
+      {
+        "path": "renaissance-map/data/scene-rivers-50m.geojson",
+        "bytes": 77726
+      },
+      {
+        "path": "renaissance-map/illustrated-scene.html",
+        "bytes": 600255
+      },
+      {
+        "path": "renaissance-map/index.html",
+        "bytes": 77969
+      },
+      {
+        "path": "renaissance-map/preview.jpg",
+        "bytes": 88237
+      },
+      {
+        "path": "renaissance-map/scene-checks.html",
+        "bytes": 860
+      },
+      {
+        "path": "renaissance-map/scene-explore-preview.jpg",
+        "bytes": 237163
+      },
+      {
+        "path": "renaissance-map/scene-geometry.json",
+        "bytes": 22774
+      },
+      {
+        "path": "renaissance-map/scene-map-fragment.html",
+        "bytes": 558919
+      },
+      {
+        "path": "renaissance-map/scene-preview.jpg",
+        "bytes": 221125
+      },
+      {
+        "path": "renaissance-map/scene-shell.html",
+        "bytes": 18581
+      },
+      {
+        "path": "renaissance-map/screen-checks-v2.html",
+        "bytes": 1651
+      },
+      {
+        "path": "renaissance-map/screen-checks.html",
+        "bytes": 1633
+      }
     ]
   },
   "repository_heads": {
     "Maltais239/interactives": "6c72111326a5637e8f370e56c56244b7392b34f2",
-    "BlackGoldSchoolDivision/interactives": "699204ec0c40b32d4382cd44c7ff8ff7529b56d3"
+    "BlackGoldSchoolDivision/interactives": "3060bae25bcfc92cf99f143190ac2fe267ca63fe"
   }
 }
