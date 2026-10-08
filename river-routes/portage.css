@@ -10,17 +10,17 @@ body[data-view=portage] .footer button{color:#ffdda1}
 .portage-heading .eyebrow{color:#f0c474}.portage-heading h2{font-size:29px;margin-top:5px}
 .portage-grid{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:18px;align-items:start}
 .portage-play-card{min-width:0;background:#193e50;border:1px solid #53757a;border-radius:14px;overflow:hidden;box-shadow:0 15px 30px #06182755}
-.portage-board{position:relative;height:clamp(280px,calc(100dvh - 310px),560px);min-height:270px;background:#89b5b4;overflow:hidden}
+.portage-board{position:relative;height:clamp(280px,calc(100dvh - 310px),560px);min-height:270px;background:#273e3d url(assets/portage-trail.webp) center/cover;overflow:hidden}
 .portage-board>svg{display:block;width:100%;height:100%;object-fit:contain}
 .portage-board:focus-visible{outline:3px solid #ffd078;outline-offset:-5px}
 .portage-stage{position:absolute;left:12px;top:12px;background:#13394dda;color:#ffe5ab;padding:8px 10px;border:1px solid #6e9a9b;border-radius:6px;font-size:9px;letter-spacing:1px;pointer-events:none}
 .portage-scene-label{position:absolute;font-size:9px;font-weight:700;letter-spacing:.7px;color:#fff0b8;background:#173d49cb;padding:5px 7px;border-radius:5px;pointer-events:none}
-.near-label{left:3%;bottom:9%}.far-label{right:3%;top:26%}
+.near-label{left:4%;bottom:18%}.far-label{right:7%;top:10%}
 .portage-controls{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(60px,.6fr);gap:9px;padding:12px}
 .portage-primary{min-height:48px;border-radius:8px;background:#ffd078;color:#153347;font-size:14px;font-weight:700;padding:9px 12px}
 .portage-secondary{min-height:44px;border-radius:8px;border:1px solid #65828c;background:#254e61;color:#fff0ce;padding:8px 11px;font-size:12px}
 .portage-primary:disabled{background:#405e68;color:#acc1be;cursor:default}
-.portage-secondary:disabled{opacity:.5;cursor:default}
+.portage-secondary:disabled{opacity:.7;cursor:default}
 .portage-instructions{padding:0 15px 13px;font-size:12px;line-height:1.6;color:#e1ebd9}
 .portage-instructions span{display:block;color:#c8d8d0;font-size:11px}
 .portage-inventory-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 15px 10px;border-top:1px solid #496773}

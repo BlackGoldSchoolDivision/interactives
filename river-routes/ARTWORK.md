@@ -14,3 +14,11 @@ Use case: historical-scene. Asset type: wide environment illustration for the ac
 - Matching picture buttons provide a second way to select every object without needing to find a marker.
 - Gentle glows and drifting motes respect reduced-motion preferences.
 - Discoveries form a small exploration activity, with a completion state and a reset. They do not imply that packing or paddling gameplay is already finished.
+# Portage environment — October 8, 2026
+
+`assets/portage-trail.webp` is a new illustrated environment made with the built-in image generator, using the existing camp artwork as a style reference. The original output is `generated_images/exec-a697e252-32cc-4823-8840-52e07ec2be3d.png`. A WebP encoding at quality 85 preserves the full 1536×1024 composition.
+
+Production prompt: Create a new portage gameplay environment in the camp's detailed painterly realism, golden sunlight, rich forest depth, brilliant turquoise water, warm stone and birch textures. Landscape 3:2. Bird's-eye oblique view of a forested land corridor beside cascading water on the right. An imagined game setting, not a reconstruction or precise map. Broad open sandy corridor from the lower-left landing through the middle to an upper-right calm-water landing, safely on land to the left of the falls, and an alternate narrower ridge trail above it. Golden birch leaves, dark evergreens, textured boulders, sunlight, mist and ferns. No people, canoe, cargo, buildings, signs, text, UI, arrows or borders. The game overlays its moving crew, cargo and highlighted route.
+
+The code draws the route, roots, crew and cargo separately so interactions and saved progress remain independent of the artwork. Both trail choices are illustrative game paths.
+
