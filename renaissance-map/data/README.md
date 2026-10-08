@@ -14,7 +14,7 @@ Adaptations: split the source's English-territory feature into the island of Ire
 
 ## Ottoman Empire 1683
 
-`ottoman-1683.geojson` is an approximate overlay digitised from the provided classroom map showing 1683, then georeferenced with an thin-plate-spline fit to city positions in Web Mercator. It is source-derived classroom cartography; its frontier and coastline alignment is less precise than the Europe layer. It remains separate from the circa-1400 map. It must not be interpreted as Ottoman extent in 1400.
+`ottoman-1683.geojson` is an approximate overlay digitised from the provided classroom map showing 1683, then georeferenced with an thin-plate-spline fit to city positions in Web Mercator. The outer extent is intersected with Natural Earth land to align coastlines and exclude seas. It is source-derived classroom cartography; its frontier reconstruction is less precise than the Europe layer. It remains separate from the circa-1400 map. It must not be interpreted as Ottoman extent in 1400.
 
 ## Coastlines and basemap
 
