@@ -32,6 +32,7 @@ const subjects = [
 const featuredOrder = ['morpheme-missions','vocabularyarcade','mackwoodmapping','word-detective','numberbuilding','moonphases','writerspark','thinking-dialogue'];
 const writingOrder = ['writerspark','infospark'];
 const thinkingOrder = ['thinking-dialogue','thinkingroutines','imagespark','venndiagram','hexthinker','asctriangle','frayermodel'];
+const scienceOrder = ['moonphases','dinodig','walker-bridge'];
 let chosen = 'Favourites', chosenGroup = 'All geography', chosenType = 'All types', query = '';
 const cardsNode = document.getElementById('cards');
 const filters = document.getElementById('filters');
@@ -83,6 +84,10 @@ function render() {
   if (chosen === 'Social studies') visible.sort((a,b) => Number(b.id === 'railways-and-immigration') - Number(a.id === 'railways-and-immigration'));
   if (chosen === 'Thinking tools') visible.sort((a,b) => {
     const ai = thinkingOrder.indexOf(a.id), bi = thinkingOrder.indexOf(b.id);
+    return (ai < 0 ? 100 : ai) - (bi < 0 ? 100 : bi);
+  });
+  if (chosen === 'Science') visible.sort((a,b) => {
+    const ai = scienceOrder.indexOf(a.id), bi = scienceOrder.indexOf(b.id);
     return (ai < 0 ? 100 : ai) - (bi < 0 ? 100 : bi);
   });
   if (featured) visible.sort((a,b) => {
