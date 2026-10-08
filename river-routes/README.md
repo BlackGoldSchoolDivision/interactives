@@ -1,5 +1,17 @@
 # River Routes: A Fur Trade Journey
 
+## Checkpoint 4 — a playable river leg
+
+After securing cargo, **Launch canoe** opens a controllable upstream river challenge. The canoe moves through a winding channel with rocks, current marks, trees and a gold landing before the falls. Left/right or A/D steer; Space starts or pauses. The large touch buttons support taps and held steering. The moving route marker is zoomed to the simplified Fort William–Kakabeka segment so progress is visible; the overview map also retains the marker.
+
+The cargo manifest is copied from the learner's actual secured load. Heavy loads move more slowly. Rocks and banks damage the canoe; an available repair kit can restore condition once per carried kit. Landing requires reaching the final section and steering to the left landing. The completed state and cargo persist for the next portage chunk. This is an illustrative game channel, not reconstructed river geography; speed, damage, load limits and trip duration are game rules.
+
+Pause, view changes, page hiding and focus loss stop the journey. Progress, condition, repairs and the manifest survive reloads and resizing. Resume uses the same manifest; changing cargo starts a fresh river journey. Invalid or unsecured packing cannot launch. Restart river preserves the load and resets only travel.
+
+Validation: completed a real river run through ordinary controls, encountered rock collisions, used a repair kit, steered to the landing and saved/reloaded the completed state. Keyboard start/pause and steering, held pointer steering, hints, restart, navigation pause, changed/invalid cargo guards, reduced-motion presentation and visible route-marker travel passed. All six required viewport checks found no horizontal overflow and all visible buttons at least 44 CSS pixels high; the paused journey and landed state survived resizing. A 200% CSS zoom rendering check passed. Native browser zoom remains a manual check. No browser JavaScript exceptions were recorded.
+
+**Next: Chunk 5, portage gameplay.** Use the saved landing manifest and remaining repair-kit count to move the canoe and cargo around the falls. Trading remains Chunk 6 and must retain hands-on offers, counter-offers, partner needs and visible exchanges. Stop after each chunk to talk with Darren.
+
 ## Checkpoint 3 — cargo packing
 
 The approved illustrated camp now leads to **Pack your canoe**. Learners add or remove food, repair supplies, cloth, kettles, tools and beads. Each added bundle moves into the load (with reduced-motion support). Both 12 cargo spaces and a 130 kg limit constrain the choice. Securing the load requires three food bundles, one repair kit and four trade bundles; multiple cargo mixes work. Choices report food days, cargo carrying trips and trade variety. These are simplified game rules, not historical measurements.
@@ -59,4 +71,4 @@ The remote browser did not apply browser-zoom keyboard shortcuts, so actual brow
 
 ## Next checkpoint
 
-Review cargo packing, then build canoe movement and river travel. Stop after each chunk to talk with Darren.
+Review the playable river leg, then build portage loads, carrying trips and animation. Stop after each chunk to talk with Darren.

@@ -25,6 +25,7 @@
   const visiblePlace = p => state.filter==='both' || (state.filter==='nwc' && p.company!=='hbc') || p.company===state.filter;
   const point = id => mapData.points[id];
   const line = (ids,cls) => `<path class="connection ${cls}" d="${ids.map((id,i) => (i?'L':'M')+point(id).join(',')).join(' ')}"/>`;
+  let travelProgress=null;
   function renderMap() {
     const svg = $('tradeMap');
     const viewbox = mapData.viewboxes[state.view];
@@ -54,7 +55,8 @@
         ${showLabel?`<path d="M0 0L${dx*.65} ${dy*.65}" stroke="#647d65" stroke-width="${unit}" fill="none" opacity=".65"/><rect class="hit" x="${hitX}" y="${hitY}" width="${textWidth+12*unit}" height="${44*unit}"/><text class="label" x="${dx}" y="${dy}" text-anchor="${p.anchor}" style="font-size:${13*unit}px;stroke-width:${3*unit}px">${p.name}</text>`:`<circle class="hit" r="${22*unit}"/>`}
       </g>`;
     }).join('');
-    svg.innerHTML = `<title id="mapTitle">${state.view==='canada'?'Fur trade connections across the land now known as Canada':'First journey: Fort William toward Rainy Lake'}</title><desc id="mapDesc">Dashed lines show simplified trading connections, not exact canoe routes. Choose a map marker or a location button below the map.</desc>${mapData.svg}<g id="connections">${connections}</g><g id="markers">${markers}</g>`;
+    svg.innerHTML = `<title id="mapTitle">${state.view==='canada'?'Fur trade connections across the land now known as Canada':'First journey: Fort William toward Rainy Lake'}</title><desc id="mapDesc">Dashed lines show simplified trading connections, not exact canoe routes. Choose a map marker or a location button below the map.</desc>${mapData.svg}<g id="connections">${connections}</g><g id="markers">${markers}</g><g id="journeyCanoe" aria-hidden="true"></g>`;
+    drawTravelMarker();
     svg.querySelectorAll('.water-label').forEach(el => { el.style.fontSize=(state.view==='journey'?6:12)*unit+'px'; el.style.letterSpacing=.8*unit+'px'; });
     $('mapStamp').textContent = state.view==='canada'?'CANADA · TRADE CONNECTIONS':'FORT WILLIAM · TOWARD THE INTERIOR';
     $('mapNote').textContent = state.view==='canada'?'Modern outline for orientation. Dashed lines are simplified trading connections.':'Journey overview. The real inland route passes through many rivers, lakes, and portages.';
@@ -63,6 +65,12 @@
     }
     document.querySelectorAll('[data-filter]').forEach(b=>{b.classList.toggle('active',b.dataset.filter===state.filter);b.setAttribute('aria-pressed',b.dataset.filter===state.filter);});
     if(focused) svg.querySelector(`[data-location="${focused}"]`)?.focus({preventScroll:true});
+  }
+  function drawTravelMarker(){
+    const marker=$('journeyCanoe');if(!marker||travelProgress===null||state.filter==='hbc')return;
+    const a=point('fort-william'),b=point('kakabeka'),u=Math.max(0,Math.min(1,travelProgress));
+    const box=mapData.viewboxes[state.view],unit=Math.max(box[2]/($('tradeMap').clientWidth||1000),box[3]/($('tradeMap').clientHeight||500));
+    marker.innerHTML=`<g transform="translate(${a[0]+(b[0]-a[0])*u} ${a[1]+(b[1]-a[1])*u}) scale(${unit})"><circle r="14" fill="#173345" stroke="#ffca68" stroke-width="2"/><path d="M-9 2Q0 13 9 2L7 6Q0 13-7 6Z" fill="#ffca68"/><path d="M-4 1L4-7" stroke="#fff3cf" stroke-width="2"/></g>`;
   }
   function renderLocation() {
     const p=byId[state.selected];
@@ -87,14 +95,14 @@
     renderMap();renderLocation();save();
   }
   function chooseTab(tab) {
-    if(!['adventure','packing','map','journal'].includes(tab)) return;
+    if(!['adventure','packing','river','map','journal'].includes(tab)) return;
     state.tab=tab;
     document.body.dataset.view=tab;
-    $('adventureView').hidden=tab!=='adventure';$('packingView').hidden=tab!=='packing';$('mapIntro').hidden=tab!=='map';$('mapView').hidden=tab!=='map';$('placesSection').hidden=tab!=='map';$('journalView').hidden=tab!=='journal';
-    for(const [id,t] of [['adventureTab','adventure'],['mapTab','map'],['journalTab','journal']]) {$(id).classList.toggle('active',tab===t||(t==='adventure'&&tab==='packing'));if(t===tab||(t==='adventure'&&tab==='packing'))$(id).setAttribute('aria-current','page');else $(id).removeAttribute('aria-current');}
+    $('adventureView').hidden=tab!=='adventure';$('packingView').hidden=tab!=='packing';$('riverView').hidden=tab!=='river';$('mapIntro').hidden=tab!=='map';$('mapView').hidden=tab!=='map';$('placesSection').hidden=tab!=='map';$('journalView').hidden=tab!=='journal';
+    for(const [id,t] of [['adventureTab','adventure'],['mapTab','map'],['journalTab','journal']]) {$(id).classList.toggle('active',tab===t||(t==='adventure'&&['packing','river'].includes(tab)));if(t===tab||(t==='adventure'&&['packing','river'].includes(tab)))$(id).setAttribute('aria-current','page');else $(id).removeAttribute('aria-current');}
     $('pageTitle').textContent='Find your way inland.';
     if(tab==='map') requestAnimationFrame(renderMap);
-    save();
+    save();window.dispatchEvent(new CustomEvent('river-routes-view',{detail:tab}));
   }
   $('tradeMap').addEventListener('click',event=>{const id=event.target.closest('[data-location]')?.dataset.location;if(id)chooseLocation(id);});
   $('tradeMap').addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){const id=event.target.closest('[data-location]')?.dataset.location;if(id){event.preventDefault();chooseLocation(id);}}});
@@ -119,5 +127,5 @@
   sources.addEventListener('click',event=>{if(event.target===sources){const r=sources.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)sources.close();}});
   const resizeObserver=new ResizeObserver(()=>requestAnimationFrame(renderMap));resizeObserver.observe($('mapSurface'));
   chooseTab('adventure');renderMap();renderLocation();
-  window.RiverRoutesPreview={getState:()=>({...state}),places:places.map(p=>({...p})),selectPlace:chooseLocation,selectView:chooseView,openView:chooseTab};
+  window.RiverRoutesPreview={getState:()=>({...state}),places:places.map(p=>({...p})),selectPlace:chooseLocation,selectView:chooseView,openView:chooseTab,setTravelProgress:value=>{travelProgress=value;drawTravelMarker();}};
 })();
