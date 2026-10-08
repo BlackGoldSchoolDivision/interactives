@@ -1,6 +1,6 @@
 # Renaissance Atlas geographic data
 
-Updated October 8, 2026. Coordinates are WGS84 longitude, latitude. Leaflet renders them in Web Mercator, matching the activities' shared OpenStreetMap basemap. Modern basemap labels are context; they are not historical labels.
+Updated October 8, 2026. Coordinates are WGS84 longitude, latitude. Leaflet renders them in Web Mercator. The default historical atlas contains no modern tiles, roads, place names or present-day country borders.
 
 ## Europe circa 1400
 
@@ -18,8 +18,8 @@ Adaptations: split the source's English-territory feature into the island of Ire
 
 ## Coastlines and basemap
 
-`land.geojson`: Natural Earth, 1:110m land; public domain. Source: https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_110m_land.geojson (Git blob `04811d72fff2701ec67587e30ad8942675b511e3`). Used as neutral coastlines for printable vector maps. https://www.naturalearthdata.com/about/terms-of-use/
+`land.geojson`: Natural Earth, 1:110m land; public domain. Source: https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_110m_land.geojson (Git blob `04811d72fff2701ec67587e30ad8942675b511e3`). Used as neutral coastlines for the live historical atlas and printable vector maps. https://www.naturalearthdata.com/about/terms-of-use/
 
-Live map: OpenStreetMap Standard tiles, © OpenStreetMap contributors, https://www.openstreetmap.org/copyright . The shared basemap helper was copied from the existing Maltais239/interactives `geography-shared/basemap.js`, retaining Light grey, Muted colour and Original views, normal caching and visible attribution. No tile prefetch or offline download is implemented.
+Live map: the local `basemap.js` draws Natural Earth land in warm parchment colours over blue seas, with a subtle geographic grid and north indicator. The ocean texture and decorative ship are generated artwork. They do not encode terrain, borders or historical voyages. All geographic shapes and activity markers come from the data layers, not generated map imagery. The Europe lesson adds the circa-1400 territory layers; the Ottoman chapter uses only the separate 1683 extent. Assignment labels are earned through the mapping missions. A ResizeObserver keeps map geometry and markers aligned when the available width or height changes.
 
 The activity's colour key and arrows follow the classroom assignment. They show conceptual connections, not dated journeys. Saved work retains the existing 37-step sequence and storage key.
