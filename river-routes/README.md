@@ -1,5 +1,17 @@
 # River Routes: A Fur Trade Journey
 
+## Checkpoint 5 — playable portage around the falls
+
+The completed river landing opens **Carry around the falls**. The new painterly trail illustration follows the camp's approved visual style. Learners select their actual remaining cargo, up to 40 kg per trip, or carry the canoe separately with two crew members. The choice moves on the trail, while bundles and the canoe visibly accumulate on the far shore. Forest and ridge trails trade distance against effort and root crossings; both are imagined game paths.
+
+Learners can tap the scenery or press Right arrow for each step, or use Space / the walking button for automatic travel. Root crossings pause for a careful step (Up arrow). Heavy loads consume more crew energy; Rest / R restores energy without discarding the load. Return trips bring the crew back empty. Completion requires carrying every bundle and the canoe, then choosing **Reload the canoe**. No trading shortcut or automatic offers are added here.
+
+The portage manifest deducts repair kits already used on the river and preserves canoe condition. It is keyed to the river journey's identity, so a restarted river or newly launched cargo creates a fresh portage. Resizing, navigation, focus loss and reloading preserve position, selected load, delivered bundles, energy and carrying trips; automatic travel pauses when leaving the view. The next chunk should use the completed portage manifest, rather than the original packing counts, for subsequent travel and trading.
+
+Validation: completed an actual portage with the remaining seven cargo bundles and canoe in four carrying trips. Verified overload blocking, separate two-person canoe carrying, both trail choices and their root crossings, automatic travel and pausing, manual keyboard steps, tapping the trail, energy exhaustion and recovery, return trips, final canoe reloading, optional hints, map navigation, source-dialog Escape dismissal, and completed-state persistence after reload. The repair kit used on the river remained absent; canoe condition stayed at 98%. No application JavaScript errors were recorded. Rendered checks passed at 1024×540, 1366×650, 768×900, 390×667, 320×568 and 640×360 for both paused and completed portage states. There was no horizontal overflow; visible buttons were at least 44 CSS pixels high. The completed state retained seven delivered bundles, the canoe across, and four carrying trips during live resizing. The crew stayed inside the illustrated scene at every size. Native browser zoom remains a manual check because the remote browser does not apply browser zoom shortcuts.
+
+**Next: Chunk 6, visual trading at a post.** Keep hands-on goods, partner needs, offers, counter-offers and visible exchanges; later connect the inland route to the post. Continue in small chunks and stop to talk with Darren after each one.
+
 ## Checkpoint 4 — a playable river leg
 
 After securing cargo, **Launch canoe** opens a controllable upstream river challenge. The canoe moves through a winding channel with rocks, current marks, trees and a gold landing before the falls. Left/right or A/D steer; Space starts or pauses. The large touch buttons support taps and held steering. The moving route marker is zoomed to the simplified Fort William–Kakabeka segment so progress is visible; the overview map also retains the marker.
@@ -71,4 +83,5 @@ The remote browser did not apply browser-zoom keyboard shortcuts, so actual brow
 
 ## Next checkpoint
 
-Review the playable river leg, then build portage loads, carrying trips and animation. Stop after each chunk to talk with Darren.
+Review the completed portage, then build the visual trading interaction. Stop after each chunk to talk with Darren.
+
