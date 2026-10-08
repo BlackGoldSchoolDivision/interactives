@@ -8246,7 +8246,23 @@
     "Maltais239/interactives/walker-corner": [
       {
         "path": "walker-corner/bridge/app.js",
-        "bytes": 30670
+        "bytes": 40292
+      },
+      {
+        "path": "walker-corner/bridge/assets/semi.webp",
+        "bytes": 87848
+      },
+      {
+        "path": "walker-corner/bridge/assets/tank.webp",
+        "bytes": 164836
+      },
+      {
+        "path": "walker-corner/bridge/assets/tanker.webp",
+        "bytes": 111522
+      },
+      {
+        "path": "walker-corner/bridge/assets/trailer.webp",
+        "bytes": 75164
       },
       {
         "path": "walker-corner/bridge/assets/valley.webp",
@@ -8258,27 +8274,27 @@
       },
       {
         "path": "walker-corner/bridge/engine.js",
-        "bytes": 8192
+        "bytes": 17760
       },
       {
         "path": "walker-corner/bridge/game.css",
-        "bytes": 15406
+        "bytes": 20309
       },
       {
         "path": "walker-corner/bridge/index.html",
-        "bytes": 10026
+        "bytes": 11806
       },
       {
         "path": "walker-corner/bridge/README.md",
-        "bytes": 2577
+        "bytes": 7353
       },
       {
         "path": "walker-corner/bridge/verification/engine.test.js",
-        "bytes": 2323
+        "bytes": 9401
       },
       {
         "path": "walker-corner/bridge/verification/screen-checks.html",
-        "bytes": 2072
+        "bytes": 2073
       },
       {
         "path": "walker-corner/functions/app.js",

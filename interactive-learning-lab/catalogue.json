@@ -3611,7 +3611,7 @@
     "category": "Science",
     "group": "",
     "collection": "walker-corner",
-    "description": "Build a bridge across a painted mountain canyon. Connect wood and steel, test moving vehicles, watch stress and collapse, and compare saved trials.",
+    "description": "Build beam, truss, arch and suspension bridges across a painted canyon. Test cars, pickups with trailers, semis and a tank; compare stress, cost and saved trials.",
     "types": [
       "Simulations & models",
       "Decision games",
@@ -3621,7 +3621,9 @@
     "tags": [
       "Structures",
       "Fair tests",
-      "Mr. Walker’s Corner"
+      "Mr. Walker’s Corner",
+      "Vehicle loads",
+      "Suspension"
     ],
     "url": "https://maltais239.github.io/interactives/walker-corner/bridge/",
     "links": [
@@ -3636,8 +3638,8 @@
     ],
     "favourite": false,
     "credit": "Original idea: Tyler Walker · Improved classroom edition: Engaging Students",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/walker-bridge.jpg?v=20261007-game",
-    "captured": "2026-10-07",
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/walker-bridge.jpg?v=20261008-fleet2",
+    "captured": "2026-10-08",
     "original_urls": [
       "https://sites.google.com/gshare.blackgold.ca/bridgetester/home"
     ]
