@@ -54,9 +54,9 @@
     const near=units.filter(i=>!state.delivered.includes(i.unitId)&&!(state.phase==='carrying'&&state.selected.includes(i.unitId)));
     const far=units.filter(i=>state.delivered.includes(i.unitId));
     $('nearShoreCargo').innerHTML=near.map((i,n)=>bundleArt(i,55+(n%3)*31,498-Math.floor(n/3)*27,.82)).join('');
-    $('farShoreCargo').innerHTML=far.map((i,n)=>bundleArt(i,797+(n%3)*27,129-Math.floor(n/3)*25,.82)).join('');
+    $('farShoreCargo').innerHTML=far.map((i,n)=>bundleArt(i,664+(n%3)*27,120-Math.floor(n/3)*25,.82)).join('');
     const carryingCanoe=state.phase==='carrying'&&state.selected.includes('canoe');
-    $('shoreCanoe').innerHTML=carryingCanoe?'':`<g transform="translate(${state.canoeDelivered?'818 173':'100 549'}) rotate(${state.canoeDelivered?-12:10})">${canoeArt}</g>`;
+    $('shoreCanoe').innerHTML=carryingCanoe?'':`<g transform="translate(${state.canoeDelivered?'818 42':'100 549'}) rotate(${state.canoeDelivered?-12:10})">${canoeArt}</g>`;
     $('carriedLoad').innerHTML=state.phase!=='carrying'?'':carryingCanoe?`<g transform="translate(0 -54) rotate(-6)">${canoeArt}</g>`:units.filter(i=>state.selected.includes(i.unitId)).map((i,n)=>bundleArt(i,-10+(n%2)*22,-27-Math.floor(n/2)*24,.85)).join('');
     $('crewPartner').innerHTML=carryingCanoe?'<g transform="translate(44 0)"><path d="M-8 3l-9 23M6 3l11 21" stroke="#304758" stroke-width="9" stroke-linecap="round"/><path d="M-11-18H11l4 23H-15Z" fill="#4b7274"/><circle cy="-32" r="11" fill="#d3a878"/><path d="M-11-35q7-12 20-4" stroke="#48362b" stroke-width="7"/><path d="M-10-12l-3-32M10-12l3-30" stroke="#d3a878" stroke-width="6"/></g>':'';
   }
