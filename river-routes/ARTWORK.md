@@ -22,3 +22,52 @@ Production prompt: Create a new portage gameplay environment in the camp's detai
 
 The code draws the route, roots, crew and cargo separately so interactions and saved progress remain independent of the artwork. Both trail choices are illustrative game paths.
 
+
+# Trading post environments and object atlas — October 8, 2026
+
+Three new assets were generated with the built-in image generator. The existing river camp was used as a style reference for the two environments. Generated goods use a transparent background and remain a single atlas; CSS display viewports select each object without rewriting the art. The environment shelves are decorative; the working shelves and inventory counters are HTML controls. See `POST-HISTORY.md` for the historical evidence and reconstruction limits.
+
+Production prompts:
+
+## Fort William / NWC
+
+Use case: historical-scene.
+Asset type: landscape 3:2 environment illustration for River Routes, an inviting educational adventure game.
+Input image 1: STYLE REFERENCE only. Match the river camp's luminous painterly realism, gorgeous materials and depth, rich teal water, golden light, and detailed northern landscape. Create a new composition.
+Primary request: a beautiful busy North West Company trading-post setting, inspired by Fort William on the Kaministiquia River circa 1809. This is a researched illustrative scene, not an exact reconstruction.
+Scene: view from an open-sided timber trading-store porch across a canoe landing toward a large wooden palisaded depot with low log warehouses, a canoe-building shed, and modest workshops. Birchbark canoes and cargo bundles at the river edge; workers moving barrels and fur packs in everyday practical period clothing. A few small birchbark domed Anishinaabe dwellings outside the palisade, consistent with early-1800s accounts. The surrounding land is the Lake Superior boreal river landscape, golden birches and dark pines; do not depict a waterfall here.
+Composition: wonderfully inviting, detailed, wide 3:2. Shelves of goods frame the near LEFT and RIGHT edges of the porch, at most 15% of image width each: folded plain red and cream woollen cloth, nested hammered brass kettles with iron bails, wooden crates of simple iron axe heads, small glass beads. A broad EMPTY worn wooden counter spans the lower 20% of the image; its centre is clear and warmly lit for game overlays. The post, river and activity are clearly visible in the middle 70%, not obscured by shelves. View about human eye height. Goods look handmade, used, tactile and historically plausible.
+Lighting/mood: warm late-summer golden morning, sparkling teal river, lively sense of arrival and possibility, captivating beautiful game art.
+Constraints: no words, signs, labels, invented company logos, modern objects, guns, UI, borders or watermarks. No ceremonial costume or generic feather headdress. No Gothic castle. No modern landmark building. Preserve the inviting sophisticated painted texture of the reference. Full-bleed art only.
+
+## York Factory / HBC
+
+Use case: historical-scene.
+Asset type: landscape 3:2 environment illustration for River Routes, companion to a North West Company scene but distinctly HUDSON'S BAY COMPANY.
+Input image 1: STYLE REFERENCE only. Match luminous detailed painterly realism, beautiful water and wood textures, depth, inviting adventure. Create a new composition.
+Primary request: a beautiful Hudson's Bay Company trading-post scene inspired by York Factory's OLD OCTAGON on the Hayes River circa 1809. Not the surviving white depot: that was only built in 1831. This scene must be visually distinct from Fort William.
+Scene: view from an open-sided timber trading porch on the broad Hayes River bank across a wooden landing and low wet sedge grass to the Old Octagon compound. The historic building form is a low star-like timber fort: four five-sided corner flankers linked by long low roofed rectangular curtain-store sheds around an open courtyard, with a modest central entry. Depict a clearly visible angular corner flanker and adjoining roofed wings, no tall lookout towers, no castle crenellations. Timber walls, shingle roofs, simple brick chimneys. Flat Hudson Bay lowlands with distant low spruce, expansive pale sky, marshy ground, boardwalk access, a shallow-draft working wooden river boat and a birchbark canoe. NO mountains, cliff or rapids. Ordinary workers unloading simple wooden crates, practical clothing and no stereotyped ceremonial dress.
+Composition: appealing wide 3:2. Near LEFT and RIGHT edges of the covered porch have goods shelves, at most 15% of image width each: folded wool cloth, simple copper/brass kettles with iron bails, small iron axe heads and containers with WHITE, BRIGHT BLUE, and RED glass beads. These bead colours match archaeological finds in the Old Octagon from 1795 to before 1815. A broad EMPTY warm wooden counter spans the lower 20%, clean central area for game pieces. River, flat landscape and distinctive old compound dominate the middle 70%. Human eye-height view with enough angle to show roofs and the pentagonal flanker.
+Lighting/mood: luminous pearly northern sky with warm sunlight breaking through, teal-grey river, glowing wood and brick, captivating and inviting. Sophisticated rich painterly art, not gloomy or desaturated.
+Constraints: never depict the three-storey white 1831 depot or iconic modern HBC logo/striped blanket branding. No text, signs, labels, guns, UI, watermark, borders, generic headdress or teepees. Architecture is illustrative and source-informed, not a precise measured reconstruction.
+
+## Trade goods
+
+Use case: historical-scene.
+Asset type: illustrated object atlas for interactive trading shelves; 1536x768 landscape, FOUR columns by TWO rows of equally sized cells.
+Primary request: exactly EIGHT separate beautiful painterly historical trade-goods still lifes, one per cell, isolated on a genuinely TRANSPARENT background. All objects fully inside their own cell with at least 12% padding on every side; no object crosses a cell edge. No grid lines, letters, numbers, labels, logos or scenery.
+Style: luminous realistic hand-painted game objects with rich tactile material detail and clear recognizable silhouettes; warm soft natural light; same inviting 1809 Canadian fur-trade adventure feeling as the reference. Small contact shadows only, transparent background.
+TOP ROW left to right:
+1. Folded plain red woollen trade cloth, cream folded layer beneath, tied with simple twine. No branded stripes.
+2. Nested hammered BRASS cooking kettles, slightly tapered cylindrical bowls, hand-forged black iron bail handle and rim, NO tea spout. Kettles were nested for canoe transport.
+3. Two simple iron trade axe heads with one plain wooden haft resting diagonally beneath, small utility knife; not modern shiny camping gear.
+4. Three loose strands/piles of small cylindrical glass trade beads in WHITE, BRIGHT BLUE, and RED. Simple drawn glass beads with visible holes, no elaborate sacred motifs. York Factory archaeology supports those colours circa 1795–before 1815.
+BOTTOM ROW left to right:
+5. Two brown smoked/dried fish tied together in a small bundle with cord; no tin cans or modern packaging.
+6. A small plain cloth sack of long dark wild rice grains, open mouth revealing grain, a little shallow wooden scoop.
+7. A folded dark brown beaver pelt with dense lustrous fur and irregular flattened hide shape; a pelt not a live animal, no taxidermy face.
+8. Birchbark canoe repair materials: a rolled piece of birch bark, a coil of split spruce roots, a small plain wooden container of dark pitch; no red medical cross or modern toolbox.
+Do not render eight cards: render objects alone. Match their apparent scale within each cell, each using about 70% of its square cell. Full eight-object atlas with actual alpha transparency.
+
+Production files: `assets/post-fort-william.webp` and `assets/post-york-factory.webp` (1536×1024); `assets/trade-goods.webp` (1774×887, alpha transparency). Format encoding only; no creative image edits. Original generated files are `exec-50361e4e-6e54-4b12-b12c-9ed1adff6f6d.png`, `exec-606f850d-00e7-40fc-96e2-b403247d81d9.png`, and `exec-104e9a57-1cff-492d-9d60-30bf9d25c6c5.png`.
+

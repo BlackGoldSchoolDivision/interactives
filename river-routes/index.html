@@ -6,23 +6,26 @@
   <meta name="description" content="Explore Canada's fur-trade waterways and plan a journey from Fort William. A developing classroom adventure from BGSD's Interactive Learning Lab.">
   <title>River Routes · A Fur Trade Journey</title>
   <link rel="preload" as="image" href="assets/river-camp.webp">
-  <link rel="stylesheet" href="styles.css?v=20261008-portage7">
-  <link rel="stylesheet" href="adventure.css?v=20261008-portage7">
-  <script defer src="map-data.js?v=20261008-portage7"></script>
-  <script defer src="app.js?v=20261008-portage7"></script>
-  <script defer src="camp.js?v=20261008-portage7"></script>
-  <link rel="stylesheet" href="packing.css?v=20261008-portage7">
-  <script defer src="packing.js?v=20261008-portage7"></script>
-  <link rel="stylesheet" href="river.css?v=20261008-portage7">
-  <script defer src="river.js?v=20261008-portage7"></script>
-  <link rel="stylesheet" href="portage.css?v=20261008-portage7">
-  <script defer src="portage.js?v=20261008-portage7"></script>
+  <link rel="stylesheet" href="styles.css?v=20261008-posts1">
+  <link rel="stylesheet" href="adventure.css?v=20261008-posts1">
+  <script defer src="map-data.js?v=20261008-posts1"></script>
+  <script defer src="app.js?v=20261008-posts1"></script>
+  <script defer src="camp.js?v=20261008-posts1"></script>
+  <link rel="stylesheet" href="packing.css?v=20261008-posts1">
+  <script defer src="packing.js?v=20261008-posts1"></script>
+  <link rel="stylesheet" href="river.css?v=20261008-posts1">
+  <script defer src="river.js?v=20261008-posts1"></script>
+  <link rel="stylesheet" href="portage.css?v=20261008-posts1">
+  <script defer src="portage.js?v=20261008-posts1"></script>
+  <link rel="stylesheet" href="trading.css?v=20261008-posts1">
+  <script defer src="trading-model.js?v=20261008-posts1"></script>
+  <script defer src="trading.js?v=20261008-posts1"></script>
 </head>
 <body>
   <a class="skip-link" href="#workspace">Skip to the adventure</a>
   <header class="topbar">
     <div class="brand"><svg viewBox="0 0 48 32" aria-hidden="true"><path d="M3 20Q24 36 45 20L41 26Q24 36 7 26Z"/><path d="M19 20L31 3M28 8L33 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg><div><h1>River Routes</h1><p>A Fur Trade Journey</p></div></div>
-    <nav class="main-nav" aria-label="Game views"><button class="active" id="adventureTab" aria-current="page">Adventure</button><button id="mapTab">Map</button><button id="journalTab">Journal</button></nav>
+    <nav class="main-nav" aria-label="Game views"><button class="active" id="adventureTab" aria-current="page">Adventure</button><button id="tradeTab">Posts</button><button id="mapTab">Map</button><button id="journalTab">Journal</button></nav>
     <div class="era"><span>COMPANY RIVALRY</span><strong>1809</strong></div>
   </header>
   <main id="workspace">
@@ -49,6 +52,7 @@
           <button class="primary-button journey-button" id="startPacking">Pack your canoe <span aria-hidden="true">→</span></button>
           <button class="text-button camp-route" id="resumePortage" hidden>Resume portage →</button>
           <button class="text-button camp-route" id="resumeRiver" hidden>Resume river journey →</button>
+          <button class="start-trading-button" id="startTrading">Enter the trading posts <span aria-hidden="true">→</span></button>
           <button class="text-button camp-route" id="seeRoute">See your route <span aria-hidden="true">→</span></button>
           <div class="journey-ribbon" aria-label="The journey will include packing, paddling, portage, and trading"><span>Pack</span><i>›</i><span>Paddle</span><i>›</i><span>Portage</span><i>›</i><span>Trade</span></div>
           <p class="art-preview-note">Explore the camp · Then pack your canoe</p>
@@ -131,10 +135,29 @@
           <p id="portageFeedback" class="portage-feedback" role="status" aria-live="polite" aria-atomic="true">Take up to 40 kg of cargo, or carry the canoe on its own.</p>
           <button id="returnPortage" class="portage-primary" hidden>Return for the next load ↩</button>
           <button id="reloadPortage" class="portage-primary" hidden>Reload the canoe ✓</button>
-          <div id="portageResult" class="portage-result" hidden><strong>Ready for the water!</strong><p>Every bundle is across. Your canoe and supplies are saved for the next leg.</p><button id="portageMap" class="portage-secondary">See where you are →</button></div>
+          <div id="portageResult" class="portage-result" hidden><strong>Ready for the water!</strong><p>Every bundle is across. Your canoe and supplies are saved for the next leg.</p><button id="portageMap" class="portage-secondary">See where you are →</button><button id="portageTrading" class="portage-secondary">Try post trading →</button></div>
           <div class="portage-actions"><button id="restartPortage" class="portage-secondary">Restart portage</button><button id="portageHint" class="portage-secondary" aria-expanded="false" aria-controls="portageHintText">Hint</button></div>
           <p id="portageHintText" class="portage-hint" hidden>Combine bundles up to 40 kg. Lighter loads use less energy. The forest trail has fewer roots. Rest when energy runs low, then continue. Carry the canoe on its own, and return until nothing is left behind.</p>
           <details class="portage-notes"><summary>Look closer</summary><p>People carried canoes and cargo around obstacles using known overland routes. This scene and its two trail choices are imagined. The 40 kg limit, canoe weight, energy and trip times are game rules—not instructions for a real carrying activity.</p><p>Indigenous route knowledge and canoe technology helped the inland trade work.</p><a href="https://www.ontarioparks.ca/park/Kakabekafalls/activities" target="_blank" rel="noopener">The historic portage ↗</a></details>
+        </aside>
+      </div>
+    </section>
+    <section id="tradingView" class="trading-view" hidden aria-label="Trade at the posts">
+      <div class="trade-heading"><div><span class="eyebrow">POST VISITS · TRADING PRACTICE</span><h2 id="tradePostName" tabindex="-1">Fort William</h2></div><button id="tradeBack" class="trade-secondary">← Camp</button></div>
+      <div class="post-switch" role="group" aria-label="Choose a trading post"><button data-trade-post="nwc" aria-pressed="true"><b>NWC</b><span><strong>Fort William</strong><small>Canoes &amp; workshops</small></span></button><button data-trade-post="hbc" aria-pressed="false"><b>HBC</b><span><strong>York Factory</strong><small>The Bay &amp; river boats</small></span></button></div>
+      <div class="trade-grid">
+        <div class="trade-world">
+          <div class="trade-post-scene" id="tradePostScene"><img id="tradePostArt" src="assets/post-fort-william.webp" width="1536" height="1024" alt="Fort William trading post" loading="lazy"><div class="trade-scene-stamp">THE TRADING POST · 1809<b id="tradeCompany">North West Company</b></div><div class="trade-scene-caption" id="tradeOrigin">Trading practice · Sample cargo</div><div class="trade-pulse" id="tradeExchangeFlash" aria-hidden="true">Goods exchanged ✓</div></div>
+          <div class="trade-countertop">
+            <div class="trade-shelves"><div class="trade-shelf"><h3>Your shelf</h3><div id="yourTradeShelf" class="shelf-goods" role="group" aria-label="Your goods to offer"></div></div><div class="trade-shelf theirs"><h3>Their shelf</h3><div id="theirTradeShelf" class="shelf-goods" role="group" aria-label="Their goods to request"></div></div></div>
+            <div class="barter-table" aria-label="Your proposed exchange"><div class="offer-half"><strong>You offer</strong><div id="yourOffer" class="offer-tray" role="group" aria-label="Goods you are offering"></div></div><span class="trade-arrows" aria-hidden="true">⇄</span><div class="offer-half"><strong>You ask for</strong><div id="theirOffer" class="offer-tray" role="group" aria-label="Goods you are requesting"></div></div></div>
+            <div class="trade-table-footer"><span>Tap a shelf to add. Tap the table to remove.</span><button id="clearTradeTable">Clear the table</button></div>
+          </div>
+        </div>
+        <aside class="trading-panel" aria-label="Traders and your supplies">
+          <div class="trade-partner-panel"><span class="eyebrow">TODAY’S TRADERS</span><h3 id="tradePartner">Provisioning partners</h3><div class="trade-wants"><strong>Looking for</strong><div id="tradeNeeds" class="trade-needs" aria-label="Goods wanted today"></div></div><p id="tradeReply" class="trade-reply" role="status" aria-live="polite" aria-atomic="true">Choose goods from both shelves.</p><div id="tradeCounters" class="trade-counters" role="group" aria-label="Counter-offer choices"></div><button id="makeTradeOffer" class="trade-offer-button">Make an offer →</button><button id="acceptTrade" class="trade-offer-button accept" hidden>Exchange these goods ⇄</button><button id="tradeHelp" class="trade-help" aria-expanded="false" aria-controls="tradeHelpText">Hint</button><p id="tradeHelpText" class="trade-help-text" hidden>Look at what the traders need. A mixed offer often works better than lots of one thing. Try asking for food and pelts, then adjust the offer if they counter.</p></div>
+          <div class="trade-goals" id="tradeGoals"><h3 id="tradeGoalsTitle">Bring back food &amp; furs</h3><div class="trade-goal-row" id="tradeFoodGoal"><span class="trade-object" style="--object-x:0%;--object-y:100%" aria-hidden="true"></span><span>Food · 4 days</span><b id="tradeFood">0 days</b></div><div class="trade-goal-row" id="tradeFurGoal"><span class="trade-object" style="--object-x:66.6667%;--object-y:100%" aria-hidden="true"></span><span>Beaver pelts</span><b id="tradeFurs">0 / 4</b></div><div class="trade-weight"><span id="tradeDealCount">0 exchanges</span><b id="tradeWeight">75 kg</b></div><div id="tradeReceived" class="trade-received" aria-label="Goods packed from exchanges" hidden></div><p id="tradeGoodsKept" class="trade-kept"></p><p id="tradeSuccess" class="trade-success" hidden>Useful supplies for you. Wanted goods for your partners. Can you do it again and keep more cargo?</p></div>
+          <div class="trade-small-panel"><button id="mapTradingPost">Map this post ↗</button><button id="useCarriedCargo" hidden>Practise with my carried cargo</button><button id="restartTrading">Start a fresh practice visit</button><details class="trade-history-details"><summary>Your exchanges</summary><ul id="tradeHistory"></ul></details><details class="trade-art-details"><summary>Look closer · real history</summary><p id="tradeFact"></p><a id="tradeFactSource" target="_blank" rel="noopener">Post history ↗</a><p>These scenes are inspired by historical sources. York Factory shows the earlier Old Octagon, built in 1788–1795, before the white depot of 1831. Fort William shows its canoe depot and workshops; individual layouts are illustrated.</p><div class="trade-inspect"><div id="tradeInspectPicture" aria-hidden="true"></div><label for="tradeInspectSelect">Inspect a good<select id="tradeInspectSelect"></select></label></div><p id="tradeItemDetail"></p><a id="tradeItemSource" target="_blank" rel="noopener">Object evidence ↗</a><p class="trade-note">Bundle sizes, daily needs and barter values are invented game rules. These practice visits do not move or spend your saved journey cargo. The fur trade also involved unequal power, environmental changes and consequences for Indigenous communities; bargaining is one part of its history.</p></details></div>
         </aside>
       </div>
     </section>
@@ -154,7 +177,7 @@
     <section class="journal-view" id="journalView" hidden><div class="journal-header"><span class="eyebrow">LOOK CLOSER</span><h2>A network of people, places, and knowledge.</h2><p>Use these notes to connect the map with the story behind it.</p></div><div class="journal-grid"><article><span class="note-number">01</span><h3>The routes came first.</h3><p>Indigenous peoples used and knew these waterways long before the trading companies arrived. At Fort William, Anishinaabe knowledge, guiding, food, and canoe technology helped the trade work.</p><a href="https://fwhp.ca/about-us/our-history/" target="_blank" rel="noopener">Fort William Historical Park ↗</a></article><article><span class="note-number">02</span><h3>Two supply networks.</h3><p>The North West Company’s network connected Montreal, Fort William, and the interior. Hudson’s Bay Company posts connected Hudson Bay with inland trade. Both depended on Indigenous trading networks and relationships.</p><a href="https://parks.canada.ca/lhn-nhs/mb/yorkfactory/culture/histoire-history" target="_blank" rel="noopener">Parks Canada: York Factory ↗</a></article><article><span class="note-number">03</span><h3>Water does not go everywhere.</h3><p>A portage means carrying a canoe and cargo over land between waterways or around an obstacle. Kakabeka Falls on the Kaministiquia River required travellers to take an overland route around the falls.</p><a href="https://www.ontarioparks.ca/park/Kakabekafalls/activities" target="_blank" rel="noopener">Ontario Parks: the historic portage ↗</a></article><article><span class="note-number">04</span><h3>A map is a model.</h3><p>This preview uses present-day geography to help you find places. The dashed connections are a simplified overview; they do not trace every bend, lake, or portage. Company connections do not represent ownership of Indigenous lands.</p><button class="text-button" id="backToMap">Return to the map →</button></article></div></section>
     <footer class="footer"><span>BGSD Interactive Learning Lab</span><button id="sourcesButton" class="text-button">History & map sources</button><span class="footer-note">Adventure preview</span></footer>
   </main>
-  <dialog id="sourcesDialog"><div class="dialog-heading"><h2>History & map sources</h2><button id="closeSources" class="close-button" aria-label="Close sources">×</button></div><p>The camp artwork is an illustrative setting, not a reconstruction of one named site. Locations are approximate waypoints. The map uses modern geography; trading connections are set in 1809.</p><ul><li><a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth</a> · Canada outline, neighbours, and major lakes; Albers equal-area projection.</li><li><a href="https://fwhp.ca/about-us/our-history/" target="_blank" rel="noopener">Fort William Historical Park</a> · inland network, Anishinaabe contributions, and Fort William’s name from 1807.</li><li><a href="https://parks.canada.ca/lhn-nhs/mb/yorkfactory/culture/histoire-history" target="_blank" rel="noopener">Parks Canada: York Factory</a> · Hudson Bay, Indigenous trade, and inland expansion.</li><li><a href="https://www.ontarioparks.ca/park/Kakabekafalls/activities" target="_blank" rel="noopener">Ontario Parks: Kakabeka Falls</a> · historic portage around the falls.</li><li><a href="https://recherche-collection-search.bac-lac.gc.ca/eng/home/record?app=fonandcol&idnumber=2962865" target="_blank" rel="noopener">Library and Archives Canada</a> · Cumberland House and its inland role.</li></ul><button id="doneSources" class="primary-button">Back to exploring</button></dialog>
+  <dialog id="sourcesDialog"><div class="dialog-heading"><h2>History & map sources</h2><button id="closeSources" class="close-button" aria-label="Close sources">×</button></div><p>The camp artwork is an illustrative setting, not a reconstruction of one named site. Locations are approximate waypoints. The map uses modern geography; trading connections are set in 1809.</p><ul><li><a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth</a> · Canada outline, neighbours, and major lakes; Albers equal-area projection.</li><li><a href="https://fwhp.ca/about-us/our-history/" target="_blank" rel="noopener">Fort William Historical Park</a> · inland network, Anishinaabe contributions, and Fort William’s name from 1807.</li><li><a href="https://parks.canada.ca/lhn-nhs/mb/yorkfactory/culture/histoire-history" target="_blank" rel="noopener">Parks Canada: York Factory</a> · Hudson Bay, Indigenous trade, and inland expansion.</li><li><a href="https://parks.canada.ca/lhn-nhs/mb/yorkfactory/culture/archaeo" target="_blank" rel="noopener">Parks Canada: the Old Octagon</a> · earlier York Factory architecture, 1788–1795.</li><li><a href="https://journals.uoregon.edu/beads/article/view/6219" target="_blank" rel="noopener">York Factory bead archaeology</a> · white, bright blue and red beads from the 1795–before 1815 deposit.</li><li><a href="https://digital.library.mcgill.ca/nwc/history/04.htm" target="_blank" rel="noopener">McGill’s North West Company collection</a> · cloth, nested kettles and iron tools.</li><li><a href="https://www.ontarioparks.ca/park/Kakabekafalls/activities" target="_blank" rel="noopener">Ontario Parks: Kakabeka Falls</a> · historic portage around the falls.</li><li><a href="https://recherche-collection-search.bac-lac.gc.ca/eng/home/record?app=fonandcol&idnumber=2962865" target="_blank" rel="noopener">Library and Archives Canada</a> · Cumberland House and its inland role.</li></ul><button id="doneSources" class="primary-button">Back to exploring</button></dialog>
 </body>
 </html>
 
