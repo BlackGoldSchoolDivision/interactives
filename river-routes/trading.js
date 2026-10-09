@@ -4,7 +4,8 @@
   const byId=Object.fromEntries(M.items.map(i=>[i.id,i]));
   let state={active:'nwc',visits:{nwc:M.fresh('nwc'),hbc:M.fresh('hbc')}},counterOptions=[],mode='practice';
   try{const saved=JSON.parse(localStorage.getItem(key));if(saved){state.active=['nwc','hbc'].includes(saved.active)?saved.active:'nwc';for(const id of ['nwc','hbc'])state.visits[id]=M.restore(id,saved.visits?.[id]);}}catch{}
-  const postId=()=>mode==='journey'?'rainy':state.active,visit=()=>mode==='journey'?api.onward.getVisit():state.visits[state.active],save=()=>{if(mode==='journey'){api.onward.saveVisit(visit());return;}try{localStorage.setItem(key,JSON.stringify(state));}catch{}};
+  const actual=()=>{if(mode==='journey'&&!api.onward.canTrade())mode='practice';return mode==='journey';};
+  const postId=()=>actual()?'rainy':state.active,visit=()=>actual()?api.onward.getVisit():state.visits[state.active],save=()=>{if(actual()){api.onward.saveVisit(visit());return;}try{localStorage.setItem(key,JSON.stringify(state));}catch{}};
   const picture=(id,cls='')=>`<span class="trade-object ${cls}" style="--object-x:${byId[id].cell%4*100/3}%;--object-y:${Math.floor(byId[id].cell/4)*100}%" aria-hidden="true"></span>`;
   function shelf(container,ids,kind){
     const s=visit(),selected=kind==='give'?s.give:s.take,available=kind==='give'?s.own:s.stock;
