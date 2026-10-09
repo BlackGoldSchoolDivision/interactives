@@ -9,7 +9,7 @@ const ring=r=>r.map((p,i)=>{const [x,y]=xy(p);return(i?'L':'M')+num(x)+','+num(y
 function path(g){return(g.type==='Polygon'?[g.coordinates]:g.coordinates).map(p=>p.map(ring).join('')).join('');}
 const read=n=>JSON.parse(fs.readFileSync(dir+'/data/'+n,'utf8'));
 const land=read('scene-land-50m.geojson'),rivers=read('scene-rivers-50m.geojson');
-const historical=read('context-1400.geojson'),regions=read('europe-1400.geojson');
+const historical=read('scene-context-1400.geojson'),regions=read('scene-europe-1400.geojson');
 const landPath=land.features.map(f=>path(f.geometry)).join('');
 const esc=s=>String(s).replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]));
 const colours={france:'#b77eb3',castile:'#e7ad4e',aragon:'#b9ae61',granada:'#ce8470',portugal:'#c28e62',england:'#d68f7c',scotland:'#ce9d67',ireland:'#a8ac73',hre:'#e1bc61',papal:'#cb8074',naples:'#c39565',sicily:'#bca257',veniceState:'#a8ac73',genoa:'#b881a3',hungary:'#91a383'};

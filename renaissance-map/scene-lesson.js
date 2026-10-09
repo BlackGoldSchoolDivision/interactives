@@ -70,7 +70,7 @@ function renderMap() {
   const m = current();
   if (!exploring) mapKind = m?.chapter === 2 ? 'ottoman' : 'europe';
   $('illustration').toggleAttribute('hidden', mapKind === 'ottoman'); $('ottoman-illustration').toggleAttribute('hidden', mapKind !== 'ottoman');
-  document.querySelector('.period').textContent = mapKind === 'ottoman' ? 'Ottoman Empire · 1683' : 'Europe · c. 1400';
+  document.querySelector('.period').textContent = mapKind === 'ottoman' ? 'Ottoman Empire + dependent lands · c. 1683' : 'Europe · c. 1400';
   baseZoom = !exploring && m && [3, 4].includes(m.chapter) ? 2.8 : 1;
   mapCenter = baseZoom > 1 ? geometry.italyCenter : [geometry.W/2, geometry.H/2];
   paintWork($('atlas'), mapKind);
@@ -130,7 +130,7 @@ function bindHold(button) {
 }
 function renderResponse() {
   const q = questions[responseIndex];
-  $('written-count').textContent = 'Written question '+(responseIndex+1)+' of 6'; $('written-title').textContent = q.q; $('written-page').textContent = 'Use your textbook, page '+q.page+'.';
+  $('written-count').textContent = 'Written question '+(responseIndex+1)+' of 6'; $('written-title').textContent = q.q; $('written-page').textContent = 'Textbook page '+q.page+' · Phrases are suggestions.';
   $('response-text').value = state.responses[responseIndex]; $('response-text').readOnly = state.liam && !allowTyping;
   $('type-answer').hidden = !state.liam || allowTyping; $('response-help').textContent = state.liam && !allowTyping ? 'Choose phrases to build your answer. Tap a selected phrase to remove it.' : 'Write your own answer, or use the phrases to help.';
   $('phrase-bank').replaceChildren();
@@ -164,7 +164,7 @@ function printWork() {
   const paper = $('paper-work'); paper.replaceChildren(); const h = document.createElement('h1'); h.textContent = 'My illustrated Renaissance atlas'; paper.append(h);
   for (const kind of ['europe', 'ottoman']) { const figure = document.createElement('figure'), caption = document.createElement('figcaption'); caption.textContent = kind==='europe'?'Europe · c. 1400':'Ottoman Empire · 1683'; figure.append(caption,mapSnapshot(kind)); paper.append(figure); }
   questions.forEach((q,i)=>{const s=document.createElement('section'),h=document.createElement('h2'),p=document.createElement('p');h.textContent=q.q+' (p. '+q.page+')';p.textContent=state.responses[i]||'No response saved yet.';s.append(h,p);paper.append(s);});
-  const note=document.createElement('p'); note.textContent='Historical borders are approximate. Sources: Natural Earth (public domain), André Ourednik’s Historical Basemaps (GPL-3.0), and the classroom assignment. Illustrations are decorative.'; paper.append(note); window.print();
+  const note=document.createElement('p'); note.textContent='Historical borders are approximate. Europe: c. 1400. Ottoman Empire and dependent lands: c. 1683. Sources: Natural Earth, André Ourednik’s Historical Basemaps, The Met, and Shaw’s historical atlas. Phrases are suggestions; check textbook answers with your teacher. Illustrations are decorative.'; paper.append(note); window.print();
 }
 $('choice-a').addEventListener('click',()=>choose(0)); $('choice-b').addEventListener('click',()=>choose(1));
 $('next').addEventListener('click',()=>{if(exploring||!state.done.includes(state.index))return;newStep(state.index+1);if(state.index===37)openResponses(state.responses.findIndex(s=>!s.trim())<0?0:state.responses.findIndex(s=>!s.trim()));});

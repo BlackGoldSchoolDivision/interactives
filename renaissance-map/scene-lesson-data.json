@@ -135,7 +135,7 @@
       ]
     },
     "castile": {
-      "name": "Spain (Castile)",
+      "name": "Castile (part of Spain today)",
       "ids": [
         39
       ],
@@ -192,7 +192,7 @@
         210
       ],
       "hint": "Find the large central region north of the Italian peninsula.",
-      "fact": "The Holy Roman Empire included many territories and cities. It was not modern Germany.",
+      "fact": "The Holy Roman Empire contained many states and cities. Italian cities such as Florence governed themselves.",
       "ll": [
         50.6,
         11.5
@@ -209,7 +209,7 @@
         298
       ],
       "hint": "Look on the northwestern coast of Italy.",
-      "fact": "Genoa was a maritime republic. Its merchants and wealthy families supported trade and the arts.",
+      "fact": "Genoa was a trading republic. It also ruled Corsica. Its wealthy families supported the arts.",
       "ll": [
         44.4056,
         8.9463
@@ -329,7 +329,7 @@
       ],
       "type": "empire",
       "hint": "Look for the connected territories across southeastern Europe, Anatolia and parts of North Africa and western Asia.",
-      "fact": "This separate classroom reference shows Ottoman extent in 1683, well after the late-medieval map.",
+      "fact": "This map shows the Ottoman Empire and dependent territories around 1683, almost 300 years after the Europe map.",
       "ll": [
         38,
         33
