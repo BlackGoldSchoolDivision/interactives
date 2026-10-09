@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated": "2026-10-08T23:51:08.945Z",
+  "generated": "2026-10-09",
   "activities": {
     "morpheme-missions": {
       "kind": "html",
@@ -1935,12 +1935,18 @@
     },
     "furtrade": {
       "kind": "html",
-      "title": "Fur Trade Game",
-      "credit": "",
+      "title": "River Routes: Fur Trade Adventure",
+      "credit": "Classroom idea: Darren Maltais",
       "category": "Social studies",
       "versions": [
         {
-          "label": "Fur Trade Game",
+          "label": "River Routes: Fur Trade Adventure",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "river-routes/index.html",
+          "url": "https://interactives.blackgold.ca/river-routes/?v=20261009-final1"
+        },
+        {
+          "label": "Original card-style game",
           "repo": "Maltais239/interactives",
           "path": "furtrade/index.html",
           "url": "https://maltais239.github.io/interactives/furtrade/"
@@ -9478,10 +9484,156 @@
         "path": "renaissance-map/screen-checks.html",
         "bytes": 1633
       }
+    ],
+    "BlackGoldSchoolDivision/interactives/river-routes": [
+      {
+        "path": "river-routes/ARTWORK.md",
+        "bytes": 16442
+      },
+      {
+        "path": "river-routes/JOURNEY-HISTORY.md",
+        "bytes": 6092
+      },
+      {
+        "path": "river-routes/POST-HISTORY.md",
+        "bytes": 4432
+      },
+      {
+        "path": "river-routes/README.md",
+        "bytes": 22396
+      },
+      {
+        "path": "river-routes/adventure.css",
+        "bytes": 11593
+      },
+      {
+        "path": "river-routes/app.js",
+        "bytes": 14612
+      },
+      {
+        "path": "river-routes/assets/portage-trail.webp",
+        "bytes": 659098
+      },
+      {
+        "path": "river-routes/assets/post-fort-william.webp",
+        "bytes": 529394
+      },
+      {
+        "path": "river-routes/assets/post-rainy-lake.webp",
+        "bytes": 520896
+      },
+      {
+        "path": "river-routes/assets/post-york-factory.webp",
+        "bytes": 452542
+      },
+      {
+        "path": "river-routes/assets/river-camp.webp",
+        "bytes": 647448
+      },
+      {
+        "path": "river-routes/assets/trade-goods.webp",
+        "bytes": 473818
+      },
+      {
+        "path": "river-routes/camp.js",
+        "bytes": 6974
+      },
+      {
+        "path": "river-routes/index.html",
+        "bytes": 35995
+      },
+      {
+        "path": "river-routes/journey-model.js",
+        "bytes": 842
+      },
+      {
+        "path": "river-routes/journey.css",
+        "bytes": 2762
+      },
+      {
+        "path": "river-routes/journey.js",
+        "bytes": 3319
+      },
+      {
+        "path": "river-routes/map-data.js",
+        "bytes": 35378
+      },
+      {
+        "path": "river-routes/onward-model.js",
+        "bytes": 2745
+      },
+      {
+        "path": "river-routes/onward.css",
+        "bytes": 7135
+      },
+      {
+        "path": "river-routes/onward.js",
+        "bytes": 11854
+      },
+      {
+        "path": "river-routes/packing.css",
+        "bytes": 7252
+      },
+      {
+        "path": "river-routes/packing.js",
+        "bytes": 9708
+      },
+      {
+        "path": "river-routes/portage.css",
+        "bytes": 9159
+      },
+      {
+        "path": "river-routes/portage.js",
+        "bytes": 19772
+      },
+      {
+        "path": "river-routes/qa.html",
+        "bytes": 2921
+      },
+      {
+        "path": "river-routes/river.css",
+        "bytes": 7032
+      },
+      {
+        "path": "river-routes/river.js",
+        "bytes": 15372
+      },
+      {
+        "path": "river-routes/styles.css",
+        "bytes": 13298
+      },
+      {
+        "path": "river-routes/teacher.html",
+        "bytes": 6868
+      },
+      {
+        "path": "river-routes/tests/journey-model.test.cjs",
+        "bytes": 2808
+      },
+      {
+        "path": "river-routes/tests/onward-model.test.cjs",
+        "bytes": 4198
+      },
+      {
+        "path": "river-routes/tests/trading-model.test.cjs",
+        "bytes": 4065
+      },
+      {
+        "path": "river-routes/trading-model.js",
+        "bytes": 9160
+      },
+      {
+        "path": "river-routes/trading.css",
+        "bytes": 13362
+      },
+      {
+        "path": "river-routes/trading.js",
+        "bytes": 12518
+      }
     ]
   },
   "repository_heads": {
     "Maltais239/interactives": "6c72111326a5637e8f370e56c56244b7392b34f2",
-    "BlackGoldSchoolDivision/interactives": "3060bae25bcfc92cf99f143190ac2fe267ca63fe"
+    "BlackGoldSchoolDivision/interactives": "bcd6a3dd7eba03fc084544592104d80e5c818602"
   }
 }

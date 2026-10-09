@@ -1961,6 +1961,39 @@
     "captured": "2026-10-07"
   },
   {
+    "id": "furtrade",
+    "path": "river-routes",
+    "repo": "org",
+    "title": "River Routes: Fur Trade Adventure",
+    "category": "Social studies",
+    "description": "Pack a canoe, paddle, portage and bargain at illustrated fur-trade posts. Carry your cargo from Fort William to Rainy Lake.",
+    "types": [
+      "Decision games",
+      "Maps & geography"
+    ],
+    "tags": [
+      "Canada",
+      "Fur trade",
+      "Portage"
+    ],
+    "url": "https://interactives.blackgold.ca/river-routes/?v=20261009-final1",
+    "links": [
+      {
+        "label": "Teacher guide",
+        "url": "https://interactives.blackgold.ca/river-routes/teacher.html"
+      },
+      {
+        "label": "Original card-style game",
+        "url": "https://maltais239.github.io/interactives/furtrade/"
+      }
+    ],
+    "favourite": false,
+    "credit": "Classroom idea: Darren Maltais",
+    "group": "",
+    "image": "https://interactives.blackgold.ca/interactive-learning-lab/images/river-routes.jpg?v=20261009-final1",
+    "captured": "2026-10-08"
+  },
+  {
     "id": "governmentsort",
     "path": "governmentsorting",
     "repo": "bg",
@@ -3079,28 +3112,6 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/culturalcontact.jpg",
-    "captured": "2026-10-04"
-  },
-  {
-    "id": "furtrade",
-    "path": "furtrade",
-    "repo": "personal",
-    "title": "Fur Trade Game",
-    "category": "Social studies",
-    "description": "Make choices in a fur-trade scenario and explore their consequences.",
-    "types": [
-      "Decision games"
-    ],
-    "tags": [
-      "Trade",
-      "Historical choices"
-    ],
-    "url": "https://maltais239.github.io/interactives/furtrade/",
-    "links": [],
-    "favourite": false,
-    "credit": "",
-    "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/furtrade.jpg",
     "captured": "2026-10-04"
   },
   {
