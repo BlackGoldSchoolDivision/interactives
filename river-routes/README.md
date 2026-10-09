@@ -1,5 +1,15 @@
 # River Routes: A Fur Trade Journey
 
+## Checkpoint 8 — one resume action and a fresh journey
+
+Camp now shows a compact trail of five illustrated stages: Pack, Paddle, Portage, Inland and Trade. Completed stages receive a tick, the current stage is highlighted, and one main button resumes the appropriate saved activity. The map mission uses the same action. Separate company visits are explicitly labelled trading practice. Old competing camp resume links stay hidden. The completed arrival is titled **Journey complete!** and offers a fresh start.
+
+**Start a new journey** opens a short dialog with **Keep my journey** and **Start fresh at Fort William**. Confirmation stops animation and clears the live packing, river, portage and inland states as well as their four saved keys, then opens an empty packing screen. Camp discoveries and separately saved HBC/NWC practice visits remain; the map returns to Fort William. Clearing live state prevents page-hide or resize saves from bringing the old journey back. Trading automatically falls back to its practice state when the real journey is no longer available.
+
+Validation: all fifteen model checks pass, including current-source resume order, stranded river handling, stale manifests and journey identities, incomplete portage guards and fresh-start progress. JavaScript syntax, unique HTML IDs and local references passed. Completed, fresh and active camp progress and the restart dialog passed all six required screen sizes with no horizontal overflow and visible buttons at least 44 CSS pixels high. Dialog bounds stayed inside every viewport. Cancel preserved the completed inventory; Escape preserved the new active river journey. Confirmation from a real trading visit opened a 0 kg canoe, cleared all three travel states, retained the discovered canoe and the exact pending HBC practice offer, and stayed clear after reload. Packing and securing a new 115 kg load then launched a different journey ID at full condition; resizing and map resume kept that new journey unchanged. No application JavaScript errors were recorded. Native browser zoom remains a manual check in this remote environment.
+
+First-pass finishing work remaining: add River Routes to the hub with a current screenshot, then review the teacher-facing grade/curriculum mapping and historical framing. The playable core is connected; classroom playtesting and later mission expansion remain separate.
+
 ## Checkpoint 7B — connected inland journey and real trading
 
 A completed portage now opens **Continue inland**. The canoe visibly moves on a simplified map connection toward Rainy Lake. Space / the paddling button starts and pauses movement; Right arrow / **One stroke** advances manually. At the crossing, a sheltered route uses another provision bundle and protects canoe condition, while the quicker open crossing saves that bundle and costs 16 condition points. An available repair kit restores up to 40 points once; supplies already used on the first river remain spent. These routes, resource costs and shortened movement are invented game rules, not a surveyed channel or historical duration.
