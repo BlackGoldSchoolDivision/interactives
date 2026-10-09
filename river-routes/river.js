@@ -105,6 +105,8 @@
   window.addEventListener('blur',stop);document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});window.addEventListener('pagehide',save);
   new ResizeObserver(()=>requestAnimationFrame(render)).observe($('riverBoard'));
   const previous=api.getState;api.getState=()=>({...previous(),travel:state?{...state,manifest:{...state.manifest,counts:{...state.manifest.counts}},running,progress:progress(),canLand:canLand()}:null});
+  api.openRiver=enter;
+  api.resetRiver=()=>{stop();state=null;cooldown=0;lastSave=0;lastAnnouncement='';render();};
   makeWorld();drawCargo();render();
 })();
 

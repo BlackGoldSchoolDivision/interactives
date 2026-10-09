@@ -60,7 +60,8 @@
   $('clearCargo').addEventListener('click',()=>{state={counts:empty(),secured:false};render();save();});
   $('packingHelp').addEventListener('click',()=>{const open=$('packHelpText').hidden;$('packHelpText').hidden=!open;$('packingHelp').setAttribute('aria-expanded',String(open));});
   function openPacking(){window.RiverRoutesPreview.openView('packing');$('packingView').scrollIntoView({block:'start',behavior:'instant'});$('backToCamp').focus({preventScroll:true});}
-  $('startPacking').addEventListener('click',openPacking);
+  window.RiverRoutesPreview.openPacking=openPacking;
+  window.RiverRoutesPreview.resetCargo=()=>{state={counts:empty(),secured:false};render();};
   $('backToCamp').addEventListener('click',()=>{window.RiverRoutesPreview.openView('adventure');$('startPacking').focus({preventScroll:true});});
   $('packingRoute').addEventListener('click',()=>{window.RiverRoutesPreview.openView('map');window.RiverRoutesPreview.selectView('journey');$('mapTab').focus({preventScroll:true});$('mapIntro').scrollIntoView({block:'start',behavior:'instant'});});
   const previous=window.RiverRoutesPreview.getState;

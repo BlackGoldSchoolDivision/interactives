@@ -166,5 +166,7 @@
   new ResizeObserver(()=>requestAnimationFrame(render)).observe($('portageBoard'));
   const previous=api.getState;
   api.getState=()=>({...previous(),portage:state?{...state,manifest:{...state.manifest,counts:{...state.manifest.counts}},selected:[...state.selected],delivered:[...state.delivered],roots:[...state.roots],running,loadKg:loadKg(),allAcross:allAcross(),rootAhead:rootIndex()>=0}:null});
+  api.openPortage=enter;
+  api.resetPortage=()=>{stop();state=null;units=[];lastSave=0;render();};
   if(state)makeUnits();$('resumePortage').hidden=!landing();
 })();

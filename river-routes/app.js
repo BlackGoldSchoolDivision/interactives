@@ -67,7 +67,7 @@
     if(focused) svg.querySelector(`[data-location="${focused}"]`)?.focus({preventScroll:true});
   }
   function drawTravelMarker(){
-    const marker=$('journeyCanoe');if(!marker||travelProgress===null||state.filter==='hbc')return;
+    const marker=$('journeyCanoe');if(!marker)return;if(travelProgress===null||state.filter==='hbc'){marker.innerHTML='';return;}
     const inland=typeof travelProgress==='object'&&travelProgress.leg==='inland',a=point(inland?'kakabeka':'fort-william'),b=point(inland?'rainy-lake':'kakabeka'),u=Math.max(0,Math.min(1,inland?travelProgress.progress:travelProgress));
     const box=mapData.viewboxes[state.view],unit=Math.max(box[2]/($('tradeMap').clientWidth||1000),box[3]/($('tradeMap').clientHeight||500));
     marker.innerHTML=`<g transform="translate(${a[0]+(b[0]-a[0])*u} ${a[1]+(b[1]-a[1])*u}) scale(${unit})"><circle r="14" fill="#173345" stroke="#ffca68" stroke-width="2"/><path d="M-9 2Q0 13 9 2L7 6Q0 13-7 6Z" fill="#ffca68"/><path d="M-4 1L4-7" stroke="#fff3cf" stroke-width="2"/></g>`;
@@ -115,7 +115,7 @@
   }));
   $('canadaView').addEventListener('click',()=>chooseView('canada'));
   $('journeyView').addEventListener('click',()=>chooseView('journey'));
-  $('exploreJourney').addEventListener('click',()=>{chooseView('journey');chooseLocation('kakabeka');$('mapSurface').scrollIntoView({behavior:'instant',block:'nearest'});});
+
   $('resetMap').addEventListener('click',()=>{state={view:'canada',filter:'both',selected:'fort-william',tab:'map'};chooseTab('map');renderMap();renderLocation();save();});
   $('mapTab').addEventListener('click',()=>chooseTab('map'));
   $('adventureTab').addEventListener('click',()=>chooseTab('adventure'));

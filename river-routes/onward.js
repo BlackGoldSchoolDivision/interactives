@@ -34,7 +34,7 @@
     const arrived=state.phase==='arrived',choice=state.phase==='choice',moving=['first','second'].includes(state.phase);
     $('onwardPanelTitle').textContent=arrived&&M.goal(state.visit)?'Journey complete!':arrived?'You reached the depot.':'Make it to the post.';
     $('resumeOnward').textContent=arrived?'Return to Rainy Lake →':'Continue inland →';
-    $('onwardTitle').textContent=arrived?'Land at Rainy Lake.':choice?'Choose your crossing.':state.phase==='ready'?'Back on the water.':running?'Into the interior.':'Your canoe is waiting.';
+    $('onwardTitle').textContent=arrived&&M.goal(state.visit)?'Journey complete!':arrived?'Land at Rainy Lake.':choice?'Choose your crossing.':state.phase==='ready'?'Back on the water.':running?'Into the interior.':'Your canoe is waiting.';
     $('onwardStage').textContent=arrived?'RAINY LAKE · ARRIVED':choice?'A CHOICE ON THE WATER':state.route==='shore'?'SHELTERED SHORE':state.route==='crossing'?'OPEN CROSSING':'KAKABEKA → RAINY LAKE';
     $('onwardProgress').textContent=Math.round(state.progress*100)+'%';$('onwardProgressFill').style.width=state.progress*100+'%';
     $('onwardFood').textContent=M.food(state.visit)*2+' days';$('onwardHull').textContent=Math.round(state.hull)+'%';$('onwardWeight').textContent=M.weight(state.visit)+' / 130 kg';
@@ -76,7 +76,7 @@
   for(const [id,route]of [['takeShore','shore'],['takeCrossing','crossing']])$(id).addEventListener('click',()=>{const n=J.choose(state,route);if(!n)return;state=n;save();render();$('onwardFeedback').textContent=route==='shore'?'Shore route chosen. One more food bundle will be used.':'Crossing chosen. The canoe will lose 16 condition points.';toggle();});
   $('mendOnward').addEventListener('click',()=>{stop();const n=state&&J.repair(state);if(!n)return;state=n;save();render();$('onwardFeedback').textContent='One repair kit used. The canoe recovers up to 40 condition points.';});
   for(const id of ['startOnward','resumeOnward'])$(id).addEventListener('click',enter);
-  $('onwardBack').addEventListener('click',()=>{stop();api.openView('adventure');$('resumeOnward').focus({preventScroll:true});});
+  $('onwardBack').addEventListener('click',()=>{stop();api.openView('adventure');$('startPacking').focus({preventScroll:true});});
   $('enterRainyPost').addEventListener('click',()=>{stop();if(current()&&state.phase==='arrived')api.openJourneyTrading();});
   $('onwardOverview').addEventListener('click',()=>{stop();api.openView('map');api.selectView('journey');api.selectPlace(state?.phase==='arrived'?'rainy-lake':'kakabeka');$('mapIntro').scrollIntoView({block:'start',behavior:'instant'});});
   window.addEventListener('river-routes-view',e=>{if(e.detail!=='onward')stop();if(['onward','adventure'].includes(e.detail))render();else if(e.detail==='map'&&current())drawMap();});
@@ -85,5 +85,6 @@
   new ResizeObserver(()=>{if(!$('onwardView').hidden)fit();}).observe($('onwardView'));window.addEventListener('resize',fit);
   api.onward={canTrade:()=>current()&&state.phase==='arrived',getVisit:()=>state?.visit,saveVisit:v=>{if(!current()||state.phase!=='arrived')return false;state.visit=v;save();return true;},exchange:()=>{if(!current())return null;const next=J.exchange(state);if(!next)return null;state=next;save();return state.visit;},open:enter};
   api.getState=()=>({...baseState(),onward:state?{...structuredClone(state),running,available:current()}:null});
+  api.resetOnward=()=>{stop();state=null;saved=null;render();};
   sync();render();
 })();
