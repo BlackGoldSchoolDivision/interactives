@@ -36,7 +36,7 @@ if(action==='enter')set(M.enter(state),true);
 if(action==='clear')set(M.clear(state));
 if(action==='negotiate')set(M.negotiate(state));
 if(action==='edit')set({...state,pending:null});
-if(action==='accept'){const old=state,next=M.accept(state);if(next===old)return;note('exchange');set(next);const pop=document.createElement('div');pop.className='exchange-pop';pop.textContent='Bargain made!';pop.setAttribute('aria-hidden','true');document.body.append(pop);clearTimeout(flashTimer);flashTimer=setTimeout(()=>pop.remove(),1250);}
+if(action==='accept'){const old=state,next=M.accept(state);if(next===old)return;note('exchange');set(next);const pop=document.createElement('div');pop.className='exchange-pop';pop.innerHTML='<div class="swap-goods"><span class="fly-away">'+mini(old.pending.give)+'</span><span>⇄</span><span class="fly-back">'+mini(old.pending.take)+'</span></div><span>Bargain made!</span>';pop.setAttribute('aria-hidden','true');document.body.append(pop);clearTimeout(flashTimer);flashTimer=setTimeout(()=>pop.remove(),1250);}
 if(action==='hint')showHint();
 if(action==='advance')set(M.advance(state),true);
 if(action==='finish')set(M.finish(state),true);
