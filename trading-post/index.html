@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trading Post · The Fur Trade Fair</title>
+<meta name="description" content="A painted fur-trade bargaining game inspired by the McCord Museum classroom card game. Roll your stock, trade through two rounds and reveal what you bring home.">
+<link rel="stylesheet" href="style.css?v=20261009-post1">
+<link rel="preload" href="assets/arrival.webp" as="image">
+<script defer src="model.js?v=20261009-post1"></script><script defer src="game.js?v=20261009-post1"></script>
+</head><body>
+<a class="skip" href="#game">Skip to the game</a>
+<header class="topbar"><a class="brand" href="./"><strong>Trading Post</strong><span>THE FUR TRADE FAIR · c.1750</span></a><nav aria-label="Game tools"><button id="sound" aria-pressed="false">Sound off</button><button id="help">Hint</button><button id="restart">Start over</button></nav></header>
+<main id="game" tabindex="-1" aria-label="Fur trade game"></main>
+<footer><a href="../interactive-learning-lab/">Learning Lab</a><button id="teacher">Teacher notes</button><a href="../river-routes/">River Routes adventure ↗</a></footer>
+<dialog id="restartDialog"><h2>Start a new trading fair?</h2><p>Your current stock and bargains will be cleared.</p><div class="dialog-actions"><button data-dialog="close">Keep playing</button><button id="confirmRestart" class="gold">Start fresh</button></div></dialog>
+<dialog id="helpDialog"><h2>A good bargain</h2><p>Tap your shelf to offer goods. Tap their shelf to request goods. Tap an item on the counter to remove it.</p><p>Look for what your partner wants. You can accept, counteroffer or save your stock for the next round.</p><p>Only the items you receive score points at home.</p><button data-dialog="close" class="gold">Back to the counter</button></dialog>
+<dialog id="teacherDialog"><h2>Inspired by the McCord game</h2><p>This short digital adaptation keeps the twelve item scores, three starting dice rolls, two trading rounds and zero points for unexchanged starting stock. The museum cards call fur values “gold pieces” and goods values “prestige points”; this version uses “trade points” for both.</p><p>The PDFs supplied by Darren include the rules and item cards, but omit the separate dice lookup cards. This version reconstructs a six-face lookup from the examples and paired value tiers. Computer partners, their changing priorities, visible shelves and untimed rounds are new game rules; the classroom team rotation and uneven-team auction are not included.</p><p>The setting is a fictional Great Lakes trading post in New France around 1750. Illustrations and characters are imagined. Anishinaabe trading parties are shown as experienced partners; preferences belong to individual fictional parties. The numerical scores are game mechanics, not documented historical prices or a description of any culture’s values.</p><p>Discuss: Why might both sides want the same bargain? What happened when you waited? What does this small game leave out about relationships, Indigenous knowledge, colonial power and the environment?</p><p><a href="https://www.musee-mccord-stewart.ca/en/collections/indigenous-cultures/">McCord Stewart Museum · Indigenous cultures</a></p><button data-dialog="close" class="gold">Back to the game</button></dialog>
+<script>document.querySelectorAll('[data-dialog="close"]').forEach(b=>b.onclick=()=>b.closest('dialog').close());</script>
+</body></html>
