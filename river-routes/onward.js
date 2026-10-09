@@ -43,6 +43,7 @@
     $('stepOnward').hidden=choice||arrived;$('stepOnward').disabled=!moving&&state.phase!=='ready';
     $('mendOnward').hidden=arrived;$('mendOnward').disabled=state.hull>=100||state.visit.own.repair<1;$('onwardRepairs').textContent=state.visit.own.repair+' kit'+(state.visit.own.repair===1?'':'s');
     $('onwardArrival').hidden=!arrived;$('onwardChoicesNote').hidden=!choice;
+    $('enterRainyPost').textContent=arrived&&M.goal(state.visit)?'Review my exchanges →':'Trade at Rainy Lake →';
     $('onwardCargo').innerHTML=`<span class="onward-cargo-good" title="Food from your portage">${picture('fish')}<b>×${state.visit.foodReserve}</b><small>Provisions</small></span>`+M.ids.filter(id=>state.visit.own[id]).map(id=>`<span class="onward-cargo-good" title="${M.items.find(i=>i.id===id).name}">${picture(id)}<b>×${state.visit.own[id]}</b><small>${M.items.find(i=>i.id===id).short}</small></span>`).join('');
     if(arrived)$('onwardFeedback').textContent=M.goal(state.visit)?'Food and furs aboard. Your successful exchanges are saved.':'Your carried goods are ready for the traders. Choose what to keep and what to offer.';
     drawMap();
