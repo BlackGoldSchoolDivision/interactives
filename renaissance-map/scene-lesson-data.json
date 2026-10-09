@@ -1,0 +1,899 @@
+{
+  "locations": {
+    "atlantic": {
+      "name": "Atlantic Ocean",
+      "p": [
+        75,
+        204
+      ],
+      "type": "water",
+      "hint": "Look west of Ireland, England, France and Portugal.",
+      "fact": "The Atlantic lies west of Europe.",
+      "ll": [
+        46,
+        -16
+      ]
+    },
+    "north": {
+      "name": "North Sea",
+      "p": [
+        268,
+        105
+      ],
+      "type": "water",
+      "hint": "Look between Britain and the coast of northern mainland Europe.",
+      "fact": "The North Sea lies east of Britain.",
+      "ll": [
+        56,
+        3
+      ]
+    },
+    "adriatic": {
+      "name": "Adriatic Sea",
+      "p": [
+        386,
+        350
+      ],
+      "type": "water",
+      "hint": "Find the narrow sea east of Italy.",
+      "fact": "The Adriatic connects Venice with the Mediterranean.",
+      "ll": [
+        42.5,
+        16
+      ]
+    },
+    "mediterranean": {
+      "name": "Mediterranean Sea",
+      "p": [
+        222,
+        423
+      ],
+      "type": "water",
+      "hint": "Look south of Europe, between Europe and North Africa.",
+      "fact": "Mediterranean sea routes connected European, African and Asian ports.",
+      "ll": [
+        35.5,
+        13
+      ]
+    },
+    "black": {
+      "name": "Black Sea",
+      "p": [
+        598,
+        314
+      ],
+      "type": "water",
+      "hint": "Look north of Anatolia, in the east of the map.",
+      "fact": "The Black Sea lies north of Anatolia.",
+      "ll": [
+        43.5,
+        34
+      ]
+    },
+    "ireland": {
+      "name": "Ireland",
+      "ids": [
+        9
+      ],
+      "p": [
+        133,
+        87
+      ],
+      "hint": "Find the island west of Britain.",
+      "fact": "Ireland lies west of Britain. This identifies the island, which was not a single united kingdom in 1400.",
+      "ll": [
+        53.3,
+        -8
+      ]
+    },
+    "scotland": {
+      "name": "Scotland",
+      "ids": [
+        6
+      ],
+      "p": [
+        196,
+        45
+      ],
+      "hint": "Find the northern part of Britain.",
+      "fact": "Scotland was a separate kingdom during the medieval period.",
+      "ll": [
+        56.9,
+        -4
+      ]
+    },
+    "england": {
+      "name": "England",
+      "ids": [
+        15
+      ],
+      "p": [
+        195,
+        126
+      ],
+      "hint": "Look south of Scotland.",
+      "fact": "The Renaissance later developed in England, including literature and theatre.",
+      "ll": [
+        52.1,
+        -1.5
+      ]
+    },
+    "france": {
+      "name": "France",
+      "ids": [
+        34
+      ],
+      "p": [
+        211,
+        239
+      ],
+      "hint": "Look across the Channel from England.",
+      "fact": "Artists and ideas travelled between Italy and France.",
+      "ll": [
+        47,
+        2.4
+      ]
+    },
+    "castile": {
+      "name": "Spain (Castile)",
+      "ids": [
+        39
+      ],
+      "p": [
+        92,
+        331
+      ],
+      "hint": "Find the large kingdom east of Portugal. Spain was divided into kingdoms.",
+      "fact": "Castile was one of several Iberian kingdoms. It is not identical to all of modern Spain.",
+      "ll": [
+        40.2,
+        -4.5
+      ]
+    },
+    "granada": {
+      "name": "Granada",
+      "ids": [
+        61
+      ],
+      "p": [
+        86,
+        394
+      ],
+      "hint": "Find the small kingdom along the southern edge of Iberia.",
+      "fact": "Granada was an Islamic kingdom until its conquest in 1492.",
+      "ll": [
+        37.05,
+        -3.8
+      ]
+    },
+    "portugal": {
+      "name": "Portugal",
+      "ids": [
+        43
+      ],
+      "p": [
+        35,
+        330
+      ],
+      "hint": "Look along the western edge of Iberia.",
+      "fact": "Portugal borders the Atlantic Ocean.",
+      "ll": [
+        39.6,
+        -8
+      ]
+    },
+    "hre": {
+      "name": "Holy Roman Empire",
+      "ids": [
+        25
+      ],
+      "p": [
+        326,
+        210
+      ],
+      "hint": "Find the large central region north of the Italian peninsula.",
+      "fact": "The Holy Roman Empire included many territories and cities. It was not modern Germany.",
+      "ll": [
+        50.6,
+        11.5
+      ]
+    },
+    "genoa": {
+      "name": "Genoa",
+      "ids": [
+        "genoa",
+        53
+      ],
+      "p": [
+        311,
+        298
+      ],
+      "hint": "Look on the northwestern coast of Italy.",
+      "fact": "Genoa was a maritime republic. Its merchants and wealthy families supported trade and the arts.",
+      "ll": [
+        44.4056,
+        8.9463
+      ]
+    },
+    "papal": {
+      "name": "Papal States",
+      "ids": [
+        "papal"
+      ],
+      "p": [
+        339,
+        348
+      ],
+      "hint": "Look in central Italy, around Rome.",
+      "fact": "The Papal States were territories ruled by the pope.",
+      "ll": [
+        42.7,
+        12.6
+      ]
+    },
+    "naples": {
+      "name": "Kingdom of Naples",
+      "ids": [
+        56
+      ],
+      "p": [
+        378,
+        385
+      ],
+      "hint": "Find the southern part of the Italian mainland.",
+      "fact": "The Kingdom of Naples occupied much of southern mainland Italy.",
+      "ll": [
+        40.4,
+        15.7
+      ]
+    },
+    "sicily": {
+      "name": "Kingdom of Sicily",
+      "ids": [
+        67
+      ],
+      "p": [
+        348,
+        440
+      ],
+      "hint": "Find the island just below the toe of Italy.",
+      "fact": "Sicily is an island south of the Italian mainland.",
+      "ll": [
+        37.6,
+        14
+      ]
+    },
+    "veniceState": {
+      "name": "Republic of Venice",
+      "ids": [
+        "venice"
+      ],
+      "p": [
+        359,
+        288
+      ],
+      "hint": "Look near the northern end of the Adriatic Sea.",
+      "fact": "Venice linked European markets with the eastern Mediterranean through maritime trade.",
+      "ll": [
+        45.45,
+        12.1
+      ]
+    },
+    "florence": {
+      "name": "Florence",
+      "p": [
+        328,
+        322
+      ],
+      "type": "city",
+      "hint": "Find the inland city in central northern Italy.",
+      "fact": "Florence was a major Renaissance centre. The Medici were prominent patrons of artists.",
+      "ll": [
+        43.7696,
+        11.2558
+      ]
+    },
+    "venice": {
+      "name": "Venice",
+      "p": [
+        363,
+        295
+      ],
+      "type": "city",
+      "hint": "Find the city at the northern end of the Adriatic Sea.",
+      "fact": "Venice’s location supported trade by sea and connections with inland Europe.",
+      "ll": [
+        45.4408,
+        12.3155
+      ]
+    },
+    "genoaCity": {
+      "name": "Genoa",
+      "p": [
+        311,
+        298
+      ],
+      "type": "city",
+      "hint": "Find the port on Italy’s northwestern coast.",
+      "fact": "Genoa’s wealth came in part from maritime trade and finance.",
+      "ll": [
+        44.4056,
+        8.9463
+      ]
+    },
+    "ottoman": {
+      "name": "Ottoman Empire",
+      "p": [
+        426,
+        242
+      ],
+      "type": "empire",
+      "hint": "Look for the connected territories across southeastern Europe, Anatolia and parts of North Africa and western Asia.",
+      "fact": "This separate classroom reference shows Ottoman extent in 1683, well after the late-medieval map.",
+      "ll": [
+        38,
+        33
+      ]
+    },
+    "ottomanSea": {
+      "name": "Mediterranean Sea",
+      "p": [
+        240,
+        248
+      ],
+      "type": "water",
+      "ll": [
+        34,
+        19
+      ]
+    },
+    "ottomanWest": {
+      "name": "Western Europe",
+      "p": [
+        84,
+        98
+      ],
+      "ll": [
+        47,
+        3
+      ]
+    },
+    "aragon": {
+      "name": "Aragon",
+      "ids": [
+        50
+      ],
+      "p": [
+        162,
+        338
+      ],
+      "ll": [
+        41.3,
+        -0.7
+      ]
+    },
+    "hungary": {
+      "name": "Hungary",
+      "ids": [
+        36
+      ],
+      "p": [
+        442,
+        266
+      ],
+      "ll": [
+        47,
+        20
+      ]
+    },
+    "norway": {
+      "name": "Norway",
+      "ids": [
+        1
+      ],
+      "p": [
+        333,
+        25
+      ],
+      "ll": [
+        60,
+        7
+      ]
+    },
+    "sweden": {
+      "name": "Sweden",
+      "ids": [
+        2
+      ],
+      "p": [
+        394,
+        32
+      ],
+      "ll": [
+        60,
+        16
+      ]
+    },
+    "anatolia": {
+      "name": "Anatolia",
+      "ids": [
+        55
+      ],
+      "p": [
+        604,
+        397
+      ],
+      "ll": [
+        39,
+        35
+      ]
+    }
+  },
+  "tasks": [
+    {
+      "chapter": 0,
+      "type": "water",
+      "target": "atlantic",
+      "other": [
+        "north",
+        "mediterranean"
+      ],
+      "instruction": "Find this waterway. Choose a letter on the map.",
+      "detail": "Your blue label will be added to the map."
+    },
+    {
+      "chapter": 0,
+      "type": "water",
+      "target": "north",
+      "other": [
+        "black",
+        "atlantic"
+      ],
+      "instruction": "Find this waterway. Choose a letter on the map.",
+      "detail": "Your blue label will be added to the map."
+    },
+    {
+      "chapter": 0,
+      "type": "water",
+      "target": "adriatic",
+      "other": [
+        "north",
+        "mediterranean"
+      ],
+      "instruction": "Find this waterway. Choose a letter on the map.",
+      "detail": "Your blue label will be added to the map."
+    },
+    {
+      "chapter": 0,
+      "type": "water",
+      "target": "mediterranean",
+      "other": [
+        "black",
+        "atlantic"
+      ],
+      "instruction": "Find this waterway. Choose a letter on the map.",
+      "detail": "Your blue label will be added to the map."
+    },
+    {
+      "chapter": 0,
+      "type": "water",
+      "target": "black",
+      "other": [
+        "north",
+        "mediterranean"
+      ],
+      "instruction": "Find this waterway. Choose a letter on the map.",
+      "detail": "Your blue label will be added to the map."
+    },
+    {
+      "chapter": 1,
+      "type": "label",
+      "target": "ireland",
+      "other": [
+        "scotland",
+        "england"
+      ],
+      "instruction": "Locate the kingdom or territory.",
+      "detail": "Its name will appear on your map."
+    },
+    {
+      "chapter": 1,
+      "type": "label",
+      "target": "scotland",
+      "other": [
+        "england",
+        "ireland"
+      ],
+      "instruction": "Locate the kingdom or territory.",
+      "detail": "Its name will appear on your map."
+    },
+    {
+      "chapter": 1,
+      "type": "label",
+      "target": "england",
+      "other": [
+        "scotland",
+        "france"
+      ],
+      "instruction": "Locate the kingdom or territory.",
+      "detail": "Its name will appear on your map."
+    },
+    {
+      "chapter": 1,
+      "type": "label",
+      "target": "france",
+      "other": [
+        "hre",
+        "castile"
+      ],
+      "instruction": "Locate the kingdom or territory.",
+      "detail": "Its name will appear on your map."
+    },
+    {
+      "chapter": 1,
+      "type": "label",
+      "target": "castile",
+      "other": [
+        "portugal",
+        "aragon"
+      ],
+      "instruction": "Locate the kingdom or territory.",
+      "detail": "Its name will appear on your map."
+    },
+    {
+      "chapter": 1,
+      "type": "label",
+      "target": "granada",
+      "other": [
+        "portugal",
+        "castile"
+      ],
+      "instruction": "Locate the kingdom or territory.",
+      "detail": "Its name will appear on your map."
+    },
+    {
+      "chapter": 1,
+      "type": "label",
+      "target": "portugal",
+      "other": [
+        "castile",
+        "granada"
+      ],
+      "instruction": "Locate the kingdom or territory.",
+      "detail": "Its name will appear on your map."
+    },
+    {
+      "chapter": 1,
+      "type": "label",
+      "target": "hre",
+      "other": [
+        "france",
+        "hungary"
+      ],
+      "instruction": "Locate the kingdom or territory.",
+      "detail": "Its name will appear on your map."
+    },
+    {
+      "chapter": 1,
+      "type": "label",
+      "target": "genoa",
+      "other": [
+        "papal",
+        "veniceState"
+      ],
+      "instruction": "Locate the kingdom or territory.",
+      "detail": "Its name will appear on your map."
+    },
+    {
+      "chapter": 1,
+      "type": "label",
+      "target": "papal",
+      "other": [
+        "naples",
+        "genoa"
+      ],
+      "instruction": "Locate the kingdom or territory.",
+      "detail": "Its name will appear on your map."
+    },
+    {
+      "chapter": 1,
+      "type": "label",
+      "target": "naples",
+      "other": [
+        "papal",
+        "sicily"
+      ],
+      "instruction": "Locate the kingdom or territory.",
+      "detail": "Its name will appear on your map."
+    },
+    {
+      "chapter": 1,
+      "type": "label",
+      "target": "sicily",
+      "other": [
+        "naples",
+        "granada"
+      ],
+      "instruction": "Locate the kingdom or territory.",
+      "detail": "Its name will appear on your map."
+    },
+    {
+      "chapter": 2,
+      "type": "empire",
+      "target": "ottoman",
+      "other": [
+        "ottomanWest",
+        "ottomanSea"
+      ],
+      "instruction": "Which area is the Ottoman Empire?",
+      "detail": "Select its location to shade it brown."
+    },
+    {
+      "chapter": 2,
+      "type": "religionChoice",
+      "target": "ottoman",
+      "other": [],
+      "instruction": "Which religion was practised by the Ottoman rulers?",
+      "detail": "Add the word Islam to your Ottoman map."
+    },
+    {
+      "chapter": 3,
+      "type": "city",
+      "target": "florence",
+      "other": [
+        "venice",
+        "genoaCity"
+      ],
+      "instruction": "Place a star at this city.",
+      "detail": "Explore the cities that helped shape the Renaissance."
+    },
+    {
+      "chapter": 3,
+      "type": "city",
+      "target": "venice",
+      "other": [
+        "florence",
+        "genoaCity"
+      ],
+      "instruction": "Place a star at this city.",
+      "detail": "Explore the cities that helped shape the Renaissance."
+    },
+    {
+      "chapter": 3,
+      "type": "city",
+      "target": "genoaCity",
+      "other": [
+        "florence",
+        "venice"
+      ],
+      "instruction": "Place a star at this city.",
+      "detail": "Explore the cities that helped shape the Renaissance."
+    },
+    {
+      "chapter": 4,
+      "type": "italian",
+      "target": "naples",
+      "other": [
+        "genoa",
+        "papal"
+      ],
+      "instruction": "Find this Italian Renaissance territory.",
+      "detail": "Shade it yellow, following the classroom assignment."
+    },
+    {
+      "chapter": 4,
+      "type": "italian",
+      "target": "genoa",
+      "other": [
+        "naples",
+        "papal"
+      ],
+      "instruction": "Find this Italian Renaissance territory.",
+      "detail": "Shade it yellow, following the classroom assignment."
+    },
+    {
+      "chapter": 4,
+      "type": "italian",
+      "target": "papal",
+      "other": [
+        "naples",
+        "genoa"
+      ],
+      "instruction": "Find this Italian Renaissance territory.",
+      "detail": "Shade it yellow, following the classroom assignment."
+    },
+    {
+      "chapter": 4,
+      "type": "italian",
+      "target": "veniceState",
+      "other": [
+        "naples",
+        "genoa"
+      ],
+      "instruction": "Find this Italian Renaissance territory.",
+      "detail": "Shade it yellow, following the classroom assignment."
+    },
+    {
+      "chapter": 5,
+      "type": "spread",
+      "target": "france",
+      "other": [
+        "castile",
+        "hre"
+      ],
+      "instruction": "Where will these ideas travel?",
+      "detail": "Choose the destination. Arrows from the Italian territories will appear."
+    },
+    {
+      "chapter": 5,
+      "type": "spread",
+      "target": "castile",
+      "other": [
+        "france",
+        "hre"
+      ],
+      "instruction": "Where will these ideas travel?",
+      "detail": "Choose the destination. Arrows from the Italian territories will appear."
+    },
+    {
+      "chapter": 5,
+      "type": "spread",
+      "target": "hre",
+      "other": [
+        "france",
+        "castile"
+      ],
+      "instruction": "Where will these ideas travel?",
+      "detail": "Choose the destination. Arrows from the Italian territories will appear."
+    },
+    {
+      "chapter": 6,
+      "type": "northern",
+      "target": "france",
+      "other": [
+        "castile",
+        "hre"
+      ],
+      "instruction": "Find this destination.",
+      "detail": "Shade it red using the assignment’s colour key."
+    },
+    {
+      "chapter": 6,
+      "type": "northern",
+      "target": "castile",
+      "other": [
+        "france",
+        "hre"
+      ],
+      "instruction": "Find this destination.",
+      "detail": "Shade it red using the assignment’s colour key."
+    },
+    {
+      "chapter": 6,
+      "type": "northern",
+      "target": "hre",
+      "other": [
+        "france",
+        "castile"
+      ],
+      "instruction": "Find this destination.",
+      "detail": "Shade it red using the assignment’s colour key."
+    },
+    {
+      "chapter": 6,
+      "type": "cross",
+      "target": "france",
+      "other": [
+        "castile",
+        "hre"
+      ],
+      "instruction": "Add religious symbols to this area.",
+      "detail": "Place crosses to represent the assignment’s focus on religion."
+    },
+    {
+      "chapter": 6,
+      "type": "cross",
+      "target": "castile",
+      "other": [
+        "france",
+        "hre"
+      ],
+      "instruction": "Add religious symbols to this area.",
+      "detail": "Place crosses to represent the assignment’s focus on religion."
+    },
+    {
+      "chapter": 6,
+      "type": "cross",
+      "target": "hre",
+      "other": [
+        "france",
+        "castile"
+      ],
+      "instruction": "Add religious symbols to this area.",
+      "detail": "Place crosses to represent the assignment’s focus on religion."
+    },
+    {
+      "chapter": 7,
+      "type": "englandArrow",
+      "target": "england",
+      "other": [
+        "ireland",
+        "scotland"
+      ],
+      "instruction": "Where do the Renaissance ideas travel next?",
+      "detail": "Draw arrows from the northern destinations to England."
+    },
+    {
+      "chapter": 7,
+      "type": "englandGreen",
+      "target": "england",
+      "other": [
+        "ireland",
+        "scotland"
+      ],
+      "instruction": "Finish by locating England.",
+      "detail": "Shade it green, following your assignment."
+    }
+  ],
+  "questions": [
+    {
+      "q": "Florence became the birthplace of Renaissance ______________________________.",
+      "page": "35",
+      "chips": [
+        "art and learning",
+        "humanism"
+      ]
+    },
+    {
+      "q": "What prominent banking family controlled Florence, and how did they support the Renaissance?",
+      "page": "36",
+      "chips": [
+        "The Medici family",
+        "They supported artists and commissioned works of art."
+      ]
+    },
+    {
+      "q": "Why is Venice ideally situated to become a trading hub?",
+      "page": "37",
+      "chips": [
+        "Venice is near the northern end of the Adriatic Sea.",
+        "Sea routes linked it with the eastern Mediterranean.",
+        "It connected sea trade with markets in Europe."
+      ]
+    },
+    {
+      "q": "List three reasons why Venice gained importance.",
+      "page": "40",
+      "chips": [
+        "Its position on sea trading routes.",
+        "Trade and contact with other cultures.",
+        "Wealth from merchants and commerce."
+      ]
+    },
+    {
+      "q": "Genoa is Italy’s main __________________________________ today.",
+      "page": "42",
+      "chips": [
+        "port"
+      ]
+    },
+    {
+      "q": "Wealthy Genovese families paid for the creation of…",
+      "page": "44",
+      "chips": [
+        "works of art",
+        "buildings and artistic commissions"
+      ]
+    }
+  ],
+  "chapters": [
+    "Chart the waters",
+    "Find the kingdoms",
+    "Meet the Ottoman Empire",
+    "Visit the city states",
+    "Colour the Renaissance",
+    "Follow the ideas",
+    "Faith and the north",
+    "Across to England"
+  ]
+}

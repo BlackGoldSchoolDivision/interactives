@@ -1,12 +1,12 @@
-# Illustrated atlas scene checkpoint
+# Illustrated Renaissance atlas — complete assignment
 
-This is a separate three-question scene for visual review. `illustrated-scene.html` does not replace the 37-step activity or change its saved work.
+The approved illustrated version now contains the same 37 mapping steps and all six written-response prompts as the original classroom activity. It remains a separate hub entry and uses its own device-save key; the original version and saved work are preserved. Saved JSON from the original can be opened in this version.
 
 The fixed illustration and question overlays share the same geographic projection and SVG coordinate system. The generated assets contain no coastlines, country borders, river positions or place labels. Boundary highlights remain transparent so the paper and engraved artwork stay visible.
 
 Sources: Natural Earth public-domain 1:50m land and rivers (`scene-land-50m.geojson`, `scene-rivers-50m.geojson`), https://github.com/nvkelso/natural-earth-vector ; existing GPL-3.0 historical circa-1400 activity regions and context, https://github.com/aourednik/historical-basemaps . Extracted land is clipped to the scene region; river properties retain names and scale rank. Historical borders remain approximate. Engraved mountain vignettes mark broad mountain areas decoratively and are not an elevation model.
 
-Authoring: `scene-shell.html`, `scene-map-fragment.html`, `scene-geometry.json`, and `../reference/build-illustrated-scene.cjs`. Build the map fragment and geometry with the Node script; substitute them for `__MAP__` and `__GEOMETRY__` in the shell to build `illustrated-scene.html`.
+Authoring: `scene-shell.html`, `scene-lesson.js`, `scene-lesson.css`, and two build scripts. Run `node reference/build-illustrated-scene.cjs`, then `node reference/build-illustrated-lesson.cjs`. The second script copies the original task and response data, checks the 37 + 6 counts, adds the separate 1683 Ottoman illustration and geographic anchors, and builds the complete inline `illustrated-scene.html`.
 
 ## Generated artwork
 
@@ -27,3 +27,8 @@ Sea prompt: “Use case: stylized-concept. Asset type: seamless historical atlas
 ## Labels and modes
 
 Questions hide every country, city and sea name on the map, including after a correct response. The A/B markers stay visible. Explore shows the complete atlas labels, including the five smaller Italian states, and hides question markers. Entering or leaving Explore preserves the question index, answer, feedback and hint. LIAM remains available in both modes; Explore provides button-based zoom and Fit controls.
+
+
+## Complete lesson
+
+The original eight chapters remain: waters (5), territories (12), Ottoman Empire and ruling religion (2), cities (3), yellow Italian states (4), routes from Italy (3), red northern destinations and crosses (6), and routes to England plus green England (2). The six original textbook prompts retain pages 35, 36, 37, 40, 42 and 44. LIAM offers two answer buttons for every mapping task and selectable phrases for every written prompt; typing remains optional. Italian questions use a closer fixed view. Saved work includes mapping progress and responses. Work can be downloaded, imported from either version, reviewed and printed. The labels are visible in Explore and exported maps, and hidden in every mapping question. The Ottoman map is a separate historical view, using the existing approximately georeferenced 1683 classroom overlay and Natural Earth 1:110m coastlines.
