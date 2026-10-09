@@ -1953,6 +1953,20 @@
         }
       ]
     },
+    "trading-post": {
+      "kind": "html",
+      "title": "Trading Post: The Fur Trade Fair",
+      "credit": "Inspired by a McCord Stewart Museum classroom activity",
+      "category": "Social studies",
+      "versions": [
+        {
+          "label": "Trading Post: The Fur Trade Fair",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "trading-post/index.html",
+          "url": "https://interactives.blackgold.ca/trading-post/?v=20261009-post2"
+        }
+      ]
+    },
     "governmentguide": {
       "kind": "html",
       "title": "Government Leaders & Responsibilities",
@@ -9629,6 +9643,60 @@
       {
         "path": "river-routes/trading.js",
         "bytes": 12518
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/trading-post": [
+      {
+        "path": "trading-post/ARTWORK.md",
+        "bytes": 7494
+      },
+      {
+        "path": "trading-post/README.md",
+        "bytes": 3759
+      },
+      {
+        "path": "trading-post/assets/arrival.webp",
+        "bytes": 581088
+      },
+      {
+        "path": "trading-post/assets/home.webp",
+        "bytes": 479576
+      },
+      {
+        "path": "trading-post/assets/items.webp",
+        "bytes": 449220
+      },
+      {
+        "path": "trading-post/assets/post-community.webp",
+        "bytes": 416362
+      },
+      {
+        "path": "trading-post/assets/post.webp",
+        "bytes": 428912
+      },
+      {
+        "path": "trading-post/game.js",
+        "bytes": 13506
+      },
+      {
+        "path": "trading-post/index.html",
+        "bytes": 3519
+      },
+      {
+        "path": "trading-post/model.js",
+        "bytes": 7176
+      },
+      {
+        "path": "trading-post/qa.html",
+        "bytes": 2357
+      },
+      {
+        "path": "trading-post/style.css",
+        "bytes": 19120
+      },
+      {
+        "path": "trading-post/tests/model.test.cjs",
+        "bytes": 4124
       }
     ]
   },
