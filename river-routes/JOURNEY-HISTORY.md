@@ -1,6 +1,6 @@
 # Rainy Lake arrival — route and artwork checkpoint
 
-Prepared October 8, 2026. This checkpoint adds researched destination notes and an environment asset. The playable game remains at the illustrated-post trading-practice checkpoint; arrival, onward travel and actual journey exchanges are not wired into the application yet.
+Prepared October 8, 2026. Checkpoint 7A added researched destination notes and an environment asset. Checkpoint 7B connects the completed portage to saved map travel and actual journey trading at this inland arrival.
 
 ## Destination in 1809
 
@@ -27,7 +27,7 @@ Asset: `assets/post-rainy-lake.webp`, 1536 × 1024, 520,896 bytes. A modest wood
 
 This is a source-informed illustrative scene. Building arrangement, enclosure, people, clothing, shelves, objects, season and lighting are imagined. It does not reproduce an excavated assemblage or a known 1809 view. The fish and rice illustrate the proposed provisioning scenario; later local food-trade evidence and Fort William's Anishinaabe provisions do not establish an exact stock list for this post in 1809. Glass colours repeat the game's object palette and are not a claim about finds at Rainy Lake.
 
-## Next build chunk: inventory continuity
+## Implemented inventory continuity
 
 - Start onward travel only after the current journey's canoe and every bundle have completed the portage and been reloaded.
 - Create one persistent onward-journey state keyed to the original river `journeyId`. Use remaining food, repair kits and canoe condition from the portage manifest. Do not re-import the original packing counts after repairs have been spent.
@@ -37,7 +37,7 @@ This is a source-informed illustrative scene. Building arrangement, enclosure, p
 - Keep the separately saved Fort William / York comparison practices available.
 - Use pictures, short prompts and visible choices. Provisioning and canoe capacity remain part of the goal; the activity must not imply that accumulating the most furs is the only measure of success.
 
-## Following verification chunk
+## Verification scope
 
 Check depleted repair supplies, food use, conservation during real exchanges, reloading at each transition, stale agreements, new-journey invalidation and independent practice saves. Play a complete journey through the arrival. Verify live and completed states at all six required sizes, keyboard access, horizontal overflow and control sizes, then publish and pause for review. Native browser zoom remains a manual check unless the browser supports it.
 

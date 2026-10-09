@@ -75,7 +75,7 @@ Production files: `assets/post-fort-william.webp` and `assets/post-york-factory.
 
 # Rainy Lake inland arrival — October 8, 2026
 
-New asset: `assets/post-rainy-lake.webp` (1536×1024, 520,896 bytes), prepared for the next journey chunk. Generated with the built-in image-generation tool using `post-fort-william.webp` as a style reference. Original: `generated_images/exec-86e494c5-55b0-4dcd-b323-61f579149597.png`. WebP encoding at quality 85 changes format only. The environment is not yet wired into gameplay.
+New asset: `assets/post-rainy-lake.webp` (1536×1024, 520,896 bytes), prepared for the next journey chunk. Generated with the built-in image-generation tool using `post-fort-william.webp` as a style reference. Original: `generated_images/exec-86e494c5-55b0-4dcd-b323-61f579149597.png`. WebP encoding at quality 85 changes format only. Checkpoint 7B uses this environment for the actual Rainy Lake journey arrival.
 
 The destination is supported by the Town of Fort Frances's NWC provincial plaque. Architecture, people, clothing, display shelves, goods, weather and season are imagined. This picture is not an exact reconstruction or a documented local assemblage. See `JOURNEY-HISTORY.md` for naming, route, food-evidence and inventory-continuity boundaries.
 

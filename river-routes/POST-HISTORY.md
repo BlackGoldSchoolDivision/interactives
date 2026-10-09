@@ -5,6 +5,7 @@ The game’s company-rivalry setting is 1809. These are source-informed illustra
 | Post | Evidence used in the scene | Limits |
 | --- | --- | --- |
 | Fort William · North West Company | Kaministiquia canoe rendezvous; depot, warehouses, canoe work and trades; Anishinaabe dwellings described in 1805 and 1808 images. | Building placement, foreground porch, weather, workers and shelves are imagined. The park’s current living-history presentation is 1815 and is not proof of an exact 1809 layout. |
+| Fort Lac La Pluie · North West Company | The Town of Fort Frances reproduces the provincial plaque for this late-1700s–1821 depot and cargo exchange. | The smaller buildings, people and shelves are imagined. Fish and rice are provisioning game scenarios, not a documented 1809 stock list. |
 | York Factory · Hudson’s Bay Company | Hayes River lowlands; Old Octagon built 1788–1795, with four pentagonal flankers linked by roofed curtain sheds. | The illustration suggests the earlier form. The surviving white depot began in 1831 and is deliberately excluded. The 1810 Northern Department headquarters role is not assigned to 1809. |
 
 Goods evidence:
@@ -17,6 +18,7 @@ Both companies’ operations depended on Indigenous expertise, technologies, pro
 
 Sources checked October 8, 2026:
 
+- [Rainy Lake: Town of Fort Frances heritage tour and plaques](https://www.fortfrances.ca/node/248)
 - [Fort William: historical background](https://fwhp.ca/about-us/historic-background/)
 - [Fort William: the park’s 1815 interpretation](https://fwhp.ca/plan-your-visit/fort-william/)
 - [York Factory: Old Octagon archaeology](https://parks.canada.ca/lhn-nhs/mb/yorkfactory/culture/archaeo)
@@ -26,5 +28,5 @@ Sources checked October 8, 2026:
 
 ## Gameplay boundary
 
-The two post visits are separately saved trading practices with visible shelves, offers, counter-offers and inventory changes. Learners can compare different supplies and demands without moving their canoe to a distant post. A completed, current portage can supply a separate practice copy of the carried cargo, including remaining repair supplies and food. The journey’s original inventory stays available for the next river leg. Connecting trading to an actual inland arrival is a later chunk.
+The two post visits are separately saved trading practices with visible shelves, offers, counter-offers and inventory changes. Learners can compare different supplies and demands without moving their canoe to a distant post. A completed, current portage can supply a separate practice copy of the carried cargo, including remaining repair supplies and food. The journey’s original inventory stays available for the next river leg. Checkpoint 7B now connects the current completed portage to a compressed inland map journey and an actual game arrival at Fort Lac La Pluie. This real journey visit uses one saved remaining inventory; accepted exchanges spend its goods. The Fort William and York comparison practices remain independent. See `JOURNEY-HISTORY.md` for the route and inventory boundaries.
 
