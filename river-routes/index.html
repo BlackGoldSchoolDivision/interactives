@@ -6,20 +6,23 @@
   <meta name="description" content="Explore Canada's fur-trade waterways and plan a journey from Fort William. A developing classroom adventure from BGSD's Interactive Learning Lab.">
   <title>River Routes · A Fur Trade Journey</title>
   <link rel="preload" as="image" href="assets/river-camp.webp">
-  <link rel="stylesheet" href="styles.css?v=20261008-posts2">
-  <link rel="stylesheet" href="adventure.css?v=20261008-posts2">
-  <script defer src="map-data.js?v=20261008-posts2"></script>
-  <script defer src="app.js?v=20261008-posts2"></script>
-  <script defer src="camp.js?v=20261008-posts2"></script>
-  <link rel="stylesheet" href="packing.css?v=20261008-posts2">
-  <script defer src="packing.js?v=20261008-posts2"></script>
-  <link rel="stylesheet" href="river.css?v=20261008-posts2">
-  <script defer src="river.js?v=20261008-posts2"></script>
-  <link rel="stylesheet" href="portage.css?v=20261008-posts2">
-  <script defer src="portage.js?v=20261008-posts2"></script>
-  <link rel="stylesheet" href="trading.css?v=20261008-posts2">
-  <script defer src="trading-model.js?v=20261008-posts2"></script>
-  <script defer src="trading.js?v=20261008-posts2"></script>
+  <link rel="stylesheet" href="styles.css?v=20261009-inland1">
+  <link rel="stylesheet" href="adventure.css?v=20261009-inland1">
+  <script defer src="map-data.js?v=20261009-inland1"></script>
+  <script defer src="app.js?v=20261009-inland1"></script>
+  <script defer src="camp.js?v=20261009-inland1"></script>
+  <link rel="stylesheet" href="packing.css?v=20261009-inland1">
+  <script defer src="packing.js?v=20261009-inland1"></script>
+  <link rel="stylesheet" href="river.css?v=20261009-inland1">
+  <script defer src="river.js?v=20261009-inland1"></script>
+  <link rel="stylesheet" href="portage.css?v=20261009-inland1">
+  <script defer src="portage.js?v=20261009-inland1"></script>
+  <link rel="stylesheet" href="trading.css?v=20261009-inland1">
+  <script defer src="trading-model.js?v=20261009-inland1"></script>
+  <link rel="stylesheet" href="onward.css?v=20261009-inland1">
+  <script defer src="onward-model.js?v=20261009-inland1"></script>
+  <script defer src="onward.js?v=20261009-inland1"></script>
+  <script defer src="trading.js?v=20261009-inland1"></script>
 </head>
 <body>
   <a class="skip-link" href="#workspace">Skip to the adventure</a>
@@ -51,6 +54,7 @@
           <details class="object-details" id="objectDetails" hidden><summary>Look closer</summary><p id="objectDetailText"></p><a id="objectSource" target="_blank" rel="noopener">History source ↗</a></details>
           <button class="primary-button journey-button" id="startPacking">Pack your canoe <span aria-hidden="true">→</span></button>
           <button class="text-button camp-route" id="resumePortage" hidden>Resume portage →</button>
+          <button class="start-trading-button" id="resumeOnward" hidden>Continue inland →</button>
           <button class="text-button camp-route" id="resumeRiver" hidden>Resume river journey →</button>
           <button class="start-trading-button" id="startTrading">Enter the trading posts <span aria-hidden="true">→</span></button>
           <button class="text-button camp-route" id="seeRoute">See your route <span aria-hidden="true">→</span></button>
@@ -135,15 +139,31 @@
           <p id="portageFeedback" class="portage-feedback" role="status" aria-live="polite" aria-atomic="true">Take up to 40 kg of cargo, or carry the canoe on its own.</p>
           <button id="returnPortage" class="portage-primary" hidden>Return for the next load ↩</button>
           <button id="reloadPortage" class="portage-primary" hidden>Reload the canoe ✓</button>
-          <div id="portageResult" class="portage-result" hidden><strong>Ready for the water!</strong><p>Every bundle is across. Your canoe and supplies are saved for the next leg.</p><button id="portageMap" class="portage-secondary">See where you are →</button><button id="portageTrading" class="portage-secondary">Try post trading →</button></div>
+          <div id="portageResult" class="portage-result" hidden><strong>Ready for the water!</strong><p>Every bundle is across. Take your remaining supplies toward Rainy Lake.</p><button id="startOnward" class="portage-primary">Continue inland →</button><button id="portageMap" class="portage-secondary">See where you are →</button><button id="portageTrading" class="portage-secondary">Try post trading →</button></div>
           <div class="portage-actions"><button id="restartPortage" class="portage-secondary">Restart portage</button><button id="portageHint" class="portage-secondary" aria-expanded="false" aria-controls="portageHintText">Hint</button></div>
           <p id="portageHintText" class="portage-hint" hidden>Combine bundles up to 40 kg. Lighter loads use less energy. The forest trail has fewer roots. Rest when energy runs low, then continue. Carry the canoe on its own, and return until nothing is left behind.</p>
           <details class="portage-notes"><summary>Look closer</summary><p>People carried canoes and cargo around obstacles using known overland routes. This scene and its two trail choices are imagined. The 40 kg limit, canoe weight, energy and trip times are game rules—not instructions for a real carrying activity.</p><p>Indigenous route knowledge and canoe technology helped the inland trade work.</p><a href="https://www.ontarioparks.ca/park/Kakabekafalls/activities" target="_blank" rel="noopener">The historic portage ↗</a></details>
         </aside>
       </div>
     </section>
+    <section id="onwardView" class="onward-view" hidden aria-label="Travel inland to Rainy Lake">
+      <div class="onward-heading"><div><span class="eyebrow">YOUR CARGO · YOUR JOURNEY</span><h2 id="onwardTitle" tabindex="-1">Back on the water.</h2></div><button id="onwardBack" class="onward-secondary">← Camp</button></div>
+      <div class="onward-grid">
+        <div class="onward-world">
+          <div id="onwardMapSurface" class="onward-map-surface" tabindex="0" role="group" aria-label="Inland journey map. Right arrow takes one paddle stroke. Space paddles or pauses."><svg id="onwardMap" viewBox="555 603 100 68" role="img" aria-labelledby="onwardMapTitle"></svg><div class="onward-map-stamp"><span id="onwardStage">KAKABEKA → RAINY LAKE</span><b>SIMPLIFIED CONNECTION · 1809</b></div><div class="onward-progress"><span>Journey</span><div><i id="onwardProgressFill"></i></div><b id="onwardProgress">0%</b></div></div>
+          <div class="onward-controls"><button id="paddleOnward" class="onward-primary" aria-pressed="false">Paddle inland →</button><button id="stepOnward" class="onward-secondary">One stroke · →</button></div>
+          <div class="onward-cargo-heading"><strong>Aboard your canoe</strong><span id="onwardWeight"></span></div><div id="onwardCargo" class="onward-cargo" aria-label="Your actual remaining cargo"></div>
+        </div>
+        <aside class="onward-panel" aria-label="Your route and provisions"><span class="eyebrow">AFTER THE PORTAGE</span><h3 id="onwardPanelTitle">Make it to the post.</h3><div class="onward-stats"><div><span>Food aboard</span><strong id="onwardFood"></strong></div><div><span>Canoe condition</span><strong id="onwardHull"></strong></div></div><p id="onwardFeedback" class="onward-feedback" role="status" aria-live="polite" aria-atomic="true"></p>
+          <div id="onwardChoices" class="onward-choices" hidden><button id="takeShore" class="onward-choice"><svg viewBox="0 0 80 55" aria-hidden="true"><path d="M0 46Q23 22 80 43V55H0" fill="#3b7f8c"/><path d="M0 0H80V27Q35 12 0 43" fill="#dfc088"/><path d="M12 15l6-13 6 13h-4v12h-5V15M38 13l6-13 6 13h-4v9h-5V13" fill="#48674c"/><path d="M8 43Q40 22 73 38" fill="none" stroke="#ffdf8b" stroke-width="3" stroke-dasharray="4 5"/></svg><span><strong>Sheltered shore</strong><small>Longer route · Use 1 food bundle<br>Protect the canoe</small></span></button><button id="takeCrossing" class="onward-choice"><svg viewBox="0 0 80 55" aria-hidden="true"><path d="M0 0H80V55H0" fill="#397c92"/><path d="M5 16q8-7 16 0t16 0t16 0t16 0M5 40q8-7 16 0t16 0t16 0t16 0" fill="none" stroke="#92c4cb" stroke-width="2"/><path d="M15 25Q40 45 65 25L58 37Q40 47 22 37Z" fill="#e8bd78" stroke="#48392a" stroke-width="2"/></svg><span><strong>Open crossing</strong><small>Quicker route · Keep the food<br>Canoe condition −16</small></span></button></div><p id="onwardChoicesNote" class="onward-notes" hidden>These are imagined route choices on a simplified map. Food use and canoe wear are game rules.</p>
+          <div class="onward-mending"><button id="mendOnward" class="onward-secondary">Mend canoe</button><span id="onwardRepairs"></span></div>
+          <div id="onwardArrival" class="onward-arrival" hidden><img src="assets/post-rainy-lake.webp" width="1536" height="1024" alt="A smaller inland trading depot with stocked shelves and a canoe landing." loading="lazy"><strong>Fort Lac La Pluie · NWC</strong><button id="enterRainyPost" class="onward-primary">Trade at Rainy Lake →</button></div>
+          <button id="onwardOverview" class="onward-secondary onward-overview">See the Canada overview ↗</button><details class="onward-notes"><summary>Look closer · the route</summary><p>This short game leg compresses a journey through many lakes, rivers and portages. Its dashed connection is not a surveyed waterway. Indigenous route knowledge and canoe technology made inland travel possible.</p><p>Fort Lac La Pluie was a North West Company cargo depot in 1809, in the area now called Fort Frances. Its illustrated buildings, people and trading requests are imagined.</p><a href="https://www.fortfrances.ca/node/248" target="_blank" rel="noopener">The inland depot’s history ↗</a></details>
+        </aside>
+      </div>
+    </section>
     <section id="tradingView" class="trading-view" hidden aria-label="Trade at the posts">
-      <div class="trade-heading"><div><span class="eyebrow">POST VISITS · TRADING PRACTICE</span><h2 id="tradePostName" tabindex="-1">Fort William</h2></div><button id="tradeBack" class="trade-secondary">← Camp</button></div>
+      <div class="trade-heading"><div><span class="eyebrow" id="tradeModeLabel">POST VISITS · TRADING PRACTICE</span><h2 id="tradePostName" tabindex="-1">Fort William</h2></div><button id="tradeBack" class="trade-secondary">← Camp</button></div>
       <div class="post-switch" role="group" aria-label="Choose a trading post"><button data-trade-post="nwc" aria-pressed="true"><b>NWC</b><span><strong>Fort William</strong><small>Canoes &amp; workshops</small></span></button><button data-trade-post="hbc" aria-pressed="false"><b>HBC</b><span><strong>York Factory</strong><small>The Bay &amp; river boats</small></span></button></div>
       <div class="trade-grid">
         <div class="trade-world">
@@ -157,7 +177,7 @@
         <aside class="trading-panel" aria-label="Traders and your supplies">
           <div class="trade-partner-panel"><span class="eyebrow">TODAY’S TRADERS</span><h3 id="tradePartner">Provisioning partners</h3><div class="trade-wants"><strong>Looking for</strong><div id="tradeNeeds" class="trade-needs" aria-label="Goods wanted today"></div></div><p id="tradeReply" class="trade-reply" role="status" aria-live="polite" aria-atomic="true">Choose goods from both shelves.</p><div id="tradeCounters" class="trade-counters" role="group" aria-label="Counter-offer choices"></div><button id="makeTradeOffer" class="trade-offer-button">Make an offer →</button><button id="acceptTrade" class="trade-offer-button accept" hidden>Exchange these goods ⇄</button><button id="tradeHelp" class="trade-help" aria-expanded="false" aria-controls="tradeHelpText">Hint</button><p id="tradeHelpText" class="trade-help-text" hidden>Look at what the traders need. A mixed offer often works better than lots of one thing. Try asking for food and pelts, then adjust the offer if they counter.</p></div>
           <div class="trade-goals" id="tradeGoals"><h3 id="tradeGoalsTitle">Bring back food &amp; furs</h3><div class="trade-goal-row" id="tradeFoodGoal"><span class="trade-object" style="--object-x:0%;--object-y:100%" aria-hidden="true"></span><span>Food · 4 days</span><b id="tradeFood">0 days</b></div><div class="trade-goal-row" id="tradeFurGoal"><span class="trade-object" style="--object-x:66.6667%;--object-y:100%" aria-hidden="true"></span><span>Beaver pelts</span><b id="tradeFurs">0 / 4</b></div><div class="trade-weight"><span id="tradeDealCount">0 exchanges</span><b id="tradeWeight">75 kg</b></div><div id="tradeReceived" class="trade-received" aria-label="Goods packed from exchanges" hidden></div><p id="tradeGoodsKept" class="trade-kept"></p><p id="tradeSuccess" class="trade-success" hidden>Useful supplies for you. Wanted goods for your partners. Can you do it again and keep more cargo?</p></div>
-          <div class="trade-small-panel"><button id="mapTradingPost">Map this post ↗</button><button id="useCarriedCargo" hidden>Practise with my carried cargo</button><button id="restartTrading">Start a fresh practice visit</button><details class="trade-history-details"><summary>Your exchanges</summary><ul id="tradeHistory"></ul></details><details class="trade-art-details"><summary>Look closer · real history</summary><p id="tradeFact"></p><a id="tradeFactSource" target="_blank" rel="noopener">Post history ↗</a><p>These scenes are inspired by historical sources. York Factory shows the earlier Old Octagon, built in 1788–1795, before the white depot of 1831. Fort William shows its canoe depot and workshops; individual layouts are illustrated.</p><div class="trade-inspect"><div id="tradeInspectPicture" aria-hidden="true"></div><label for="tradeInspectSelect">Inspect a good<select id="tradeInspectSelect"></select></label></div><p id="tradeItemDetail"></p><a id="tradeItemSource" target="_blank" rel="noopener">Object evidence ↗</a><p class="trade-note">Bundle sizes, daily needs and barter values are invented game rules. These practice visits do not move or spend your saved journey cargo. The fur trade also involved unequal power, environmental changes and consequences for Indigenous communities; bargaining is one part of its history.</p></details></div>
+          <div class="trade-small-panel"><button id="mapTradingPost">Map this post ↗</button><button id="returnJourneyTrade" class="trade-journey-return" hidden>Return to my Rainy Lake visit →</button><button id="finishJourneyTrade" class="trade-journey-finish" hidden>Review your journey ✓</button><button id="useCarriedCargo" hidden>Practise with my portage cargo</button><button id="restartTrading">Start a fresh practice visit</button><details class="trade-history-details"><summary>Your exchanges</summary><ul id="tradeHistory"></ul></details><details class="trade-art-details"><summary>Look closer · real history</summary><p id="tradeFact"></p><a id="tradeFactSource" target="_blank" rel="noopener">Post history ↗</a><p>These scenes are inspired by historical sources. York Factory shows the earlier Old Octagon, built in 1788–1795, before the white depot of 1831. Fort William shows its canoe depot and workshops; Rainy Lake shows a smaller inland depot. Individual buildings, people and layouts are illustrated.</p><div class="trade-inspect"><div id="tradeInspectPicture" aria-hidden="true"></div><label for="tradeInspectSelect">Inspect a good<select id="tradeInspectSelect"></select></label></div><p id="tradeItemDetail"></p><a id="tradeItemSource" target="_blank" rel="noopener">Object evidence ↗</a><p class="trade-note" id="tradeModeNote">Bundle sizes, daily needs and barter values are invented game rules. These practice visits do not move or spend your saved journey cargo. The fur trade also involved unequal power, environmental changes and consequences for Indigenous communities; bargaining is one part of its history.</p></details></div>
         </aside>
       </div>
     </section>

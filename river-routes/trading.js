@@ -2,9 +2,9 @@
   'use strict';
   const $=id=>document.getElementById(id),api=window.RiverRoutesPreview,M=window.RIVER_TRADE,key='bgsd-river-routes-trading-1';
   const byId=Object.fromEntries(M.items.map(i=>[i.id,i]));
-  let state={active:'nwc',visits:{nwc:M.fresh('nwc'),hbc:M.fresh('hbc')}},counterOptions=[];
-  try{const saved=JSON.parse(localStorage.getItem(key));if(saved){state.active=M.posts[saved.active]?saved.active:'nwc';for(const id of Object.keys(M.posts))state.visits[id]=M.restore(id,saved.visits?.[id]);}}catch{}
-  const visit=()=>state.visits[state.active],save=()=>{try{localStorage.setItem(key,JSON.stringify(state));}catch{}};
+  let state={active:'nwc',visits:{nwc:M.fresh('nwc'),hbc:M.fresh('hbc')}},counterOptions=[],mode='practice';
+  try{const saved=JSON.parse(localStorage.getItem(key));if(saved){state.active=['nwc','hbc'].includes(saved.active)?saved.active:'nwc';for(const id of ['nwc','hbc'])state.visits[id]=M.restore(id,saved.visits?.[id]);}}catch{}
+  const postId=()=>mode==='journey'?'rainy':state.active,visit=()=>mode==='journey'?api.onward.getVisit():state.visits[state.active],save=()=>{if(mode==='journey'){api.onward.saveVisit(visit());return;}try{localStorage.setItem(key,JSON.stringify(state));}catch{}};
   const picture=(id,cls='')=>`<span class="trade-object ${cls}" style="--object-x:${byId[id].cell%4*100/3}%;--object-y:${Math.floor(byId[id].cell/4)*100}%" aria-hidden="true"></span>`;
   function shelf(container,ids,kind){
     const s=visit(),selected=kind==='give'?s.give:s.take,available=kind==='give'?s.own:s.stock;
@@ -17,22 +17,29 @@
   }
   function carried(){const s=api.getState(),p=s.portage,t=s.travel,c=s.cargo;return p?.phase==='complete'&&t?.status==='landed'&&p.journeyId===t.journeyId&&c?.secured&&JSON.stringify(t.manifest.counts)===JSON.stringify(c.counts)?{counts:{...p.manifest.counts},journeyId:p.journeyId}:null;}
   function render(){
-    const s=visit(),p=M.posts[state.active],done=M.goal(s);
-    $('tradingView').dataset.company=state.active;$('tradePostName').textContent=p.name;$('tradeCompany').textContent=p.company;
+    if(mode==='journey'&&!api.onward.canTrade())mode='practice';
+    const actual=mode==='journey',s=visit(),p=M.posts[postId()],done=M.goal(s);
+    $('tradeModeLabel').textContent=actual?'YOUR JOURNEY · RAINY LAKE':'POST VISITS · TRADING PRACTICE';
+    $('tradingView').querySelector('.post-switch').hidden=actual;
+    $('tradeBack').textContent=actual?'← My canoe':'← Camp';
+    $('restartTrading').hidden=actual;$('returnJourneyTrade').hidden=actual||!api.onward.canTrade();$('finishJourneyTrade').hidden=!actual||!done;
+    $('tradeSuccess').textContent=actual?'Journey complete! Provisions and four pelts are aboard. Your exchanges and remaining cargo are saved.':'Useful supplies for you. Wanted goods for your partners. Can you do it again and keep more cargo?';
+    $('tradeModeNote').textContent=actual?'Accepting an exchange changes your actual journey cargo. Bundle sizes, needs, barter values and the goal are invented game rules. The fur trade also involved unequal power, environmental changes and consequences for Indigenous communities; bargaining is one part of its history.':'Bundle sizes, daily needs and barter values are invented game rules. Practice visits do not move or spend your saved journey cargo. The fur trade also involved unequal power, environmental changes and consequences for Indigenous communities; bargaining is one part of its history.';
+    $('tradingView').dataset.company=postId();$('tradePostName').textContent=p.name;$('tradeCompany').textContent=p.company;
     const art=$('tradePostArt');if(!art.getAttribute('src')?.endsWith(p.image))art.src=p.image;art.alt=p.alt;
     document.querySelectorAll('[data-trade-post]').forEach(b=>{b.setAttribute('aria-pressed',String(b.dataset.tradePost===state.active));});
     $('tradePartner').textContent=p.visitors[Math.min(1,s.deals)];
-    $('tradeNeeds').innerHTML=M.wanted(state.active,s).map(id=>`<span title="${byId[id].name}">${picture(id)}<b>${byId[id].short}</b></span>`).join('');
+    $('tradeNeeds').innerHTML=M.wanted(postId(),s).map(id=>`<span title="${byId[id].name}">${picture(id)}<b>${byId[id].short}</b></span>`).join('');
     shelf('yourTradeShelf',M.giveIds,'give');shelf('theirTradeShelf',M.takeIds,'take');tray('yourOffer',s.give,'give');tray('theirOffer',s.take,'take');
     $('tradeReply').textContent=s.reply;$('tradeReply').dataset.kind=s.replyKind;$('makeTradeOffer').disabled=!M.valid(s);$('acceptTrade').hidden=s.replyKind!=='agreement';$('makeTradeOffer').hidden=s.replyKind==='agreement';
-    counterOptions=s.replyKind==='counter'?M.counters(state.active,s):[];
+    counterOptions=s.replyKind==='counter'?M.counters(postId(),s):[];
     const single={cloth:'cloth',kettle:'kettle',tools:'tool',beads:'bead',fish:'fish',rice:'rice',pelt:'pelt'};
     $('tradeCounters').innerHTML=counterOptions.map((c,n)=>`<button data-counter="${n}" class="trade-counter">${picture(c.id)}<span>${c.kind==='add'?'Add':'Ask for'} ${c.count}${c.kind==='reduce'?' fewer':''} ${single[c.id]} ${c.count===1?'bundle':'bundles'}</span><b aria-hidden="true">→</b></button>`).join('');
     $('tradeFood').textContent=M.food(s)*2+' days';$('tradeFurs').textContent=s.own.pelt+' / 4';$('tradeWeight').textContent=M.weight(s)+' / 130 kg';
     $('tradeReceived').innerHTML=M.takeIds.filter(id=>s.own[id]).map(id=>`<span>${picture(id)}<b>×${s.own[id]}</b></span>`).join('');$('tradeReceived').hidden=!M.takeIds.some(id=>s.own[id]);
     $('tradeGoodsKept').textContent=M.giveIds.reduce((n,id)=>n+s.own[id],0)+' trade bundles kept';
-    $('tradeFoodGoal').classList.toggle('met',M.food(s)>=2);$('tradeFurGoal').classList.toggle('met',s.own.pelt>=4);$('tradeGoals').classList.toggle('done',done);$('tradeGoalsTitle').textContent=done?'Ready for a journey!':'Bring back food & furs';
-    $('tradeSuccess').hidden=!done;$('tradeOrigin').textContent=s.origin==='carried-copy'?'Practice copy of your carried cargo':'Trading practice · Sample cargo';$('useCarriedCargo').hidden=!carried();
+    $('tradeFoodGoal').classList.toggle('met',M.food(s)>=2);$('tradeFurGoal').classList.toggle('met',s.own.pelt>=4);$('tradeGoals').classList.toggle('done',done);$('tradeGoalsTitle').textContent=done?(actual?'Journey complete!':'Ready for a journey!'):'Bring back food & furs';
+    $('tradeSuccess').hidden=!done;$('tradeOrigin').textContent=actual?'Your actual journey cargo · '+Math.round(api.getState().onward.hull)+'% canoe':s.origin==='carried-copy'?'Practice copy of your portage cargo':'Trading practice · Sample cargo';$('useCarriedCargo').hidden=actual||!carried();
     $('tradeFact').textContent=p.fact;$('tradeFactSource').href=p.source;
     $('tradeHistory').innerHTML=s.log.map((r,n)=>`<li><b>Exchange ${s.deals-n}</b><span>${M.giveIds.filter(id=>r.give[id]).map(id=>r.give[id]+' '+byId[id].short).join(' + ')} → ${M.takeIds.filter(id=>r.take[id]).map(id=>r.take[id]+' '+byId[id].short).join(' + ')}</span></li>`).join('')||'<li>No exchanges yet.</li>';
     $('tradeDealCount').textContent=s.deals===1?'1 exchange':s.deals+' exchanges';
@@ -47,32 +54,35 @@
     const s=visit();
     if(add){const side=add.dataset.side,id=add.dataset.tradeItem,inventory=side==='give'?s.own:s.stock;if(s[side][id]<inventory[id]){s[side][id]++;changed();}}
     else if(remove){const side=remove.dataset.side,id=remove.dataset.tradeRemove;if(s[side][id]){s[side][id]--;changed();}}
-    else if(post){state.active=post.dataset.tradePost;render();save();}
-    else if(counter){const c=counterOptions[Number(counter.dataset.counter)];if(c&&M.agreeable(state.active,s,c.give,c.take)){s.give={...c.give};s.take={...c.take};s.reply='That revised offer works. Exchange when you’re ready.';s.replyKind='agreement';render();save();}}
+    else if(post){mode='practice';state.active=post.dataset.tradePost;render();save();}
+    else if(counter){const c=counterOptions[Number(counter.dataset.counter)];if(c&&M.agreeable(postId(),s,c.give,c.take)){s.give={...c.give};s.take={...c.take};s.reply='That revised offer works. Exchange when you’re ready.';s.replyKind='agreement';render();save();}}
   });
   $('makeTradeOffer').addEventListener('click',()=>{
     const s=visit();if(!M.valid(s))return;
-    if(M.agreeable(state.active,s)){s.reply='Agreed! Both sides get useful goods.';s.replyKind='agreement';}
-    else {s.replyKind='counter';const options=M.counters(state.active,s);s.reply=M.afterWeight(s)>130?'Your canoe would be overloaded. Change the load.':options.length?'We can trade if you change the offer.':`We need ${M.wanted(state.active,s).map(id=>byId[id].short.toLowerCase()).join(' or ')} more. Try a different mix.`;}
+    if(M.agreeable(postId(),s)){s.reply='Agreed! Both sides get useful goods.';s.replyKind='agreement';}
+    else {s.replyKind='counter';const options=M.counters(postId(),s);s.reply=M.afterWeight(s)>130?'Your canoe would be overloaded. Change the load.':options.length?'We can trade if you change the offer.':`We need ${M.wanted(postId(),s).map(id=>byId[id].short.toLowerCase()).join(' or ')} more. Try a different mix.`;}
     render();save();
   });
   $('acceptTrade').addEventListener('click',()=>{
-    const s=visit();if(s.replyKind!=='agreement')return;const next=M.exchange(state.active,s);if(!next)return;state.visits[state.active]=next;render();save();$('tradeExchangeFlash').classList.remove('exchange-pop');void $('tradeExchangeFlash').offsetWidth;$('tradeExchangeFlash').classList.add('exchange-pop');$('yourTradeShelf').querySelector('button:not(:disabled)')?.focus({preventScroll:true});
+    const s=visit();if(s.replyKind!=='agreement')return;const next=mode==='journey'?api.onward.exchange():M.exchange(state.active,s);if(!next)return;if(mode!=='journey')state.visits[state.active]=next;render();save();$('tradeExchangeFlash').classList.remove('exchange-pop');void $('tradeExchangeFlash').offsetWidth;$('tradeExchangeFlash').classList.add('exchange-pop');$('yourTradeShelf').querySelector('button:not(:disabled)')?.focus({preventScroll:true});
   });
   $('clearTradeTable').addEventListener('click',()=>{const s=visit();s.give=M.empty();s.take=M.empty();changed();});
   $('restartTrading').addEventListener('click',()=>{state.visits[state.active]=M.fresh(state.active);render();save();});
   $('useCarriedCargo').addEventListener('click',()=>{const m=carried();if(!m)return;state.visits[state.active]=M.fresh(state.active,m);render();save();});
   $('tradeHelp').addEventListener('click',()=>{const open=$('tradeHelpText').hidden;$('tradeHelpText').hidden=!open;$('tradeHelp').setAttribute('aria-expanded',String(open));});
-  function open(){api.openView('trading');$('tradingView').scrollIntoView({block:'start',behavior:'instant'});$('tradePostName').focus({preventScroll:true});}
+  function open(){mode='practice';api.openView('trading');$('tradingView').scrollIntoView({block:'start',behavior:'instant'});$('tradePostName').focus({preventScroll:true});}
   for(const id of ['startTrading','tradeTab','portageTrading'])$(id).addEventListener('click',open);
-  $('tradeBack').addEventListener('click',()=>{api.openView('adventure');$('startTrading').focus({preventScroll:true});});
-  $('mapTradingPost').addEventListener('click',()=>{api.openView('map');api.selectView('canada');api.selectPlace(M.posts[state.active].place);$('mapTab').focus({preventScroll:true});$('mapIntro').scrollIntoView({block:'start',behavior:'instant'});});
+  $('tradeBack').addEventListener('click',()=>{if(mode==='journey'){api.onward.open();return;}api.openView('adventure');$('startTrading').focus({preventScroll:true});});
+  $('mapTradingPost').addEventListener('click',()=>{api.openView('map');api.selectView('canada');api.selectPlace(M.posts[postId()].place);$('mapTab').focus({preventScroll:true});$('mapIntro').scrollIntoView({block:'start',behavior:'instant'});});
   $('tradeInspectSelect').innerHTML=M.items.map(i=>`<option value="${i.id}">${i.name}</option>`).join('');
   function inspect(){const i=byId[$('tradeInspectSelect').value];$('tradeInspectPicture').innerHTML=picture(i.id);$('tradeItemDetail').textContent=i.detail;$('tradeItemSource').href=i.source;}
   $('tradeInspectSelect').addEventListener('change',inspect);inspect();
   window.addEventListener('river-routes-view',e=>{if(e.detail==='trading')render();});
   function fit(){const offset=$('tradePostScene').getBoundingClientRect().top-$('tradingView').getBoundingClientRect().top;document.documentElement.style.setProperty('--trade-workspace-height',Math.max(180,window.innerHeight-offset-24)+'px');}
   const observer=new ResizeObserver(()=>{if(!$('tradingView').hidden)fit();});observer.observe($('tradingView'));window.addEventListener('resize',fit);window.addEventListener('river-routes-view',e=>{if(e.detail==='trading')requestAnimationFrame(fit);});
-  const previous=api.getState;api.getState=()=>({...previous(),trading:{active:state.active,...structuredClone(visit()),food:M.food(visit()),weight:M.weight(visit()),complete:M.goal(visit())}});
+  const previous=api.getState;api.getState=()=>({...previous(),trading:{active:postId(),mode,...structuredClone(visit()),food:M.food(visit()),weight:M.weight(visit()),complete:M.goal(visit())}});
+  api.openJourneyTrading=()=>{if(!api.onward.canTrade())return;mode='journey';api.openView('trading');render();$('tradingView').scrollIntoView({block:'start',behavior:'instant'});$('tradePostName').focus({preventScroll:true});};
+  $('returnJourneyTrade').addEventListener('click',()=>api.openJourneyTrading());
+  $('finishJourneyTrade').addEventListener('click',()=>api.onward.open());
   render();
 })();

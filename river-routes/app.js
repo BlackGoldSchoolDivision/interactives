@@ -68,7 +68,7 @@
   }
   function drawTravelMarker(){
     const marker=$('journeyCanoe');if(!marker||travelProgress===null||state.filter==='hbc')return;
-    const a=point('fort-william'),b=point('kakabeka'),u=Math.max(0,Math.min(1,travelProgress));
+    const inland=typeof travelProgress==='object'&&travelProgress.leg==='inland',a=point(inland?'kakabeka':'fort-william'),b=point(inland?'rainy-lake':'kakabeka'),u=Math.max(0,Math.min(1,inland?travelProgress.progress:travelProgress));
     const box=mapData.viewboxes[state.view],unit=Math.max(box[2]/($('tradeMap').clientWidth||1000),box[3]/($('tradeMap').clientHeight||500));
     marker.innerHTML=`<g transform="translate(${a[0]+(b[0]-a[0])*u} ${a[1]+(b[1]-a[1])*u}) scale(${unit})"><circle r="14" fill="#173345" stroke="#ffca68" stroke-width="2"/><path d="M-9 2Q0 13 9 2L7 6Q0 13-7 6Z" fill="#ffca68"/><path d="M-4 1L4-7" stroke="#fff3cf" stroke-width="2"/></g>`;
   }
@@ -95,11 +95,11 @@
     renderMap();renderLocation();save();
   }
   function chooseTab(tab) {
-    if(!['adventure','packing','river','portage','trading','map','journal'].includes(tab)) return;
+    if(!['adventure','packing','river','portage','onward','trading','map','journal'].includes(tab)) return;
     state.tab=tab;
     document.body.dataset.view=tab;
-    $('adventureView').hidden=tab!=='adventure';$('packingView').hidden=tab!=='packing';$('riverView').hidden=tab!=='river';$('portageView').hidden=tab!=='portage';$('tradingView').hidden=tab!=='trading';$('mapIntro').hidden=tab!=='map';$('mapView').hidden=tab!=='map';$('placesSection').hidden=tab!=='map';$('journalView').hidden=tab!=='journal';
-    for(const [id,t] of [['adventureTab','adventure'],['tradeTab','trading'],['mapTab','map'],['journalTab','journal']]) {$(id).classList.toggle('active',tab===t||(t==='adventure'&&['packing','river','portage'].includes(tab)));if(t===tab||(t==='adventure'&&['packing','river','portage'].includes(tab)))$(id).setAttribute('aria-current','page');else $(id).removeAttribute('aria-current');}
+    $('adventureView').hidden=tab!=='adventure';$('packingView').hidden=tab!=='packing';$('riverView').hidden=tab!=='river';$('portageView').hidden=tab!=='portage';$('onwardView').hidden=tab!=='onward';$('tradingView').hidden=tab!=='trading';$('mapIntro').hidden=tab!=='map';$('mapView').hidden=tab!=='map';$('placesSection').hidden=tab!=='map';$('journalView').hidden=tab!=='journal';
+    for(const [id,t] of [['adventureTab','adventure'],['tradeTab','trading'],['mapTab','map'],['journalTab','journal']]) {$(id).classList.toggle('active',tab===t||(t==='adventure'&&['packing','river','portage','onward'].includes(tab)));if(t===tab||(t==='adventure'&&['packing','river','portage','onward'].includes(tab)))$(id).setAttribute('aria-current','page');else $(id).removeAttribute('aria-current');}
     $('pageTitle').textContent='Find your way inland.';
     if(tab==='map') requestAnimationFrame(renderMap);
     save();window.dispatchEvent(new CustomEvent('river-routes-view',{detail:tab}));
@@ -127,6 +127,6 @@
   sources.addEventListener('click',event=>{if(event.target===sources){const r=sources.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)sources.close();}});
   const resizeObserver=new ResizeObserver(()=>requestAnimationFrame(renderMap));resizeObserver.observe($('mapSurface'));
   chooseTab('adventure');renderMap();renderLocation();
-  window.RiverRoutesPreview={getState:()=>({...state}),places:places.map(p=>({...p})),selectPlace:chooseLocation,selectView:chooseView,openView:chooseTab,setTravelProgress:value=>{travelProgress=value;drawTravelMarker();}};
+  window.RiverRoutesPreview={getState:()=>({...state}),places:places.map(p=>({...p})),selectPlace:chooseLocation,selectView:chooseView,openView:chooseTab,setTravelProgress:value=>{if(typeof value==='number'&&travelProgress?.leg==='inland'&&state.tab!=='river')return;travelProgress=value;drawTravelMarker();}};
 })();
 
