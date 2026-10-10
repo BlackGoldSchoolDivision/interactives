@@ -1,5 +1,5 @@
 import {topics,activities,bonusGames,getActivity,getTopic,inTopic} from './catalogue.js';
-import {topicPreview} from './previews.js';
+import {topicPreview} from './previews.js?v=20261010-release1';
 import {loadActivity,isReady} from './registry.js';
 import {createProgress} from './progress.js';
 let localStorageHandle=null,sessionStorageHandle=null;

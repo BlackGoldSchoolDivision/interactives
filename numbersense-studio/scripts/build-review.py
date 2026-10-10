@@ -17,7 +17,7 @@ modules = {str(path.relative_to(ROOT)): path.read_text() for path in ROOT.rglob(
 imports = {}
 for name, source in modules.items():
     def resolve(match):
-        destination = posixpath.normpath(posixpath.join(posixpath.dirname(name), match.group(2)))
+        destination = posixpath.normpath(posixpath.join(posixpath.dirname(name), match.group(2).split("?", 1)[0]))
         if destination not in modules:
             raise ValueError(f'Missing import: {name} -> {destination}')
         return match.group(0).replace(match.group(2), PREFIX + destination)
@@ -33,7 +33,7 @@ html = html.replace('<link rel="stylesheet" href="./styles.css">', '<style>' + c
 favicon = data_url('image/svg+xml', (ROOT / 'assets' / 'favicon.svg').read_bytes())
 html = html.replace('href="./assets/favicon.svg"', f'href="{favicon}"')
 entry = '<script type="importmap">' + json.dumps({'imports': imports}) + '</script>\n  <script type="module">import "@number-sense/app.js";</script>'
-html = html.replace('<script type="module" src="./app.js"></script>', entry)
+html = re.sub(r'<script type="module" src="\./app\.js(?:\?[^"]*)?"></script>', lambda match: entry, html)
 license_text = (ROOT / 'assets' / 'NUNITO-OFL.txt').read_text().replace('</script', '&lt;/script')
 html = html.replace('</body>', '<script type="text/plain" id="nunito-license">' + license_text + '</script>\n</body>')
 OUTPUT.parent.mkdir(parents=True, exist_ok=True)
