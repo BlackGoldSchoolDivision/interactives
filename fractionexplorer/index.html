@@ -104,6 +104,8 @@ button{touch-action:manipulation}
 .fe-brand-mark{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;width:35px;height:35px;overflow:hidden;border:2px solid #d8e8f6;border-radius:50%;margin-right:7px;flex:0 0 auto}
 .fe-brand-mark i:nth-child(1){background:#2587d7}.fe-brand-mark i:nth-child(2){background:#ffd061}.fe-brand-mark i:nth-child(3){background:#f27b4e}.fe-brand-mark i:nth-child(4){background:#44a7bc}
 .fe-tagline{margin:4px 0 0 49px;font-size:.91rem;color:#cbddef;font-weight:650}
+.fe-reset{min-height:42px;padding:8px 12px;border:1px solid #5c83a5;background:#1a486e;color:white;border-radius:9px;font-size:.84rem;font-weight:900}
+.fe-reset:hover{background:#285a80}
 #score-container{background:#183f64;color:#fff;border:1px solid #5380a5;box-shadow:none;padding:8px 14px}
 #score-container .fa-star{color:#f7c758}
 .fe-main{max-width:1420px;padding:13px clamp(10px,2vw,22px) 22px;min-height:0;overflow:visible}
@@ -180,6 +182,7 @@ button{touch-action:manipulation}
 @media(max-width:650px){
  .fe-site-header{padding:13px 12px}.fe-brand-title{font-size:1.6rem}.fe-brand-mark{width:27px;height:27px}.fe-tagline{margin-left:0;font-size:.78rem}
  #score-container{font-size:.78rem;padding:5px 8px}
+ .fe-reset{font-size:.76rem;padding:6px 8px;min-height:38px}
  .fe-main{padding:8px}.fe-tabs{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
  .fe-tabs .tab-btn{min-height:46px;font-size:.78rem;padding:5px 3px;gap:4px;border-radius:9px}
  .fe-tabs .tab-btn i{font-size:.85rem}
@@ -218,7 +221,8 @@ button{touch-action:manipulation}
             <h1 class="fe-brand-title"><span class="fe-brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Fraction <span>Explorer</span></h1>
             <p class="fe-tagline">See it. Build it. Understand it.</p>
         </div>
-        <div class="flex space-x-4">
+        <div class="flex items-center gap-2 flex-wrap justify-end">
+             <button type="button" class="fe-reset" onclick="window.location.reload()" title="Start a new session">↻ <span>Start over</span></button>
              <div class="bg-green-800 px-4 py-2 rounded-full text-sm font-semibold flex items-center shadow-inner transition-colors duration-300" id="score-container">
                 <i class="fas fa-star text-yellow-400 mr-2"></i> Score: <span id="mastery-score" class="ml-2 text-lg">0</span>
             </div>
@@ -627,8 +631,9 @@ button{touch-action:manipulation}
         let score = 0;
         
         // State for Explore Tab
-        let exploreF1 = { n: 1, d: 2 };
-        let exploreF2 = { n: 1, d: 3 };
+        let exploreF1 = { n: 3, d: 4 };
+        let exploreF2 = { n: 2, d: 3 };
+        let exploreCompared = false;
 
         // State for Simplify Tab
         let currentSimplifyProblem = null;
@@ -709,14 +714,10 @@ button{touch-action:manipulation}
 
         // --- EXPLORE TAB LOGIC ---
         function adjustExplore(prop, amount) {
-            if (prop === 'f1n') { exploreF1.n = Math.max(1, exploreF1.n + amount); }
-            if (prop === 'f1d') { exploreF1.d = Math.max(exploreF1.n + 1, exploreF1.d + amount); } // Keep proper fraction visually
-            if (prop === 'f2n') { exploreF2.n = Math.max(1, exploreF2.n + amount); }
-            if (prop === 'f2d') { exploreF2.d = Math.max(exploreF2.n + 1, exploreF2.d + amount); }
-            
-            // Ensure denominator is never 0 or 1 for this exploration
-            if(exploreF1.d < 2) exploreF1.d = 2;
-            if(exploreF2.d < 2) exploreF2.d = 2;
+            const fraction = prop.startsWith('f1') ? exploreF1 : exploreF2;
+            // Keep models between halves and twelfths, and fractions proper.
+            if (prop.endsWith('n')) fraction.n = Math.max(1, Math.min(fraction.d - 1, fraction.n + amount));
+            if (prop.endsWith('d')) fraction.d = Math.max(fraction.n + 1, Math.min(12, fraction.d + amount));
 
             updateExploreVis();
         }
@@ -738,8 +739,14 @@ button{touch-action:manipulation}
 
             // Reset comparison area
             document.getElementById('exp-comparison-symbol').innerText = '?';
-            document.getElementById('exp-comparison-symbol').className = 'font-black text-3xl text-gray-400 w-12 text-center';
+            document.getElementById('exp-comparison-symbol').className = 'sr-only';
             document.getElementById('exp-cd-result').classList.add('hidden');
+            exploreCompared = false;
+            const compareFeedback = document.getElementById('fe-compare-feedback');
+            if(compareFeedback) { compareFeedback.textContent=''; compareFeedback.className='fe-compare-feedback'; }
+            document.querySelectorAll('.fe-compare-buttons button').forEach(button => button.setAttribute('aria-pressed','false'));
+            const extraHint = document.getElementById('fe-hint-details');
+            if(extraHint) extraHint.classList.add('hidden');
             
             // Reset common denominator input
             const userInput = document.getElementById('exp-user-cd');
@@ -753,6 +760,47 @@ button{touch-action:manipulation}
             }
         }
 
+
+        function newExplorePair() {
+            // Choose proper fractions; occasionally include equivalent pairs to practise '='.
+            const d1 = 2 + Math.floor(Math.random() * 8);
+            const d2 = 2 + Math.floor(Math.random() * 8);
+            exploreF1 = { n: 1 + Math.floor(Math.random() * (d1-1)), d: d1 };
+            exploreF2 = { n: 1 + Math.floor(Math.random() * (d2-1)), d: d2 };
+            if (Math.random() < .23) {
+                const g = gcd(exploreF1.n,exploreF1.d);
+                const num = exploreF1.n/g, den = exploreF1.d/g;
+                const mult = Math.floor(12/den);
+                if(mult>=1){ const k=1+Math.floor(Math.random()*mult); exploreF2={n:num*k,d:den*k}; }
+            }
+            updateExploreVis();
+        }
+
+        function checkComparison(symbol) {
+            const a = exploreF1.n * exploreF2.d, b = exploreF2.n * exploreF1.d;
+            const correct = a < b ? '<' : a > b ? '>' : '=';
+            const feedback = document.getElementById('fe-compare-feedback');
+            document.querySelectorAll('.fe-compare-buttons button').forEach(btn => {
+                const selected = btn.textContent.trim() === symbol;
+                btn.setAttribute('aria-pressed',String(selected));
+            });
+            if (symbol === correct) {
+                feedback.textContent='Correct! '+ exploreF1.n+'/'+exploreF1.d +' '+symbol+' '+exploreF2.n+'/'+exploreF2.d+'.';
+                feedback.className='fe-compare-feedback good';
+                document.getElementById('exp-comparison-symbol').textContent = symbol;
+                if (!exploreCompared) { updateScore(1); exploreCompared = true; }
+            } else {
+                feedback.textContent='Not quite. Look at how much of each whole is shaded.';
+                feedback.className='fe-compare-feedback try';
+            }
+        }
+
+        function showExploreHint() {
+            const hint = document.getElementById('fe-hint-details');
+            const showing = hint.classList.toggle('hidden');
+            if (!showing) hint.textContent='Make equal-sized parts by finding a common denominator. Both bars represent one whole, so compare how much is coloured. One useful common denominator is '+lcm(exploreF1.d,exploreF2.d)+'.';
+        }
+
         function drawFractionBar(elementId, n, d, colorClass) {
             const container = document.getElementById(elementId);
             container.innerHTML = '';
@@ -764,12 +812,13 @@ button{touch-action:manipulation}
         }
 
         function checkExploreCD() {
-            const userInput = parseInt(document.getElementById('exp-user-cd').value);
+            const entered = document.getElementById('exp-user-cd').value.trim();
+            const userInput = Number(entered);
             const actualLCM = lcm(exploreF1.d, exploreF2.d);
             const feedback = document.getElementById('exp-cd-feedback');
 
-            if (isNaN(userInput)) {
-                feedback.innerText = "Please enter a number.";
+            if (!entered || !Number.isSafeInteger(userInput) || userInput < 1 || userInput > 999) {
+                feedback.innerText = "Enter a positive whole number (up to 999).";
                 feedback.className = "mt-3 font-bold text-red-600 min-h-[28px]";
                 return;
             }
@@ -829,7 +878,7 @@ button{touch-action:manipulation}
             
             const symbolEl = document.getElementById('exp-comparison-symbol');
             symbolEl.innerHTML = symbol;
-            symbolEl.className = 'font-black text-4xl text-purple-600 w-12 text-center';
+            symbolEl.className = 'sr-only';
         }
 
         // --- SIMPLIFY TAB LOGIC ---
