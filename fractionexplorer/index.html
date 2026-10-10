@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grade 7 Math: Fraction Explorer</title>
+    <title>Fraction Explorer · Interactive Learning Lab</title>
     
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -89,13 +89,134 @@
             box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
         }
     </style>
+<style id="fe-refresh">
+/* Fraction Explorer – restrained Interactive Learning Lab refresh (Oct 2026) */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap');
+:root{--fe-navy:#0d2d4f;--fe-deep:#092340;--fe-ink:#102844;--fe-blue:#237cc7;--fe-orange:#e86b46;--fe-gold:#e5b842;--fe-paper:#fffdf8;--fe-line:#d6e1e9}
+html{scroll-behavior:smooth}
+body.fe-app{font-family:Nunito,system-ui,sans-serif;background:#eaf0f5;color:var(--fe-ink);min-height:100vh;min-height:100dvh;height:auto;overflow-x:hidden}
+button,input{font:inherit}
+button:focus-visible,input:focus-visible,.fe-tabs button:focus-visible{outline:3px solid #ffb835;outline-offset:3px}
+button{touch-action:manipulation}
+.fe-site-header{background:#0d2d4f;border-bottom:3px solid #1b547e;gap:12px;padding:17px clamp(15px,3vw,34px)}
+.fe-brand-title{font-size:clamp(1.42rem,3vw,2.5rem);line-height:1.1;font-weight:900;letter-spacing:-.035em;display:flex;align-items:center;flex-wrap:wrap;gap:.3em;color:#fff}
+.fe-brand-title>span:last-child{color:#ffd060}
+.fe-brand-mark{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;width:35px;height:35px;overflow:hidden;border:2px solid #d8e8f6;border-radius:50%;margin-right:7px;flex:0 0 auto}
+.fe-brand-mark i:nth-child(1){background:#2587d7}.fe-brand-mark i:nth-child(2){background:#ffd061}.fe-brand-mark i:nth-child(3){background:#f27b4e}.fe-brand-mark i:nth-child(4){background:#44a7bc}
+.fe-tagline{margin:4px 0 0 49px;font-size:.91rem;color:#cbddef;font-weight:650}
+#score-container{background:#183f64;color:#fff;border:1px solid #5380a5;box-shadow:none;padding:8px 14px}
+#score-container .fa-star{color:#f7c758}
+.fe-main{max-width:1420px;padding:13px clamp(10px,2vw,22px) 22px;min-height:0;overflow:visible}
+.fe-tabs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin:0 0 9px;align-items:stretch}
+.fe-tabs .tab-btn{display:flex;justify-content:center;align-items:center;gap:7px;text-align:center;min-height:54px;padding:9px 8px;background:#f6f8fa;color:#17314c;border:1px solid #cbd9e5;border-bottom:3px solid #b6c7d6;border-radius:11px;box-shadow:none;transition:background .12s;line-height:1.2;font-weight:900;min-width:0}
+.fe-tabs .tab-btn i{font-size:1rem;color:#347dad;margin:0}
+.fe-tabs .tab-btn:hover:not(.active){background:#e7f1f8}
+.fe-tabs .tab-btn.active{background:#f2c759;color:#132d4c;border:1px solid #d6af40;border-bottom:3px solid #c79b30}
+.fe-tabs .tab-btn.active i{color:#133554}
+.fe-content{border:1px solid #d3dfe8;background:#fffdf8;border-radius:16px;padding:clamp(12px,2vw,24px);box-shadow:0 9px 22px #1b3d5a14;min-height:0;overflow:visible}
+.fe-content .tab-content{min-width:0}
+.fe-content .tab-content h2{color:#122f50}
+.fe-content input[type=number]{max-width:100%;border-radius:8px}
+.fe-content button:not(.fe-primary):not(.fe-compare-buttons button){min-height:42px}
+.fe-content .bg-green-50,.fe-content .bg-teal-50,.fe-content .bg-gray-50{background:#f2f6f8}
+.fe-content .text-green-800,.fe-content .text-green-600{color:#17658e}
+.fe-content .border-green-500,.fe-content .border-teal-500{border-color:#317cb0}
+.fe-content button.bg-green-600,.fe-content button.bg-teal-600,.fe-content button.bg-blue-600,.fe-content button.bg-purple-600{background:#276a9a}
+.fe-content button.bg-green-600:hover,.fe-content button.bg-teal-600:hover,.fe-content button.bg-blue-600:hover,.fe-content button.bg-purple-600:hover{background:#1a507c}
+.fe-content .flex-grow.overflow-y-auto{overflow:visible}
+.fe-explore-grid{display:grid;grid-template-columns:minmax(220px,285px) minmax(0,1fr);gap:15px;align-items:stretch}
+.fe-builders{background:#eaf2f8;border:1px solid #d5e4f0;border-radius:14px;padding:15px;display:flex;flex-direction:column;gap:11px}
+.fe-builders h2{font-size:1.15rem;font-weight:900;margin:0}
+.fe-small{font-size:.79rem;color:#60768d;line-height:1.35;margin:-5px 0 0}
+.fe-builder{border:1px solid #c8d8e6;border-radius:12px;padding:10px;background:#fff}
+.fe-builder h3{font-size:.96rem;font-weight:900;margin:0 0 6px}
+.fe-orange{border-color:#f2bfac;background:#fff5f0}.fe-orange h3{color:#b74d29}
+.fe-blue{border-color:#b8d6f3;background:#f0f7ff}.fe-blue h3{color:#1d65a7}
+.fe-step-fraction{display:flex;align-items:center;justify-content:space-around;gap:8px;background:#fff;border-radius:9px;padding:8px}
+.fe-numbers{font-size:2.2rem;font-weight:900;text-align:center;line-height:1.02;min-width:58px}
+.fe-fraction-line{display:block;height:3px;background:#172c48;border-radius:2px;margin:5px auto;width:100%}
+.fe-step-controls{display:grid;grid-template-columns:42px 42px;gap:6px 4px;align-items:center}
+.fe-step-controls button{border:1px solid #bed0e1;background:#ecf3fa;color:#153a60;border-radius:8px;font-size:1.25rem;font-weight:900;width:42px;height:42px;min-height:42px;padding:0}
+.fe-control-label{grid-column:span 2;text-align:center;text-transform:uppercase;font-weight:800;letter-spacing:.06em;color:#6b8095;font-size:.59rem;margin-top:-4px}
+.fe-primary{background:#edc557;color:#17304d;border:1px solid #caa344;border-radius:10px;min-height:44px;padding:10px 16px;font-weight:900;box-shadow:0 2px 0 #bf9a42}
+.fe-primary:hover{background:#f5d376}
+.fe-new-pair{width:100%;margin-top:auto}
+.fe-explore-work{min-width:0;display:flex;flex-direction:column;gap:14px;padding:7px 4px 2px}
+.fe-work-heading h2{font-size:clamp(1.4rem,2.5vw,2.1rem);font-weight:900;letter-spacing:-.025em;line-height:1.1}
+.fe-work-heading p{font-size:.96rem;color:#506780;margin-top:4px}
+.fe-fraction-models{display:grid;gap:17px;margin:8px 0}
+.fe-model-row{display:grid;grid-template-columns:78px minmax(0,1fr);align-items:center;gap:15px}
+.fe-model-row .fraction{font-size:1.65rem;font-weight:900;line-height:1;min-width:55px;margin:0}
+.fe-model-orange .fraction>span:first-child{color:#c7502d}
+.fe-model-blue .fraction>span:first-child{color:#226fc1}
+.fe-model-row .fraction span.fdn{border-top:3px solid #152d4b;padding:4px 9px}
+.fe-model-row .fraction-bar-container{height:71px;background:#f3f6f8;border:2px solid #173455;border-radius:11px;box-shadow:none}
+.fe-model-row .fraction-piece{border-right:2px solid #143756}
+.fe-model-row .fraction-piece.filled{background:#ef724d}
+.fe-model-row .fraction-piece.filled-secondary{background:#3187e1}
+.fe-compare{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px 14px;align-items:center;padding:13px;background:#f5f8fa;border:1px solid #dce6ee;border-radius:12px}
+.fe-compare h3,.fe-denominator-section h3{font-size:1rem;font-weight:900;margin:0}
+.fe-compare p,.fe-denominator-section p{font-size:.82rem;color:#627a90;margin:3px 0 0}
+.fe-compare-buttons{display:flex;gap:6px}
+.fe-compare-buttons button{font-size:1.6rem;font-weight:900;min-width:53px;min-height:47px;background:#e2eff8;border:1px solid #c4d9e9;border-radius:9px;color:#173452}
+.fe-compare-buttons button:hover{background:#c9e5f7}
+.fe-compare-buttons button[aria-pressed=true]{background:#236e9e;color:#fff}
+.fe-compare-feedback{grid-column:1/-1;font-size:.86rem;font-weight:800;min-height:0}
+.fe-compare-feedback.good{color:#146145}.fe-compare-feedback.try{color:#a04631}
+.fe-denominator-section{background:#eef5f9;border:1px solid #cddfea;border-radius:13px;padding:14px}
+.fe-denominator-heading{display:flex;justify-content:space-between;align-items:center;gap:14px}
+.fe-denominator-controls{display:flex;gap:7px;align-items:center}
+.fe-denominator-controls input{background:#fff;border:1px solid #9bb7cd;border-radius:8px;padding:8px;width:73px;text-align:center;font-weight:850;font-size:1.1rem}
+.fe-denominator-feedback{margin:5px 0;font-weight:800;font-size:.86rem}
+.fe-common-result{background:#fff;border:1px solid #d3e0eb;border-radius:11px;padding:12px;font-weight:700;overflow-x:auto}
+.fe-common-result .flex.justify-center{flex-wrap:wrap;gap:15px}
+.fe-common-result .fraction{font-size:1.25rem}
+.fe-hint{display:flex;align-items:center;gap:11px;padding:12px 14px;background:#fcf5df;border:1px solid #e5d8ad;border-radius:12px;font-size:.85rem;color:#35475a}
+.fe-hint strong{color:#805b1e;font-size:.98rem}
+.fe-hint span{flex:1}
+.fe-hint button{background:#fff7dc;border:1px solid #d6c799;padding:6px 10px;border-radius:8px;font-weight:800;color:#5c4d30;min-height:38px}
+.fe-hint-details{margin:-7px 0 0;padding:7px 12px;background:#fffaf0;border-radius:8px;font-size:.85rem;color:#486277}
+@media(max-width:900px){.fe-explore-grid{grid-template-columns:minmax(195px,235px) minmax(0,1fr)}.fe-tabs .tab-btn{font-size:.86rem;padding:8px 5px}.fe-builders{padding:10px}.fe-model-row{grid-template-columns:58px minmax(0,1fr);gap:8px}.fe-model-row .fraction-bar-container{height:62px}}
+@media(max-width:650px){
+ .fe-site-header{padding:13px 12px}.fe-brand-title{font-size:1.6rem}.fe-brand-mark{width:27px;height:27px}.fe-tagline{margin-left:0;font-size:.78rem}
+ #score-container{font-size:.78rem;padding:5px 8px}
+ .fe-main{padding:8px}.fe-tabs{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+ .fe-tabs .tab-btn{min-height:46px;font-size:.78rem;padding:5px 3px;gap:4px;border-radius:9px}
+ .fe-tabs .tab-btn i{font-size:.85rem}
+ .fe-content{padding:10px;border-radius:12px}
+ .fe-explore-grid{grid-template-columns:minmax(0,1fr);gap:12px}
+ .fe-builders{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:10px}
+ .fe-builders>h2,.fe-builders>.fe-small,.fe-new-pair{grid-column:1/-1}
+ .fe-builders>h2{font-size:1rem}
+ .fe-builder{padding:8px}.fe-builder h3{font-size:.85rem}
+ .fe-step-fraction{padding:5px;gap:2px}.fe-numbers{font-size:1.65rem;min-width:40px}
+ .fe-step-controls{grid-template-columns:33px 33px;gap:3px}.fe-step-controls button{width:33px;height:36px;min-height:36px;font-size:1rem}
+ .fe-control-label{font-size:.5rem}
+ .fe-new-pair{min-height:42px}
+ .fe-work-heading h2{font-size:1.28rem}.fe-work-heading p{font-size:.84rem}
+ .fe-fraction-models{gap:12px;margin:3px 0}
+ .fe-model-row{grid-template-columns:45px minmax(0,1fr);gap:7px}
+ .fe-model-row .fraction{font-size:1.35rem;min-width:42px}
+ .fe-model-row .fraction-bar-container{height:55px}
+ .fe-compare{padding:10px;grid-template-columns:1fr}
+ .fe-compare-buttons{justify-content:center}
+ .fe-denominator-section{padding:10px}.fe-denominator-heading{flex-wrap:wrap}
+ .fe-denominator-controls{width:100%}.fe-denominator-controls input{flex:1;max-width:130px}
+ .fe-hint{flex-wrap:wrap;gap:7px;padding:9px}.fe-hint span{flex-basis:65%}
+ .fe-content .tab-content .text-5xl{font-size:2rem}
+ .fe-content .tab-content .text-4xl{font-size:1.8rem}
+ .fe-content .tab-content .p-8{padding:14px}
+ .fe-content .tab-content .space-x-8>:not([hidden])~:not([hidden]){margin-left:12px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+</style>
 </head>
-<body class="text-gray-800 h-screen flex flex-col">
+<body class="text-gray-800 flex flex-col fe-app">
 
-    <header class="bg-green-600 text-white p-4 shadow-md z-10 flex justify-between items-center shrink-0">
+    <header class="fe-site-header text-white p-4 shadow-md z-10 flex justify-between items-center shrink-0">
         <div>
-            <h1 class="text-2xl font-bold flex items-center"><i class="fas fa-calculator mr-3"></i>Fraction Explorer</h1>
-            <p class="text-green-200 text-sm mt-1 font-medium">Interactive Grade 7 Math Curriculum</p>
+            <h1 class="fe-brand-title"><span class="fe-brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Fraction <span>Explorer</span></h1>
+            <p class="fe-tagline">See it. Build it. Understand it.</p>
         </div>
         <div class="flex space-x-4">
              <div class="bg-green-800 px-4 py-2 rounded-full text-sm font-semibold flex items-center shadow-inner transition-colors duration-300" id="score-container">
@@ -104,10 +225,10 @@
         </div>
     </header>
 
-    <main class="flex-grow flex flex-col overflow-hidden max-w-6xl mx-auto w-full p-4 lg:p-6">
+    <main class="fe-main flex-grow flex flex-col max-w-6xl mx-auto w-full p-4 lg:p-6">
         
         <!-- Navigation Tabs -->
-        <div class="flex flex-wrap gap-2 mb-0 justify-center shrink-0">
+        <nav class="fe-tabs flex flex-wrap gap-2 mb-0 justify-center shrink-0" aria-label="Fraction activities">
             <button onclick="switchTab('explore')" id="tab-explore" class="tab-btn active px-4 md:px-6 py-3 rounded-t-lg font-bold shadow-sm flex items-center">
                 <i class="fas fa-search-plus mr-2"></i> Explore
             </button>
@@ -126,85 +247,101 @@
             <button onclick="switchTab('test')" id="tab-test" class="tab-btn px-4 md:px-6 py-3 rounded-t-lg font-bold shadow-sm flex items-center text-purple-700">
                 <i class="fas fa-graduation-cap mr-2"></i> Mastery Test
             </button>
-        </div>
+        </nav>
 
         <!-- Content Area -->
-        <div class="bg-white rounded-b-xl rounded-t-none shadow-xl p-4 md:p-8 flex-grow overflow-y-auto border-t-4 border-green-500 relative">
+        <div class="fe-content bg-white rounded-xl shadow-xl p-4 md:p-8 flex-grow relative">
             
-            <!-- TAB: EXPLORE -->
-            <div id="content-explore" class="tab-content h-full flex flex-col animate-fade-in">
-                <div class="flex items-center mb-4 border-b pb-3">
-                    <i class="fas fa-binoculars text-2xl text-green-600 mr-3"></i>
-                    <div>
-                        <h2 class="text-2xl font-bold text-green-800">Visualizing Fractions & Common Denominators</h2>
-                        <p class="text-sm text-gray-600 mt-1">Adjust the arrows to build fractions. See how they look visually and find their common denominator to compare them.</p>
-                    </div>
-                </div>
-                
-                <div class="grid md:grid-cols-2 gap-8 flex-grow mt-4">
-                    <!-- Fraction 1 Builder -->
-                    <div class="bg-blue-50/50 p-6 rounded-xl border border-blue-200 shadow-sm flex flex-col items-center hover:shadow-md transition-shadow">
-                        <h3 class="font-bold text-blue-800 mb-4 text-lg">Fraction 1</h3>
-                        <div class="flex flex-col items-center mb-6 bg-white p-4 rounded-lg shadow-inner w-48 border border-blue-100">
-                            <div class="flex items-center justify-between w-full px-2">
-                                <button onclick="adjustExplore('f1n', -1)" class="text-blue-500 hover:text-blue-700 p-2"><i class="fas fa-chevron-left text-xl"></i></button>
-                                <span id="exp-f1-num" class="text-3xl font-bold text-gray-800">1</span>
-                                <button onclick="adjustExplore('f1n', 1)" class="text-blue-500 hover:text-blue-700 p-2"><i class="fas fa-chevron-right text-xl"></i></button>
-                            </div>
-                            <div class="w-full border-b-4 border-gray-800 rounded my-2"></div>
-                            <div class="flex items-center justify-between w-full px-2">
-                                <button onclick="adjustExplore('f1d', -1)" class="text-blue-500 hover:text-blue-700 p-2"><i class="fas fa-chevron-left text-xl"></i></button>
-                                <span id="exp-f1-den" class="text-3xl font-bold text-gray-800">2</span>
-                                <button onclick="adjustExplore('f1d', 1)" class="text-blue-500 hover:text-blue-700 p-2"><i class="fas fa-chevron-right text-xl"></i></button>
-                            </div>
-                        </div>
-                        <div id="exp-f1-vis" class="fraction-bar-container w-full shadow-sm"></div>
-                    </div>
 
-                    <!-- Fraction 2 Builder -->
-                    <div class="bg-amber-50/50 p-6 rounded-xl border border-amber-200 shadow-sm flex flex-col items-center hover:shadow-md transition-shadow">
-                        <h3 class="font-bold text-amber-800 mb-4 text-lg">Fraction 2</h3>
-                         <div class="flex flex-col items-center mb-6 bg-white p-4 rounded-lg shadow-inner w-48 border border-amber-100">
-                            <div class="flex items-center justify-between w-full px-2">
-                                <button onclick="adjustExplore('f2n', -1)" class="text-amber-500 hover:text-amber-700 p-2"><i class="fas fa-chevron-left text-xl"></i></button>
-                                <span id="exp-f2-num" class="text-3xl font-bold text-gray-800">1</span>
-                                <button onclick="adjustExplore('f2n', 1)" class="text-amber-500 hover:text-amber-700 p-2"><i class="fas fa-chevron-right text-xl"></i></button>
+            <!-- TAB: EXPLORE — clear, visual fraction workspace -->
+            <div id="content-explore" class="tab-content fe-explore">
+                <div class="fe-explore-grid">
+                    <aside class="fe-builders" aria-label="Choose your fractions">
+                        <h2>Choose your fractions</h2>
+                        <p class="fe-small">Use the arrows to change each numerator and denominator.</p>
+                        <section class="fe-builder fe-orange" aria-label="First fraction">
+                            <h3>Fraction 1</h3>
+                            <div class="fe-step-fraction">
+                                <div class="fe-numbers"><span id="exp-f1-num">3</span><span class="fe-fraction-line"></span><span id="exp-f1-den">4</span></div>
+                                <div class="fe-step-controls">
+                                    <button type="button" onclick="adjustExplore('f1n', 1)" aria-label="Increase numerator of fraction 1">+</button>
+                                    <button type="button" onclick="adjustExplore('f1n', -1)" aria-label="Decrease numerator of fraction 1">−</button>
+                                    <span class="fe-control-label">Numerator</span>
+                                    <button type="button" onclick="adjustExplore('f1d', 1)" aria-label="Increase denominator of fraction 1">+</button>
+                                    <button type="button" onclick="adjustExplore('f1d', -1)" aria-label="Decrease denominator of fraction 1">−</button>
+                                    <span class="fe-control-label">Denominator</span>
+                                </div>
                             </div>
-                            <div class="w-full border-b-4 border-gray-800 rounded my-2"></div>
-                            <div class="flex items-center justify-between w-full px-2">
-                                <button onclick="adjustExplore('f2d', -1)" class="text-amber-500 hover:text-amber-700 p-2"><i class="fas fa-chevron-left text-xl"></i></button>
-                                <span id="exp-f2-den" class="text-3xl font-bold text-gray-800">3</span>
-                                <button onclick="adjustExplore('f2d', 1)" class="text-amber-500 hover:text-amber-700 p-2"><i class="fas fa-chevron-right text-xl"></i></button>
+                        </section>
+                        <section class="fe-builder fe-blue" aria-label="Second fraction">
+                            <h3>Fraction 2</h3>
+                            <div class="fe-step-fraction">
+                                <div class="fe-numbers"><span id="exp-f2-num">2</span><span class="fe-fraction-line"></span><span id="exp-f2-den">3</span></div>
+                                <div class="fe-step-controls">
+                                    <button type="button" onclick="adjustExplore('f2n', 1)" aria-label="Increase numerator of fraction 2">+</button>
+                                    <button type="button" onclick="adjustExplore('f2n', -1)" aria-label="Decrease numerator of fraction 2">−</button>
+                                    <span class="fe-control-label">Numerator</span>
+                                    <button type="button" onclick="adjustExplore('f2d', 1)" aria-label="Increase denominator of fraction 2">+</button>
+                                    <button type="button" onclick="adjustExplore('f2d', -1)" aria-label="Decrease denominator of fraction 2">−</button>
+                                    <span class="fe-control-label">Denominator</span>
+                                </div>
                             </div>
-                        </div>
-                        <div id="exp-f2-vis" class="fraction-bar-container w-full shadow-sm"></div>
-                    </div>
-                </div>
+                        </section>
+                        <button id="fe-new-pair" type="button" onclick="newExplorePair()" class="fe-primary fe-new-pair">↻ &nbsp; New fractions</button>
+                    </aside>
 
-                <div class="mt-8 bg-gray-50 p-6 rounded-xl border border-gray-200 text-center shadow-inner">
-                    <h3 class="text-xl font-bold mb-6 text-gray-700">Comparison & Common Denominator</h3>
-                    <div class="flex justify-center items-center space-x-8 text-2xl bg-white p-4 inline-flex rounded-xl shadow-sm border border-gray-100">
-                        <div id="exp-f1-display" class="fraction text-blue-700 font-bold"><span>1</span><span class="fdn">2</span></div>
-                        <div id="exp-comparison-symbol" class="font-black text-3xl text-purple-600 w-12 text-center">?</div>
-                        <div id="exp-f2-display" class="fraction text-amber-600 font-bold"><span>1</span><span class="fdn">3</span></div>
-                    </div>
-                    <div class="mt-6 flex flex-col items-center">
-                        <label for="exp-user-cd" class="text-gray-700 font-semibold mb-2">Suggest a Common Denominator:</label>
-                        <div class="flex items-center space-x-3 bg-white p-2 rounded-xl shadow-sm border border-purple-200">
-                            <input type="number" id="exp-user-cd" class="border-2 border-purple-300 rounded-lg p-2 w-24 text-center font-bold text-lg focus:border-purple-600 outline-none" placeholder="?">
-                            <button onclick="checkExploreCD()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded-lg shadow transition-transform hover:-translate-y-1">
-                                Check
-                            </button>
+                    <section class="fe-explore-work">
+                        <header class="fe-work-heading">
+                            <h2>Compare the fractions</h2>
+                            <p>Use the models to decide which fraction is greater.</p>
+                        </header>
+                        <div class="fe-fraction-models">
+                            <div class="fe-model-row fe-model-orange">
+                                <div id="exp-f1-display" class="fraction" aria-label="Fraction 1"><span>3</span><span class="fdn">4</span></div>
+                                <div id="exp-f1-vis" class="fraction-bar-container" aria-label="Fraction 1 model"></div>
+                            </div>
+                            <div class="fe-model-row fe-model-blue">
+                                <div id="exp-f2-display" class="fraction" aria-label="Fraction 2"><span>2</span><span class="fdn">3</span></div>
+                                <div id="exp-f2-vis" class="fraction-bar-container" aria-label="Fraction 2 model"></div>
+                            </div>
                         </div>
-                        <div id="exp-cd-feedback" class="mt-3 font-bold text-lg min-h-[28px]"></div>
-                    </div>
-                    <div id="exp-cd-result" class="mt-6 hidden p-6 bg-purple-50 border border-purple-200 rounded-xl text-purple-900 shadow-sm text-left max-w-2xl mx-auto">
-                        <!-- Filled by JS -->
-                    </div>
+
+                        <div class="fe-compare">
+                            <div class="fe-compare-question">
+                                <h3>Which fraction is greater?</h3>
+                                <p>Select the correct symbol.</p>
+                            </div>
+                            <div class="fe-compare-buttons" role="group" aria-label="Compare fraction 1 with fraction 2">
+                                <button type="button" onclick="checkComparison('<')" aria-label="Fraction 1 is less than fraction 2">&lt;</button>
+                                <button type="button" onclick="checkComparison('=')" aria-label="Fractions are equal">=</button>
+                                <button type="button" onclick="checkComparison('>')" aria-label="Fraction 1 is greater than fraction 2">&gt;</button>
+                            </div>
+                            <div id="fe-compare-feedback" class="fe-compare-feedback" role="status" aria-live="polite"></div>
+                        </div>
+
+                        <div class="fe-denominator-section">
+                            <div class="fe-denominator-heading">
+                                <div>
+                                    <h3>Find a common denominator</h3>
+                                    <p>What number is a multiple of both denominators?</p>
+                                </div>
+                                <div class="fe-denominator-controls">
+                                    <label for="exp-user-cd" class="sr-only">Common denominator</label>
+                                    <input id="exp-user-cd" type="number" min="1" step="1" inputmode="numeric" placeholder="?" aria-label="Common denominator">
+                                    <button type="button" onclick="checkExploreCD()" class="fe-primary">Check</button>
+                                </div>
+                            </div>
+                            <div id="exp-cd-feedback" class="fe-denominator-feedback" role="status" aria-live="polite"></div>
+                            <div id="exp-cd-result" class="fe-common-result hidden" aria-live="polite"></div>
+                        </div>
+                        <div class="fe-hint"><strong>Hint</strong><span>Both bars represent the same-sized whole. Compare how much is shaded.</span><button type="button" onclick="showExploreHint()">More help</button></div>
+                        <p id="fe-hint-details" class="fe-hint-details hidden" aria-live="polite">A common denominator partitions both bars into equal-sized parts. You can compare their numerators when denominators match.</p>
+                        <span id="exp-comparison-symbol" class="sr-only" aria-live="polite">?</span>
+                    </section>
                 </div>
             </div>
 
-            <!-- TAB: SIMPLIFY -->
+                        <!-- TAB: SIMPLIFY -->
             <div id="content-simplify" class="tab-content hidden h-full flex flex-col animate-fade-in">
                 <div class="flex items-center mb-4 border-b pb-3">
                     <i class="fas fa-compress-alt text-2xl text-green-600 mr-3"></i>
