@@ -208,3 +208,8 @@ footer{text-align:center;padding:18px 8px 25px;color:#60778b;font-size:.75rem;fo
  .explore-actions .line-toggle{min-height:51px;width:100%;font-size:.94rem}
  .more-options>summary{font-size:.75rem}
 }
+
+/* A single visual workbench, rather than cards within cards. */
+.simple-chips .chip-tile{background:transparent;border:0;border-radius:0;padding:4px 6px;box-shadow:none;min-width:105px}
+.simple-chips .chip-tile-title{font-weight:850;color:#4d7083;font-size:.72rem}
+.simple-chips{align-items:center}
