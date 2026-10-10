@@ -22,3 +22,5 @@ const configs={
 };
 const taskPower=t=>`${t.base}^${t.exponent}`;
 export const mount=(root,activity,context)=>mountRound(root,activity,configs[activity.id],context);
+
+export const definitions = configs;

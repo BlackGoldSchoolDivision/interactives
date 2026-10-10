@@ -53,3 +53,5 @@ const configurations={
   multfrac:{bank:multiplyBank,title:'Find a part of the quantity',instruction:'Make equal groups, then select the fractional part.',placeholder:'e.g. 6',inputmode:'decimal',render:multiplyModel,check:checkMultiply,hint:t=>`Divide ${t.whole} into ${t.d} equal groups: ${t.whole} ÷ ${t.d} = ${t.whole/t.d}. Then take ${t.n} of those groups.`,explain:t=>`${t.whole} ÷ ${t.d} × ${t.n} = ${asFraction(t.answer)}. That is ${t.n}/${t.d} of ${t.whole}.`}
 };
 export const mount=(root,activity,context)=>mountRound(root,activity,configurations[activity.id],context);
+
+export const definitions = configurations;

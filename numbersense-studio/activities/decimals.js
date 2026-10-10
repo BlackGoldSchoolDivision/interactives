@@ -22,3 +22,5 @@ const configs={
 };
 const taskWhole=v=>`${Math.floor(Number(v))} wholes and ${Math.round(Number(v)*10)%10} tenths`;
 export const mount=(root,activity,context)=>mountRound(root,activity,configs[activity.id],context);
+
+export const definitions = configs;
