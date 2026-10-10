@@ -1,0 +1,39 @@
+{
+  "stage": "review",
+  "activitiesImplemented": 29,
+  "bonusGamesImplemented": 3,
+  "automatedTestsPassed": 31,
+  "moduleGraphValidated": true,
+  "browserInteractionVerified": false,
+  "responsiveViewportsVerified": false,
+  "deployedReplacementVerified": false,
+  "originalFolderModified": false,
+  "hubModified": false,
+  "teacherAttribution": "provisional, awaiting Darren confirmation",
+  "pendingViewports": [
+    [
+      1024,
+      540
+    ],
+    [
+      1366,
+      650
+    ],
+    [
+      768,
+      900
+    ],
+    [
+      390,
+      667
+    ],
+    [
+      320,
+      568
+    ],
+    [
+      640,
+      360
+    ]
+  ]
+}
