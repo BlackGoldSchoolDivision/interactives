@@ -5,6 +5,7 @@ loaders.set('fractions',()=>import('./activities/fractions.js'));
 loaders.set('numbers',()=>import('./activities/numbers.js'));
 loaders.set('decimals',()=>import('./activities/decimals.js'));
 loaders.set('ratios',()=>import('./activities/ratios.js'));
+loaders.set('geometry',()=>import('./activities/geometry.js'));
 export const isReady = activity => loaders.has(activity.topic);
 export async function loadActivity(activity) {
   const loader = loaders.get(activity.topic);
