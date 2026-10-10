@@ -54,7 +54,7 @@ function modelFor(a,op,b){
   tile('Take away: '+neg(b),signedChips(b))+
   tile('Left: '+neg(res),signedChips(res))+'</div>',
   explanation:'Start with '+neg(a)+'. '+(extra?'Add '+extra+' positive–negative zero pair'+(extra===1?'':'s')+' without changing the value. ':'No extra zero pairs are needed. ')+
-  'Remove '+Math.abs(b)+' '+(b>0?'positive':b<0?'negative':'')+' chip'+(Math.abs(b)===1?'':'s')+'. You have '+neg(res)+' left.'};
+  'Remove '+Math.abs(b)+' '+(b>0?'positive ':b<0?'negative ':'')+'chip'+(Math.abs(b)===1?'':'s')+'. You have '+neg(res)+' left.'};
  }
  if(op==='×'){
   const groups=Math.abs(b),count=Math.abs(a),negative=(a<0)!==(b<0);
@@ -79,7 +79,7 @@ function prettyDetail(a,op,b,result){
   const shift=op==='+'?b:-b;
   return 'Start at '+neg(a)+' and move '+Math.abs(shift)+' '+(shift>=0?'right':'left')+' to '+neg(result.value)+'.';
  }
- if(op==='×')return 'The product '+neg(result.value)+' is '+(result.value<0?'to the left':'to the right')+' of zero.';
+ if(op==='×')return result.value===0?'The product is zero, so the endpoint stays at zero.':'The product '+neg(result.value)+' is '+(result.value<0?'to the left':'to the right')+' of zero.';
  if(result.value===null)return 'Division by zero is undefined.';
  return 'The quotient is '+(result.exact?neg(result.value):result.display)+' on the number line.';
 }
