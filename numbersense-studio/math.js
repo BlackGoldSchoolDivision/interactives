@@ -19,8 +19,8 @@ export const add = (a,b) => rational(a.n*b.d+b.n*a.d,a.d*b.d);
 export const subtract = (a,b) => rational(a.n*b.d-b.n*a.d,a.d*b.d);
 export const multiply = (a,b) => rational(a.n*b.n,a.d*b.d);
 export const divide = (a,b) => rational(a.n*b.d,a.d*b.n);
-export function primeFactors(value){const factors=[];for(let p=2;p*p<=value;p++){while(value%p===0){factors.push(p);value/=p;}}if(value>1)factors.push(value);return factors;}
-export const isPrime = value => Number.isInteger(value)&&value>1&&primeFactors(value).length===1;
+export function primeFactors(value){if(!Number.isSafeInteger(value)||value<1||value>1000000000)throw new RangeError('Factor input out of range');const factors=[];for(let p=2;p*p<=value;p++){while(value%p===0){factors.push(p);value/=p;}}if(value>1)factors.push(value);return factors;}
+export const isPrime = value => Number.isSafeInteger(value)&&value>1&&value<=1000000&&primeFactors(value).length===1;
 export const numeric = a => a.n/a.d;
 export function seededRandom(seed=1) {
   let state=seed>>>0;

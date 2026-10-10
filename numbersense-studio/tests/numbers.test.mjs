@@ -18,6 +18,8 @@ test('all fixed number and algebra fixtures are retained and correct',()=>{
 test('factorization accepts prime order and powers, while rejecting composites as leaves',()=>{
   assert.deepEqual(parseFactors('3 × 2²'),[2,2,3]);assert.deepEqual(parseFactors('2^5 * 3'),[2,2,2,2,2,3]);assert.equal(parseFactors('4 × 3'),null);
   const twelve=factorBank[0];assert.ok(checkFactors(twelve,'3 * 2^2',{leaves:[2,2,3]}).correct);assert.equal(checkFactors(twelve,'2^2*3',{leaves:[2,6]}).correct,false);
+  assert.equal(parseFactors('999999999999999999999999999999'),null);
+  assert.equal(checkFactors(twelve,'2^2*3',{leaves:[2,3]}).correct,false);
 });
 test('BEDMAS reductions preserve meaning through either order of independent ready steps',()=>{
   for(const t of bedmasBank){let tree=structuredClone(t.tree);assert.equal(evaluateTree(tree),t.answer.n);while(typeof tree!=='number'){const ready=treeSteps(tree).filter(s=>s.ready);assert.ok(ready.length);tree=reduceTree(tree,ready.at(-1).path);assert.equal(evaluateTree(tree),t.answer.n);}assert.equal(tree,t.answer.n);}
