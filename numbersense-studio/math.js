@@ -18,6 +18,9 @@ export const asFraction = a => a.d===1?String(a.n):`${a.n}/${a.d}`;
 export const add = (a,b) => rational(a.n*b.d+b.n*a.d,a.d*b.d);
 export const subtract = (a,b) => rational(a.n*b.d-b.n*a.d,a.d*b.d);
 export const multiply = (a,b) => rational(a.n*b.n,a.d*b.d);
+export const divide = (a,b) => rational(a.n*b.d,a.d*b.n);
+export function primeFactors(value){const factors=[];for(let p=2;p*p<=value;p++){while(value%p===0){factors.push(p);value/=p;}}if(value>1)factors.push(value);return factors;}
+export const isPrime = value => Number.isInteger(value)&&value>1&&primeFactors(value).length===1;
 export const numeric = a => a.n/a.d;
 export function seededRandom(seed=1) {
   let state=seed>>>0;
