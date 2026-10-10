@@ -1650,22 +1650,30 @@
   },
   {
     "id": "numbersense6",
-    "path": "numbersense6",
-    "repo": "personal",
-    "title": "Number Sense",
+    "path": "numbersense-studio",
+    "repo": "bg",
+    "title": "Number Sense · 29 Activities",
     "category": "Maths",
-    "description": "Choose a number topic, answer practice questions, and use hints as you work.",
+    "description": "A teacher-created mathematics collection with 29 interactive activities across six topics, plus three bonus mini-games. Build models, explore ideas, and practise at your own pace.",
     "types": [
-      "Practice questions"
+      "Simulations & models",
+      "Practice questions",
+      "Games"
     ],
     "tags": [
       "Number sense",
-      "Hints & practice"
+      "29 activities",
+      "Six topics"
     ],
-    "url": "https://maltais239.github.io/interactives/numbersense6/",
-    "links": [],
+    "url": "https://interactives.blackgold.ca/numbersense-studio/",
+    "links": [
+      {
+        "label": "Original teacher-created version",
+        "url": "https://maltais239.github.io/interactives/numbersense6/"
+      }
+    ],
     "favourite": false,
-    "credit": "",
+    "credit": "Mrs. Publow & Mrs. Murley",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/numbersense6.jpg",
     "captured": "2026-10-04"
