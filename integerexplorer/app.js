@@ -38,7 +38,7 @@ function modelFor(a,op,b){
   const pos=Math.max(a,0)+Math.max(b,0),negative=Math.max(-a,0)+Math.max(-b,0);
   const pairs=Math.min(pos,negative),rPos=pos-pairs,rNeg=negative-pairs;
   const renderedPairs=Array.from({length:pairs},()=>'<span class="zero-pair">'+chip(-1,'paired')+chip(1,'paired')+'</span>').join('');
-  return {html:'<div class="chip-layout">'+tile('Start: '+neg(a),signedChips(a))+tile('Add: '+neg(b),signedChips(b))+'</div>'+
+  return {html:'<div class="chip-layout simple-chips">'+tile('Start: '+neg(a),signedChips(a))+tile('Add: '+neg(b),signedChips(b))+'</div>'+
   '<div class="chip-groups" style="margin:12px 0">'+(pairs?renderedPairs:'<span class="zero-label">No zero pairs</span>')+
   '</div><div class="chip-note">'+(pairs?pairs+' zero pair'+(pairs===1?'':'s')+' cancel':'Put the groups together')+'</div>'+
   '<div class="chip-groups" style="margin-top:10px">'+(rPos?chips(1,rPos):rNeg?chips(-1,rNeg):'<span class="zero-label">0</span>')+'</div>',
@@ -205,8 +205,14 @@ function init(){
  $('input-b').addEventListener('change',e=>setNumber('b',Number(e.target.value)));
  document.querySelectorAll('[data-op]').forEach(btn=>btn.onclick=()=>setOperation(btn.dataset.op));
  ['explore','practice','rules'].forEach(tab=>$('tab-'+tab).onclick=()=>setTab(tab));
- $('another').onclick=randomExample;$('examples-toggle').onclick=()=>{$('examples').hidden=!$('examples').hidden};
- $('steps-button').onclick=()=>{const d=$('steps');d.open=!d.open;if(d.open)d.scrollIntoView({block:'nearest',behavior:'smooth'})};
+ $('another').onclick=randomExample;
+ $('examples-toggle').onclick=()=>{$('examples').hidden=!$('examples').hidden};
+ $('line-toggle').onclick=()=>{
+  const panel=$('line-panel'),button=$('line-toggle');
+  panel.hidden=!panel.hidden;
+  button.setAttribute('aria-expanded',String(!panel.hidden));
+  button.textContent=panel.hidden?'Show on number line →':'Hide number line ↑';
+ };
  $('practice-op').addEventListener('change',e=>{state.practiceOp=e.target.value;state.round=0;state.score=0;startQuestion()});
  $('practice-level').addEventListener('change',e=>{state.difficulty=e.target.value;state.round=0;state.score=0;startQuestion()});
  $('practice-answer').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();state.answered?startQuestion():checkPractice()}});
