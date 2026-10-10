@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#102f51">
 <meta name="description" content="Explore positive and negative integers with large counters, zero pairs, number lines and practice.">
 <title>Integer Explorer | Interactive Learning Lab</title>
-<link rel="stylesheet" href="./style.css?v=20261010-v1">
-<script defer src="./app.js?v=20261010-v2"></script>
+<link rel="stylesheet" href="./style.css?v=20261010-simple2">
+<script defer src="./app.js?v=20261010-simple2"></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to the activity</a>
@@ -61,29 +61,35 @@
   <div id="equation" class="math" role="status" aria-live="polite" aria-atomic="true">
    <span class="negative">−3</span><span class="sign">+</span><span class="positive">5</span><span class="equals">=</span><span class="result">2</span>
   </div>
-  <div class="visual-heading"><h2>Integer chips</h2><span>Blue +1 &nbsp; / &nbsp; Coral −1</span></div>
+  <div class="visual-heading"><h2>Integer chips</h2></div>
   <div class="chip-stage" id="chip-content" aria-label="Integer chips model"></div>
-  <p id="model-description" class="chip-explain" aria-live="polite"></p>
-  <div class="line-stage">
-   <div id="line-caption" class="line-caption">Move 5 steps to the right</div>
-   <div id="line-content" aria-label="Number line diagram"></div>
-   <div class="line-label-help">The number line adjusts to fit the values.</div>
-  </div>
+  <p id="model-description" class="sr-only" aria-live="polite"></p>
   <div class="explore-actions">
-   <button type="button" id="another" class="action">↻ Another example</button>
-   <button type="button" id="steps-button" class="action primary">Show steps</button>
-   <button type="button" id="examples-toggle" class="action">Try a specific equation</button>
+   <button type="button" id="line-toggle" class="action line-toggle" aria-expanded="false" aria-controls="line-panel">Show on number line →</button>
   </div>
-  <div id="examples" class="examples" hidden aria-label="Sample equations">
-   <button type="button" data-example="-3|+|5">−3 + 5</button>
-   <button type="button" data-example="4|-|-2">4 − (−2)</button>
-   <button type="button" data-example="-5|-|3">−5 − 3</button>
-   <button type="button" data-example="-3|×|4">−3 × 4</button>
-   <button type="button" data-example="-8|÷|-2">−8 ÷ (−2)</button>
-  </div>
-  <details id="steps" class="disclosure">
-   <summary>How does the model work?</summary>
-   <div id="steps-explanation" class="explanation" aria-live="polite"></div>
+  <section id="line-panel" class="line-stage" aria-label="Number line model" hidden>
+   <div id="line-caption" class="line-caption">Start at −3 and move 5 right to 2.</div>
+   <div id="line-content" aria-label="Number line diagram"></div>
+  </section>
+  <details class="disclosure more-options">
+   <summary>More examples &amp; explanation</summary>
+   <div class="more-content">
+    <div class="explore-actions">
+     <button type="button" id="another" class="action">↻ Another example</button>
+     <button type="button" id="examples-toggle" class="action">Choose an example</button>
+    </div>
+    <div id="examples" class="examples" hidden aria-label="Sample equations">
+     <button type="button" data-example="-3|+|5">−3 + 5</button>
+     <button type="button" data-example="4|-|-2">4 − (−2)</button>
+     <button type="button" data-example="-5|-|3">−5 − 3</button>
+     <button type="button" data-example="-3|×|4">−3 × 4</button>
+     <button type="button" data-example="-8|÷|-2">−8 ÷ (−2)</button>
+    </div>
+    <details id="steps" class="disclosure">
+     <summary>How do the chips work?</summary>
+     <div id="steps-explanation" class="explanation" aria-live="polite"></div>
+    </details>
+   </div>
   </details>
  </section>
  <section id="view-practice" class="surface panel-view" role="tabpanel" aria-labelledby="tab-practice" hidden>
