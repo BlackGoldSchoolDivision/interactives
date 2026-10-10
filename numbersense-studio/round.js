@@ -17,7 +17,7 @@ export function mountRound(root,activity,config,context={}) {
     const feedback=root.querySelector('#feedback'), next=root.querySelector('#next');
     form.addEventListener('submit',event=>{
       event.preventDefault(); if(solved)return;
-      if(!input.value.trim()){feedback.innerHTML='<p class="feedback retry">Write an answer before checking.</p>';input.focus();return;}
+      if(!input.value.trim()){feedback.innerHTML=`<p class="feedback retry">${input.parentElement.hidden?'Choose an explanation before checking.':'Write an answer before checking.'}</p>`;if(!input.parentElement.hidden)input.focus();return;}
       const result=config.check(task,input.value,model.state);
       if(result.invalid){feedback.innerHTML=`<p class="feedback retry">${safeText(result.message)}</p>`;input.focus();return;}
       attempts++;
