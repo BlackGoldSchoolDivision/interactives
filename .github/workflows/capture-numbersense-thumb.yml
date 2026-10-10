@@ -1,0 +1,50 @@
+name: Capture Number Sense hub screenshot
+
+on:
+  push:
+    paths:
+      - .github/workflows/capture-numbersense-thumb.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install screenshot tools
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+          python -m pip install pillow
+      - name: Capture actual Number Sense Studio homepage
+        run: |
+          python -m http.server 8765 --bind 127.0.0.1 >/tmp/numbersense-server.log 2>&1 &
+          sleep 2
+          npx playwright screenshot --browser chromium --viewport-size='1366,900' --wait-for-timeout=1600 'http://127.0.0.1:8765/numbersense-studio/#/' /tmp/numbersense-home.png
+          python - <<'PY'
+          from PIL import Image, ImageStat
+          im = Image.open('/tmp/numbersense-home.png').convert('RGB')
+          assert im.size == (1366,900), im.size
+          sample = ImageStat.Stat(im).stddev
+          assert max(sample)>25, f'Page is suspiciously blank: {sample}'
+          # Real screen capture, centred on the app's six-topic home grid.
+          crop = im.crop((83,0,1283,900)).resize((600,450),Image.Resampling.LANCZOS)
+          crop.save('interactive-learning-lab/images/numbersense-studio-home-20261010.webp','WEBP',quality=90,method=6)
+          im.save('/tmp/numbersense-home-verified.png')
+          PY
+      - name: Publish verified screenshot
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add interactive-learning-lab/images/numbersense-studio-home-20261010.webp
+          git commit -m 'Capture finished Number Sense Studio homepage for Learning Lab'
+          git push
