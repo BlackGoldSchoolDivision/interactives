@@ -161,3 +161,50 @@ footer{text-align:center;padding:18px 8px 25px;color:#60778b;font-size:.75rem;fo
 }
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 @media print{.top,.nav,.builder,.explore-actions,.practice-controls,footer{display:none!important}.surface,.chip-stage,.line-stage{box-shadow:none!important;break-inside:avoid}}
+
+
+/* Visual-first classroom layout: show one model at a time. */
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.explore{padding-bottom:14px}
+.math{margin:12px 0 18px}
+.visual-heading{margin-bottom:10px}
+.chip-stage{padding:clamp(14px,2vw,22px);min-height:170px}
+.chip-groups{margin-top:8px}
+.explore-actions{margin:14px 0 0}
+.explore-actions .line-toggle{min-height:54px;min-width:min(320px,100%);font-size:1rem;font-weight:900;background:#f9fbfd;border:1.5px solid #adc2d6;color:#173e62}
+.explore-actions .line-toggle:hover{background:#edf6fc}
+.line-stage{margin-top:14px}
+.more-options{margin:10px 0 0}
+.more-options>summary{display:list-item;width:max-content;max-width:100%;margin:0 auto;text-align:center;font-size:.77rem;color:#718598;padding:8px 10px}
+.more-content{padding:4px 8px 8px}
+.more-content .explore-actions{margin:0}
+.more-content .explore-actions .action{font-size:.85rem;min-height:40px;padding:7px 13px}
+.more-content .disclosure{max-width:750px;margin:10px auto 0}
+@media(max-width:850px){
+ .builder{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto auto;gap:8px}
+ .builder>.picker:first-child{grid-row:1;grid-column:1}
+ .builder>.picker:last-child{grid-row:1;grid-column:2}
+ .builder>.operations{grid-row:2;grid-column:1/-1}
+ .picker{flex-direction:column;gap:4px}
+ .picker label{min-width:0}
+}
+@media(max-width:520px){
+ .builder{gap:7px}
+ .picker{justify-content:center;flex-wrap:nowrap;gap:3px;min-width:0}
+ .picker label{font-size:.76rem;font-weight:850}
+ .stepper{max-width:100%}
+ .stepper button{min-width:38px;min-height:40px}
+ .stepper input{width:56px;min-height:40px;font-size:1.13rem}
+ .operations{padding:3px}
+ .operations button{min-height:39px;min-width:52px}
+ .math{font-size:clamp(2.3rem,10vw,3.25rem);margin:10px 0 13px}
+ .explore{padding:12px 10px}
+ .chip-stage{min-height:185px;padding:12px 8px}
+ .chip-layout{gap:7px}
+ .chip-tile{padding:9px;flex:1 1 120px;min-width:105px}
+ .chip-note{font-size:.89rem}
+ .chip{width:35px;height:35px;font-size:.79rem}
+ .zero-pair{padding:3px 4px}
+ .explore-actions .line-toggle{min-height:51px;width:100%;font-size:.94rem}
+ .more-options>summary{font-size:.75rem}
+}
