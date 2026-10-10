@@ -29,7 +29,7 @@ html = (ROOT / 'index.html').read_text()
 css = (ROOT / 'styles.css').read_text()
 font = data_url('font/ttf', (ROOT / 'assets' / 'nunito.ttf').read_bytes())
 css = css.replace("url('./assets/nunito.ttf')", f"url('{font}')")
-html = html.replace('<link rel="stylesheet" href="./styles.css">', '<style>' + css + '</style>')
+html = re.sub(r'<link rel="stylesheet" href="\./styles\.css(?:\?[^"]*)?">', lambda match: '<style>' + css + '</style>', html)
 favicon = data_url('image/svg+xml', (ROOT / 'assets' / 'favicon.svg').read_bytes())
 html = html.replace('href="./assets/favicon.svg"', f'href="{favicon}"')
 entry = '<script type="importmap">' + json.dumps({'imports': imports}) + '</script>\n  <script type="module">import "@number-sense/app.js";</script>'
