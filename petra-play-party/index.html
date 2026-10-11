@@ -88,6 +88,7 @@
   .palette-btn.active{transform:scale(1.08);outline:4px solid #6f5694}
   .colour-modes{display:flex;gap:10px;flex-wrap:wrap}
   .tool-mode.active,.size-btn.active{background:linear-gradient(180deg,#8ad8ff,#60adff);color:#fff}
+  .picture-position{text-align:center;font-weight:800;color:#806ca2;font-size:.9rem;margin:-3px 0 10px}
   .colour-picture-name,.free-name{text-align:center;font-size:1.12rem;font-weight:900;color:#ff5a85;margin:10px 0}
   .colour-stage,.free-stage{position:relative;background:#fffefc;border:4px solid #f0e5ff;border-radius:24px;overflow:hidden;min-height:340px}
   .colour-stage svg,.colour-stage canvas,.free-stage canvas{display:block;width:100%;height:340px}
@@ -95,7 +96,9 @@
   .colour-stage canvas{pointer-events:none}
   .colour-stage.brush-active canvas{pointer-events:auto}
   .drag-ghost{position:fixed;z-index:150;pointer-events:none;transform:translate(-50%,-50%) scale(1.05);opacity:.93;box-shadow:0 14px 28px #37265e55}
-  .color-fill-piece{cursor:pointer;transition:transform .15s ease}
+  .color-fill-piece{cursor:pointer;transition:fill .1s ease}
+  .colour-stage{background:#fffdf8}
+  #color-svg{touch-action:manipulation}
   .color-fill-piece:active{transform:scale(.99)}
   .size-picker{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
   .size-btn{min-width:54px}
@@ -120,17 +123,35 @@
   @keyframes fall{to{transform:translateY(110vh) rotate(600deg);opacity:.95}}
 
   @media (max-width:720px){
-    body{padding:8px}
-    .hero{border-radius:24px;padding:14px}
-    .hero{position:static}
-    .tabs{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;padding:3px 2px 9px}
-    .tab{flex:0 0 112px;min-height:62px;scroll-snap-align:start;font-size:.91rem;padding:7px 5px}
-    .scene{padding:14px}
+    body{padding:7px}
+    .hero{position:relative;top:auto;border-radius:22px;padding:10px 11px}
+    .hero-top{gap:4px}
+    .hero h1{font-size:1.52rem}
+    .hero .sub{display:none}
+    .top-actions{gap:7px}
+    .top-actions button{padding:7px 10px;font-size:.85rem}
+    .tabs{display:flex;grid-template-columns:none;overflow-x:auto;gap:7px;margin-top:8px;scroll-snap-type:x proximity;padding:3px 2px 7px;scrollbar-width:thin}
+    .tab{flex:0 0 96px;min-width:96px;min-height:55px;padding:5px 4px;font-size:.79rem;border-radius:15px;scroll-snap-align:start}
+    .tab .emoji{font-size:1.22rem}
+    .panel{margin-top:8px;padding:5px}
+    .scene{padding:10px;min-height:calc(100dvh - 190px)}
+    .scene-heading{font-size:1.45rem}
+    .subhead{font-size:.94rem;margin-bottom:8px}
     .hunt-balloons{grid-template-columns:repeat(2,minmax(0,1fr))}
     .balloon{min-height:104px;font-size:1.85rem}
     .paper,.colour-stage,.free-stage{min-height:300px}
     .paper svg,.paper canvas,.colour-stage svg,.colour-stage canvas,.free-stage canvas{height:300px}
     .paper canvas{height:300px}
+    .colour-tools{gap:5px}
+    .colour-palette,.free-palette{width:100%;flex-wrap:nowrap;overflow-x:auto;gap:5px;padding:5px 3px;scrollbar-width:thin}
+    .palette-btn{width:38px;height:38px;min-width:38px}
+    .colour-picture-name{margin-top:6px}
+    .colour-modes{gap:8px}
+    .colour-modes button{padding:9px 14px}
+    .colour-stage,.free-stage{border-width:3px}
+    .color-shell,.free-shell{padding:8px}
+    .free-tools{gap:6px}
+    .free-name{margin:8px 0}
   }
   @media (max-width:450px){
     .car,.slot,.draggable-letter{width:64px;height:64px;font-size:1.75rem}
@@ -248,14 +269,16 @@
           </div>
         </div>
         <div class="colour-picture-name" id="color-picture-name">🌼 Happy flower</div>
+        <div class="picture-position" id="picture-position" aria-live="polite">Picture 1 of 10</div>
         <div class="colour-stage">
-          <svg id="color-svg" viewBox="0 0 500 340" role="img" aria-label="Picture to colour"></svg>
+          <svg id="color-svg" viewBox="40 7 420 326" role="img" aria-label="Picture to colour"></svg>
           <canvas id="color-canvas" aria-label="Draw on your picture"></canvas>
         </div>
       </div>
       <div class="colour-actions">
         <button class="small-action" id="color-undo" type="button">↶ Undo</button>
         <button class="small-action" id="color-clear" type="button">🧽 Start fresh</button>
+        <button class="small-action" id="color-prev" type="button">⬅ Previous</button>
         <button class="big-action" id="color-next" type="button">Next picture ➜</button>
       </div>
     </section>
@@ -266,6 +289,10 @@
       <div class="free-shell">
         <div class="free-tools">
           <div id="free-palette" class="free-palette" aria-label="Choose a colour"></div>
+          <div class="size-picker" aria-label="Drawing tools">
+            <button type="button" class="tool-mode active" id="free-crayon" aria-pressed="true">🖍️ Draw</button>
+            <button type="button" class="tool-mode" id="free-eraser" aria-pressed="false">🧽 Eraser</button>
+          </div>
           <div class="size-picker" aria-label="Brush size">
             <button type="button" class="size-btn" data-size="6">Small</button>
             <button type="button" class="size-btn active" data-size="12">Medium</button>
@@ -365,6 +392,7 @@
   let colorStrokes = [];
   let colorHistory = [];
   let freeColor = COLORS[0];
+  let freeTool = 'crayon';
   let freeSize = 12;
   let freeDrawing = false;
   let freeLast = null;
@@ -670,114 +698,170 @@
     });
   }
 
+  // Each picture is intentionally drawn as distinct, outlined colouring regions.
+  // The outlined paths do not cover one another unintentionally, and every large
+  // white area can be filled by tapping it.
+  const ink = '#352a4d';
+  const region = (tag, attrs) => `<${tag} class="color-fill-piece" ${attrs} fill="#ffffff" stroke="${ink}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`;
+  const detail = (d, width=4) => `<path d="${d}" fill="none" stroke="${ink}" stroke-width="${width}" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>`;
+  const decoration = (tag, attrs) => `<${tag} ${attrs} fill="none" stroke="#c9badd" stroke-width="3" stroke-linecap="round" pointer-events="none"/>`;
+  const ell = (cx,cy,rx,ry,attrs='') => region('ellipse',`cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" ${attrs}`);
+  const cir = (cx,cy,r,attrs='') => region('circle',`cx="${cx}" cy="${cy}" r="${r}" ${attrs}`);
+  const path = (d,attrs='') => region('path',`d="${d}" ${attrs}`);
+  const rect = (x,y,w,h,rx=0,attrs='') => region('rect',`x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" ${attrs}`);
+  const sparkle = (x,y,size=13) => decoration('path',`d="M${x} ${y-size}V${y+size} M${x-size} ${y}H${x+size}"`);
   const COLOR_PICTURES = [
-    {
-      title:'🌼 Happy flower',
-      shapes:`
-        <rect class="color-fill-piece" data-default="#ffffff" x="20" y="255" width="460" height="58" rx="18" fill="#ffffff" stroke="#2f2540" stroke-width="4"/>
-        <rect class="color-fill-piece" data-default="#8d6e63" x="238" y="120" width="20" height="145" rx="10" fill="#8d6e63" stroke="#2f2540" stroke-width="4"/>
-        <ellipse class="color-fill-piece" data-default="#ffd54f" cx="248" cy="124" rx="44" ry="42" fill="#ffd54f" stroke="#2f2540" stroke-width="4"/>
-        <ellipse class="color-fill-piece" data-default="#ff7ca6" cx="248" cy="48" rx="34" ry="48" fill="#ff7ca6" stroke="#2f2540" stroke-width="4"/>
-        <ellipse class="color-fill-piece" data-default="#ff7ca6" cx="248" cy="200" rx="34" ry="48" fill="#ff7ca6" stroke="#2f2540" stroke-width="4"/>
-        <ellipse class="color-fill-piece" data-default="#ff7ca6" cx="170" cy="124" rx="48" ry="34" fill="#ff7ca6" stroke="#2f2540" stroke-width="4"/>
-        <ellipse class="color-fill-piece" data-default="#ff7ca6" cx="326" cy="124" rx="48" ry="34" fill="#ff7ca6" stroke="#2f2540" stroke-width="4"/>
-        <ellipse class="color-fill-piece" data-default="#ff7ca6" cx="193" cy="69" rx="30" ry="42" transform="rotate(-35 193 69)" fill="#ff7ca6" stroke="#2f2540" stroke-width="4"/>
-        <ellipse class="color-fill-piece" data-default="#ff7ca6" cx="303" cy="69" rx="30" ry="42" transform="rotate(35 303 69)" fill="#ff7ca6" stroke="#2f2540" stroke-width="4"/>
-      `
-    },
-    {
-      title:'🦋 Butterfly',
-      shapes:`
-        <ellipse class="color-fill-piece" data-default="#8b5cf6" cx="170" cy="118" rx="82" ry="66" fill="#8b5cf6" stroke="#2f2540" stroke-width="4"/>
-        <ellipse class="color-fill-piece" data-default="#f472b6" cx="170" cy="224" rx="68" ry="56" fill="#f472b6" stroke="#2f2540" stroke-width="4"/>
-        <ellipse class="color-fill-piece" data-default="#8b5cf6" cx="330" cy="118" rx="82" ry="66" fill="#8b5cf6" stroke="#2f2540" stroke-width="4"/>
-        <ellipse class="color-fill-piece" data-default="#f472b6" cx="330" cy="224" rx="68" ry="56" fill="#f472b6" stroke="#2f2540" stroke-width="4"/>
-        <rect class="color-fill-piece" data-default="#374151" x="228" y="70" width="44" height="190" rx="22" fill="#374151" stroke="#2f2540" stroke-width="4"/>
-        <circle class="color-fill-piece" data-default="#fde68a" cx="250" cy="102" r="16" fill="#fde68a" stroke="#2f2540" stroke-width="4"/>
-        <line x1="240" y1="74" x2="220" y2="38" stroke="#2f2540" stroke-width="4" stroke-linecap="round"/>
-        <line x1="260" y1="74" x2="280" y2="38" stroke="#2f2540" stroke-width="4" stroke-linecap="round"/>
-      `
-    },
-    {
-      title:'🌈 Rainbow',
-      shapes:`
-        <rect class="color-fill-piece" data-default="#d8f3ff" x="10" y="10" width="480" height="320" rx="24" fill="#d8f3ff" stroke="#2f2540" stroke-width="4"/>
-        <path class="color-fill-piece" data-default="#ff6b6b" d="M80 280 A170 170 0 0 1 420 280 L390 280 A140 140 0 0 0 110 280Z" fill="#ff6b6b" stroke="#2f2540" stroke-width="4"/>
-        <path class="color-fill-piece" data-default="#f59e0b" d="M110 280 A140 140 0 0 1 390 280 L360 280 A110 110 0 0 0 140 280Z" fill="#f59e0b" stroke="#2f2540" stroke-width="4"/>
-        <path class="color-fill-piece" data-default="#fde047" d="M140 280 A110 110 0 0 1 360 280 L332 280 A82 82 0 0 0 168 280Z" fill="#fde047" stroke="#2f2540" stroke-width="4"/>
-        <path class="color-fill-piece" data-default="#4ade80" d="M168 280 A82 82 0 0 1 332 280 L306 280 A56 56 0 0 0 194 280Z" fill="#4ade80" stroke="#2f2540" stroke-width="4"/>
-        <path class="color-fill-piece" data-default="#60a5fa" d="M194 280 A56 56 0 0 1 306 280 L280 280 A30 30 0 0 0 220 280Z" fill="#60a5fa" stroke="#2f2540" stroke-width="4"/>
-        <circle class="color-fill-piece" data-default="#ffffff" cx="95" cy="272" r="42" fill="#ffffff" stroke="#2f2540" stroke-width="4"/>
-        <circle class="color-fill-piece" data-default="#ffffff" cx="133" cy="275" r="34" fill="#ffffff" stroke="#2f2540" stroke-width="4"/>
-        <circle class="color-fill-piece" data-default="#ffffff" cx="367" cy="275" r="34" fill="#ffffff" stroke="#2f2540" stroke-width="4"/>
-        <circle class="color-fill-piece" data-default="#ffffff" cx="405" cy="272" r="42" fill="#ffffff" stroke="#2f2540" stroke-width="4"/>
-      `
-    },
-    {
-      title:'🐱 Kitty cat',
-      shapes:`
-        <ellipse class="color-fill-piece" data-default="#ffe0b2" cx="250" cy="180" rx="94" ry="84" fill="#ffe0b2" stroke="#2f2540" stroke-width="4"/>
-        <circle class="color-fill-piece" data-default="#ffe0b2" cx="250" cy="120" r="82" fill="#ffe0b2" stroke="#2f2540" stroke-width="4"/>
-        <polygon class="color-fill-piece" data-default="#ffc4d6" points="180,48 146,16 140,86" fill="#ffc4d6" stroke="#2f2540" stroke-width="4"/>
-        <polygon class="color-fill-piece" data-default="#ffc4d6" points="320,48 354,16 360,86" fill="#ffc4d6" stroke="#2f2540" stroke-width="4"/>
-        <circle class="color-fill-piece" data-default="#ffffff" cx="220" cy="114" r="18" fill="#ffffff" stroke="#2f2540" stroke-width="4"/>
-        <circle class="color-fill-piece" data-default="#ffffff" cx="280" cy="114" r="18" fill="#ffffff" stroke="#2f2540" stroke-width="4"/>
-        <circle cx="220" cy="114" r="8" fill="#2f2540"/>
-        <circle cx="280" cy="114" r="8" fill="#2f2540"/>
-        <polygon class="color-fill-piece" data-default="#ff8ba7" points="250,128 235,146 265,146" fill="#ff8ba7" stroke="#2f2540" stroke-width="4"/>
-        <path d="M250 146 C237 164 212 164 198 152" fill="none" stroke="#2f2540" stroke-width="4" stroke-linecap="round"/>
-        <path d="M250 146 C263 164 288 164 302 152" fill="none" stroke="#2f2540" stroke-width="4" stroke-linecap="round"/>
-      `
-    },
-    {
-      title:'🦖 Friendly dinosaur',
-      shapes:`
-        <path class="color-fill-piece" data-default="#86efac" d="M120 235 C110 128 176 70 266 76 C335 81 391 126 390 199 C389 255 342 292 278 290 C233 289 199 268 177 252 L137 265 L149 232Z" fill="#86efac" stroke="#2f2540" stroke-width="4"/>
-        <circle class="color-fill-piece" data-default="#86efac" cx="300" cy="96" r="44" fill="#86efac" stroke="#2f2540" stroke-width="4"/>
-        <circle class="color-fill-piece" data-default="#ffffff" cx="316" cy="89" r="10" fill="#ffffff" stroke="#2f2540" stroke-width="4"/>
-        <circle cx="318" cy="90" r="4" fill="#2f2540"/>
-        <path d="M324 110 C313 124 294 126 282 117" fill="none" stroke="#2f2540" stroke-width="4" stroke-linecap="round"/>
-        <polygon class="color-fill-piece" data-default="#f9a8d4" points="168,110 184,82 203,112" fill="#f9a8d4" stroke="#2f2540" stroke-width="4"/>
-        <polygon class="color-fill-piece" data-default="#f9a8d4" points="201,96 220,66 239,97" fill="#f9a8d4" stroke="#2f2540" stroke-width="4"/>
-        <polygon class="color-fill-piece" data-default="#f9a8d4" points="236,88 254,60 274,91" fill="#f9a8d4" stroke="#2f2540" stroke-width="4"/>
-      `
-    },
-    {
-      title:'🚀 Rocket ship',
-      shapes:`
-        <ellipse class="color-fill-piece" data-default="#e5e7eb" cx="250" cy="150" rx="68" ry="120" fill="#e5e7eb" stroke="#2f2540" stroke-width="4"/>
-        <polygon class="color-fill-piece" data-default="#ff6b6b" points="250,22 208,82 292,82" fill="#ff6b6b" stroke="#2f2540" stroke-width="4"/>
-        <circle class="color-fill-piece" data-default="#93c5fd" cx="250" cy="126" r="28" fill="#93c5fd" stroke="#2f2540" stroke-width="4"/>
-        <polygon class="color-fill-piece" data-default="#60a5fa" points="182,193 132,245 182,252" fill="#60a5fa" stroke="#2f2540" stroke-width="4"/>
-        <polygon class="color-fill-piece" data-default="#60a5fa" points="318,193 368,245 318,252" fill="#60a5fa" stroke="#2f2540" stroke-width="4"/>
-        <polygon class="color-fill-piece" data-default="#f59e0b" points="220,267 198,318 234,296" fill="#f59e0b" stroke="#2f2540" stroke-width="4"/>
-        <polygon class="color-fill-piece" data-default="#f59e0b" points="280,267 266,296 302,318" fill="#f59e0b" stroke="#2f2540" stroke-width="4"/>
-        <path class="color-fill-piece" data-default="#fde68a" d="M250 268 C272 293 272 322 250 334 C228 322 228 293 250 268Z" fill="#fde68a" stroke="#2f2540" stroke-width="4"/>
-      `
-    },
-    {
-      title:'🏰 Castle',
-      shapes:`
-        <rect class="color-fill-piece" data-default="#d1d5db" x="110" y="115" width="280" height="170" rx="8" fill="#d1d5db" stroke="#2f2540" stroke-width="4"/>
-        <rect class="color-fill-piece" data-default="#cbd5e1" x="110" y="85" width="70" height="200" fill="#cbd5e1" stroke="#2f2540" stroke-width="4"/>
-        <rect class="color-fill-piece" data-default="#cbd5e1" x="320" y="85" width="70" height="200" fill="#cbd5e1" stroke="#2f2540" stroke-width="4"/>
-        <rect class="color-fill-piece" data-default="#94a3b8" x="132" y="61" width="26" height="24" fill="#94a3b8" stroke="#2f2540" stroke-width="4"/>
-        <rect class="color-fill-piece" data-default="#94a3b8" x="342" y="61" width="26" height="24" fill="#94a3b8" stroke="#2f2540" stroke-width="4"/>
-        <rect class="color-fill-piece" data-default="#94a3b8" x="200" y="91" width="26" height="24" fill="#94a3b8" stroke="#2f2540" stroke-width="4"/>
-        <rect class="color-fill-piece" data-default="#94a3b8" x="274" y="91" width="26" height="24" fill="#94a3b8" stroke="#2f2540" stroke-width="4"/>
-        <rect class="color-fill-piece" data-default="#93c5fd" x="150" y="150" width="42" height="44" rx="10" fill="#93c5fd" stroke="#2f2540" stroke-width="4"/>
-        <rect class="color-fill-piece" data-default="#93c5fd" x="308" y="150" width="42" height="44" rx="10" fill="#93c5fd" stroke="#2f2540" stroke-width="4"/>
-        <path class="color-fill-piece" data-default="#f59e0b" d="M220 286 V206 C220 180 280 180 280 206 V286Z" fill="#f59e0b" stroke="#2f2540" stroke-width="4"/>
-      `
-    }
+    { title:'🌼 Happy flower', shapes: () => `
+      ${sparkle(78,77)} ${sparkle(422,107,10)}
+      ${detail('M250 189 Q248 251 250 320',8)}
+      ${path('M250 285 C218 255 185 258 186 281 C191 308 228 311 250 285Z')}
+      ${path('M250 280 C277 251 313 258 313 283 C313 309 272 306 250 280Z')}
+      ${[0,60,120,180,240,300].map(a => path('M250 165 C211 137 208 84 250 57 C292 84 289 137 250 165Z',`transform="rotate(${a} 250 165)"`)).join('')}
+      ${cir(250,165,38)}
+      ${cir(237,159,4,'stroke-width="2"')} ${cir(263,159,4,'stroke-width="2"')}
+      ${detail('M237 176 Q250 190 263 176',3)}
+      ${decoration('path','d="M54 300Q80 286 104 300 M376 302Q404 291 437 302"')}
+    `},
+    { title:'🦋 Beautiful butterfly', shapes: () => `
+      ${sparkle(66,56,10)} ${sparkle(435,61,10)}
+      ${path('M244 171 C229 131 207 76 149 67 C96 60 64 104 87 153 C110 198 165 194 244 183Z')}
+      ${path('M244 183 C205 175 138 198 128 250 C125 295 179 310 213 280 C236 260 239 228 248 194Z')}
+      ${path('M256 171 C271 131 293 76 351 67 C404 60 436 104 413 153 C390 198 335 194 256 183Z')}
+      ${path('M256 183 C295 175 362 198 372 250 C375 295 321 310 287 280 C264 260 261 228 252 194Z')}
+      ${ell(152,129,28,33)} ${ell(348,129,28,33)}
+      ${cir(172,248,17)} ${cir(328,248,17)}
+      ${detail('M244 103 Q229 56 207 46',4)} ${detail('M256 103 Q271 56 293 46',4)}
+      ${cir(207,46,7)} ${cir(293,46,7)}
+      ${ell(250,186,23,100)} ${cir(250,96,25)}
+      ${cir(242,92,3,'stroke-width="2"')} ${cir(258,92,3,'stroke-width="2"')}
+      ${detail('M243 106 Q250 113 257 106',3)}
+    `},
+    { title:'🌈 Rainbow magic', shapes: () => `
+      ${sparkle(76,76)} ${sparkle(416,88)}
+      ${path('M80 277 A170 170 0 0 1 420 277 L384 277 A134 134 0 0 0 116 277Z')}
+      ${path('M116 277 A134 134 0 0 1 384 277 L351 277 A101 101 0 0 0 149 277Z')}
+      ${path('M149 277 A101 101 0 0 1 351 277 L320 277 A70 70 0 0 0 180 277Z')}
+      ${path('M180 277 A70 70 0 0 1 320 277 L289 277 A39 39 0 0 0 211 277Z')}
+      ${path('M211 277 A39 39 0 0 1 289 277 L289 296 L211 296Z')}
+      ${path('M45 279 C30 255 53 231 80 238 C90 208 133 213 143 244 C174 237 197 271 182 294 L65 294 C55 293 49 289 45 279Z')}
+      ${path('M318 280 C304 260 328 232 355 239 C366 209 409 215 420 244 C452 235 469 272 453 294 L332 294 C326 291 321 287 318 280Z')}
+      ${decoration('path','d="M69 317H170 M326 317H436"')}
+    `},
+    { title:'🐱 Little kitten', shapes: () => `
+      ${sparkle(72,68,11)} ${sparkle(429,63,11)}
+      ${path('M311 257 C380 282 398 215 376 204 C350 191 345 231 355 234')}
+      ${ell(250,251,95,67)}
+      ${path('M179 120 L164 41 Q164 33 174 39 L222 71Z')}
+      ${path('M321 120 L336 41 Q336 33 326 39 L278 71Z')}
+      ${path('M184 105 L180 61 L209 84Z')}
+      ${path('M316 105 L320 61 L291 84Z')}
+      ${cir(250,148,100)}
+      ${ell(222,144,14,19)} ${ell(278,144,14,19)}
+      ${cir(224,149,6,'stroke-width="2"')} ${cir(280,149,6,'stroke-width="2"')}
+      ${path('M236 180 Q250 170 264 180 L250 194Z')}
+      ${detail('M250 195 Q241 210 226 198 M250 195 Q259 210 274 198',3)}
+      ${detail('M197 180 L140 168 M197 194 L139 197 M303 180 L360 168 M303 194 L361 197',3)}
+      ${ell(209,297,29,20)} ${ell(291,297,29,20)}
+      ${path('M234 241 L266 241 L250 261Z')}
+    `},
+    { title:'🦖 Dino adventure', shapes: () => `
+      ${sparkle(70,70)} ${sparkle(415,62)}
+      ${path('M163 211 Q88 231 80 279 Q118 276 174 255Z')}
+      ${[ [145,161,173,116,197,149], [178,135,207,96,228,128], [217,116,244,75,265,123], [263,114,287,83,304,128] ].map(p=>path(`M${p[0]} ${p[1]} L${p[2]} ${p[3]} L${p[4]} ${p[5]}Z`)).join('')}
+      ${path('M152 215 C135 155 168 109 226 110 C246 110 269 123 275 153 C285 144 301 104 299 83 C301 59 339 44 371 67 C403 90 406 129 386 152 C365 175 333 161 316 163 C310 234 282 276 228 278 C184 279 158 256 152 215Z')}
+      ${path('M183 256 L175 307 Q189 321 207 307 L217 268Z')}
+      ${path('M246 265 L252 307 Q267 319 282 308 L282 249Z')}
+      ${ell(210,205,31,38)}
+      ${cir(369,100,7)}
+      ${detail('M364 131 Q348 145 330 132',4)}
+      ${cir(393,121,5)}
+      ${path('M268 187 Q307 179 308 203 Q296 217 273 207Z')}
+      ${decoration('path','d="M52 312Q86 299 113 312 M355 313Q389 299 440 314"')}
+    `},
+    { title:'🚀 Blast-off rocket', shapes: () => `
+      ${sparkle(85,78)} ${sparkle(415,94)} ${sparkle(378,221,9)}
+      ${path('M226 240 L176 292 L183 213 L205 190Z')}
+      ${path('M274 240 L324 292 L317 213 L295 190Z')}
+      ${path('M226 259 C218 296 234 313 250 332 C266 313 282 296 274 259Z')}
+      ${path('M237 261 Q234 290 250 309 Q266 290 263 261Z')}
+      ${path('M250 35 C202 80 194 147 194 210 Q194 244 214 265 L286 265 Q306 244 306 210 C306 147 298 80 250 35Z')}
+      ${path('M250 35 Q217 65 205 110 L295 110 Q283 65 250 35Z')}
+      ${cir(250,158,34)} ${cir(250,158,21)}
+      ${path('M214 236 Q250 228 286 236 L286 265 L214 265Z')}
+      ${cir(222,214,4,'stroke-width="2"')} ${cir(278,214,4,'stroke-width="2"')}
+      ${decoration('path','d="M112 188V223 M95 204H129 M391 267V293 M379 280H404"')}
+    `},
+    { title:'🏰 Princess castle', shapes: () => `
+      ${sparkle(72,60,9)} ${sparkle(428,57,9)}
+      ${path('M126 128 L126 63 L181 30 L181 128Z')}
+      ${path('M319 128 L319 30 L374 63 L374 128Z')}
+      ${rect(170,138,160,154,4)}
+      ${rect(110,105,80,187,4)} ${rect(310,105,80,187,4)}
+      ${path('M104 106 L115 80 L185 80 L196 106Z')}
+      ${path('M304 106 L315 80 L385 80 L396 106Z')}
+      ${path('M165 138 L165 121 L335 121 L335 138Z')}
+      ${path('M205 121 L205 84 L250 49 L295 84 L295 121Z')}
+      ${path('M227 290 L227 230 C227 201 273 201 273 230 L273 290Z')}
+      ${rect(130,155,40,51,18)} ${rect(330,155,40,51,18)}
+      ${rect(233,110,34,43,14)}
+      ${rect(185,249,35,41,8)} ${rect(280,249,35,41,8)}
+      ${detail('M250 50 V24 L276 35 L250 45',4)}
+      ${decoration('path','d="M65 313H439 M85 321H404"')}
+    `},
+    { title:'🐠 Under the sea', shapes: () => `
+      ${sparkle(70,61,8)}
+      ${path('M346 154 Q415 95 429 116 Q415 169 350 192Z')}
+      ${path('M236 115 Q266 62 308 83 L286 136Z')}
+      ${path('M247 210 Q267 265 305 239 L300 195Z')}
+      ${path('M90 168 C145 92 285 86 362 171 C295 251 148 250 90 168Z')}
+      ${cir(148,155,17)} ${cir(148,155,7,'stroke-width="2"')}
+      ${detail('M115 192 Q146 208 171 188',4)}
+      ${path('M256 158 Q291 179 256 202Z')}
+      ${[ [194,149,15], [231,177,13], [280,144,11] ].map(c=>cir(c[0],c[1],c[2])).join('')}
+      ${cir(406,68,21)} ${cir(432,32,11)} ${cir(396,17,8)}
+      ${path('M95 317 Q71 282 83 248 Q118 260 106 317Z')}
+      ${path('M132 317 Q126 269 148 252 Q166 277 148 317Z')}
+      ${path('M372 317 Q344 273 360 248 Q394 267 390 317Z')}
+      ${decoration('path','d="M45 323H450"')}
+    `},
+    { title:'🍦 Ice cream party', shapes: () => `
+      ${sparkle(81,77)} ${sparkle(418,81)}
+      ${path('M175 180 L325 180 L250 325Z')}
+      ${detail('M206 202L282 282 M291 202L222 282 M224 239L271 239',3)}
+      ${path('M183 200 C153 185 156 146 180 133 C158 111 173 75 210 70 C216 43 260 37 276 61 C310 47 340 74 333 101 C365 123 355 165 326 173 C328 192 313 202 295 201Z')}
+      ${path('M174 176 Q194 196 211 174 Q231 199 250 174 Q270 199 290 174 Q312 198 332 174', 'fill="none"')}
+      ${path('M240 69 Q220 37 231 24 C246 8 269 21 268 40 Q266 58 250 74Z')}
+      ${detail('M250 74 Q260 64 283 72',3)}
+      ${cir(224,126,8)} ${cir(282,142,7)} ${cir(274,106,5)}
+    `},
+    { title:'🦄 Magical unicorn', shapes: () => `
+      ${sparkle(88,78,13)} ${sparkle(418,92)}
+      ${path('M167 195 C112 170 96 205 74 223 Q110 247 168 229Z')}
+      ${path('M153 234 L150 306 Q165 318 180 305 L191 246Z')}
+      ${path('M264 238 L281 306 Q301 316 309 301 L307 232Z')}
+      ${path('M143 181 C155 131 215 119 261 141 C294 159 293 199 272 225 L277 240 Q220 269 163 240 Q138 227 143 181Z')}
+      ${path('M237 154 C251 128 261 102 265 78 C263 55 296 51 308 79 L305 173Z')}
+      ${path('M268 100 L279 30 L299 104Z')}
+      ${path('M266 102 L247 69 Q232 54 236 88Z')}
+      ${path('M305 110 L321 73 Q331 54 334 91Z')}
+      ${path('M268 118 C275 86 299 76 328 91 C360 100 377 125 379 155 Q399 165 397 183 C384 210 329 207 295 187 C269 173 257 144 268 118Z')}
+      ${path('M265 95 C248 118 255 152 270 170 L249 162 Q232 125 265 95Z')}
+      ${path('M325 91 C311 116 307 153 324 174 L301 163 Q289 117 325 91Z')}
+      ${detail('M339 135 Q351 142 365 131',4)}
+      ${cir(377,182,5)}
+      ${path('M182 150 Q198 178 182 202 Q161 179 182 150Z')}
+      ${decoration('path','d="M46 320H451"')}
+    `}
   ];
 
   function setColorChoice(color){ chosenColor = color; renderPalette('color-palette', setColorChoice, chosenColor); }
-  function setFreeColor(color){ freeColor = color; renderPalette('free-palette', setFreeColor, freeColor); }
+  function setFreeColor(color){ freeColor = color; renderPalette('free-palette', setFreeColor, freeColor); setFreeTool('crayon'); }
+  function setFreeTool(tool){ freeTool=tool; $('free-crayon').classList.toggle('active',tool==='crayon'); $('free-eraser').classList.toggle('active',tool==='eraser'); $('free-crayon').setAttribute('aria-pressed',String(tool==='crayon')); $('free-eraser').setAttribute('aria-pressed',String(tool==='eraser')); freeCanvas.style.cursor=tool==='eraser'?'cell':'crosshair'; }
   function renderColorPicture(){
     const pic = COLOR_PICTURES[colorIndex % COLOR_PICTURES.length];
     $('color-picture-name').textContent = pic.title;
-    $('color-svg').innerHTML = pic.shapes;
+    $('picture-position').textContent = `Picture ${(colorIndex % COLOR_PICTURES.length) + 1} of ${COLOR_PICTURES.length}`;
+    $('color-svg').innerHTML = pic.shapes();
     $('color-svg').style.pointerEvents = 'auto';
     colorHistory = [];
     colorStrokes = [];
@@ -794,6 +878,15 @@
     });
   }
   function resizeColorCanvas(){
+    const oldWidth=Number(colorCanvas.dataset.csswidth||0);
+    const newWidth=colorCanvas.getBoundingClientRect().width;
+    const oldHeight=Number(colorCanvas.dataset.cssheight||0);
+    const newHeight=colorCanvas.getBoundingClientRect().height;
+    if(oldWidth && newWidth && oldHeight && newHeight && (oldWidth!==newWidth || oldHeight!==newHeight)){
+      colorStrokes.forEach(stroke=>stroke.points.forEach(pt=>{pt.x*=newWidth/oldWidth;pt.y*=newHeight/oldHeight;}));
+    }
+    colorCanvas.dataset.csswidth=String(newWidth);
+    colorCanvas.dataset.cssheight=String(newHeight);
     resizeCanvasToDisplay(colorCanvas, colorCtx, () => {
       colorCtx.clearRect(0,0,colorCanvas.width,colorCanvas.height);
       colorCtx.lineCap='round'; colorCtx.lineJoin='round';
@@ -847,14 +940,14 @@
     event.preventDefault();
     freeDrawing=true;
     freeLast=getPoint(event,freeCanvas);
-    freeCtx.fillStyle=freeColor;
-    freeCtx.beginPath();freeCtx.arc(freeLast.x,freeLast.y,freeSize/2,0,Math.PI*2);freeCtx.fill();
+    freeCtx.fillStyle=freeTool==='eraser'?'#fffefc':freeColor;
+    freeCtx.beginPath();freeCtx.arc(freeLast.x,freeLast.y,(freeTool==='eraser'?freeSize*2.2:freeSize)/2,0,Math.PI*2);freeCtx.fill();
   }
   function moveFree(event){
     if(!freeDrawing)return;
     event.preventDefault();
     const p=getPoint(event,freeCanvas);
-    freeCtx.strokeStyle=freeColor;freeCtx.lineWidth=freeSize;
+    freeCtx.strokeStyle=freeTool==='eraser'?'#fffefc':freeColor;freeCtx.lineWidth=freeTool==='eraser'?freeSize*2.2:freeSize;
     freeCtx.beginPath();freeCtx.moveTo(freeLast.x,freeLast.y);freeCtx.lineTo(p.x,p.y);freeCtx.stroke();
     freeLast=p;
   }
@@ -916,6 +1009,9 @@
   });
   $('color-clear').addEventListener('click', renderColorPicture);
   $('color-next').addEventListener('click', ()=> { colorIndex++; renderColorPicture(); });
+  $('color-prev').addEventListener('click', ()=> { colorIndex=(colorIndex-1+COLOR_PICTURES.length)%COLOR_PICTURES.length; renderColorPicture(); });
+  $('free-crayon').addEventListener('click',()=>setFreeTool('crayon'));
+  $('free-eraser').addEventListener('click',()=>setFreeTool('eraser'));
   document.querySelectorAll('.size-btn').forEach(btn => btn.addEventListener('click', ()=> {
     freeSize = Number(btn.dataset.size);
     document.querySelectorAll('.size-btn').forEach(b => b.classList.toggle('active', b === btn));
