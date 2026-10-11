@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fff3dc">
+<title>Petra's Play Party 🌈</title>
+<style>
+  :root { color-scheme: light; --ink:#382753; --cream:#fff5e5; --pink:#ff6488; --coral:#ff8063; --yellow:#ffd65e; --blue:#5e99ec; --mint:#4ecbb5; --purple:#ac83ed; }
+  *{box-sizing:border-box}
+  html{min-height:100%;-webkit-tap-highlight-color:transparent}
+  body{margin:0;min-height:100vh;min-height:100dvh;background:radial-gradient(circle at 8% 5%,#ffe2a6 0 7%,transparent 7.3%),radial-gradient(circle at 90% 7%,#fcd4d8 0 6%,transparent 6.3%),radial-gradient(circle at 8% 96%,#d4f5ef 0 10%,transparent 10.3%),#fff4e1;color:var(--ink);font-family:'Trebuchet MS',ui-rounded,'Arial Rounded MT Bold',system-ui,sans-serif;overflow-x:hidden}
+  button{font:inherit;cursor:pointer;touch-action:manipulation;user-select:none}
+  button:focus-visible{outline:4px solid #4e7fee;outline-offset:4px}
+  .app{position:relative;width:min(920px,100%);margin:0 auto;padding:clamp(12px,2.8vw,28px) clamp(12px,3vw,28px) 30px}
+  .header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 17px}
+  .header-copy{display:flex;align-items:center;gap:14px}
+  .smile-star{display:grid;place-items:center;flex:0 0 auto;width:64px;height:64px;color:#e99200;font-size:51px;text-shadow:0 3px 0 #eab64b;animation:bob 3s ease-in-out infinite}
+  .eyebrow{margin:0 0 2px;color:#88688f;text-transform:uppercase;letter-spacing:.12em;font-size:12px;font-weight:1000}
+  h1{font-size:clamp(25px,5.8vw,40px);margin:0;line-height:1.07;letter-spacing:-.045em}
+  h1 em{font-style:normal;color:#ec5c83}
+  .sound-btn{display:grid;place-items:center;flex:0 0 auto;width:48px;height:48px;background:#fff;border:3px solid #4b3868;border-radius:18px;box-shadow:0 4px 0 #4b3868;font-size:24px}
+  .sound-btn:active{transform:translateY(3px);box-shadow:0 1px 0 #4b3868}
+  .tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:14px}
+  .tab{border:3px solid #382753;border-radius:22px;padding:12px 7px;color:var(--ink);background:#fff;box-shadow:0 5px 0 #382753;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:1000;font-size:clamp(13px,2.4vw,19px);min-height:63px;transition:transform .1s,box-shadow .1s}
+  .tab .emoji{font-size:clamp(20px,3.8vw,28px)}
+  .tab.active{background:#ffd85e;transform:translateY(3px);box-shadow:0 2px 0 #382753}
+  .tab:active{transform:translateY(4px);box-shadow:0 1px 0 #382753}
+  .panel{background:#fffdfb;border:3px solid #47335d;border-radius:34px;box-shadow:0 9px 0 #e9c8a4;min-height:500px;overflow:hidden;position:relative}
+  .scene{display:none;padding:clamp(15px,4vw,30px);text-align:center;animation:arrive .24s ease-out}
+  .scene.active{display:block}
+  .scene-heading{margin:2px 0 0;font-size:clamp(27px,5.3vw,40px);line-height:1.1;letter-spacing:-.04em}
+  .scene-heading .highlight{color:#ea5980}
+  .subhead{margin:8px auto 18px;max-width:26em;font-size:clamp(15px,3.1vw,20px);font-weight:700;color:#716386}
+  .train-world{background:linear-gradient(#d9f5ff,#f4faff 70%,#e7f7d6 70%);border:3px solid #cde8ef;border-radius:25px;padding:20px 13px 27px;position:relative;margin:10px 0 20px;overflow:hidden}
+  .train-world:before,.train-world:after{content:'☁';position:absolute;top:2px;color:white;text-shadow:0 2px 0 #b7dfec;font-size:34px;opacity:.9;pointer-events:none}
+  .train-world:before{left:7%}.train-world:after{right:11%;top:8px;font-size:25px}
+  .train-label{font-weight:1000;font-size:14px;color:#467882;margin:0 0 15px}
+  .train{position:relative;z-index:1;max-width:650px;margin:0 auto;transition:transform .8s ease-in}
+  .car-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(5px,1.2vw,13px)}
+  .car{--car:#ffa1b4;position:relative;display:grid;place-items:center;border:3px solid #4a345e;border-radius:15px 15px 11px 11px;background:var(--car);height:clamp(66px,16vw,105px);box-shadow:inset 0 -9px 0 #ffffff3d,0 5px 0 #4a345e;font-size:clamp(29px,7.3vw,60px);font-weight:1000;color:#35214e;text-shadow:0 2px 0 #ffffff80}
+  .car:nth-child(2){--car:#ffce66}.car:nth-child(3){--car:#88dacf}.car:nth-child(4){--car:#bca7f8}.car:nth-child(5){--car:#ffae8b}
+  .car::before,.car::after{content:'';width:20%;aspect-ratio:1;background:#453154;border:3px solid #f8e2a2;border-radius:50%;position:absolute;bottom:-18%;z-index:2}
+  .car::before{left:17%}.car::after{right:17%}
+  .car.empty span{color:#ffffffbd;text-shadow:none;font-size:clamp(22px,4.5vw,37px)}
+  .car.filled span{animation:pop-in .24s cubic-bezier(.17,1.8,.47,1)}
+  .rail{height:8px;border-radius:20px;background:#68516a;margin:17px auto 0;max-width:690px;box-shadow:0 9px 0 #9b805f;position:relative}
+  .train-world.won .train{animation:train-wiggle .9s ease-in-out}
+  .find-line{font-size:clamp(18px,3.4vw,24px);font-weight:1000;display:flex;justify-content:center;align-items:center;gap:10px;min-height:48px;margin:0 0 10px}
+  .find-letter{display:grid;place-items:center;width:53px;height:53px;border-radius:15px;background:#fff0a9;border:3px solid #50395a;font-size:35px;line-height:1}
+  .name-choices{display:flex;justify-content:center;gap:clamp(7px,1.8vw,17px);margin:0 auto;max-width:630px}
+  .letter-tile{--tile:#ec7090;background:var(--tile);border:3px solid #4d345d;border-radius:24px 24px 19px 19px;box-shadow:0 7px 0 #4d345d;flex:1 1 0;max-width:108px;min-width:0;height:clamp(70px,18vw,105px);font-size:clamp(34px,8vw,59px);font-weight:1000;color:white;text-shadow:0 3px 0 #00000020;transition:transform .13s,box-shadow .13s,opacity .13s}
+  .letter-tile:nth-child(5n+1){--tile:#ed6f93}.letter-tile:nth-child(5n+2){--tile:#f6b649}.letter-tile:nth-child(5n+3){--tile:#4ec4b3}.letter-tile:nth-child(5n+4){--tile:#ab8aee}.letter-tile:nth-child(5n+5){--tile:#f58768}
+  .letter-tile:not(:disabled):active{transform:translateY(5px);box-shadow:0 2px 0 #4d345d}
+  .letter-tile.used{opacity:.18;transform:scale(.83);cursor:default}
+  .letter-tile.wrong,.balloon.wrong{animation:wiggle .33s ease-in-out}
+  .bottom-actions{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:23px}
+  .small-action{background:#fff;border:2px solid #d7c9d7;border-radius:16px;padding:10px 15px;font-weight:900;color:#634d74;min-height:45px}
+  .small-action:active{background:#fff0b9}
+  .win-box{display:none;max-width:550px;margin:0 auto;padding:18px 16px;background:#fff2b8;border:3px solid #f5c855;border-radius:22px}
+  .win-box.visible{display:block;animation:pop-in .35s cubic-bezier(.2,1.5,.5,1)}
+  .win-box h3{font-size:clamp(25px,5vw,35px);margin:0 0 6px;color:#e95b82}
+  .win-box p{margin:0 0 13px;font-size:18px;font-weight:800}
+  .big-action{background:var(--pink);border:3px solid #50345f;color:#fff;text-shadow:0 2px 0 #0001;border-radius:21px;padding:14px 24px;font-size:clamp(18px,3vw,22px);font-weight:1000;box-shadow:0 5px 0 #50345f}
+  .big-action:active{transform:translateY(4px);box-shadow:0 1px 0 #50345f}
+  .hunt-prompt{display:inline-flex;gap:15px;align-items:center;justify-content:center;background:#fff3bb;border:3px solid #f0d87e;border-radius:23px;padding:6px 20px;margin-bottom:8px}
+  .hunt-prompt span:first-child{font-size:18px;font-weight:1000}
+  .hunt-target{font-size:clamp(50px,11vw,75px);color:#7d4fbd;font-weight:1000;line-height:1}
+  .hunt-balloons{display:flex;justify-content:center;align-items:flex-start;gap:clamp(10px,4vw,42px);min-height:clamp(175px,40vw,225px);padding-top:18px}
+  .balloon{--balloon:#fa7095;position:relative;border:3px solid #533763;border-radius:47% 47% 44% 44%;background:var(--balloon);color:white;width:clamp(83px,25vw,140px);height:clamp(116px,30vw,168px);box-shadow:inset -11px -8px 0 #00000013,inset 9px 8px 0 #ffffff29,0 7px 0 #533763;font-weight:1000;font-size:clamp(44px,11vw,74px);text-shadow:0 3px 0 #0001;transition:transform .16s}
+  .balloon:nth-child(2){margin-top:14px}.balloon:nth-child(3){margin-top:4px}
+  .balloon:before{content:'';position:absolute;bottom:-14px;left:calc(50% - 9px);border-left:9px solid transparent;border-right:9px solid transparent;border-bottom:0;border-top:16px solid var(--balloon)}
+  .balloon:after{content:'';position:absolute;top:calc(100% + 10px);left:50%;height:27px;border-left:2px solid #ad8eaf;transform:rotate(5deg)}
+  .balloon:active{transform:translateY(-9px) rotate(-3deg)}
+  .balloon.popped{animation:burst .3s ease-in forwards;pointer-events:none}
+  .hunt-feedback{font-size:19px;font-weight:1000;min-height:26px;color:#e26180;margin:6px 0}
+  .stars{display:flex;justify-content:center;gap:8px;margin-top:10px;font-size:clamp(25px,5vw,34px)}
+  .stars span{filter:grayscale(1);opacity:.3}.stars span.earned{filter:none;opacity:1;animation:pop-in .3s both}
+  .tiny-caption{margin:5px 0 0;font-size:14px;font-weight:800;color:#887690}
+  .tracing-top{display:flex;justify-content:center;gap:10px;align-items:baseline;margin:0 0 9px;font-weight:1000;font-size:18px}
+  .tracing-letter{font-size:42px;color:#ed668c}
+  .paper{width:min(100%,490px);aspect-ratio:1.58;margin:0 auto;position:relative;touch-action:none;background:repeating-linear-gradient(to bottom,transparent 0,transparent 77px,#d7eaf2 78px,#d7eaf2 80px);border:4px solid #71bdd1;border-radius:27px;overflow:hidden;box-shadow:0 7px 0 #d9e5de;cursor:crosshair}
+  .paper svg,.paper canvas{position:absolute;inset:0;width:100%;height:100%}
+  .paper svg{pointer-events:none}
+  .paper canvas{touch-action:none}
+  .draw-tip{margin:13px 0 0;color:#7a718b;font-size:15px;font-weight:800;min-height:24px}
+  .draw-actions{margin-top:15px}
+  .draw-actions .big-action{background:#50bfae}
+  .decor{position:absolute;z-index:-1;font-size:35px;pointer-events:none}.decor.left{top:115px;left:-44px;transform:rotate(-14deg)}.decor.right{top:150px;right:-37px;transform:rotate(12deg)}
+  #confetti{position:fixed;inset:0;z-index:10;pointer-events:none;overflow:hidden}
+  .piece{position:absolute;left:var(--x);top:var(--y);font-size:var(--size);animation:fly var(--time) ease-out forwards;transform:translate(-50%,-50%)}
+  .visually-hidden{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+  @keyframes wiggle{0%,100%{transform:rotate(0)}20%{transform:rotate(8deg)}45%{transform:rotate(-8deg)}65%{transform:rotate(5deg)}85%{transform:rotate(-5deg)}}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-7deg)}50%{transform:translateY(-5px) rotate(8deg)}}
+  @keyframes pop-in{from{transform:scale(.5);opacity:.3}to{transform:scale(1);opacity:1}}
+  @keyframes arrive{from{opacity:.3;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes burst{to{opacity:0;transform:scale(1.35) translateY(-25px)}}
+  @keyframes train-wiggle{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(11px)}40%,80%{transform:translateX(-4px)}}
+  @keyframes fly{0%{transform:translate(-50%,-50%) scale(.4) rotate(0);opacity:1}100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1) rotate(var(--spin));opacity:0}}
+  @media(max-width:1000px){.decor{display:none}}
+  @media(max-width:540px){.app{padding:12px 11px 25px}.header{margin-bottom:12px}.header-copy{gap:5px}.smile-star{width:43px;height:49px;font-size:39px}h1{font-size:clamp(23px,6vw,31px)}.eyebrow{font-size:10px}.sound-btn{width:43px;height:43px;border-radius:14px}.tabs{gap:7px;margin-bottom:12px}.tab{flex-direction:column;gap:0;padding:6px 3px;min-height:65px;border-radius:17px;box-shadow:0 4px 0 #382753}.tab span:last-child{white-space:nowrap}.panel{border-radius:25px;box-shadow:0 6px 0 #e9c8a4;min-height:0}.scene{padding:19px 12px 21px}.subhead{margin:6px auto 13px}.train-world{padding:17px 11px 26px;margin:7px 0 16px}.find-line{margin-bottom:10px}.bottom-actions{margin-top:18px;gap:7px}.small-action{padding:8px 10px;font-size:14px}.decor{display:none}.hunt-balloons{gap:10px}.hunt-prompt{margin:3px auto 8px}.paper{aspect-ratio:1.25}}
+  @media(max-width:355px){.tab{font-size:12px}.tab .emoji{font-size:19px}.scene-heading{font-size:26px}.car{height:62px}.train-world{padding-left:6px;padding-right:6px}.car::before,.car::after{bottom:-20%;border-width:2px}.letter-tile{height:68px;border-radius:17px;font-size:33px}.balloon{width:78px;height:116px}}
+  @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+  /* Colouring book: friendly, touch-sized tools and true tap-to-fill art. */
+  .tabs{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .colour-tools{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:9px 18px;margin:5px auto 9px}
+  .colour-palette{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+  .colour-swatch{background:var(--swatch);width:clamp(34px,5.5vw,45px);height:clamp(34px,5.5vw,45px);border:3px solid #50375e;border-radius:50%;box-shadow:0 4px 0 #50375e;position:relative}
+  .colour-swatch.selected{outline:4px solid #ffcf53;outline-offset:2px;transform:translateY(2px);box-shadow:0 2px 0 #50375e}
+  .colour-swatch.selected:after{content:'✓';position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-weight:1000;font-size:22px;text-shadow:0 2px 2px #392443}
+  .colour-modes{display:flex;gap:6px}
+  .tool-mode{border:2px solid #8c7a9d;border-radius:15px;background:#fff;padding:9px 12px;min-height:45px;color:#4a3461;font-weight:900;font-size:14px}
+  .tool-mode.active{background:#ffe288;border-color:#654770;box-shadow:0 3px 0 #654770}
+  .colour-picture-name{font-weight:1000;font-size:clamp(16px,2.7vw,21px);margin:9px 0 6px}
+  .colour-stage{position:relative;width:min(100%,620px);aspect-ratio:500/340;margin:0 auto;border:4px solid #7ebcca;border-radius:24px;overflow:hidden;background:linear-gradient(#e8faff,#fffdf3);touch-action:none;box-shadow:0 6px 0 #d5e5e4}
+  .colour-stage svg,.colour-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .colour-stage [data-paint]{fill:#fffef7;stroke:#5b4168;stroke-width:5;stroke-linejoin:round;stroke-linecap:round;cursor:pointer}
+  .colour-stage #color-canvas{pointer-events:none;touch-action:none}
+  .colour-stage.draw-mode #color-canvas{pointer-events:auto}
+  .colour-stage.draw-mode #color-svg{pointer-events:none}
+  .colour-actions{margin-top:15px;gap:8px}
+  .colour-actions .big-action{background:#a078e5;font-size:18px;padding:10px 17px}
+  .number-board{display:grid;grid-template-columns:1fr 1fr 1.25fr;align-items:center;gap:10px;border:3px solid #a4d9ba;border-radius:25px;background:linear-gradient(#d9f6ff 0 72%,#bde9b7 72% 100%);padding:14px;min-height:235px;position:relative;overflow:hidden}
+  .number-goal{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:#fffefa;border:3px solid #eac87c;border-radius:23px;min-height:184px;box-shadow:0 4px 0 #eac87c}
+  .number-label{font-size:12px;font-weight:1000;color:#846e8c;letter-spacing:.045em}
+  .number-target{font-weight:1000;font-size:clamp(76px,13vw,122px);color:#f36f8f;line-height:1.02;text-shadow:0 4px 0 #ffd9df}
+  .number-hear{background:#ffe5a0;border:0;border-radius:12px;color:#533d64;font-size:13px;font-weight:1000;min-height:37px;padding:6px 11px}
+  .number-friend{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+  .number-buddy{font-size:clamp(88px,14vw,134px);filter:drop-shadow(0 6px 0 #6d997033);line-height:1.15;animation:bob 3s ease-in-out infinite}
+  .friend-speech{font-weight:1000;background:white;border:2px solid #7fc1ba;padding:6px 12px;border-radius:18px;white-space:nowrap;font-size:clamp(13px,2.5vw,17px)}
+  .number-plate{display:flex;align-content:center;justify-content:center;align-items:center;flex-wrap:wrap;gap:0 2px;min-height:154px;padding:13px 7px;border-radius:50%;background:#fffefb;box-shadow:0 7px 0 #debcbc;border:4px solid #f4a7b4}
+  .plate-item{font-size:clamp(25px,4vw,35px);animation:pop-in .21s cubic-bezier(.2,1.7,.5,1);line-height:1.25}
+  .plate-empty{color:#ad98ac;font-weight:900;font-size:clamp(13px,2.5vw,20px);padding:9px}
+  .number-count{font-size:clamp(23px,5vw,30px);font-weight:1000;margin:16px 0 7px;color:#684684}
+  .number-progress{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;min-height:22px}
+  .number-dot{height:20px;width:20px;border-radius:50%;border:2px solid #967eaa;background:#eae5ed;transition:background .1s,transform .1s}
+  .number-dot.done{background:#ffbd45;border-color:#e8893b;transform:scale(1.12)}
+  .number-feed{display:flex;gap:12px;align-items:center;justify-content:center;margin:18px auto 0;width:min(100%,270px);min-height:89px;background:#ffe16c;border:3px solid #594068;border-radius:25px;box-shadow:0 6px 0 #594068;font-weight:1000;font-size:clamp(18px,4vw,23px);color:#533a67}
+  .number-feed>span:first-child{font-size:45px;line-height:1}
+  .number-feed:active{transform:translateY(5px);box-shadow:0 1px 0 #594068}
+  .number-success{padding:14px 0 1px}
+  .number-success[hidden]{display:none}
+  .number-cheer{font-size:clamp(23px,4.6vw,29px);font-weight:1000;color:#e85e83;margin-bottom:13px;animation:pop-in .33s both}
+  .number-success .big-action{background:#52bfae}
+  @media(max-width:650px){
+    .tabs{grid-template-columns:repeat(6,minmax(0,1fr))}
+    .tabs .tab{grid-column:span 2}
+    .tabs .tab:nth-child(4),.tabs .tab:nth-child(5){grid-column:span 3}
+    .tab{font-size:clamp(12px,2.8vw,16px)}
+    .colour-tools{gap:9px;margin-bottom:5px}
+    .colour-palette{gap:7px}
+    .colour-modes{width:100%;justify-content:center}
+    .number-board{min-height:190px;padding:9px;gap:6px;grid-template-columns: .85fr .9fr 1.15fr}
+    .number-goal{min-height:150px;border-radius:18px}
+    .number-target{font-size:clamp(59px,17vw,90px)}
+    .number-label{font-size:10px}
+    .number-buddy{font-size:clamp(64px,20vw,102px)}
+    .number-plate{min-height:125px;padding:6px 3px}
+    .plate-item{font-size:clamp(21px,6vw,30px)}
+    .number-feed{min-height:74px;margin-top:12px}
+    .colour-stage{border-radius:17px}
+  }
+  @media(max-width:355px){.colour-swatch{width:31px;height:31px}.number-board{gap:4px}.number-buddy{font-size:57px}.plate-item{font-size:20px}.friend-speech{padding:5px 7px;font-size:11px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <span class="decor left" aria-hidden="true">🌼</span><span class="decor right" aria-hidden="true">✨</span>
+  <header class="header">
+    <div class="header-copy"><span class="smile-star" aria-hidden="true">🌟</span><div><p class="eyebrow">Made just for you!</p><h1><em>Petra's</em> Play Party</h1></div></div>
+    <button class="sound-btn" id="sound-toggle" type="button" aria-label="Turn sound off" title="Sound on">🔊</button>
+  </header>
+  <nav class="tabs" aria-label="Choose a game">
+    <button class="tab active" type="button" data-scene="name" aria-pressed="true"><span class="emoji" aria-hidden="true">🚂</span><span>My Name</span></button>
+    <button class="tab" type="button" data-scene="hunt" aria-pressed="false"><span class="emoji" aria-hidden="true">🎈</span><span>Letter Pop</span></button>
+    <button class="tab" type="button" data-scene="draw" aria-pressed="false"><span class="emoji" aria-hidden="true">✏️</span><span>Draw Letters</span></button>
+    <button class="tab" type="button" data-scene="color" aria-pressed="false"><span class="emoji" aria-hidden="true">🎨</span><span>Colouring</span></button>
+    <button class="tab" type="button" data-scene="number" aria-pressed="false"><span class="emoji" aria-hidden="true">🔢</span><span>Numbers</span></button>
+  </nav>
+  <main class="panel">
+    <section class="scene active" id="name-scene" aria-label="Build Petra's name">
+      <h2 class="scene-heading">All aboard, <span class="highlight">Petra!</span> 🚂</h2>
+      <p class="subhead">Tap the letters to build your name!</p>
+      <div class="train-world" id="train-world">
+        <p class="train-label">PETRA'S NAME TRAIN</p>
+        <div class="train"><div class="car-row" id="name-cars" aria-label="Letters in your name"></div></div>
+        <div class="rail" aria-hidden="true"></div>
+      </div>
+      <div id="name-playing">
+        <p class="find-line">Find <span class="find-letter" id="name-target">P</span></p>
+        <div class="name-choices" id="name-choices" aria-label="Choose a letter"></div>
+        <div class="bottom-actions">
+          <button class="small-action" id="name-hear" type="button">🔊 Say the letter</button>
+          <button class="small-action" id="name-reset" type="button">↻ Start over</button>
+        </div>
+      </div>
+      <div class="win-box" id="name-win" aria-live="polite">
+        <h3>🌟 P-E-T-R-A! 🌟</h3><p>You spelled PETRA! Amazing!</p>
+        <button class="big-action" type="button" id="name-again">🚂 Play again!</button>
+      </div>
+    </section>
+    <section class="scene" id="hunt-scene" aria-label="Find and pop letters">
+      <h2 class="scene-heading">Pop the <span class="highlight">letter!</span> 🎈</h2>
+      <p class="subhead">Find the matching balloon!</p>
+      <div class="hunt-prompt"><span>Find</span><span class="hunt-target" id="hunt-target">P</span><button class="small-action" id="hunt-hear" type="button" aria-label="Hear the letter">🔊</button></div>
+      <div class="hunt-balloons" id="hunt-balloons" aria-label="Letter balloons"></div>
+      <p class="hunt-feedback" id="hunt-feedback" aria-live="polite">Tap the P balloon!</p>
+      <div class="stars" id="hunt-stars" aria-label="Stars collected"></div>
+      <p class="tiny-caption" id="hunt-caption">Find Petra's special letters!</p>
+    </section>
+    <section class="scene" id="draw-scene" aria-label="Draw alphabet letters">
+      <h2 class="scene-heading">Finger <span class="highlight">painting!</span> ✏️</h2>
+      <p class="subhead">Use your finger to draw the big letter!</p>
+      <p class="tracing-top">Let's draw <span class="tracing-letter" id="trace-name">P</span><button class="small-action" type="button" id="trace-hear" aria-label="Hear the letter">🔊</button></p>
+      <div class="paper" id="paper">
+        <svg viewBox="0 0 480 305" aria-hidden="true" preserveAspectRatio="xMidYMid meet"><text id="trace-guide" x="240" y="245" text-anchor="middle" style="font:1000 255px 'Trebuchet MS',system-ui,sans-serif;paint-order:stroke;" fill="#e6dbf8" stroke="#b5a2e7" stroke-width="4" stroke-dasharray="5 9">P</text></svg>
+        <canvas id="drawing-canvas" aria-label="Draw the letter here"></canvas>
+      </div>
+      <p class="draw-tip" id="draw-tip" aria-live="polite">Follow the dotted letter!</p>
+      <div class="bottom-actions draw-actions">
+        <button class="small-action" id="trace-clear" type="button">🧽 Erase</button>
+        <button class="big-action" id="trace-next" type="button">Next letter ➜</button>
+      </div>
+    </section>
+    <section class="scene" id="color-scene" aria-label="Colour pictures">
+      <h2 class="scene-heading">Petra's <span class="highlight">colouring book!</span> 🎨</h2>
+      <p class="subhead">Pick a colour, then tap or draw!</p>
+      <div class="colour-tools">
+        <div id="color-palette" class="colour-palette" role="group" aria-label="Pick a colour"></div>
+        <div class="colour-modes" role="group" aria-label="Colouring tool">
+          <button type="button" class="tool-mode active" id="color-fill" aria-pressed="true">🪣 Tap to fill</button>
+          <button type="button" class="tool-mode" id="color-brush" aria-pressed="false">🖍️ Draw</button>
+        </div>
+      </div>
+      <div class="colour-picture-name" id="color-picture-name">🌼 Happy flower!</div>
+      <div class="colour-stage" id="color-stage">
+        <svg id="color-svg" viewBox="0 0 500 340" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Picture to colour"></svg>
+        <canvas id="color-canvas" aria-label="Draw on your picture"></canvas>
+      </div>
+      <div class="bottom-actions colour-actions">
+        <button class="small-action" id="color-undo" type="button">↶ Undo</button>
+        <button class="small-action" id="color-clear" type="button">🧽 Start fresh</button>
+        <button class="big-action" id="color-next" type="button">Next picture ➜</button>
+      </div>
+    </section>
+    <section class="scene" id="number-scene" aria-label="Numbers and counting from one to ten">
+      <h2 class="scene-heading">Let's <span class="highlight">count!</span> 🔢</h2>
+      <p class="subhead" id="number-prompt">Feed Bunny 1 strawberry!</p>
+      <div class="number-board">
+        <div class="number-goal">
+          <div class="number-label">OUR NUMBER</div>
+          <span id="number-target" class="number-target">1</span>
+          <button type="button" class="number-hear" id="number-hear" aria-label="Hear the number">🔊 Hear it!</button>
+        </div>
+        <div class="number-friend"><div id="number-buddy" class="number-buddy" aria-label="Hungry animal">🐰</div><span class="friend-speech" id="number-bubble">Yum yum!</span></div>
+        <div class="number-plate" id="number-plate" aria-label="Food we have counted"></div>
+      </div>
+      <div class="number-count" id="number-count">0 of 1</div>
+      <div class="number-progress" id="number-progress" aria-label="Counting progress"></div>
+      <div id="number-playing" class="number-playing">
+        <button type="button" class="number-feed" id="number-feed" aria-label="Give one piece of food">
+          <span id="number-food" aria-hidden="true">🍓</span><span>Tap to feed!</span>
+        </button>
+      </div>
+      <div class="number-success" id="number-success" hidden>
+        <div class="number-cheer" id="number-cheer">🌟 You counted 1! 🌟</div>
+        <button type="button" class="big-action" id="number-next">Next number ➜</button>
+      </div>
+    </section>
+  </main>
+  <p class="visually-hidden" role="status" id="announcer" aria-live="polite"></p>
+</div>
+<div id="confetti" aria-hidden="true"></div>
+<script>
+(() => {
+  'use strict';
+  const NAME = [...'PETRA'];
+  const ABC = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'];
+  const TRACE_ORDER = [...NAME, ...ABC.filter(c => !NAME.includes(c))];
+  const HUNT_ORDER = [...NAME, ...ABC];
+  const $ = id => document.getElementById(id);
+  let soundOn = true;
+  let audioContext;
+  let nameProgress = 0;
+  let nameOrder = [];
+  let huntIndex = 0;
+  let huntOptions = [];
+  let huntLocked = false;
+  let traceIndex = 0;
+  let drawing = false;
+  let traced = false;
+  let lastPoint = null;
+  let colorIndex = 0;
+  let chosenColor = '#f4658c';
+  let colorMode = 'fill';
+  let colorDrawing = false;
+  let activeStroke = null;
+  const colorStrokes = [];
+  const colorHistory = [];
+  let numberLevel = 1;
+  let numberCount = 0;
+
+  function shuffle(items) {
+    const copy = [...items];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+  function sound(frequencies = [523, 659], length = .12) {
+    if (!soundOn) return;
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      audioContext ||= new AudioCtx();
+      if (audioContext.state === 'suspended') audioContext.resume();
+      frequencies.forEach((frequency, i) => {
+        const now = audioContext.currentTime + i * .11;
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        osc.type = 'sine'; osc.frequency.value = frequency;
+        gain.gain.setValueAtTime(.0001, now);
+        gain.gain.exponentialRampToValueAtTime(.10, now + .02);
+        gain.gain.exponentialRampToValueAtTime(.0001, now + length + .06);
+        osc.connect(gain); gain.connect(audioContext.destination);
+        osc.start(now); osc.stop(now + length + .07);
+      });
+    } catch (_) { /* Some devices have no Web Audio; game still works. */ }
+  }
+  function say(text) {
+    if (!soundOn || !('speechSynthesis' in window)) return;
+    try {
+      speechSynthesis.cancel();
+      const message = new SpeechSynthesisUtterance(text);
+      message.lang = 'en-CA'; message.rate = .79; message.pitch = 1.25;
+      message.volume = .95;
+      const voices = speechSynthesis.getVoices();
+      const english = voices.find(v => /^en-(CA|US|GB|AU)/i.test(v.lang));
+      if (english) message.voice = english;
+      speechSynthesis.speak(message);
+    } catch (_) {}
+  }
+  function announce(text) { $('announcer').textContent = text; }
+  function celebrate(x = window.innerWidth/2, y = window.innerHeight/2, count = 16) {
+    const layer = $('confetti');
+    const shapes = ['⭐','💗','✨','🌼','🎉'];
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('span');
+      p.className = 'piece'; p.textContent = shapes[i % shapes.length];
+      const angle = Math.PI * 2 * i / count;
+      const radius = 65 + Math.random() * 130;
+      p.style.setProperty('--x', x + 'px'); p.style.setProperty('--y', y + 'px');
+      p.style.setProperty('--dx', Math.cos(angle) * radius + 'px');
+      p.style.setProperty('--dy', (Math.sin(angle) * radius + 30) + 'px');
+      p.style.setProperty('--spin', (Math.random()*600 - 300) + 'deg');
+      p.style.setProperty('--size', (17 + Math.random()*16) + 'px');
+      p.style.setProperty('--time', (.75 + Math.random()*.5) + 's');
+      layer.appendChild(p);
+      p.addEventListener('animationend', () => p.remove(), {once:true});
+      setTimeout(() => p.remove(), 1700);
+    }
+  }
+  function partyAt(el, n = 10) {
+    const r = el.getBoundingClientRect(); celebrate(r.left + r.width/2, r.top + r.height/2, n);
+  }
+  function gentlyWiggle(button) {
+    button.classList.remove('wrong'); void button.offsetWidth;
+    button.classList.add('wrong');
+    setTimeout(() => button.classList.remove('wrong'), 420);
+    sound([270], .09);
+  }
+  function nameReset() {
+    nameProgress = 0;
+    nameOrder = shuffle(NAME);
+    $('name-playing').hidden = false;
+    $('name-win').classList.remove('visible');
+    $('train-world').classList.remove('won');
+    renderName();
+  }
+  function renderName() {
+    $('name-cars').innerHTML = '';
+    NAME.forEach((letter, i) => {
+      const car = document.createElement('div');
+      car.className = 'car ' + (i < nameProgress ? 'filled' : 'empty');
+      const span = document.createElement('span');
+      span.textContent = i < nameProgress ? letter : '★';
+      car.appendChild(span); $('name-cars').appendChild(car);
+    });
+    $('name-target').textContent = NAME[nameProgress] || '🌟';
+    $('name-choices').innerHTML = '';
+    nameOrder.forEach((letter, i) => {
+      const button = document.createElement('button');
+      const chosen = NAME.indexOf(letter) < nameProgress;
+      button.type = 'button';
+      button.className = 'letter-tile' + (chosen ? ' used' : '');
+      button.textContent = letter;
+      button.disabled = chosen;
+      button.setAttribute('aria-label', 'Letter ' + letter);
+      button.addEventListener('click', () => chooseNameLetter(letter, button));
+      $('name-choices').appendChild(button);
+    });
+  }
+  function chooseNameLetter(letter, button) {
+    if (letter !== NAME[nameProgress]) { gentlyWiggle(button); return; }
+    partyAt(button, 7);
+    sound([587, 784], .13);
+    say(letter);
+    nameProgress++;
+    renderName();
+    announce('Great! ' + NAME.slice(0, nameProgress).join(', '));
+    if (nameProgress === NAME.length) {
+      $('name-playing').hidden = true;
+      $('name-win').classList.add('visible');
+      $('train-world').classList.add('won');
+      sound([523, 659, 784, 1047], .21);
+      setTimeout(() => { celebrate(window.innerWidth/2, window.innerHeight*.46, 35); say('Hooray, Petra! You spelled your name! P, E, T, R, A. Petra!'); }, 500);
+    }
+  }
+  function newHunt() {
+    const target = HUNT_ORDER[huntIndex % HUNT_ORDER.length];
+    const distractors = shuffle(ABC.filter(letter => letter !== target)).slice(0, 2);
+    huntOptions = shuffle([target, ...distractors]);
+    renderHunt();
+  }
+  function renderHunt() {
+    const target = HUNT_ORDER[huntIndex % HUNT_ORDER.length];
+    $('hunt-target').textContent = target;
+    $('hunt-feedback').textContent = 'Tap the ' + target + ' balloon!';
+    $('hunt-balloons').innerHTML = '';
+    const colors = ['#ef7395', '#6fc7ce', '#b08bec'];
+    huntOptions.forEach((letter, i) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'balloon'; b.style.setProperty('--balloon', colors[i]);
+      b.setAttribute('aria-label', 'Letter ' + letter); b.textContent = letter;
+      b.addEventListener('click', () => chooseHunt(letter, b));
+      $('hunt-balloons').appendChild(b);
+    });
+    $('hunt-stars').innerHTML = '';
+    for (let i=0;i<5;i++) {
+      const s = document.createElement('span'); s.textContent = '⭐';
+      if (huntIndex % HUNT_ORDER.length > i || huntIndex >= HUNT_ORDER.length) s.className = 'earned';
+      $('hunt-stars').appendChild(s);
+    }
+    $('hunt-caption').textContent = huntIndex < 5 ? "First, find the letters in PETRA!" : "Hooray! You're exploring the alphabet!";
+  }
+  function chooseHunt(letter, button) {
+    if (huntLocked) return;
+    const target = HUNT_ORDER[huntIndex % HUNT_ORDER.length];
+    if (letter !== target) { gentlyWiggle(button); return; }
+    huntLocked = true; button.classList.add('popped');
+    partyAt(button, 13); sound([523, 659, 880], .12); say(letter);
+    $('hunt-feedback').textContent = 'Yes! ' + letter + '! 🌟';
+    announce('You found ' + letter + '!');
+    setTimeout(() => {
+      huntIndex++;
+      if (huntIndex >= HUNT_ORDER.length) {
+        huntIndex = 0;
+        celebrate(window.innerWidth / 2, window.innerHeight / 2, 28);
+        say('You are a letter superstar, Petra!');
+      }
+      newHunt(); huntLocked = false;
+    }, 900);
+  }
+  function traceLetter() {
+    const letter = TRACE_ORDER[traceIndex % TRACE_ORDER.length];
+    $('trace-name').textContent = letter;
+    $('trace-guide').textContent = letter;
+    $('draw-tip').textContent = 'Follow the dotted letter with your finger!';
+    clearDrawing();
+  }
+  const canvas = $('drawing-canvas');
+  const ctx = canvas.getContext('2d');
+  function resizeCanvas() {
+    const r = canvas.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    const ratio = Math.min(window.devicePixelRatio || 1, 3);
+    canvas.width = Math.round(r.width * ratio);
+    canvas.height = Math.round(r.height * ratio);
+    ctx.setTransform(ratio,0,0,ratio,0,0);
+    ctx.strokeStyle = '#ed668c'; ctx.fillStyle = '#ed668c';
+    ctx.lineWidth = Math.max(12, r.width * .036);
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  }
+  function clearDrawing() { resizeCanvas(); traced = false; }
+  function canvasPoint(event) {
+    const r = canvas.getBoundingClientRect();
+    return {x:event.clientX-r.left,y:event.clientY-r.top};
+  }
+  canvas.addEventListener('pointerdown', e => {
+    e.preventDefault(); drawing = true;
+    try { canvas.setPointerCapture(e.pointerId); } catch (_) {}
+    lastPoint = canvasPoint(e);
+    ctx.beginPath(); ctx.arc(lastPoint.x,lastPoint.y,ctx.lineWidth*.5,0,Math.PI*2); ctx.fill();
+  });
+  canvas.addEventListener('pointermove', e => {
+    if (!drawing) return;
+    e.preventDefault();
+    const point = canvasPoint(e);
+    ctx.beginPath(); ctx.moveTo(lastPoint.x,lastPoint.y); ctx.lineTo(point.x,point.y); ctx.stroke();
+    if (!traced && Math.hypot(point.x-lastPoint.x,point.y-lastPoint.y) > 5) {
+      traced = true; $('draw-tip').textContent = 'Beautiful! Keep going! 🌈';
+      sound([659, 784], .1);
+    }
+    lastPoint = point;
+  });
+  function finishDrawing() { drawing = false; lastPoint = null; }
+  canvas.addEventListener('pointerup', finishDrawing);
+  canvas.addEventListener('pointercancel', finishDrawing);
+  canvas.addEventListener('lostpointercapture', finishDrawing);
+
+  /* Colour pictures can be filled a section at a time, OR coloured with a crayon.
+     Art, drawing, and colouring are fully self-contained for offline use. */
+  const PALETTE = [
+    ['Pink','#f4658c'],['Orange','#ff9860'],['Yellow','#ffe15a'],
+    ['Green','#73c96c'],['Blue','#63b9ef'],['Purple','#ac88e9'],
+    ['Brown','#b88159'],['Black','#47375b']
+  ];
+  const SVG_START = '<rect x="0" y="0" width="500" height="340" fill="#eaf9ff"/><path d="M0 285 Q120 268 250 282 Q378 258 500 282 V340 H0 Z" fill="#daf1c8"/>';
+  const FLOWER_PETALS = Array.from({length:8}, (_,i) => {
+    const a=i*45, r=a*Math.PI/180;
+    const x=(250+81*Math.sin(r)).toFixed(1),y=(165-81*Math.cos(r)).toFixed(1);
+    return `<ellipse data-paint="petal${i}" cx="${x}" cy="${y}" rx="41" ry="57" transform="rotate(${a} ${x} ${y})"/>`;
+  }).join('');
+  const PICTURES = [
+    {title:'🌼 Happy flower!', svg: `${SVG_START}
+      <circle cx="75" cy="65" r="39" data-paint="sun"/>
+      <path d="M238 187 Q234 254 240 326" fill="none" stroke="#547c55" stroke-width="15" stroke-linecap="round"/>
+      <path data-paint="leaf-left" d="M240 277 Q165 282 156 229 Q218 216 240 277 Z"/>
+      <path data-paint="leaf-right" d="M239 302 Q315 302 331 239 Q262 241 239 302 Z"/>
+      ${FLOWER_PETALS}
+      <circle data-paint="middle" cx="250" cy="165" r="53"/>
+      <circle cx="231" cy="155" r="5" fill="#50395b"/><circle cx="269" cy="155" r="5" fill="#50395b"/>
+      <path d="M235 179 Q250 194 265 179" fill="none" stroke="#50395b" stroke-width="4" stroke-linecap="round"/>
+      <path d="M70 299 Q82 289 90 299 M396 300 Q410 289 420 300" fill="none" stroke="#71a967" stroke-width="6" stroke-linecap="round"/>`
+    },
+    {title:'🦋 Beautiful butterfly!', svg: `${SVG_START}
+      <path data-paint="top-left" d="M245 155 C184 41 72 35 65 115 C55 177 149 217 243 193 Z"/>
+      <path data-paint="top-right" d="M255 155 C316 41 428 35 435 115 C445 177 351 217 257 193 Z"/>
+      <path data-paint="bottom-left" d="M240 191 C165 195 85 203 113 266 C134 314 215 284 247 219 Z"/>
+      <path data-paint="bottom-right" d="M260 191 C335 195 415 203 387 266 C366 314 285 284 253 219 Z"/>
+      <circle data-paint="spot1" cx="139" cy="135" r="27"/>
+      <circle data-paint="spot2" cx="361" cy="135" r="27"/>
+      <circle data-paint="spot3" cx="166" cy="239" r="19"/>
+      <circle data-paint="spot4" cx="334" cy="239" r="19"/>
+      <path d="M247 121 Q216 72 192 80 M253 121 Q284 72 308 80" fill="none" stroke="#5b4168" stroke-width="7" stroke-linecap="round"/>
+      <ellipse data-paint="body" cx="250" cy="197" rx="23" ry="89"/>
+      <circle cx="240" cy="139" r="4" fill="#5b4168"/><circle cx="260" cy="139" r="4" fill="#5b4168"/>
+      <path d="M240 154 Q250 165 260 154" stroke="#5b4168" stroke-width="3" fill="none"/>`
+    },
+    {title:'🍦 Giant ice cream!', svg: `${SVG_START}
+      <path data-paint="cone" d="M164 177 L336 177 L250 326 Z"/>
+      <path d="M187 189 L286 285 M233 185 L312 226 M312 190 L209 280" fill="none" stroke="#d1a36e" stroke-width="6" stroke-linecap="round"/>
+      <circle data-paint="scoop-left" cx="176" cy="167" r="70"/>
+      <circle data-paint="scoop-right" cx="325" cy="167" r="70"/>
+      <circle data-paint="scoop-top" cx="250" cy="96" r="75"/>
+      <path d="M157 202 Q250 227 343 202" stroke="#5b4168" fill="none" stroke-width="5" stroke-linecap="round"/>
+      <circle data-paint="cherry" cx="264" cy="28" r="23"/>
+      <path d="M263 9 Q258 -8 275 4" stroke="#65956d" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <g stroke="#8d7ab0" stroke-width="5" stroke-linecap="round"><path d="M215 67 l10 5 M288 90 l10 -6 M174 157 l7 -7 M342 167 l-7 -7 M247 133 l11 5"/></g>`
+    },
+    {title:'🌈 Rainbow magic!', svg: `${SVG_START}
+      <path data-paint="rainbow1" d="M55 278 A195 195 0 0 1 445 278 L416 278 A166 166 0 0 0 84 278 Z"/>
+      <path data-paint="rainbow2" d="M84 278 A166 166 0 0 1 416 278 L385 278 A135 135 0 0 0 115 278 Z"/>
+      <path data-paint="rainbow3" d="M115 278 A135 135 0 0 1 385 278 L354 278 A104 104 0 0 0 146 278 Z"/>
+      <path data-paint="rainbow4" d="M146 278 A104 104 0 0 1 354 278 L323 278 A73 73 0 0 0 177 278 Z"/>
+      <path data-paint="rainbow5" d="M177 278 A73 73 0 0 1 323 278 L294 278 A44 44 0 0 0 206 278 Z"/>
+      <path data-paint="cloud-left" d="M8 279 Q5 245 38 239 Q37 208 65 205 Q90 181 116 214 Q157 199 166 241 Q191 253 177 280 Z"/>
+      <path data-paint="cloud-right" d="M325 279 Q312 254 341 238 Q341 205 373 211 Q388 179 421 205 Q451 195 460 232 Q498 232 493 278 Z"/>
+      <circle data-paint="sun" cx="455" cy="62" r="32"/>`
+    },
+    {title:'🐱 Little kitty!', svg: `${SVG_START}
+      <path data-paint="tail" d="M332 272 Q411 245 403 179 Q401 157 383 160 Q366 164 374 183 Q380 225 314 229 Z"/>
+      <ellipse data-paint="body" cx="248" cy="248" rx="113" ry="83"/>
+      <path data-paint="head" d="M160 137 L166 43 Q169 30 184 45 L231 90 Q250 85 272 90 L322 45 Q338 30 342 47 L343 146 Q365 196 327 215 Q250 259 174 215 Q136 195 160 137 Z"/>
+      <path data-paint="ear-left" d="M179 106 L183 68 L214 99 Z"/><path data-paint="ear-right" d="M292 99 L325 68 L322 108 Z"/>
+      <ellipse cx="210" cy="154" rx="9" ry="14" fill="#544067"/><ellipse cx="290" cy="154" rx="9" ry="14" fill="#544067"/>
+      <path d="M244 185 L256 185 L250 193 Z" fill="#eb9bae" stroke="#544067" stroke-width="3"/>
+      <path d="M250 195 Q238 212 227 195 M250 195 Q262 212 273 195 M188 187 L149 180 M188 200 L150 205 M312 187 L351 180 M312 200 L351 205" fill="none" stroke="#544067" stroke-width="4" stroke-linecap="round"/>
+      <ellipse data-paint="paw-left" cx="184" cy="312" rx="39" ry="20"/><ellipse data-paint="paw-right" cx="313" cy="312" rx="39" ry="20"/>`
+    }
+  ];
+  const paintCanvas = $('color-canvas');
+  const paintCtx = paintCanvas.getContext('2d');
+  function setColor(index) {
+    chosenColor = PALETTE[index][1];
+    document.querySelectorAll('.colour-swatch').forEach((b,i) => {
+      b.classList.toggle('selected', i===index);
+      b.setAttribute('aria-pressed', String(i===index));
+    });
+  }
+  PALETTE.forEach(([name,hex],i) => {
+    const b = document.createElement('button');
+    b.type='button'; b.className='colour-swatch'; b.style.setProperty('--swatch',hex);
+    b.setAttribute('aria-label',name); b.title=name;
+    b.addEventListener('click', () => { setColor(i); sound([660],.06); });
+    $('color-palette').appendChild(b);
+  });
+  setColor(0);
+  function resizePaintCanvas() {
+    const r=paintCanvas.getBoundingClientRect();
+    if(!r.width || !r.height) return;
+    const dpr=Math.min(devicePixelRatio||1,3);
+    paintCanvas.width=Math.max(1,Math.round(r.width*dpr));
+    paintCanvas.height=Math.max(1,Math.round(r.height*dpr));
+    paintCtx.setTransform(dpr,0,0,dpr,0,0);
+    redrawPaint();
+  }
+  function redrawPaint() {
+    const w=paintCanvas.clientWidth, h=paintCanvas.clientHeight;
+    paintCtx.clearRect(0,0,w,h);
+    for(const stroke of colorStrokes) {
+      paintCtx.strokeStyle=stroke.color; paintCtx.fillStyle=stroke.color;
+      paintCtx.lineCap='round';paintCtx.lineJoin='round';paintCtx.lineWidth=Math.max(12,w*.031);
+      if (stroke.points.length===1){
+        const point=stroke.points[0]; paintCtx.beginPath();paintCtx.arc(point.x*w,point.y*h,paintCtx.lineWidth/2,0,2*Math.PI);paintCtx.fill();
+      } else {
+        paintCtx.beginPath();
+        stroke.points.forEach((p,i) => i?paintCtx.lineTo(p.x*w,p.y*h):paintCtx.moveTo(p.x*w,p.y*h));
+        paintCtx.stroke();
+      }
+    }
+  }
+  function paintPoint(e){const r=paintCanvas.getBoundingClientRect();return {x:(e.clientX-r.left)/r.width,y:(e.clientY-r.top)/r.height};}
+  paintCanvas.addEventListener('pointerdown',e => {
+    if(colorMode!=='brush')return;
+    e.preventDefault();colorDrawing=true;
+    try{paintCanvas.setPointerCapture(e.pointerId);}catch(_){}
+    activeStroke={color:chosenColor,points:[paintPoint(e)]};
+    colorStrokes.push(activeStroke); colorHistory.push({type:'stroke'});
+    redrawPaint();
+  });
+  paintCanvas.addEventListener('pointermove',e => {
+    if(!colorDrawing||!activeStroke)return;
+    e.preventDefault();activeStroke.points.push(paintPoint(e));redrawPaint();
+  });
+  function endPaint(){colorDrawing=false;activeStroke=null;}
+  paintCanvas.addEventListener('pointerup',endPaint);
+  paintCanvas.addEventListener('pointercancel',endPaint);
+  paintCanvas.addEventListener('lostpointercapture',endPaint);
+  function setColorMode(mode){
+    colorMode=mode;
+    $('color-stage').classList.toggle('draw-mode',mode==='brush');
+    $('color-fill').classList.toggle('active',mode==='fill');
+    $('color-brush').classList.toggle('active',mode==='brush');
+    $('color-fill').setAttribute('aria-pressed',String(mode==='fill'));
+    $('color-brush').setAttribute('aria-pressed',String(mode==='brush'));
+  }
+  $('color-fill').addEventListener('click',()=>setColorMode('fill'));
+  $('color-brush').addEventListener('click',()=>setColorMode('brush'));
+  $('color-svg').addEventListener('click',e => {
+    if (colorMode!=='fill')return;
+    const part=e.target.closest('[data-paint]');
+    if(!part||!$('color-svg').contains(part))return;
+    const previous=part.style.fill;
+    if(previous===chosenColor)return;
+    colorHistory.push({type:'fill',part,previous});
+    part.style.fill=chosenColor;
+    sound([523,659],.085);
+  });
+  function undoColor(){
+    const action=colorHistory.pop();if(!action)return;
+    if(action.type==='fill')action.part.style.fill=action.previous;
+    else {colorStrokes.pop();redrawPaint();}
+  }
+  function clearColor(){
+    $('color-svg').querySelectorAll('[data-paint]').forEach(el=>{el.style.fill='';});
+    colorHistory.length=0;colorStrokes.length=0;
+    redrawPaint();
+  }
+  function showPicture(index){
+    colorIndex=(index+PICTURES.length)%PICTURES.length;
+    const picture=PICTURES[colorIndex];
+    $('color-svg').innerHTML=picture.svg;
+    $('color-svg').setAttribute('aria-label',picture.title.replace(/[^\w\s!]/g,''));
+    $('color-picture-name').textContent=picture.title;
+    colorHistory.length=0;colorStrokes.length=0;
+    requestAnimationFrame(resizePaintCanvas);
+  }
+  $('color-undo').addEventListener('click',undoColor);
+  $('color-clear').addEventListener('click',()=>{clearColor();say('A fresh picture!');});
+  $('color-next').addEventListener('click',()=>{showPicture(colorIndex+1);sound([523,659,784],.11);say('A new picture to colour!');});
+  showPicture(0);
+
+  /* Feed the animals with exactly 1-10 treats. Every tap counts aloud. */
+  const COUNT_FRIENDS = [
+    {name:'Bunny',buddy:'🐰',food:'🍓',thing:'strawberry',plural:'strawberries'},
+    {name:'Puppy',buddy:'🐶',food:'🦴',thing:'bone',plural:'bones'},
+    {name:'Dino',buddy:'🦕',food:'🍎',thing:'apple',plural:'apples'},
+    {name:'Monkey',buddy:'🐵',food:'🍌',thing:'banana',plural:'bananas'},
+    {name:'Panda',buddy:'🐼',food:'🎋',thing:'bamboo shoot',plural:'bamboo shoots'}
+  ];
+  function currentFriend(){return COUNT_FRIENDS[(numberLevel-1)%COUNT_FRIENDS.length];}
+  function numberSetup(){
+    numberCount=0;
+    const friend=currentFriend();
+    $('number-target').textContent=numberLevel;
+    $('number-buddy').textContent=friend.buddy;
+    $('number-food').textContent=friend.food;
+    $('number-bubble').textContent='I’m hungry!';
+    $('number-prompt').textContent=`Give ${friend.name} ${numberLevel} ${numberLevel===1?friend.thing:friend.plural}!`;
+    $('number-playing').hidden=false;$('number-success').hidden=true;
+    renderNumbers();
+  }
+  function renderNumbers(){
+    const friend=currentFriend();
+    $('number-count').textContent=`${numberCount} of ${numberLevel}`;
+    $('number-plate').innerHTML='';
+    if(numberCount===0){const hint=document.createElement('span');hint.className='plate-empty';hint.textContent='Treats go here!';$('number-plate').appendChild(hint);}
+    for(let i=0;i<numberCount;i++){
+      const item=document.createElement('span');item.className='plate-item';item.textContent=friend.food;
+      $('number-plate').appendChild(item);
+    }
+    $('number-progress').innerHTML='';
+    for(let i=0;i<numberLevel;i++){
+      const dot=document.createElement('span');dot.className='number-dot'+(i<numberCount?' done':'');
+      $('number-progress').appendChild(dot);
+    }
+  }
+  function feedNumber(){
+    if(numberCount>=numberLevel)return;
+    numberCount++;
+    renderNumbers();
+    $('number-bubble').textContent=numberCount===numberLevel?'Yippee!': 'Yum!';
+    sound([493+numberCount*20,650+numberCount*20],.07);
+    if(numberCount===numberLevel){
+      $('number-playing').hidden=true;$('number-success').hidden=false;
+      $('number-cheer').textContent=`🌟 You counted ${numberLevel}! 🌟`;
+      partyAt($('number-buddy'),20);
+      say(`${numberCount}! Great counting, Petra!`);
+    }else{ say(String(numberCount)); }
+  }
+  $('number-feed').addEventListener('click',feedNumber);
+  $('number-hear').addEventListener('click',()=>say(String(numberLevel)));
+  $('number-next').addEventListener('click',()=>{
+    numberLevel=numberLevel%10+1;
+    numberSetup();
+    say(`Let's count to ${numberLevel}!`);
+  });
+  numberSetup();
+
+  function switchScene(id) {
+    document.querySelectorAll('.scene').forEach(scene => scene.classList.toggle('active',scene.id === id + '-scene'));
+    document.querySelectorAll('.tab').forEach(tab => {
+      const active = tab.dataset.scene === id;
+      tab.classList.toggle('active',active);tab.setAttribute('aria-pressed', String(active));
+    });
+    if (id === 'draw') requestAnimationFrame(resizeCanvas);
+    if (id === 'color') requestAnimationFrame(resizePaintCanvas);
+    if (id === 'name') say('Let’s spell Petra!');
+    if (id === 'hunt') say('Find the letter ' + HUNT_ORDER[huntIndex % HUNT_ORDER.length]);
+    if (id === 'draw') say('Let’s draw ' + TRACE_ORDER[traceIndex % TRACE_ORDER.length]);
+    if (id === 'color') say('Let’s colour, Petra!');
+    if (id === 'number') say(`Let's count to ${numberLevel}!`);
+  }
+  document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => switchScene(tab.dataset.scene)));
+  $('sound-toggle').addEventListener('click', () => {
+    soundOn = !soundOn;
+    $('sound-toggle').textContent = soundOn ? '🔊' : '🔇';
+    $('sound-toggle').setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+    if (!soundOn && 'speechSynthesis' in window) speechSynthesis.cancel();
+    if (soundOn) { sound([523, 659, 784], .12); say('Let’s play, Petra!'); }
+  });
+  $('name-reset').addEventListener('click', nameReset);
+  $('name-again').addEventListener('click', () => { nameReset(); say('Let’s spell Petra!'); });
+  $('name-hear').addEventListener('click', () => say(NAME[nameProgress]));
+  $('hunt-hear').addEventListener('click', () => say(HUNT_ORDER[huntIndex % HUNT_ORDER.length]));
+  $('trace-hear').addEventListener('click', () => say(TRACE_ORDER[traceIndex % TRACE_ORDER.length]));
+  $('trace-clear').addEventListener('click', () => { clearDrawing(); $('draw-tip').textContent = 'Try again! You can do it!'; });
+  $('trace-next').addEventListener('click', () => {
+    traceIndex = (traceIndex + 1) % TRACE_ORDER.length;
+    traceLetter(); sound([523, 659], .1);
+    say(TRACE_ORDER[traceIndex]);
+  });
+  window.addEventListener('resize', () => {
+    if ($('draw-scene').classList.contains('active')) resizeCanvas();
+    if ($('color-scene').classList.contains('active')) resizePaintCanvas();
+  });
+  nameReset(); newHunt(); traceLetter();
+})();
+</script>
+</body>
+</html>
