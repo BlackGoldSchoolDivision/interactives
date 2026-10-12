@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#057fac">
+<meta name="description" content="Ocean Counting Explorer: count sea creatures, compare groups and solve simple addition and subtraction stories. A playful Grade 1 mathematics game.">
+<title>Ocean Counting Explorer · Interactive Learning Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900;1000&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=phase1-1">
+<script type="module" src="app.js?v=phase1-1"></script>
+</head>
+<body>
+<a class="skip-link" href="#reef-game">Skip to the activity</a>
+<!-- Locally drawn artwork: no tracking scripts or image dependencies for the sea creatures. -->
+<svg class="sprite-bank" width="0" height="0" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+<defs>
+<linearGradient id="fish-body" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#ffcd57"/><stop offset=".46" stop-color="#ff893f"/><stop offset="1" stop-color="#fa543f"/></linearGradient>
+<linearGradient id="turtle-shell" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9ee868"/><stop offset="1" stop-color="#168d78"/></linearGradient>
+<linearGradient id="crab-body" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffb17c"/><stop offset="1" stop-color="#f05d57"/></linearGradient>
+<linearGradient id="octo" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ecadff"/><stop offset="1" stop-color="#9661c8"/></linearGradient>
+<symbol id="animal-fish" viewBox="0 0 200 150">
+  <path d="M53 76 12 46Q3 40 7 67L11 87Q-4 117 12 112L53 92Z" fill="#ff7e44" stroke="#823c35" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M78 47Q72 15 105 25L123 47M81 107Q68 141 106 127L129 101" fill="#ff7c43" stroke="#823c35" stroke-width="5"/>
+  <path d="M46 69Q56 30 115 29Q170 31 185 69Q195 109 120 118Q65 123 46 87Z" fill="url(#fish-body)" stroke="#823c35" stroke-width="5"/>
+  <path d="M87 32 94 118 115 114 108 31Z" fill="#fff9e8" stroke="#b96e54" stroke-width="2"/>
+  <path d="M140 36Q139 76 144 111L161 105Q155 74 160 46Z" fill="#fff9e8" stroke="#b96e54" stroke-width="2"/>
+  <ellipse cx="159" cy="63" rx="12" ry="17" fill="white"/><circle cx="163" cy="65" r="7" fill="#173b54"/><circle cx="165" cy="61" r="2.8" fill="white"/>
+  <path d="M163 95Q172 105 183 92" stroke="#823c35" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <ellipse cx="144" cy="86" rx="9" ry="5" fill="#f26372" opacity=".65"/>
+  <path d="M69 66q-9 5-4 16" stroke="#ffc66d" stroke-width="4" stroke-linecap="round" fill="none"/>
+</symbol>
+<symbol id="animal-turtle" viewBox="0 0 200 150">
+  <path d="M62 83Q27 43 15 76Q12 99 59 106M119 99q8 37 40 28 15-9-17-38" fill="#81cd71" stroke="#348768" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M77 105Q44 136 65 142Q88 147 104 114" fill="#81cd71" stroke="#348768" stroke-width="5"/>
+  <ellipse cx="102" cy="75" rx="67" ry="55" fill="url(#turtle-shell)" stroke="#216e60" stroke-width="5"/>
+  <path d="M67 36q30-23 64-5l23 38-26 38-50 8-30-40Z" fill="#2fa880" stroke="#f0e890" stroke-width="4"/>
+  <path d="m92 28-16 37 16 35m35-69 4 40-39 29m-43-25 43-10 39 6" fill="none" stroke="#bce682" stroke-width="4"/>
+  <path d="M147 60Q170 43 188 57Q205 79 187 105Q171 123 150 100" fill="#a0df85" stroke="#348768" stroke-width="5"/>
+  <ellipse cx="175" cy="75" rx="7" ry="10" fill="#173b54"/><circle cx="178" cy="73" r="2.3" fill="white"/>
+  <path d="M170 94q8 7 17-2" stroke="#348768" stroke-width="3" fill="none" stroke-linecap="round"/>
+</symbol>
+<symbol id="animal-crab" viewBox="0 0 200 150">
+  <g stroke="#b53e4c" stroke-width="6" stroke-linecap="round" fill="none">
+    <path d="M61 89 24 106 16 129M72 108 52 132M132 108 149 132M142 86 178 105 190 128"/>
+    <path d="M69 58 39 36M132 58 163 36"/>
+  </g>
+  <path d="M23 57Q-1 35 19 12Q33 8 42 30Q52 2 65 12Q82 38 51 59Z" fill="#ff8c6c" stroke="#b53e4c" stroke-width="5"/>
+  <path d="M172 57q25-22 4-45-16-5-23 18-13-28-25-18-15 25 16 47Z" fill="#ff8c6c" stroke="#b53e4c" stroke-width="5"/>
+  <ellipse cx="103" cy="86" rx="58" ry="43" fill="url(#crab-body)" stroke="#b53e4c" stroke-width="5"/>
+  <path d="M82 52 79 26M119 52l6-26" stroke="#b53e4c" stroke-width="7" stroke-linecap="round"/>
+  <ellipse cx="78" cy="29" rx="15" ry="18" fill="#fff"/><ellipse cx="126" cy="29" rx="15" ry="18" fill="#fff"/>
+  <circle cx="81" cy="30" r="8" fill="#173b54"/><circle cx="123" cy="30" r="8" fill="#173b54"/>
+  <circle cx="84" cy="26" r="3" fill="white"/><circle cx="126" cy="26" r="3" fill="white"/>
+  <path d="M84 91Q101 112 122 91" stroke="#a33e49" stroke-width="5" fill="none" stroke-linecap="round"/>
+</symbol>
+<symbol id="animal-octopus" viewBox="0 0 200 150">
+  <path d="M45 91q-40 24-15 46 13 9 25-13 2 30 21 20 12-7 13-21 7 26 24 21 15-7 14-22 18 24 33 10 14-16-15-40Z" fill="#b785e2" stroke="#674b9a" stroke-width="5"/>
+  <path d="M52 75Q40 24 91 17q55-7 68 60 7 40-47 45-52 9-60-47Z" fill="url(#octo)" stroke="#674b9a" stroke-width="5"/>
+  <ellipse cx="91" cy="78" rx="13" ry="19" fill="white"/><ellipse cx="129" cy="78" rx="13" ry="19" fill="white"/>
+  <circle cx="95" cy="80" r="8" fill="#263858"/><circle cx="125" cy="80" r="8" fill="#263858"/>
+  <circle cx="98" cy="75" r="3" fill="white"/><circle cx="128" cy="75" r="3" fill="white"/>
+  <path d="M103 103q12 9 24-2" stroke="#674b9a" stroke-width="4" stroke-linecap="round" fill="none"/>
+</symbol>
+<symbol id="animal-star" viewBox="0 0 200 150">
+  <path d="m100 9 25 44 52-5-24 42 22 46-52-14-36 27-11-47-55-10 41-29Z" fill="#ffb746" stroke="#bf6941" stroke-width="5" stroke-linejoin="round"/>
+  <path d="m96 19 18 49 46-9" stroke="#ffe8a0" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <ellipse cx="86" cy="85" rx="6" ry="10" fill="#523e57"/><ellipse cx="121" cy="85" rx="6" ry="10" fill="#523e57"/>
+  <path d="M92 104q12 12 27-1" fill="none" stroke="#9f553b" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="69" cy="109" r="4" fill="#f77c4f"/><circle cx="140" cy="112" r="4" fill="#f77c4f"/>
+</symbol>
+<symbol id="animal-shell" viewBox="0 0 200 150">
+  <path d="M29 118q-22-31-4-68 27-49 78-49 55 0 78 54 15 34-7 63Z" fill="#ffb8ac" stroke="#b76b85" stroke-width="5"/>
+  <path d="M101 15 77 117M101 15l20 102M101 15 43 117M101 15l115 0M101 15 159 117" stroke="#ffede3" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <rect x="25" y="113" width="151" height="24" rx="10" fill="#e998a3" stroke="#b76b85" stroke-width="4"/>
+</symbol>
+</defs>
+</svg>
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="mini-mark" aria-hidden="true">✦</div>
+    <div class="brand"><a class="lab-link" href="../interactive-learning-lab/">← Interactive Learning Lab</a>
+      <h1>Ocean <span>Counting</span> Explorer <span class="title-starfish" aria-hidden="true">★</span></h1>
+      <p>Count the sea creatures!</p>
+    </div>
+    <div class="progress-pill"><span id="level-label">Grade 1 reef</span><strong id="progress-text">1 / 5</strong><div class="progress-pips" id="progress-pips" aria-label="Round progress"></div></div>
+  </div>
+</header>
+<nav class="modebar" aria-label="Choose how to play">
+ <div class="modebar-inner">
+   <div class="mode-switch" role="group" aria-label="Activity mode">
+     <button type="button" data-mode="count" aria-pressed="true">Count</button>
+     <button type="button" data-mode="compare" aria-pressed="false">Compare</button>
+     <button type="button" data-mode="story" aria-pressed="false">Sea stories</button>
+     <button type="button" data-mode="mix" aria-pressed="false">Ocean mix</button>
+   </div>
+   <label class="range-picker">Numbers to
+     <select id="number-range"><option value="10">10</option><option value="20">20</option></select>
+   </label>
+ </div>
+</nav>
+<main id="reef-game" class="reef">
+  <svg class="reef-background" viewBox="0 0 1450 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="ocean-grad" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#3dd6f6"/><stop offset=".35" stop-color="#07a6df"/><stop offset=".75" stop-color="#0969a4"/><stop offset="1" stop-color="#10497f"/></linearGradient>
+      <linearGradient id="seabed" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffdd95"/><stop offset="1" stop-color="#f1aa60"/></linearGradient>
+    </defs>
+    <rect width="1450" height="800" fill="url(#ocean-grad)"/>
+    <g fill="#d5faff" opacity=".18"><path d="M200 0h110l-400 780H-170Z"/><path d="M410 0h145L230 800H50Z"/><path d="M930 0h90L840 800H680Z"/></g>
+    <path fill="#e2ffff" opacity=".27" d="M0 30Q70 5 120 30t170 0t170 0t170 0t170 0t170 0t170 0t190 0v15H0Z"/>
+    <g fill="#0b629c" opacity=".48">
+      <path d="M0 630q100-180 220-92t215 20q134-178 340-45t265-30q196-165 410 85v232H0Z"/>
+      <path d="M0 550q180-100 340 30t380-18q180-160 390 0t340-30v268H0Z" opacity=".4"/>
+    </g>
+    <path d="M0 665Q140 594 280 658T620 667Q805 620 1000 656T1450 666v134H0Z" fill="url(#seabed)"/>
+    <g fill="none" stroke-linecap="round" opacity=".8">
+      <path d="M36 765q-40-90-9-160m8 165q10-110 62-178m-39 167q-3-90 51-128" stroke="#8dd744" stroke-width="17"/>
+      <path d="M1195 768q-35-98 0-148m10 140q55-115 98-153m-57 163q9-112 64-150" stroke="#33b39b" stroke-width="22"/>
+      <path d="M1323 761v-139m0 58q-37-45-54-75m55 60q24-62 58-80" stroke="#fc6b91" stroke-width="17"/>
+      <path d="M190 771v-95m0 53q-40-29-41-54m43 30q29-34 50-45" stroke="#f477a0" stroke-width="17"/>
+    </g>
+    <g fill="#8b78bf"><ellipse cx="102" cy="746" rx="66" ry="30"/><ellipse cx="1185" cy="744" rx="106" ry="26"/><ellipse cx="1410" cy="745" rx="70" ry="30"/></g>
+    <g fill="#ffb54e"><circle cx="322" cy="726" r="9"/><circle cx="1040" cy="748" r="6"/><circle cx="1072" cy="711" r="6"/></g>
+    <g fill="none" stroke="#d6faff" stroke-width="3" opacity=".48">
+      <circle cx="73" cy="188" r="11"/><circle cx="107" cy="255" r="17"/><circle cx="346" cy="164" r="9"/><circle cx="612" cy="198" r="13"/><circle cx="750" cy="91" r="10"/><circle cx="1211" cy="240" r="19"/><circle cx="1315" cy="156" r="7"/><circle cx="900" cy="381" r="14"/>
+    </g>
+  </svg>
+  <div class="reef-layout">
+    <section class="sea-stage" aria-labelledby="scene-heading">
+      <div class="scene-heading" id="scene-heading">Explore the reef</div>
+      <div id="scene" class="creature-stage" aria-label="Underwater animal counting scene"></div>
+      <div class="scene-tip" id="scene-tip">Tap sea creatures to count them!</div>
+    </section>
+    <aside class="challenge" aria-label="Counting challenge">
+      <div class="question-top">
+        <div class="question-label" id="question-tag">LOOK &amp; COUNT</div>
+        <button type="button" id="hear" class="sound-button" aria-label="Hear the question and instructions" title="Hear the question">♫ <span>Listen</span></button>
+      </div>
+      <h2 id="question-text">How many fish do you see?</h2>
+      <div id="number-pad" class="answer-pad" aria-label="Choose your answer"></div>
+      <div id="feedback" class="feedback" role="status" aria-live="polite"></div>
+      <div class="question-actions">
+        <button type="button" id="hint" class="action-secondary">💡 Hint</button>
+        <button type="button" id="retry" class="action-secondary">↻ Try again</button>
+        <button type="button" id="next" class="action-next" disabled>Next →</button>
+      </div>
+    </aside>
+  </div>
+</main>
+<div class="game-footer"><span>Made for curious young mathematicians · Grade 1</span><span>Count • Compare • Add • Subtract</span></div>
+</body>
+</html>
