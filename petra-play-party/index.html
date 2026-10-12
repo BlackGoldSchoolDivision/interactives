@@ -88,7 +88,8 @@
   .palette-btn.active{transform:scale(1.08);outline:4px solid #6f5694}
   .colour-modes{display:flex;gap:10px;flex-wrap:wrap}
   .tool-mode.active,.size-btn.active{background:linear-gradient(180deg,#8ad8ff,#60adff);color:#fff}
-  .picture-position{text-align:center;font-weight:800;color:#806ca2;font-size:.9rem;margin:-3px 0 10px}
+  .picture-position{text-align:center;font-weight:800;color:#806ca2;font-size:.9rem;margin:-3px 0 4px}
+  .picture-cheer{text-align:center;font-weight:900;color:#4f8b4b;font-size:.98rem;min-height:1.4em;margin:0 0 10px}
   .colour-picture-name,.free-name{text-align:center;font-size:1.12rem;font-weight:900;color:#ff5a85;margin:10px 0}
   .colour-stage,.free-stage{position:relative;background:#fffefc;border:4px solid #f0e5ff;border-radius:24px;overflow:hidden;min-height:340px}
   .colour-stage svg,.colour-stage canvas,.free-stage canvas{display:block;width:100%;height:340px}
@@ -130,8 +131,8 @@
     .hero .sub{display:none}
     .top-actions{gap:7px}
     .top-actions button{padding:7px 10px;font-size:.85rem}
-    .tabs{display:flex;grid-template-columns:none;overflow-x:auto;gap:7px;margin-top:8px;scroll-snap-type:x proximity;padding:3px 2px 7px;scrollbar-width:thin}
-    .tab{flex:0 0 96px;min-width:96px;min-height:55px;padding:5px 4px;font-size:.79rem;border-radius:15px;scroll-snap-align:start}
+    .tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));overflow:visible;gap:6px;margin-top:9px;padding:0}
+    .tab{min-width:0;min-height:55px;padding:6px 2px;font-size:.70rem;line-height:1.16;border-radius:15px;overflow-wrap:anywhere}
     .tab .emoji{font-size:1.22rem}
     .panel{margin-top:8px;padding:5px}
     .scene{padding:10px;min-height:calc(100dvh - 190px)}
@@ -159,6 +160,40 @@
     .hunt-target{font-size:2.5rem}
     .word-emoji{font-size:3.4rem}
   }
+
+  /* Finn's virtual puppy play time */
+  .finn-play-area{position:relative;border-radius:28px;padding:14px 14px 18px;background:linear-gradient(180deg,#dbf3fd 0%,#eefafc 52%,#def1ce 52%,#def4b8 100%);border:3px solid #fff;box-shadow:inset 0 0 0 2px #dae8c9;max-width:720px;margin:auto}
+  .finn-speech{position:relative;z-index:2;background:white;border:3px solid #fad2e6;border-radius:23px;padding:10px 16px;box-shadow:0 4px 10px #49305d18;text-align:center;font-size:1.13rem;font-weight:900;color:#925272;width:fit-content;margin:0 auto -6px;max-width:96%;min-height:47px}
+  .finn-dog-stage{position:relative;max-width:440px;margin:-10px auto -26px;overflow:visible}
+  .finn-dog{display:block;width:100%;height:auto;max-height:min(35dvh,275px);overflow:visible;filter:drop-shadow(0 8px 6px #68482b24)}
+  .finn-tail{transform-origin:310px 222px;animation:finn-tail 1.1s ease-in-out infinite alternate}
+  .finn-sparkles{opacity:.55;transform-origin:center;animation:finn-heart 1.8s ease-in-out infinite alternate}
+  .finn-dog-stage.happy .finn-dog{animation:finn-bounce .42s ease-in-out 2}
+  .finn-dog-stage.happy .finn-tail{animation-duration:.16s}
+  .finn-dog-stage.happy .finn-tongue{animation:finn-tongue .3s ease-in-out 2}
+  .finn-pats{position:absolute;top:22%;left:50%;transform:translate(-50%,-30%);font-size:2rem;opacity:0;pointer-events:none}
+  .finn-pats.show{animation:finn-pop 1.25s ease forwards}
+  .finn-treat-float{position:absolute;z-index:4;left:50%;bottom:3%;font-size:2.5rem;opacity:0;transform:translate(-50%,0);pointer-events:none}
+  .finn-treat-float.fly{animation:finn-treat-fly .68s ease-in forwards}
+  .finn-status-row{display:flex;justify-content:center}
+  .finn-counter{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap;font-weight:900;background:#fffefb;border:2px solid #fff;border-radius:20px;padding:9px 18px;color:#5f4479;box-shadow:0 5px 12px #48325217}
+  .finn-counter strong{background:#ffcf60;border-radius:16px;padding:5px 13px;font-size:1.4rem;color:#6e4f1f}
+  #finn-paws{letter-spacing:3px;font-size:.9rem;white-space:nowrap}
+  .finn-instruction{font-size:1.1rem;text-align:center;font-weight:900;margin:13px 0 10px}
+  .finn-treats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+  .finn-treat-btn{min-height:85px;border:3px solid #fff;background:#fffdf8;color:#583f70;border-radius:23px;font-weight:900;box-shadow:0 6px 12px #775a4725;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;touch-action:manipulation}
+  .finn-treat-btn:active{transform:scale(.96);background:#fff1d8}
+  .treat-emoji{font-size:2rem;line-height:1}
+  .finn-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px}
+  .finn-celebration{text-align:center;font-size:1.17rem;font-weight:900;color:#a83e75;background:#fff9d7;border:2px dashed #f9cc69;border-radius:20px;margin-top:12px;padding:13px}
+  @keyframes finn-tail{from{transform:rotate(-9deg)}to{transform:rotate(19deg)}}
+  @keyframes finn-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px) rotate(-1deg)}}
+  @keyframes finn-tongue{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.2)}}
+  @keyframes finn-heart{from{opacity:.38;transform:scale(.86)}to{opacity:.85;transform:scale(1.12)}}
+  @keyframes finn-pop{0%{opacity:0;transform:translate(-50%,0) scale(.5)}25%{opacity:1;transform:translate(-50%,-24px) scale(1.2)}85%{opacity:1}100%{opacity:0;transform:translate(-50%,-75px) scale(1)}}
+  @keyframes finn-treat-fly{0%{opacity:1;transform:translate(-50%,0) rotate(-20deg) scale(1)}85%{opacity:1}100%{opacity:0;transform:translate(-50%,-140px) rotate(20deg) scale(.35)}}
+  @media(max-width:480px){.finn-play-area{padding:10px 9px 14px}.finn-speech{font-size:.99rem;padding:8px 10px}.finn-treats{gap:6px}.finn-treat-btn{min-height:74px;border-radius:18px;font-size:.84rem}.treat-emoji{font-size:1.8rem}.finn-counter{font-size:.9rem}#finn-paws{letter-spacing:1px}}
+  @media(prefers-reduced-motion:reduce){.finn-tail,.finn-sparkles{animation:none}}
 </style>
 </head>
 <body>
@@ -167,7 +202,7 @@
     <div class="hero-top">
       <div>
         <h1>Petra's Play Party 🌈</h1>
-        <p class="sub">Letters, colouring, words, drawing, and counting for Petra!</p>
+        <p class="sub">Letters, pets, colouring, drawing, and counting for Petra!</p>
       </div>
       <div class="top-actions">
         <button id="home-btn" class="home-btn" type="button">🏠 Home</button>
@@ -176,12 +211,13 @@
     </div>
     <nav class="tabs" aria-label="Activities">
       <button class="tab active" type="button" data-scene="name"><span class="emoji">🚂</span><span>My Name</span></button>
+      <button class="tab" type="button" data-scene="finn"><span class="emoji">🐶</span><span>Feed Finn!</span></button>
+      <button class="tab" type="button" data-scene="color"><span class="emoji">🎨</span><span>Colouring</span></button>
+      <button class="tab" type="button" data-scene="number"><span class="emoji">🔢</span><span>Numbers</span></button>
       <button class="tab" type="button" data-scene="words"><span class="emoji">🧩</span><span>Word Builder</span></button>
       <button class="tab" type="button" data-scene="hunt"><span class="emoji">🎈</span><span>Letter Pop</span></button>
       <button class="tab" type="button" data-scene="draw"><span class="emoji">✏️</span><span>Draw Letters</span></button>
-      <button class="tab" type="button" data-scene="color"><span class="emoji">🎨</span><span>Colouring</span></button>
       <button class="tab" type="button" data-scene="free"><span class="emoji">🖍️</span><span>Free Draw</span></button>
-      <button class="tab" type="button" data-scene="number"><span class="emoji">🔢</span><span>Numbers</span></button>
     </nav>
   </header>
 
@@ -259,7 +295,7 @@
 
     <section class="scene" id="color-scene" aria-label="Colour pictures">
       <h2 class="scene-heading">Petra's <span class="highlight">colouring book</span>! 🎨</h2>
-      <p class="subhead">Pick a colour, then tap to fill or draw.</p>
+      <p class="subhead">Pick a colour, then tap to fill the picture. Animal pages cheer for Petra!</p>
       <div class="color-shell">
         <div class="colour-tools">
           <div id="color-palette" class="colour-palette" aria-label="Choose a colour"></div>
@@ -269,7 +305,9 @@
           </div>
         </div>
         <div class="colour-picture-name" id="color-picture-name">🌼 Happy flower</div>
-        <div class="picture-position" id="picture-position" aria-live="polite">Picture 1 of 10</div>
+        <div class="picture-position" id="picture-position" aria-live="polite">Picture 1 of 16</div>
+        <div class="bottom-actions" style="margin:2px 0 9px"><button class="small-action" id="color-animals" type="button">🐾 See animal pictures</button></div>
+        <div class="picture-cheer" id="picture-cheer" aria-live="polite"></div>
         <div class="colour-stage">
           <svg id="color-svg" viewBox="40 7 420 326" role="img" aria-label="Picture to colour"></svg>
           <canvas id="color-canvas" aria-label="Draw on your picture"></canvas>
@@ -306,6 +344,83 @@
       </div>
       <div class="free-actions">
         <button class="small-action" id="free-clear" type="button">🧽 Clear</button>
+      </div>
+    </section>
+
+    <section class="scene" id="finn-scene" aria-label="Play with Finn the brown cockapoo">
+      <h2 class="scene-heading">Say hello to <span class="highlight">Finn!</span> 🐶</h2>
+      <p class="subhead">Finn is Petra's fluffy brown cockapoo. Give him some pretend doggy treats!</p>
+      <div class="finn-play-area">
+        <div class="finn-speech" id="finn-speech" role="status" aria-live="polite">Woof woof! Hi, Petra! 💕</div>
+        <div class="finn-dog-stage" id="finn-stage">
+          <svg class="finn-dog" id="finn-dog" viewBox="0 0 440 350" role="img" aria-label="Finn, a happy fluffy brown cockapoo with floppy ears and curly fur">
+            <defs>
+              <linearGradient id="finnFur" x1="0" y1="0" x2=".7" y2="1"><stop offset="0" stop-color="#db995c"/><stop offset="1" stop-color="#a96136"/></linearGradient>
+              <linearGradient id="finnMuzzle" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#f7dab1"/><stop offset="1" stop-color="#ecbf91"/></linearGradient>
+              <radialGradient id="finnGrass"><stop offset="0" stop-color="#aee6a6"/><stop offset="1" stop-color="#e6f8cf"/></radialGradient>
+            </defs>
+            <ellipse cx="225" cy="323" rx="158" ry="20" fill="#5f945a" opacity=".17"/>
+            <g class="finn-tail" transform="translate(310 222)">
+              <path d="M0 9 C52 7 61 -24 66 -55" fill="none" stroke="#92512c" stroke-width="29" stroke-linecap="round"/>
+              <path d="M0 8 C52 5 62 -26 68 -57" fill="none" stroke="#ca8954" stroke-width="23" stroke-linecap="round"/>
+              <circle cx="67" cy="-56" r="20" fill="#ca8954"/>
+            </g>
+            <ellipse cx="222" cy="244" rx="113" ry="75" fill="url(#finnFur)" stroke="#744122" stroke-width="5"/>
+            <g fill="#d79a62" opacity=".8">
+              <circle cx="131" cy="234" r="24"/><circle cx="153" cy="205" r="22"/><circle cx="181" cy="189" r="20"/>
+              <circle cx="261" cy="191" r="22"/><circle cx="290" cy="215" r="23"/><circle cx="306" cy="243" r="23"/>
+            </g>
+            <ellipse cx="163" cy="299" rx="33" ry="30" fill="#c27e48" stroke="#754225" stroke-width="5"/>
+            <ellipse cx="273" cy="299" rx="33" ry="30" fill="#c27e48" stroke="#754225" stroke-width="5"/>
+            <path d="M149 300 q13 -12 26 0 M259 300 q13 -12 26 0" fill="none" stroke="#8b5634" stroke-width="3.5" stroke-linecap="round"/>
+            <g id="finn-head">
+              <path d="M155 112 C105 89 76 141 89 193 C104 232 143 227 157 195Z" fill="#93532f" stroke="#754225" stroke-width="6"/>
+              <path d="M281 112 C331 86 363 141 350 193 C334 232 296 227 280 195Z" fill="#93532f" stroke="#754225" stroke-width="6"/>
+              <circle cx="112" cy="177" r="25" fill="#aa673d"/><circle cx="325" cy="178" r="27" fill="#aa673d"/>
+              <path d="M133 154 C132 79 168 60 216 64 C269 56 305 90 303 160 C309 226 275 253 222 255 C168 256 131 223 133 154Z" fill="url(#finnFur)" stroke="#754225" stroke-width="6"/>
+              <g fill="#d89a60">
+                <circle cx="155" cy="106" r="20"/><circle cx="172" cy="85" r="23"/><circle cx="195" cy="73" r="23"/>
+                <circle cx="222" cy="71" r="24"/><circle cx="247" cy="75" r="22"/><circle cx="270" cy="88" r="21"/>
+                <circle cx="288" cy="111" r="21"/>
+              </g>
+              <path d="M154 131 Q169 119 188 134 M249 133 Q264 119 282 131" fill="none" stroke="#9b5a31" stroke-width="9" stroke-linecap="round"/>
+              <ellipse cx="182" cy="162" rx="17" ry="21" fill="#fff4dd"/>
+              <ellipse cx="257" cy="162" rx="17" ry="21" fill="#fff4dd"/>
+              <circle cx="184" cy="163" r="10" fill="#3b241e"/><circle cx="256" cy="163" r="10" fill="#3b241e"/>
+              <circle cx="188" cy="159" r="3.7" fill="white"/><circle cx="259" cy="159" r="3.7" fill="white"/>
+              <circle cx="159" cy="192" r="18" fill="#efb38b" opacity=".7"/>
+              <circle cx="278" cy="192" r="18" fill="#efb38b" opacity=".7"/>
+              <ellipse cx="187" cy="209" rx="45" ry="33" fill="url(#finnMuzzle)"/>
+              <ellipse cx="249" cy="209" rx="45" ry="33" fill="url(#finnMuzzle)"/>
+              <path d="M196 228 Q219 253 243 228" fill="none" stroke="#754225" stroke-width="5" stroke-linecap="round"/>
+              <path class="finn-tongue" d="M205 236 Q218 268 232 236" fill="#ff82a0" stroke="#ae4d65" stroke-width="3.5"/>
+              <ellipse cx="218" cy="200" rx="21" ry="14" fill="#302321"/>
+              <ellipse cx="212" cy="195" rx="7" ry="3.5" fill="#ffffff" opacity=".75"/>
+              <path d="M218 211v13" stroke="#754225" stroke-width="4" stroke-linecap="round"/>
+            </g>
+            <path d="M160 254 Q220 284 282 250" fill="none" stroke="#5d80d7" stroke-width="12" stroke-linecap="round"/>
+            <circle cx="218" cy="272" r="21" fill="#ffd56d" stroke="#785d34" stroke-width="4"/>
+            <text x="218" y="278" text-anchor="middle" fill="#613f27" font-weight="900" font-size="14" font-family="system-ui">FINN</text>
+            <g class="finn-sparkles" aria-hidden="true" fill="#ff78ab"><path d="M75 104 Q60 80 44 104 Q34 124 75 148 Q113 119 104 102 Q91 80 75 104Z"/><path d="M369 87 Q359 70 346 87 Q338 104 369 124 Q395 105 389 87 Q378 71 369 87Z"/></g>
+          </svg>
+          <div class="finn-treat-float" id="finn-flying-treat" aria-hidden="true"></div>
+          <div class="finn-pats" id="finn-hearts" aria-hidden="true">💛 💕</div>
+        </div>
+        <div class="finn-status-row">
+          <div class="finn-counter" aria-live="polite">Treats <strong id="finn-count">0</strong> <span id="finn-paws">🐾 🐾 🐾 🐾 🐾</span></div>
+        </div>
+        <p class="finn-instruction">Pick a treat for Finn!</p>
+        <div class="finn-treats" role="group" aria-label="Choose a pretend treat to feed Finn">
+          <button type="button" class="finn-treat-btn" data-treat="biscuit" data-emoji="🦴"><span class="treat-emoji">🦴</span><span>Dog biscuit</span></button>
+          <button type="button" class="finn-treat-btn" data-treat="carrot" data-emoji="🥕"><span class="treat-emoji">🥕</span><span>Carrot</span></button>
+          <button type="button" class="finn-treat-btn" data-treat="apple" data-emoji="🍎"><span class="treat-emoji">🍎</span><span>Apple slice</span></button>
+        </div>
+        <div class="finn-actions">
+          <button type="button" class="small-action" id="finn-pat">💖 Pat Finn</button>
+          <button type="button" class="small-action" id="finn-hear">🔊 Say hello</button>
+          <button type="button" class="small-action" id="finn-again">↻ Play again</button>
+        </div>
+        <div class="finn-celebration" id="finn-win" hidden>🌟 Good job, Petra! Finn is so happy! 🌟</div>
       </div>
     </section>
 
@@ -390,6 +505,7 @@
   let colorDrawing = false;
   let colorStroke = null;
   let colorStrokes = [];
+  let colorFillCount=0;
   let colorHistory = [];
   let freeColor = COLORS[0];
   let freeTool = 'crayon';
@@ -466,7 +582,7 @@
     document.querySelectorAll('.scene').forEach(s => s.classList.toggle('active', s.id === `${name}-scene`));
     document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.scene === name));
     if(name === 'draw') resizeTraceCanvas();
-    if(name === 'color') resizeColorCanvas();
+    if(name === 'color'){ resizeColorCanvas(); maybeColorCheer(true); }
     if(name === 'free') resizeFreeCanvas();
   }
 
@@ -722,7 +838,7 @@
       ${detail('M237 176 Q250 190 263 176',3)}
       ${decoration('path','d="M54 300Q80 286 104 300 M376 302Q404 291 437 302"')}
     `},
-    { title:'🦋 Beautiful butterfly', shapes: () => `
+    { title:'🦋 Beautiful butterfly', animal:true, shapes: () => `
       ${sparkle(66,56,10)} ${sparkle(435,61,10)}
       ${path('M244 171 C229 131 207 76 149 67 C96 60 64 104 87 153 C110 198 165 194 244 183Z')}
       ${path('M244 183 C205 175 138 198 128 250 C125 295 179 310 213 280 C236 260 239 228 248 194Z')}
@@ -747,7 +863,7 @@
       ${path('M318 280 C304 260 328 232 355 239 C366 209 409 215 420 244 C452 235 469 272 453 294 L332 294 C326 291 321 287 318 280Z')}
       ${decoration('path','d="M69 317H170 M326 317H436"')}
     `},
-    { title:'🐱 Little kitten', shapes: () => `
+    { title:'🐱 Little kitten', animal:true, shapes: () => `
       ${sparkle(72,68,11)} ${sparkle(429,63,11)}
       ${path('M311 257 C380 282 398 215 376 204 C350 191 345 231 355 234')}
       ${ell(250,251,95,67)}
@@ -764,7 +880,7 @@
       ${ell(209,297,29,20)} ${ell(291,297,29,20)}
       ${path('M234 241 L266 241 L250 261Z')}
     `},
-    { title:'🦖 Dino adventure', shapes: () => `
+    { title:'🦖 Dino adventure', animal:true, shapes: () => `
       ${sparkle(70,70)} ${sparkle(415,62)}
       ${path('M163 211 Q88 231 80 279 Q118 276 174 255Z')}
       ${[ [145,161,173,116,197,149], [178,135,207,96,228,128], [217,116,244,75,265,123], [263,114,287,83,304,128] ].map(p=>path(`M${p[0]} ${p[1]} L${p[2]} ${p[3]} L${p[4]} ${p[5]}Z`)).join('')}
@@ -808,7 +924,7 @@
       ${detail('M250 50 V24 L276 35 L250 45',4)}
       ${decoration('path','d="M65 313H439 M85 321H404"')}
     `},
-    { title:'🐠 Under the sea', shapes: () => `
+    { title:'🐠 Under the sea', animal:true, shapes: () => `
       ${sparkle(70,61,8)}
       ${path('M346 154 Q415 95 429 116 Q415 169 350 192Z')}
       ${path('M236 115 Q266 62 308 83 L286 136Z')}
@@ -834,7 +950,7 @@
       ${detail('M250 74 Q260 64 283 72',3)}
       ${cir(224,126,8)} ${cir(282,142,7)} ${cir(274,106,5)}
     `},
-    { title:'🦄 Magical unicorn', shapes: () => `
+    { title:'🦄 Magical unicorn', animal:true, shapes: () => `
       ${sparkle(88,78,13)} ${sparkle(418,92)}
       ${path('M167 195 C112 170 96 205 74 223 Q110 247 168 229Z')}
       ${path('M153 234 L150 306 Q165 318 180 305 L191 246Z')}
@@ -852,28 +968,142 @@
       ${path('M182 150 Q198 178 182 202 Q161 179 182 150Z')}
       ${decoration('path','d="M46 320H451"')}
     `}
+
+    ,{ title:'🐶 Finn the cockapoo', animal:true, shapes: () => `
+      ${sparkle(68,61)} ${sparkle(427,79,10)}
+      ${path('M332 226 Q385 211 383 163 Q407 189 392 238 Q371 273 335 269Z')}
+      ${ell(246,252,100,64)}
+      ${ell(181,299,34,28)} ${ell(311,301,34,28)}
+      ${path('M175 124 Q99 76 99 179 Q112 247 161 216 L190 151Z')}
+      ${path('M325 124 Q399 76 399 179 Q386 247 339 216 L307 151Z')}
+      ${cir(251,153,103)}
+      ${[156,188,224,261,293,323].map((x,i)=>cir(x,90+Math.abs(i-2.5)*9,22)).join('')}
+      ${ell(215,169,15,23)} ${ell(282,169,15,23)}
+      ${cir(217,172,7,'stroke-width="2"')} ${cir(281,172,7,'stroke-width="2"')}
+      ${ell(222,216,48,33)} ${ell(283,216,48,33)}
+      ${ell(251,207,20,13)}
+      ${detail('M251 222 Q249 251 230 246 M251 222 Q257 250 274 246',3)}
+      ${path('M237 252 Q251 277 266 252Z')}
+      ${path('M189 269 Q249 291 313 267', 'fill="none"')}
+      ${cir(252,293,14)}
+      ${decoration('path','d="M62 316H430"')}
+    `}
+    ,{ title:'🐰 Hoppy bunny', animal:true, shapes: () => `
+      ${sparkle(72,63)} ${sparkle(423,81,10)}
+      ${ell(198,103,34,92,'transform="rotate(-17 198 103)"')}
+      ${ell(299,103,34,92,'transform="rotate(17 299 103)"')}
+      ${ell(199,102,16,64,'transform="rotate(-17 199 102)"')}
+      ${ell(298,102,16,64,'transform="rotate(17 298 102)"')}
+      ${ell(250,265,106,71)}
+      ${cir(250,184,93)}
+      ${ell(216,186,14,20)} ${ell(284,186,14,20)}
+      ${cir(216,191,7,'stroke-width="2"')} ${cir(284,191,7,'stroke-width="2"')}
+      ${ell(227,229,33,26)} ${ell(273,229,33,26)}
+      ${path('M241 216 Q250 210 259 216 L250 230Z')}
+      ${detail('M250 229 V242 M250 242 Q240 253 231 244 M250 242 Q260 253 268 244',3)}
+      ${ell(182,303,36,24)} ${ell(319,303,36,24)}
+      ${cir(365,263,22)}
+      ${decoration('path','d="M67 326H428"')}
+    `}
+    ,{ title:'🦊 Forest fox', animal:true, shapes: () => `
+      ${sparkle(69,76,11)} ${sparkle(428,74,11)}
+      ${path('M337 275 Q419 238 414 180 Q392 219 347 210 L314 242Z')}
+      ${ell(249,260,91,63)}
+      ${path('M158 158 L161 52 L225 115 Q252 93 278 115 L341 52 L341 156Z')}
+      ${path('M165 78 L171 133 L209 123Z')} ${path('M334 78 L329 133 L292 123Z')}
+      ${path('M163 153 Q250 85 338 153 L319 228 Q251 281 180 226Z')}
+      ${path('M188 199 L250 243 L312 199 L295 242 Q250 279 204 243Z')}
+      ${ell(222,185,14,20)} ${ell(279,185,14,20)}
+      ${cir(222,188,7,'stroke-width="2"')} ${cir(279,188,7,'stroke-width="2"')}
+      ${path('M237 224 Q250 217 263 224 L250 237Z')}
+      ${ell(215,304,34,23)} ${ell(286,304,34,23)}
+    `}
+    ,{ title:'🐢 Smiling turtle', animal:true, shapes: () => `
+      ${sparkle(70,76)} ${sparkle(429,91)}
+      ${ell(250,233,139,81)}
+      ${path('M146 244 Q145 133 253 126 Q362 133 361 244Z')}
+      ${path('M250 137 L217 178 L234 229 L276 229 L294 178Z')}
+      ${path('M217 178 L161 196 L173 242 L234 229Z')}
+      ${path('M294 178 L341 196 L326 242 L276 229Z')}
+      ${path('M120 243 Q99 215 79 244 Q73 284 115 274Z')}
+      ${path('M174 273 Q143 281 142 309 Q164 332 189 301Z')}
+      ${path('M312 273 Q340 281 342 309 Q319 332 296 301Z')}
+      ${path('M362 245 Q400 194 419 230 Q436 288 379 284Z')}
+      ${cir(397,226,8,'stroke-width="2"')}
+      ${detail('M397 251 Q414 264 425 250',3)}
+      ${path('M104 235 L71 214 L87 253Z')}
+    `}
+    ,{ title:'🐧 Little penguin', animal:true, shapes: () => `
+      ${sparkle(67,67)} ${sparkle(430,84)}
+      ${path('M174 221 Q111 168 95 211 Q100 255 184 264Z')}
+      ${path('M328 221 Q391 168 407 211 Q402 255 317 264Z')}
+      ${ell(251,195,97,130)}
+      ${ell(250,227,77,84)}
+      ${ell(220,154,16,23)} ${ell(282,154,16,23)}
+      ${cir(221,158,8,'stroke-width="2"')} ${cir(281,158,8,'stroke-width="2"')}
+      ${path('M233 184 L268 184 L250 210Z')}
+      ${path('M200 298 L182 323 L245 321 L236 292Z')}
+      ${path('M302 298 L320 323 L257 321 L266 292Z')}
+      ${path('M220 253 Q250 271 282 253', 'fill="none"')}
+      ${decoration('path','d="M52 325H450"')}
+    `}
+    ,{ title:'🦉 Wise owl', animal:true, shapes: () => `
+      ${sparkle(74,75)} ${sparkle(420,93)}
+      ${path('M150 128 L147 59 Q178 75 199 103 Q251 77 302 103 Q325 75 355 59 L352 128Z')}
+      ${ell(250,215,111,116)}
+      ${path('M154 177 Q127 204 144 259 Q164 292 195 274 L208 225Z')}
+      ${path('M346 177 Q373 204 356 259 Q336 292 305 274 L292 225Z')}
+      ${cir(211,180,46)} ${cir(291,180,46)}
+      ${cir(211,183,23)} ${cir(291,183,23)}
+      ${cir(216,185,11,'stroke-width="2"')} ${cir(286,185,11,'stroke-width="2"')}
+      ${path('M237 221 L264 221 L250 250Z')}
+      ${path('M204 275 Q250 300 296 275 Q250 325 204 275Z')}
+      ${path('M188 304 L176 327 L226 324Z')}
+      ${path('M274 324 L324 327 L312 304Z')}
+    `}
   ];
 
   function setColorChoice(color){ chosenColor = color; renderPalette('color-palette', setColorChoice, chosenColor); }
   function setFreeColor(color){ freeColor = color; renderPalette('free-palette', setFreeColor, freeColor); setFreeTool('crayon'); }
   function setFreeTool(tool){ freeTool=tool; $('free-crayon').classList.toggle('active',tool==='crayon'); $('free-eraser').classList.toggle('active',tool==='eraser'); $('free-crayon').setAttribute('aria-pressed',String(tool==='crayon')); $('free-eraser').setAttribute('aria-pressed',String(tool==='eraser')); freeCanvas.style.cursor=tool==='eraser'?'cell':'crosshair'; }
+  function maybeColorCheer(speakIt=false){
+    const pic = COLOR_PICTURES[colorIndex % COLOR_PICTURES.length];
+    const message = pic.animal ? '🐾 Colour me, Petra!' : '';
+    $('picture-cheer').textContent = message;
+    if(speakIt && pic.animal){
+      announce('Good job Petra!');
+      sound([659,784], .11);
+      say('Good job Petra!');
+    }
+  }
   function renderColorPicture(){
     const pic = COLOR_PICTURES[colorIndex % COLOR_PICTURES.length];
     $('color-picture-name').textContent = pic.title;
     $('picture-position').textContent = `Picture ${(colorIndex % COLOR_PICTURES.length) + 1} of ${COLOR_PICTURES.length}`;
+    maybeColorCheer(false);
     $('color-svg').innerHTML = pic.shapes();
     $('color-svg').style.pointerEvents = 'auto';
     colorHistory = [];
     colorStrokes = [];
+    colorFillCount=0;
     resizeColorCanvas();
     $('color-svg').querySelectorAll('.color-fill-piece').forEach(piece => {
       piece.dataset.fill = piece.getAttribute('fill') || piece.dataset.default || '#ffffff';
       piece.addEventListener('click', () => {
         if(colorMode !== 'fill') return;
-        colorHistory.push({el:piece, prev: piece.getAttribute('fill')});
+        const before=piece.getAttribute('fill');
+        if(before===chosenColor)return;
+        colorHistory.push({el:piece, prev:before});
         piece.setAttribute('fill', chosenColor);
         piece.dataset.fill = chosenColor;
         sound([659,784], .08);
+        if(pic.animal){
+          colorFillCount++;
+          if(colorFillCount===3 || colorFillCount%7===0){
+            $('picture-cheer').textContent='🐾 Good job Petra!';
+            announce('Good job Petra!'); say('Good job Petra!');
+          }
+        }
       });
     });
   }
@@ -956,6 +1186,53 @@
   freeCanvas.addEventListener('pointermove',moveFree);
   window.addEventListener('pointerup',endFree);
 
+  // Finn's simple treat game is deliberately self-contained and works offline.
+  let finnTreatCount=0;
+  let finnBusy=false;
+  let finnAnimTimer=0;
+  const FINN_FEEDBACK={
+    biscuit:['Crunch crunch! Yum!','A biscuit! Woof!'],
+    carrot:['Crunchy carrot!','I love my carrot!'],
+    apple:['Sweet apple slice!','Yummy apple!']
+  };
+  function finnReact(message, treatment){
+    $('finn-speech').textContent=message;
+    const stage=$('finn-stage');
+    stage.classList.remove('happy');
+    void stage.offsetWidth;
+    stage.classList.add('happy');
+    const hearts=$('finn-hearts');
+    hearts.classList.remove('show');void hearts.offsetWidth;hearts.classList.add('show');
+    if(treatment){
+      const el=$('finn-flying-treat'); el.textContent=treatment;
+      el.classList.remove('fly');void el.offsetWidth;el.classList.add('fly');
+    }
+    window.clearTimeout(finnAnimTimer);
+    finnAnimTimer=window.setTimeout(()=>{stage.classList.remove('happy');$('finn-flying-treat').classList.remove('fly');},1600);
+  }
+  function feedFinn(treat,emoji){
+    if(finnBusy)return;
+    finnBusy=true;
+    finnTreatCount+=1;
+    $('finn-count').textContent=String(finnTreatCount);
+    const paws=Math.min(5, (finnTreatCount-1)%5+1);
+    $('finn-paws').textContent=Array.from({length:5},(_,i)=>i<paws?'🐾':'·').join(' ');
+    const phrases=FINN_FEEDBACK[treat]||FINN_FEEDBACK.biscuit;
+    const message=phrases[(finnTreatCount-1)%phrases.length];
+    finnReact(message,emoji);
+    sound([523,659,784],.10);
+    say(finnTreatCount%5===0?'Good job Petra! Finn is so happy!':message);
+    if(finnTreatCount%5===0){
+      $('finn-win').hidden=false;
+      celebrate('Good job Petra! You made Finn happy!');
+    }else {$('finn-win').hidden=true;}
+    setTimeout(()=>{finnBusy=false;},680);
+  }
+  document.querySelectorAll('.finn-treat-btn').forEach(btn=>btn.addEventListener('click',()=>feedFinn(btn.dataset.treat,btn.dataset.emoji)));
+  $('finn-pat').addEventListener('click',()=>{finnReact('I love cuddles, Petra! 💕');say('Woof woof! Thank you Petra!');sound([480,650],.13);});
+  $('finn-hear').addEventListener('click',()=>{say('Hello Petra! I am Finn, your fluffy brown cockapoo!');finnReact('Hi Petra! Woof woof!');});
+  $('finn-again').addEventListener('click',()=>{finnTreatCount=0;finnBusy=false;$('finn-count').textContent='0';$('finn-paws').textContent='🐾 🐾 🐾 🐾 🐾';$('finn-win').hidden=true;$('finn-speech').textContent='Woof woof! Hi, Petra! 💕';});
+
   function updateNumberLevel(){
     const level = COUNT_LEVELS[numberLevel % COUNT_LEVELS.length];
     numberCount = 0;
@@ -979,11 +1256,12 @@
     $('number-progress').textContent = `Count with me: ${numberCount}`;
     say(String(numberCount)); sound([523,659], .12);
     if(numberCount >= level.n){
-      $('number-bubble').textContent = 'All done!';
+      $('number-bubble').textContent = 'Good job Petra!';
       $('number-cheer').textContent = `🌟 You counted ${level.n}! 🌟`;
       $('number-success').classList.add('show');
       $('number-playing').style.display = 'none';
       celebrate(`You counted ${level.n}!`);
+      say('Good job Petra!');
     }
   }
 
@@ -1009,6 +1287,7 @@
   });
   $('color-clear').addEventListener('click', renderColorPicture);
   $('color-next').addEventListener('click', ()=> { colorIndex++; renderColorPicture(); });
+  $('color-animals').addEventListener('click', ()=> { colorIndex=COLOR_PICTURES.findIndex(p=>p.title.includes('Finn the cockapoo'));renderColorPicture();maybeColorCheer(true); });
   $('color-prev').addEventListener('click', ()=> { colorIndex=(colorIndex-1+COLOR_PICTURES.length)%COLOR_PICTURES.length; renderColorPicture(); });
   $('free-crayon').addEventListener('click',()=>setFreeTool('crayon'));
   $('free-eraser').addEventListener('click',()=>setFreeTool('eraser'));
