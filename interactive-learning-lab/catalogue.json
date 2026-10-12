@@ -2205,6 +2205,28 @@
     "captured": "2026-10-10"
   },
   {
+    "id": "base10",
+    "path": "base10",
+    "repo": "personal",
+    "title": "Base 10 Blocks",
+    "category": "Maths",
+    "description": "Build numbers with place-value blocks and explore regrouping.",
+    "types": [
+      "Simulations & models"
+    ],
+    "tags": [
+      "Place value",
+      "Manipulatives"
+    ],
+    "url": "https://maltais239.github.io/interactives/base10/",
+    "links": [],
+    "favourite": false,
+    "credit": "",
+    "group": "",
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/base10.jpg",
+    "captured": "2026-10-04"
+  },
+  {
     "id": "rationalexplorer",
     "path": "rationalnumbers",
     "repo": "bg",
@@ -2438,28 +2460,6 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/financialchoices.jpg",
-    "captured": "2026-10-04"
-  },
-  {
-    "id": "base10",
-    "path": "base10",
-    "repo": "personal",
-    "title": "Base 10 Blocks",
-    "category": "Maths",
-    "description": "Build numbers with place-value blocks and explore regrouping.",
-    "types": [
-      "Simulations & models"
-    ],
-    "tags": [
-      "Place value",
-      "Manipulatives"
-    ],
-    "url": "https://maltais239.github.io/interactives/base10/",
-    "links": [],
-    "favourite": false,
-    "credit": "",
-    "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/base10.jpg",
     "captured": "2026-10-04"
   },
   {
