@@ -38,3 +38,10 @@ The optional Google Fonts stylesheet is the only external visual dependency. Cre
 4. Test on school Chromebooks and phones, then change the Learning Lab entry and update its screenshot.
 
 The early counting game should not be overwritten or removed in a later phase without approval.
+
+
+## Illustrated visual pass (2026-10-12)
+
+The Phase 1 SVG animal symbols and SVG reef scene were replaced with two local generated-illustration WebP image assets. Six character cutouts are arranged on a transparent sprite atlas (`assets/creatures.webp`); a painted reef strip lives in `assets/reef.webp`. The game uses CSS sprite positioning, not SVG drawings for animals. A compact question overlay now appears above the counting scene on phones. Pure mathematics logic and all four activity choices are unchanged.
+
+**Release note:** This remains a separate review build. The previous Ocean Counting game and the Learning Lab catalogue entry are not modified. Review phone/Chromebook rendering and correct count-to-20 overlaps before switching the hub card.

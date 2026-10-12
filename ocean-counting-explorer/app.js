@@ -1,4 +1,4 @@
-import {createQuestion,isCorrect,positions,roundCount} from './logic.js?v=phase1-1';
+import {createQuestion,isCorrect,positions,roundCount} from './logic.js?v=illustrated-2';
 
 const $=id=>document.getElementById(id);
 const stage=$('scene'), tip=$('scene-tip'), pad=$('number-pad'), feedback=$('feedback');
@@ -8,7 +8,7 @@ let mode='count',limit=10,round=1,question=null,solved=false,tries=0,firstTry=0;
 let tapped=[];
 
 const modeName={count:'Count',compare:'Compare',story:'Sea stories',mix:'Ocean mix'};
-const sprite=kind=>'<svg viewBox="0 0 200 150" aria-hidden="true" focusable="false"><use href="#animal-'+kind+'"></use></svg>';
+const sprite=kind=>'<span class="creature-art creature-'+kind+'" aria-hidden="true"></span>';
 const escapeText=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 function currentMode(){
@@ -85,6 +85,7 @@ function renderQuestion(){
   const q=createQuestion(currentMode(),limit);
   question=q;
   $('question-text').textContent=q.prompt;
+  $('mobile-question').textContent=q.prompt;
   $('question-tag').textContent=q.tag;
   renderScene();renderChoices();updateProgress();
   next.disabled=true;next.textContent='Next →';
