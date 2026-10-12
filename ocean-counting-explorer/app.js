@@ -50,7 +50,7 @@ function storyStage(q){
     '</div>';
 }
 function renderScene(){
-  stage.classList.toggle('dense',question.type==='count'&&question.count>10);
+  stage.classList.toggle('dense',question.type==='count'&&question.count>6);
   if(question.type==='count')stage.innerHTML=countStage(question);
   if(question.type==='compare')stage.innerHTML=compareStage(question);
   if(question.type==='story')stage.innerHTML=storyStage(question);
