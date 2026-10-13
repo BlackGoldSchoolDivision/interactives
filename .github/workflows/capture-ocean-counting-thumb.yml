@@ -1,0 +1,69 @@
+name: Capture Ocean Counting Explorer preview
+
+on:
+  push:
+    paths:
+      - .github/workflows/capture-ocean-counting-thumb.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install local screenshot tools
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+          python -m pip install pillow
+      - name: Capture the actual playable game
+        run: |
+          python -m http.server 8765 --bind 127.0.0.1 >/tmp/ocean-server.log 2>&1 &
+          sleep 2
+          node --input-type=module <<'JS'
+          import { chromium } from 'playwright';
+          const browser = await chromium.launch({headless:true});
+          const page = await browser.newPage({viewport:{width:1366,height:1024}, deviceScaleFactor:1});
+          await page.addInitScript(() => { Math.random = () => 0.38; });
+          page.on('pageerror',error=>{throw error});
+          const response=await page.goto('http://127.0.0.1:8765/ocean-counting-explorer/',{waitUntil:'networkidle',timeout:30000});
+          if(!response?.ok())throw Error('Ocean game failed to load');
+          await page.locator('.animal').first().waitFor({timeout:12000});
+          await page.waitForTimeout(600);
+          const status = await page.evaluate(async () => {
+            const urls=['assets/reef.webp','assets/creatures.webp'];
+            const assets=await Promise.all(urls.map(async url=>(await fetch(url)).ok));
+            return {title:document.title,animalCount:document.querySelectorAll('.animal').length,question:document.querySelector('#question-text')?.textContent,assets};
+          });
+          if(status.animalCount<2 || status.assets.some(x=>!x)) throw Error('Incomplete scene: '+JSON.stringify(status));
+          console.log('Verified live game render:',JSON.stringify(status));
+          await page.screenshot({path:'/tmp/ocean-counting-game.png',animations:'disabled'});
+          await browser.close();
+          JS
+          python - <<'PY'
+          from PIL import Image, ImageStat
+          im=Image.open('/tmp/ocean-counting-game.png').convert('RGB')
+          assert im.size==(1366,1024),im.size
+          assert max(ImageStat.Stat(im).stddev)>28,'Screenshot seems blank'
+          im.resize((600,450),Image.Resampling.LANCZOS).save(
+            'interactive-learning-lab/images/ocean-counting-explorer-20261013.webp',
+            'WEBP', quality=87,method=6)
+          PY
+      - name: Publish real screenshot
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add interactive-learning-lab/images/ocean-counting-explorer-20261013.webp
+          git commit -m 'Capture illustrated Ocean Counting Explorer screenshot for math hub'
+          git pull --rebase origin main
+          git push origin main
