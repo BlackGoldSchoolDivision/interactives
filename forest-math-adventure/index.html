@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2c704c"><meta name="description" content="Forest Math Adventure: count forwards and backwards, skip count, complete patterns and solve number stories with woodland friends.">
+<title>Forest Math Adventure · Illustrated Classroom Edition</title>
+<link rel="stylesheet" href="styles.css?v=2"><script type="module" src="app.js?v=2"></script></head>
+<body><a class="skip" href="#main">Skip to game</a>
+<div class="app">
+<header class="topbar"><a class="lab-link" href="../interactive-learning-lab/">← Learning Lab</a><div class="top-actions"><button class="small-btn" id="home" hidden>⌂ Menu</button><button class="small-btn" id="audio" aria-pressed="false" title="Toggle spoken instructions">♪ Sound off</button></div></header>
+<section class="hero" role="img" aria-label="Illustrated forest with a waterfall, Squirrel, Bear and Owl and a Forest Math Adventure title"><h1 class="sr-only">Forest Math Adventure</h1></section>
+<main id="main">
+<section id="menu" class="menu-screen"><div class="intro"><div><p class="eyebrow">CHOOSE YOUR WOODLAND ADVENTURE</p><h2>Every trail is a math adventure.</h2></div><p>Help the forest friends, earn stars, and watch your number skills grow!</p></div>
+<div class="mission-grid">
+<button class="mission" data-mode="forward"><img src="assets/forest-bear.webp" alt="Bear beside the forest river"><span class="mission-body"><strong>Bear's Number Trail</strong><span>Count forwards by ones</span></span></button>
+<button class="mission" data-mode="backward"><img src="assets/forest-owl.webp" alt="Two illustrated owls on a tree branch"><span class="mission-body"><strong>Owl's Backward Trail</strong><span>Count backwards by ones</span></span></button>
+<button class="mission" data-mode="skip"><img src="assets/forest-skip.webp" alt="Frog jumping across numbered logs"><span class="mission-body"><strong>Squirrel's Big Hops</strong><span>Skip count by 2s, 5s or 10s</span></span></button>
+<button class="mission" data-mode="pattern"><img src="assets/forest-pattern.webp" alt="Illustrated woodland pattern puzzle"><span class="mission-body"><strong>Woodland Patterns</strong><span>Find the missing number</span></span></button>
+<button class="mission" data-mode="story"><img src="assets/forest-acorns.webp" alt="Acorns on a woodland counting board"><span class="mission-body"><strong>Acorn Number Stories</strong><span>Add and subtract within 20</span></span></button>
+</div></section>
+<section id="play" class="play-screen" hidden>
+<div class="game-head"><div><p class="eyebrow" id="mode-label">NUMBER TRAIL</p><h2 id="question">Which number comes next?</h2></div><div class="progress" aria-label="Level progress"><span id="progress-label">1 of 5</span><span id="stars">☆ ☆ ☆ ☆ ☆</span></div></div>
+<div class="play-scene"><div class="scene-instructions" id="scene-instructions">Follow the stepping stones!</div><div id="trail" class="trail" aria-label="Math number trail"></div><div id="picture" class="picture-count" aria-hidden="true"></div></div>
+<div class="answers"><p class="answer-label">Tap your answer</p><div id="options" class="options"></div></div>
+<p id="feedback" class="feedback" role="status" aria-live="polite"></p>
+<div class="game-actions"><button id="hint" class="secondary">Need a hint?</button><button id="again" class="secondary">New question ↻</button><button id="next" class="primary" hidden>Next trail →</button></div>
+</section>
+<section id="finish" class="finish-screen" hidden><div class="finish-panel"><span class="big-star" aria-hidden="true">★</span><h2>What a wonderful adventure!</h2><p id="finish-detail"></p><div class="finish-actions"><button id="replay" class="primary">Play again</button><button id="choose" class="secondary">Choose another trail</button></div></div></section>
+</main><footer><span>Original activities by <strong>Chantelle</strong> · Illustrated classroom redesign</span><span>No accounts or student information collected</span></footer></div>
+</body></html>
