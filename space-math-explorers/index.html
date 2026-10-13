@@ -1,0 +1,20 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#151647"><meta name="description" content="Space Math Explorers: collect moon rocks, share crystals equally, group astronauts, and discover multiplication and division.">
+<title>Space Math Explorers · Illustrated Classroom Edition</title>
+<link rel="stylesheet" href="styles.css?v=2"><script type="module" src="app.js?v=2"></script></head><body>
+<a href="#main" class="skip">Skip to space mission</a><div class="app"><header class="topbar"><a href="../interactive-learning-lab/" class="lab-link">← Learning Lab</a><div class="header-buttons"><button id="home" class="small-btn" hidden>⌂ Mission menu</button><button id="sound" class="small-btn" aria-pressed="false">♪ Sound off</button></div></header>
+<section class="hero" role="img" aria-label="An illustrated Space Math Explorers title, astronaut, planets, and stars in deep space"><h1 class="sr-only">Space Math Explorers</h1></section>
+<main id="main"><section id="menu" class="menu"><div class="intro"><p class="eyebrow">MISSION CONTROL</p><h2>Choose your space mission.</h2><p>Explore faraway worlds and solve real math challenges!</p></div>
+<div class="mission-grid">
+<button class="mission" data-mode="sharing"><img src="assets/space-sharing.webp" alt="Illustrated rockets and colourful crystals"><span class="mission-text"><strong>Crystal Sharing</strong><span>Share equally between rockets</span></span></button>
+<button class="mission" data-mode="grouping"><img src="assets/space-grouping.webp" alt="Little aliens being organised into groups"><span class="mission-text"><strong>Astronaut Groups</strong><span>Build equal-size teams</span></span></button>
+<button class="mission" data-mode="counting"><img src="assets/space-counting.webp" alt="Illustrated moon rocks floating in space"><span class="mission-text"><strong>Moon Rock Count</strong><span>Count and compare collections</span></span></button>
+<button class="mission" data-mode="equations"><img src="assets/space-equations.webp" alt="Space explorers showing an addition equation"><span class="mission-text"><strong>Galaxy Equations</strong><span>Build addition number stories</span></span></button>
+</div></section>
+<section id="game" class="game" hidden><header class="mission-head"><div><p class="eyebrow" id="mode-name">SPACE MISSION</p><h2 id="question">Share the crystals!</h2></div><div class="progress"><span id="round-label">1 / 5</span><strong id="score">☆ ☆ ☆ ☆ ☆</strong></div></header>
+<div class="space-stage"><div class="instructions" id="instruction">Pick up an object, then tap a ship to place it.</div>
+<div id="count-zone" class="count-zone" hidden></div><div id="stations" class="stations"></div><div id="dock" class="dock"><div class="dock-title" id="dock-title">Space supply</div><div id="supply" class="supply"></div><div id="remaining" class="remaining">8 remaining</div></div><div id="equation-zone" class="equation-zone" hidden></div></div>
+<div id="answers-area" class="answers-area" hidden><h3>Choose your answer</h3><div id="answers" class="answers"></div></div>
+<p class="feedback" id="feedback" role="status" aria-live="polite"></p><div class="actions"><button id="hint" class="secondary">Hint</button><button id="reset" class="secondary">Start this round over</button><button id="check" class="primary">Check my mission ✓</button><button id="next" class="primary" hidden>Next mission →</button></div>
+</section><section id="finish" class="finish" hidden><div class="finish-panel"><div class="big-star">★</div><h2>Mission accomplished!</h2><p id="finish-text"></p><div class="finish-actions"><button id="replay" class="primary">Another mission</button><button id="choose" class="secondary">Mission menu</button></div></div></section></main>
+<footer><span>Original sharing & grouping activities by <strong>Chantelle</strong> · Illustrated classroom redesign</span><span>Progress stays in this tab · No personal information</span></footer></div></body></html>
