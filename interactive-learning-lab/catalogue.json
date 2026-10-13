@@ -2488,26 +2488,34 @@
   },
   {
     "id": "oceancounting",
-    "path": "oceancounting",
-    "repo": "personal",
+    "path": "ocean-counting-explorer",
+    "repo": "bg",
     "title": "Ocean Counting Explorer",
     "category": "Maths",
-    "description": "Count groups of ocean creatures and practise matching quantities with numbers.",
+    "description": "Count sea creatures, compare groups, and solve picture-based addition and subtraction stories. Includes tap-to-count, gentle hints, optional narration, and numbers to 10 or 20.",
     "types": [
       "Practice questions",
       "Simulations & models"
     ],
     "tags": [
+      "Grade 1",
       "Early numeracy",
-      "Counting"
+      "Count to 20",
+      "Compare groups",
+      "Addition & subtraction"
     ],
-    "url": "https://maltais239.github.io/interactives/oceancounting/",
-    "links": [],
+    "url": "https://interactives.blackgold.ca/ocean-counting-explorer/",
+    "links": [
+      {
+        "label": "Original Ocean Counting game",
+        "url": "https://maltais239.github.io/interactives/oceancounting/"
+      }
+    ],
     "favourite": false,
     "credit": "",
     "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/oceancounting.jpg",
-    "captured": "2026-10-04"
+    "image": "https://interactives.blackgold.ca/interactive-learning-lab/images/ocean-counting-explorer-20261013.webp",
+    "captured": "2026-10-13"
   },
   {
     "id": "anglefinder",
