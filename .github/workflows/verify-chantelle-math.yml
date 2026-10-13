@@ -1,0 +1,95 @@
+name: Verify Chantelle Math review games
+on:
+  push:
+    paths:
+      - .github/workflows/verify-chantelle-math.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run math logic tests
+        run: node --test forest-math-adventure/tests/*.test.mjs space-math-explorers/tests/*.test.mjs
+      - name: Prepare Chromium
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+          python -m pip install pillow
+      - name: Verify desktop and phone play, capture real pages
+        run: |
+          python -m http.server 8765 --bind 127.0.0.1 >/tmp/math-server.log 2>&1 &
+          sleep 2
+          node --input-type=module <<'JS'
+          import {chromium} from 'playwright';
+          import assert from 'node:assert/strict';
+          const browser=await chromium.launch({headless:true});
+          const origin='http://127.0.0.1:8765/';
+          const cases=[['forest-math-adventure',['forward','backward','skip','pattern','story']],['space-math-explorers',['sharing','grouping','counting','equations']]];
+          for(const [app,modes] of cases){
+            for(const mobile of [false,true]){
+              const page=await browser.newPage({viewport:mobile?{width:390,height:844}:{width:1366,height:900},deviceScaleFactor:1});
+              const errors=[];page.on('pageerror',e=>errors.push(e.message));
+              const response=await page.goto(origin+app+'/',{waitUntil:'networkidle'});
+              assert(response?.ok(),'Page failed to load '+app);
+              assert.equal(await page.locator('.mission').count(),modes.length);
+              const loaded=await page.evaluate(async()=>{const urls=[...document.querySelectorAll('.mission img')].map(x=>x.src);return Promise.all(urls.map(async url=>(await fetch(url)).ok))});
+              assert(loaded.every(Boolean),'Missing raster artwork in '+app);
+              assert(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+3),'Horizontal overflow in '+app);
+              await page.screenshot({path:app+'/validation-menu-'+(mobile?'mobile':'desktop')+'.png',fullPage:true});
+              for(const mode of modes){
+                await page.locator('button[data-mode="'+mode+'"]').click();
+                assert(await page.locator(app.startsWith('forest')?'#play:not([hidden])':'#game:not([hidden])').count()===1,'Missing play screen '+mode);
+                assert.equal(errors.length,0,'JS error '+mode+': '+errors.join(' / '));
+                if(!mobile)await page.screenshot({path:app+'/validation-'+mode+'.png',fullPage:false});
+                if(app.startsWith('forest')){
+                  assert.equal(await page.locator('.answer').count(),3);
+                  await page.locator('#hint').click();
+                  assert(await page.locator('#feedback').textContent());
+                  for(const button of await page.locator('.answer').all()){
+                    await button.click();
+                    if(await page.locator('#next').isVisible())break;
+                  }
+                  assert(await page.locator('#next').isVisible(),'No correct option worked');
+                }else if(mode==='sharing'||mode==='grouping'){
+                  const numbers=(await page.locator('#question').textContent()).match(/\d+/g).map(Number);
+                  const total=numbers[0];const stations=await page.locator('.station-place').all();
+                  assert(stations.length>=2);
+                  await stations[0].click();
+                  await page.locator('.undo').first().click();
+                  if(mode==='sharing'){
+                    const count=numbers[1];for(let i=0;i<total;i++)await stations[i%count].click();
+                  }else{const teamSize=numbers[1];for(let i=0;i<total;i++)await stations[Math.floor(i/teamSize)].click();}
+                  await page.locator('#check').click();
+                  assert(await page.locator('#next').isVisible(),'Correct grouping not accepted in '+mode);
+                }else{
+                  const answer=mode==='counting'?await page.locator('.rock-item').count():((await page.locator('.equation').textContent()).match(/\d+/g)||[]).map(Number).reduce((a,b)=>a+b,0);
+                  await page.getByRole('button',{name:String(answer),exact:true}).click();
+                  assert(await page.locator('#next').isVisible(),'Correct numeric answer not accepted in '+mode);
+                }
+                await page.locator('#home').click();
+              }
+              assert.equal(errors.length,0,'Browser errors '+errors.join(' / '));
+              console.log('PASS '+app+' '+(mobile?'mobile':'desktop'));
+              await page.close();
+            }
+          }
+          await browser.close();
+          JS
+      - name: Save actual browser screenshots in repo
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add forest-math-adventure/validation-*.png space-math-explorers/validation-*.png
+          git commit -m 'Verify illustrated forest and space maths in real desktop and mobile browsers'
+          git pull --rebase origin main
+          git push origin main
