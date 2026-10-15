@@ -400,19 +400,30 @@
     </div>
 
     <h3 style="margin-bottom: 10px; color: var(--primary-color);">Vocabulary Terms (Up to 20)</h3>
-  <div class="term-manage-list" id="termManageList">
-    <!-- Generated via JS -->
-  </div>
-  <button class="btn btn-primary" id="addTermBtn" onclick="addTermInput()">+ Add Term</button>
-</div>
+    <div class="term-manage-list" id="termManageList">
+      <!-- Generated via JS -->
+    </div>
+    <button class="btn btn-primary" id="addTermBtn" onclick="addTermInput()">+ Add Term</button>
 
-<!-- STUDENT VIEW -->
-<div class="student-only">
-  <!-- Student Details Header -->
-  <div class="header-inputs">
-    <div class="form-group">
-      <label>Name</label>
-      <input type="text" placeholder="Enter your name">
+    <!-- Share Link Section -->
+    <div class="share-section no-print" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border-color);">
+      <h3 style="margin-bottom: 10px; color: var(--primary-color);">Share with Students</h3>
+      <p style="font-size: 0.9rem; color: var(--muted-text); margin-bottom: 10px;">Generate a custom link to send to your students. It will automatically load your words and open in Student Mode.</p>
+      <div style="display: flex; gap: 10px;">
+        <button class="btn btn-success" onclick="generateShareLink()">Generate Link</button>
+        <input type="text" id="shareLinkInput" readonly placeholder="Click 'Generate Link' to create a shareable URL..." style="flex-grow: 1; background-color: #f1f5f9; color: var(--muted-text);">
+        <button class="btn btn-primary" id="copyLinkBtn" onclick="copyShareLink()" style="display: none;">Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STUDENT VIEW -->
+  <div class="student-only">
+    <!-- Student Details Header -->
+    <div class="header-inputs">
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" placeholder="Enter your name">
       </div>
       <div class="form-group">
         <label>Date</label>
@@ -500,6 +511,27 @@
   ];
 
   function init() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const dataParam = urlParams.get('d');
+
+    // If a student clicks a shared link, decode the data
+    if (dataParam) {
+      try {
+        const decodedData = JSON.parse(decodeURIComponent(atob(dataParam)));
+        
+        if (decodedData.title !== undefined) document.getElementById('teacherTitle').value = decodedData.title;
+        if (decodedData.focus !== undefined) document.getElementById('teacherFocus').value = decodedData.focus;
+        if (decodedData.pin !== undefined) document.getElementById('teacherPin').value = decodedData.pin;
+        if (decodedData.terms && Array.isArray(decodedData.terms)) terms = decodedData.terms;
+        
+        // Auto-launch into student mode if a shared link was used
+        isStudentMode = false; 
+        setTimeout(() => { toggleMode(); }, 50);
+      } catch (e) {
+        console.error("Could not load shared data. Starting with defaults.");
+      }
+    }
+
     renderTeacherTerms();
     // Set default date to today
     const today = new Date().toISOString().split('T')[0];
@@ -586,6 +618,45 @@
     } else {
       document.getElementById('pinError').style.display = 'block';
     }
+  }
+
+  function generateShareLink() {
+    const title = document.getElementById('teacherTitle').value;
+    const focus = document.getElementById('teacherFocus').value;
+    const pin = document.getElementById('teacherPin').value.trim();
+    const activeTerms = terms.filter(t => t.trim() !== "");
+
+    // Package the data
+    const data = {
+      title: title,
+      focus: focus,
+      pin: pin,
+      terms: activeTerms
+    };
+
+    // Encode to a safe Base64 string
+    const encoded = btoa(encodeURIComponent(JSON.stringify(data)));
+    
+    // Create the URL (stripping out any old data parameters if they click generate twice)
+    const baseUrl = window.location.href.split('?')[0]; 
+    const shareUrl = baseUrl + '?d=' + encoded;
+
+    const shareInput = document.getElementById('shareLinkInput');
+    shareInput.value = shareUrl;
+    document.getElementById('copyLinkBtn').style.display = 'block';
+  }
+
+  function copyShareLink() {
+    const shareInput = document.getElementById('shareLinkInput');
+    shareInput.select();
+    shareInput.setSelectionRange(0, 99999); // For mobile compatibility
+    document.execCommand('copy');
+    
+    const copyBtn = document.getElementById('copyLinkBtn');
+    copyBtn.innerText = "Copied!";
+    setTimeout(() => {
+      copyBtn.innerText = "Copy";
+    }, 2000);
   }
 
   function renderStudentView() {
