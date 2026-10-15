@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Vocabulary Worksheet Tool</title>
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --accent-color: #27ae60;
+      --bg-color: #f8f9fa;
+      --card-bg: #ffffff;
+      --border-color: #cbd5e1;
+      --text-color: #1e293b;
+      --muted-text: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.5;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    }
+
+    /* Mode Controls */
+    .mode-controls {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .mode-badge {
+      padding: 8px 16px;
+      background-color: #f1f5f9;
+      color: var(--primary-color);
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: 1px solid var(--border-color);
+      cursor: default;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .btn-primary {
+      background-color: var(--secondary-color);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #2980b9;
+    }
+
+    .btn-success {
+      background-color: var(--accent-color);
+      color: white;
+    }
+
+    .btn-success:hover {
+      background-color: #219150;
+    }
+
+    .btn-danger {
+      background-color: #e74c3c;
+      color: white;
+      padding: 4px 8px;
+      font-size: 0.85rem;
+    }
+
+    .btn-danger:hover {
+      background-color: #c0392b;
+    }
+
+    /* Form Styles */
+    .header-inputs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group.full-width {
+      grid-column: span 3;
+    }
+
+    label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--muted-text);
+      margin-bottom: 5px;
+    }
+
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 0.95rem;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    /* Knowledge Key Box */
+    .scale-key {
+      background: #f1f5f9;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 25px;
+    }
+
+    .scale-key h3 {
+      font-size: 1rem;
+      margin-bottom: 10px;
+      color: var(--primary-color);
+    }
+
+    .scale-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      font-size: 0.85rem;
+    }
+
+    .scale-item {
+      background: white;
+      padding: 8px 12px;
+      border-radius: 4px;
+      border: 1px solid var(--border-color);
+    }
+
+    .scale-item strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+    .level-4-title { color: var(--accent-color); } /* Green */
+    .level-3-title { color: var(--secondary-color); } /* Blue */
+    .level-2-title { color: #e67e22; } /* Yellow/Orange */
+    .level-1-title { color: var(--muted-text); } /* Grey */
+
+    /* Table Styles */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 25px;
+    }
+
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background-color: var(--primary-color);
+      color: white;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+    }
+
+    .col-term { width: 25%; }
+    .col-rating { width: 15%; text-align: center; }
+    .col-notes { width: 60%; }
+
+    .rating-options {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding-top: 5px;
+    }
+
+    .rating-options label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.75rem;
+      cursor: pointer;
+      text-transform: none;
+    }
+
+    .rating-options input {
+      margin-bottom: 3px;
+    }
+
+    /* Teacher Term Management */
+    .term-manage-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .term-manage-item {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    /* Reflection Section */
+    .reflection-section {
+      margin-top: 25px;
+    }
+
+    .reflection-section h3 {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+      color: var(--primary-color);
+    }
+
+    /* Hide / Show states */
+    .teacher-only { display: block; }
+    .student-only { display: none; }
+
+    body.student-mode .teacher-only { display: none; }
+    body.student-mode .student-only { display: block; }
+
+    /* Display-only elements for student mode header */
+    .student-header-display {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      padding: 30px;
+      border-radius: 8px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .student-header-display h1 {
+      font-size: 2.2rem;
+      color: white;
+      margin-bottom: 10px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .student-header-display p {
+      color: #e2e8f0;
+      font-size: 1.1rem;
+      margin-bottom: 0;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .scale-instructions {
+      font-size: 0.9rem;
+      color: var(--muted-text);
+      margin-bottom: 15px;
+      font-style: italic;
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-content {
+      background: white;
+      padding: 25px;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    .modal-content h3 {
+      color: var(--primary-color);
+      margin-bottom: 10px;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+
+      .container {
+        box-shadow: none;
+        padding: 0;
+        max-width: 100%;
+      }
+
+      .mode-controls, .no-print, .btn {
+        display: none !important;
+      }
+
+      .student-header-display {
+        background: none;
+        color: black;
+        padding: 0;
+        box-shadow: none;
+        text-align: left;
+        margin-bottom: 20px;
+      }
+
+      .student-header-display h1 {
+        color: black;
+        text-shadow: none;
+        font-size: 1.8rem;
+      }
+
+      .student-header-display p {
+        color: #333;
+        margin-left: 0;
+      }
+
+      input[type="text"], textarea {
+        border: none;
+        border-bottom: 1px solid #999;
+        border-radius: 0;
+        padding: 2px;
+      }
+
+      textarea {
+        min-height: 60px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- TEACHER HEADER -->
+  <div class="teacher-only">
+    <h2 style="margin-bottom: 15px; color: var(--primary-color);">Worksheet Builder</h2>
+  </div>
+
+  <!-- STUDENT HEADER -->
+  <div class="student-only">
+    <div class="student-header-display">
+      <h1 class="displayTitle"></h1>
+      <p class="displayFocus"></p>
+    </div>
+  </div>
+
+  <!-- MODE CONTROLS (Under Header) -->
+  <div class="mode-controls no-print">
+    <span class="mode-badge" id="modeIndicator">Teacher Setup Mode</span>
+    <button class="btn btn-primary" id="toggleModeBtn" onclick="toggleMode()">Switch to Student Mode</button>
+  </div>
+
+  <!-- TEACHER SETUP VIEW BODY -->
+  <div class="teacher-only">
+    <div class="header-inputs">
+      <div class="form-group" style="grid-column: span 2;">
+        <label>Worksheet Title</label>
+        <input type="text" id="teacherTitle" value="Grade 7 Social Studies Vocabulary Worksheet">
+      </div>
+      <div class="form-group">
+        <label>Teacher PIN (Optional Lock)</label>
+        <input type="password" id="teacherPin" placeholder="Set a PIN to lock">
+      </div>
+      <div class="form-group full-width">
+        <label>Unit Focus</label>
+        <textarea id="teacherFocus">Unit Focus</textarea>
+      </div>
+    </div>
+
+    <h3 style="margin-bottom: 10px; color: var(--primary-color);">Vocabulary Terms (Up to 20)</h3>
+  <div class="term-manage-list" id="termManageList">
+    <!-- Generated via JS -->
+  </div>
+  <button class="btn btn-primary" id="addTermBtn" onclick="addTermInput()">+ Add Term</button>
+</div>
+
+<!-- STUDENT VIEW -->
+<div class="student-only">
+  <!-- Student Details Header -->
+  <div class="header-inputs">
+    <div class="form-group">
+      <label>Name</label>
+      <input type="text" placeholder="Enter your name">
+      </div>
+      <div class="form-group">
+        <label>Date</label>
+        <input type="text" id="studentDate">
+      </div>
+      <div class="form-group">
+        <label>Class / Block</label>
+        <input type="text" placeholder="e.g. Block A">
+      </div>
+    </div>
+
+    <!-- Degrees of Knowledge Scale Key -->
+    <div class="scale-key">
+      <h3>Degrees of Knowledge (Self-Assessment Scale)</h3>
+      <p class="scale-instructions">Understanding key terms and context clues builds historical comprehension. Rate your confidence for each word before and after our study.</p>
+      <div class="scale-grid">
+        <div class="scale-item">
+          <strong class="level-4-title">Level 4: Mastery</strong>
+          Know meaning, can use in sentence & connect concepts.
+        </div>
+        <div class="scale-item">
+          <strong class="level-3-title">Level 3: Developing</strong>
+          Can define, but unsure how it connects to other terms.
+        </div>
+        <div class="scale-item">
+          <strong class="level-2-title">Level 2: Emerging</strong>
+          Heard it before, cannot clearly explain or use yet.
+        </div>
+        <div class="scale-item">
+          <strong class="level-1-title">Level 1: Novice</strong>
+          Recognize word, do not know meaning in context.
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive Vocabulary Table -->
+    <table>
+      <thead>
+        <tr>
+          <th class="col-term">Vocabulary Term</th>
+          <th class="col-rating">Rating (1–4)</th>
+          <th class="col-notes">Definition, Historical Context & Notes</th>
+        </tr>
+      </thead>
+      <tbody id="studentTableBody">
+        <!-- Rendered dynamically -->
+      </tbody>
+    </table>
+
+    <!-- Reflection / Concept Connection Section -->
+    <div class="reflection-section">
+      <h3>Historical Concept Connection & Reflection</h3>
+      <div class="form-group">
+        <label>Choose two terms from your list above. Explain how these two concepts were connected during the historical period studied:</label>
+        <textarea rows="4" placeholder="Type your response here..."></textarea>
+      </div>
+    </div>
+
+    <!-- Save / Export Actions -->
+    <div class="no-print" style="display: flex; justify-content: flex-end; margin-top: 35px;">
+      <button class="btn btn-success" onclick="window.print()">Save / Export (PDF)</button>
+    </div>
+  </div>
+</div>
+
+<!-- PIN Modal -->
+<div id="pinModal" class="modal-overlay">
+  <div class="modal-content">
+    <h3>Teacher Access</h3>
+    <p style="font-size: 0.9rem; margin-bottom: 15px; color: var(--muted-text);">Please enter your PIN to return to Teacher Mode.</p>
+    <input type="password" id="modalPinInput" placeholder="Enter PIN" style="margin-bottom: 10px;">
+    <div style="color: #e74c3c; font-size: 0.85rem; margin-bottom: 15px; display: none;" id="pinError">Incorrect PIN. Please try again.</div>
+    <div style="display: flex; justify-content: flex-end; gap: 10px;">
+      <button class="btn" style="background: #e2e8f0; color: #1e293b;" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="verifyPin()">Unlock</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let isStudentMode = false;
+  let terms = [
+    "Resistance", "Rebellion", "Provisional Government", "Scrip", 
+    "Surveyor", "Annexation", "Sovereignty", "Petition"
+  ];
+
+  function init() {
+    renderTeacherTerms();
+    // Set default date to today
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('studentDate').value = today;
+  }
+
+  function renderTeacherTerms() {
+    const list = document.getElementById('termManageList');
+    list.innerHTML = '';
+    
+    terms.forEach((term, index) => {
+      const item = document.createElement('div');
+      item.className = 'term-manage-item';
+      item.innerHTML = `
+        <span>${index + 1}.</span>
+        <input type="text" value="${term}" onchange="updateTerm(${index}, this.value)" placeholder="Enter vocabulary term">
+        <button class="btn btn-danger" onclick="removeTerm(${index})">Delete</button>
+      `;
+      list.appendChild(item);
+    });
+
+    const addBtn = document.getElementById('addTermBtn');
+    addBtn.style.display = terms.length >= 20 ? 'none' : 'inline-block';
+  }
+
+  function addTermInput() {
+    if (terms.length < 20) {
+      terms.push("");
+      renderTeacherTerms();
+    }
+  }
+
+  function updateTerm(index, value) {
+    terms[index] = value;
+  }
+
+  function removeTerm(index) {
+    terms.splice(index, 1);
+    renderTeacherTerms();
+  }
+
+  function toggleMode() {
+    const pinInput = document.getElementById('teacherPin').value.trim();
+
+    if (isStudentMode) {
+      // Trying to switch back to teacher mode
+      if (pinInput !== "") {
+        // Show modal if a PIN was set
+        document.getElementById('modalPinInput').value = '';
+        document.getElementById('pinError').style.display = 'none';
+        document.getElementById('pinModal').classList.add('active');
+      } else {
+        // No PIN set, switch immediately
+        executeSwitchToTeacher();
+      }
+    } else {
+      // Switching to student mode
+      isStudentMode = true;
+      document.body.classList.add('student-mode');
+      document.getElementById('modeIndicator').innerText = "Student Mode";
+      document.getElementById('toggleModeBtn').innerText = "Switch to Teacher Mode";
+      renderStudentView();
+    }
+  }
+
+  function executeSwitchToTeacher() {
+    isStudentMode = false;
+    document.body.classList.remove('student-mode');
+    document.getElementById('modeIndicator').innerText = "Teacher Setup Mode";
+    document.getElementById('toggleModeBtn').innerText = "Switch to Student Mode";
+  }
+
+  function closeModal() {
+    document.getElementById('pinModal').classList.remove('active');
+  }
+
+  function verifyPin() {
+    const enteredPin = document.getElementById('modalPinInput').value;
+    const actualPin = document.getElementById('teacherPin').value.trim();
+    
+    if (enteredPin === actualPin) {
+      closeModal();
+      executeSwitchToTeacher();
+    } else {
+      document.getElementById('pinError').style.display = 'block';
+    }
+  }
+
+  function renderStudentView() {
+    // Sync Header Texts
+    document.querySelectorAll('.displayTitle').forEach(el => el.innerText = document.getElementById('teacherTitle').value);
+    document.querySelectorAll('.displayFocus').forEach(el => el.innerText = document.getElementById('teacherFocus').value);
+
+    // Filter non-empty terms
+    const activeTerms = terms.filter(t => t.trim() !== "");
+
+    const tbody = document.getElementById('studentTableBody');
+    tbody.innerHTML = '';
+
+    activeTerms.forEach((term, idx) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="col-term"><strong>${term}</strong></td>
+        <td class="col-rating">
+          <div class="rating-options">
+            <label><input type="radio" name="rating_${idx}" value="1">1</label>
+            <label><input type="radio" name="rating_${idx}" value="2">2</label>
+            <label><input type="radio" name="rating_${idx}" value="3">3</label>
+            <label><input type="radio" name="rating_${idx}" value="4">4</label>
+          </div>
+        </td>
+        <td class="col-notes">
+          <textarea rows="2" placeholder="Write definition and notes..."></textarea>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  window.onload = init;
+</script>
+
+</body>
+</html>
