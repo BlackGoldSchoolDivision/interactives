@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#ForYou: Interactive Card Game</title>
+    <style>
+        :root {
+            --primary: #8e44ad;
+            --secondary: #e67e22;
+            --bg-color: #f4f4f9;
+            --text-dark: #333;
+            --text-light: #fff;
+            --card-bg: #fff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: var(--text-light);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+        .scores {
+            display: flex;
+            gap: 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .controls button {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            margin-left: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .controls button:hover {
+            background-color: #d35400;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* VidYou Area (Top) */
+        .vidyou-area {
+            background-color: #e0e0e0;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 2px solid #ccc;
+            height: 25%;
+        }
+
+        .vidyou-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-slot-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Play Area (Middle) */
+        .play-area {
+            flex: 1;
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+            background-color: #eaeded;
+        }
+
+        .player-board {
+            flex: 1;
+            border: 2px dashed #bdc3c7;
+            border-radius: 10px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .player-board h3 {
+            margin-bottom: 10px;
+            color: #7f8c8d;
+        }
+
+        .played-cards {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Hand Area (Bottom) */
+        .hand-area {
+            background-color: #34495e;
+            padding: 15px;
+            height: 30%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hand-header {
+            color: white;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .cards-in-hand {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            max-width: 100%;
+            padding-bottom: 10px;
+        }
+
+        /* Cards */
+        .card {
+            width: 120px;
+            height: 168px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .card.hidden-card {
+            background-color: #7f8c8d;
+            background-image: repeating-linear-gradient(45deg, #95a5a6 25%, transparent 25%, transparent 75%, #95a5a6 75%, #95a5a6), repeating-linear-gradient(45deg, #95a5a6 25%, #7f8c8d 25%, #7f8c8d 75%, #95a5a6 75%, #95a5a6);
+            background-position: 0 0, 10px 10px;
+            background-size: 20px 20px;
+        }
+
+        .card.hidden-card img {
+            display: none;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }
+
+        .card.selected {
+            border: 3px solid #f1c40f;
+            transform: translateY(-10px);
+        }
+
+        .card-fallback-text {
+            z-index: 2;
+            background: rgba(255,255,255,0.9);
+            padding: 5px;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        /* Overlays */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(44, 62, 80, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 100;
+            text-align: center;
+        }
+
+        .overlay h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+
+        .overlay h2 {
+            margin-bottom: 20px;
+        }
+
+        .overlay button {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background 0.2s;
+        }
+
+        .overlay button:hover {
+            background-color: #d35400;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Rules Modal */
+        .modal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            color: #333;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 200;
+        }
+
+        .modal h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .modal p, .modal li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .close-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            float: right;
+        }
+
+        .log {
+            background: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            max-height: 100px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h2>#ForYou</h2>
+            <span id="round-display">Round 1: Popularity</span>
+        </div>
+        <div class="scores">
+            <div>Player 1: <span id="p1-score">0</span></div>
+            <div>Player 2: <span id="p2-score">0</span></div>
+        </div>
+        <div class="controls">
+            <button onclick="showRules()">Rules</button>
+            <button onclick="restartGame()">Restart</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Interstitial Overlays -->
+        <div id="pass-device-overlay" class="overlay">
+            <h1 id="overlay-title">Pass Device</h1>
+            <h2 id="overlay-msg">It is Player X's turn. Make sure the other player isn't looking!</h2>
+            <button id="overlay-btn" onclick="startPlayerTurn()">I'm Ready</button>
+            <button id="end-round-btn" class="hidden" onclick="endRound()">Finish Round / Next</button>
+            <button id="stop-game-btn" class="hidden" onclick="endGameEarly()" style="background:#e74c3c;">Stop Game Now</button>
+        </div>
+
+        <!-- VidYou Area -->
+        <div class="vidyou-area">
+            <div class="vidyou-section">
+                <h3>VidYou Goal (Optimization)</h3>
+                <div id="vidyou-opt" class="card"></div>
+            </div>
+            <div class="vidyou-section">
+                <h3>VidYou Algorithm/Audience</h3>
+                <p>1st (3pt) - 2nd (2pt) - 3rd (1pt)</p>
+                <div id="vidyou-targets" class="card-slot-group">
+                    <div class="card hidden-card"></div>
+                    <div class="card hidden-card"></div>
+                    <div class="card hidden-card"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Play Area -->
+        <div class="play-area">
+            <div class="player-board" id="p1-board">
+                <h3>Player 1's Played Cards</h3>
+                <div class="played-cards" id="p1-played"></div>
+            </div>
+            <div class="player-board" id="p2-board">
+                <h3>Player 2's Played Cards</h3>
+                <div class="played-cards" id="p2-played"></div>
+            </div>
+        </div>
+
+        <!-- Hand Area -->
+        <div class="hand-area">
+            <div class="hand-header">
+                <h3 id="current-player-label">Player 1's Hand</h3>
+                <div>
+                    <span id="instruction-label">Select 1 card to play.</span>
+                    <button id="play-cards-btn" onclick="submitPlay()" disabled>Play Selected</button>
+                </div>
+            </div>
+            <div class="cards-in-hand" id="player-hand">
+                <!-- Cards injected here via JS -->
+            </div>
+            <div id="game-log" class="log">Game started. Waiting for Player 1.</div>
+        </div>
+
+        <!-- Rules Modal -->
+        <div id="rules-modal" class="modal hidden">
+            <button class="close-btn" onclick="hideRules()">Close</button>
+            <h2>#ForYou: Rules Summary</h2>
+            <p><strong>Goal:</strong> Figure out the hidden algorithm VidYou is using and play cards that match it to score points!</p>
+            <ul>
+                <li><strong>Round 1 (Popularity):</strong> VidYou plays 1 Optimization card (visible) and 3 Algorithm cards (hidden, ranked 1st, 2nd, 3rd). Play Video/Boost cards from your hand. Turn 1: Play 1 card. Turn 2: Play up to 2 cards.</li>
+                <li><strong>Round 2 (Monetization):</strong> VidYou plays 3 Audience cards (hidden). Play Ad and Data cards to target the audience.</li>
+                <li><strong>Round 3 (Machine Learning):</strong> Similar to Round 2, using Ad and Data cards to hit Audience targets.</li>
+            </ul>
+            <p><strong>Scoring:</strong> Matching the 1st hidden card = 3pts, 2nd = 2pts, 3rd = 1pt. Boost/Data cards enhance your main cards!</p>
+            <p><em>Note: You can stop playing at the end of any round. Points carry over sequentially.</em></p>
+        </div>
+    </main>
+
+    <script>
+        // --- Game Data (Using Provided Filenames) ---
+        const DB = {
+            videos: [
+                { id: 'v1', src: '70.jpg', name: 'Music Video', metrics: ['Freshness', 'Likes'] },
+                { id: 'v2', src: '71.jpg', name: 'Animal Video', metrics: ['Views', 'Subscribers'] },
+                { id: 'v3', src: '72.jpg', name: 'Sports Video', metrics: ['Shares', 'Links'] },
+                { id: 'v4', src: '73.jpg', name: 'How-To Video', metrics: ['Freshness', 'Shares'] },
+                { id: 'v5', src: '74.jpg', name: 'Game Video', metrics: ['Likes', 'Links'] },
+                { id: 'v6', src: '75.jpg', name: 'Music Video', metrics: ['Views', 'Freshness'] },
+                { id: 'v7', src: '76.jpg', name: 'Sports Video', metrics: ['Views', 'Subscribers'] },
+                { id: 'v8', src: '77.jpg', name: 'Music Video', metrics: ['Likes', 'Links'] },
+                { id: 'v9', src: '78.jpg', name: 'Music Video', metrics: ['Shares', 'Subscribers'] },
+                { id: 'v10', src: '79.jpg', name: 'Music Video', metrics: ['Shares', 'Freshness'] },
+                { id: 'v11', src: '80.jpg', name: 'Review Video', metrics: ['Views', 'Links'] },
+                { id: 'v12', src: '81.jpg', name: 'Animal Video', metrics: ['Likes', 'Subscribers'] },
+                { id: 'v13', src: '82.jpg', name: 'Review Video', metrics: ['Views', 'Subscribers'] },
+                { id: 'v14', src: '83.jpg', name: 'Sports Video', metrics: ['Shares', 'Freshness'] },
+                { id: 'v15', src: '84.jpg', name: 'Celebrity Video', metrics: ['Views', 'Links'] },
+                { id: 'v16', src: '85.jpg', name: 'How-To Video', metrics: ['Views', 'Freshness'] },
+                { id: 'v17', src: '86.jpg', name: 'Animal Video', metrics: ['Shares', 'Subscribers'] },
+                { id: 'v18', src: '87.jpg', name: 'Celebrity Video', metrics: ['Likes', 'Links'] },
+                { id: 'v19', src: '88.jpg', name: 'Celebrity Video', metrics: ['Views', 'Links'] },
+                { id: 'v20', src: '89.jpg', name: 'Music Video', metrics: ['Likes', 'Shares'] }
+            ],
+            boosts: [
+                { id: 'b1', src: '41.jpg', name: 'Like Farm', metrics: ['Likes'], isBoost: true },
+                { id: 'b2', src: '42.jpg', name: 'Hidden Pop-up', metrics: ['Views'], isBoost: true },
+                { id: 'b3', src: '44.jpg', name: 'Retweet Room', metrics: ['Freshness'], isBoost: true },
+                { id: 'b4', src: '45.jpg', name: 'Sock Puppet', metrics: ['Subscribers'], isBoost: true },
+                { id: 'b5', src: '46.jpg', name: 'Google Bomb', metrics: ['Links'], isBoost: true },
+                { id: 'b6', src: '68.jpg', name: 'Controversy', metrics: ['Shares'], isBoost: true }
+            ],
+            algorithms: [
+                { id: 'al1', src: '30.jpg', name: 'Freshness', metric: 'Freshness' },
+                { id: 'al2', src: '31.jpg', name: 'Likes', metric: 'Likes' },
+                { id: 'al3', src: '32.jpg', name: 'Links', metric: 'Links' },
+                { id: 'al4', src: '33.jpg', name: 'Shares', metric: 'Shares' },
+                { id: 'al5', src: '47.png', name: 'Subscribers', metric: 'Subscribers' },
+                { id: 'al6', src: '71.jpg', name: 'Views', metric: 'Views' } 
+            ],
+            optimizations: [
+                { id: 'o1', src: '68_2.jpg', name: 'Daily Use' },
+                { id: 'o2', src: '1.jpg', name: 'Virality' },
+                { id: 'o3', src: '66.jpg', name: 'Watch Time' },
+                { id: 'o4', src: '67.jpg', name: 'Stickiness' }
+            ],
+            audiences: [
+                { id: 'au1', src: '34.jpg', name: 'Location', metric: 'Location' },
+                { id: 'au2', src: '35.jpg', name: 'Brand Loyalty', metric: 'Brand Loyalty' },
+                { id: 'au3', src: '36.jpg', name: 'Personality', metric: 'Personality' },
+                { id: 'au4', src: '38.jpg', name: 'Interests', metric: 'Interests' },
+                { id: 'au5', src: '40.jpg', name: 'Age', metric: 'Age' }
+            ],
+            ads: [
+                { id: 'ad1', src: '5.jpg', name: 'TV Show Ad', metrics: ['Location', 'Brand Loyalty'] },
+                { id: 'ad2', src: '6.jpg', name: 'Video Game Ad', metrics: ['Brand Loyalty', 'Age'] },
+                { id: 'ad3', src: '26.jpg', name: 'Tech Ad', metrics: ['Interests', 'Brand Loyalty'] },
+                { id: 'ad4', src: '54.png', name: 'Housewares Ad', metrics: ['Location', 'Income'] },
+                { id: 'ad5', src: '2.jpg', name: 'Car Ad', metrics: ['Income', 'Brand Loyalty'] },
+                { id: 'ad6', src: '3.jpg', name: 'Restaurant Ad', metrics: ['Location', 'Interests'] },
+                { id: 'ad7', src: '4.jpg', name: 'Restaurant Ad', metrics: ['Intent to Buy', 'Location'] },
+                { id: 'ad8', src: '7.jpg', name: 'Beauty Ad', metrics: ['Personality', 'Income'] },
+                { id: 'ad9', src: '8.jpg', name: 'Kitchenware Ad', metrics: ['Interests', 'Brand Loyalty'] },
+                { id: 'ad10', src: '9.jpg', name: 'Lessons Ad', metrics: ['Interests', 'Personality'] },
+                { id: 'ad11', src: '10.jpg', name: 'Housewares Ad', metrics: ['Location', 'Income'] },
+                { id: 'ad12', src: '11.jpg', name: 'Insurance Ad', metrics: ['Intent to Buy', 'Personality'] }
+            ],
+            dataCards: [
+                { id: 'd1', src: '69.jpg', name: 'GPS', metrics: ['Location'], isData: true },
+                { id: 'd2', src: '48.png', name: 'Cookies', metrics: ['Interests'], isData: true },
+                { id: 'd3', src: '49.png', name: 'Views', metrics: ['Age'], isData: true },
+                { id: 'd4', src: '50.png', name: 'Profile', metrics: ['Intent to Buy'], isData: true },
+                { id: 'd5', src: '51.png', name: 'Views', metrics: ['Interests'], isData: true },
+                { id: 'd6', src: '52.png', name: 'Cookies', metrics: ['Brand Loyalty'], isData: true },
+                { id: 'd7', src: '64.png', name: 'Other Sites', metrics: ['Income'], isData: true },
+                { id: 'd8', src: '65.png', name: 'Cookies', metrics: ['Interests'], isData: true }
+            ]
+        };
+
+        // --- Game State ---
+        let state = {
+            round: 1, // 1: Pop, 2: Mon, 3: ML
+            phase: 1, // 1: Turn 1, 2: Turn 2
+            p1Score: 0,
+            p2Score: 0,
+            p1Hand: [],
+            p2Hand: [],
+            p1Played: [],
+            p2Played: [],
+            vidYouOpt: null,
+            vidYouTargets: [], // Array of 3 cards
+            currentPlayer: 1,
+            selectedCards: [],
+            maxSelectable: 1,
+            targetsRevealed: false
+        };
+
+        // --- Utility ---
+        function shuffle(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex != 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        function logMsg(msg) {
+            const log = document.getElementById('game-log');
+            log.innerHTML += `<div>> ${msg}</div>`;
+            log.scrollTop = log.scrollHeight;
+        }
+
+        // --- UI Rendering ---
+        function renderCard(card, hidden = false) {
+            const div = document.createElement('div');
+            div.className = 'card' + (hidden ? ' hidden-card' : '');
+            div.dataset.id = card.id;
+            
+            const img = document.createElement('img');
+            img.src = card.src;
+            img.alt = card.name;
+            // Fallback text if image fails to load
+            img.onerror = () => {
+                img.style.display = 'none';
+                const text = document.createElement('div');
+                text.className = 'card-fallback-text';
+                text.innerHTML = `${card.name}<br><small>${card.metrics ? card.metrics.join(', ') : (card.metric || '')}</small>`;
+                div.appendChild(text);
+            };
+            div.appendChild(img);
+            return div;
+        }
+
+        function updateUI() {
+            document.getElementById('p1-score').innerText = state.p1Score;
+            document.getElementById('p2-score').innerText = state.p2Score;
+            
+            const roundNames = ["", "Popularity", "Monetization", "Machine Learning"];
+            document.getElementById('round-display').innerText = `Round ${state.round}: ${roundNames[state.round]}`;
+
+            // Render VidYou
+            const optContainer = document.getElementById('vidyou-opt');
+            optContainer.innerHTML = '';
+            if (state.vidYouOpt) optContainer.appendChild(renderCard(state.vidYouOpt));
+
+            const targetsContainer = document.getElementById('vidyou-targets');
+            targetsContainer.innerHTML = '';
+            state.vidYouTargets.forEach(c => {
+                targetsContainer.appendChild(renderCard(c, !state.targetsRevealed));
+            });
+
+            // Render Played
+            const p1Played = document.getElementById('p1-played');
+            p1Played.innerHTML = '';
+            state.p1Played.forEach(c => p1Played.appendChild(renderCard(c)));
+
+            const p2Played = document.getElementById('p2-played');
+            p2Played.innerHTML = '';
+            state.p2Played.forEach(c => p2Played.appendChild(renderCard(c)));
+        }
+
+        // --- Game Flow ---
+        function initGame() {
+            state.p1Score = 0;
+            state.p2Score = 0;
+            state.round = 1;
+            document.getElementById('game-log').innerHTML = '';
+            logMsg("Game Started! Welcome to #ForYou.");
+            startRound();
+        }
+
+        function startRound() {
+            state.phase = 1;
+            state.p1Played = [];
+            state.p2Played = [];
+            state.targetsRevealed = false;
+            state.currentPlayer = 1;
+            state.selectedCards = [];
+
+            if (state.round === 1) {
+                // Popularity
+                state.maxSelectable = 1;
+                state.vidYouOpt = shuffle([...DB.optimizations])[0];
+                state.vidYouTargets = shuffle([...DB.algorithms]).slice(0, 3);
+                
+                let deck = shuffle([...DB.videos, ...DB.boosts]);
+                state.p1Hand = deck.slice(0, 5);
+                state.p2Hand = deck.slice(5, 10);
+            } else if (state.round === 2 || state.round === 3) {
+                // Monetization & ML
+                state.maxSelectable = 1;
+                state.vidYouOpt = null; // No optimization card in these rounds per rules
+                state.vidYouTargets = shuffle([...DB.audiences]).slice(0, 3);
+                
+                let adDeck = shuffle([...DB.ads]);
+                state.p1Hand = adDeck.slice(0, 5);
+                state.p2Hand = adDeck.slice(5, 10);
+            }
+
+            updateUI();
+            showPassDevice(`Round ${state.round} - Phase 1 begins! Pass to Player 1.`);
+        }
+
+        function showPassDevice(msg) {
+            document.getElementById('pass-device-overlay').classList.remove('hidden');
+            document.getElementById('overlay-title').innerText = `Player ${state.currentPlayer}'s Turn`;
+            document.getElementById('overlay-msg').innerText = msg + " Make sure the other player isn't looking.";
+            document.getElementById('overlay-btn').classList.remove('hidden');
+            document.getElementById('end-round-btn').classList.add('hidden');
+            document.getElementById('stop-game-btn').classList.add('hidden');
+        }
+
+        function startPlayerTurn() {
+            document.getElementById('pass-device-overlay').classList.add('hidden');
+            document.getElementById('current-player-label').innerText = `Player ${state.currentPlayer}'s Hand`;
+            
+            let allowedToPlay = state.phase === 1 ? 1 : (state.round === 1 ? 2 : 4); 
+            // Simplified: R1P2 play 2. R2P2/R3P2 play 2 ads + 2 data = 4 cards.
+            state.maxSelectable = allowedToPlay;
+            document.getElementById('instruction-label').innerText = `Select up to ${state.maxSelectable} card(s) to play.`;
+            
+            renderHand();
+        }
+
+        function renderHand() {
+            const handContainer = document.getElementById('player-hand');
+            handContainer.innerHTML = '';
+            state.selectedCards = [];
+            document.getElementById('play-cards-btn').disabled = true;
+
+            const hand = state.currentPlayer === 1 ? state.p1Hand : state.p2Hand;
+            
+            hand.forEach((card, index) => {
+                const el = renderCard(card);
+                el.onclick = () => toggleSelectCard(el, card, index);
+                handContainer.appendChild(el);
+            });
+        }
+
+        function toggleSelectCard(element, card, index) {
+            const idx = state.selectedCards.findIndex(c => c.index === index);
+            if (idx > -1) {
+                state.selectedCards.splice(idx, 1);
+                element.classList.remove('selected');
+            } else {
+                if (state.selectedCards.length < state.maxSelectable) {
+                    state.selectedCards.push({card, index});
+                    element.classList.add('selected');
+                }
+            }
+            document.getElementById('play-cards-btn').disabled = state.selectedCards.length === 0;
+        }
+
+        function submitPlay() {
+            // Remove from hand, add to played
+            let hand = state.currentPlayer === 1 ? state.p1Hand : state.p2Hand;
+            let played = state.currentPlayer === 1 ? state.p1Played : state.p2Played;
+
+            // Sort indices descending to avoid splice shifting issues
+            state.selectedCards.sort((a,b) => b.index - a.index).forEach(s => {
+                played.push(s.card);
+                hand.splice(s.index, 1);
+            });
+
+            logMsg(`Player ${state.currentPlayer} played ${state.selectedCards.length} card(s).`);
+
+            if (state.currentPlayer === 1) {
+                state.currentPlayer = 2;
+                showPassDevice(`Pass to Player 2.`);
+            } else {
+                // Both played. Resolve phase.
+                resolvePhase();
+            }
+        }
+
+        function resolvePhase() {
+            updateUI(); // Show played cards
+            document.getElementById('player-hand').innerHTML = ''; // Hide hand
+
+            if (state.phase === 1) {
+                // Score Phase 1 (hidden)
+                let p1PhaseScore = calculateScore(state.p1Played);
+                let p2PhaseScore = calculateScore(state.p2Played);
+                logMsg(`Phase 1 complete. P1 cards scored: ${p1PhaseScore}. P2 cards scored: ${p2PhaseScore}. (Targets remain hidden)`);
+                
+                // Setup Phase 2
+                state.phase = 2;
+                state.currentPlayer = 1;
+                
+                // If R2 or R3, deal Data cards
+                if (state.round > 1) {
+                    let dataDeck = shuffle([...DB.dataCards]);
+                    state.p1Hand.push(...dataDeck.slice(0, 4));
+                    state.p2Hand.push(...dataDeck.slice(4, 8));
+                    logMsg(`Dealt 4 Data cards to each player for Phase 2.`);
+                }
+
+                showPassDevice(`Phase 1 over. Phase 2 begins. Pass to Player 1.`);
+            } else {
+                // Phase 2 complete. Reveal and score.
+                state.targetsRevealed = true;
+                updateUI();
+
+                let p1FinalScore = calculateScore(state.p1Played);
+                let p2FinalScore = calculateScore(state.p2Played);
+                
+                state.p1Score += p1FinalScore;
+                state.p2Score += p2FinalScore;
+                
+                logMsg(`Round ${state.round} OVER! Targets revealed.`);
+                logMsg(`P1 earned ${p1FinalScore} this round. Total: ${state.p1Score}`);
+                logMsg(`P2 earned ${p2FinalScore} this round. Total: ${state.p2Score}`);
+                updateUI();
+
+                promptRoundEnd();
+            }
+        }
+
+        function calculateScore(playedArray) {
+            // Simplified scoring logic
+            // Targets: [0] = 3pts, [1] = 2pts, [2] = 1pt
+            let targetMetrics = state.vidYouTargets.map(t => t.metric);
+            let score = 0;
+            let multiplier = 1;
+
+            playedArray.forEach(card => {
+                if (card.isBoost || card.isData) {
+                    // In simplified rules: Boosts double. Data adds logic. Let's make them add +2 if they match a target.
+                    if (card.isBoost) multiplier *= 2;
+                    if (card.isData && card.metrics.some(m => targetMetrics.includes(m))) {
+                        score += 2; // Data card matched a target
+                    }
+                } else if (card.metrics) {
+                    card.metrics.forEach(m => {
+                        if (m === targetMetrics[0]) score += 3;
+                        if (m === targetMetrics[1]) score += 2;
+                        if (m === targetMetrics[2]) score += 1;
+                    });
+                }
+            });
+
+            return score * multiplier;
+        }
+
+        function promptRoundEnd() {
+            document.getElementById('pass-device-overlay').classList.remove('hidden');
+            document.getElementById('overlay-title').innerText = `Round ${state.round} Complete!`;
+            document.getElementById('overlay-msg').innerText = `P1 Total: ${state.p1Score} | P2 Total: ${state.p2Score}\nContinue to next round or stop here?`;
+            
+            document.getElementById('overlay-btn').classList.add('hidden');
+            document.getElementById('end-round-btn').classList.remove('hidden');
+            document.getElementById('stop-game-btn').classList.remove('hidden');
+
+            if (state.round === 3) {
+                document.getElementById('end-round-btn').innerText = "Finish Game";
+            } else {
+                document.getElementById('end-round-btn').innerText = "Start Next Round";
+            }
+        }
+
+        function endRound() {
+            if (state.round < 3) {
+                state.round++;
+                startRound();
+            } else {
+                endGameEarly();
+            }
+        }
+
+        function endGameEarly() {
+            let winner = state.p1Score > state.p2Score ? "Player 1 Wins!" : (state.p2Score > state.p1Score ? "Player 2 Wins!" : "It's a Tie!");
+            document.getElementById('overlay-title').innerText = "Game Over!";
+            document.getElementById('overlay-msg').innerText = `Final Score\nPlayer 1: ${state.p1Score}\nPlayer 2: ${state.p2Score}\n\n${winner}`;
+            
+            document.getElementById('overlay-btn').classList.add('hidden');
+            document.getElementById('end-round-btn').classList.add('hidden');
+            document.getElementById('stop-game-btn').classList.add('hidden');
+
+            const restartBtn = document.createElement('button');
+            restartBtn.innerText = "Play Again";
+            restartBtn.onclick = () => {
+                restartBtn.remove();
+                restartGame();
+            };
+            document.getElementById('pass-device-overlay').appendChild(restartBtn);
+        }
+
+        function restartGame() {
+            initGame();
+        }
+
+        function showRules() {
+            document.getElementById('rules-modal').classList.remove('hidden');
+        }
+
+        function hideRules() {
+            document.getElementById('rules-modal').classList.add('hidden');
+        }
+
+        // Start
+        window.onload = initGame;
+
+    </script>
+</body>
+</html>
