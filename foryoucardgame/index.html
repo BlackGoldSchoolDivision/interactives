@@ -18,50 +18,81 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-dark);
+            background-color: #1a1e29;
+            color: #f1f2f6;
             display: flex;
             flex-direction: column;
             height: 100vh;
             overflow: hidden;
+            user-select: none;
         }
 
         header {
-            background-color: var(--primary);
-            color: var(--text-light);
-            padding: 10px 20px;
+            background: linear-gradient(135deg, #6c2bd9, #8e44ad);
+            color: #fff;
+            padding: 10px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            z-index: 10;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            z-index: 20;
+        }
+
+        .header-title-box h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            display: inline-block;
+            margin-right: 12px;
+        }
+
+        .round-pill {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
         }
 
         .scores {
             display: flex;
-            gap: 20px;
-            font-weight: bold;
-            font-size: 1.2rem;
+            gap: 24px;
+            font-weight: 700;
+            font-size: 1.15rem;
+            background: rgba(0,0,0,0.25);
+            padding: 6px 18px;
+            border-radius: 30px;
         }
 
-        .controls button {
-            background-color: var(--secondary);
+        .score-p1 { color: #38bdf8; }
+        .score-p2 { color: #f472b6; }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .controls button, .action-btn {
+            background-color: #f97316;
             color: white;
             border: none;
-            padding: 8px 15px;
-            margin-left: 10px;
-            border-radius: 5px;
+            padding: 8px 16px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
-            transition: background 0.2s;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
         }
 
-        .controls button:hover {
-            background-color: #d35400;
+        .controls button:hover, .action-btn:hover {
+            background-color: #ea580c;
+            transform: translateY(-1px);
         }
 
         main {
@@ -69,18 +100,20 @@
             display: flex;
             flex-direction: column;
             position: relative;
+            background-color: #0f172a;
         }
 
         /* VidYou Area (Top) */
         .vidyou-area {
-            background-color: #e0e0e0;
-            padding: 15px;
+            background: #1e293b;
+            padding: 8px 20px;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px;
-            border-bottom: 2px solid #ccc;
-            height: 25%;
+            gap: 36px;
+            border-bottom: 2px solid #334155;
+            min-height: 240px;
+            box-shadow: inset 0 -4px 10px rgba(0,0,0,0.2);
         }
 
         .vidyou-section {
@@ -89,138 +122,529 @@
             align-items: center;
         }
 
+        .vidyou-section h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
         .card-slot-group {
             display: flex;
-            gap: 10px;
+            gap: 14px;
         }
 
         /* Play Area (Middle) */
         .play-area {
             flex: 1;
             display: flex;
-            padding: 20px;
-            gap: 20px;
-            background-color: #eaeded;
+            padding: 12px 20px;
+            gap: 16px;
+            background-color: #0f172a;
+            overflow: hidden;
         }
 
         .player-board {
             flex: 1;
-            border: 2px dashed #bdc3c7;
-            border-radius: 10px;
+            border: 2px dashed #334155;
+            border-radius: 12px;
             padding: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            background: rgba(30, 41, 59, 0.4);
+            overflow-y: auto;
         }
 
         .player-board h3 {
-            margin-bottom: 10px;
-            color: #7f8c8d;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: #cbd5e1;
+            font-weight: 700;
         }
 
         .played-cards {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
             justify-content: center;
+            align-items: flex-start;
+            padding-bottom: 8px;
         }
 
         /* Hand Area (Bottom) */
         .hand-area {
-            background-color: #34495e;
-            padding: 15px;
-            height: 30%;
+            background-color: #182234;
+            padding: 10px 20px 14px 20px;
+            min-height: 250px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            border-top: 2px solid #334155;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.3);
         }
 
         .hand-header {
             color: white;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
             width: 100%;
-            max-width: 800px;
+            max-width: 1050px;
         }
 
         .cards-in-hand {
             display: flex;
-            gap: 15px;
+            gap: 14px;
             overflow-x: auto;
             max-width: 100%;
-            padding-bottom: 10px;
+            padding: 6px 12px 12px 12px;
+            min-height: 195px;
         }
 
-        /* Cards */
+        /* Authentic Card Visuals matching exact uploads */
         .card {
-            width: 120px;
-            height: 168px;
-            background-color: var(--card-bg);
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            width: 132px;
+            height: 186px;
+            border-radius: 14px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.45);
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            font-size: 0.8rem;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1.2), box-shadow 0.2s;
             position: relative;
             overflow: hidden;
-            border: 2px solid transparent;
+            border: 2px solid rgba(255,255,255,0.15);
+            flex-shrink: 0;
             background-size: cover;
             background-position: center;
         }
 
-        .card img {
+        .card:hover {
+            transform: translateY(-6px) scale(1.03);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.65);
+            z-index: 5;
+        }
+
+        .card.selected {
+            border: 3px solid #facc15 !important;
+            transform: translateY(-12px) scale(1.05);
+            box-shadow: 0 12px 28px rgba(250, 204, 21, 0.45);
+            z-index: 10;
+        }
+
+        /* Card Type Styles */
+        /* 1. VIDEO CARDS (Bright Orange Diagonal Stripe) */
+        .card-video {
+            background: repeating-linear-gradient(
+                -45deg,
+                #ff7a00,
+                #ff7a00 7px,
+                #f36c00 7px,
+                #f36c00 14px
+            );
+            color: #fff;
+            padding: 7px;
+            justify-content: space-between;
+        }
+
+        .card-video .card-header-badge {
+            font-size: 0.65rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-align: center;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.95);
+            margin-bottom: 3px;
+        }
+
+        .card-screen-frame {
+            background: #fff;
+            border-radius: 8px;
+            padding: 3px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .card-screen-thumb {
+            width: 100%;
+            height: 64px;
+            background: #000;
+            border-radius: 5px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+
+        .play-btn-circle {
+            width: 22px;
+            height: 22px;
+            background: rgba(0,0,0,0.65);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255,255,255,0.7);
+        }
+
+        .play-btn-triangle {
+            width: 0;
+            height: 0;
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+            border-left: 7px solid #fff;
+            margin-left: 2px;
+        }
+
+        .screen-metadata-bar {
+            padding: 2px 3px 0 3px;
+            color: #111;
+            text-align: left;
+        }
+
+        .screen-title {
+            font-size: 0.46rem;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.1;
+        }
+
+        .screen-subtext {
+            font-size: 0.38rem;
+            color: #555;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-video .card-metrics-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: 4px 0;
+        }
+
+        .card-metrics-body .metric-txt {
+            font-size: 0.8rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            line-height: 1.15;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .card-video .card-topic-tag {
+            background: rgba(255, 120, 0, 0.95);
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 6px;
+            padding: 2px 0;
+            text-align: center;
+            font-size: 0.58rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+
+        /* 2. AD CARDS (Cyan Diagonal Stripe) */
+        .card-ad {
+            background: repeating-linear-gradient(
+                -45deg,
+                #00b4d8,
+                #00b4d8 7px,
+                #0096c7 7px,
+                #0096c7 14px
+            );
+            color: #fff;
+            padding: 7px;
+            justify-content: space-between;
+        }
+
+        .card-ad .card-header-badge {
+            font-size: 0.65rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-align: center;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.95);
+            margin-bottom: 2px;
+        }
+
+        .ad-title-tag {
+            font-size: 0.62rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            text-align: center;
+            letter-spacing: 0.8px;
+            margin-bottom: 3px;
+        }
+
+        .card-ad .card-metrics-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: 6px 0;
+        }
+
+        /* 3. AUDIENCE CARDS (Lime Green Diagonal) */
+        .card-audience {
+            background: repeating-linear-gradient(
+                -45deg,
+                #70b343,
+                #70b343 7px,
+                #5e9e34 7px,
+                #5e9e34 14px
+            );
+            color: #fff;
+            padding: 8px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-audience-icon-ring {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #ffb703;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+            margin: 4px 0;
+            color: #fff;
+        }
+
+        .card-audience-icon-ring svg {
+            width: 26px;
+            height: 26px;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .card-rule-desc {
+            font-size: 0.44rem;
+            line-height: 1.25;
+            background: rgba(0,0,0,0.18);
+            padding: 4px;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+
+        /* 4. ALGORITHM CARDS (Purple Diagonal) */
+        .card-algorithm {
+            background: repeating-linear-gradient(
+                -45deg,
+                #9333ea,
+                #9333ea 7px,
+                #7e22ce 7px,
+                #7e22ce 14px
+            );
+            color: #fff;
+            padding: 8px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-algo-icon-ring {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #0284c7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+            margin: 4px 0;
+            color: #fff;
+        }
+
+        .card-algo-icon-ring svg {
+            width: 26px;
+            height: 26px;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* 5. BOOST CARDS (Amber-Orange concentric bullseye) */
+        .card-boost {
+            background: radial-gradient(circle, #f97316 45%, #f59e0b 80%, #fbbf24 100%);
+            color: #fff;
+            padding: 10px 8px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .boost-header {
+            font-size: 1.25rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .boost-name {
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        /* 6. DATA CARDS (Dark Blue with side proxy tabs) */
+        .card-data {
+            background: #0284c7;
+            color: #fff;
+            padding: 6px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: center;
+            position: relative;
+        }
+
+        .proxy-tab {
+            position: absolute;
+            top: 28%;
+            width: 14px;
+            height: 72px;
+            background: #38bdf8;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.38rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+            color: #0f172a;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .proxy-left { left: 1px; }
+        .proxy-right { right: 1px; }
+
+        /* 7. OPTIMIZATION CARDS (Navy / Violet circle) */
+        .card-opt {
+            background: repeating-linear-gradient(
+                -45deg,
+                #1e3a8a,
+                #1e3a8a 7px,
+                #172554 7px,
+                #172554 14px
+            );
+            color: #fff;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+        }
+
+        .opt-icon-ring {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #c084fc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+            margin: 4px 0;
+        }
+
+        .opt-icon-ring svg {
+            width: 26px;
+            height: 26px;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Overlaid direct image support */
+        .card-user-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             position: absolute;
             top: 0;
             left: 0;
-            z-index: 1;
+            z-index: 10;
+            border-radius: 12px;
         }
 
+        /* Hidden Card Back */
         .card.hidden-card {
-            background-color: #7f8c8d;
-            background-image: repeating-linear-gradient(45deg, #95a5a6 25%, transparent 25%, transparent 75%, #95a5a6 75%, #95a5a6), repeating-linear-gradient(45deg, #95a5a6 25%, #7f8c8d 25%, #7f8c8d 75%, #95a5a6 75%, #95a5a6);
-            background-position: 0 0, 10px 10px;
-            background-size: 20px 20px;
+            background: repeating-linear-gradient(
+                45deg,
+                #334155,
+                #334155 10px,
+                #1e293b 10px,
+                #1e293b 20px
+            ) !important;
+            border: 2px solid #475569 !important;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .card.hidden-card img {
-            display: none;
+        .card.hidden-card * {
+            display: none !important;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        .card.hidden-card::after {
+            content: "#ForYou";
+            display: block !important;
+            font-size: 0.9rem;
+            font-weight: 900;
+            color: #64748b;
+            letter-spacing: 2px;
+            transform: rotate(-25deg);
         }
 
-        .card.selected {
-            border: 3px solid #f1c40f;
-            transform: translateY(-10px);
-        }
-
-        .card-fallback-text {
-            z-index: 2;
-            background: rgba(255,255,255,0.9);
-            padding: 5px;
-            width: 100%;
-            font-weight: bold;
-        }
-
-        /* Overlays */
         .overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(44, 62, 80, 0.95);
+            background-color: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(8px);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -228,101 +652,144 @@
             color: white;
             z-index: 100;
             text-align: center;
+            padding: 24px;
         }
 
         .overlay h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            color: var(--secondary);
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 14px;
+            color: #f97316;
+            letter-spacing: -0.5px;
         }
 
         .overlay h2 {
-            margin-bottom: 20px;
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 24px;
+            max-width: 650px;
+            line-height: 1.5;
+            color: #e2e8f0;
         }
 
         .overlay button {
-            background-color: var(--secondary);
+            background-color: #f97316;
             color: white;
             border: none;
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            border-radius: 8px;
+            padding: 14px 28px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            border-radius: 10px;
             cursor: pointer;
-            margin: 10px;
-            transition: background 0.2s;
+            margin: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 14px rgba(249, 115, 22, 0.4);
         }
 
         .overlay button:hover {
-            background-color: #d35400;
+            background-color: #ea580c;
+            transform: translateY(-2px);
         }
 
         .hidden {
             display: none !important;
         }
 
-        /* Rules Modal */
         .modal {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: white;
-            color: #333;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            max-width: 600px;
+            background: #1e293b;
+            color: #f1f5f9;
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            max-width: 650px;
             width: 90%;
             max-height: 80vh;
             overflow-y: auto;
             z-index: 200;
+            border: 1px solid #334155;
         }
 
         .modal h2 {
-            color: var(--primary);
-            margin-bottom: 15px;
+            color: #a855f7;
+            margin-bottom: 16px;
+            font-size: 1.5rem;
+            font-weight: 800;
         }
 
         .modal p, .modal li {
-            margin-bottom: 10px;
-            line-height: 1.5;
+            margin-bottom: 12px;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            color: #cbd5e1;
         }
 
         .close-btn {
-            background: #e74c3c;
+            background: #ef4444;
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 8px 16px;
+            border-radius: 8px;
             cursor: pointer;
             float: right;
+            font-weight: 700;
         }
 
         .log {
-            background: #fff;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            max-height: 100px;
+            background: #0f172a;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            height: 48px;
             overflow-y: auto;
-            border: 1px solid #ccc;
-            margin-top: 10px;
+            border: 1px solid #334155;
+            margin-top: 8px;
             width: 100%;
+            max-width: 1050px;
+            font-family: monospace;
+            color: #38bdf8;
+        }
+
+        .custom-upload-input {
+            display: none;
+        }
+
+        .file-upload-badge {
+            background: rgba(255,255,255,0.15);
+            padding: 4px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .file-upload-badge:hover {
+            background: rgba(255,255,255,0.25);
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div>
+        <div class="header-title-box">
             <h2>#ForYou</h2>
-            <span id="round-display">Round 1: Popularity</span>
+            <span id="round-display" class="round-pill">Round 1: Popularity</span>
         </div>
         <div class="scores">
-            <div>Player 1: <span id="p1-score">0</span></div>
-            <div>Player 2: <span id="p2-score">0</span></div>
+            <div>Player 1: <span id="p1-score" class="score-p1">0</span></div>
+            <div>Player 2: <span id="p2-score" class="score-p2">0</span></div>
         </div>
         <div class="controls">
+            <label class="file-upload-badge" title="Optional: Load your card image files directly from your computer">
+                <span>📁 Load Images</span>
+                <input type="file" id="local-img-loader" class="custom-upload-input" multiple accept="image/*" onchange="handleUserImages(event)">
+            </label>
             <button onclick="showRules()">Rules</button>
             <button onclick="restartGame()">Restart</button>
         </div>
@@ -332,26 +799,22 @@
         <!-- Interstitial Overlays -->
         <div id="pass-device-overlay" class="overlay">
             <h1 id="overlay-title">Pass Device</h1>
-            <h2 id="overlay-msg">It is Player X's turn. Make sure the other player isn't looking!</h2>
+            <h2 id="overlay-msg">It is Player 1's turn. Make sure the other player isn't looking!</h2>
             <button id="overlay-btn" onclick="startPlayerTurn()">I'm Ready</button>
-            <button id="end-round-btn" class="hidden" onclick="endRound()">Finish Round / Next</button>
-            <button id="stop-game-btn" class="hidden" onclick="endGameEarly()" style="background:#e74c3c;">Stop Game Now</button>
+            <button id="end-round-btn" class="hidden" onclick="endRound()">Next Round</button>
+            <button id="stop-game-btn" class="hidden" onclick="endGameEarly()" style="background:#ef4444;">Stop Game Now</button>
         </div>
 
         <!-- VidYou Area -->
         <div class="vidyou-area">
             <div class="vidyou-section">
                 <h3>VidYou Goal (Optimization)</h3>
-                <div id="vidyou-opt" class="card"></div>
+                <div id="vidyou-opt"></div>
             </div>
             <div class="vidyou-section">
-                <h3>VidYou Algorithm/Audience</h3>
-                <p>1st (3pt) - 2nd (2pt) - 3rd (1pt)</p>
-                <div id="vidyou-targets" class="card-slot-group">
-                    <div class="card hidden-card"></div>
-                    <div class="card hidden-card"></div>
-                    <div class="card hidden-card"></div>
-                </div>
+                <h3>VidYou Algorithm / Audience Priority</h3>
+                <p style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 6px;">1st (3 pts) • 2nd (2 pts) • 3rd (1 pt)</p>
+                <div id="vidyou-targets" class="card-slot-group"></div>
             </div>
         </div>
 
@@ -372,13 +835,11 @@
             <div class="hand-header">
                 <h3 id="current-player-label">Player 1's Hand</h3>
                 <div>
-                    <span id="instruction-label">Select 1 card to play.</span>
-                    <button id="play-cards-btn" onclick="submitPlay()" disabled>Play Selected</button>
+                    <span id="instruction-label" style="font-size: 0.85rem; color: #cbd5e1; margin-right: 12px;">Select 1 card to play.</span>
+                    <button id="play-cards-btn" class="action-btn" onclick="submitPlay()" disabled>Play Selected</button>
                 </div>
             </div>
-            <div class="cards-in-hand" id="player-hand">
-                <!-- Cards injected here via JS -->
-            </div>
+            <div class="cards-in-hand" id="player-hand"></div>
             <div id="game-log" class="log">Game started. Waiting for Player 1.</div>
         </div>
 
@@ -390,96 +851,162 @@
             <ul>
                 <li><strong>Round 1 (Popularity):</strong> VidYou plays 1 Optimization card (visible) and 3 Algorithm cards (hidden, ranked 1st, 2nd, 3rd). Play Video/Boost cards from your hand. Turn 1: Play 1 card. Turn 2: Play up to 2 cards.</li>
                 <li><strong>Round 2 (Monetization):</strong> VidYou plays 3 Audience cards (hidden). Play Ad and Data cards to target the audience.</li>
-                <li><strong>Round 3 (Machine Learning):</strong> Similar to Round 2, using Ad and Data cards to hit Audience targets.</li>
+                <li><strong>Round 3 (Machine Learning):</strong> Similar to Round 2, using Ad and Data cards to hit Audience targets by chaining matching Proxies.</li>
             </ul>
-            <p><strong>Scoring:</strong> Matching the 1st hidden card = 3pts, 2nd = 2pts, 3rd = 1pt. Boost/Data cards enhance your main cards!</p>
+            <p><strong>Scoring:</strong> Matching the 1st hidden card = 3 pts, 2nd = 2 pts, 3rd = 1 pt. Boost/Data cards enhance your main cards!</p>
             <p><em>Note: You can stop playing at the end of any round. Points carry over sequentially.</em></p>
         </div>
     </main>
 
     <script>
-        // --- Game Data (Using Provided Filenames) ---
+        // User provided custom images storage
+        const userUploadedImages = {};
+
+        function handleUserImages(event) {
+            const files = event.target.files;
+            if (!files) return;
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const url = URL.createObjectURL(file);
+                userUploadedImages[file.name] = url;
+            }
+            logMsg(`Loaded ${files.length} custom card image(s) from files!`);
+            updateUI();
+            if (!document.getElementById('pass-device-overlay').classList.contains('hidden')) {
+                // If on turn screen
+            } else {
+                renderHand();
+            }
+        }
+
+        // SVG Icons dictionary for Algorithms, Audiences & Optimizations
+        const ICONS = {
+            eye: `<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`,
+            clock: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>`,
+            thumb: `<svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>`,
+            link: `<svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>`,
+            share: `<svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>`,
+            mail: `<svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>`,
+            pin: `<svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>`,
+            shirt: `<svg viewBox="0 0 24 24"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path></svg>`,
+            search: `<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>`,
+            images: `<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>`,
+            hourglass: `<svg viewBox="0 0 24 24"><path d="M5 22h14"></path><path d="M5 2h14"></path><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"></path><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"></path></svg>`,
+            cart: `<svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>`,
+            calendar: `<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>`,
+            sparkle: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><line x1="12" y1="2" x2="12" y2="5"></line><line x1="12" y1="19" x2="12" y2="22"></line><line x1="2" y1="12" x2="5" y2="12"></line><line x1="19" y1="12" x2="22" y2="12"></line></svg>`,
+            target: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>`,
+            phone: `<svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>`
+        };
+
         const DB = {
             videos: [
-                { id: 'v1', src: '70.jpg', name: 'Music Video', metrics: ['Freshness', 'Likes'] },
-                { id: 'v2', src: '71.jpg', name: 'Animal Video', metrics: ['Views', 'Subscribers'] },
-                { id: 'v3', src: '72.jpg', name: 'Sports Video', metrics: ['Shares', 'Links'] },
-                { id: 'v4', src: '73.jpg', name: 'How-To Video', metrics: ['Freshness', 'Shares'] },
-                { id: 'v5', src: '74.jpg', name: 'Game Video', metrics: ['Likes', 'Links'] },
-                { id: 'v6', src: '75.jpg', name: 'Music Video', metrics: ['Views', 'Freshness'] },
-                { id: 'v7', src: '76.jpg', name: 'Sports Video', metrics: ['Views', 'Subscribers'] },
-                { id: 'v8', src: '77.jpg', name: 'Music Video', metrics: ['Likes', 'Links'] },
-                { id: 'v9', src: '78.jpg', name: 'Music Video', metrics: ['Shares', 'Subscribers'] },
-                { id: 'v10', src: '79.jpg', name: 'Music Video', metrics: ['Shares', 'Freshness'] },
-                { id: 'v11', src: '80.jpg', name: 'Review Video', metrics: ['Views', 'Links'] },
-                { id: 'v12', src: '81.jpg', name: 'Animal Video', metrics: ['Likes', 'Subscribers'] },
-                { id: 'v13', src: '82.jpg', name: 'Review Video', metrics: ['Views', 'Subscribers'] },
-                { id: 'v14', src: '83.jpg', name: 'Sports Video', metrics: ['Shares', 'Freshness'] },
-                { id: 'v15', src: '84.jpg', name: 'Celebrity Video', metrics: ['Views', 'Links'] },
-                { id: 'v16', src: '85.jpg', name: 'How-To Video', metrics: ['Views', 'Freshness'] },
-                { id: 'v17', src: '86.jpg', name: 'Animal Video', metrics: ['Shares', 'Subscribers'] },
-                { id: 'v18', src: '87.jpg', name: 'Celebrity Video', metrics: ['Likes', 'Links'] },
-                { id: 'v19', src: '88.jpg', name: 'Celebrity Video', metrics: ['Views', 'Links'] },
-                { id: 'v20', src: '89.jpg', name: 'Music Video', metrics: ['Likes', 'Shares'] }
+                { id: 'v1', file: '70.jpg', name: 'Music Video', topic: 'MUSIC', metrics: ['FRESHNESS', 'LIKES'], vidTitle: 'Top 10 Music Videos of All Time', subTitle: '6,822,128 views • WatchMojo', thumbBg: 'linear-gradient(135deg, #1f2937, #4b5563)' },
+                { id: 'v2', file: '71.jpg', name: 'Animal Video', topic: 'ANIMALS', metrics: ['VIEWS', 'SUBSCRIBERS'], vidTitle: 'House Hippo 2.0', subTitle: '255,531 views • Sep 30, 2019', thumbBg: 'linear-gradient(135deg, #064e3b, #047857)' },
+                { id: 'v3', file: '72.jpg', name: 'Sports Video', topic: 'SPORTS', metrics: ['SHARES', 'LINKS'], vidTitle: 'Hockey is Back!', subTitle: '31,544 views • Capitals NHL', thumbBg: 'linear-gradient(135deg, #7f1d1d, #b91c1c)' },
+                { id: 'v4', file: '73.jpg', name: 'How-To Video', topic: 'HOW-TO', metrics: ['FRESHNESS', 'SHARES'], vidTitle: 'How to Make Fire with a Lemon', subTitle: '25,396,062 views • Life Hacks', thumbBg: 'linear-gradient(135deg, #854d0e, #ca8a04)' },
+                { id: 'v5', file: '74.jpg', name: 'Game Video', topic: 'GAMES', metrics: ['LIKES', 'LINKS'], vidTitle: 'Gaming Gone Wrong #12', subTitle: '1,450,200 views • GamerZone', thumbBg: 'linear-gradient(135deg, #3730a3, #4338ca)' },
+                { id: 'v6', file: '75.jpg', name: 'Music Video', topic: 'MUSIC', metrics: ['VIEWS', 'FRESHNESS'], vidTitle: 'Hot This Week - New Music', subTitle: '228,932 views • Vevo Records', thumbBg: 'linear-gradient(135deg, #111827, #374151)' },
+                { id: 'v7', file: '76.jpg', name: 'Sports Video', topic: 'SPORTS', metrics: ['VIEWS', 'SUBSCRIBERS'], vidTitle: '1 in a Million Catch Compilation', subTitle: '890,123 views • Sports Center', thumbBg: 'linear-gradient(135deg, #14532d, #15803d)' },
+                { id: 'v8', file: '77.jpg', name: 'Music Video', topic: 'MUSIC', metrics: ['LIKES', 'LINKS'], vidTitle: 'Queen - Greatest Music Videos', subTitle: '7,356,897 views • Classic Rock', thumbBg: 'linear-gradient(135deg, #581c87, #7e22ce)' },
+                { id: 'v9', file: '78.jpg', name: 'Music Video', topic: 'MUSIC', metrics: ['SHARES', 'SUBSCRIBERS'], vidTitle: 'Selena Gomez - Rare Video', subTitle: '82,750,270 views • Interscope', thumbBg: 'linear-gradient(135deg, #831843, #be185d)' },
+                { id: 'v10', file: '79.jpg', name: 'Music Video', topic: 'MUSIC', metrics: ['SHARES', 'FRESHNESS'], vidTitle: 'Janelle Monáe - Make Me Feel', subTitle: '28,666,697 views • Warner', thumbBg: 'linear-gradient(135deg, #701a75, #a21caf)' },
+                { id: 'v11', file: '80.jpg', name: 'Review Video', topic: 'REVIEW', metrics: ['VIEWS', 'LINKS'], vidTitle: 'Mulan - Movie Honest Review', subTitle: '803,400 views • FilmCritic', thumbBg: 'linear-gradient(135deg, #1e3a8a, #2563eb)' },
+                { id: 'v12', file: '81.jpg', name: 'Animal Video', topic: 'ANIMALS', metrics: ['LIKES', 'SUBSCRIBERS'], vidTitle: 'Funniest Cats & Dogs Life Clips', subTitle: '4,732,153 views • PetClub', thumbBg: 'linear-gradient(135deg, #065f46, #059669)' },
+                { id: 'v13', file: '82.jpg', name: 'Review Video', topic: 'REVIEW', metrics: ['VIEWS', 'SUBSCRIBERS'], vidTitle: 'Uncle Roger Review Ramsey Rice', subTitle: '10,032,260 views • Comedy Review', thumbBg: 'linear-gradient(135deg, #9a3412, #c2410c)' },
+                { id: 'v14', file: '83.jpg', name: 'Sports Video', topic: 'SPORTS', metrics: ['SHARES', 'FRESHNESS'], vidTitle: 'NHL Team Moving Odds Explained', subTitle: '261,755 views • PuckTalk', thumbBg: 'linear-gradient(135deg, #1e293b, #334155)' },
+                { id: 'v15', file: '84.jpg', name: 'Celebrity Video', topic: 'CELEBRITY', metrics: ['VIEWS', 'LINKS'], vidTitle: 'Kardashians Cry Over Last Fight', subTitle: '639,338 views • E! Online', thumbBg: 'linear-gradient(135deg, #4c1d95, #6d28d9)' },
+                { id: 'v16', file: '85.jpg', name: 'How-To Video', topic: 'HOW-TO', metrics: ['VIEWS', 'FRESHNESS'], vidTitle: 'How to Fall Asleep in 2 Minutes', subTitle: '23,633,877 views • HealthDoc', thumbBg: 'linear-gradient(135deg, #0f172a, #1e293b)' },
+                { id: 'v17', file: '86.jpg', name: 'Animal Video', topic: 'ANIMALS', metrics: ['SHARES', 'SUBSCRIBERS'], vidTitle: 'Weirdest Cat Breeds in the World', subTitle: '507,309 views • WildDiscovery', thumbBg: 'linear-gradient(135deg, #713f12, #a16207)' },
+                { id: 'v18', file: '87.jpg', name: 'Celebrity Video', topic: 'CELEBRITY', metrics: ['LIKES', 'LINKS'], vidTitle: 'Meghan & Harry Double Date', subTitle: '1,780 views • Access Star', thumbBg: 'linear-gradient(135deg, #312e81, #4338ca)' },
+                { id: 'v19', file: '88.jpg', name: 'Celebrity Video', topic: 'CELEBRITY', metrics: ['VIEWS', 'LINKS'], vidTitle: 'Nicole Kidman Real Birth Name', subTitle: '13,922,050 views • BBC Graham', thumbBg: 'linear-gradient(135deg, #881337, #9f1239)' },
+                { id: 'v20', file: '89.jpg', name: 'Music Video', topic: 'MUSIC', metrics: ['LIKES', 'SHARES'], vidTitle: 'Men Without Hats - Safety Dance', subTitle: '42,109 views • 80s Vibe', thumbBg: 'linear-gradient(135deg, #14532d, #166534)' }
             ],
             boosts: [
-                { id: 'b1', src: '41.jpg', name: 'Like Farm', metrics: ['Likes'], isBoost: true },
-                { id: 'b2', src: '42.jpg', name: 'Hidden Pop-up', metrics: ['Views'], isBoost: true },
-                { id: 'b3', src: '44.jpg', name: 'Retweet Room', metrics: ['Freshness'], isBoost: true },
-                { id: 'b4', src: '45.jpg', name: 'Sock Puppet', metrics: ['Subscribers'], isBoost: true },
-                { id: 'b5', src: '46.jpg', name: 'Google Bomb', metrics: ['Links'], isBoost: true },
-                { id: 'b6', src: '68.jpg', name: 'Controversy', metrics: ['Shares'], isBoost: true }
+                { id: 'b1', file: '41.jpg', name: 'LIKE FARM', metric: 'LIKES', desc: 'Like farms are groups of accounts used to fake Likes. Doubles Like score on card.' },
+                { id: 'b2', file: '42.jpg', name: 'HIDDEN POP-UP', metric: 'VIEWS', desc: 'Hidden pop-ups open video secretly in new windows. Doubles Views score on card.' },
+                { id: 'b3', file: '43.jpg', name: 'RETWEET ROOM', metric: 'FRESHNESS', desc: 'Retweet rooms share posts rapidly to look viral. Doubles Freshness score.' },
+                { id: 'b4', file: '44.jpg', name: 'SOCK PUPPET', metric: 'SUBSCRIBERS', desc: 'Fake accounts making it look like someone follows. Doubles Subscribers score.' },
+                { id: 'b5', file: '45.jpg', name: 'GOOGLE BOMB', metric: 'LINKS', desc: 'Making misleading sites to alter searches. Doubles Links score on card.' },
+                { id: 'b6', file: '46.jpg', name: 'CONTROVERSY', metric: 'SHARES', desc: 'Controversial posts provoke massive heated sharing. Doubles Shares score.' }
             ],
             algorithms: [
-                { id: 'al1', src: '30.jpg', name: 'Freshness', metric: 'Freshness' },
-                { id: 'al2', src: '31.jpg', name: 'Likes', metric: 'Likes' },
-                { id: 'al3', src: '32.jpg', name: 'Links', metric: 'Links' },
-                { id: 'al4', src: '33.jpg', name: 'Shares', metric: 'Shares' },
-                { id: 'al5', src: '47.png', name: 'Subscribers', metric: 'Subscribers' },
-                { id: 'al6', src: '71.jpg', name: 'Views', metric: 'Views' } 
+                { id: 'al1', file: '29.jpg', name: 'Freshness', metric: 'FRESHNESS', icon: 'clock', desc: 'Sorts by how popular recently. Shows if video is gaining momentum.' },
+                { id: 'al2', file: '30.jpg', name: 'Likes', metric: 'LIKES', icon: 'thumb', desc: 'Sorts by likes & upvotes. Shows how interested people were.' },
+                { id: 'al3', file: '31.jpg', name: 'Links', metric: 'LINKS', icon: 'link', desc: 'Sorts by external backlinks. Shows popularity across the whole web.' },
+                { id: 'al4', file: '32.jpg', name: 'Shares', metric: 'SHARES', icon: 'share', desc: 'Sorts by friend-shares. Shows strong social viral preference.' },
+                { id: 'al5', file: '33.jpg', name: 'Subscribers', metric: 'SUBSCRIBERS', icon: 'mail', desc: 'Sorts by follower count. Predicts initial day-one release views.' },
+                { id: 'al6', file: '28.jpg', name: 'Views', metric: 'VIEWS', icon: 'eye', desc: 'Sorts by total count of viewers who played this video.' }
             ],
             optimizations: [
-                { id: 'o1', src: '68_2.jpg', name: 'Daily Use' },
-                { id: 'o2', src: '1.jpg', name: 'Virality' },
-                { id: 'o3', src: '66.jpg', name: 'Watch Time' },
-                { id: 'o4', src: '67.jpg', name: 'Stickiness' }
+                { id: 'o1', file: '68_2.jpg', name: 'Daily Use', icon: 'calendar', desc: 'Make sure your users come back to your site often every day.' },
+                { id: 'o2', file: '69.jpg', name: 'Virality', icon: 'sparkle', desc: 'Make sure users share videos they watch with as many people as possible.' },
+                { id: 'o3', file: '65.jpg', name: 'Watch Time', icon: 'phone', desc: 'Try to make users watch as much of each video as possible.' },
+                { id: 'o4', file: '66.jpg', name: 'Stickiness', icon: 'target', desc: 'Make sure users keep watching videos instead of leaving the platform.' },
+                { id: 'o5', file: '67.jpg', name: 'Engagement', icon: 'target', desc: 'Get users to like, comment and reply to as many videos as possible.' }
             ],
             audiences: [
-                { id: 'au1', src: '34.jpg', name: 'Location', metric: 'Location' },
-                { id: 'au2', src: '35.jpg', name: 'Brand Loyalty', metric: 'Brand Loyalty' },
-                { id: 'au3', src: '36.jpg', name: 'Personality', metric: 'Personality' },
-                { id: 'au4', src: '38.jpg', name: 'Interests', metric: 'Interests' },
-                { id: 'au5', src: '40.jpg', name: 'Age', metric: 'Age' }
+                { id: 'au1', file: '34.jpg', name: 'Location', metric: 'LOCATION', icon: 'pin', desc: 'Sorts by viewer location so they only see local ads.' },
+                { id: 'au2', file: '35.jpg', name: 'Brand Loyalty', metric: 'BRAND LOYALTY', icon: 'shirt', desc: 'Targets loyal fans and redirects users who will not buy.' },
+                { id: 'au3', file: '36.jpg', name: 'Personality', metric: 'PERSONALITY', icon: 'search', desc: 'Targets psychological traits like curiosity or excitement.' },
+                { id: 'au4', file: '38.jpg', name: 'Interests', metric: 'INTERESTS', icon: 'images', desc: 'Sorts by what viewer is interested in so they buy.' },
+                { id: 'au5', file: '40.jpg', name: 'Age', metric: 'AGE', icon: 'hourglass', desc: 'Ensures ads reach people of the right demographic age.' },
+                { id: 'au6', file: '39.jpg', name: 'Intent to Buy', metric: 'INTENT TO BUY', icon: 'cart', desc: 'Reaches people searching to buy right away.' }
             ],
             ads: [
-                { id: 'ad1', src: '5.jpg', name: 'TV Show Ad', metrics: ['Location', 'Brand Loyalty'] },
-                { id: 'ad2', src: '6.jpg', name: 'Video Game Ad', metrics: ['Brand Loyalty', 'Age'] },
-                { id: 'ad3', src: '26.jpg', name: 'Tech Ad', metrics: ['Interests', 'Brand Loyalty'] },
-                { id: 'ad4', src: '54.png', name: 'Housewares Ad', metrics: ['Location', 'Income'] },
-                { id: 'ad5', src: '2.jpg', name: 'Car Ad', metrics: ['Income', 'Brand Loyalty'] },
-                { id: 'ad6', src: '3.jpg', name: 'Restaurant Ad', metrics: ['Location', 'Interests'] },
-                { id: 'ad7', src: '4.jpg', name: 'Restaurant Ad', metrics: ['Intent to Buy', 'Location'] },
-                { id: 'ad8', src: '7.jpg', name: 'Beauty Ad', metrics: ['Personality', 'Income'] },
-                { id: 'ad9', src: '8.jpg', name: 'Kitchenware Ad', metrics: ['Interests', 'Brand Loyalty'] },
-                { id: 'ad10', src: '9.jpg', name: 'Lessons Ad', metrics: ['Interests', 'Personality'] },
-                { id: 'ad11', src: '10.jpg', name: 'Housewares Ad', metrics: ['Location', 'Income'] },
-                { id: 'ad12', src: '11.jpg', name: 'Insurance Ad', metrics: ['Intent to Buy', 'Personality'] }
+                { id: 'ad1', file: '5.jpg', name: 'TV Show Ad', metrics: ['LOCATION', 'BRAND LOYALTY'], adTitle: 'The Tonight Show Fallon', subTitle: 'Wheel of Musical Impressions' },
+                { id: 'ad2', file: '6.jpg', name: 'Video Game Ad', metrics: ['BRAND LOYALTY', 'AGE'], adTitle: 'Xbox Game Pass - Forza', subTitle: 'One low monthly price' },
+                { id: 'ad3', file: '26.jpg', name: 'Tech Ad', metrics: ['INTERESTS', 'BRAND LOYALTY'], adTitle: 'Sony Bravia OLED TV', subTitle: 'Immerse in pure vision' },
+                { id: 'ad4', file: '54.png', name: 'Housewares Ad', metrics: ['LOCATION', 'INCOME'], adTitle: 'Zillow Real Estate', subTitle: 'Find your dream home' },
+                { id: 'ad5', file: '1.jpg', name: 'Car Ad', metrics: ['INCOME', 'BRAND LOYALTY'], adTitle: 'GMC Sierra Truck', subTitle: 'Professional Grade Power' },
+                { id: 'ad6', file: '2.jpg', name: 'Restaurant Ad', metrics: ['LOCATION', 'INTERESTS'], adTitle: 'Firepit Smokehouse Bar', subTitle: 'Book table now • Southport' },
+                { id: 'ad7', file: '3.jpg', name: 'Restaurant Ad', metrics: ['INTENT TO BUY', 'LOCATION'], adTitle: 'Endless Shrimp Special', subTitle: 'Red Lobster seasonal deal' },
+                { id: 'ad8', file: '4.jpg', name: 'Beauty Ad', metrics: ['PERSONALITY', 'INCOME'], adTitle: 'Refinery29 Beauty Test', subTitle: '5 days of luxury skin experiments' },
+                { id: 'ad9', file: '7.jpg', name: 'Clothing Ad', metrics: ['LOCATION', 'INCOME'], adTitle: 'Sock Club Patterns', subTitle: 'Handmade luxury organic' },
+                { id: 'ad10', file: '8.jpg', name: 'Kitchenware Ad', metrics: ['INTERESTS', 'BRAND LOYALTY'], adTitle: 'Chef Ramsay Master Pans', subTitle: 'Pro kitchen gear tricks' },
+                { id: 'ad11', file: '9.jpg', name: 'Lessons Ad', metrics: ['INTERESTS', 'PERSONALITY'], adTitle: 'Aaron Sorkin Screenwriting', subTitle: 'MasterClass video stream' },
+                { id: 'ad12', file: '10.jpg', name: 'Housewares Ad', metrics: ['LOCATION', 'INCOME'], adTitle: 'Grace Church Rd Property', subTitle: 'Modern architecture tour' },
+                { id: 'ad13', file: '11.jpg', name: 'Insurance Ad', metrics: ['INTENT TO BUY', 'PERSONALITY'], adTitle: 'State Farm Coverage', subTitle: 'Relief that works hard' },
+                { id: 'ad14', file: '12.jpg', name: 'Travel Ad', metrics: ['INTERESTS', 'INCOME'], adTitle: 'Uluru Outback Expeditions', subTitle: 'Discover secret Australia' },
+                { id: 'ad15', file: '13.jpg', name: 'Productivity Ad', metrics: ['PERSONALITY', 'INTENT TO BUY'], adTitle: 'Grammarly Writing Assistant', subTitle: 'Write with clear confidence' },
+                { id: 'ad16', file: '14.jpg', name: 'Tech Ad', metrics: ['INCOME', 'PERSONALITY'], adTitle: 'YouTube TV 70+ Channels', subTitle: 'Live cable alternative' },
+                { id: 'ad17', file: '15.jpg', name: 'Medicine Ad', metrics: ['AGE', 'INCOME'], adTitle: 'Excedrin Migraine Relief', subTitle: 'Doctor recommended formula' },
+                { id: 'ad18', file: '16.jpg', name: 'Restaurant Ad', metrics: ['INCOME', 'LOCATION'], adTitle: 'Ralphs Grocery Deals', subTitle: 'Easter fresh market coupons' },
+                { id: 'ad19', file: '17.jpg', name: 'Video Game Ad', metrics: ['PERSONALITY', 'AGE'], adTitle: 'Halo 5 4K Game Edition', subTitle: 'Enhanced master gameplay' },
+                { id: 'ad20', file: '18.jpg', name: 'Yogurt Ad', metrics: ['PERSONALITY', 'INTERESTS'], adTitle: 'Oikos Triple Zero Protein', subTitle: '10g healthy nutrition' },
+                { id: 'ad21', file: '19.jpg', name: 'Shoes Ad', metrics: ['INTERESTS', 'LOCATION'], adTitle: 'Nike Air Max JustFab', subTitle: 'First pair discount order' },
+                { id: 'ad22', file: '20.jpg', name: 'TV Show Ad', metrics: ['LOCATION', 'AGE'], adTitle: 'How to Run Marathon Doc', subTitle: 'Exclusive series premiere' },
+                { id: 'ad23', file: '21.jpg', name: 'Influencer Ad', metrics: ['INTERESTS', 'AGE'], adTitle: 'Lele Pons First College Day', subTitle: 'Campus student style' },
+                { id: 'ad24', file: '22.jpg', name: 'Shaving Cream Ad', metrics: ['BRAND LOYALTY', 'LOCATION'], adTitle: 'Crema Men 2-in-1 Wash', subTitle: 'Cooling refresh gel' },
+                { id: 'ad25', file: '23.jpg', name: 'Car Ad', metrics: ['INTENT TO BUY', 'BRAND LOYALTY'], adTitle: 'Toyota Olympic Concept', subTitle: 'Next-gen mobility future' },
+                { id: 'ad26', file: '24.jpg', name: 'Jeans Ad', metrics: ['PERSONALITY', 'AGE'], adTitle: 'Old Navy Denim Stretch', subTitle: 'Say Hi to new styles' },
+                { id: 'ad27', file: '25.jpg', name: 'Medication Ad', metrics: ['INTENT TO BUY', 'AGE'], adTitle: 'Cigna Preventive Health', subTitle: 'Take control of wellness' },
+                { id: 'ad28', file: '27.jpg', name: 'Productivity Ad', metrics: ['INTENT TO BUY', 'INTERESTS'], adTitle: 'Shutterstock 4K Stock', subTitle: 'Download incredible scenes' }
             ],
             dataCards: [
-                { id: 'd1', src: '69.jpg', name: 'GPS', metrics: ['Location'], isData: true },
-                { id: 'd2', src: '48.png', name: 'Cookies', metrics: ['Interests'], isData: true },
-                { id: 'd3', src: '49.png', name: 'Views', metrics: ['Age'], isData: true },
-                { id: 'd4', src: '50.png', name: 'Profile', metrics: ['Intent to Buy'], isData: true },
-                { id: 'd5', src: '51.png', name: 'Views', metrics: ['Interests'], isData: true },
-                { id: 'd6', src: '52.png', name: 'Cookies', metrics: ['Brand Loyalty'], isData: true },
-                { id: 'd7', src: '64.png', name: 'Other Sites', metrics: ['Income'], isData: true },
-                { id: 'd8', src: '65.png', name: 'Cookies', metrics: ['Interests'], isData: true }
+                { id: 'd1', file: '54.png', name: 'GPS', target: 'LOCATION', left: 'FRIENDS', right: null, desc: 'Your GPS signal shows exactly where you are.' },
+                { id: 'd2', file: '47.png', name: 'COOKIES', target: 'INTERESTS', left: 'LANGUAGE', right: 'GENDER', desc: 'What you do on websites shows what you like.' },
+                { id: 'd3', file: '48.png', name: 'VIEWS', target: 'AGE', left: 'RACE', right: 'GENDER', desc: 'What videos you watched can show your age.' },
+                { id: 'd4', file: '49.png', name: 'PROFILE', target: 'INTENT TO BUY', left: 'GENDER', right: 'NAME', desc: 'Profile info shows likelihood of purchasing.' },
+                { id: 'd5', file: '50.png', name: 'VIEWS', target: 'INTERESTS', left: 'SEXUAL ORIENTATION', right: null, desc: 'Videos you watched show your true interests.' },
+                { id: 'd6', file: '51.png', name: 'COOKIES', target: 'BRAND LOYALTY', left: 'NAME', right: 'LANGUAGE', desc: 'Visiting brand sites shows brand devotion.' },
+                { id: 'd7', file: '52.png', name: 'OTHER SITES', target: 'INTERESTS', left: 'SEXUAL ORIENTATION', right: 'LANGUAGE', desc: 'External visits show your personal interests.' },
+                { id: 'd8', file: '53.png', name: 'SEARCH HISTORY', target: 'BRAND LOYALTY', left: 'GENDER', right: 'SEXUAL ORIENTATION', desc: 'Searches for a brand reveal strong loyalty.' },
+                { id: 'd9', file: '55.png', name: 'PROFILE', target: 'AGE', left: 'FRIENDS', right: 'NAME', desc: 'Profile info frequently discloses birthday & age.' },
+                { id: 'd10', file: '56.png', name: 'SHOPPING HISTORY', target: 'AGE', left: 'HEALTH', right: 'GENDER', desc: 'What you buy reveals how old you are.' },
+                { id: 'd11', file: '57.png', name: 'INTERACTIONS', target: 'INTERESTS', left: 'FRIENDS', right: 'RACE', desc: 'Liked & shared posts reveal core preferences.' },
+                { id: 'd12', file: '58.png', name: 'IP ADDRESS', target: 'LOCATION', left: 'LANGUAGE', right: 'FRIENDS', desc: 'IP routing identifies user town and region.' },
+                { id: 'd13', file: '59.png', name: 'INTERACTIONS', target: 'PERSONALITY', left: 'HEALTH', right: 'SEXUAL ORIENTATION', desc: 'Behavior patterns identify emotional personality.' },
+                { id: 'd14', file: '60.png', name: 'LOYALTY PROGRAM', target: 'BRAND LOYALTY', left: null, right: 'GENDER', desc: 'Signing up for reward points shows devotion.' },
+                { id: 'd15', file: '61.png', name: 'SHOPPING HISTORY', target: 'INTENT TO BUY', left: 'RACE', right: 'HEALTH', desc: 'Recent purchase cart history signals intent.' },
+                { id: 'd16', file: '62.png', name: 'LOYALTY PROGRAM', target: 'AGE', left: 'NAME', right: 'RACE', desc: 'Points program profiles indicate demographic.' },
+                { id: 'd17', file: '63.png', name: 'OTHER SITES', target: 'INCOME', left: 'GENDER', right: 'HEALTH', desc: 'Purchases elsewhere indicate income bracket.' },
+                { id: 'd18', file: '64.png', name: 'COOKIES', target: 'INTERESTS', left: 'LANGUAGE', right: 'GENDER', desc: 'Browser cookie tracking profiles hobbies.' }
             ]
         };
 
-        // --- Game State ---
         let state = {
-            round: 1, // 1: Pop, 2: Mon, 3: ML
+            round: 1, // 1: Popularity, 2: Monetization, 3: Machine Learning
             phase: 1, // 1: Turn 1, 2: Turn 2
             p1Score: 0,
             p2Score: 0,
@@ -488,14 +1015,13 @@
             p1Played: [],
             p2Played: [],
             vidYouOpt: null,
-            vidYouTargets: [], // Array of 3 cards
+            vidYouTargets: [],
             currentPlayer: 1,
             selectedCards: [],
             maxSelectable: 1,
             targetsRevealed: false
         };
 
-        // --- Utility ---
         function shuffle(array) {
             let currentIndex = array.length, randomIndex;
             while (currentIndex != 0) {
@@ -512,25 +1038,116 @@
             log.scrollTop = log.scrollHeight;
         }
 
-        // --- UI Rendering ---
-        function renderCard(card, hidden = false) {
-            const div = document.createElement('div');
-            div.className = 'card' + (hidden ? ' hidden-card' : '');
-            div.dataset.id = card.id;
-            
-            const img = document.createElement('img');
-            img.src = card.src;
-            img.alt = card.name;
-            // Fallback text if image fails to load
-            img.onerror = () => {
-                img.style.display = 'none';
-                const text = document.createElement('div');
-                text.className = 'card-fallback-text';
-                text.innerHTML = `${card.name}<br><small>${card.metrics ? card.metrics.join(', ') : (card.metric || '')}</small>`;
-                div.appendChild(text);
-            };
-            div.appendChild(img);
-            return div;
+        function createCardElement(card, hidden = false) {
+            const el = document.createElement('div');
+            el.className = 'card' + (hidden ? ' hidden-card' : '');
+            el.dataset.id = card.id;
+
+            // If user loaded the actual image file locally, display it
+            if (userUploadedImages[card.file]) {
+                const img = document.createElement('img');
+                img.className = 'card-user-img';
+                img.src = userUploadedImages[card.file];
+                img.alt = card.name || 'Card';
+                el.appendChild(img);
+                return el;
+            }
+
+            // High Fidelity Procedural Visual Card Templates
+            if (card.topic) {
+                // VIDEO CARD (Orange stripes + Video Player UI mockup)
+                el.classList.add('card-video');
+                el.innerHTML = `
+                    <div class="card-header-badge">VIDEO</div>
+                    <div class="card-screen-frame">
+                        <div class="card-screen-thumb" style="background:${card.thumbBg};">
+                            <div class="play-btn-circle"><div class="play-btn-triangle"></div></div>
+                        </div>
+                        <div class="screen-metadata-bar">
+                            <div class="screen-title">${card.vidTitle || card.name}</div>
+                            <div class="screen-subtext">${card.subTitle || 'YouTube • HD'}</div>
+                        </div>
+                    </div>
+                    <div class="card-metrics-body">
+                        ${card.metrics.map(m => `<div class="metric-txt">${m}</div>`).join('')}
+                    </div>
+                    <div class="card-topic-tag">${card.topic}</div>
+                `;
+            } else if (card.adTitle) {
+                // AD CARD (Cyan stripes + Advert mock video UI)
+                el.classList.add('card-ad');
+                el.innerHTML = `
+                    <div class="card-header-badge">AD</div>
+                    <div class="ad-title-tag">${card.name}</div>
+                    <div class="card-screen-frame">
+                        <div class="card-screen-thumb" style="background: #0f172a;">
+                            <div style="font-size:0.5rem; color:#38bdf8; font-weight:800; padding:4px; text-align:center;">
+                                ${card.adTitle}
+                            </div>
+                        </div>
+                        <div class="screen-metadata-bar">
+                            <div class="screen-title" style="color:#0284c7;">SPONSORED AD</div>
+                            <div class="screen-subtext">${card.subTitle || 'Skip in 5s'}</div>
+                        </div>
+                    </div>
+                    <div class="card-metrics-body">
+                        ${card.metrics.map(m => `<div class="metric-txt">${m}</div>`).join('')}
+                    </div>
+                `;
+            } else if (card.metric && card.icon) {
+                // ALGORITHM CARD (Purple + Blue circular glyph icon)
+                el.classList.add('card-algorithm');
+                el.innerHTML = `
+                    <div style="font-size:0.6rem; font-weight:900; letter-spacing:1.5px; opacity:0.9;">ALGORITHM</div>
+                    <div style="font-size:0.85rem; font-weight:900; letter-spacing:0.8px;">${card.name.toUpperCase()}</div>
+                    <div class="card-algo-icon-ring">${ICONS[card.icon] || ICONS.sparkle}</div>
+                    <div class="card-rule-desc">${card.desc}</div>
+                `;
+            } else if (card.target && card.desc && !card.left && !card.right && card.icon) {
+                // AUDIENCE CARD (Green + Orange circular glyph icon)
+                el.classList.add('card-audience');
+                el.innerHTML = `
+                    <div style="font-size:0.6rem; font-weight:900; letter-spacing:1.5px; opacity:0.9;">AUDIENCE</div>
+                    <div style="font-size:0.85rem; font-weight:900; letter-spacing:0.8px;">${card.name.toUpperCase()}</div>
+                    <div class="card-audience-icon-ring">${ICONS[card.icon] || ICONS.pin}</div>
+                    <div class="card-rule-desc">${card.desc}</div>
+                `;
+            } else if (card.target && card.left !== undefined) {
+                // DATA CARD (Dark blue + connecting side tabs)
+                el.classList.add('card-data');
+                el.innerHTML = `
+                    ${card.left ? `<div class="proxy-tab proxy-left">${card.left}</div>` : ''}
+                    ${card.right ? `<div class="proxy-tab proxy-right">${card.right}</div>` : ''}
+                    <div style="font-size:0.55rem; font-weight:900; letter-spacing:1.5px; opacity:0.9;">DATA</div>
+                    <div style="font-size:0.8rem; font-weight:900; margin:2px 0;">${card.name}</div>
+                    <div style="margin: 6px 0;">
+                        <div style="font-size:0.55rem; opacity:0.85; font-weight:700;">TARGETS</div>
+                        <div style="font-size:0.8rem; font-weight:900; color:#facc15;">${card.target}</div>
+                    </div>
+                    <div style="font-size:0.45rem; line-height:1.2; padding:0 8px; opacity:0.95;">${card.desc}</div>
+                `;
+            } else if (card.metric && card.desc) {
+                // BOOST CARD (Amber bullseye)
+                el.classList.add('card-boost');
+                el.innerHTML = `
+                    <div class="boost-header">BOOST</div>
+                    <div class="boost-name">${card.name}</div>
+                    <div style="font-size:0.5rem; line-height:1.3; background:rgba(0,0,0,0.2); padding:6px; border-radius:6px;">
+                        ${card.desc}
+                    </div>
+                `;
+            } else if (card.name && card.icon) {
+                // OPTIMIZATION CARD (Navy blue + Purple ring)
+                el.classList.add('card-opt');
+                el.innerHTML = `
+                    <div style="font-size:0.58rem; font-weight:900; letter-spacing:1.5px; opacity:0.9;">OPTIMIZATION</div>
+                    <div style="font-size:0.85rem; font-weight:900;">${card.name.toUpperCase()}</div>
+                    <div class="opt-icon-ring">${ICONS[card.icon] || ICONS.target}</div>
+                    <div class="card-rule-desc">${card.desc}</div>
+                `;
+            }
+
+            return el;
         }
 
         function updateUI() {
@@ -540,28 +1157,61 @@
             const roundNames = ["", "Popularity", "Monetization", "Machine Learning"];
             document.getElementById('round-display').innerText = `Round ${state.round}: ${roundNames[state.round]}`;
 
-            // Render VidYou
+            // Render VidYou goal
             const optContainer = document.getElementById('vidyou-opt');
             optContainer.innerHTML = '';
-            if (state.vidYouOpt) optContainer.appendChild(renderCard(state.vidYouOpt));
+            if (state.vidYouOpt) {
+                optContainer.appendChild(createCardElement(state.vidYouOpt));
+            } else {
+                optContainer.innerHTML = `<div style="color:#64748b; font-size:0.8rem; padding:20px; font-style:italic;">No Optimization Goal for this Round</div>`;
+            }
 
+            // Render Targets
             const targetsContainer = document.getElementById('vidyou-targets');
             targetsContainer.innerHTML = '';
-            state.vidYouTargets.forEach(c => {
-                targetsContainer.appendChild(renderCard(c, !state.targetsRevealed));
+            state.vidYouTargets.forEach((targetCard, idx) => {
+                const targetWrapper = document.createElement('div');
+                targetWrapper.style.position = 'relative';
+
+                const cardEl = createCardElement(targetCard, !state.targetsRevealed);
+                targetWrapper.appendChild(cardEl);
+
+                // Priority Badge
+                const rankBadge = document.createElement('div');
+                rankBadge.style.cssText = `
+                    position: absolute;
+                    top: -8px;
+                    right: -8px;
+                    background: ${idx === 0 ? '#eab308' : (idx === 1 ? '#94a3b8' : '#cd7f32')};
+                    color: #000;
+                    font-weight: 900;
+                    font-size: 0.75rem;
+                    width: 24px;
+                    height: 24px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border: 2px solid #fff;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+                    z-index: 15;
+                `;
+                rankBadge.innerText = `${idx + 1}`;
+                targetWrapper.appendChild(rankBadge);
+
+                targetsContainer.appendChild(targetWrapper);
             });
 
-            // Render Played
+            // Render Played Cards
             const p1Played = document.getElementById('p1-played');
             p1Played.innerHTML = '';
-            state.p1Played.forEach(c => p1Played.appendChild(renderCard(c)));
+            state.p1Played.forEach(c => p1Played.appendChild(createCardElement(c)));
 
             const p2Played = document.getElementById('p2-played');
             p2Played.innerHTML = '';
-            state.p2Played.forEach(c => p2Played.appendChild(renderCard(c)));
+            state.p2Played.forEach(c => p2Played.appendChild(createCardElement(c)));
         }
 
-        // --- Game Flow ---
         function initGame() {
             state.p1Score = 0;
             state.p2Score = 0;
@@ -580,7 +1230,7 @@
             state.selectedCards = [];
 
             if (state.round === 1) {
-                // Popularity
+                // Popularity Round: Optimization + 3 Algorithms (1st, 2nd, 3rd)
                 state.maxSelectable = 1;
                 state.vidYouOpt = shuffle([...DB.optimizations])[0];
                 state.vidYouTargets = shuffle([...DB.algorithms]).slice(0, 3);
@@ -588,25 +1238,38 @@
                 let deck = shuffle([...DB.videos, ...DB.boosts]);
                 state.p1Hand = deck.slice(0, 5);
                 state.p2Hand = deck.slice(5, 10);
-            } else if (state.round === 2 || state.round === 3) {
-                // Monetization & ML
+                logMsg(`Round 1 started! Optimization: "${state.vidYouOpt.name}". VidYou set 3 secret algorithms.`);
+            } else if (state.round === 2) {
+                // Monetization Round: 3 Audience Targets
                 state.maxSelectable = 1;
-                state.vidYouOpt = null; // No optimization card in these rounds per rules
+                state.vidYouOpt = null;
                 state.vidYouTargets = shuffle([...DB.audiences]).slice(0, 3);
                 
                 let adDeck = shuffle([...DB.ads]);
                 state.p1Hand = adDeck.slice(0, 5);
                 state.p2Hand = adDeck.slice(5, 10);
+                logMsg(`Round 2 (Monetization) started! VidYou selected 3 target audiences.`);
+            } else if (state.round === 3) {
+                // Machine Learning Round
+                state.maxSelectable = 1;
+                state.vidYouOpt = null;
+                state.vidYouTargets = shuffle([...DB.audiences]).slice(0, 3);
+                
+                let adDeck = shuffle([...DB.ads]);
+                state.p1Hand = adDeck.slice(0, 5);
+                state.p2Hand = adDeck.slice(5, 10);
+                logMsg(`Round 3 (Machine Learning) started! Prepare your algorithms and proxies.`);
             }
 
             updateUI();
-            showPassDevice(`Round ${state.round} - Phase 1 begins! Pass to Player 1.`);
+            showPassDevice(`Round ${state.round} - Phase 1 begins! Pass device to Player 1.`);
         }
 
         function showPassDevice(msg) {
-            document.getElementById('pass-device-overlay').classList.remove('hidden');
+            const overlay = document.getElementById('pass-device-overlay');
+            overlay.classList.remove('hidden');
             document.getElementById('overlay-title').innerText = `Player ${state.currentPlayer}'s Turn`;
-            document.getElementById('overlay-msg').innerText = msg + " Make sure the other player isn't looking.";
+            document.getElementById('overlay-msg').innerText = `${msg} (Do not let the other player see your hand!)`;
             document.getElementById('overlay-btn').classList.remove('hidden');
             document.getElementById('end-round-btn').classList.add('hidden');
             document.getElementById('stop-game-btn').classList.add('hidden');
@@ -616,8 +1279,8 @@
             document.getElementById('pass-device-overlay').classList.add('hidden');
             document.getElementById('current-player-label').innerText = `Player ${state.currentPlayer}'s Hand`;
             
-            let allowedToPlay = state.phase === 1 ? 1 : (state.round === 1 ? 2 : 4); 
-            // Simplified: R1P2 play 2. R2P2/R3P2 play 2 ads + 2 data = 4 cards.
+            // Turn 1 = 1 card. Turn 2 = up to 2 Video cards (plus boosts/data in later rounds)
+            let allowedToPlay = state.phase === 1 ? 1 : (state.round === 1 ? 2 : 4);
             state.maxSelectable = allowedToPlay;
             document.getElementById('instruction-label').innerText = `Select up to ${state.maxSelectable} card(s) to play.`;
             
@@ -633,7 +1296,7 @@
             const hand = state.currentPlayer === 1 ? state.p1Hand : state.p2Hand;
             
             hand.forEach((card, index) => {
-                const el = renderCard(card);
+                const el = createCardElement(card);
                 el.onclick = () => toggleSelectCard(el, card, index);
                 handContainer.appendChild(el);
             });
@@ -646,7 +1309,7 @@
                 element.classList.remove('selected');
             } else {
                 if (state.selectedCards.length < state.maxSelectable) {
-                    state.selectedCards.push({card, index});
+                    state.selectedCards.push({ card, index });
                     element.classList.add('selected');
                 }
             }
@@ -654,52 +1317,78 @@
         }
 
         function submitPlay() {
-            // Remove from hand, add to played
             let hand = state.currentPlayer === 1 ? state.p1Hand : state.p2Hand;
             let played = state.currentPlayer === 1 ? state.p1Played : state.p2Played;
 
-            // Sort indices descending to avoid splice shifting issues
+            // Remove played cards from hand and place on the shared table
             state.selectedCards.sort((a,b) => b.index - a.index).forEach(s => {
                 played.push(s.card);
                 hand.splice(s.index, 1);
             });
 
-            logMsg(`Player ${state.currentPlayer} played ${state.selectedCards.length} card(s).`);
+            logMsg(`Player ${state.currentPlayer} placed ${state.selectedCards.length} card(s) on the board.`);
 
             if (state.currentPlayer === 1) {
                 state.currentPlayer = 2;
-                showPassDevice(`Pass to Player 2.`);
+                showPassDevice(`Player 1 finished. Pass Chromebook to Player 2.`);
             } else {
-                // Both played. Resolve phase.
                 resolvePhase();
             }
         }
 
+        function calculateScore(playedArray) {
+            let targetMetrics = state.vidYouTargets.map(t => (t.metric || t.name).toUpperCase());
+            let score = 0;
+            let multiplier = 1;
+
+            playedArray.forEach(card => {
+                if (card.metric && card.desc && !card.icon) {
+                    // Boost card: doubles score if matches
+                    if (targetMetrics.includes(card.metric.toUpperCase())) {
+                        multiplier *= 2;
+                    }
+                } else if (card.target) {
+                    // Data card: adds bonus if target matches
+                    if (targetMetrics.includes(card.target.toUpperCase())) {
+                        score += 2;
+                    }
+                } else if (card.metrics) {
+                    // Video or Ad card
+                    card.metrics.forEach(m => {
+                        const mUpper = m.toUpperCase();
+                        if (mUpper === targetMetrics[0]) score += 3;
+                        if (mUpper === targetMetrics[1]) score += 2;
+                        if (mUpper === targetMetrics[2]) score += 1;
+                    });
+                }
+            });
+
+            return score * multiplier;
+        }
+
         function resolvePhase() {
-            updateUI(); // Show played cards
-            document.getElementById('player-hand').innerHTML = ''; // Hide hand
+            updateUI();
+            document.getElementById('player-hand').innerHTML = '';
 
             if (state.phase === 1) {
-                // Score Phase 1 (hidden)
                 let p1PhaseScore = calculateScore(state.p1Played);
                 let p2PhaseScore = calculateScore(state.p2Played);
-                logMsg(`Phase 1 complete. P1 cards scored: ${p1PhaseScore}. P2 cards scored: ${p2PhaseScore}. (Targets remain hidden)`);
+                logMsg(`Turn 1 complete! VidYou scores cards (VidYou targets remain hidden).`);
+                logMsg(`P1 cards earned ${p1PhaseScore} pts | P2 cards earned ${p2PhaseScore} pts.`);
                 
-                // Setup Phase 2
                 state.phase = 2;
                 state.currentPlayer = 1;
                 
-                // If R2 or R3, deal Data cards
                 if (state.round > 1) {
                     let dataDeck = shuffle([...DB.dataCards]);
                     state.p1Hand.push(...dataDeck.slice(0, 4));
                     state.p2Hand.push(...dataDeck.slice(4, 8));
-                    logMsg(`Dealt 4 Data cards to each player for Phase 2.`);
+                    logMsg(`Dealt 4 Data cards to each player for Turn 2.`);
                 }
 
-                showPassDevice(`Phase 1 over. Phase 2 begins. Pass to Player 1.`);
+                showPassDevice(`Turn 1 finished! Both players see played cards. Pass to Player 1 for Turn 2.`);
             } else {
-                // Phase 2 complete. Reveal and score.
+                // Phase 2 finished: Reveal the 3 algorithm/audience cards
                 state.targetsRevealed = true;
                 updateUI();
 
@@ -709,54 +1398,42 @@
                 state.p1Score += p1FinalScore;
                 state.p2Score += p2FinalScore;
                 
-                logMsg(`Round ${state.round} OVER! Targets revealed.`);
-                logMsg(`P1 earned ${p1FinalScore} this round. Total: ${state.p1Score}`);
-                logMsg(`P2 earned ${p2FinalScore} this round. Total: ${state.p2Score}`);
+                logMsg(`Round ${state.round} OVER! VidYou revealed the algorithm priority.`);
+                logMsg(`P1 scored +${p1FinalScore} pts (Total: ${state.p1Score})`);
+                logMsg(`P2 scored +${p2FinalScore} pts (Total: ${state.p2Score})`);
                 updateUI();
 
                 promptRoundEnd();
             }
         }
 
-        function calculateScore(playedArray) {
-            // Simplified scoring logic
-            // Targets: [0] = 3pts, [1] = 2pts, [2] = 1pt
-            let targetMetrics = state.vidYouTargets.map(t => t.metric);
-            let score = 0;
-            let multiplier = 1;
-
-            playedArray.forEach(card => {
-                if (card.isBoost || card.isData) {
-                    // In simplified rules: Boosts double. Data adds logic. Let's make them add +2 if they match a target.
-                    if (card.isBoost) multiplier *= 2;
-                    if (card.isData && card.metrics.some(m => targetMetrics.includes(m))) {
-                        score += 2; // Data card matched a target
-                    }
-                } else if (card.metrics) {
-                    card.metrics.forEach(m => {
-                        if (m === targetMetrics[0]) score += 3;
-                        if (m === targetMetrics[1]) score += 2;
-                        if (m === targetMetrics[2]) score += 1;
-                    });
-                }
-            });
-
-            return score * multiplier;
-        }
-
         function promptRoundEnd() {
-            document.getElementById('pass-device-overlay').classList.remove('hidden');
+            const overlay = document.getElementById('pass-device-overlay');
+            overlay.classList.remove('hidden');
             document.getElementById('overlay-title').innerText = `Round ${state.round} Complete!`;
-            document.getElementById('overlay-msg').innerText = `P1 Total: ${state.p1Score} | P2 Total: ${state.p2Score}\nContinue to next round or stop here?`;
+            
+            const p1RoundPts = calculateScore(state.p1Played);
+            const p2RoundPts = calculateScore(state.p2Played);
+
+            document.getElementById('overlay-msg').innerHTML = `
+                <div style="font-size: 1.2rem; margin-bottom: 12px;">The algorithm targets have been revealed above!</div>
+                <div style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin-bottom: 16px;">
+                    <div>Round Points: <strong>Player 1 (+${p1RoundPts})</strong> • <strong>Player 2 (+${p2RoundPts})</strong></div>
+                    <div style="margin-top:6px;">Current Total Score: <strong>P1: ${state.p1Score}</strong> | <strong>P2: ${state.p2Score}</strong></div>
+                </div>
+                <div>Would you like to advance to the next round, or stop and finish here?</div>
+            `;
             
             document.getElementById('overlay-btn').classList.add('hidden');
-            document.getElementById('end-round-btn').classList.remove('hidden');
-            document.getElementById('stop-game-btn').classList.remove('hidden');
+            const endBtn = document.getElementById('end-round-btn');
+            const stopBtn = document.getElementById('stop-game-btn');
+            endBtn.classList.remove('hidden');
+            stopBtn.classList.remove('hidden');
 
             if (state.round === 3) {
-                document.getElementById('end-round-btn').innerText = "Finish Game";
+                endBtn.innerText = "Finish Game & View Winner";
             } else {
-                document.getElementById('end-round-btn').innerText = "Start Next Round";
+                endBtn.innerText = `Start Round ${state.round + 1}`;
             }
         }
 
@@ -770,24 +1447,40 @@
         }
 
         function endGameEarly() {
-            let winner = state.p1Score > state.p2Score ? "Player 1 Wins!" : (state.p2Score > state.p1Score ? "Player 2 Wins!" : "It's a Tie!");
+            let winner = state.p1Score > state.p2Score 
+                ? "🏆 Player 1 Wins!" 
+                : (state.p2Score > state.p1Score ? "🏆 Player 2 Wins!" : "It's a Tie!");
+            
+            const overlay = document.getElementById('pass-device-overlay');
+            overlay.classList.remove('hidden');
             document.getElementById('overlay-title').innerText = "Game Over!";
-            document.getElementById('overlay-msg').innerText = `Final Score\nPlayer 1: ${state.p1Score}\nPlayer 2: ${state.p2Score}\n\n${winner}`;
+            document.getElementById('overlay-msg').innerHTML = `
+                <div style="font-size: 2rem; color: #facc15; font-weight: 900; margin-bottom: 16px;">${winner}</div>
+                <div style="font-size: 1.25rem;">Final Running Scores:</div>
+                <div style="margin-top: 8px; font-weight: 700;">Player 1: ${state.p1Score} pts &nbsp;|&nbsp; Player 2: ${state.p2Score} pts</div>
+            `;
             
             document.getElementById('overlay-btn').classList.add('hidden');
             document.getElementById('end-round-btn').classList.add('hidden');
             document.getElementById('stop-game-btn').classList.add('hidden');
 
-            const restartBtn = document.createElement('button');
-            restartBtn.innerText = "Play Again";
-            restartBtn.onclick = () => {
-                restartBtn.remove();
-                restartGame();
-            };
-            document.getElementById('pass-device-overlay').appendChild(restartBtn);
+            // Play again button
+            let existingRestart = document.getElementById('restart-game-prompt-btn');
+            if (!existingRestart) {
+                const restartBtn = document.createElement('button');
+                restartBtn.id = 'restart-game-prompt-btn';
+                restartBtn.innerText = "Play Again from Round 1";
+                restartBtn.onclick = () => {
+                    restartBtn.remove();
+                    restartGame();
+                };
+                overlay.appendChild(restartBtn);
+            }
         }
 
         function restartGame() {
+            const promptBtn = document.getElementById('restart-game-prompt-btn');
+            if (promptBtn) promptBtn.remove();
             initGame();
         }
 
@@ -799,9 +1492,7 @@
             document.getElementById('rules-modal').classList.add('hidden');
         }
 
-        // Start
         window.onload = initGame;
-
     </script>
 </body>
 </html>
