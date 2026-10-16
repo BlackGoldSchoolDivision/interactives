@@ -145,6 +145,7 @@
             background-color: #0f172a;
             overflow: hidden;
             position: relative;
+            min-height: 230px;
         }
 
         .player-board {
@@ -157,6 +158,7 @@
             align-items: center;
             background: rgba(30, 41, 59, 0.4);
             overflow-y: auto;
+            max-height: 100%;
         }
 
         .player-board h3 {
@@ -173,6 +175,8 @@
             justify-content: center;
             align-items: flex-start;
             padding-bottom: 8px;
+            width: 100%;
+            min-height: 190px;
         }
 
         /* Review Mode Banner */
@@ -1462,12 +1466,18 @@
             let hand = state.currentPlayer === 1 ? state.p1Hand : state.p2Hand;
             let played = state.currentPlayer === 1 ? state.p1Played : state.p2Played;
 
-            state.selectedCards.sort((a,b) => b.index - a.index).forEach(s => {
+            // Extract the selected cards in descending index order to avoid splicing offsets
+            const chosen = [...state.selectedCards].sort((a,b) => b.index - a.index);
+            chosen.forEach(s => {
                 played.push(s.card);
                 hand.splice(s.index, 1);
             });
 
-            logMsg(`Player ${state.currentPlayer} placed ${state.selectedCards.length} card(s) on the board.`);
+            logMsg(`Player ${state.currentPlayer} placed ${chosen.length} card(s) on the board.`);
+            
+            // Clear selections immediately and re-render board so played cards show up instantly
+            state.selectedCards = [];
+            updateUI();
 
             if (state.currentPlayer === 1) {
                 state.currentPlayer = 2;
