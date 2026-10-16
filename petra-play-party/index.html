@@ -91,17 +91,16 @@
   .picture-position{text-align:center;font-weight:800;color:#806ca2;font-size:.9rem;margin:-3px 0 4px}
   .picture-cheer{text-align:center;font-weight:900;color:#4f8b4b;font-size:.98rem;min-height:1.4em;margin:0 0 10px}
   .colour-picture-name,.free-name{text-align:center;font-size:1.12rem;font-weight:900;color:#ff5a85;margin:10px 0}
-  .colour-stage,.free-stage{position:relative;background:#fffefc;border:4px solid #f0e5ff;border-radius:24px;overflow:hidden;min-height:340px}
-  .colour-stage svg,.colour-stage canvas,.free-stage canvas{display:block;width:100%;height:340px}
+  .colour-stage,.free-stage{position:relative;background:#fffefc;border:4px solid #f0e5ff;border-radius:24px;overflow:hidden;min-height:min(68dvh,620px)}
+  .colour-stage svg,.colour-stage canvas,.free-stage canvas{display:block;width:100%;height:min(68dvh,620px)}
   .colour-stage canvas,.free-stage canvas{position:absolute;inset:0;touch-action:none}
   .colour-stage canvas{pointer-events:none}
   .colour-stage.brush-active canvas{pointer-events:auto}
   .drag-ghost{position:fixed;z-index:150;pointer-events:none;transform:translate(-50%,-50%) scale(1.05);opacity:.93;box-shadow:0 14px 28px #37265e55}
-  .color-fill-piece{cursor:pointer;transition:fill .1s ease}
+  .color-fill-piece{cursor:pointer;touch-action:manipulation}
   .colour-stage{background:#fffdf8}
   #color-svg{touch-action:manipulation}
-  .color-fill-piece:active{transform:scale(.99)}
-  .size-picker{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .size-picker{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
   .size-btn{min-width:54px}
 
   /* numbers */
@@ -140,8 +139,9 @@
     .subhead{font-size:.94rem;margin-bottom:8px}
     .hunt-balloons{grid-template-columns:repeat(2,minmax(0,1fr))}
     .balloon{min-height:104px;font-size:1.85rem}
-    .paper,.colour-stage,.free-stage{min-height:300px}
-    .paper svg,.paper canvas,.colour-stage svg,.colour-stage canvas,.free-stage canvas{height:300px}
+    .paper,.colour-stage,.free-stage{min-height:min(60dvh,540px)}
+    .paper svg,.paper canvas{height:300px}
+    .colour-stage svg,.colour-stage canvas,.free-stage canvas{height:min(60dvh,540px)}
     .paper canvas{height:300px}
     .colour-tools{gap:5px}
     .colour-palette,.free-palette{width:100%;flex-wrap:nowrap;overflow-x:auto;gap:5px;padding:5px 3px;scrollbar-width:thin}
@@ -295,7 +295,7 @@
 
     <section class="scene" id="color-scene" aria-label="Colour pictures">
       <h2 class="scene-heading">Petra's <span class="highlight">colouring book</span>! 🎨</h2>
-      <p class="subhead">Pick a colour, then tap to fill the picture. Animal pages cheer for Petra!</p>
+      <p class="subhead">Tap a colour, then tap the picture to fill it. The animal pages say “Good job Petra!”</p>
       <div class="color-shell">
         <div class="colour-tools">
           <div id="color-palette" class="colour-palette" aria-label="Choose a colour"></div>
@@ -309,7 +309,7 @@
         <div class="bottom-actions" style="margin:2px 0 9px"><button class="small-action" id="color-animals" type="button">🐾 See animal pictures</button></div>
         <div class="picture-cheer" id="picture-cheer" aria-live="polite"></div>
         <div class="colour-stage">
-          <svg id="color-svg" viewBox="40 7 420 326" role="img" aria-label="Picture to colour"></svg>
+          <svg id="color-svg" viewBox="0 0 500 500" role="img" aria-label="Picture to colour"></svg>
           <canvas id="color-canvas" aria-label="Draw on your picture"></canvas>
         </div>
       </div>
@@ -462,15 +462,12 @@
   const TRACE_ORDER = [...NAME, ...ABC.filter(c => !NAME.includes(c))];
   const HUNT_ORDER = [...NAME, ...ABC.filter(c => !NAME.includes(c))];
   const WORDS = [
-    {word:'CAT', emoji:'🐱'},
-    {word:'DOG', emoji:'🐶'},
-    {word:'SUN', emoji:'☀️'},
-    {word:'HAT', emoji:'🎩'},
-    {word:'BUS', emoji:'🚌'},
-    {word:'CUP', emoji:'🥤'},
-    {word:'BOOK', emoji:'📘'},
-    {word:'FISH', emoji:'🐟'},
-    {word:'PETRA', emoji:'🌟'}
+    {word:'PETRA', emoji:'🌟'},
+    {word:'ZOE', emoji:'👧'},
+    {word:'PAPA', emoji:'👨'},
+    {word:'MOM', emoji:'👩'},
+    {word:'GRANDMA', emoji:'👵'},
+    {word:'FINN', emoji:'🐶'}
   ];
   const COUNT_LEVELS = [
     {n:1, buddy:'🐰', food:'🍓', foodName:'strawberry', buddyName:'Bunny'},
@@ -827,239 +824,82 @@
   const rect = (x,y,w,h,rx=0,attrs='') => region('rect',`x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" ${attrs}`);
   const sparkle = (x,y,size=13) => decoration('path',`d="M${x} ${y-size}V${y+size} M${x-size} ${y}H${x+size}"`);
   const COLOR_PICTURES = [
-    { title:'🌼 Happy flower', shapes: () => `
-      ${sparkle(78,77)} ${sparkle(422,107,10)}
-      ${detail('M250 189 Q248 251 250 320',8)}
-      ${path('M250 285 C218 255 185 258 186 281 C191 308 228 311 250 285Z')}
-      ${path('M250 280 C277 251 313 258 313 283 C313 309 272 306 250 280Z')}
-      ${[0,60,120,180,240,300].map(a => path('M250 165 C211 137 208 84 250 57 C292 84 289 137 250 165Z',`transform="rotate(${a} 250 165)"`)).join('')}
-      ${cir(250,165,38)}
-      ${cir(237,159,4,'stroke-width="2"')} ${cir(263,159,4,'stroke-width="2"')}
-      ${detail('M237 176 Q250 190 263 176',3)}
-      ${decoration('path','d="M54 300Q80 286 104 300 M376 302Q404 291 437 302"')}
+    { title:'🐢 Friendly turtle', animal:true, shapes: () => `
+      ${ell(250,250,125,95)}
+      ${cir(250,250,52)}
+      ${rect(215,205,70,90,14)}
+      ${rect(140,215,38,60,18)} ${rect(322,215,38,60,18)}
+      ${rect(195,325,42,50,18)} ${rect(263,325,42,50,18)}
+      ${cir(250,126,48)}
+      ${cir(234,118,7,'stroke-width="3"')} ${cir(266,118,7,'stroke-width="3"')}
+      ${detail('M235 146 Q250 158 265 146',4)}
+      ${path('M250 334 L235 388 L265 388 Z')}
+      ${ell(210,225,22,18)} ${ell(290,225,22,18)} ${ell(210,278,22,18)} ${ell(290,278,22,18)}
+      ${ell(250,295,24,18)}
     `},
-    { title:'🦋 Beautiful butterfly', animal:true, shapes: () => `
-      ${sparkle(66,56,10)} ${sparkle(435,61,10)}
-      ${path('M244 171 C229 131 207 76 149 67 C96 60 64 104 87 153 C110 198 165 194 244 183Z')}
-      ${path('M244 183 C205 175 138 198 128 250 C125 295 179 310 213 280 C236 260 239 228 248 194Z')}
-      ${path('M256 171 C271 131 293 76 351 67 C404 60 436 104 413 153 C390 198 335 194 256 183Z')}
-      ${path('M256 183 C295 175 362 198 372 250 C375 295 321 310 287 280 C264 260 261 228 252 194Z')}
-      ${ell(152,129,28,33)} ${ell(348,129,28,33)}
-      ${cir(172,248,17)} ${cir(328,248,17)}
-      ${detail('M244 103 Q229 56 207 46',4)} ${detail('M256 103 Q271 56 293 46',4)}
-      ${cir(207,46,7)} ${cir(293,46,7)}
-      ${ell(250,186,23,100)} ${cir(250,96,25)}
-      ${cir(242,92,3,'stroke-width="2"')} ${cir(258,92,3,'stroke-width="2"')}
-      ${detail('M243 106 Q250 113 257 106',3)}
+    { title:'👟 Cool shoes', shapes: () => `
+      ${path('M82 290 C110 244 168 226 224 237 C254 243 278 260 292 286 L292 336 L83 336 C68 336 58 327 58 316 C58 301 68 292 82 290 Z')}
+      ${path('M418 290 C390 244 332 226 276 237 C246 243 222 260 208 286 L208 336 L417 336 C432 336 442 327 442 316 C442 301 432 292 418 290 Z')}
+      ${rect(80,336,215,28,10)} ${rect(205,336,215,28,10)}
+      ${detail('M126 274 L201 274 M118 292 L210 292 M111 309 L219 309',4)}
+      ${detail('M374 274 L299 274 M382 292 L290 292 M389 309 L281 309',4)}
+      ${cir(140,320,6,'stroke-width="3"')} ${cir(169,320,6,'stroke-width="3"')} ${cir(198,320,6,'stroke-width="3"')}
+      ${cir(360,320,6,'stroke-width="3"')} ${cir(331,320,6,'stroke-width="3"')} ${cir(302,320,6,'stroke-width="3"')}
     `},
-    { title:'🌈 Rainbow magic', shapes: () => `
-      ${sparkle(76,76)} ${sparkle(416,88)}
-      ${path('M80 277 A170 170 0 0 1 420 277 L384 277 A134 134 0 0 0 116 277Z')}
-      ${path('M116 277 A134 134 0 0 1 384 277 L351 277 A101 101 0 0 0 149 277Z')}
-      ${path('M149 277 A101 101 0 0 1 351 277 L320 277 A70 70 0 0 0 180 277Z')}
-      ${path('M180 277 A70 70 0 0 1 320 277 L289 277 A39 39 0 0 0 211 277Z')}
-      ${path('M211 277 A39 39 0 0 1 289 277 L289 296 L211 296Z')}
-      ${path('M45 279 C30 255 53 231 80 238 C90 208 133 213 143 244 C174 237 197 271 182 294 L65 294 C55 293 49 289 45 279Z')}
-      ${path('M318 280 C304 260 328 232 355 239 C366 209 409 215 420 244 C452 235 469 272 453 294 L332 294 C326 291 321 287 318 280Z')}
-      ${decoration('path','d="M69 317H170 M326 317H436"')}
+    { title:'🙂 Silly face', shapes: () => `
+      ${path('M128 210 C128 116 204 56 250 56 C296 56 372 116 372 210 L372 226 C345 202 317 186 250 186 C183 186 155 202 128 226 Z')}
+      ${cir(250,260,150)}
+      ${ell(190,240,28,20)} ${ell(310,240,28,20)}
+      ${cir(190,240,9,'stroke-width="3"')} ${cir(310,240,9,'stroke-width="3"')}
+      ${path('M250 245 Q236 286 250 318 Q264 286 250 245 Z')}
+      ${ell(176,314,24,16)} ${ell(324,314,24,16)}
+      ${detail('M190 355 Q250 404 310 355',6)}
+      ${path('M126 170 Q98 196 106 236 Q134 234 147 208 Z')}
+      ${path('M374 170 Q402 196 394 236 Q366 234 353 208 Z')}
+      ${path('M186 95 Q250 40 314 95')}
     `},
-    { title:'🐱 Little kitten', animal:true, shapes: () => `
-      ${sparkle(72,68,11)} ${sparkle(429,63,11)}
-      ${path('M311 257 C380 282 398 215 376 204 C350 191 345 231 355 234')}
-      ${ell(250,251,95,67)}
-      ${path('M179 120 L164 41 Q164 33 174 39 L222 71Z')}
-      ${path('M321 120 L336 41 Q336 33 326 39 L278 71Z')}
-      ${path('M184 105 L180 61 L209 84Z')}
-      ${path('M316 105 L320 61 L291 84Z')}
-      ${cir(250,148,100)}
-      ${ell(222,144,14,19)} ${ell(278,144,14,19)}
-      ${cir(224,149,6,'stroke-width="2"')} ${cir(280,149,6,'stroke-width="2"')}
-      ${path('M236 180 Q250 170 264 180 L250 194Z')}
-      ${detail('M250 195 Q241 210 226 198 M250 195 Q259 210 274 198',3)}
-      ${detail('M197 180 L140 168 M197 194 L139 197 M303 180 L360 168 M303 194 L361 197',3)}
-      ${ell(209,297,29,20)} ${ell(291,297,29,20)}
-      ${path('M234 241 L266 241 L250 261Z')}
+    { title:'🐰 Happy bunny', animal:true, shapes: () => `
+      ${ell(215,108,36,90)} ${ell(285,108,36,90)}
+      ${ell(215,117,18,58)} ${ell(285,117,18,58)}
+      ${cir(250,214,102)}
+      ${ell(250,382,92,78)}
+      ${ell(198,378,28,42)} ${ell(302,378,28,42)}
+      ${ell(182,450,36,18)} ${ell(318,450,36,18)}
+      ${ell(212,214,16,20)} ${ell(288,214,16,20)}
+      ${cir(212,214,7,'stroke-width="3"')} ${cir(288,214,7,'stroke-width="3"')}
+      ${path('M250 242 L236 262 L264 262 Z')}
+      ${detail('M250 262 Q236 279 214 270 M250 262 Q264 279 286 270',4)}
+      ${detail('M218 252 L168 240 M218 264 L166 264 M282 252 L332 240 M282 264 L334 264',3)}
     `},
-    { title:'🦖 Dino adventure', animal:true, shapes: () => `
-      ${sparkle(70,70)} ${sparkle(415,62)}
-      ${path('M163 211 Q88 231 80 279 Q118 276 174 255Z')}
-      ${[ [145,161,173,116,197,149], [178,135,207,96,228,128], [217,116,244,75,265,123], [263,114,287,83,304,128] ].map(p=>path(`M${p[0]} ${p[1]} L${p[2]} ${p[3]} L${p[4]} ${p[5]}Z`)).join('')}
-      ${path('M152 215 C135 155 168 109 226 110 C246 110 269 123 275 153 C285 144 301 104 299 83 C301 59 339 44 371 67 C403 90 406 129 386 152 C365 175 333 161 316 163 C310 234 282 276 228 278 C184 279 158 256 152 215Z')}
-      ${path('M183 256 L175 307 Q189 321 207 307 L217 268Z')}
-      ${path('M246 265 L252 307 Q267 319 282 308 L282 249Z')}
-      ${ell(210,205,31,38)}
-      ${cir(369,100,7)}
-      ${detail('M364 131 Q348 145 330 132',4)}
-      ${cir(393,121,5)}
-      ${path('M268 187 Q307 179 308 203 Q296 217 273 207Z')}
-      ${decoration('path','d="M52 312Q86 299 113 312 M355 313Q389 299 440 314"')}
+    { title:'🐶 Puppy Finn', animal:true, shapes: () => `
+      ${ell(250,340,95,88)}
+      ${rect(188,406,28,52,14)} ${rect(284,406,28,52,14)} ${rect(214,406,28,52,14)} ${rect(258,406,28,52,14)}
+      ${ell(250,205,122,108)}
+      ${ell(172,202,44,74)} ${ell(328,202,44,74)}
+      ${path('M182 134 Q154 116 158 86 Q192 102 206 130 Z')}
+      ${path('M318 134 Q346 116 342 86 Q308 102 294 130 Z')}
+      ${ell(212,208,20,24)} ${ell(288,208,20,24)}
+      ${cir(212,208,8,'stroke-width="3"')} ${cir(288,208,8,'stroke-width="3"')}
+      ${ell(250,246,22,16)}
+      ${detail('M250 258 Q236 272 221 266 M250 258 Q264 272 279 266',4)}
+      ${path('M170 336 Q148 318 132 336 Q145 360 170 356 Z')}
+      ${path('M330 336 Q352 318 368 336 Q355 360 330 356 Z')}
+      ${detail('M346 350 Q388 330 402 352',6)}
+      ${rect(213,296,74,34,16)}
+      ${detail('M230 313 H270',3)}
     `},
-    { title:'🚀 Blast-off rocket', shapes: () => `
-      ${sparkle(85,78)} ${sparkle(415,94)} ${sparkle(378,221,9)}
-      ${path('M226 240 L176 292 L183 213 L205 190Z')}
-      ${path('M274 240 L324 292 L317 213 L295 190Z')}
-      ${path('M226 259 C218 296 234 313 250 332 C266 313 282 296 274 259Z')}
-      ${path('M237 261 Q234 290 250 309 Q266 290 263 261Z')}
-      ${path('M250 35 C202 80 194 147 194 210 Q194 244 214 265 L286 265 Q306 244 306 210 C306 147 298 80 250 35Z')}
-      ${path('M250 35 Q217 65 205 110 L295 110 Q283 65 250 35Z')}
-      ${cir(250,158,34)} ${cir(250,158,21)}
-      ${path('M214 236 Q250 228 286 236 L286 265 L214 265Z')}
-      ${cir(222,214,4,'stroke-width="2"')} ${cir(278,214,4,'stroke-width="2"')}
-      ${decoration('path','d="M112 188V223 M95 204H129 M391 267V293 M379 280H404"')}
-    `},
-    { title:'🏰 Princess castle', shapes: () => `
-      ${sparkle(72,60,9)} ${sparkle(428,57,9)}
-      ${path('M126 128 L126 63 L181 30 L181 128Z')}
-      ${path('M319 128 L319 30 L374 63 L374 128Z')}
-      ${rect(170,138,160,154,4)}
-      ${rect(110,105,80,187,4)} ${rect(310,105,80,187,4)}
-      ${path('M104 106 L115 80 L185 80 L196 106Z')}
-      ${path('M304 106 L315 80 L385 80 L396 106Z')}
-      ${path('M165 138 L165 121 L335 121 L335 138Z')}
-      ${path('M205 121 L205 84 L250 49 L295 84 L295 121Z')}
-      ${path('M227 290 L227 230 C227 201 273 201 273 230 L273 290Z')}
-      ${rect(130,155,40,51,18)} ${rect(330,155,40,51,18)}
-      ${rect(233,110,34,43,14)}
-      ${rect(185,249,35,41,8)} ${rect(280,249,35,41,8)}
-      ${detail('M250 50 V24 L276 35 L250 45',4)}
-      ${decoration('path','d="M65 313H439 M85 321H404"')}
-    `},
-    { title:'🐠 Under the sea', animal:true, shapes: () => `
-      ${sparkle(70,61,8)}
-      ${path('M346 154 Q415 95 429 116 Q415 169 350 192Z')}
-      ${path('M236 115 Q266 62 308 83 L286 136Z')}
-      ${path('M247 210 Q267 265 305 239 L300 195Z')}
-      ${path('M90 168 C145 92 285 86 362 171 C295 251 148 250 90 168Z')}
-      ${cir(148,155,17)} ${cir(148,155,7,'stroke-width="2"')}
-      ${detail('M115 192 Q146 208 171 188',4)}
-      ${path('M256 158 Q291 179 256 202Z')}
-      ${[ [194,149,15], [231,177,13], [280,144,11] ].map(c=>cir(c[0],c[1],c[2])).join('')}
-      ${cir(406,68,21)} ${cir(432,32,11)} ${cir(396,17,8)}
-      ${path('M95 317 Q71 282 83 248 Q118 260 106 317Z')}
-      ${path('M132 317 Q126 269 148 252 Q166 277 148 317Z')}
-      ${path('M372 317 Q344 273 360 248 Q394 267 390 317Z')}
-      ${decoration('path','d="M45 323H450"')}
-    `},
-    { title:'🍦 Ice cream party', shapes: () => `
-      ${sparkle(81,77)} ${sparkle(418,81)}
-      ${path('M175 180 L325 180 L250 325Z')}
-      ${detail('M206 202L282 282 M291 202L222 282 M224 239L271 239',3)}
-      ${path('M183 200 C153 185 156 146 180 133 C158 111 173 75 210 70 C216 43 260 37 276 61 C310 47 340 74 333 101 C365 123 355 165 326 173 C328 192 313 202 295 201Z')}
-      ${path('M174 176 Q194 196 211 174 Q231 199 250 174 Q270 199 290 174 Q312 198 332 174', 'fill="none"')}
-      ${path('M240 69 Q220 37 231 24 C246 8 269 21 268 40 Q266 58 250 74Z')}
-      ${detail('M250 74 Q260 64 283 72',3)}
-      ${cir(224,126,8)} ${cir(282,142,7)} ${cir(274,106,5)}
-    `},
-    { title:'🦄 Magical unicorn', animal:true, shapes: () => `
-      ${sparkle(88,78,13)} ${sparkle(418,92)}
-      ${path('M167 195 C112 170 96 205 74 223 Q110 247 168 229Z')}
-      ${path('M153 234 L150 306 Q165 318 180 305 L191 246Z')}
-      ${path('M264 238 L281 306 Q301 316 309 301 L307 232Z')}
-      ${path('M143 181 C155 131 215 119 261 141 C294 159 293 199 272 225 L277 240 Q220 269 163 240 Q138 227 143 181Z')}
-      ${path('M237 154 C251 128 261 102 265 78 C263 55 296 51 308 79 L305 173Z')}
-      ${path('M268 100 L279 30 L299 104Z')}
-      ${path('M266 102 L247 69 Q232 54 236 88Z')}
-      ${path('M305 110 L321 73 Q331 54 334 91Z')}
-      ${path('M268 118 C275 86 299 76 328 91 C360 100 377 125 379 155 Q399 165 397 183 C384 210 329 207 295 187 C269 173 257 144 268 118Z')}
-      ${path('M265 95 C248 118 255 152 270 170 L249 162 Q232 125 265 95Z')}
-      ${path('M325 91 C311 116 307 153 324 174 L301 163 Q289 117 325 91Z')}
-      ${detail('M339 135 Q351 142 365 131',4)}
-      ${cir(377,182,5)}
-      ${path('M182 150 Q198 178 182 202 Q161 179 182 150Z')}
-      ${decoration('path','d="M46 320H451"')}
-    `}
-
-    ,{ title:'🐶 Finn the cockapoo', animal:true, shapes: () => `
-      ${sparkle(68,61)} ${sparkle(427,79,10)}
-      ${path('M332 226 Q385 211 383 163 Q407 189 392 238 Q371 273 335 269Z')}
-      ${ell(246,252,100,64)}
-      ${ell(181,299,34,28)} ${ell(311,301,34,28)}
-      ${path('M175 124 Q99 76 99 179 Q112 247 161 216 L190 151Z')}
-      ${path('M325 124 Q399 76 399 179 Q386 247 339 216 L307 151Z')}
-      ${cir(251,153,103)}
-      ${[156,188,224,261,293,323].map((x,i)=>cir(x,90+Math.abs(i-2.5)*9,22)).join('')}
-      ${ell(215,169,15,23)} ${ell(282,169,15,23)}
-      ${cir(217,172,7,'stroke-width="2"')} ${cir(281,172,7,'stroke-width="2"')}
-      ${ell(222,216,48,33)} ${ell(283,216,48,33)}
-      ${ell(251,207,20,13)}
-      ${detail('M251 222 Q249 251 230 246 M251 222 Q257 250 274 246',3)}
-      ${path('M237 252 Q251 277 266 252Z')}
-      ${path('M189 269 Q249 291 313 267', 'fill="none"')}
-      ${cir(252,293,14)}
-      ${decoration('path','d="M62 316H430"')}
-    `}
-    ,{ title:'🐰 Hoppy bunny', animal:true, shapes: () => `
-      ${sparkle(72,63)} ${sparkle(423,81,10)}
-      ${ell(198,103,34,92,'transform="rotate(-17 198 103)"')}
-      ${ell(299,103,34,92,'transform="rotate(17 299 103)"')}
-      ${ell(199,102,16,64,'transform="rotate(-17 199 102)"')}
-      ${ell(298,102,16,64,'transform="rotate(17 298 102)"')}
-      ${ell(250,265,106,71)}
-      ${cir(250,184,93)}
-      ${ell(216,186,14,20)} ${ell(284,186,14,20)}
-      ${cir(216,191,7,'stroke-width="2"')} ${cir(284,191,7,'stroke-width="2"')}
-      ${ell(227,229,33,26)} ${ell(273,229,33,26)}
-      ${path('M241 216 Q250 210 259 216 L250 230Z')}
-      ${detail('M250 229 V242 M250 242 Q240 253 231 244 M250 242 Q260 253 268 244',3)}
-      ${ell(182,303,36,24)} ${ell(319,303,36,24)}
-      ${cir(365,263,22)}
-      ${decoration('path','d="M67 326H428"')}
-    `}
-    ,{ title:'🦊 Forest fox', animal:true, shapes: () => `
-      ${sparkle(69,76,11)} ${sparkle(428,74,11)}
-      ${path('M337 275 Q419 238 414 180 Q392 219 347 210 L314 242Z')}
-      ${ell(249,260,91,63)}
-      ${path('M158 158 L161 52 L225 115 Q252 93 278 115 L341 52 L341 156Z')}
-      ${path('M165 78 L171 133 L209 123Z')} ${path('M334 78 L329 133 L292 123Z')}
-      ${path('M163 153 Q250 85 338 153 L319 228 Q251 281 180 226Z')}
-      ${path('M188 199 L250 243 L312 199 L295 242 Q250 279 204 243Z')}
-      ${ell(222,185,14,20)} ${ell(279,185,14,20)}
-      ${cir(222,188,7,'stroke-width="2"')} ${cir(279,188,7,'stroke-width="2"')}
-      ${path('M237 224 Q250 217 263 224 L250 237Z')}
-      ${ell(215,304,34,23)} ${ell(286,304,34,23)}
-    `}
-    ,{ title:'🐢 Smiling turtle', animal:true, shapes: () => `
-      ${sparkle(70,76)} ${sparkle(429,91)}
-      ${ell(250,233,139,81)}
-      ${path('M146 244 Q145 133 253 126 Q362 133 361 244Z')}
-      ${path('M250 137 L217 178 L234 229 L276 229 L294 178Z')}
-      ${path('M217 178 L161 196 L173 242 L234 229Z')}
-      ${path('M294 178 L341 196 L326 242 L276 229Z')}
-      ${path('M120 243 Q99 215 79 244 Q73 284 115 274Z')}
-      ${path('M174 273 Q143 281 142 309 Q164 332 189 301Z')}
-      ${path('M312 273 Q340 281 342 309 Q319 332 296 301Z')}
-      ${path('M362 245 Q400 194 419 230 Q436 288 379 284Z')}
-      ${cir(397,226,8,'stroke-width="2"')}
-      ${detail('M397 251 Q414 264 425 250',3)}
-      ${path('M104 235 L71 214 L87 253Z')}
-    `}
-    ,{ title:'🐧 Little penguin', animal:true, shapes: () => `
-      ${sparkle(67,67)} ${sparkle(430,84)}
-      ${path('M174 221 Q111 168 95 211 Q100 255 184 264Z')}
-      ${path('M328 221 Q391 168 407 211 Q402 255 317 264Z')}
-      ${ell(251,195,97,130)}
-      ${ell(250,227,77,84)}
-      ${ell(220,154,16,23)} ${ell(282,154,16,23)}
-      ${cir(221,158,8,'stroke-width="2"')} ${cir(281,158,8,'stroke-width="2"')}
-      ${path('M233 184 L268 184 L250 210Z')}
-      ${path('M200 298 L182 323 L245 321 L236 292Z')}
-      ${path('M302 298 L320 323 L257 321 L266 292Z')}
-      ${path('M220 253 Q250 271 282 253', 'fill="none"')}
-      ${decoration('path','d="M52 325H450"')}
-    `}
-    ,{ title:'🦉 Wise owl', animal:true, shapes: () => `
-      ${sparkle(74,75)} ${sparkle(420,93)}
-      ${path('M150 128 L147 59 Q178 75 199 103 Q251 77 302 103 Q325 75 355 59 L352 128Z')}
-      ${ell(250,215,111,116)}
-      ${path('M154 177 Q127 204 144 259 Q164 292 195 274 L208 225Z')}
-      ${path('M346 177 Q373 204 356 259 Q336 292 305 274 L292 225Z')}
-      ${cir(211,180,46)} ${cir(291,180,46)}
-      ${cir(211,183,23)} ${cir(291,183,23)}
-      ${cir(216,185,11,'stroke-width="2"')} ${cir(286,185,11,'stroke-width="2"')}
-      ${path('M237 221 L264 221 L250 250Z')}
-      ${path('M204 275 Q250 300 296 275 Q250 325 204 275Z')}
-      ${path('M188 304 L176 327 L226 324Z')}
-      ${path('M274 324 L324 327 L312 304Z')}
+    { title:'🐱 Kitty cat', animal:true, shapes: () => `
+      ${ell(250,352,95,82)}
+      ${path('M201 126 L168 76 L165 154 Z')} ${path('M299 126 L332 76 L335 154 Z')}
+      ${path('M201 126 L186 96 L208 119 Z')} ${path('M299 126 L314 96 L292 119 Z')}
+      ${cir(250,222,118)}
+      ${ell(208,220,22,28)} ${ell(292,220,22,28)}
+      ${cir(208,220,8,'stroke-width="3"')} ${cir(292,220,8,'stroke-width="3"')}
+      ${path('M250 255 L235 274 L265 274 Z')}
+      ${detail('M250 274 Q236 292 214 286 M250 274 Q264 292 286 286',4)}
+      ${detail('M206 258 L154 248 M206 274 L150 274 M294 258 L346 248 M294 274 L350 274',3)}
+      ${path('M326 348 Q374 330 392 372 Q369 388 336 376 Z')}
+      ${ell(210,446,34,18)} ${ell(290,446,34,18)}
     `}
   ];
 
@@ -1068,12 +908,10 @@
   function setFreeTool(tool){ freeTool=tool; $('free-crayon').classList.toggle('active',tool==='crayon'); $('free-eraser').classList.toggle('active',tool==='eraser'); $('free-crayon').setAttribute('aria-pressed',String(tool==='crayon')); $('free-eraser').setAttribute('aria-pressed',String(tool==='eraser')); freeCanvas.style.cursor=tool==='eraser'?'cell':'crosshair'; }
   function maybeColorCheer(speakIt=false){
     const pic = COLOR_PICTURES[colorIndex % COLOR_PICTURES.length];
-    const message = pic.animal ? '🐾 Colour me, Petra!' : '';
+    const message = pic.animal ? '🐾 Good job Petra!' : '';
     $('picture-cheer').textContent = message;
     if(speakIt && pic.animal){
       announce('Good job Petra!');
-      sound([659,784], .11);
-      say('Good job Petra!');
     }
   }
   function renderColorPicture(){
@@ -1089,7 +927,7 @@
     resizeColorCanvas();
     $('color-svg').querySelectorAll('.color-fill-piece').forEach(piece => {
       piece.dataset.fill = piece.getAttribute('fill') || piece.dataset.default || '#ffffff';
-      piece.addEventListener('click', () => {
+      piece.addEventListener('pointerdown', (event) => { event.preventDefault();
         if(colorMode !== 'fill') return;
         const before=piece.getAttribute('fill');
         if(before===chosenColor)return;
@@ -1099,9 +937,10 @@
         sound([659,784], .08);
         if(pic.animal){
           colorFillCount++;
-          if(colorFillCount===3 || colorFillCount%7===0){
+          if(colorFillCount===1 || colorFillCount%3===0){
             $('picture-cheer').textContent='🐾 Good job Petra!';
-            announce('Good job Petra!'); say('Good job Petra!');
+            announce('Good job Petra!');
+            if(colorFillCount===1 || colorFillCount%6===0) say('Good job Petra!');
           }
         }
       });
