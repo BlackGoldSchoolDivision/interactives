@@ -8,7 +8,7 @@
         :root {
             --primary: #8e44ad;
             --secondary: #e67e22;
-            --bg-color: #f4f4f9;
+            --bg-color: #0f172a;
             --text-dark: #333;
             --text-light: #fff;
             --card-bg: #fff;
@@ -101,9 +101,9 @@
             flex-direction: column;
             position: relative;
             background-color: #0f172a;
+            overflow: hidden;
         }
 
-        /* VidYou Area (Top) */
         .vidyou-area {
             background: #1e293b;
             padding: 8px 20px;
@@ -114,6 +114,7 @@
             border-bottom: 2px solid #334155;
             min-height: 240px;
             box-shadow: inset 0 -4px 10px rgba(0,0,0,0.2);
+            position: relative;
         }
 
         .vidyou-section {
@@ -136,7 +137,6 @@
             gap: 14px;
         }
 
-        /* Play Area (Middle) */
         .play-area {
             flex: 1;
             display: flex;
@@ -144,6 +144,7 @@
             gap: 16px;
             background-color: #0f172a;
             overflow: hidden;
+            position: relative;
         }
 
         .player-board {
@@ -167,14 +168,62 @@
 
         .played-cards {
             display: flex;
-            gap: 12px;
+            gap: 14px;
             flex-wrap: wrap;
             justify-content: center;
             align-items: flex-start;
             padding-bottom: 8px;
         }
 
-        /* Hand Area (Bottom) */
+        /* Review Mode Banner */
+        #review-banner {
+            background: linear-gradient(135deg, #1e1b4b, #312e81);
+            border: 2px solid #6366f1;
+            border-radius: 12px;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0 20px 8px 20px;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.35);
+            animation: pulse-glow 2s infinite alternate;
+        }
+
+        @keyframes pulse-glow {
+            from { box-shadow: 0 4px 14px rgba(99, 102, 241, 0.25); }
+            to { box-shadow: 0 4px 24px rgba(99, 102, 241, 0.55); }
+        }
+
+        .review-banner-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #a5b4fc;
+        }
+
+        .review-banner-sub {
+            font-size: 0.85rem;
+            color: #e0e7ff;
+            margin-top: 2px;
+        }
+
+        .card-score-tag {
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #f59e0b;
+            color: #000;
+            font-weight: 900;
+            font-size: 0.65rem;
+            padding: 3px 8px;
+            border-radius: 10px;
+            white-space: nowrap;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+            border: 1px solid #fff;
+            z-index: 15;
+            text-align: center;
+        }
+
         .hand-area {
             background-color: #182234;
             padding: 10px 20px 14px 20px;
@@ -205,7 +254,11 @@
             min-height: 195px;
         }
 
-        /* Authentic Card Visuals matching exact uploads */
+        .card-wrapper {
+            position: relative;
+            flex-shrink: 0;
+        }
+
         .card {
             width: 132px;
             height: 186px;
@@ -236,8 +289,7 @@
             z-index: 10;
         }
 
-        /* Card Type Styles */
-        /* 1. VIDEO CARDS (Bright Orange Diagonal Stripe) */
+        /* VIDEO CARDS */
         .card-video {
             background: repeating-linear-gradient(
                 -45deg,
@@ -360,7 +412,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.15);
         }
 
-        /* 2. AD CARDS (Cyan Diagonal Stripe) */
+        /* AD CARDS */
         .card-ad {
             background: repeating-linear-gradient(
                 -45deg,
@@ -402,7 +454,7 @@
             margin: 6px 0;
         }
 
-        /* 3. AUDIENCE CARDS (Lime Green Diagonal) */
+        /* AUDIENCE CARDS */
         .card-audience {
             background: repeating-linear-gradient(
                 -45deg,
@@ -452,7 +504,7 @@
             font-weight: 600;
         }
 
-        /* 4. ALGORITHM CARDS (Purple Diagonal) */
+        /* ALGORITHM CARDS */
         .card-algorithm {
             background: repeating-linear-gradient(
                 -45deg,
@@ -493,7 +545,7 @@
             stroke-linejoin: round;
         }
 
-        /* 5. BOOST CARDS (Amber-Orange concentric bullseye) */
+        /* BOOST CARDS */
         .card-boost {
             background: radial-gradient(circle, #f97316 45%, #f59e0b 80%, #fbbf24 100%);
             color: #fff;
@@ -519,7 +571,7 @@
             text-transform: uppercase;
         }
 
-        /* 6. DATA CARDS (Dark Blue with side proxy tabs) */
+        /* DATA CARDS */
         .card-data {
             background: #0284c7;
             color: #fff;
@@ -555,7 +607,7 @@
         .proxy-left { left: 1px; }
         .proxy-right { right: 1px; }
 
-        /* 7. OPTIMIZATION CARDS (Navy / Violet circle) */
+        /* OPTIMIZATION CARDS */
         .card-opt {
             background: repeating-linear-gradient(
                 -45deg,
@@ -595,7 +647,6 @@
             stroke-linejoin: round;
         }
 
-        /* Overlaid direct image support */
         .card-user-img {
             width: 100%;
             height: 100%;
@@ -796,7 +847,7 @@
     </header>
 
     <main>
-        <!-- Interstitial Overlays -->
+        <!-- Pass Device & Modal Overlays -->
         <div id="pass-device-overlay" class="overlay">
             <h1 id="overlay-title">Pass Device</h1>
             <h2 id="overlay-msg">It is Player 1's turn. Make sure the other player isn't looking!</h2>
@@ -812,20 +863,29 @@
                 <div id="vidyou-opt"></div>
             </div>
             <div class="vidyou-section">
-                <h3>VidYou Algorithm / Audience Priority</h3>
+                <h3 id="vidyou-targets-header">VidYou Algorithm / Audience Priority</h3>
                 <p style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 6px;">1st (3 pts) • 2nd (2 pts) • 3rd (1 pt)</p>
                 <div id="vidyou-targets" class="card-slot-group"></div>
             </div>
         </div>
 
+        <!-- Scoring Review Banner (Visible only during End-of-Round Review) -->
+        <div id="review-banner" class="hidden">
+            <div>
+                <div class="review-banner-title" id="review-banner-title">🔍 VidYou Algorithm Revealed!</div>
+                <div class="review-banner-sub" id="review-banner-sub">Take time to review how each card was scored. Hover or view points below each card!</div>
+            </div>
+            <button class="action-btn" style="background:#4f46e5; padding: 10px 20px; font-size: 0.95rem;" onclick="proceedToRoundSummary()">Proceed to Round Summary ➔</button>
+        </div>
+
         <!-- Play Area -->
         <div class="play-area">
             <div class="player-board" id="p1-board">
-                <h3>Player 1's Played Cards</h3>
+                <h3 id="p1-board-title">Player 1's Played Cards</h3>
                 <div class="played-cards" id="p1-played"></div>
             </div>
             <div class="player-board" id="p2-board">
-                <h3>Player 2's Played Cards</h3>
+                <h3 id="p2-board-title">Player 2's Played Cards</h3>
                 <div class="played-cards" id="p2-played"></div>
             </div>
         </div>
@@ -859,7 +919,6 @@
     </main>
 
     <script>
-        // User provided custom images storage
         const userUploadedImages = {};
 
         function handleUserImages(event) {
@@ -872,14 +931,11 @@
             }
             logMsg(`Loaded ${files.length} custom card image(s) from files!`);
             updateUI();
-            if (!document.getElementById('pass-device-overlay').classList.contains('hidden')) {
-                // If on turn screen
-            } else {
+            if (document.getElementById('pass-device-overlay').classList.contains('hidden') && !state.isReviewing) {
                 renderHand();
             }
         }
 
-        // SVG Icons dictionary for Algorithms, Audiences & Optimizations
         const ICONS = {
             eye: `<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`,
             clock: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>`,
@@ -920,7 +976,15 @@
                 { id: 'v17', file: '86.jpg', name: 'Animal Video', topic: 'ANIMALS', metrics: ['SHARES', 'SUBSCRIBERS'], vidTitle: 'Weirdest Cat Breeds in the World', subTitle: '507,309 views • WildDiscovery', thumbBg: 'linear-gradient(135deg, #713f12, #a16207)' },
                 { id: 'v18', file: '87.jpg', name: 'Celebrity Video', topic: 'CELEBRITY', metrics: ['LIKES', 'LINKS'], vidTitle: 'Meghan & Harry Double Date', subTitle: '1,780 views • Access Star', thumbBg: 'linear-gradient(135deg, #312e81, #4338ca)' },
                 { id: 'v19', file: '88.jpg', name: 'Celebrity Video', topic: 'CELEBRITY', metrics: ['VIEWS', 'LINKS'], vidTitle: 'Nicole Kidman Real Birth Name', subTitle: '13,922,050 views • BBC Graham', thumbBg: 'linear-gradient(135deg, #881337, #9f1239)' },
-                { id: 'v20', file: '89.jpg', name: 'Music Video', topic: 'MUSIC', metrics: ['LIKES', 'SHARES'], vidTitle: 'Men Without Hats - Safety Dance', subTitle: '42,109 views • 80s Vibe', thumbBg: 'linear-gradient(135deg, #14532d, #166534)' }
+                { id: 'v20', file: '89.jpg', name: 'Music Video', topic: 'MUSIC', metrics: ['LIKES', 'SHARES'], vidTitle: 'Men Without Hats - Safety Dance', subTitle: '42,109 views • 80s Vibe', thumbBg: 'linear-gradient(135deg, #14532d, #166534)' },
+                { id: 'v21', file: '90.jpg', name: 'Comedy Video', topic: 'COMEDY', metrics: ['FRESHNESS', 'SUBSCRIBERS'], vidTitle: 'Marc Maron: More Later Special', subTitle: '569,279 views • Comedy Special', thumbBg: 'linear-gradient(135deg, #7c2d12, #9a3412)' },
+                { id: 'v22', file: '91.jpg', name: 'Review Video', topic: 'REVIEW', metrics: ['VIEWS', 'LIKES'], vidTitle: "Brandon's Cult Reviews: The Last Dragon", subTitle: '115,646 views • Cult Classics', thumbBg: 'linear-gradient(135deg, #431407, #78350f)' },
+                { id: 'v23', file: '92.jpg', name: 'Comedy Video', topic: 'COMEDY', metrics: ['FRESHNESS', 'LINKS'], vidTitle: 'Samantha Bee on Late Night', subTitle: '304,480 views • Late Night', thumbBg: 'linear-gradient(135deg, #1e1b4b, #312e81)' },
+                { id: 'v24', file: '93.jpg', name: 'Sports Video', topic: 'SPORTS', metrics: ['SHARES', 'SUBSCRIBERS'], vidTitle: 'MLB Worst Throws in History', subTitle: '51,299 views • Baseball Fails', thumbBg: 'linear-gradient(135deg, #064e3b, #047857)' },
+                { id: 'v25', file: '94.jpg', name: 'How-To Video', topic: 'HOW-TO', metrics: ['SHARES', 'LINKS'], vidTitle: 'Stop Motion Basics Tutorial #1', subTitle: '1,470,519 views • Animation Tips', thumbBg: 'linear-gradient(135deg, #78350f, #b45309)' },
+                { id: 'v26', file: '95.jpg', name: 'Review Video', topic: 'REVIEW', metrics: ['VIEWS', 'SUBSCRIBERS'], vidTitle: '$100 10-Pound Pillow Review', subTitle: '23,265 views • Freakin Reviews', thumbBg: 'linear-gradient(135deg, #581c87, #6b21a8)' },
+                { id: 'v27', file: '96.jpg', name: 'Animal Video', topic: 'ANIMALS', metrics: ['VIEWS', 'FRESHNESS'], vidTitle: 'Humans Rescued Animals Compilation', subTitle: '353,215 views • Cute Rescues', thumbBg: 'linear-gradient(135deg, #134e4a, #0f766e)' },
+                { id: 'v28', file: '97.jpg', name: 'Sports Video', topic: 'SPORTS', metrics: ['SHARES', 'LINKS'], vidTitle: 'Most Dangerous Skate Tricks 2016', subTitle: 'ShredCentral • Skating', thumbBg: 'linear-gradient(135deg, #831843, #9d174d)' }
             ],
             boosts: [
                 { id: 'b1', file: '41.jpg', name: 'LIKE FARM', metric: 'LIKES', desc: 'Like farms are groups of accounts used to fake Likes. Doubles Like score on card.' },
@@ -1006,8 +1070,8 @@
         };
 
         let state = {
-            round: 1, // 1: Popularity, 2: Monetization, 3: Machine Learning
-            phase: 1, // 1: Turn 1, 2: Turn 2
+            round: 1,
+            phase: 1,
             p1Score: 0,
             p2Score: 0,
             p1Hand: [],
@@ -1019,7 +1083,8 @@
             currentPlayer: 1,
             selectedCards: [],
             maxSelectable: 1,
-            targetsRevealed: false
+            targetsRevealed: false,
+            isReviewing: false
         };
 
         function shuffle(array) {
@@ -1038,24 +1103,21 @@
             log.scrollTop = log.scrollHeight;
         }
 
-        function createCardElement(card, hidden = false) {
+        function createCardElement(card, hidden = false, scoreAnnotation = null) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'card-wrapper';
+
             const el = document.createElement('div');
             el.className = 'card' + (hidden ? ' hidden-card' : '');
             el.dataset.id = card.id;
 
-            // If user loaded the actual image file locally, display it
             if (userUploadedImages[card.file]) {
                 const img = document.createElement('img');
                 img.className = 'card-user-img';
                 img.src = userUploadedImages[card.file];
                 img.alt = card.name || 'Card';
                 el.appendChild(img);
-                return el;
-            }
-
-            // High Fidelity Procedural Visual Card Templates
-            if (card.topic) {
-                // VIDEO CARD (Orange stripes + Video Player UI mockup)
+            } else if (card.topic) {
                 el.classList.add('card-video');
                 el.innerHTML = `
                     <div class="card-header-badge">VIDEO</div>
@@ -1074,7 +1136,6 @@
                     <div class="card-topic-tag">${card.topic}</div>
                 `;
             } else if (card.adTitle) {
-                // AD CARD (Cyan stripes + Advert mock video UI)
                 el.classList.add('card-ad');
                 el.innerHTML = `
                     <div class="card-header-badge">AD</div>
@@ -1095,7 +1156,6 @@
                     </div>
                 `;
             } else if (card.metric && card.icon) {
-                // ALGORITHM CARD (Purple + Blue circular glyph icon)
                 el.classList.add('card-algorithm');
                 el.innerHTML = `
                     <div style="font-size:0.6rem; font-weight:900; letter-spacing:1.5px; opacity:0.9;">ALGORITHM</div>
@@ -1104,7 +1164,6 @@
                     <div class="card-rule-desc">${card.desc}</div>
                 `;
             } else if (card.target && card.desc && !card.left && !card.right && card.icon) {
-                // AUDIENCE CARD (Green + Orange circular glyph icon)
                 el.classList.add('card-audience');
                 el.innerHTML = `
                     <div style="font-size:0.6rem; font-weight:900; letter-spacing:1.5px; opacity:0.9;">AUDIENCE</div>
@@ -1113,7 +1172,6 @@
                     <div class="card-rule-desc">${card.desc}</div>
                 `;
             } else if (card.target && card.left !== undefined) {
-                // DATA CARD (Dark blue + connecting side tabs)
                 el.classList.add('card-data');
                 el.innerHTML = `
                     ${card.left ? `<div class="proxy-tab proxy-left">${card.left}</div>` : ''}
@@ -1127,7 +1185,6 @@
                     <div style="font-size:0.45rem; line-height:1.2; padding:0 8px; opacity:0.95;">${card.desc}</div>
                 `;
             } else if (card.metric && card.desc) {
-                // BOOST CARD (Amber bullseye)
                 el.classList.add('card-boost');
                 el.innerHTML = `
                     <div class="boost-header">BOOST</div>
@@ -1137,7 +1194,6 @@
                     </div>
                 `;
             } else if (card.name && card.icon) {
-                // OPTIMIZATION CARD (Navy blue + Purple ring)
                 el.classList.add('card-opt');
                 el.innerHTML = `
                     <div style="font-size:0.58rem; font-weight:900; letter-spacing:1.5px; opacity:0.9;">OPTIMIZATION</div>
@@ -1147,7 +1203,16 @@
                 `;
             }
 
-            return el;
+            wrapper.appendChild(el);
+
+            if (scoreAnnotation) {
+                const tag = document.createElement('div');
+                tag.className = 'card-score-tag';
+                tag.innerHTML = scoreAnnotation;
+                wrapper.appendChild(tag);
+            }
+
+            return wrapper;
         }
 
         function updateUI() {
@@ -1157,7 +1222,6 @@
             const roundNames = ["", "Popularity", "Monetization", "Machine Learning"];
             document.getElementById('round-display').innerText = `Round ${state.round}: ${roundNames[state.round]}`;
 
-            // Render VidYou goal
             const optContainer = document.getElementById('vidyou-opt');
             optContainer.innerHTML = '';
             if (state.vidYouOpt) {
@@ -1166,7 +1230,6 @@
                 optContainer.innerHTML = `<div style="color:#64748b; font-size:0.8rem; padding:20px; font-style:italic;">No Optimization Goal for this Round</div>`;
             }
 
-            // Render Targets
             const targetsContainer = document.getElementById('vidyou-targets');
             targetsContainer.innerHTML = '';
             state.vidYouTargets.forEach((targetCard, idx) => {
@@ -1176,7 +1239,6 @@
                 const cardEl = createCardElement(targetCard, !state.targetsRevealed);
                 targetWrapper.appendChild(cardEl);
 
-                // Priority Badge
                 const rankBadge = document.createElement('div');
                 rankBadge.style.cssText = `
                     position: absolute;
@@ -1202,14 +1264,92 @@
                 targetsContainer.appendChild(targetWrapper);
             });
 
-            // Render Played Cards
+            // Played cards with live score breakdowns if revealed
             const p1Played = document.getElementById('p1-played');
             p1Played.innerHTML = '';
-            state.p1Played.forEach(c => p1Played.appendChild(createCardElement(c)));
+            state.p1Played.forEach(c => {
+                const annotation = state.targetsRevealed ? getCardScoreBreakdown(c, state.p1Played) : null;
+                p1Played.appendChild(createCardElement(c, false, annotation));
+            });
 
             const p2Played = document.getElementById('p2-played');
             p2Played.innerHTML = '';
-            state.p2Played.forEach(c => p2Played.appendChild(createCardElement(c)));
+            state.p2Played.forEach(c => {
+                const annotation = state.targetsRevealed ? getCardScoreBreakdown(c, state.p2Played) : null;
+                p2Played.appendChild(createCardElement(c, false, annotation));
+            });
+        }
+
+        function getCardScoreBreakdown(card, playedSet) {
+            let targetMetrics = state.vidYouTargets.map(t => (t.metric || t.name).toUpperCase());
+            let parts = [];
+            let multiplier = 1;
+
+            if (card.metric && card.desc && !card.icon) {
+                // Boost card
+                if (targetMetrics.includes(card.metric.toUpperCase())) {
+                    return `⚡ 2x MULTIPLIER (${card.metric})`;
+                }
+                return `0 pts`;
+            } else if (card.target) {
+                // Data card
+                if (targetMetrics.includes(card.target.toUpperCase())) {
+                    return `+2 pts (${card.target})`;
+                }
+                return `0 pts`;
+            } else if (card.metrics) {
+                // Video or Ad card
+                let pts = 0;
+                card.metrics.forEach(m => {
+                    const mUpper = m.toUpperCase();
+                    if (mUpper === targetMetrics[0]) { pts += 3; parts.push(`1st: +3`); }
+                    else if (mUpper === targetMetrics[1]) { pts += 2; parts.push(`2nd: +2`); }
+                    else if (mUpper === targetMetrics[2]) { pts += 1; parts.push(`3rd: +1`); }
+                });
+
+                // Check if a Boost card in playedSet applies to this card
+                playedSet.forEach(other => {
+                    if (other.metric && other.desc && !other.icon) {
+                        if (card.metrics.map(m => m.toUpperCase()).includes(other.metric.toUpperCase())) {
+                            multiplier *= 2;
+                        }
+                    }
+                });
+
+                let total = pts * multiplier;
+                if (multiplier > 1 && pts > 0) {
+                    return `+${total} pts (${parts.join(', ')} ×${multiplier})`;
+                }
+                return pts > 0 ? `+${pts} pts (${parts.join(', ')})` : `0 pts`;
+            }
+            return null;
+        }
+
+        function calculateScore(playedArray) {
+            let targetMetrics = state.vidYouTargets.map(t => (t.metric || t.name).toUpperCase());
+            let score = 0;
+            let multiplier = 1;
+
+            playedArray.forEach(card => {
+                if (card.metric && card.desc && !card.icon) {
+                    if (targetMetrics.includes(card.metric.toUpperCase())) {
+                        multiplier *= 2;
+                    }
+                } else if (card.target) {
+                    if (targetMetrics.includes(card.target.toUpperCase())) {
+                        score += 2;
+                    }
+                } else if (card.metrics) {
+                    card.metrics.forEach(m => {
+                        const mUpper = m.toUpperCase();
+                        if (mUpper === targetMetrics[0]) score += 3;
+                        if (mUpper === targetMetrics[1]) score += 2;
+                        if (mUpper === targetMetrics[2]) score += 1;
+                    });
+                }
+            });
+
+            return score * multiplier;
         }
 
         function initGame() {
@@ -1226,11 +1366,16 @@
             state.p1Played = [];
             state.p2Played = [];
             state.targetsRevealed = false;
+            state.isReviewing = false;
             state.currentPlayer = 1;
             state.selectedCards = [];
 
+            document.getElementById('review-banner').classList.add('hidden');
+            document.getElementById('vidyou-targets-header').innerText = state.round === 1 
+                ? "VidYou Algorithm Priority (Hidden)" 
+                : "VidYou Audience Priority (Hidden)";
+
             if (state.round === 1) {
-                // Popularity Round: Optimization + 3 Algorithms (1st, 2nd, 3rd)
                 state.maxSelectable = 1;
                 state.vidYouOpt = shuffle([...DB.optimizations])[0];
                 state.vidYouTargets = shuffle([...DB.algorithms]).slice(0, 3);
@@ -1240,7 +1385,6 @@
                 state.p2Hand = deck.slice(5, 10);
                 logMsg(`Round 1 started! Optimization: "${state.vidYouOpt.name}". VidYou set 3 secret algorithms.`);
             } else if (state.round === 2) {
-                // Monetization Round: 3 Audience Targets
                 state.maxSelectable = 1;
                 state.vidYouOpt = null;
                 state.vidYouTargets = shuffle([...DB.audiences]).slice(0, 3);
@@ -1250,7 +1394,6 @@
                 state.p2Hand = adDeck.slice(5, 10);
                 logMsg(`Round 2 (Monetization) started! VidYou selected 3 target audiences.`);
             } else if (state.round === 3) {
-                // Machine Learning Round
                 state.maxSelectable = 1;
                 state.vidYouOpt = null;
                 state.vidYouTargets = shuffle([...DB.audiences]).slice(0, 3);
@@ -1279,7 +1422,6 @@
             document.getElementById('pass-device-overlay').classList.add('hidden');
             document.getElementById('current-player-label').innerText = `Player ${state.currentPlayer}'s Hand`;
             
-            // Turn 1 = 1 card. Turn 2 = up to 2 Video cards (plus boosts/data in later rounds)
             let allowedToPlay = state.phase === 1 ? 1 : (state.round === 1 ? 2 : 4);
             state.maxSelectable = allowedToPlay;
             document.getElementById('instruction-label').innerText = `Select up to ${state.maxSelectable} card(s) to play.`;
@@ -1296,9 +1438,9 @@
             const hand = state.currentPlayer === 1 ? state.p1Hand : state.p2Hand;
             
             hand.forEach((card, index) => {
-                const el = createCardElement(card);
-                el.onclick = () => toggleSelectCard(el, card, index);
-                handContainer.appendChild(el);
+                const wrapper = createCardElement(card);
+                wrapper.onclick = () => toggleSelectCard(wrapper.firstElementChild, card, index);
+                handContainer.appendChild(wrapper);
             });
         }
 
@@ -1320,7 +1462,6 @@
             let hand = state.currentPlayer === 1 ? state.p1Hand : state.p2Hand;
             let played = state.currentPlayer === 1 ? state.p1Played : state.p2Played;
 
-            // Remove played cards from hand and place on the shared table
             state.selectedCards.sort((a,b) => b.index - a.index).forEach(s => {
                 played.push(s.card);
                 hand.splice(s.index, 1);
@@ -1330,40 +1471,10 @@
 
             if (state.currentPlayer === 1) {
                 state.currentPlayer = 2;
-                showPassDevice(`Player 1 finished. Pass Chromebook to Player 2.`);
+                showPassDevice(`Player 1 finished. Pass device to Player 2.`);
             } else {
                 resolvePhase();
             }
-        }
-
-        function calculateScore(playedArray) {
-            let targetMetrics = state.vidYouTargets.map(t => (t.metric || t.name).toUpperCase());
-            let score = 0;
-            let multiplier = 1;
-
-            playedArray.forEach(card => {
-                if (card.metric && card.desc && !card.icon) {
-                    // Boost card: doubles score if matches
-                    if (targetMetrics.includes(card.metric.toUpperCase())) {
-                        multiplier *= 2;
-                    }
-                } else if (card.target) {
-                    // Data card: adds bonus if target matches
-                    if (targetMetrics.includes(card.target.toUpperCase())) {
-                        score += 2;
-                    }
-                } else if (card.metrics) {
-                    // Video or Ad card
-                    card.metrics.forEach(m => {
-                        const mUpper = m.toUpperCase();
-                        if (mUpper === targetMetrics[0]) score += 3;
-                        if (mUpper === targetMetrics[1]) score += 2;
-                        if (mUpper === targetMetrics[2]) score += 1;
-                    });
-                }
-            });
-
-            return score * multiplier;
         }
 
         function resolvePhase() {
@@ -1373,7 +1484,7 @@
             if (state.phase === 1) {
                 let p1PhaseScore = calculateScore(state.p1Played);
                 let p2PhaseScore = calculateScore(state.p2Played);
-                logMsg(`Turn 1 complete! VidYou scores cards (VidYou targets remain hidden).`);
+                logMsg(`Turn 1 complete! VidYou scores cards (targets remain hidden).`);
                 logMsg(`P1 cards earned ${p1PhaseScore} pts | P2 cards earned ${p2PhaseScore} pts.`);
                 
                 state.phase = 2;
@@ -1386,10 +1497,11 @@
                     logMsg(`Dealt 4 Data cards to each player for Turn 2.`);
                 }
 
-                showPassDevice(`Turn 1 finished! Both players see played cards. Pass to Player 1 for Turn 2.`);
+                showPassDevice(`Turn 1 finished! Both players see played cards on table. Pass to Player 1 for Turn 2.`);
             } else {
-                // Phase 2 finished: Reveal the 3 algorithm/audience cards
+                // Phase 2 finished: Enter the dedicated Reveal & Review mode
                 state.targetsRevealed = true;
+                state.isReviewing = true;
                 updateUI();
 
                 let p1FinalScore = calculateScore(state.p1Played);
@@ -1398,30 +1510,42 @@
                 state.p1Score += p1FinalScore;
                 state.p2Score += p2FinalScore;
                 
-                logMsg(`Round ${state.round} OVER! VidYou revealed the algorithm priority.`);
+                logMsg(`Round ${state.round} OVER! VidYou revealed the priority order.`);
                 logMsg(`P1 scored +${p1FinalScore} pts (Total: ${state.p1Score})`);
                 logMsg(`P2 scored +${p2FinalScore} pts (Total: ${state.p2Score})`);
-                updateUI();
+                
+                // Show review banner and dismiss interstitial so students can view the board
+                document.getElementById('pass-device-overlay').classList.add('hidden');
+                
+                const banner = document.getElementById('review-banner');
+                banner.classList.remove('hidden');
+                document.getElementById('review-banner-title').innerText = `🔍 Round ${state.round} Algorithm Revealed! (P1: +${p1FinalScore} pts | P2: +${p2FinalScore} pts)`;
+                document.getElementById('review-banner-sub').innerText = `Look at the targets at top and points under each card below to see why they scored!`;
 
-                promptRoundEnd();
+                document.getElementById('instruction-label').innerText = `Algorithm Revealed! Review the scoring on the board above.`;
             }
+        }
+
+        function proceedToRoundSummary() {
+            document.getElementById('review-banner').classList.add('hidden');
+            promptRoundEnd();
         }
 
         function promptRoundEnd() {
             const overlay = document.getElementById('pass-device-overlay');
             overlay.classList.remove('hidden');
-            document.getElementById('overlay-title').innerText = `Round ${state.round} Complete!`;
+            document.getElementById('overlay-title').innerText = `Round ${state.round} Summary`;
             
             const p1RoundPts = calculateScore(state.p1Played);
             const p2RoundPts = calculateScore(state.p2Played);
 
             document.getElementById('overlay-msg').innerHTML = `
-                <div style="font-size: 1.2rem; margin-bottom: 12px;">The algorithm targets have been revealed above!</div>
-                <div style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin-bottom: 16px;">
-                    <div>Round Points: <strong>Player 1 (+${p1RoundPts})</strong> • <strong>Player 2 (+${p2RoundPts})</strong></div>
-                    <div style="margin-top:6px;">Current Total Score: <strong>P1: ${state.p1Score}</strong> | <strong>P2: ${state.p2Score}</strong></div>
+                <div style="font-size: 1.15rem; margin-bottom: 12px;">You've completed your review of Round ${state.round}!</div>
+                <div style="background: rgba(0,0,0,0.3); padding: 14px; border-radius: 8px; margin-bottom: 16px;">
+                    <div>This Round's Score: <strong>Player 1 (+${p1RoundPts})</strong> • <strong>Player 2 (+${p2RoundPts})</strong></div>
+                    <div style="margin-top:8px; font-size:1.15rem;">Running Total Score: <strong>P1: ${state.p1Score}</strong> &nbsp;|&nbsp; <strong>P2: ${state.p2Score}</strong></div>
                 </div>
-                <div>Would you like to advance to the next round, or stop and finish here?</div>
+                <div>Would you like to advance to the next round, or stop and finish the game here?</div>
             `;
             
             document.getElementById('overlay-btn').classList.add('hidden');
@@ -1464,7 +1588,6 @@
             document.getElementById('end-round-btn').classList.add('hidden');
             document.getElementById('stop-game-btn').classList.add('hidden');
 
-            // Play again button
             let existingRestart = document.getElementById('restart-game-prompt-btn');
             if (!existingRestart) {
                 const restartBtn = document.createElement('button');
@@ -1481,6 +1604,7 @@
         function restartGame() {
             const promptBtn = document.getElementById('restart-game-prompt-btn');
             if (promptBtn) promptBtn.remove();
+            document.getElementById('review-banner').classList.add('hidden');
             initGame();
         }
 
