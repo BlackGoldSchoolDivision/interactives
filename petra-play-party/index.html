@@ -103,6 +103,40 @@
     .size-picker{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
   .size-btn{min-width:54px}
 
+  /* Big, touch-friendly balloon party */
+  .balloon-toolbar{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap;margin:8px 0 12px}
+  .balloon-score{background:#fff5c5;color:#795817;border-radius:18px;border:2px solid #ffe58d;padding:10px 14px;font-weight:950;font-size:1.1rem}
+  .balloon-modes{display:flex;gap:7px;flex-wrap:wrap;justify-content:center}
+  .balloon-modes .tool-mode{padding:10px 12px;font-size:.9rem}
+  .balloon-field{position:relative;isolation:isolate;overflow:hidden;width:100%;height:clamp(310px,52dvh,570px);background:linear-gradient(180deg,#c5efff 0%,#ebfaff 57%,#f8edff 100%);border:4px solid #f4d7ff;border-radius:26px;touch-action:manipulation}
+  .balloon-field-star{position:absolute;color:#fff;z-index:0;font-size:4rem;opacity:.8;text-shadow:0 3px 8px #7dd4ff}
+  .balloon-field-star.s1{top:15%;left:9%}.balloon-field-star.s2{top:32%;right:11%}
+  .balloon-field-ground{position:absolute;bottom:-22px;width:125%;left:-12%;height:65px;border-radius:50% 50% 0 0;background:#c4f4c9;pointer-events:none;z-index:0}
+  .balloon-layer{position:absolute;inset:0;z-index:2;pointer-events:none}
+  .balloon-target{position:absolute;z-index:3;left:50%;top:9px;transform:translateX(-50%);border-radius:40px;padding:9px 15px;background:rgba(255,255,255,.94);font-weight:900;color:#57437d;box-shadow:0 6px 14px #4c6e931e;text-align:center;min-width:190px;pointer-events:none}
+  .balloon-bubble{--drift:0px;position:absolute;left:10%;bottom:-122px;width:clamp(70px,21vw,108px);height:clamp(91px,28vw,136px);background:var(--balloon-color);border:4px solid #ffffff77;border-radius:52% 52% 49% 49%;box-shadow:inset -13px -11px 3px #00000014,inset 12px 9px 6px #ffffff56,0 6px 12px #4a4e7c1f;color:#fff;font-weight:900;font-size:1.65rem;text-shadow:0 1px 5px #00000025;cursor:pointer;pointer-events:auto;display:grid;place-items:center;touch-action:manipulation;user-select:none;animation:balloonRise var(--rise) linear forwards;z-index:2}
+  .balloon-bubble::before{content:'';position:absolute;bottom:-14px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:16px solid var(--balloon-color)}
+  .balloon-bubble::after{content:'';position:absolute;bottom:-60px;left:50%;height:52px;border-left:2px solid #94749caa;transform:rotate(8deg);pointer-events:none}
+  .balloon-bubble .shine{position:absolute;top:17px;left:18px;width:15px;height:28px;border-radius:70%;background:#ffffff6b;transform:rotate(26deg);pointer-events:none}
+  .balloon-bubble.popping{animation:balloonPop .23s cubic-bezier(.3,1,.6,1) forwards;pointer-events:none}
+  .balloon-bubble.pop-miss{animation:balloonWiggle .32s ease;}
+  .balloon-message{color:#8254a1;font-size:1.05rem;text-align:center;font-weight:900;min-height:1.7em;margin:10px 0 4px}
+  @keyframes balloonRise{0%{transform:translate(0,0) rotate(-7deg)}45%{transform:translate(var(--drift),-45vh) rotate(6deg)}100%{transform:translate(calc(var(--drift) * -0.4),calc(-1 * var(--travel))) rotate(-5deg)}}
+  @keyframes balloonPop{0%{transform:scale(1);opacity:1}65%{transform:scale(1.26);opacity:.85}100%{transform:scale(.15);opacity:0}}
+  @keyframes balloonWiggle{0%,100%{rotate:0deg}30%{rotate:8deg}60%{rotate:-8deg}}
+  .picture-gallery{display:flex;gap:7px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+  .picture-choice{font-size:1.43rem;width:50px;height:48px;min-width:50px;border:2px solid #eadcf3;border-radius:15px;background:#fff;box-shadow:0 3px 7px #4c34721a}
+  .picture-choice.active{border-color:#ff65a1;background:#fff0f8;box-shadow:inset 0 0 0 1px #ff65a1}
+  #color-svg .color-fill-piece{cursor:pointer;touch-action:manipulation;transition:none!important;animation:none!important;transform:none!important;paint-order:normal;}
+  #color-svg .color-fill-piece:active{transform:none!important}
+  @media(max-width:720px){
+    .tabs{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .balloon-field{height:clamp(330px,56dvh,520px)}
+    .balloon-toolbar .small-action{padding:9px 11px}
+    .balloon-bubble{font-size:1.4rem}
+  }
+  @media(prefers-reduced-motion:reduce){.balloon-bubble{animation-duration:20s}.balloon-bubble.popping{animation-duration:.01s}}
+
   /* numbers */
   .number-board{display:grid;gap:14px}
   .number-goal,.number-friend,.number-plate{background:linear-gradient(180deg,#fff,#fff7fe);border-radius:22px;padding:14px;text-align:center;border:3px dashed #ecd9ff}
@@ -216,6 +250,7 @@
       <button class="tab" type="button" data-scene="number"><span class="emoji">🔢</span><span>Numbers</span></button>
       <button class="tab" type="button" data-scene="words"><span class="emoji">🧩</span><span>Word Builder</span></button>
       <button class="tab" type="button" data-scene="hunt"><span class="emoji">🎈</span><span>Letter Pop</span></button>
+      <button class="tab" type="button" data-scene="balloons"><span class="emoji">🎉</span><span>Balloon Party</span></button>
       <button class="tab" type="button" data-scene="draw"><span class="emoji">✏️</span><span>Draw Letters</span></button>
       <button class="tab" type="button" data-scene="free"><span class="emoji">🖍️</span><span>Free Draw</span></button>
     </nav>
@@ -276,6 +311,26 @@
       <p class="tiny-caption">Find Petra's letters first, then more ABC letters!</p>
     </section>
 
+    <section class="scene" id="balloons-scene" aria-label="Balloon popping party">
+      <h2 class="scene-heading">Pop the <span class="highlight">balloons!</span> 🎉</h2>
+      <p class="subhead balloon-instructions" id="balloon-instructions">Tap the floating balloons! POP!</p>
+      <div class="balloon-toolbar">
+        <div class="balloon-score">⭐ <span id="balloon-score">0</span> popped!</div>
+        <div class="balloon-modes" role="group" aria-label="Balloon game mode">
+          <button class="tool-mode active" id="balloon-free" type="button" aria-pressed="true">🎈 Pop all</button>
+          <button class="tool-mode" id="balloon-colors" type="button" aria-pressed="false">🌈 Find colours</button>
+        </div>
+        <button class="small-action" type="button" id="balloon-again">↻ Start over</button>
+      </div>
+      <div class="balloon-field" id="balloon-field" aria-label="Pop balloons by touching them">
+        <span class="balloon-field-star s1" aria-hidden="true">✦</span><span class="balloon-field-star s2" aria-hidden="true">✧</span>
+        <div id="balloon-target" class="balloon-target" aria-live="polite"></div>
+        <div id="balloon-layer" class="balloon-layer"></div>
+        <div class="balloon-field-ground" aria-hidden="true"></div>
+      </div>
+      <p class="balloon-message" id="balloon-message" aria-live="polite">Ready, Petra? Let's pop!</p>
+    </section>
+
     <section class="scene" id="draw-scene" aria-label="Draw alphabet letters">
       <h2 class="scene-heading">Draw the <span class="highlight">letter</span>! ✏️</h2>
       <p class="subhead">Use your finger to trace and draw.</p>
@@ -295,7 +350,7 @@
 
     <section class="scene" id="color-scene" aria-label="Colour pictures">
       <h2 class="scene-heading">Petra's <span class="highlight">colouring book</span>! 🎨</h2>
-      <p class="subhead">Tap a colour, then tap the picture to fill it. The animal pages say “Good job Petra!”</p>
+      <p class="subhead">Choose a colour and tap a big area to fill it! Petra can switch pictures and come back.</p>
       <div class="color-shell">
         <div class="colour-tools">
           <div id="color-palette" class="colour-palette" aria-label="Choose a colour"></div>
@@ -305,7 +360,8 @@
           </div>
         </div>
         <div class="colour-picture-name" id="color-picture-name">🌼 Happy flower</div>
-        <div class="picture-position" id="picture-position" aria-live="polite">Picture 1 of 16</div>
+        <div class="picture-position" id="picture-position" aria-live="polite">Picture 1 of 10</div>
+        <div class="picture-gallery" id="picture-gallery" role="group" aria-label="Choose a colouring picture"></div>
         <div class="bottom-actions" style="margin:2px 0 9px"><button class="small-action" id="color-animals" type="button">🐾 See animal pictures</button></div>
         <div class="picture-cheer" id="picture-cheer" aria-live="polite"></div>
         <div class="colour-stage">
@@ -504,6 +560,7 @@
   let colorStrokes = [];
   let colorFillCount=0;
   let colorHistory = [];
+  const savedColourPages = new Map();
   let freeColor = COLORS[0];
   let freeTool = 'crayon';
   let freeSize = 12;
@@ -575,12 +632,14 @@
   }
 
   function showScene(name){
-    currentScene = name;
-    document.querySelectorAll('.scene').forEach(s => s.classList.toggle('active', s.id === `${name}-scene`));
+    if(currentScene==='balloons'&&name!=='balloons')stopBalloonParty();
+    currentScene=name;
+    document.querySelectorAll('.scene').forEach(scene => scene.classList.toggle('active', scene.id === `${name}-scene`));
     document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.scene === name));
-    if(name === 'draw') resizeTraceCanvas();
-    if(name === 'color'){ resizeColorCanvas(); maybeColorCheer(true); }
-    if(name === 'free') resizeFreeCanvas();
+    if(name==='draw')resizeTraceCanvas();
+    if(name==='color'){resizeColorCanvas();maybeColorCheer(false);}
+    if(name==='free')resizeFreeCanvas();
+    if(name==='balloons')startBalloonParty(false);
   }
 
   document.querySelectorAll('.tab').forEach(btn => btn.addEventListener('click', ()=> showScene(btn.dataset.scene)));
@@ -754,6 +813,73 @@
     });
   }
 
+  // A separate pop-anything game; the original Letter Pop is unchanged.
+  const BUBBLE_COLORS=[
+    {name:'red',hex:'#fc567e'},{name:'blue',hex:'#4c9ce9'},{name:'yellow',hex:'#ffd34b'},
+    {name:'green',hex:'#45c99d'},{name:'purple',hex:'#ae80ef'},{name:'orange',hex:'#ff9850'}
+  ];
+  let balloonMode='free',balloonScore=0,balloonGoal=0,balloonTimer=null,balloonSpawnSeq=0;
+  const balloonLayer=$('balloon-layer');
+  function updateBalloonHeader(){
+    const chosen=BUBBLE_COLORS[balloonGoal];
+    $('balloon-target').textContent=balloonMode==='colors'?`Find ${chosen.name.toUpperCase()}!`:'Pop the balloons! 🎈';
+    $('balloon-instructions').textContent=balloonMode==='colors'?'Find and pop the matching colour.':'Tap the floating balloons! POP!';
+  }
+  function balloonPopSound(){sound([690,330],.065);}
+  function popBalloon(button,col){
+    if(button.dataset.popped==='yes')return;
+    if(balloonMode==='colors'&&col!==balloonGoal){
+      button.classList.remove('pop-miss');void button.offsetWidth;button.classList.add('pop-miss');
+      $('balloon-message').textContent=`Find ${BUBBLE_COLORS[balloonGoal].name}! 🌈`;
+      return;
+    }
+    button.dataset.popped='yes';button.classList.add('popping');
+    balloonPopSound();balloonScore++;
+    $('balloon-score').textContent=String(balloonScore);
+    const msg=balloonScore%10===0?'WOW! TEN POPS! ⭐':balloonScore%5===0?'Amazing, Petra! 🌟':['POP! 🎉','Nice one! ⭐','Good job, Petra! 💕'][balloonScore%3];
+    $('balloon-message').textContent=msg;
+    if(balloonScore%10===0){burstConfetti();say('Good job Petra!');}
+    if(balloonMode==='colors'){balloonGoal=(balloonGoal+1)%BUBBLE_COLORS.length;updateBalloonHeader();spawnBalloon(balloonGoal);}
+    setTimeout(()=>button.remove(),240);
+  }
+  function spawnBalloon(forcedIndex=null){
+    if(currentScene!=='balloons')return;
+    if(balloonLayer.children.length>=9)return;
+    const ci=forcedIndex===null?Math.floor(Math.random()*BUBBLE_COLORS.length):forcedIndex;
+    const col=BUBBLE_COLORS[ci];
+    const btn=document.createElement('button');btn.type='button';btn.className='balloon-bubble';
+    btn.style.setProperty('--balloon-color',col.hex);
+    btn.style.setProperty('--rise',(8+Math.random()*3).toFixed(2)+'s');
+    btn.style.setProperty('--drift',Math.floor(Math.random()*70-35)+'px');
+    btn.style.setProperty('--travel',Math.max(650,$('balloon-field').clientHeight+180)+'px');
+    btn.style.left=(5+Math.random()*72)+'%';
+    btn.style.bottom=(-90+Math.random()*160)+'px';
+    btn.style.width=(72+Math.floor(Math.random()*23))+'px';
+    btn.style.height=(99+Math.floor(Math.random()*28))+'px';
+    btn.textContent=balloonMode==='colors'?'': '✦';
+    const glare=document.createElement('i');glare.className='shine';glare.setAttribute('aria-hidden','true');btn.appendChild(glare);
+    btn.setAttribute('aria-label',`Pop ${col.name} balloon`);
+    btn.addEventListener('click',()=>popBalloon(btn,ci));
+    btn.addEventListener('animationend',e=>{if(e.animationName==='balloonRise')btn.remove();});
+    balloonLayer.appendChild(btn);
+  }
+  function stopBalloonParty(){if(balloonTimer!==null){clearInterval(balloonTimer);balloonTimer=null;}balloonLayer.replaceChildren();}
+  function startBalloonParty(reset=false){
+    if(reset){balloonScore=0;balloonGoal=0;$('balloon-score').textContent='0';$('balloon-message').textContent="Ready, Petra? Let's pop!";}
+    stopBalloonParty();updateBalloonHeader();
+    for(let i=0;i<5;i++)spawnBalloon(balloonMode==='colors'&&i===0?balloonGoal:null);
+    balloonTimer=setInterval(()=>spawnBalloon(),680);
+  }
+  $('balloon-free').addEventListener('click',()=>{
+    balloonMode='free';$('balloon-free').classList.add('active');$('balloon-colors').classList.remove('active');
+    $('balloon-free').setAttribute('aria-pressed','true');$('balloon-colors').setAttribute('aria-pressed','false');startBalloonParty(true);
+  });
+  $('balloon-colors').addEventListener('click',()=>{
+    balloonMode='colors';$('balloon-colors').classList.add('active');$('balloon-free').classList.remove('active');
+    $('balloon-colors').setAttribute('aria-pressed','true');$('balloon-free').setAttribute('aria-pressed','false');startBalloonParty(true);
+  });
+  $('balloon-again').addEventListener('click',()=>startBalloonParty(true));
+
   function resizeCanvasToDisplay(canvas, ctx, clearFn){
     const rect = canvas.getBoundingClientRect();
     const ratio = window.devicePixelRatio || 1;
@@ -824,82 +950,149 @@
   const rect = (x,y,w,h,rx=0,attrs='') => region('rect',`x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" ${attrs}`);
   const sparkle = (x,y,size=13) => decoration('path',`d="M${x} ${y-size}V${y+size} M${x-size} ${y}H${x+size}"`);
   const COLOR_PICTURES = [
-    { title:'🐢 Friendly turtle', animal:true, shapes: () => `
-      ${ell(250,250,125,95)}
-      ${cir(250,250,52)}
-      ${rect(215,205,70,90,14)}
-      ${rect(140,215,38,60,18)} ${rect(322,215,38,60,18)}
-      ${rect(195,325,42,50,18)} ${rect(263,325,42,50,18)}
-      ${cir(250,126,48)}
-      ${cir(234,118,7,'stroke-width="3"')} ${cir(266,118,7,'stroke-width="3"')}
-      ${detail('M235 146 Q250 158 265 146',4)}
-      ${path('M250 334 L235 388 L265 388 Z')}
-      ${ell(210,225,22,18)} ${ell(290,225,22,18)} ${ell(210,278,22,18)} ${ell(290,278,22,18)}
-      ${ell(250,295,24,18)}
+    {title:'🐢 Sammy the turtle',icon:'🐢',animal:true,viewBox:'55 93 390 355',shapes:()=>`
+      ${decoration('path','d="M48 382 Q250 408 452 382 M72 140 l15 -22 m0 22 l15 22 M408 160 l13 -20 m0 20 l13 20"')}
+      ${path('M355 269 Q412 259 425 310 Q402 329 363 316Z')}
+      ${path('M169 280 Q108 293 96 329 Q132 363 179 320 Z')}
+      ${path('M339 283 Q393 295 407 330 Q370 363 329 322Z')}
+      ${path('M195 348 Q161 400 195 429 Q224 437 241 387Z')}
+      ${path('M297 348 Q339 402 305 429 Q273 437 258 387Z')}
+      ${ell(249,295,130,104)}
+      ${path('M249 196 Q204 214 205 263 L249 279 L290 261 Q289 213 249 196Z')}
+      ${path('M201 266 L246 282 L218 342 L156 312 Q159 283 201 266Z')}
+      ${path('M293 266 L251 282 L279 342 L344 312 Q337 280 293 266Z')}
+      ${path('M247 282 L280 343 L250 377 L217 341Z')}
+      ${path('M250 154 Q288 117 326 138 Q366 170 357 214 Q343 260 291 257 Q260 246 245 223 Q224 183 250 154Z')}
+      ${ell(301,182,13,19)} ${cir(302,183,5,'stroke-width="2"')}
+      ${detail('M327 217 Q312 230 294 218',4)}
+      ${cir(343,197,5,'stroke-width="2"')}
+      ${decoration('path','d="M70 385 Q98 370 119 382 M378 384 Q408 374 435 387"')}
     `},
-    { title:'👟 Cool shoes', shapes: () => `
-      ${path('M82 290 C110 244 168 226 224 237 C254 243 278 260 292 286 L292 336 L83 336 C68 336 58 327 58 316 C58 301 68 292 82 290 Z')}
-      ${path('M418 290 C390 244 332 226 276 237 C246 243 222 260 208 286 L208 336 L417 336 C432 336 442 327 442 316 C442 301 432 292 418 290 Z')}
-      ${rect(80,336,215,28,10)} ${rect(205,336,215,28,10)}
-      ${detail('M126 274 L201 274 M118 292 L210 292 M111 309 L219 309',4)}
-      ${detail('M374 274 L299 274 M382 292 L290 292 M389 309 L281 309',4)}
-      ${cir(140,320,6,'stroke-width="3"')} ${cir(169,320,6,'stroke-width="3"')} ${cir(198,320,6,'stroke-width="3"')}
-      ${cir(360,320,6,'stroke-width="3"')} ${cir(331,320,6,'stroke-width="3"')} ${cir(302,320,6,'stroke-width="3"')}
+    {title:'👟 Fancy sneakers',icon:'👟',viewBox:'35 145 430 285',shapes:()=>`
+      ${decoration('path','d="M49 404 H454 M72 85 l0 -22 m-12 11 h24 M427 125 l0 -22 m-12 11 h24"')}
+      ${path('M69 296 Q89 284 113 274 L152 202 Q174 179 197 202 L238 242 Q267 266 302 266 Q330 269 338 304 L338 357 L65 357 Q52 348 53 328 Q53 306 69 296Z')}
+      ${path('M162 208 Q186 192 203 213 L238 242 L203 265 L143 241Z')}
+      ${path('M193 277 L270 289 L305 316 L198 316 Z')}
+      ${path('M65 356 L338 356 L338 379 L60 379 Q49 371 65 356 Z')}
+      ${detail('M178 255 L223 267 M166 270 L210 280 M154 283 L196 294',5)}
+      ${path('M429 294 Q411 282 386 274 L348 202 Q326 179 303 202 L263 242 Q233 265 198 266 Q170 268 160 304 L160 357 L436 357 Q448 348 446 328 Q446 307 429 294Z')}
+      ${path('M339 208 Q316 191 299 213 L263 242 L299 265 L360 241Z')}
+      ${path('M307 277 L230 289 L197 316 L301 316Z')}
+      ${path('M160 356 L436 356 L440 379 L160 379 Z')}
+      ${detail('M322 255 L276 267 M333 270 L290 280 M344 283 L302 294',5)}
     `},
-    { title:'🙂 Silly face', shapes: () => `
-      ${path('M128 210 C128 116 204 56 250 56 C296 56 372 116 372 210 L372 226 C345 202 317 186 250 186 C183 186 155 202 128 226 Z')}
-      ${cir(250,260,150)}
-      ${ell(190,240,28,20)} ${ell(310,240,28,20)}
-      ${cir(190,240,9,'stroke-width="3"')} ${cir(310,240,9,'stroke-width="3"')}
-      ${path('M250 245 Q236 286 250 318 Q264 286 250 245 Z')}
-      ${ell(176,314,24,16)} ${ell(324,314,24,16)}
-      ${detail('M190 355 Q250 404 310 355',6)}
-      ${path('M126 170 Q98 196 106 236 Q134 234 147 208 Z')}
-      ${path('M374 170 Q402 196 394 236 Q366 234 353 208 Z')}
-      ${path('M186 95 Q250 40 314 95')}
+    {title:'🙂 Happy face',icon:'🙂',viewBox:'75 55 350 390',shapes:()=>`
+      ${decoration('path','d="M67 98 L67 61 M49 79 H85 M427 357 L427 323 M410 341 H444"')}
+      ${ell(250,278,136,153)}
+      ${ell(121,267,24,34)} ${ell(379,267,24,34)}
+      ${path('M117 207 Q114 105 193 99 Q211 73 246 91 Q267 73 298 100 Q373 98 383 201 Q343 178 325 163 Q303 198 261 188 Q231 193 214 171 Q177 203 117 207Z')}
+      ${ell(198,258,26,31)} ${ell(302,258,26,31)}
+      ${cir(202,260,10,'stroke-width="3"')} ${cir(298,260,10,'stroke-width="3"')}
+      ${ell(173,321,26,18)} ${ell(327,321,26,18)}
+      ${path('M242 276 Q249 298 240 313 L262 316 Q269 306 258 278Z')}
+      ${path('M185 346 Q250 405 315 346 Q308 383 250 396 Q195 390 185 346Z')}
+      ${decoration('path','d="M164 216 Q198 204 226 222 M274 222 Q304 204 336 217"')}
     `},
-    { title:'🐰 Happy bunny', animal:true, shapes: () => `
-      ${ell(215,108,36,90)} ${ell(285,108,36,90)}
-      ${ell(215,117,18,58)} ${ell(285,117,18,58)}
-      ${cir(250,214,102)}
-      ${ell(250,382,92,78)}
-      ${ell(198,378,28,42)} ${ell(302,378,28,42)}
-      ${ell(182,450,36,18)} ${ell(318,450,36,18)}
-      ${ell(212,214,16,20)} ${ell(288,214,16,20)}
-      ${cir(212,214,7,'stroke-width="3"')} ${cir(288,214,7,'stroke-width="3"')}
-      ${path('M250 242 L236 262 L264 262 Z')}
-      ${detail('M250 262 Q236 279 214 270 M250 262 Q264 279 286 270',4)}
-      ${detail('M218 252 L168 240 M218 264 L166 264 M282 252 L332 240 M282 264 L334 264',3)}
+    {title:'🐰 Bella the bunny',icon:'🐰',animal:true,viewBox:'80 0 340 470',shapes:()=>`
+      ${decoration('path','d="M63 422 Q250 438 436 422 M62 156 L75 144 M425 164 L439 150"')}
+      ${ell(211,117,42,103,'transform="rotate(-12 211 117)"')}
+      ${ell(289,117,42,103,'transform="rotate(12 289 117)"')}
+      ${ell(212,115,21,73,'transform="rotate(-12 212 115)"')}
+      ${ell(288,115,21,73,'transform="rotate(12 288 115)"')}
+      ${ell(250,367,109,93)}
+      ${ell(161,365,33,50)} ${ell(339,365,33,50)}
+      ${ell(191,437,47,24)} ${ell(309,437,47,24)}
+      ${cir(250,244,113)}
+      ${ell(211,234,19,25)} ${ell(289,234,19,25)}
+      ${cir(211,235,8,'stroke-width="3"')} ${cir(289,235,8,'stroke-width="3"')}
+      ${ell(201,282,24,15)} ${ell(299,282,24,15)}
+      ${path('M229 273 Q250 291 271 273 L250 293Z')}
+      ${detail('M250 292 L250 308 M250 308 Q236 322 222 310 M250 308 Q264 322 278 310',4)}
+      ${detail('M222 289 L166 279 M222 302 L160 306 M278 289 L334 279 M278 302 L340 306',4)}
+      ${ell(250,368,45,53)}
     `},
-    { title:'🐶 Puppy Finn', animal:true, shapes: () => `
-      ${ell(250,340,95,88)}
-      ${rect(188,406,28,52,14)} ${rect(284,406,28,52,14)} ${rect(214,406,28,52,14)} ${rect(258,406,28,52,14)}
-      ${ell(250,205,122,108)}
-      ${ell(172,202,44,74)} ${ell(328,202,44,74)}
-      ${path('M182 134 Q154 116 158 86 Q192 102 206 130 Z')}
-      ${path('M318 134 Q346 116 342 86 Q308 102 294 130 Z')}
-      ${ell(212,208,20,24)} ${ell(288,208,20,24)}
-      ${cir(212,208,8,'stroke-width="3"')} ${cir(288,208,8,'stroke-width="3"')}
-      ${ell(250,246,22,16)}
-      ${detail('M250 258 Q236 272 221 266 M250 258 Q264 272 279 266',4)}
-      ${path('M170 336 Q148 318 132 336 Q145 360 170 356 Z')}
-      ${path('M330 336 Q352 318 368 336 Q355 360 330 356 Z')}
-      ${detail('M346 350 Q388 330 402 352',6)}
-      ${rect(213,296,74,34,16)}
-      ${detail('M230 313 H270',3)}
+    {title:'🐶 Finn the cockapoo',icon:'🐶',animal:true,viewBox:'60 83 380 375',shapes:()=>`
+      ${decoration('path','d="M69 435 H435 M65 122 l14 -20 m0 20 l14 20 M405 115 l13 -20 m0 20 l13 20"')}
+      ${path('M319 367 Q389 310 402 345 Q412 371 372 389 Q349 390 327 383Z')}
+      ${ell(249,376,105,79)}
+      ${ell(183,425,37,29)} ${ell(318,425,37,29)}
+      ${path('M166 194 Q113 152 106 226 Q108 274 151 292 Q187 288 189 259Z')}
+      ${path('M334 194 Q387 152 394 226 Q392 274 349 292 Q313 288 311 259Z')}
+      ${path('M165 192 Q153 137 191 118 Q210 92 244 117 Q268 100 298 119 Q342 121 342 180 Q361 223 334 281 Q322 314 289 327 L213 327 Q168 306 158 275 Q142 233 165 192Z')}
+      ${ell(211,233,20,24)} ${ell(289,233,20,24)}
+      ${cir(213,236,9,'stroke-width="3"')} ${cir(287,236,9,'stroke-width="3"')}
+      ${ell(250,278,44,37)}
+      ${ell(250,270,19,15)}
+      ${detail('M249 284 Q237 299 219 290 M251 284 Q265 299 281 290',4)}
+      ${ell(177,277,23,19)} ${ell(323,277,23,19)}
+      ${path('M213 330 Q250 347 287 330 L277 351 Q250 361 223 351Z')}
+      ${cir(250,348,13)}
+      ${decoration('path','d="M198 166 Q212 158 222 170 M275 170 Q291 155 306 168"')}
     `},
-    { title:'🐱 Kitty cat', animal:true, shapes: () => `
-      ${ell(250,352,95,82)}
-      ${path('M201 126 L168 76 L165 154 Z')} ${path('M299 126 L332 76 L335 154 Z')}
-      ${path('M201 126 L186 96 L208 119 Z')} ${path('M299 126 L314 96 L292 119 Z')}
-      ${cir(250,222,118)}
-      ${ell(208,220,22,28)} ${ell(292,220,22,28)}
-      ${cir(208,220,8,'stroke-width="3"')} ${cir(292,220,8,'stroke-width="3"')}
-      ${path('M250 255 L235 274 L265 274 Z')}
-      ${detail('M250 274 Q236 292 214 286 M250 274 Q264 292 286 286',4)}
-      ${detail('M206 258 L154 248 M206 274 L150 274 M294 258 L346 248 M294 274 L350 274',3)}
-      ${path('M326 348 Q374 330 392 372 Q369 388 336 376 Z')}
-      ${ell(210,446,34,18)} ${ell(290,446,34,18)}
+    {title:'🐱 Miso the kitty',icon:'🐱',animal:true,viewBox:'70 60 360 405',shapes:()=>`
+      ${decoration('path','d="M68 426 Q250 442 432 426 M85 114 l14 -20 m0 20 l14 20"')}
+      ${path('M329 358 Q398 318 409 373 Q403 417 369 414 Q352 408 355 385Z')}
+      ${ell(247,371,109,90)}
+      ${ell(192,434,40,22)} ${ell(305,434,40,22)}
+      ${path('M145 180 L145 77 L212 133Z')}
+      ${path('M355 180 L355 77 L288 133Z')}
+      ${path('M158 159 L159 111 L198 138Z')}
+      ${path('M342 159 L341 111 L302 138Z')}
+      ${cir(250,250,125)}
+      ${ell(209,240,24,31)} ${ell(291,240,24,31)}
+      ${cir(210,244,9,'stroke-width="3"')} ${cir(290,244,9,'stroke-width="3"')}
+      ${ell(189,299,23,16)} ${ell(311,299,23,16)}
+      ${path('M230 276 L270 276 L250 297Z')}
+      ${detail('M250 298 Q229 317 211 302 M250 298 Q271 317 289 302',4)}
+      ${detail('M208 279 L143 267 M206 291 L140 292 M292 279 L357 267 M294 291 L360 292',3)}
+      ${path('M224 355 Q250 341 276 355 Q269 375 250 377 Q231 375 224 355Z')}
+    `},
+    {title:'🦋 Butterfly garden',icon:'🦋',animal:true,viewBox:'45 86 410 365',shapes:()=>`
+      ${sparkle(67,90)} ${sparkle(432,114)}
+      ${path('M242 230 C155 80 70 89 81 183 Q92 254 232 267Z')}
+      ${path('M239 281 Q130 254 130 358 Q150 435 245 337Z')}
+      ${path('M258 230 C345 80 430 89 419 183 Q408 254 268 267Z')}
+      ${path('M261 281 Q370 254 370 358 Q350 435 255 337Z')}
+      ${ell(161,197,36,46)} ${ell(339,197,36,46)}
+      ${ell(196,330,28,25)} ${ell(304,330,28,25)}
+      ${ell(250,274,24,91)}
+      ${cir(250,181,26)}
+      ${detail('M239 162 Q220 122 200 113 M261 162 Q280 122 300 113',4)}
+      ${cir(240,181,4,'stroke-width="2"')} ${cir(260,181,4,'stroke-width="2"')}
+      ${detail('M240 195 Q250 202 260 195',3)}
+    `},
+    {title:'🚀 Rocket to the moon',icon:'🚀',viewBox:'65 33 370 440',shapes:()=>`
+      ${sparkle(83,98)} ${sparkle(424,162)} ${sparkle(94,356)}
+      ${path('M179 311 L115 377 L127 289 L191 253 Z')}
+      ${path('M321 311 L385 377 L373 289 L309 253Z')}
+      ${path('M211 358 Q200 407 250 461 Q300 407 289 358Z')}
+      ${path('M230 362 Q224 391 250 425 Q276 391 270 362Z')}
+      ${path('M250 53 C193 116 184 208 187 296 Q187 348 211 367 L289 367 Q313 348 313 296 C316 208 307 116 250 53Z')}
+      ${path('M250 53 Q207 106 199 162 L301 162 Q293 106 250 53Z')}
+      ${cir(250,244,53)} ${cir(250,244,35)}
+      ${path('M211 337 Q250 328 289 337 L289 367 L211 367Z')}
+    `},
+    {title:'🌸 Smiling flower',icon:'🌸',viewBox:'57 58 386 405',shapes:()=>`
+      ${decoration('path','d="M65 435 H437 M70 145 l14 -20 m0 20 l14 20"')}
+      ${path('M250 296 Q251 364 246 435 L264 435 Q260 365 260 296Z')}
+      ${path('M253 360 Q199 327 168 356 Q185 394 255 385Z')}
+      ${path('M254 381 Q318 339 355 359 Q326 410 256 401Z')}
+      ${[0,60,120,180,240,300].map(a=>ell(250,180,48,108,`transform="rotate(${a} 250 256)"`)).join('')}
+      ${cir(250,250,64)}
+      ${cir(229,241,8,'stroke-width="3"')} ${cir(271,241,8,'stroke-width="3"')}
+      ${detail('M228 277 Q250 297 272 277',5)}
+    `},
+    {title:'🦖 Happy dinosaur',icon:'🦖',animal:true,viewBox:'50 68 402 395',shapes:()=>`
+      ${decoration('path','d="M60 443 H441"')}
+      ${path('M157 325 Q94 333 73 376 Q108 399 168 373Z')}
+      ${[0,1,2,3,4].map(i=>path(`M${160+i*34} ${238-i*14} L${176+i*34} ${199-i*14} L${191+i*34} ${236-i*14}Z`)).join('')}
+      ${path('M171 290 Q164 208 246 175 Q276 162 298 190 Q323 166 323 120 Q336 77 385 99 Q437 116 420 168 Q408 215 359 211 Q354 345 280 387 Q192 407 171 290Z')}
+      ${path('M205 370 L197 436 L247 436 L247 377Z')}
+      ${path('M289 365 L295 436 L344 436 L328 334Z')}
+      ${ell(240,289,39,55)}
+      ${ell(383,144,17,24)} ${cir(385,144,6,'stroke-width="3"')}
+      ${detail('M367 183 Q390 196 410 178',4)}
+      ${path('M316 262 Q360 248 359 282 Q334 298 315 283Z')}
     `}
   ];
 
@@ -914,37 +1107,53 @@
       announce('Good job Petra!');
     }
   }
+  function saveColorPage(){
+    const marks=Array.from($('color-svg').querySelectorAll('.color-fill-piece')).map(piece=>piece.getAttribute('fill'));
+    if(marks.length){savedColourPages.set(colorIndex,{marks,strokes:colorStrokes.map(stroke=>({color:stroke.color,size:stroke.size,points:stroke.points.map(p=>({...p}))}))});}
+  }
+  function updatePictureGallery(){
+    const gallery=$('picture-gallery');
+    gallery.innerHTML='';
+    COLOR_PICTURES.forEach((pic,i)=>{
+      const btn=document.createElement('button');btn.type='button';btn.className='picture-choice'+(i===colorIndex?' active':'');
+      btn.textContent=pic.icon||'🎨';btn.title=pic.title;btn.setAttribute('aria-label',pic.title);btn.setAttribute('aria-pressed',String(i===colorIndex));
+      btn.addEventListener('click',()=>{if(i!==colorIndex){saveColorPage();colorIndex=i;renderColorPicture();}});
+      gallery.appendChild(btn);
+    });
+    const active=gallery.querySelector('.active');active?.scrollIntoView?.({block:'nearest',inline:'nearest',behavior:'instant'});
+  }
   function renderColorPicture(){
-    const pic = COLOR_PICTURES[colorIndex % COLOR_PICTURES.length];
-    $('color-picture-name').textContent = pic.title;
-    $('picture-position').textContent = `Picture ${(colorIndex % COLOR_PICTURES.length) + 1} of ${COLOR_PICTURES.length}`;
+    const pic=COLOR_PICTURES[colorIndex % COLOR_PICTURES.length];
+    $('color-picture-name').textContent=pic.title;
+    $('picture-position').textContent=`Picture ${colorIndex+1} of ${COLOR_PICTURES.length}`;
+    $('color-svg').setAttribute('aria-label',pic.title+' colouring picture');
+    $('color-svg').setAttribute('viewBox',pic.viewBox||'0 0 500 500');
     maybeColorCheer(false);
-    $('color-svg').innerHTML = pic.shapes();
-    $('color-svg').style.pointerEvents = 'auto';
-    colorHistory = [];
-    colorStrokes = [];
+    $('color-svg').innerHTML=pic.shapes();
+    const saved=savedColourPages.get(colorIndex);
+    colorHistory=[];
+    colorStrokes=saved? saved.strokes.map(stroke=>({color:stroke.color,size:stroke.size,points:stroke.points.map(p=>({...p}))})) : [];
     colorFillCount=0;
-    resizeColorCanvas();
-    $('color-svg').querySelectorAll('.color-fill-piece').forEach(piece => {
-      piece.dataset.fill = piece.getAttribute('fill') || piece.dataset.default || '#ffffff';
-      piece.addEventListener('pointerdown', (event) => { event.preventDefault();
-        if(colorMode !== 'fill') return;
+    $('color-svg').querySelectorAll('.color-fill-piece').forEach((piece,index)=>{
+      if(saved?.marks?.[index])piece.setAttribute('fill',saved.marks[index]);
+      piece.addEventListener('pointerdown',event=>{
+        if(colorMode!=='fill')return;
+        event.preventDefault();
         const before=piece.getAttribute('fill');
         if(before===chosenColor)return;
-        colorHistory.push({el:piece, prev:before});
-        piece.setAttribute('fill', chosenColor);
-        piece.dataset.fill = chosenColor;
-        sound([659,784], .08);
-        if(pic.animal){
-          colorFillCount++;
-          if(colorFillCount===1 || colorFillCount%3===0){
-            $('picture-cheer').textContent='🐾 Good job Petra!';
-            announce('Good job Petra!');
-            if(colorFillCount===1 || colorFillCount%6===0) say('Good job Petra!');
-          }
+        colorHistory.push({el:piece,prev:before});
+        piece.setAttribute('fill',chosenColor);
+        sound([620,784],.07);
+        colorFillCount++;
+        if(pic.animal&&(colorFillCount===2||colorFillCount%6===0)){
+          $('picture-cheer').textContent='🐾 Good job Petra!';
+          say('Good job Petra!');
         }
+        saveColorPage();
       });
     });
+    resizeColorCanvas();
+    updatePictureGallery();
   }
   function resizeColorCanvas(){
     const oldWidth=Number(colorCanvas.dataset.csswidth||0);
@@ -989,7 +1198,7 @@
     colorStroke.points.push(p);
     redrawColorStrokes();
   }
-  function endColor(){ colorDrawing = false; colorStroke = null; }
+  function endColor(){ if(colorDrawing) saveColorPage(); colorDrawing = false; colorStroke = null; }
   colorCanvas.addEventListener('pointerdown', beginColor);
   colorCanvas.addEventListener('pointermove', moveColor);
   window.addEventListener('pointerup', endColor);
@@ -1119,15 +1328,15 @@
   $('color-undo').addEventListener('click', ()=> {
     if(colorMode === 'fill' && colorHistory.length){
       const last = colorHistory.pop();
-      last.el.setAttribute('fill', last.prev);
+      last.el.setAttribute('fill', last.prev);saveColorPage();
       return;
     }
-    if(colorStrokes.length){ colorStrokes.pop(); redrawColorStrokes(); }
+    if(colorStrokes.length){ colorStrokes.pop(); redrawColorStrokes(); saveColorPage(); }
   });
-  $('color-clear').addEventListener('click', renderColorPicture);
-  $('color-next').addEventListener('click', ()=> { colorIndex++; renderColorPicture(); });
-  $('color-animals').addEventListener('click', ()=> { colorIndex=COLOR_PICTURES.findIndex(p=>p.title.includes('Finn the cockapoo'));renderColorPicture();maybeColorCheer(true); });
-  $('color-prev').addEventListener('click', ()=> { colorIndex=(colorIndex-1+COLOR_PICTURES.length)%COLOR_PICTURES.length; renderColorPicture(); });
+  $('color-clear').addEventListener('click',()=>{savedColourPages.delete(colorIndex);renderColorPicture();});
+  $('color-next').addEventListener('click', ()=> { saveColorPage();colorIndex=(colorIndex+1)%COLOR_PICTURES.length;renderColorPicture(); });
+  $('color-animals').addEventListener('click',()=>{saveColorPage();const index=COLOR_PICTURES.findIndex(p=>p.animal);if(index>=0){colorIndex=index;renderColorPicture();}});
+  $('color-prev').addEventListener('click', ()=> {saveColorPage();colorIndex=(colorIndex-1+COLOR_PICTURES.length)%COLOR_PICTURES.length;renderColorPicture(); });
   $('free-crayon').addEventListener('click',()=>setFreeTool('crayon'));
   $('free-eraser').addEventListener('click',()=>setFreeTool('eraser'));
   document.querySelectorAll('.size-btn').forEach(btn => btn.addEventListener('click', ()=> {
