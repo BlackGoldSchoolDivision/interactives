@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated": "2026-10-09",
+  "generated": "2026-10-19",
   "activities": {
     "morpheme-missions": {
       "kind": "html",
@@ -1406,9 +1406,15 @@
     "forestmath": {
       "kind": "html",
       "title": "Forest Math Adventure",
-      "credit": "",
+      "credit": "Original activities by Chantelle",
       "category": "Maths",
       "versions": [
+        {
+          "label": "Illustrated Forest Math Adventure",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "forest-math-adventure/index.html",
+          "url": "https://interactives.blackgold.ca/forest-math-adventure/"
+        },
         {
           "label": "Forest Math Adventure",
           "repo": "Maltais239/interactives",
@@ -1454,9 +1460,15 @@
     "spacemaths": {
       "kind": "html",
       "title": "Space Math Explorers",
-      "credit": "",
+      "credit": "Original activities by Chantelle",
       "category": "Maths",
       "versions": [
+        {
+          "label": "Illustrated Space Math Explorers",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "space-math-explorers/index.html",
+          "url": "https://interactives.blackgold.ca/space-math-explorers/"
+        },
         {
           "label": "Space Math Explorers",
           "repo": "Maltais239/interactives",
@@ -9697,6 +9709,142 @@
       {
         "path": "trading-post/tests/model.test.cjs",
         "bytes": 4124
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/forest-math-adventure": [
+      {
+        "path": "forest-math-adventure/README.md",
+        "bytes": 1067
+      },
+      {
+        "path": "forest-math-adventure/app.js",
+        "bytes": 4188
+      },
+      {
+        "path": "forest-math-adventure/assets/forest-acorn.webp",
+        "bytes": 254
+      },
+      {
+        "path": "forest-math-adventure/assets/forest-acorns.webp",
+        "bytes": 18944
+      },
+      {
+        "path": "forest-math-adventure/assets/forest-banner.webp",
+        "bytes": 104518
+      },
+      {
+        "path": "forest-math-adventure/assets/forest-bear.webp",
+        "bytes": 25816
+      },
+      {
+        "path": "forest-math-adventure/assets/forest-owl.webp",
+        "bytes": 20518
+      },
+      {
+        "path": "forest-math-adventure/assets/forest-pattern.webp",
+        "bytes": 20814
+      },
+      {
+        "path": "forest-math-adventure/assets/forest-scene.webp",
+        "bytes": 70456
+      },
+      {
+        "path": "forest-math-adventure/assets/forest-skip.webp",
+        "bytes": 22584
+      },
+      {
+        "path": "forest-math-adventure/assets/forest-steps.webp",
+        "bytes": 25802
+      },
+      {
+        "path": "forest-math-adventure/index.html",
+        "bytes": 4151
+      },
+      {
+        "path": "forest-math-adventure/math.mjs",
+        "bytes": 2585
+      },
+      {
+        "path": "forest-math-adventure/styles.css",
+        "bytes": 7400
+      },
+      {
+        "path": "forest-math-adventure/tests/math.test.mjs",
+        "bytes": 800
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/space-math-explorers": [
+      {
+        "path": "space-math-explorers/README.md",
+        "bytes": 1051
+      },
+      {
+        "path": "space-math-explorers/app.js",
+        "bytes": 8552
+      },
+      {
+        "path": "space-math-explorers/assets/space-alien.webp",
+        "bytes": 1552
+      },
+      {
+        "path": "space-math-explorers/assets/space-astronaut.webp",
+        "bytes": 1376
+      },
+      {
+        "path": "space-math-explorers/assets/space-banner.webp",
+        "bytes": 79134
+      },
+      {
+        "path": "space-math-explorers/assets/space-building.webp",
+        "bytes": 16536
+      },
+      {
+        "path": "space-math-explorers/assets/space-counting.webp",
+        "bytes": 17136
+      },
+      {
+        "path": "space-math-explorers/assets/space-crystal.webp",
+        "bytes": 950
+      },
+      {
+        "path": "space-math-explorers/assets/space-equations.webp",
+        "bytes": 17930
+      },
+      {
+        "path": "space-math-explorers/assets/space-grouping.webp",
+        "bytes": 23828
+      },
+      {
+        "path": "space-math-explorers/assets/space-rock.webp",
+        "bytes": 1056
+      },
+      {
+        "path": "space-math-explorers/assets/space-rocket.webp",
+        "bytes": 4376
+      },
+      {
+        "path": "space-math-explorers/assets/space-scene.webp",
+        "bytes": 46858
+      },
+      {
+        "path": "space-math-explorers/assets/space-sharing.webp",
+        "bytes": 25672
+      },
+      {
+        "path": "space-math-explorers/index.html",
+        "bytes": 4114
+      },
+      {
+        "path": "space-math-explorers/math.mjs",
+        "bytes": 2593
+      },
+      {
+        "path": "space-math-explorers/styles.css",
+        "bytes": 9038
+      },
+      {
+        "path": "space-math-explorers/tests/math.test.mjs",
+        "bytes": 918
       }
     ]
   },
