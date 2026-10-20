@@ -20,6 +20,10 @@ Each unit keeps its own device-local progress, settings and unfinished round whe
 
 Drag placements also work by selecting a card and activating a destination by touch or keyboard. Ordered steps have up/down buttons. Resizing does not rebuild question state.
 
+## Visual question practice
+
+The **Choose a question format** picker now includes **Pictures & diagrams**. This selects illustrated questions across the same nine formats rather than treating pictures as a separate answer type. Currently 77 of the 144 questions qualify (36 Matter and 41 Energy); 50 include original illustrated scenes. The selected goal, round length, learning/test mode, and device-local progress still apply. Visual rounds do not pad the requested length with unillustrated questions.
+
 ## Content and visual sources
 
 Curriculum mapping follows the supplied *Science 1–6 Curriculum NEW Alberta* sheet. Questions are original and independent of Alberta Education and Vretta. They are not released PAT items or a verified reproduction of Vretta's interface.
