@@ -1,0 +1,206 @@
+{
+  "schemaVersion": 1,
+  "updated": "2026-10-20",
+  "status": "design-inventory",
+  "studentFacingBehavior": "Question scoring remains unchanged until individual layout extensions are tested; no review or answer bank linked in public UI.",
+  "layouts": [
+    {
+      "id": "visual-answer-grid",
+      "name": "Picture answer cards",
+      "existingTypes": [
+        "single"
+      ],
+      "stage": "upgrade",
+      "phase": "P0",
+      "spec": "Image tiles share aspect ratio; card captions and optional textual context separate from asset; no answer-specific border until feedback.",
+      "dataKeys": [
+        "data.optionVisuals",
+        "data.optionDescriptions"
+      ]
+    },
+    {
+      "id": "illustrated-multiselect",
+      "name": "Picture + multiple correct choices",
+      "existingTypes": [
+        "multi"
+      ],
+      "stage": "upgrade",
+      "phase": "P0",
+      "spec": "Large context photo or scene and tap-friendly checklist; multiple selections with no immediate key in test mode.",
+      "dataKeys": [
+        "data.photo",
+        "data.options"
+      ]
+    },
+    {
+      "id": "illustrated-dropdown",
+      "name": "Image-supported sentence completion",
+      "existingTypes": [
+        "dropdown"
+      ],
+      "stage": "upgrade",
+      "phase": "P0",
+      "spec": "Readable narrative above labelled dropdown fields; optional paired photo or illustration; no awkward inline tiny controls.",
+      "dataKeys": [
+        "data.photo",
+        "data.blanks"
+      ]
+    },
+    {
+      "id": "drag-on-illustration",
+      "name": "Drag terms to a labelled diagram",
+      "existingTypes": [
+        "label"
+      ],
+      "stage": "upgrade",
+      "phase": "P0",
+      "spec": "Raster scene with labelled drop targets as independent, accessible HTML controls; keyboard choose-then-place fallback.",
+      "dataKeys": [
+        "data.diagram",
+        "data.zoneImages",
+        "data.zones",
+        "data.items"
+      ]
+    },
+    {
+      "id": "image-sort-board",
+      "name": "Sort image or text cards into visual destinations",
+      "existingTypes": [
+        "sort"
+      ],
+      "stage": "upgrade",
+      "phase": "P0",
+      "spec": "Drop zones may use images; clear unused bank; tested with pointer, touch, mouse and keyboard.",
+      "dataKeys": [
+        "data.zoneImages",
+        "data.items",
+        "data.zones"
+      ]
+    },
+    {
+      "id": "flowchart-completion",
+      "name": "Complete energy/resource flowchart",
+      "existingTypes": [
+        "label",
+        "match"
+      ],
+      "stage": "new-layout",
+      "phase": "P1",
+      "spec": "A reusable flowchart renderer with neutral boxes and directional connections; drop zone contents are not baked into the image.",
+      "dataKeys": [
+        "data.diagram",
+        "data.zones",
+        "data.items"
+      ]
+    },
+    {
+      "id": "image-term-definition",
+      "name": "Match photo, term and definition",
+      "existingTypes": [
+        "match"
+      ],
+      "stage": "new-layout",
+      "phase": "P1",
+      "spec": "Term board, illustrated bank and definition destinations; support many-to-one only if scoring explicitly permits.",
+      "dataKeys": [
+        "data.zones",
+        "data.items",
+        "data.zoneImages"
+      ]
+    },
+    {
+      "id": "before-after-scene",
+      "name": "Compare two scenes",
+      "existingTypes": [
+        "single",
+        "dropdown",
+        "multi",
+        "hotspot"
+      ],
+      "stage": "upgrade",
+      "phase": "P0",
+      "spec": "Before/after imagery shares camera perspective; only code provides precise before/after readings or measurements.",
+      "dataKeys": [
+        "data.scenePair",
+        "data.photo",
+        "data.table"
+      ]
+    },
+    {
+      "id": "experiment-panel",
+      "name": "Investigation setup + reasoning",
+      "existingTypes": [
+        "single",
+        "multi",
+        "hotspot"
+      ],
+      "stage": "upgrade",
+      "phase": "P1",
+      "spec": "Two-column desktop, stacked phone: original investigation photo, evidence notes, and response; educational context before controls.",
+      "dataKeys": [
+        "data.photo",
+        "data.context",
+        "data.intro"
+      ]
+    },
+    {
+      "id": "evidence-selection",
+      "name": "Choose the strongest evidence",
+      "existingTypes": [
+        "hotspot"
+      ],
+      "stage": "upgrade",
+      "phase": "P1",
+      "spec": "Readable source excerpt and selectable statement lines, optionally paired with authentic-type context art; not automatically a photo click-map.",
+      "dataKeys": [
+        "data.sourceTitle",
+        "data.intro",
+        "data.options",
+        "data.photo"
+      ]
+    },
+    {
+      "id": "visual-step-sequencing",
+      "name": "Sequence stages with visual cues",
+      "existingTypes": [
+        "order"
+      ],
+      "stage": "upgrade",
+      "phase": "P1",
+      "spec": "Move-up/down controls plus optional illustrative scene without showing ordering through filenames or panel numbering.",
+      "dataKeys": [
+        "data.items",
+        "data.photo"
+      ]
+    },
+    {
+      "id": "data-model-response",
+      "name": "Data table or scale + numerical response",
+      "existingTypes": [
+        "numeric"
+      ],
+      "stage": "upgrade",
+      "phase": "P1",
+      "spec": "Coded axes/labels/numeric ticks ensure quantitative truth; photo backgrounds only for context.",
+      "dataKeys": [
+        "data.table",
+        "data.diagram",
+        "data.scale",
+        "data.unit"
+      ]
+    },
+    {
+      "id": "image-hotspot-regions",
+      "name": "Tap a precise location in a photo",
+      "existingTypes": [
+        "hotspot"
+      ],
+      "stage": "prototype-only",
+      "phase": "P2",
+      "spec": "Currently not an engine feature. Prototype explicit accessible region controls and validate hit targets before using scored image coordinates.",
+      "dataKeys": [
+        "data.options"
+      ]
+    }
+  ]
+}

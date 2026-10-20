@@ -1,0 +1,338 @@
+{
+  "schemaVersion": 1,
+  "updated": "2026-10-20",
+  "phase": "foundation",
+  "status": "planned-not-generated",
+  "purpose": "Future ORIGINAL artwork, separate from already-published image-bank.json. No planned image path should be loaded until assets are committed and tested.",
+  "qualityRules": {
+    "original": "Never republish Vretta screenshot art or scrape copyrighted examination images.",
+    "realism": "Use coherent photographic or hand-illustrated raster assets, not cobbled-together vector characters. Check hands, apparatus and geometry for accuracy.",
+    "quantities": "Numerical readouts, labels, force arrows, exact scale ticks, coordinates, and scored hotspots remain code/data-driven.",
+    "studentSafety": "Never encode correct answers in image alt text, file names that appear to students, distinct option styles or visible review buttons.",
+    "performance": "Export PNG archival source and compressed WebP delivery; optimize for mobile, target under 150 KB per web asset or record a justified exception.",
+    "accessibility": "Alt text describes observations without answering the question; labelled zones and drag targets are keyboard/touch operable.",
+    "provenance": "Record whether artwork was generated or photographed, the date, review status, and accessibility description."
+  },
+  "existingBank": "image-bank.json",
+  "pilotQuestionIds": {
+    "matter": [
+      "particles-02",
+      "particles-13",
+      "temperature-02",
+      "expansion-02",
+      "expansion-13"
+    ],
+    "energy": [
+      "forces-02",
+      "forces-13",
+      "properties-13",
+      "choices-13",
+      "management-13"
+    ],
+    "earth": [
+      "climate-04",
+      "climate-13",
+      "evidence-14",
+      "impacts-13",
+      "collaboration-14"
+    ]
+  },
+  "assets": [
+    {
+      "id": "matter--phase-change-scenes",
+      "unit": "matter",
+      "priority": "P0",
+      "status": "planned",
+      "file": "matter/phase-change-scenes.png",
+      "web": "matter/phase-change-scenes.webp",
+      "role": "four-scene illustration sheet",
+      "aspectRatio": "2x2 panels",
+      "description": "Distinct ice, liquid, vapour and condensing droplets around consistent realistic glassware.",
+      "questionIds": [
+        "particles-13",
+        "particles-12"
+      ],
+      "notes": "Leave arrow labels, transitions and exact positions for coded diagrams; do not bake answer letters into scene."
+    },
+    {
+      "id": "matter--particle-model-beakers",
+      "unit": "matter",
+      "priority": "P0",
+      "status": "planned",
+      "file": "matter/particle-model-beakers.png",
+      "web": "matter/particle-model-beakers.webp",
+      "role": "laboratory scene backplates",
+      "aspectRatio": "3x1 panels",
+      "description": "Consistent laboratory glass beakers photographed or painted in a vivid science-workbench scene.",
+      "questionIds": [
+        "particles-02",
+        "particles-14"
+      ],
+      "notes": "Empty containers/background only: count, spacing and particle states must be programmatically drawn with identical particle size."
+    },
+    {
+      "id": "matter--thermometer-study",
+      "unit": "matter",
+      "priority": "P0",
+      "status": "planned",
+      "file": "matter/thermometer-study.png",
+      "web": "matter/thermometer-study.webp",
+      "role": "apparatus photographs",
+      "aspectRatio": "2x2 panels",
+      "description": "Carefully cropped vertical liquid-thermometer arrangements on a clean class-lab bench.",
+      "questionIds": [
+        "temperature-02",
+        "temperature-13"
+      ],
+      "notes": "No readable or invented graduation numbers in generated imagery; actual temperatures and scale ticks are coded."
+    },
+    {
+      "id": "matter--equal-mass-ice-water",
+      "unit": "matter",
+      "priority": "P0",
+      "status": "planned",
+      "file": "matter/equal-mass-ice-water.png",
+      "web": "matter/equal-mass-ice-water.webp",
+      "role": "two-state investigation",
+      "aspectRatio": "2x2 panels",
+      "description": "Transparent containers with ice and liquid water as illustrative contexts for equal-mass volume comparison.",
+      "questionIds": [
+        "expansion-02",
+        "expansion-03"
+      ],
+      "notes": "A generated beaker volume is not quantitative evidence: measurements and water lines must be programmatic."
+    },
+    {
+      "id": "matter--bridge-joint-seasons",
+      "unit": "matter",
+      "priority": "P0",
+      "status": "planned",
+      "file": "matter/bridge-joint-seasons.png",
+      "web": "matter/bridge-joint-seasons.webp",
+      "role": "paired environmental photography",
+      "aspectRatio": "2x1 panels",
+      "description": "One bridge expansion joint in warm and cool conditions with consistent view, plausible construction detail.",
+      "questionIds": [
+        "expansion-13",
+        "expansion-04"
+      ],
+      "notes": "Exact gap changes shown by coded overlays not the photograph; bridge must not look structurally broken."
+    },
+    {
+      "id": "matter--plant-temperature-investigation",
+      "unit": "matter",
+      "priority": "P1",
+      "status": "planned",
+      "file": "matter/plant-temperature-investigation.png",
+      "web": "matter/plant-temperature-investigation.webp",
+      "role": "plant investigation photo sheet",
+      "aspectRatio": "2x2 panels",
+      "description": "Two otherwise matched classroom plants on neutral benches, plus leaf and watering close-ups.",
+      "questionIds": [],
+      "notes": "Inspired by a general experimental-design context; first create a curriculum-aligned new question rather than silently changing an existing mass/temperature stem."
+    },
+    {
+      "id": "energy--rubber-band-before-after",
+      "unit": "energy",
+      "priority": "P1",
+      "status": "planned",
+      "file": "energy/rubber-band-before-after.png",
+      "web": "energy/rubber-band-before-after.webp",
+      "role": "sequential original illustrated photo",
+      "aspectRatio": "2x1 panels",
+      "description": "Same undamaged rubber band gently stretched between two realistic pairs of hands, before and during pulling.",
+      "questionIds": [
+        "properties-13",
+        "properties-04"
+      ],
+      "notes": "Hands must have accurate fingers; arrows, force type and measurements added in code."
+    },
+    {
+      "id": "energy--bridge-load-test",
+      "unit": "energy",
+      "priority": "P1",
+      "status": "planned",
+      "file": "energy/bridge-load-test.png",
+      "web": "energy/bridge-load-test.webp",
+      "role": "apparatus photo sheet",
+      "aspectRatio": "2x2 panels",
+      "description": "Classroom bridge model between tables, safely tested with identical weights and a spring-scale close-up.",
+      "questionIds": [],
+      "notes": "New investigation stems to be drafted later; no dangerous collapse or distorted parts."
+    },
+    {
+      "id": "energy--skateboard-griptape",
+      "unit": "energy",
+      "priority": "P1",
+      "status": "planned",
+      "file": "energy/skateboard-griptape.png",
+      "web": "energy/skateboard-griptape.webp",
+      "role": "realistic context photograph",
+      "aspectRatio": "single 4:3",
+      "description": "Close-up skateboard grip tape and shoe contact for a friction question.",
+      "questionIds": [],
+      "notes": "Write a new evidence-based friction item first; no logos or identifiable students."
+    },
+    {
+      "id": "energy--wind-powered-model-car",
+      "unit": "energy",
+      "priority": "P1",
+      "status": "planned",
+      "file": "energy/wind-powered-model-car.png",
+      "web": "energy/wind-powered-model-car.webp",
+      "role": "model photo sheet",
+      "aspectRatio": "2x2 panels",
+      "description": "Safe classroom tabletop sail car, wind stream and a simple testing setup.",
+      "questionIds": [],
+      "notes": "Reserve for new direct versus processed resource questions; no impossible wheel or sail geometry."
+    },
+    {
+      "id": "energy--hydropower-context",
+      "unit": "energy",
+      "priority": "P1",
+      "status": "planned",
+      "file": "energy/hydropower-context.png",
+      "web": "energy/hydropower-context.webp",
+      "role": "landscape and machine photo panels",
+      "aspectRatio": "2x1 panels",
+      "description": "Original dam-turbine context scenes designed for a renewable energy flowchart.",
+      "questionIds": [],
+      "notes": "Resource classification and flow arrows remain interactive text layers."
+    },
+    {
+      "id": "energy--force-in-context",
+      "unit": "energy",
+      "priority": "P1",
+      "status": "planned",
+      "file": "energy/force-in-context.png",
+      "web": "energy/force-in-context.webp",
+      "role": "paired action photograph",
+      "aspectRatio": "2x2 panels",
+      "description": "Realistic compression, friction, twist and spring scenes in varied classroom contexts.",
+      "questionIds": [
+        "forces-02",
+        "forces-13"
+      ],
+      "notes": "Reuse existing energy/force-actions for now; generate only distinct additional contexts to avoid duplicate cards."
+    },
+    {
+      "id": "earth--storm-comparison",
+      "unit": "earth",
+      "priority": "P1",
+      "status": "planned",
+      "file": "earth/storm-comparison.png",
+      "web": "earth/storm-comparison.webp",
+      "role": "scientifically plausible storm illustrations",
+      "aspectRatio": "2x1 panels",
+      "description": "Distant tornado touching land and a stylized oblique view of an ocean hurricane.",
+      "questionIds": [
+        "evidence-12"
+      ],
+      "notes": "Illustrations must not be called real satellite imagery; weather event labels stay in question interface."
+    },
+    {
+      "id": "earth--forecast-technologies",
+      "unit": "earth",
+      "priority": "P1",
+      "status": "planned",
+      "file": "earth/forecast-technologies.png",
+      "web": "earth/forecast-technologies.webp",
+      "role": "weather technology photo sheet",
+      "aspectRatio": "2x2 panels",
+      "description": "Radar installation, weather satellite model, workstation and weather station.",
+      "questionIds": [
+        "evidence-14",
+        "evidence-02"
+      ],
+      "notes": "Device depiction only; forecasts and numerical observations stay in data tables."
+    },
+    {
+      "id": "earth--climate-action-photo-cards",
+      "unit": "earth",
+      "priority": "P1",
+      "status": "planned",
+      "file": "earth/climate-action-photo-cards.png",
+      "web": "earth/climate-action-photo-cards.webp",
+      "role": "four independent image cards",
+      "aspectRatio": "2x2 panels",
+      "description": "Planting garden, responsible recycling, public transit and avoidable litter.",
+      "questionIds": [
+        "climate-04"
+      ],
+      "notes": "No badges or color clues revealing the intended correct choices; compare multiple plausible actions."
+    },
+    {
+      "id": "earth--geography-four-locations",
+      "unit": "earth",
+      "priority": "P1",
+      "status": "planned",
+      "file": "earth/geography-four-locations.png",
+      "web": "earth/geography-four-locations.webp",
+      "role": "paired landscape illustrations",
+      "aspectRatio": "2x2 panels",
+      "description": "Higher-latitude scene, lakeshore, mountain settlement and paved city setting.",
+      "questionIds": [
+        "climate-14"
+      ],
+      "notes": "Do not label geographic factors on the images: code supplies destination letters."
+    },
+    {
+      "id": "earth--northern-coastal-changes",
+      "unit": "earth",
+      "priority": "P1",
+      "status": "planned",
+      "file": "earth/northern-coastal-changes.png",
+      "web": "earth/northern-coastal-changes.webp",
+      "role": "respectful environmental illustration",
+      "aspectRatio": "2x2 panels",
+      "description": "Sea-ice travel surface, coastal erosion, migrating animals and fishing waters.",
+      "questionIds": [
+        "impacts-13"
+      ],
+      "notes": "Avoid claims about a named community; source narratives require local and community-approved information."
+    },
+    {
+      "id": "earth--farm-climate-observations",
+      "unit": "earth",
+      "priority": "P1",
+      "status": "planned",
+      "file": "earth/farm-climate-observations.png",
+      "web": "earth/farm-climate-observations.webp",
+      "role": "agricultural context photo sheet",
+      "aspectRatio": "2x2 panels",
+      "description": "Heat stress in crops, irrigation, insect pest and seasonal field work.",
+      "questionIds": [
+        "impacts-14"
+      ],
+      "notes": "Fictional teaching scenarios, no location-specific predictions."
+    },
+    {
+      "id": "earth--collaborative-climate-sources",
+      "unit": "earth",
+      "priority": "P1",
+      "status": "planned",
+      "file": "earth/collaborative-climate-sources.png",
+      "web": "earth/collaborative-climate-sources.webp",
+      "role": "research methods context illustration",
+      "aspectRatio": "3x1 panels",
+      "description": "Instrument reading, consented conversation at a table, historical document archive.",
+      "questionIds": [
+        "collaboration-14"
+      ],
+      "notes": "Depict roles respectfully and generically; never imply Indigenous cultural protocols or private knowledge."
+    },
+    {
+      "id": "shared--science-investigation-gear",
+      "unit": "shared",
+      "priority": "P2",
+      "status": "planned",
+      "file": "shared/science-investigation-gear.png",
+      "web": "shared/science-investigation-gear.webp",
+      "role": "photoreal prop bank",
+      "aspectRatio": "2x2 panels",
+      "description": "Clean laboratory props: beaker, balance, spring scale and thermometer, separated from backgrounds.",
+      "questionIds": [],
+      "notes": "Generic asset reuse only; no instrument numeric readings baked into images."
+    }
+  ]
+}
