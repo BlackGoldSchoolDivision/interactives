@@ -685,7 +685,22 @@
           "The liquid water is measured at 10°C.",
           "The water takes the shape of the container."
         ],
-        "sourceTitle": "Observation notes"
+        "sourceTitle": "Observation notes",
+        "scenePair": {
+          "asset": "mass-investigations",
+          "panels": [
+            0,
+            1
+          ],
+          "labels": [
+            "Before melting · closed",
+            "After melting · still closed"
+          ],
+          "readings": [
+            "184 g",
+            "184 g"
+          ]
+        }
       },
       "answer": 1,
       "explanation": "A balance reading that stays the same for the same closed system is evidence that total mass is conserved.",
@@ -762,6 +777,21 @@
               "After evaporation",
               "162"
             ]
+          ]
+        },
+        "scenePair": {
+          "asset": "mass-investigations",
+          "panels": [
+            2,
+            3
+          ],
+          "labels": [
+            "Before evaporation · open",
+            "After evaporation · open"
+          ],
+          "readings": [
+            "175 g",
+            "162 g"
           ]
         }
       },

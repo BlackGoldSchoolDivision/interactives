@@ -3,9 +3,7 @@ on:
   push:
     paths:
       - 'science-practice-lab/index.html'
-      - 'science-practice-lab/app.js'
-      - 'science-practice-lab/core.js'
-      - 'science-practice-lab/data.js'
+      - 'science-practice-lab/*.js'
       - 'science-practice-lab/style.css'
       - 'science-practice-lab/tests/**'
       - 'science-practice-lab/assets/**/*.png'
@@ -26,7 +24,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Verify content and scoring
-        run: node --test science-practice-lab/tests/core.test.cjs
+        run: node --test science-practice-lab/tests/*.test.cjs
       - name: Prepare browser and optimized artwork
         run: |
           npm install --no-save --package-lock=false playwright@1.55.0
@@ -46,6 +44,9 @@ jobs:
         run: |
           python -m http.server 8765 --bind 127.0.0.1 >/tmp/science-lab-server.log 2>&1 &
           node science-practice-lab/tests/browser.cjs
+          if [ -f science-practice-lab/tests/energy-browser.cjs ]; then
+            node science-practice-lab/tests/energy-browser.cjs
+          fi
       - name: Build question review contact sheets
         if: always()
         run: |
@@ -71,7 +72,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: matter-browser-validation
+          name: science-browser-validation
           path: science-practice-lab/validation/
           if-no-files-found: ignore
       - name: Publish optimized banner and verified screenshots

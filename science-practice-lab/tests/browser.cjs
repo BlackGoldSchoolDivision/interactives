@@ -16,6 +16,12 @@ async function captureQuestion(page,file){
  finally{await style.evaluate(el=>el.remove());}
 }
 
+
+async function checkQuestionImages(page,id){
+ const loaded=await page.locator('.question-card img').evaluateAll(imgs=>Promise.all(imgs.map(async img=>{await img.decode();return img.naturalWidth>0;})));
+ assert(loaded.every(Boolean),'Question image failed '+id);if(loaded.length)checks++;
+}
+
 async function solve(page,q){
  if(['single','multi','hotspot'].includes(q.type)){for(const i of q.type==='multi'?q.answer:[q.answer])await page.locator('[data-choice="'+i+'"]').click();}
  else if(q.type==='numeric')await page.locator('#number-input').fill(String(q.answer));
@@ -25,10 +31,10 @@ async function solve(page,q){
 }
 async function round(page,n,mode='learn',capture=false){
  const seen=new Set();
- for(let i=0;i<n;i++){const q=await question(page);seen.add(q.type);await noOverflow(page,q.id);
+ for(let i=0;i<n;i++){const q=await question(page);seen.add(q.type);await noOverflow(page,q.id);await checkQuestionImages(page,q.id);
  if(capture){
   await captureQuestion(page,path.join(audit,q.id+'.png'));
-  if(q.visual||q.data.diagram||q.data.optionVisuals||q.data.table){
+  if(q.visual||q.data.diagram||q.data.optionVisuals||q.data.table||q.data.scenePair){
    const snapshot=await page.evaluate(()=>ScienceLab.getState().run);
    await page.setViewportSize({width:390,height:667});await noOverflow(page,'visual phone '+q.id);
    assert.deepEqual(await page.evaluate(()=>ScienceLab.getState().run),snapshot,'Visual resize changed state '+q.id);
