@@ -1,4 +1,4 @@
-# Science Practice Lab — Matter and Energy
+# Science Practice Lab — Matter, Energy and Earth Systems
 
 Independent Alberta Grade 6 PAT-style practice, hosted in the existing Interactives GitHub Pages site.
 
@@ -8,13 +8,14 @@ Independent Alberta Grade 6 PAT-style practice, hosted in the existing Interacti
 | --- | ---: | ---: | ---: |
 | Matter | 3 | 54 | 29 |
 | Energy | 5 | 90 | 40 |
-| Total | 8 | 144 | 69 |
+| Earth Systems | 4 | 72 | 37 |
+| Total | 12 | 216 | 106 |
 
 Each goal contains 18 questions: two each of single choice (including image choices), multiple select, dropdowns, sorting, ordering, matching, diagram labels, evidence selection and numeric entry. Energy covers both forces and interactions, and selection, use and management of energy resources. See [Energy coverage](ENERGY-COVERAGE.md).
 
 ## Student flow
 
-Select Matter or Energy, then a goal or mixed unit. Choose a nine-question format tour, 18 questions or all available questions; optionally practise one format. Learning mode offers hints, explanations, retries and shown answers. Test practice withholds feedback until completion.
+Select Matter, Energy or Earth Systems, then a goal or mixed unit. Choose a nine-question format tour, 18 questions or all available questions; optionally practise one format. Learning mode offers hints, explanations, retries and shown answers. Test practice withholds feedback until completion.
 
 Each unit keeps its own device-local progress, settings and unfinished round when browser storage is available. Switching topics and returning to the start menu preserve answers. The original Matter storage key and question identities are retained. Clearing progress affects only the selected unit. No account is required.
 
@@ -41,3 +42,7 @@ The GitHub verification workflow checks all answer keys, negative cases, curricu
 Browser checks cover image loading, keyboard placement, native dragging, resizing, the persistent start menu, topic switching, saved drafts, scoped progress reset, retry, restored rounds, deferred test feedback and teacher dialogs. Both units check 125% CSS zoom; Matter also checks migration of previously revised questions. Image questions additionally check 320-pixel reflow, image loading, crop coverage and saved-state preservation.
 
 Reports and screenshots are retained under `validation/`; Energy reports and selected desktop/phone visual checks are under `validation/energy/`. The workflow converts source PNGs to smaller WebPs.
+
+## Earth Systems
+
+72 original questions across four Grade 6 curriculum clusters: climate interactions and causes; effects on people, agriculture, wildlife and ecosystems; historical observations and forecasting technologies; and respectful collaboration with Elders and Knowledge Keepers. Each cluster has two questions in each of the nine formats and all 37 supplied K/U/SP statements are mapped. Illustrative numbers are clearly marked as fictional examples and are not historical data or accounts from actual communities. Diagrams and evidence tables are original coded teaching models rather than photographs. Curriculum source is the provided Grade 6 science spreadsheet, rows 104–155. Practice does not substitute for a locally approved investigation or community engagement.
