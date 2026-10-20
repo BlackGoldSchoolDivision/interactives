@@ -133,3 +133,20 @@ figure{margin:0}
 .picture-zones .zone.drag-over{background:#fff8ea;border-color:#c07722}
 @media(max-width:1050px){.question-visual.with-model{grid-template-columns:1fr}.question-photo{max-width:290px}.question-photo .scene-art[style*="3/4"]{max-width:150px}}
 @media(max-width:580px){.question-visual{margin:12px 0 16px}.question-visual.with-model{gap:10px}.question-photo{max-width:290px}.question-photo figcaption{font-size:12px}.zone-illustration{max-width:260px}.picture-zones .zone{padding:9px}.picture-zones .zone h3{margin-bottom:8px}}
+
+/* Earth Systems: data-based visual question diagrams and unit heading */
+body[data-topic="earth"]{--teal:#416b7e;--teal-dark:#274e63;--pale:#eaf2f5}
+body[data-topic="earth"] .unit-tab[data-topic="earth"][aria-pressed="true"]{background:#dfeef5;border-color:#416b7e;color:#274e63;box-shadow:inset 0 -2px #416b7e}
+.earth-topic-hero{min-height:200px;background:linear-gradient(118deg,#16354b 0%,#245c74 52%,#8bbec1 100%);border-radius:14px;margin:22px 0;padding:27px clamp(18px,4vw,40px);display:flex;flex-direction:column;justify-content:center;color:#f8fcfc;gap:8px;position:relative;overflow:hidden}
+.earth-topic-hero:before{content:"";position:absolute;right:-15px;top:-155px;width:340px;height:340px;border:1px solid #ffffff4d;border-radius:50%;box-shadow:0 0 0 28px #ffffff0f,0 0 0 66px #ffffff13,0 0 0 102px #ffffff10}
+.earth-topic-hero span{font-size:12px;font-weight:850;letter-spacing:.17em;color:#d2e8e7}
+.earth-topic-hero strong{font-size:clamp(23px,3.2vw,36px);line-height:1.15;max-width:500px;z-index:1}
+.earth-topic-hero em{font-size:13px;font-style:normal;color:#e4f3f3;z-index:1}
+.earth-board{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0}
+.earth-tile{margin:0;position:relative;min-width:0;background:#f9fcfd;border:1px solid #cbdfe5;border-radius:10px;padding:11px;min-height:150px}
+.earth-tile svg{width:100%;max-height:160px;display:block}
+.earth-letter{position:absolute;left:11px;top:10px;z-index:1;background:#fff;color:#173f57;border:1.5px solid #779eae;border-radius:6px;padding:4px 10px;font-size:18px;line-height:1.2}
+.earth-art{max-width:275px;margin:0 auto}
+.earth-energy{display:block;width:100%;height:auto;max-height:330px}
+@media(max-width:600px){.earth-topic-hero{min-height:165px;padding:18px}.earth-board{gap:8px}.earth-tile{min-height:105px;padding:7px}.earth-letter{left:7px;top:7px;font-size:13px;padding:3px 7px}.earth-tile svg{max-height:115px}}
+@media(max-width:380px){.earth-board{grid-template-columns:1fr}.earth-tile svg{max-height:130px}.earth-topic-hero:before{right:-170px}}
