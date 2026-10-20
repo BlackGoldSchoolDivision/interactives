@@ -53,3 +53,5 @@ figure{margin:0}
 .data-table td{font-variant-numeric:tabular-nums}
 @media(max-width:1050px){.phase-grid{grid-template-columns:1fr}}
 @media(max-width:580px){.particle-pair,.thermo-pair{gap:8px}.particle-sample{padding:5px}.particle-sample figcaption,.thermo-pair figcaption{font-size:13px}.phase-row{padding:10px 3px}.phase-state strong{font-size:14px}.diagram-panel .phase-links{width:64px;height:100px}.source-panel{padding:13px}.source-intro,.source-panel .text-choice{font-size:14px}.data-table{font-size:14px}.data-table th,.data-table td{padding:10px 8px}.data-table thead th{font-size:12px}.image-art svg.volume-svg{height:145px}}
+
+@media(max-width:580px){.volume-choices{grid-template-columns:1fr}.volume-choices .image-art svg.volume-svg{height:180px}}

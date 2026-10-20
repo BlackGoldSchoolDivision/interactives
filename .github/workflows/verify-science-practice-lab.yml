@@ -47,6 +47,7 @@ jobs:
           python -m http.server 8765 --bind 127.0.0.1 >/tmp/science-lab-server.log 2>&1 &
           node science-practice-lab/tests/browser.cjs
       - name: Build question review contact sheets
+        if: always()
         run: |
           python - <<'PY'
           from PIL import Image, ImageOps, ImageDraw, ImageFont

@@ -90,9 +90,9 @@ async function round(page,n,mode='learn',capture=false){
  // A saved answer to an older question must not appear correct under a revised task.
  const migration=await browser.newContext({viewport:{width:390,height:667}}),mp=await migration.newPage();
  await mp.goto(base,{waitUntil:'networkidle'});
- await mp.evaluate(()=>{
+ await mp.addInitScript(()=>{
   const e=response=>({response,attempts:1,submitted:true,checked:true,correct:true,firstCorrect:true,revealed:false,hinted:false,flagged:false,visited:true});
-  localStorage.setItem('science-practice-lab-matter-v1',JSON.stringify({version:ScienceLab.data.version,settings:{mode:'learn',count:'9',format:'all'},progress:{'particles-17':{seen:true,correct:true},'temperature-18':{seen:true,correct:true}},run:{queue:['particles-17','temperature-18'],pos:1,group:'all',mode:'learn',finished:false,entries:{'particles-17':e('236'),'temperature-18':e('14')}}}));
+  localStorage.setItem('science-practice-lab-matter-v1',JSON.stringify({version:'matter-1.0',settings:{mode:'learn',count:'9',format:'all'},progress:{'particles-17':{seen:true,correct:true},'temperature-18':{seen:true,correct:true}},run:{queue:['particles-17','temperature-18'],pos:1,group:'all',mode:'learn',finished:false,entries:{'particles-17':e('236'),'temperature-18':e('14')}}}));
  });
  await mp.reload({waitUntil:'networkidle'});assert(await mp.locator('#content-note').isVisible());
  await mp.locator('#resume').click();assert.equal((await question(mp)).id,'temperature-18');assert.equal(await mp.locator('#number-input').inputValue(),'');
