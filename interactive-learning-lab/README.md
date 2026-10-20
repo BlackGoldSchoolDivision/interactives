@@ -1,6 +1,6 @@
 # Interactive Learning Lab
 
-A classroom activity catalogue for Engaging Students, created for Darren Maltais. It contains 146 entries across 12 subjects and 17 activity types. This edition adds 102 entries, keeps the original geography collection, and gives the writing tools, morphology, sorting, flashcards and varied question formats their own routes through the collection.
+A classroom activity catalogue for Engaging Students, created for Darren Maltais. It contains 154 entries across 12 subjects and 17 activity types. This edition adds 102 entries, keeps the original geography collection, and gives the writing tools, morphology, sorting, flashcards and varied question formats their own routes through the collection.
 
 ## Files
 
