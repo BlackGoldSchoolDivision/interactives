@@ -67,6 +67,7 @@ const critical=new Set(["forces-02","forces-13","forces-14","forces-17","propert
  assert.equal(await page.locator('.unit-tab').count(),2);await noOverflow(page,'Energy home desktop');
  assert(await page.locator('.hero-image').evaluate(i=>i.complete&&i.naturalWidth>0));
  await page.screenshot({path:path.join(out,'home-desktop.png'),fullPage:true});
+ await page.evaluate(()=>document.body.style.zoom='125%');await noOverflow(page,'Energy 125 percent zoom');await page.evaluate(()=>document.body.style.zoom='');
  // Switching topics keeps each unit's draft answer, checked answers and round.
  await page.locator('.goal-card [data-start="forces"]').click();await page.locator('[data-choice="0"]').click();
  const energyDraft=await page.evaluate(()=>ScienceLab.getState().run);
