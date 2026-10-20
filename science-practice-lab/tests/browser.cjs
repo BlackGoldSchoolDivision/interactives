@@ -19,7 +19,10 @@ async function captureQuestion(page,file){
 
 async function checkQuestionImages(page,id){
  const loaded=await page.locator('.question-card img').evaluateAll(imgs=>Promise.all(imgs.map(async img=>{await img.decode();return img.naturalWidth>0;})));
- assert(loaded.every(Boolean),'Question image failed '+id);if(loaded.length)checks++;
+ assert(loaded.every(Boolean),'Question image failed '+id);
+ const crops=await page.locator('.question-card .scene-art').evaluateAll(els=>els.map(el=>{const a=el.getBoundingClientRect(),b=el.querySelector('img').getBoundingClientRect();return a.width>30&&a.height>30&&b.left<=a.left+2&&b.top<=a.top+2&&b.right>=a.right-2&&b.bottom>=a.bottom-2;}));
+ assert(crops.every(Boolean),'Image crop does not cover its panel '+id);
+ if(loaded.length)checks++;
 }
 
 async function solve(page,q){
@@ -32,9 +35,16 @@ async function solve(page,q){
 async function round(page,n,mode='learn',capture=false){
  const seen=new Set();
  for(let i=0;i<n;i++){const q=await question(page);seen.add(q.type);await noOverflow(page,q.id);await checkQuestionImages(page,q.id);
+ if(capture&&(q.data.photo||q.data.zoneImages)){
+  const savedImageRun=await page.evaluate(()=>ScienceLab.getState().run);
+  await page.setViewportSize({width:320,height:568});await noOverflow(page,'image question at 320 '+q.id);await checkQuestionImages(page,q.id);
+  assert.deepEqual(await page.evaluate(()=>ScienceLab.getState().run),savedImageRun,'Image layout resize lost state '+q.id);
+  await page.setViewportSize({width:1366,height:650});
+ }
+ 
  if(capture){
   await captureQuestion(page,path.join(audit,q.id+'.png'));
-  if(q.visual||q.data.diagram||q.data.optionVisuals||q.data.table||q.data.scenePair){
+  if(q.visual||q.data.diagram||q.data.optionVisuals||q.data.table||q.data.scenePair||q.data.photo||q.data.zoneImages){
    const snapshot=await page.evaluate(()=>ScienceLab.getState().run);
    await page.setViewportSize({width:390,height:667});await noOverflow(page,'visual phone '+q.id);
    assert.deepEqual(await page.evaluate(()=>ScienceLab.getState().run),snapshot,'Visual resize changed state '+q.id);

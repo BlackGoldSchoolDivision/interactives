@@ -2,13 +2,20 @@
 (function(root){
 'use strict';
 const assets={
+"interaction-contexts":{"file":"energy/interaction-contexts.webp","cols":2,"rows":2,"ratio":"3/2","frames":[[0,0,0.5,0.455078125],[0.5,0,0.5,0.455078125],[0,0.455078125,0.5,0.544921875],[0.5,0.455078125,0.5,0.544921875]],"alts":["A hand pushes a wooden box to the right across a table.","Two wooden dynamics carts meet bumper to bumper on a horizontal track.","A canoe paddle blade is immersed beside a canoe facing to the right.","A bent metal paper clip rests on a white classroom bench."]},
+"investigation-contexts":{"file":"energy/investigation-contexts.webp","cols":2,"rows":2,"ratio":"3/2","frames":[[0,0,0.5,0.4921875],[0.5,0,0.5,0.4921875],[0,0.4921875,0.5,0.5078125],[0.5,0.4921875,0.5,0.5078125]],"alts":["A wooden block is pulled by a cord along a rough test surface.","Hands gently stretch a yellow elastic band over a classroom bench.","A simple wheeled model vehicle has a paper sail.","A small classroom solar panel is connected to a low-voltage fan beside a paper strip."]},
+"temperature-contexts":{"file":"matter/temperature-contexts.webp","cols":2,"rows":2,"ratio":"3/2","frames":[[0,0,0.5,0.4921875],[0.5,0,0.5,0.4921875],[0,0.4921875,0.5,0.5078125],[0.5,0.4921875,0.5,0.5078125]],"alts":["A clamped glass liquid thermometer has its bulb immersed in a beaker of water.","A model thermometer uses coloured liquid in a bottle and a narrow transparent tube in a water bath.","Water is poured from a clear beaker into a wide bowl.","An open freezer-safe plastic container holds ice with room for expansion."]},
+
 'force-actions':{file:'energy/force-actions.webp',cols:2,rows:2,ratio:'3/2',alts:['Hands pull a rope taut.','Hands squeeze a foam block inward.','Hands twist a towel.','Scissors cut paper.']},
 'resource-uses':{file:'energy/resource-uses.webp',cols:2,rows:2,ratio:'3/2',alts:['Wind moves a sailboat.','A wind turbine supplies an electric lamp.','A solar panel supplies an electric lamp.','Gas heats a kettle on a stove.']},
 'mass-investigations':{file:'matter/mass-investigations.webp',cols:2,rows:2,ratio:'3/2',alts:['Closed container with ice on a balance.','The same closed container after the ice melts.','Open water container on a balance.','The same open container after some water evaporates.']},
 'matter-contexts':{file:'matter/contexts.webp',cols:2,rows:1,ratio:'3/4',alts:['A bridge expansion joint.','Surface ice on a winter lake.']}
 };
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function scene(id,panel=0){const a=assets[id];if(!a)return'';return'<span class="scene-art" role="img" aria-label="'+esc(a.alts[panel])+'" style="--scene-cols:'+a.cols+';--scene-rows:'+a.rows+';--scene-x:'+(panel%a.cols)+';--scene-y:'+Math.floor(panel/a.cols)+';--scene-ratio:'+a.ratio+'"><img src="assets/'+a.file+'" alt="" decoding="async" width="1536" height="1024"></span>';}
+function describe(id,panel=0){return assets[id]?.alts[panel]||'';}
+function scene(id,panel=0){const a=assets[id];if(!a||!a.alts[panel])return'';const f=a.frames?.[panel]||[(panel%a.cols)/a.cols,Math.floor(panel/a.cols)/a.rows,1/a.cols,1/a.rows],ratio=a.frames?(1536*f[2])+'/'+(1024*f[3]):a.ratio;
+return'<span class="scene-art" role="img" aria-label="'+esc(describe(id,panel))+'" style="--scene-width:'+(100/f[2])+'%;--scene-height:'+(100/f[3])+'%;--scene-left:'+(-100*f[0]/f[2])+'%;--scene-top:'+(-100*f[1]/f[3])+'%;--scene-ratio:'+ratio+'"><img src="assets/'+a.file+'" onerror="this.onerror=null;this.src=\'assets/'+(a.file.slice(0,-5)+'.png')+'\'" alt="" decoding="async" width="1536" height="1024"></span>';}
+function contextPhoto(p){return'<figure class="question-photo">'+scene(p.asset,p.panel)+'<figcaption>'+esc(p.caption||'Investigation scene')+'</figcaption></figure>';}
 function arrow(x1,y,x2,colour='#087788'){const s=x2>x1?1:-1;return'<path d="M'+x1+' '+y+'H'+x2+'M'+(x2-s*10)+' '+(y-6)+'L'+x2+' '+y+'L'+(x2-s*10)+' '+(y+6)+'" fill="none" stroke="'+colour+'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>';}
 function pairModel(v={},labels=false){const left=v.left||'left',right=v.right||'right',same=!!v.sameObject,equal=v.equal!==false;const aStart=95,bStart=same?95:205;
 const aEnd=aStart+(left==='left'?-58:58),bEnd=bStart+(right==='right'?1:-1)*(equal?58:28);
@@ -42,6 +49,6 @@ if(v.kind==='recovery')return record(v);
 if(v.kind==='site')return'<div class="site-record"><span><b>Resource</b>'+esc(v.resource)+'</span><span><b>Access</b>'+esc(v.access)+'</span><span><b>Habitat</b>'+esc(v.habitat)+'</span></div>';
 return'';
 }
-const api={assets,scene,render,optionArt,canRender:v=>['scene','pair','recovery','site'].includes(v.kind)};
+const api={assets,scene,describe,contextPhoto,render,optionArt,canRender:v=>['scene','pair','recovery','site'].includes(v.kind)};
 root.ScienceLabVisuals=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

@@ -41,3 +41,13 @@ test('Measured models agree with their answers and keep new scientific terms dis
  const elastic=E.questions.find(q=>q.id==='properties-17').data.table.rows;assert.equal(elastic[0][1],elastic[2][1]);
  const examples=E.questions.filter(q=>['choices-10','choices-17','choices-18'].includes(q.id));assert(examples.every(q=>JSON.stringify(q.data).toLowerCase().includes('example')));
 });
+
+test('Question photographs and image destinations have valid assets, crops and descriptions',()=>{
+ for(const q of [...M.questions,...E.questions]){
+  const scenes=[...(q.data.photo?[q.data.photo]:[]),...Object.values(q.data.zoneImages||{})];
+  for(const p of scenes){assert(V.assets[p.asset],q.id+' missing asset');assert(V.describe(p.asset,p.panel).length>10);assert(V.scene(p.asset,p.panel).includes(V.assets[p.asset].file));}
+  if(q.data.photo)assert(V.contextPhoto(q.data.photo).includes(q.data.photo.caption));
+  if(q.data.zoneImages)assert.deepEqual(Object.keys(q.data.zoneImages).sort(),q.data.zones.map(z=>z.id).sort());
+ }
+ for(const a of Object.values(V.assets))for(const f of a.frames||[]){assert(f[0]>=0&&f[1]>=0&&f[2]>0&&f[3]>0);assert(f[0]+f[2]<=1.0001&&f[1]+f[3]<=1.0001);}
+});

@@ -9,6 +9,8 @@ Original generated artwork for Matter and Energy, created 20 October 2026. The a
 | [energy/banner.png](energy/banner.png) | Classroom forces investigation banner |
 | [energy/force-actions.png](energy/force-actions.png) | Rope tension, foam compression, towel torsion, paper shearing |
 | [energy/resource-uses.png](energy/resource-uses.png) | Sailboat, wind-generated electricity, solar electricity, gas cooking |
+| [energy/interaction-contexts.png](energy/interaction-contexts.png) | Hand and sliding box, interacting carts, canoe paddle, bent clip |
+| [energy/investigation-contexts.png](energy/investigation-contexts.png) | Friction test, elastic band, paper-sail vehicle, solar model fan |
 
 ## Matter
 
@@ -16,8 +18,11 @@ Original generated artwork for Matter and Energy, created 20 October 2026. The a
 | --- | --- |
 | [matter/mass-investigations.png](matter/mass-investigations.png) | Closed-container ice before/after melting; open-container water before/after evaporation |
 | [matter/contexts.png](matter/contexts.png) | Bridge expansion joint and winter lake surface ice |
+| [matter/temperature-contexts.png](matter/temperature-contexts.png) | Thermometer setup, liquid-expansion model, pouring water, freezer-safe container |
 | [matter-banner.png](matter-banner.png) | Existing Matter banner |
 
-`image-bank.json` records panel order, grid layout and useful alternative descriptions. Panel numbering is zero-based, left to right then top to bottom.
+`image-bank.json` records panel order, grid layout, normalized crop frames where needed, question usage and useful alternative descriptions. Panel numbering is zero-based, left to right then top to bottom.
 
 These scenes provide context and observable actions. They do not encode precise measured values. The application adds exact readings, arrows, labels and interactive destinations. Generated balance displays are intentionally blank. Illustrative resource systems omit engineering and safety components and are not construction instructions. No Vretta screenshot images are republished here.
+
+The app now adds scene photographs to 24 Matter and 26 Energy questions. Three Energy placements connect illustrations directly to their drop areas. Some questions combine a photograph, a coded scientific model and drag-and-drop labels. The photographs show apparatus and contexts; the coded model or question text supplies exact measurements.

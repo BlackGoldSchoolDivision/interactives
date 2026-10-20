@@ -82,11 +82,150 @@
         "A deliberate gap in a bridge expansion joint.",
         "Surface ice on a winter lake with a patch of open water."
       ]
+    },
+    {
+      "id": "interaction-contexts",
+      "unit": "energy",
+      "title": "Pushes, carts, paddles and shape change",
+      "source": "energy/interaction-contexts.png",
+      "web": "energy/interaction-contexts.webp",
+      "grid": {
+        "columns": 2,
+        "rows": 2
+      },
+      "framesNormalized": [
+        [
+          0,
+          0,
+          0.5,
+          0.455078125
+        ],
+        [
+          0.5,
+          0,
+          0.5,
+          0.455078125
+        ],
+        [
+          0,
+          0.455078125,
+          0.5,
+          0.544921875
+        ],
+        [
+          0.5,
+          0.455078125,
+          0.5,
+          0.544921875
+        ]
+      ],
+      "panels": [
+        "A hand pushes a wooden box to the right across a table.",
+        "Two wooden dynamics carts meet bumper to bumper on a horizontal track.",
+        "A canoe paddle blade is immersed beside a canoe facing to the right.",
+        "A bent metal paper clip rests on a white classroom bench."
+      ]
+    },
+    {
+      "id": "investigation-contexts",
+      "unit": "energy",
+      "title": "Force and energy model investigations",
+      "source": "energy/investigation-contexts.png",
+      "web": "energy/investigation-contexts.webp",
+      "grid": {
+        "columns": 2,
+        "rows": 2
+      },
+      "framesNormalized": [
+        [
+          0,
+          0,
+          0.5,
+          0.4921875
+        ],
+        [
+          0.5,
+          0,
+          0.5,
+          0.4921875
+        ],
+        [
+          0,
+          0.4921875,
+          0.5,
+          0.5078125
+        ],
+        [
+          0.5,
+          0.4921875,
+          0.5,
+          0.5078125
+        ]
+      ],
+      "panels": [
+        "A wooden block is pulled by a cord along a rough test surface.",
+        "Hands gently stretch a yellow elastic band over a classroom bench.",
+        "A simple wheeled model vehicle has a paper sail.",
+        "A small classroom solar panel is connected to a low-voltage fan beside a paper strip."
+      ]
+    },
+    {
+      "id": "temperature-contexts",
+      "unit": "matter",
+      "title": "Temperature and water investigations",
+      "source": "matter/temperature-contexts.png",
+      "web": "matter/temperature-contexts.webp",
+      "grid": {
+        "columns": 2,
+        "rows": 2
+      },
+      "framesNormalized": [
+        [
+          0,
+          0,
+          0.5,
+          0.4921875
+        ],
+        [
+          0.5,
+          0,
+          0.5,
+          0.4921875
+        ],
+        [
+          0,
+          0.4921875,
+          0.5,
+          0.5078125
+        ],
+        [
+          0.5,
+          0.4921875,
+          0.5,
+          0.5078125
+        ]
+      ],
+      "panels": [
+        "A clamped glass liquid thermometer has its bulb immersed in a beaker of water.",
+        "A model thermometer uses coloured liquid in a bottle and a narrow transparent tube in a water bath.",
+        "Water is poured from a clear beaker into a wide bowl.",
+        "An open freezer-safe plastic container holds ice with room for expansion."
+      ]
     }
   ],
   "existingMatterBanner": {
     "source": "matter-banner.png",
     "web": "matter-banner.webp",
     "description": "Ice, liquid water and warm water on a laboratory bench."
+  },
+  "updated": "2026-10-20",
+  "questionUsage": {
+    "photoContexts": 50,
+    "imageConnectedPlacementQuestions": 3,
+    "units": [
+      "matter",
+      "energy"
+    ],
+    "notes": "Generated scene dimensions are not measurement evidence; exact readings, force arrows and scientific models remain controlled in code."
   }
 }

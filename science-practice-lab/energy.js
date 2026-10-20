@@ -1,4 +1,3 @@
-/* Original Alberta Grade 6 Energy practice. */
 (function(root){'use strict';const data={
   "version": "energy-1.0",
   "groups": [
@@ -145,7 +144,12 @@
           "Both forces act only outside the block.",
           "The hand's push is external to the block; compression acts within it.",
           "The block changes shape without any interaction."
-        ]
+        ],
+        "photo": {
+          "asset": "force-actions",
+          "panel": 1,
+          "caption": "Squeezing a foam block"
+        }
       },
       "answer": 2,
       "explanation": "The hand applies an external force to the block. That interaction produces internal compression and can change the block's shape.",
@@ -299,7 +303,12 @@
               "far apart"
             ]
           }
-        ]
+        ],
+        "photo": {
+          "asset": "interaction-contexts",
+          "panel": 0,
+          "caption": "A hand pushes the sliding box"
+        }
       },
       "answer": [
         "external applied force",
@@ -454,7 +463,25 @@
             "id": "cloth",
             "text": "A towel is twisted along its length."
           }
-        ]
+        ],
+        "zoneImages": {
+          "tension": {
+            "asset": "force-actions",
+            "panel": 0
+          },
+          "compression": {
+            "asset": "force-actions",
+            "panel": 1
+          },
+          "shear": {
+            "asset": "force-actions",
+            "panel": 3
+          },
+          "torsion": {
+            "asset": "force-actions",
+            "panel": 2
+          }
+        }
       },
       "answer": {
         "rope": "tension",
@@ -497,7 +524,12 @@
             "id": "compare",
             "text": "Compare the repeated readings and explain the surface difference."
           }
-        ]
+        ],
+        "photo": {
+          "asset": "investigation-contexts",
+          "panel": 0,
+          "caption": "Block-and-surface investigation"
+        }
       },
       "answer": [
         "plan",
@@ -533,7 +565,12 @@
             "id": "shape",
             "text": "The block becomes shorter in the direction of the squeeze."
           }
-        ]
+        ],
+        "photo": {
+          "asset": "force-actions",
+          "panel": 1,
+          "caption": "Squeezing a foam block"
+        }
       },
       "answer": [
         "push",
@@ -643,7 +680,25 @@
             "id": "twist",
             "text": "Twisting a material"
           }
-        ]
+        ],
+        "zoneImages": {
+          "tension": {
+            "asset": "force-actions",
+            "panel": 0
+          },
+          "compression": {
+            "asset": "force-actions",
+            "panel": 1
+          },
+          "shear": {
+            "asset": "force-actions",
+            "panel": 3
+          },
+          "torsion": {
+            "asset": "force-actions",
+            "panel": 2
+          }
+        }
       },
       "answer": {
         "pull": "tension",
@@ -705,7 +760,25 @@
             "id": "s",
             "text": "Shear"
           }
-        ]
+        ],
+        "zoneImages": {
+          "A": {
+            "asset": "force-actions",
+            "panel": 0
+          },
+          "B": {
+            "asset": "force-actions",
+            "panel": 1
+          },
+          "C": {
+            "asset": "force-actions",
+            "panel": 2
+          },
+          "D": {
+            "asset": "force-actions",
+            "panel": 3
+          }
+        }
       },
       "answer": {
         "t": "A",
@@ -751,7 +824,12 @@
             "id": "friction",
             "text": "Friction from the table"
           }
-        ]
+        ],
+        "photo": {
+          "asset": "interaction-contexts",
+          "panel": 0,
+          "caption": "A hand pushes the sliding box"
+        }
       },
       "answer": {
         "push": "A",
@@ -780,7 +858,12 @@
           "The block has a blue label.",
           "Both surfaces are on the same table.",
           "The spring scale reads 5 N on the rough surface and 2 N on the smooth surface."
-        ]
+        ],
+        "photo": {
+          "asset": "investigation-contexts",
+          "panel": 0,
+          "caption": "Block-and-surface investigation"
+        }
       },
       "answer": 3,
       "explanation": "The larger steady pulling force is evidence of greater sliding friction under these controlled conditions.",
@@ -805,7 +888,12 @@
           "The hands exert external forces that produce torsion within the towel.",
           "Only a force from inside the towel acts.",
           "Twisting is always called compression."
-        ]
+        ],
+        "photo": {
+          "asset": "force-actions",
+          "panel": 2,
+          "caption": "Twisting a towel"
+        }
       },
       "answer": 1,
       "explanation": "The hands interact with the towel from outside. The resulting internal twisting effect is torsion.",
@@ -867,6 +955,11 @@
               "5"
             ]
           ]
+        },
+        "photo": {
+          "asset": "investigation-contexts",
+          "panel": 0,
+          "caption": "Block-and-surface investigation"
         }
       },
       "answer": 3,
@@ -889,7 +982,12 @@
           "Elasticity, because a force was applied.",
           "Plasticity, because the clip is made of plastic.",
           "Plasticity, because the shape change remains after release."
-        ]
+        ],
+        "photo": {
+          "asset": "interaction-contexts",
+          "panel": 3,
+          "caption": "A bent metal clip"
+        }
       },
       "answer": 3,
       "explanation": "Plasticity describes a permanent change in shape. It does not mean that the object is made of plastic.",
@@ -990,7 +1088,12 @@
           "The waiting time before measuring after release.",
           "The colour of the result sheet instead of the test method.",
           "The amount of stretching used in the approved test."
-        ]
+        ],
+        "photo": {
+          "asset": "investigation-contexts",
+          "panel": 1,
+          "caption": "Elastic-band investigation"
+        }
       },
       "answer": [
         1,
@@ -1218,7 +1321,12 @@
             "id": "after",
             "text": "Record the released shape and compare it with the original."
           }
-        ]
+        ],
+        "photo": {
+          "asset": "investigation-contexts",
+          "panel": 1,
+          "caption": "Elastic-band investigation"
+        }
       },
       "answer": [
         "before",
@@ -1257,7 +1365,12 @@
             "id": "recovered",
             "text": "After the waiting time, the band is 8 cm long again."
           }
-        ]
+        ],
+        "photo": {
+          "asset": "investigation-contexts",
+          "panel": 1,
+          "caption": "Elastic-band investigation"
+        }
       },
       "answer": [
         "original",
@@ -1407,7 +1520,12 @@
             "id": "recovered",
             "text": "Recovered after release"
           }
-        ]
+        ],
+        "photo": {
+          "asset": "investigation-contexts",
+          "panel": 1,
+          "caption": "Elastic-band investigation"
+        }
       },
       "answer": {
         "original": "A",
@@ -1504,7 +1622,12 @@
           "Every metal object always behaves this way.",
           "The clip shows plastic deformation in this test.",
           "The test proves all forces destroy matter."
-        ]
+        ],
+        "photo": {
+          "asset": "interaction-contexts",
+          "panel": 3,
+          "caption": "A bent metal clip"
+        }
       },
       "answer": 2,
       "explanation": "The observation supports plastic deformation in this particular test. It does not establish a rule for every material or force.",
@@ -1544,6 +1667,11 @@
               "8"
             ]
           ]
+        },
+        "photo": {
+          "asset": "investigation-contexts",
+          "panel": 1,
+          "caption": "Elastic-band investigation"
         }
       },
       "answer": 4,
@@ -1760,7 +1888,12 @@
               "the same object"
             ]
           }
-        ]
+        ],
+        "photo": {
+          "asset": "interaction-contexts",
+          "panel": 2,
+          "caption": "Paddle–water interaction"
+        }
       },
       "answer": [
         "forward",
@@ -1806,7 +1939,12 @@
               "must be identical because the forces match"
             ]
           }
-        ]
+        ],
+        "photo": {
+          "asset": "interaction-contexts",
+          "panel": 1,
+          "caption": "Two carts interact"
+        }
       },
       "answer": [
         "equal in strength",
@@ -2133,7 +2271,12 @@
             "id": "onB",
             "text": "Force exerted by cart A on cart B"
           }
-        ]
+        ],
+        "photo": {
+          "asset": "interaction-contexts",
+          "panel": 1,
+          "caption": "Two carts interact"
+        }
       },
       "answer": {
         "onA": "A",
@@ -2176,7 +2319,12 @@
             "id": "paddle",
             "text": "Water pushes paddle forward"
           }
-        ]
+        ],
+        "photo": {
+          "asset": "interaction-contexts",
+          "panel": 2,
+          "caption": "Paddle–water interaction"
+        }
       },
       "answer": {
         "water": "A",
@@ -2206,7 +2354,12 @@
           "The reaction force is weaker.",
           "The forces happen at different times.",
           "They act on two different carts."
-        ]
+        ],
+        "photo": {
+          "asset": "interaction-contexts",
+          "panel": 1,
+          "caption": "Two carts interact"
+        }
       },
       "answer": 3,
       "explanation": "The two forces act on different objects. To analyse forces on one cart, include only forces that act on that cart.",
@@ -2910,7 +3063,12 @@
           "The colour selected for the information poster.",
           "A year of wind measurements collected at the proposed site.",
           "A statement that wind speed is identical everywhere."
-        ]
+        ],
+        "photo": {
+          "asset": "resource-uses",
+          "panel": 1,
+          "caption": "Wind-energy context"
+        }
       },
       "answer": 2,
       "explanation": "Local measurements across time are relevant to the site's wind resource. A distant picture or an unsupported general claim cannot replace them.",
@@ -3173,7 +3331,12 @@
               "removing every environmental impact"
             ]
           }
-        ]
+        ],
+        "photo": {
+          "asset": "resource-uses",
+          "panel": 1,
+          "caption": "Wind-generated lighting"
+        }
       },
       "answer": [
         "wind",
@@ -3375,7 +3538,12 @@
             "id": "improve",
             "text": "Use the observations to improve and retest the design."
           }
-        ]
+        ],
+        "photo": {
+          "asset": "investigation-contexts",
+          "panel": 2,
+          "caption": "Paper-sail model vehicle"
+        }
       },
       "answer": [
         "need",
@@ -3416,7 +3584,12 @@
             "id": "light",
             "text": "The lamp uses electrical energy to produce light."
           }
-        ]
+        ],
+        "photo": {
+          "asset": "resource-uses",
+          "panel": 1,
+          "caption": "Wind-generated lighting"
+        }
       },
       "answer": [
         "wind",
@@ -3591,7 +3764,12 @@
             "id": "use",
             "text": "Daily use: lighting"
           }
-        ]
+        ],
+        "photo": {
+          "asset": "resource-uses",
+          "panel": 1,
+          "caption": "Wind-generated lighting"
+        }
       },
       "answer": {
         "resource": "A",
@@ -3682,7 +3860,12 @@
           "The model is photographed beside a poster.",
           "Under the same light, adjusting the panel angle makes the strip move at the target distance.",
           "No one records the test conditions."
-        ]
+        ],
+        "photo": {
+          "asset": "investigation-contexts",
+          "panel": 3,
+          "caption": "Solar-powered model fan"
+        }
       },
       "answer": 2,
       "explanation": "A controlled observation about the success criterion can guide a design improvement. Appearance alone does not show the task has been met.",

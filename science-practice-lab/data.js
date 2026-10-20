@@ -1,4 +1,3 @@
-/* Original Grade 6 Matter practice. */
 (function(root){'use strict';const data={
   "version": "matter-1.0",
   "groups": [
@@ -191,7 +190,12 @@
           "The volume of the water may change.",
           "The water particles disappear when ice melts.",
           "Melting always creates a new substance."
-        ]
+        ],
+        "photo": {
+          "asset": "mass-investigations",
+          "panel": 0,
+          "caption": "Closed-container investigation"
+        }
       },
       "answer": [
         0,
@@ -374,7 +378,12 @@
             "id": "shape",
             "text": "The water takes the shape of the container."
           }
-        ]
+        ],
+        "photo": {
+          "asset": "mass-investigations",
+          "panel": 0,
+          "caption": "Closed-container investigation"
+        }
       },
       "answer": {
         "before": "mass",
@@ -414,7 +423,12 @@
             "id": "compare",
             "text": "Compare the before-and-after masses."
           }
-        ]
+        ],
+        "photo": {
+          "asset": "mass-investigations",
+          "panel": 0,
+          "caption": "Closed-container investigation"
+        }
       },
       "answer": [
         "record",
@@ -724,7 +738,12 @@
           "The ice and water are the same substance.",
           "The water flows and takes the shape of a different container."
         ],
-        "sourceTitle": "Observation notes"
+        "sourceTitle": "Observation notes",
+        "photo": {
+          "asset": "temperature-contexts",
+          "panel": 2,
+          "caption": "Liquid water changes container"
+        }
       },
       "answer": 3,
       "explanation": "Flow and changing shape are evidence that particles in a liquid can move past one another.",
@@ -743,7 +762,12 @@
       "prompt": "A closed container and its ice have a total mass of 236 g. The ice melts and nothing enters or leaves. What is the total mass afterward?",
       "data": {
         "unit": "g",
-        "context": "Same closed container · before melting: 236 g"
+        "context": "Same closed container · before melting: 236 g",
+        "photo": {
+          "asset": "mass-investigations",
+          "panel": 0,
+          "caption": "Closed-container investigation"
+        }
       },
       "answer": 236,
       "explanation": "The total mass remains 236 g because the closed system keeps all its matter.",
@@ -893,7 +917,12 @@
           "Stir vigorously with the thermometer.",
           "Use suitable protection and a safe holder when handling warm containers.",
           "Hold a hot container still with bare hands while measuring."
-        ]
+        ],
+        "photo": {
+          "asset": "temperature-contexts",
+          "panel": 0,
+          "caption": "Classroom thermometer setup"
+        }
       },
       "answer": [
         0,
@@ -1104,7 +1133,12 @@
             "id": "hot",
             "text": "Touch a hot container with bare hands."
           }
-        ]
+        ],
+        "photo": {
+          "asset": "temperature-contexts",
+          "panel": 0,
+          "caption": "Classroom thermometer setup"
+        }
       },
       "answer": {
         "inspect": "safe",
@@ -1142,7 +1176,12 @@
             "id": "read",
             "text": "Read the liquid level at eye height and record °C."
           }
-        ]
+        ],
+        "photo": {
+          "asset": "temperature-contexts",
+          "panel": 0,
+          "caption": "Classroom thermometer setup"
+        }
       },
       "answer": [
         "check",
@@ -1323,7 +1362,12 @@
             "id": "scale",
             "text": "Celsius scale"
           }
-        ]
+        ],
+        "photo": {
+          "asset": "temperature-contexts",
+          "panel": 0,
+          "caption": "Classroom thermometer setup"
+        }
       },
       "answer": {
         "bulb": "A",
@@ -1394,7 +1438,12 @@
           "The surrounding water is warmer.",
           "The glass tube remains unbroken."
         ],
-        "sourceTitle": "Observation notes"
+        "sourceTitle": "Observation notes",
+        "photo": {
+          "asset": "temperature-contexts",
+          "panel": 1,
+          "caption": "Liquid-expansion model"
+        }
       },
       "answer": 0,
       "explanation": "With no liquid added, the higher level is evidence that the warmed liquid occupies more volume.",
@@ -1420,7 +1469,12 @@
           "A clear, narrow tube beside a marked scale.",
           "A clear, narrow tube with no fixed reference marks."
         ],
-        "sourceTitle": "Design proposals"
+        "sourceTitle": "Design proposals",
+        "photo": {
+          "asset": "temperature-contexts",
+          "panel": 1,
+          "caption": "Liquid-expansion model"
+        }
       },
       "answer": 2,
       "explanation": "A narrow transparent tube makes a small volume change easier to see, and a scale gives reference values. Follow the teacher's safe model-building instructions.",
@@ -1494,7 +1548,12 @@
           "They prevent the bridge sections from changing length.",
           "They remove the need to allow for temperature changes.",
           "They are needed only when the bridge material melts."
-        ]
+        ],
+        "photo": {
+          "asset": "matter-contexts",
+          "panel": 0,
+          "caption": "Bridge expansion joint"
+        }
       },
       "answer": 0,
       "explanation": "Most construction materials expand when heated and contract when cooled. A designed gap allows movement and reduces damage.",
@@ -1567,7 +1626,12 @@
           "The surface ice helps insulate the water underneath.",
           "Ice always makes the entire lake freeze solid immediately.",
           "Freezing creates extra water particles."
-        ]
+        ],
+        "photo": {
+          "asset": "matter-contexts",
+          "panel": 1,
+          "caption": "Surface ice on a lake"
+        }
       },
       "answer": [
         0,
@@ -1595,7 +1659,12 @@
           "A bridge section keeps the same total mass when warmed.",
           "A metal section becomes slightly longer when warmed.",
           "A thermometer beside the bridge shows a higher temperature."
-        ]
+        ],
+        "photo": {
+          "asset": "matter-contexts",
+          "panel": 0,
+          "caption": "Bridge expansion joint"
+        }
       },
       "answer": [
         0,
@@ -1639,7 +1708,12 @@
               "sink below liquid water"
             ]
           }
-        ]
+        ],
+        "photo": {
+          "asset": "matter-contexts",
+          "panel": 1,
+          "caption": "Surface ice on a lake"
+        }
       },
       "answer": [
         "increases",
@@ -1683,7 +1757,12 @@
               "particles to escape"
             ]
           }
-        ]
+        ],
+        "photo": {
+          "asset": "matter-contexts",
+          "panel": 0,
+          "caption": "Bridge expansion joint"
+        }
       },
       "answer": [
         "expand",
@@ -1826,7 +1905,12 @@
             "id": "conclude",
             "text": "Use the unchanged mass and larger volume to explain the lower density of ice."
           }
-        ]
+        ],
+        "photo": {
+          "asset": "temperature-contexts",
+          "panel": 3,
+          "caption": "Container with room for expansion"
+        }
       },
       "answer": [
         "mark",
@@ -1866,7 +1950,12 @@
             "id": "life",
             "text": "Some water below can remain liquid, supporting aquatic life."
           }
-        ]
+        ],
+        "photo": {
+          "asset": "matter-contexts",
+          "panel": 1,
+          "caption": "Surface ice on a lake"
+        }
       },
       "answer": [
         "cool",
@@ -1913,7 +2002,12 @@
             "id": "walkwarm",
             "text": "Concrete sidewalk sections warm and expand toward the joint."
           }
-        ]
+        ],
+        "photo": {
+          "asset": "matter-contexts",
+          "panel": 0,
+          "caption": "Bridge expansion joint"
+        }
       },
       "answer": {
         "bridgewarm": "narrow",
@@ -1954,7 +2048,12 @@
             "id": "liquid",
             "text": "Water can remain liquid beneath lake ice."
           }
-        ]
+        ],
+        "photo": {
+          "asset": "matter-contexts",
+          "panel": 1,
+          "caption": "Surface ice on a lake"
+        }
       },
       "answer": {
         "float": "density",
@@ -1997,7 +2096,12 @@
             "id": "warm",
             "text": "Warmer bridge: sections expand"
           }
-        ]
+        ],
+        "photo": {
+          "asset": "matter-contexts",
+          "panel": 0,
+          "caption": "Bridge expansion joint"
+        }
       },
       "answer": {
         "cool": "A",
@@ -2040,7 +2144,12 @@
             "id": "liquid",
             "text": "Liquid water: habitat below the ice"
           }
-        ]
+        ],
+        "photo": {
+          "asset": "matter-contexts",
+          "panel": 1,
+          "caption": "Surface ice on a lake"
+        }
       },
       "answer": {
         "ice": "A",
@@ -2094,7 +2203,12 @@
           "Sinking ice could reduce the insulating surface layer and allow more water to freeze.",
           "Water could never freeze."
         ],
-        "sourceTitle": "Possible predictions"
+        "sourceTitle": "Possible predictions",
+        "photo": {
+          "asset": "matter-contexts",
+          "panel": 1,
+          "caption": "Surface ice on a lake"
+        }
       },
       "answer": 2,
       "explanation": "If ice sank, the usual floating insulating layer would be reduced or absent. That could allow more cooling and freezing, affecting aquatic habitats.",
@@ -2151,7 +2265,12 @@
       "type": "numeric",
       "prompt": "Two model bridge sections have a 12 mm gap between them. Warming makes each section expand 2 mm into the gap. How wide is the gap afterward?",
       "data": {
-        "unit": "mm"
+        "unit": "mm",
+        "photo": {
+          "asset": "matter-contexts",
+          "panel": 0,
+          "caption": "Bridge expansion joint"
+        }
       },
       "answer": 8,
       "explanation": "Both sections expand into the gap: 12 − 2 − 2 = 8 mm. This models why engineers allow space for expansion.",
