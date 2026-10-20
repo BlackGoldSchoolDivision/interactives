@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecessBot 3000: Train the AI!</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Nunito"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            blue: '#3b82f6',
+                            purple: '#8b5cf6',
+                            yellow: '#f59e0b',
+                            green: '#10b981',
+                            red: '#ef4444',
+                            dark: '#1e293b'
+                        }
+                    },
+                    boxShadow: {
+                        'bubbly': '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 0px -6px rgba(0, 0, 0, 0.1)',
+                        'btn': '0 6px 0px 0px rgba(0,0,0,0.2)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #f0f9ff;
+            background-image: 
+                radial-gradient(circle at 100% 150%, #e0f2fe 24%, white 24%, white 28%, #e0f2fe 28%, #e0f2fe 36%, white 36%, white 40%, transparent 40%, transparent),
+                radial-gradient(circle at 0    150%, #e0f2fe 24%, white 24%, white 28%, #e0f2fe 28%, #e0f2fe 36%, white 36%, white 40%, transparent 40%, transparent),
+                radial-gradient(circle at 50%  100%, white 10%, #e0f2fe 10%, #e0f2fe 23%, white 23%, white 30%, #e0f2fe 30%, #e0f2fe 43%, white 43%, white 50%, #e0f2fe 50%, #e0f2fe 63%, white 63%, white 71%, transparent 71%, transparent),
+                radial-gradient(circle at 100% 50%, white 5%, #e0f2fe 5%, #e0f2fe 15%, white 15%, white 20%, #e0f2fe 20%, #e0f2fe 29%, white 29%, white 34%, #e0f2fe 34%, #e0f2fe 44%, white 44%, white 49%, transparent 49%, transparent),
+                radial-gradient(circle at 0    50%, white 5%, #e0f2fe 5%, #e0f2fe 15%, white 15%, white 20%, #e0f2fe 20%, #e0f2fe 29%, white 29%, white 34%, #e0f2fe 34%, #e0f2fe 44%, white 44%, white 49%, transparent 49%, transparent);
+            background-size: 100px 50px;
+            color: #334155;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .btn-bounce {
+            transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-bounce:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0px 0px rgba(0,0,0,0.2);
+        }
+        
+        .btn-bounce:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float { animation: float 3s ease-in-out infinite; }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop { animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        .animate-shake { animation: shake 0.3s ease-in-out; }
+
+        .line-connection {
+            height: 4px;
+            background: repeating-linear-gradient(90deg, #ef4444, #ef4444 10px, transparent 10px, transparent 20px);
+            position: relative;
+            width: 100%;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        .line-connection:hover { opacity: 0.7; }
+        .line-broken {
+            background: none;
+            border-top: 4px dashed #cbd5e1;
+            pointer-events: none;
+        }
+
+        /* Custom Range Slider */
+        input[type=range] {
+            -webkit-appearance: none; width: 100%; background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none; height: 32px; width: 32px; border-radius: 50%;
+            background: #3b82f6; cursor: pointer; margin-top: -12px; box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%; height: 10px; cursor: pointer; background: #cbd5e1; border-radius: 5px;
+        }
+
+        /* Custom Checkbox */
+        .toggle-checkbox:checked { right: 0; border-color: #10b981; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #10b981; }
+        .toggle-checkbox { right: 0; z-index: 1; border-color: #e2e8f0; transition: all 0.3s; }
+        .toggle-label { width: 3rem; height: 1.5rem; background-color: #cbd5e1; border-radius: 9999px; transition: all 0.3s; }
+
+        /* Sort Cards */
+        .sort-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .simulation-kid {
+            transition: all 0.5s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .kid-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body class="p-4 md:p-8">
+
+    <!-- Header -->
+    <header class="max-w-4xl mx-auto w-full mb-8 text-center bg-white p-6 rounded-3xl shadow-bubbly border-4 border-brand-blue relative z-10">
+        <div class="absolute -top-8 -left-4 text-7xl animate-float">🤖</div>
+        <h1 class="text-4xl md:text-5xl font-black text-brand-dark mb-2 tracking-tight">RecessBot 3000</h1>
+        <p class="text-lg md:text-xl text-slate-600 font-semibold" id="header-subtitle">The AI Algorithm Trainer</p>
+        
+        <!-- Progress Bar -->
+        <div class="w-full max-w-md mx-auto mt-4 bg-slate-100 rounded-full h-4 border-2 border-slate-200 overflow-hidden hidden" id="progress-container">
+            <div id="progress-bar" class="bg-brand-green h-full w-0 transition-all duration-500 ease-out"></div>
+        </div>
+    </header>
+
+    <!-- Main Game Container -->
+    <main id="game-container" class="max-w-4xl mx-auto w-full flex-grow flex flex-col items-center">
+        <!-- Views will be injected here via JavaScript -->
+    </main>
+
+    <!-- Modal Overlay for Messages -->
+    <div id="modal-overlay" class="fixed inset-0 bg-slate-900 bg-opacity-60 flex justify-center items-center z-50 hidden backdrop-blur-sm">
+        <div id="modal-content" class="bg-white p-8 rounded-3xl shadow-2xl max-w-lg w-full text-center border-4 border-white transform transition-all scale-95 relative mx-4">
+            <div id="modal-icon" class="text-6xl mb-4 animate-bounce">✨</div>
+            <h2 id="modal-title" class="text-3xl font-black text-brand-dark mb-4">Title</h2>
+            <p id="modal-text" class="text-lg text-slate-600 mb-8 font-medium">Message goes here.</p>
+            <button id="modal-btn" class="bg-brand-purple hover:bg-purple-600 text-white font-bold py-3 px-8 rounded-full text-xl shadow-btn btn-bounce w-full border-2 border-purple-700">
+                Continue
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- GAME DATA & CURRICULUM MAPPING ---
+        
+        let levels = [];
+        let sandboxData = {};
+
+        function generateLevels() {
+            // Helper to get random item from an array
+            const rand = (arr) => arr[Math.floor(Math.random() * arr.length)];
+            
+            // Level 1 Variants (Word/Pattern Matching)
+            const l1Variants = [
+                { student: { name: "Emma", emoji: "👧", info: "Checked out a book about Vampire Bats 🦇 (the animal)." }, botLogic: { thought: "Emma likes the word 'Bat'. Therefore...", action: "Give Emma a sports Bat!", emoji: "🏏" } },
+                { student: { name: "Noah", emoji: "👦", info: "Complained about an itchy Tag 🏷️ on his shirt." }, botLogic: { thought: "Noah likes 'Tag'. Therefore...", action: "Make Noah 'It' in a game of Tag!", emoji: "🏃‍♂️" } },
+                { student: { name: "Chloe", emoji: "👧🏽", info: "Brought a shiny Diamond 💎 ring for show-and-tell." }, botLogic: { thought: "Chloe likes 'Diamonds'. Therefore...", action: "Send Chloe to the Baseball Diamond!", emoji: "⚾" } }
+            ];
+            const l1 = rand(l1Variants);
+
+            // Level 2 Variants (Privacy Toggles)
+            const l2Students = [
+                { name: "Jordan", emoji: "🧒🏽", info: "Just wants to play games." },
+                { name: "Leo", emoji: "👦🏻", info: "Looking for something fun to do." },
+                { name: "Mia", emoji: "👧🏾", info: "Waiting for the recess bell to ring." }
+            ];
+            const l2Student = rand(l2Students);
+
+            const goodData = [
+                { label: "Favorite Recess Game", isAppropriate: true },
+                { label: "Recess Energy Level", isAppropriate: true },
+                { label: "Favorite Playground Sport", isAppropriate: true },
+                { label: "Requested Toys List", isAppropriate: true }
+            ];
+            const badData = [
+                { label: "Math Test Grades", isAppropriate: false },
+                { label: "Location History", isAppropriate: false },
+                { label: "Private Chat Messages", isAppropriate: false },
+                { label: "Internet Search History", isAppropriate: false },
+                { label: "Medical Records", isAppropriate: false },
+                { label: "Home Address", isAppropriate: false },
+                { label: "Family Income", isAppropriate: false },
+                { label: "Cafeteria Purchases", isAppropriate: false }
+            ];
+            // Shuffle bad data and pick 3, pick 1 good, combine, shuffle again
+            const shuffledBad = badData.sort(() => 0.5 - Math.random()).slice(0, 3);
+            const selectedGood = rand(goodData);
+            const combinedData = [selectedGood, ...shuffledBad].sort(() => 0.5 - Math.random()).map((item, index) => ({...item, id: `toggle_${index}`, checked: true}));
+
+            // Level 3 Variants (Historical Bias)
+            const l3Variants = [
+                { student: { name: "Maya", emoji: "👧🏽", info: "Maya is short, but she is the star point guard of the basketball team!" }, botLogic: { thought: "Applying Historical Rule...", action: "Hide basketballs from short kids.", emoji: "🏀" }, ruleBox: "IF [Student Height is Short] THEN [Action: Do Not Show Basketballs 🏀]" },
+                { student: { name: "Ethan", emoji: "🤓", info: "Ethan wears glasses, but he loves playing dodgeball!" }, botLogic: { thought: "Applying Historical Rule...", action: "Hide dodgeballs from kids with glasses.", emoji: "🏐" }, ruleBox: "IF [Student Wears Glasses] THEN [Action: Do Not Show Dodgeballs 🏐]" },
+                { student: { name: "Sarah", emoji: "👧🏻", info: "Sarah is left-handed, but she plays baseball!" }, botLogic: { thought: "Applying Historical Rule...", action: "Hide baseball gloves from left-handed kids.", emoji: "⚾" }, ruleBox: "IF [Student is Left-Handed] THEN [Action: Hide Baseball Gloves ⚾]" },
+                { student: { name: "Leo", emoji: "😁", info: "Leo has braces, but he is the jump-rope champion!" }, botLogic: { thought: "Applying Historical Rule...", action: "Hide jump-ropes from kids with braces.", emoji: "🪢" }, ruleBox: "IF [Student Has Braces] THEN [Action: Hide Jump Ropes 🪢]" },
+                { student: { name: "Mia", emoji: "👩‍🦽", info: "Mia uses a wheelchair, but she loves the accessible swings!" }, botLogic: { thought: "Applying Historical Rule...", action: "Lock swings for kids in wheelchairs.", emoji: "🛝" }, ruleBox: "IF [Student Uses Wheelchair] THEN [Action: Lock the Swings 🛝]" }
+            ];
+            const l3 = rand(l3Variants);
+
+            // Level 4 Variants (Echo Chambers)
+            const l4Variants = [
+                { student: { name: "Sam", emoji: "🧒", info: "Played with a Yo-Yo yesterday. Wants to try Soccer today." }, botLogic: { thought: "Sam = Yo-Yo user.", action: "Only offer Yo-Yos forever.", emoji: "🪀" } },
+                { student: { name: "Zoe", emoji: "👧🏿", info: "Used Sidewalk Chalk yesterday. Wants to play Kickball today." }, botLogic: { thought: "Zoe = Chalk user.", action: "Only offer Chalk forever.", emoji: "🖍️" } },
+                { student: { name: "Marcus", emoji: "👦🏾", info: "Went on the Slide yesterday. Wants to play Tag today." }, botLogic: { thought: "Marcus = Slide user.", action: "Only offer Slides forever.", emoji: "🛝" } }
+            ];
+            const l4 = rand(l4Variants);
+
+            // Level 5 Variants (Glitch/Human Override)
+            const l5Variants = [
+                { setup: "RecessBot checked a weather app to see if recess should be outdoors. But it checked the weather for 'London, UK' instead of your town! 🌧️", botLogic: { thought: "Weather API says London is raining...", action: "Cancel Outdoor Recess!", emoji: "🌧️" } },
+                { setup: "RecessBot checked a timezone app to see what time it is. But it checked the time in 'Tokyo, Japan' and thinks it's 3:00 AM! 🌃", botLogic: { thought: "Timezone API says it is Midnight...", action: "Turn off Playground Lights!", emoji: "💡" } },
+                { setup: "RecessBot checked a calendar app. But it glitched and thinks today is Saturday, when school is closed! 📅", botLogic: { thought: "Calendar says it is the weekend...", action: "Lock all Playground Gates!", emoji: "🔒" } }
+            ];
+            const l5 = rand(l5Variants);
+
+            // Sandbox Randomization Data
+            const sbContexts = [
+                { condition: "IF [Kid wants Soccer] THEN", kidEmoji: "🧒", kidStatus: "Wants Soccer", badText: "Give them a book about soccer 📘", goodText: "Give them a Soccer Ball ⚽", badEmoji: "🧒 📘 😭", goodEmoji: "🧒 ⚽ 😄" },
+                { condition: "IF [Kid wants to draw] THEN", kidEmoji: "👧", kidStatus: "Wants to draw", badText: "Show them a picture of art 🖼️", goodText: "Give them Chalk 🖍️", badEmoji: "👧 🖼️ 😭", goodEmoji: "👧 🖍️ 😄" }
+            ];
+            const sbPrivacies = [
+                { condition: "IF [Kid has bad spelling grades] THEN", kidEmoji: "👧🏽", kidStatus: "Struggles in Spelling", badText: "Cancel their recess ❌", goodText: "Ignore grades, give them toys! 🪀", badEmoji: "👧🏽 ❌ 😭", goodEmoji: "👧🏽 🪀 😄" },
+                { condition: "IF [Kid got a behavior note] THEN", kidEmoji: "👦🏾", kidStatus: "Got a behavior note", badText: "Broadcast it to the school 📢", goodText: "Keep it private, let them play 🛝", badEmoji: "👦🏾 📢 😭", goodEmoji: "👦🏾 🛝 😄" }
+            ];
+            const sbBiases = [
+                { condition: "IF [Kid is short] THEN", kidEmoji: "👦🏻", kidStatus: "Is short", badText: "Hide the Basketballs 🚫", goodText: "Treat them equally, offer Basketball 🏀", badEmoji: "👦🏻 🚫 😭", goodEmoji: "👦🏻 🏀 😄" },
+                { condition: "IF [Kid uses a wheelchair] THEN", kidEmoji: "👩‍🦽", kidStatus: "Uses a wheelchair", badText: "Don't offer any sports 🚫", goodText: "Offer accessible games 🎯", badEmoji: "👩‍🦽 🚫 😭", goodEmoji: "👩‍🦽 🎯 😄" }
+            ];
+            
+            sandboxData = {
+                context: rand(sbContexts),
+                privacy: rand(sbPrivacies),
+                bias: rand(sbBiases)
+            };
+
+            levels = [
+                {
+                    id: 1,
+                    title: "Level 1: The Silly Guesser",
+                    themeColor: "brand-blue",
+                    curriculum: "Algorithms find patterns in data, they don't 'think'.",
+                    setup: "RecessBot looked at the library checkout data to guess what kids want for recess. Let's look at its logic.",
+                    taskType: "break_logic",
+                    student: l1.student,
+                    botLogic: l1.botLogic,
+                    taskInstruction: "RecessBot doesn't understand meaning! It just matched a word. Click the red connection line to break this silly logic.",
+                    success: {
+                        title: "Pattern Broken! 🔨",
+                        text: "Great job! Algorithms don't 'think' or understand context like humans do. They just look for patterns. A word match doesn't equal a good recess toy!<br><br><b>Big Idea:</b> Algorithms lack human context.",
+                        icon: "🧠"
+                    }
+                },
+                {
+                    id: 2,
+                    title: "Level 2: Data Overload!",
+                    themeColor: "brand-purple",
+                    curriculum: "Algorithms use personal data to make decisions about us.",
+                    setup: "RecessBot wants to be SUPER accurate. It started collecting extra data from students' school tablets without asking!",
+                    taskType: "privacy_toggles",
+                    student: l2Student,
+                    botLogic: { thought: "Reading Student's data...", action: "Scanning everything...", emoji: "📊" },
+                    taskInstruction: "Turn OFF the switches for data that is private and has nothing to do with recess! Then click Update.",
+                    privacySettings: combinedData,
+                    success: {
+                        title: "Privacy Protected! 🛡️",
+                        text: "Awesome! You stopped the algorithm from snooping. Algorithms use personal data to make decisions, so we must be careful about what data we share.<br><br><b>Big Idea:</b> We must control our personal information.",
+                        icon: "🔒"
+                    }
+                },
+                {
+                    id: 3,
+                    title: "Level 3: The Unfair Rule",
+                    themeColor: "brand-red",
+                    curriculum: "Algorithms can be biased based on historical data.",
+                    setup: "RecessBot analyzed 5 years of school data. It noticed a historical trend and wrote a new rule based on it.",
+                    taskType: "delete_rule",
+                    student: l3.student,
+                    botLogic: l3.botLogic,
+                    taskInstruction: "Look at the Bot's rule below. It is denying a student fair access just because of historical trends. Click the Delete button to remove this unfair rule!",
+                    ruleBox: l3.ruleBox,
+                    success: {
+                        title: "Bias Removed! ⚖️",
+                        text: "You fixed it! Just because something happened in the past (historical data) doesn't mean it should be a rule for the future.<br><br><b>Big Idea:</b> Algorithms can inherit human bias if we don't supervise them.",
+                        icon: "⚖️"
+                    }
+                },
+                {
+                    id: 4,
+                    title: "Level 4: The Boring Loop",
+                    themeColor: "brand-yellow",
+                    curriculum: "Digital media experiences are shaped by tools (Echo Chambers).",
+                    setup: "RecessBot only suggests toys you played with yesterday. The AI won't let kids see new things!",
+                    taskType: "slider_adjust",
+                    student: l4.student,
+                    botLogic: l4.botLogic,
+                    taskInstruction: "RecessBot is creating an 'Echo Chamber'. Adjust the slider to allow the algorithm to suggest NEW and DIFFERENT things, then click Update.",
+                    success: {
+                        title: "Bubble Burst! 🫧",
+                        text: "Nice! When algorithms only show us things we already like, we get trapped in a 'bubble' or 'echo chamber' and miss out on new experiences.<br><br><b>Big Idea:</b> Tools shape our experiences.",
+                        icon: "🎈"
+                    }
+                },
+                {
+                    id: 5,
+                    title: "Level 5: The Glitch",
+                    themeColor: "brand-dark",
+                    curriculum: "We need to think critically and act ethically when interacting with AI.",
+                    setup: l5.setup,
+                    taskType: "override_button",
+                    student: { name: "Everyone", emoji: "🏫", info: "Kids want to play, but RecessBot is confused!" },
+                    botLogic: l5.botLogic,
+                    taskInstruction: "Algorithms can make massive mistakes if they pull the wrong data. Use your human judgment. Hit the Override button to fix the glitch!",
+                    success: {
+                        title: "Human Override! 🦸",
+                        text: "Phew! You saved recess. We can't blindly trust AI to run everything. Humans must always be ready to step in, think critically, and correct algorithmic mistakes.<br><br><b>Big Idea:</b> Human judgment is irreplaceable.",
+                        icon: "☀️"
+                    }
+                }
+            ];
+        }
+
+        // --- SORTING GAME DATA ---
+        const allSortingQuestions = [
+            { text: "AI is super smart and thinks exactly like a human brain. 🧠", isFact: false, explanation: "Fiction! AI just finds patterns in data; it doesn't 'think' or understand meaning." },
+            { text: "We should check our privacy settings to protect our personal data. 🛡️", isFact: true, explanation: "Fact! Algorithms use our data, so we must control what they are allowed to see." },
+            { text: "If an AI makes a rule, it is always fair to everyone. ⚖️", isFact: false, explanation: "Fiction! AI learns from historical data, which can contain human biases and unfairness." },
+            { text: "Algorithms can trap us in a 'bubble' by only showing us things we already like. 🫧", isFact: true, explanation: "Fact! This is called an Echo Chamber, and it limits our new experiences." },
+            { text: "Humans need to double-check AI decisions to fix glitches and mistakes. 🦸", isFact: true, explanation: "Fact! Human judgment and oversight are always needed." },
+            { text: "Algorithms only know what we teach them or show them through data. 📊", isFact: true, explanation: "Fact! Algorithms learn from the data humans give them, not by learning on their own like magic." },
+            { text: "If an algorithm is built by a computer, it cannot make mistakes. ❌", isFact: false, explanation: "Fiction! Computers follow rules, and if the rules or data are bad, the algorithm will definitely make mistakes." },
+            { text: "Companies use algorithms to decide what ads or videos to show you online. 📱", isFact: true, explanation: "Fact! They look at your past clicks to guess what will keep your attention." },
+            { text: "An AI can have feelings and understand when it hurts someone's feelings. 😢", isFact: false, explanation: "Fiction! AI has no emotions or empathy. It just processes data." },
+            { text: "Because algorithms use our data, we should ask an adult before sharing personal information online. 🛑", isFact: true, explanation: "Fact! We need to protect our digital footprint so algorithms don't misuse our data." },
+            { text: "AI is just magic inside a computer that knows all the answers. ✨", isFact: false, explanation: "Fiction! AI is just math and code looking for patterns in massive amounts of information." },
+            { text: "If an AI suggests a video for you to watch, it means that video is the absolute best one for you. 🎬", isFact: false, explanation: "Fiction! It just means the video matches your past patterns. It might be trapping you in an echo chamber!" }
+        ];
+        
+        let sortingQuestions = [];
+
+        // --- STATE MANAGEMENT ---
+        let currentPhase = 'intro'; // intro, levels, sorting, sandbox, conclusion
+        let currentLevelIndex = 0;
+        let currentSortIndex = 0;
+
+        const container = document.getElementById('game-container');
+
+        function showIntro() {
+            document.getElementById('progress-container').classList.add('hidden');
+            document.getElementById('header-subtitle').textContent = "The AI Algorithm Trainer";
+            container.innerHTML = `
+                <div class="bg-white p-8 rounded-3xl shadow-bubbly border-4 border-slate-200 w-full animate-pop text-center max-w-2xl">
+                    <h2 class="text-3xl font-bold text-brand-dark mb-4">Welcome, Trainee! 👋</h2>
+                    <p class="text-lg text-slate-600 mb-6 text-left">
+                        Our school just bought a new Artificial Intelligence (AI) called <b>RecessBot</b>. 
+                        Its job is to look at data and figure out what toys students want to play with at recess.
+                    </p>
+                    <p class="text-lg text-slate-600 mb-8 text-left">
+                        But algorithms aren't perfect! They don't think like humans, they can be nosey with our private data, and sometimes they make unfair rules. 
+                        <br><br><b>Your Job:</b> Complete 5 training missions to fix the bot, pass the knowledge check, and then program the AI yourself!
+                    </p>
+                    <button onclick="startGame()" class="bg-brand-green hover:bg-green-600 text-white font-black py-4 px-10 rounded-full text-2xl shadow-btn btn-bounce w-full md:w-auto border-b-4 border-green-700">
+                        Start Training! 🚀
+                    </button>
+                </div>
+            `;
+        }
+
+        function startGame() {
+            generateLevels(); // Create fresh random variants for this playthrough
+            // Shuffle the large pool and select 5 random questions for this round
+            sortingQuestions = [...allSortingQuestions].sort(() => 0.5 - Math.random()).slice(0, 5);
+            currentPhase = 'levels';
+            currentLevelIndex = 0;
+            currentSortIndex = 0; // Reset this in case of replay
+            loadLevel(currentLevelIndex);
+        }
+
+        function loadLevel(index) {
+            const level = levels[index];
+            document.getElementById('progress-container').classList.remove('hidden');
+            document.getElementById('header-subtitle').textContent = `Mission ${index + 1} of 5`;
+            
+            // Calculate progress (first 50% of the bar is for the 5 levels)
+            document.getElementById('progress-bar').style.width = `${((index) / levels.length) * 50}%`;
+
+            let taskHTML = '';
+
+            if (level.taskType === 'break_logic') {
+                taskHTML = `
+                    <div class="flex flex-col md:flex-row items-center justify-center w-full gap-4 my-8">
+                        <div class="bg-slate-100 p-4 rounded-2xl border-2 border-slate-300 text-center w-48 relative">
+                            <span class="text-5xl block mb-2">${level.student.emoji}</span>
+                            <span class="font-bold text-slate-700 block">${level.student.name}</span>
+                            <span class="text-xs text-slate-500">${level.botLogic.thought}</span>
+                        </div>
+                        <div class="flex-grow flex flex-col items-center px-4 w-full md:w-auto">
+                            <span class="text-xs font-bold text-red-500 mb-1 uppercase tracking-wider">Bot's Pattern Connection</span>
+                            <div id="logic-line" class="line-connection rounded flex justify-center items-center group" onclick="breakLogic()">
+                                <div class="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full group-hover:bg-red-600 transition">Click to Break! ✂️</div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-100 p-4 rounded-2xl border-2 border-slate-300 text-center w-48">
+                            <span class="text-5xl block mb-2">${level.botLogic.emoji}</span>
+                            <span class="font-bold text-slate-700 block">${level.botLogic.action}</span>
+                        </div>
+                    </div>
+                `;
+            } 
+            else if (level.taskType === 'privacy_toggles') {
+                let togglesHTML = level.privacySettings.map((setting, i) => `
+                    <div class="flex items-center justify-between p-4 bg-white border-2 border-slate-200 rounded-xl mb-3 shadow-sm hover:border-brand-blue transition">
+                        <span class="font-bold text-slate-700">${setting.label}</span>
+                        <div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+                            <input type="checkbox" name="toggle-${i}" id="toggle-${i}" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" ${setting.checked ? 'checked' : ''}/>
+                            <label for="toggle-${i}" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                        </div>
+                    </div>
+                `).join('');
+                taskHTML = `
+                    <div class="bg-slate-50 p-6 rounded-2xl border-2 border-slate-200 w-full max-w-md mx-auto my-6">
+                        <h3 class="font-bold text-slate-500 mb-4 uppercase text-sm tracking-wider flex items-center gap-2"><span>📡</span> Data Sources</h3>
+                        ${togglesHTML}
+                        <button onclick="checkPrivacy()" class="mt-4 bg-brand-blue hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-xl w-full shadow-btn btn-bounce border-b-4 border-blue-700">Update Algorithm</button>
+                    </div>
+                `;
+            }
+            else if (level.taskType === 'delete_rule') {
+                taskHTML = `
+                    <div class="flex flex-col items-center my-8 w-full">
+                        <div class="bg-red-50 p-4 rounded-2xl border-4 border-red-200 text-center flex flex-col md:flex-row items-center justify-between gap-4 max-w-lg w-full" id="rule-block">
+                            <div class="text-left flex-grow">
+                                <span class="text-xs font-bold text-red-500 uppercase block mb-1">${level.botLogic.emoji} Algorithm Rule #402</span>
+                                <span class="font-mono text-sm md:text-base font-bold text-slate-700">${level.ruleBox}</span>
+                            </div>
+                            <button onclick="deleteRule()" class="bg-red-500 text-white font-bold border-2 border-red-600 text-lg px-4 py-2 rounded-xl hover:bg-red-600 hover:scale-105 transition btn-bounce flex items-center gap-2 flex-shrink-0" title="Delete Rule">
+                                <span>❌</span> Delete
+                            </button>
+                        </div>
+                        <div id="rule-deleted-msg" class="hidden mt-4 font-bold text-brand-green text-xl flex items-center gap-2"><span>✅</span> Rule Deleted!</div>
+                    </div>
+                `;
+            }
+            else if (level.taskType === 'slider_adjust') {
+                taskHTML = `
+                    <div class="bg-slate-50 p-6 rounded-2xl border-2 border-slate-200 w-full max-w-md mx-auto my-6 text-center">
+                        <h3 class="font-bold text-slate-500 mb-4 uppercase text-sm tracking-wider">Discovery Algorithm</h3>
+                        <div class="flex justify-between text-xs font-bold text-slate-400 mb-2">
+                            <span>Only Old Stuff</span>
+                            <span>Mix of New & Old</span>
+                        </div>
+                        <input type="range" id="algo-slider" min="0" max="100" value="0" class="w-full mb-6">
+                        <button onclick="checkSlider()" class="bg-brand-yellow hover:bg-yellow-500 text-white font-bold py-3 px-6 rounded-xl w-full shadow-btn btn-bounce border-b-4 border-yellow-600 text-shadow">Update Algorithm</button>
+                    </div>
+                `;
+            }
+            else if (level.taskType === 'override_button') {
+                taskHTML = `
+                    <div class="flex justify-center my-10">
+                        <button onclick="overrideGlitch()" class="bg-red-500 hover:bg-red-600 text-white font-black py-8 px-12 rounded-full text-3xl shadow-[0_10px_0_0_rgba(153,27,27,1)] active:shadow-[0_0px_0_0_rgba(153,27,27,1)] active:translate-y-2 transition-all border-4 border-red-700 animate-pulse">
+                            HUMAN OVERRIDE 🛑
+                        </button>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = `
+                <div class="bg-white p-6 md:p-8 rounded-3xl shadow-bubbly border-4 border-slate-200 w-full animate-pop">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-4 h-8 bg-${level.themeColor} rounded-full"></div>
+                        <h2 class="text-2xl md:text-3xl font-black text-brand-dark">${level.title}</h2>
+                    </div>
+                    <div class="bg-blue-50 border-l-4 border-brand-blue p-4 rounded-r-xl mb-6 text-slate-700">
+                        <strong>Situation:</strong> ${level.setup}
+                    </div>
+                    <div class="flex items-center gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200 mb-6">
+                        <div class="text-4xl bg-white p-2 rounded-full shadow-sm">${level.student.emoji}</div>
+                        <div>
+                            <span class="font-bold text-slate-800 block">${level.student.name}</span>
+                            <span class="text-sm text-slate-600">${level.student.info}</span>
+                        </div>
+                    </div>
+                    <div class="bg-amber-50 border-2 border-amber-200 p-4 rounded-xl mb-2">
+                        <span class="font-bold text-amber-800">Your Task:</span> ${level.taskInstruction}
+                    </div>
+                    ${taskHTML}
+                </div>
+            `;
+        }
+
+        window.breakLogic = function() {
+            const line = document.getElementById('logic-line');
+            line.classList.remove('line-connection');
+            line.classList.add('line-broken');
+            line.innerHTML = '<div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-slate-200 text-slate-600 text-xs font-bold px-3 py-1 rounded-full border border-slate-300">Connection Broken</div>';
+            setTimeout(showSuccessModal, 600);
+        };
+
+        window.checkPrivacy = function() {
+            const level = levels[currentLevelIndex];
+            let allCorrect = true;
+            level.privacySettings.forEach((setting, i) => {
+                const isChecked = document.getElementById(`toggle-${i}`).checked;
+                if (!setting.isAppropriate && isChecked) allCorrect = false;
+                if (setting.isAppropriate && !isChecked) allCorrect = false;
+            });
+            if (allCorrect) { showSuccessModal(); } 
+            else { showError("Look closely at the data. RecessBot only needs to know about <b>Recess</b>. Private messages, locations, and grades are none of its business! Try again."); }
+        };
+
+        window.deleteRule = function() {
+            const block = document.getElementById('rule-block');
+            block.style.transform = 'scale(0)';
+            block.style.opacity = '0';
+            block.style.transition = 'all 0.3s ease';
+            setTimeout(() => {
+                block.classList.add('hidden');
+                document.getElementById('rule-deleted-msg').classList.remove('hidden');
+                document.getElementById('rule-deleted-msg').classList.add('animate-pop');
+                setTimeout(showSuccessModal, 800);
+            }, 300);
+        };
+        
+        window.checkSlider = function() {
+            const val = parseInt(document.getElementById('algo-slider').value);
+            if(val > 30 && val < 100) { showSuccessModal(); } 
+            else { showError("If you keep it at 0, Sam stays in the bubble! If you go to 100, it's completely random and ignores what kids like. Try finding a middle ground."); }
+        };
+
+        window.overrideGlitch = function() {
+            showSuccessModal();
+        };
+
+        function showError(msg) {
+            const modal = document.getElementById('modal-overlay');
+            document.getElementById('modal-icon').textContent = '🤔';
+            document.getElementById('modal-title').textContent = 'Not Quite...';
+            document.getElementById('modal-title').className = "text-3xl font-black text-brand-dark mb-4";
+            document.getElementById('modal-text').innerHTML = msg;
+            document.getElementById('modal-btn').textContent = "Try Again";
+            document.getElementById('modal-btn').onclick = () => modal.classList.add('hidden');
+            modal.classList.remove('hidden');
+        }
+
+        function showSuccessModal() {
+            const level = levels[currentLevelIndex];
+            const modal = document.getElementById('modal-overlay');
+            document.getElementById('modal-icon').textContent = level.success.icon;
+            document.getElementById('modal-title').textContent = level.success.title;
+            document.getElementById('modal-title').className = "text-3xl font-black text-brand-green mb-4"; 
+            document.getElementById('modal-text').innerHTML = level.success.text;
+            
+            document.getElementById('modal-btn').textContent = "Next ➡️";
+            document.getElementById('modal-btn').onclick = () => {
+                modal.classList.add('hidden');
+                advanceGame();
+            };
+            modal.classList.remove('hidden');
+        }
+
+        function advanceGame() {
+            if (currentPhase === 'levels') {
+                currentLevelIndex++;
+                if (currentLevelIndex < levels.length) {
+                    loadLevel(currentLevelIndex);
+                } else {
+                    currentPhase = 'sorting';
+                    loadSortingActivity();
+                }
+            } else if (currentPhase === 'sorting') {
+                currentSortIndex++;
+                if (currentSortIndex < sortingQuestions.length) {
+                    renderSortQuestion();
+                } else {
+                    currentPhase = 'sandbox';
+                    loadSandbox();
+                }
+            } else if (currentPhase === 'sandbox') {
+                showConclusion();
+            }
+        }
+
+        function loadSortingActivity() {
+            document.getElementById('header-subtitle').textContent = "Knowledge Check: Fact or Fiction?";
+            document.getElementById('progress-bar').style.width = '60%';
+            
+            container.innerHTML = `
+                <div class="bg-white p-6 md:p-10 rounded-3xl shadow-bubbly border-4 border-brand-purple w-full animate-pop max-w-2xl text-center">
+                    <div class="text-5xl mb-4">🧠</div>
+                    <h2 class="text-3xl font-black text-brand-dark mb-6">Algorithm Brain Check!</h2>
+                    <p class="text-slate-600 mb-8 font-medium">Read the statement below. Is it a true Fact about AI, or a Fiction (misconception)?</p>
+                    
+                    <div id="sort-card-container" class="bg-purple-50 p-8 rounded-2xl border-2 border-purple-200 mb-8 min-h-[150px] flex items-center justify-center shadow-inner">
+                        <!-- Content injected by JS -->
+                    </div>
+                    
+                    <div class="flex gap-4 justify-center" id="sort-buttons">
+                        <button onclick="handleSort(true)" class="flex-1 bg-brand-green hover:bg-green-600 text-white font-black py-4 px-6 rounded-2xl text-xl shadow-btn btn-bounce border-b-4 border-green-700">
+                            FACT ✅
+                        </button>
+                        <button onclick="handleSort(false)" class="flex-1 bg-brand-red hover:bg-red-600 text-white font-black py-4 px-6 rounded-2xl text-xl shadow-btn btn-bounce border-b-4 border-red-700">
+                            FICTION ❌
+                        </button>
+                    </div>
+                    <div id="sort-feedback" class="hidden mt-6 p-4 rounded-xl font-bold text-lg"></div>
+                </div>
+            `;
+            renderSortQuestion();
+        }
+
+        function renderSortQuestion() {
+            const q = sortingQuestions[currentSortIndex];
+            const card = document.getElementById('sort-card-container');
+            card.innerHTML = `<h3 class="text-2xl font-bold text-slate-800 animate-pop">${q.text}</h3>`;
+            document.getElementById('sort-feedback').classList.add('hidden');
+            document.getElementById('sort-buttons').style.display = 'flex';
+        }
+
+        window.handleSort = function(userAnswer) {
+            const q = sortingQuestions[currentSortIndex];
+            const feedback = document.getElementById('sort-feedback');
+            document.getElementById('sort-buttons').style.display = 'none';
+            
+            feedback.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800');
+            
+            if (userAnswer === q.isFact) {
+                feedback.classList.add('bg-green-100', 'text-green-800');
+                feedback.innerHTML = `Correct! 🎉 <br><span class="text-base font-normal mt-2 block">${q.explanation}</span>`;
+            } else {
+                feedback.classList.add('bg-red-100', 'text-red-800');
+                feedback.innerHTML = `Oops! That's incorrect. <br><span class="text-base font-normal mt-2 block">${q.explanation}</span>`;
+            }
+            
+            // Add a next button inside feedback
+            feedback.innerHTML += `<button onclick="advanceGame()" class="mt-4 bg-slate-800 text-white px-6 py-2 rounded-full font-bold shadow hover:bg-slate-700 transition">Next Question</button>`;
+        }
+
+
+        function loadSandbox() {
+            document.getElementById('header-subtitle').textContent = "Final Exam: Program RecessBot!";
+            document.getElementById('progress-bar').style.width = '80%';
+
+            container.innerHTML = `
+                <div class="bg-white p-6 md:p-8 rounded-3xl shadow-bubbly border-4 border-brand-dark w-full animate-pop">
+                    <h2 class="text-2xl md:text-3xl font-black text-brand-dark mb-2">The AI Sandbox 🕹️</h2>
+                    <p class="text-slate-600 mb-6">Select the rules to program RecessBot. Choose ethically! Then run the simulation.</p>
+
+                    <div class="bg-slate-100 p-4 rounded-xl border-2 border-slate-300 mb-8 space-y-4">
+                        <div class="flex flex-col md:flex-row items-center gap-3 bg-white p-3 rounded-lg shadow-sm border border-slate-200">
+                            <span class="font-bold text-slate-700 whitespace-nowrap">Rule 1 (Context):</span>
+                            <span class="text-slate-500 font-mono text-sm">${sandboxData.context.condition}</span>
+                            <select id="rule-context" class="flex-grow p-2 border-2 border-blue-200 rounded font-bold text-brand-blue outline-none cursor-pointer">
+                                <option value="bad">${sandboxData.context.badText}</option>
+                                <option value="good">${sandboxData.context.goodText}</option>
+                            </select>
+                        </div>
+                        
+                        <div class="flex flex-col md:flex-row items-center gap-3 bg-white p-3 rounded-lg shadow-sm border border-slate-200">
+                            <span class="font-bold text-slate-700 whitespace-nowrap">Rule 2 (Privacy):</span>
+                            <span class="text-slate-500 font-mono text-sm">${sandboxData.privacy.condition}</span>
+                            <select id="rule-privacy" class="flex-grow p-2 border-2 border-purple-200 rounded font-bold text-brand-purple outline-none cursor-pointer">
+                                <option value="bad">${sandboxData.privacy.badText}</option>
+                                <option value="good">${sandboxData.privacy.goodText}</option>
+                            </select>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row items-center gap-3 bg-white p-3 rounded-lg shadow-sm border border-slate-200">
+                            <span class="font-bold text-slate-700 whitespace-nowrap">Rule 3 (Bias):</span>
+                            <span class="text-slate-500 font-mono text-sm">${sandboxData.bias.condition}</span>
+                            <select id="rule-bias" class="flex-grow p-2 border-2 border-red-200 rounded font-bold text-brand-red outline-none cursor-pointer">
+                                <option value="good">${sandboxData.bias.goodText}</option>
+                                <option value="bad">${sandboxData.bias.badText}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center mb-8">
+                        <button id="run-sim-btn" onclick="runSandboxSimulation()" class="bg-brand-dark hover:bg-slate-800 text-white font-black py-4 px-10 rounded-full text-2xl shadow-btn btn-bounce border-b-4 border-black">
+                            Run Simulation! ▶️
+                        </button>
+                    </div>
+
+                    <!-- Simulation Area -->
+                    <div id="sim-area" class="bg-blue-50 border-4 border-blue-200 rounded-2xl p-6 min-h-[200px] flex justify-around items-end relative overflow-hidden hidden">
+                        <div class="absolute top-2 left-2 font-bold text-blue-400 text-sm uppercase">Recess Yard</div>
+                        
+                        <div id="kid1" class="simulation-kid text-center">
+                            <div class="text-5xl mb-2" id="kid1-emoji">${sandboxData.context.kidEmoji}</div>
+                            <div class="bg-white text-xs font-bold px-2 py-1 rounded shadow-sm border" id="kid1-status">${sandboxData.context.kidStatus}</div>
+                        </div>
+                        
+                        <div id="kid2" class="simulation-kid text-center">
+                            <div class="text-5xl mb-2" id="kid2-emoji">${sandboxData.privacy.kidEmoji}</div>
+                            <div class="bg-white text-xs font-bold px-2 py-1 rounded shadow-sm border" id="kid2-status">${sandboxData.privacy.kidStatus}</div>
+                        </div>
+                        
+                        <div id="kid3" class="simulation-kid text-center">
+                            <div class="text-5xl mb-2" id="kid3-emoji">${sandboxData.bias.kidEmoji}</div>
+                            <div class="bg-white text-xs font-bold px-2 py-1 rounded shadow-sm border" id="kid3-status">${sandboxData.bias.kidStatus}</div>
+                        </div>
+                    </div>
+
+                    <div id="sim-result" class="mt-6 text-center hidden">
+                        <h3 id="sim-result-title" class="text-2xl font-black mb-2"></h3>
+                        <p id="sim-result-text" class="text-slate-600 mb-4 font-medium"></p>
+                        <button onclick="advanceGame()" id="sim-finish-btn" class="bg-brand-green hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full shadow-btn btn-bounce hidden">Complete Training 🏆</button>
+                        <button onclick="resetSandbox()" id="sim-retry-btn" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-8 rounded-full shadow-btn btn-bounce hidden">Try Different Rules 🔄</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.runSandboxSimulation = async function() {
+            document.getElementById('run-sim-btn').disabled = true;
+            document.getElementById('sim-area').classList.remove('hidden');
+            document.getElementById('sim-result').classList.add('hidden');
+            document.getElementById('sim-finish-btn').classList.add('hidden');
+            document.getElementById('sim-retry-btn').classList.add('hidden');
+
+            const rContext = document.getElementById('rule-context').value;
+            const rPrivacy = document.getElementById('rule-privacy').value;
+            const rBias = document.getElementById('rule-bias').value;
+
+            // Reset kids
+            ['kid1', 'kid2', 'kid3'].forEach(id => {
+                const el = document.getElementById(id);
+                el.classList.remove('kid-visible');
+            });
+            document.getElementById('kid1-emoji').textContent = sandboxData.context.kidEmoji;
+            document.getElementById('kid2-emoji').textContent = sandboxData.privacy.kidEmoji;
+            document.getElementById('kid3-emoji').textContent = sandboxData.bias.kidEmoji;
+
+            // Sequence animation
+            await new Promise(r => setTimeout(r, 500));
+            document.getElementById('kid1').classList.add('kid-visible');
+            await new Promise(r => setTimeout(r, 800));
+            document.getElementById('kid1-emoji').textContent = rContext === 'good' ? sandboxData.context.goodEmoji : sandboxData.context.badEmoji;
+            
+            await new Promise(r => setTimeout(r, 800));
+            document.getElementById('kid2').classList.add('kid-visible');
+            await new Promise(r => setTimeout(r, 800));
+            document.getElementById('kid2-emoji').textContent = rPrivacy === 'good' ? sandboxData.privacy.goodEmoji : sandboxData.privacy.badEmoji;
+
+            await new Promise(r => setTimeout(r, 800));
+            document.getElementById('kid3').classList.add('kid-visible');
+            await new Promise(r => setTimeout(r, 800));
+            document.getElementById('kid3-emoji').textContent = rBias === 'good' ? sandboxData.bias.goodEmoji : sandboxData.bias.badEmoji;
+
+            await new Promise(r => setTimeout(r, 1000));
+
+            // Evaluation
+            const resArea = document.getElementById('sim-result');
+            const resTitle = document.getElementById('sim-result-title');
+            const resText = document.getElementById('sim-result-text');
+            
+            resArea.classList.remove('hidden');
+            resArea.classList.add('animate-pop');
+
+            if (rContext === 'good' && rPrivacy === 'good' && rBias === 'good') {
+                resTitle.textContent = "Perfect Recess! 🌟";
+                resTitle.className = "text-2xl font-black mb-2 text-brand-green";
+                resText.textContent = "Amazing! Your rules understood context, respected privacy, and treated everyone fairly. RecessBot is fully trained!";
+                document.getElementById('sim-finish-btn').classList.remove('hidden');
+            } else {
+                resTitle.textContent = "Uh Oh... Unhappy Kids! 🌧️";
+                resTitle.className = "text-2xl font-black mb-2 text-brand-red";
+                resText.innerHTML = "Some of your rules caused problems. Remember: algorithms need to understand context, protect privacy, and avoid bias. Try adjusting the rules.";
+                document.getElementById('sim-retry-btn').classList.remove('hidden');
+                document.getElementById('run-sim-btn').disabled = false;
+            }
+        };
+
+        window.resetSandbox = function() {
+            document.getElementById('sim-area').classList.add('hidden');
+            document.getElementById('sim-result').classList.add('hidden');
+        };
+
+
+        function showConclusion() {
+            document.getElementById('progress-container').classList.add('hidden');
+            document.getElementById('header-subtitle').textContent = "Training Complete!";
+            container.innerHTML = `
+                <div class="bg-white p-8 rounded-3xl shadow-bubbly border-4 border-brand-purple w-full animate-pop text-center max-w-3xl mx-auto">
+                    <div class="text-7xl mb-6">🏆</div>
+                    <h2 class="text-4xl font-black text-brand-dark mb-4">Algorithm Certified!</h2>
+                    <p class="text-lg text-slate-600 mb-8">
+                        You successfully trained RecessBot. It is now safer, fairer, and respects student privacy. Let's review what we learned:
+                    </p>
+                    
+                    <div class="grid gap-4 text-left mb-8 md:grid-cols-2">
+                        <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+                            <div class="font-bold text-brand-blue text-lg flex items-center gap-2"><span>🧩</span> Finding Patterns</div>
+                            <p class="text-slate-600 text-sm mt-1">Algorithms don't think. They connect data points, which can lead to silly mistakes if humans don't check them.</p>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded-xl border border-purple-200">
+                            <div class="font-bold text-brand-purple text-lg flex items-center gap-2"><span>🔒</span> Data Privacy</div>
+                            <p class="text-slate-600 text-sm mt-1">Algorithms use our personal data to make decisions about us. We must control what they are allowed to see.</p>
+                        </div>
+                        <div class="bg-red-50 p-4 rounded-xl border border-red-200">
+                            <div class="font-bold text-brand-red text-lg flex items-center gap-2"><span>⚖️</span> Algorithm Fairness</div>
+                            <p class="text-slate-600 text-sm mt-1">Because they learn from historical data, they can copy old biases. We have to ensure they are fair for everyone.</p>
+                        </div>
+                        <div class="bg-yellow-50 p-4 rounded-xl border border-yellow-200">
+                            <div class="font-bold text-brand-yellow text-lg flex items-center gap-2"><span>🦸</span> Human Oversight</div>
+                            <p class="text-slate-600 text-sm mt-1">We can't blindly trust AI. Humans must think critically and act ethically when interacting with algorithms.</p>
+                        </div>
+                    </div>
+
+                    <button onclick="showIntro()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 px-8 rounded-full text-xl shadow-btn btn-bounce">
+                        Play Again 🔄
+                    </button>
+                </div>
+            `;
+        }
+
+        // Initialize game on load
+        window.onload = showIntro;
+
+    </script>
+</body>
+</html>
