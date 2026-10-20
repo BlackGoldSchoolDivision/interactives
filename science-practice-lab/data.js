@@ -2102,8 +2102,7 @@
               "109"
             ]
           ]
-        },
-        "context": "Use the measurements in the table."
+        }
       },
       "answer": 9,
       "explanation": "109 − 100 = 9 mL. The mass stays 100 g, but the ice takes up more space. Equal mass in a larger volume means lower density.",
@@ -2120,10 +2119,9 @@
       "id": "expansion-18",
       "group": "expansion",
       "type": "numeric",
-      "prompt": "A model bridge has two sections. When warmed, each section expands 2 mm into the same joint gap. The original gap is 12 mm. How wide is the gap afterward?",
+      "prompt": "Two model bridge sections have a 12 mm gap between them. Warming makes each section expand 2 mm into the gap. How wide is the gap afterward?",
       "data": {
-        "unit": "mm",
-        "context": "The shaded ends show the extra space taken up when each section expands."
+        "unit": "mm"
       },
       "answer": 8,
       "explanation": "Both sections expand into the gap: 12 − 2 − 2 = 8 mm. This models why engineers allow space for expansion.",

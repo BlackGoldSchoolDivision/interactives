@@ -48,7 +48,7 @@ Reviewed 20 October 2026. Scope: all 54 original Matter practice questions, incl
 | temperature-10 | order | Retain | Retain the energy-transfer→expansion→level→reading sequence. |
 | temperature-11 | match | Improve | Remove a generic thermometer picture that adds no evidence to the part-to-role task. |
 | temperature-12 | match | Retain | Retain the distinction between warming/rising and cooling/falling. |
-| temperature-13 | label | Improve | Correct the scale leader line and remove answer-revealing destination descriptions. |
+| temperature-13 | label | Improve | Correct the scale leader line, keeping it clear of numerals and remove answer-revealing destination descriptions. |
 | temperature-14 | label | Improve | Use neutral destination labels for the two reference marks. State standard atmospheric pressure for the 100°C boiling reference. |
 | temperature-15 | hotspot | Improve | Present selectable sentences as text in a source panel rather than another multiple-choice list. Use plausible observations that distinguish volume evidence from temperature, mass, and tool condition. |
 | temperature-16 | hotspot | Improve | Present selectable sentences as text in a source panel rather than another multiple-choice list. Compare plausible design features for visibility, sensitivity, and reference marks. |
@@ -71,7 +71,7 @@ Reviewed 20 October 2026. Scope: all 54 original Matter practice questions, incl
 | expansion-15 | hotspot | Improve | Present selectable sentences as text in a source panel rather than another multiple-choice list. Separate volume evidence from the temperature and equal-mass controls. |
 | expansion-16 | hotspot | Improve | Present selectable sentences as text in a source panel rather than another multiple-choice list. |
 | expansion-17 | numeric | Improve | Replace a repeated mass question with equal-mass volume evidence and a volume-change calculation. |
-| expansion-18 | numeric | Improve | Replace the generic bridge with a measured model showing both ends moving into the original gap. |
+| expansion-18 | numeric | Improve | Replace the generic bridge with a measured model showing both ends moving into the original gap; shorten the stem and remove a repeated caption. |
 
 ## Evidence and limits
 
@@ -85,5 +85,7 @@ Scientific checks used primary sources:
 - [American Chemical Society: Moving Molecules in a Solid](https://www.acs.org/middleschoolchemistry/lessonplans/chapter1/lesson4.html) — vibration about fixed positions and thermal expansion.
 - [USGS: Water Density](https://www.usgs.gov/water-science-school/science/water-density) — ice's lower density, floating, liquid versus solid arrangement, and near-freezing behaviour.
 - [NIST: Thermometer Verification](https://www.nist.gov/pml/sensor-science/thermodynamic-metrology/mercury-thermometer-alternatives/mercury-thermometer-7) — reference points, placement, and dependence of boiling temperature on pressure/elevation.
+
+The rendered desktop captures for all 54 questions were inspected, with individual mobile checks of the particle, phase, thermometer, equal-mass volume, bridge, and table layouts. The inspection led to a final thermometer-pointer adjustment to keep the scale numerals clear.
 
 Validation is recorded in `validation/browser-report.json`. The browser suite solves every answer key, exercises six viewport sizes, checks resize preservation and start-menu navigation, tests revised saved-question handling, and captures every desktop question plus mobile visual questions. Individual captures and contact sheets are in `validation/question-review/`.
