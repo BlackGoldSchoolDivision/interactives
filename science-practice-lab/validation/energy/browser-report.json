@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "unit": "energy",
+  "bankQuestions": 90,
+  "curriculumStatements": 40,
+  "viewports": [
+    [
+      1366,
+      650
+    ],
+    [
+      1024,
+      540
+    ],
+    [
+      768,
+      900
+    ],
+    [
+      390,
+      667
+    ],
+    [
+      320,
+      568
+    ],
+    [
+      640,
+      360
+    ]
+  ],
+  "questionChecks": 372,
+  "errors": []
+}
