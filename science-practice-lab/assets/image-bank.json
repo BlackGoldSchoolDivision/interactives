@@ -1,0 +1,92 @@
+{
+  "created": "2026-10-20",
+  "origin": "Original generated illustrations and photographs",
+  "measurementPolicy": "Artwork is illustrative. Exact numbers, force arrows, scales, labels and interactive targets are controlled in app code. Apparatus scenes are not instructions to construct or wire real devices.",
+  "assets": [
+    {
+      "id": "energy-banner",
+      "unit": "energy",
+      "title": "Energy investigation banner",
+      "source": "energy/banner.png",
+      "web": "energy/banner.webp",
+      "grid": {
+        "columns": 1,
+        "rows": 1
+      },
+      "panels": [
+        "A spring and cart investigation with foam, towel and rope on a classroom bench."
+      ]
+    },
+    {
+      "id": "force-actions",
+      "unit": "energy",
+      "title": "Forces in familiar actions",
+      "source": "energy/force-actions.png",
+      "web": "energy/force-actions.webp",
+      "grid": {
+        "columns": 2,
+        "rows": 2
+      },
+      "panels": [
+        "Two hands pull on opposite ends of a rope.",
+        "Two hands squeeze a blue foam block.",
+        "Two hands twist a towel.",
+        "Scissors cut a sheet of paper."
+      ]
+    },
+    {
+      "id": "resource-uses",
+      "unit": "energy",
+      "title": "Direct and processed resource use",
+      "source": "energy/resource-uses.png",
+      "web": "energy/resource-uses.webp",
+      "grid": {
+        "columns": 2,
+        "rows": 2
+      },
+      "panels": [
+        "Wind moves a sailboat without a motor.",
+        "A wind turbine supplies an electric lamp.",
+        "A solar panel supplies an electric lamp.",
+        "A gas stovetop heats a kettle."
+      ]
+    },
+    {
+      "id": "matter-mass-investigations",
+      "unit": "matter",
+      "title": "Closed melting and open evaporation investigations",
+      "source": "matter/mass-investigations.png",
+      "web": "matter/mass-investigations.webp",
+      "grid": {
+        "columns": 2,
+        "rows": 2
+      },
+      "panels": [
+        "Closed container with ice on a balance.",
+        "The same closed container with melted ice on a balance.",
+        "Open container of water on a balance.",
+        "The same open container with a lower water level on a balance."
+      ]
+    },
+    {
+      "id": "matter-contexts",
+      "unit": "matter",
+      "title": "Bridge expansion joint and surface ice",
+      "source": "matter/contexts.png",
+      "web": "matter/contexts.webp",
+      "grid": {
+        "columns": 2,
+        "rows": 1
+      },
+      "panels": [
+        "A deliberate gap in a bridge expansion joint.",
+        "Surface ice on a winter lake with a patch of open water."
+      ]
+    }
+  ],
+  "existingMatterBanner": {
+    "source": "matter-banner.png",
+    "web": "matter-banner.webp",
+    "description": "Ice, liquid water and warm water on a laboratory bench."
+  }
+}

@@ -1,4 +1,4 @@
-name: Verify Science Practice Lab Matter
+name: Verify Science Practice Lab
 on:
   push:
     paths:
@@ -8,7 +8,7 @@ on:
       - 'science-practice-lab/data.js'
       - 'science-practice-lab/style.css'
       - 'science-practice-lab/tests/**'
-      - 'science-practice-lab/assets/matter-banner.png'
+      - 'science-practice-lab/assets/**/*.png'
       - '.github/workflows/verify-science-practice-lab.yml'
   workflow_dispatch:
 permissions:
@@ -35,12 +35,12 @@ jobs:
           python - <<'PY'
           from PIL import Image
           from pathlib import Path
-          source = Path('science-practice-lab/assets/matter-banner.png')
-          target = source.with_suffix('.webp')
-          image = Image.open(source).convert('RGB')
-          image.thumbnail((1600, 800))
-          image.save(target, 'WEBP', quality=82, method=6)
-          print(f'Banner optimized: {target.stat().st_size} bytes')
+          for source in Path('science-practice-lab/assets').rglob('*.png'):
+              target = source.with_suffix('.webp')
+              image = Image.open(source).convert('RGB')
+              image.thumbnail((1600, 1200))
+              image.save(target, 'WEBP', quality=82, method=6)
+              print(f'Optimized {target}: {target.stat().st_size} bytes')
           PY
       - name: Exercise all questions and responsive layouts
         run: |
@@ -78,9 +78,9 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add science-practice-lab/assets/matter-banner.webp science-practice-lab/validation/
+          git add science-practice-lab/assets/ science-practice-lab/validation/
           if ! git diff --cached --quiet; then
-            git commit -m 'Verify Matter practice on six viewports and optimize photographic banner'
+            git commit -m 'Verify science practice and optimize the shared image bank'
             git pull --rebase origin main
             git push origin main
           fi
