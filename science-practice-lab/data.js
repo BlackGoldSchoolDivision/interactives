@@ -112,10 +112,10 @@
       "prompt": "Which particle model best represents a gas? Every model shows nine equal-sized particles.",
       "data": {
         "options": [
-          "A · particles close together in regular rows",
-          "B · particles close together in an irregular arrangement",
-          "C · particles widely separated",
-          "D · particles close together in columns"
+          "Model A",
+          "Model B",
+          "Model C",
+          "Model D"
         ],
         "optionVisuals": [
           {
@@ -132,8 +132,14 @@
           },
           {
             "kind": "particle",
-            "style": "columns"
+            "style": "bottom"
           }
+        ],
+        "optionDescriptions": [
+          "Nine particles close together in regular rows.",
+          "Nine particles close together in an irregular cluster.",
+          "Nine particles spread throughout the container.",
+          "Nine particles close together across the bottom of the container."
         ]
       },
       "answer": 2,
@@ -461,7 +467,7 @@
         "particles.K5",
         "particles.SP2"
       ],
-      "visual": "states"
+      "visual": null
     },
     {
       "id": "particles-11",
@@ -573,19 +579,19 @@
         "zones": [
           {
             "id": "A",
-            "label": "A · solid → liquid"
+            "label": "Arrow A"
           },
           {
             "id": "B",
-            "label": "B · liquid → gas"
+            "label": "Arrow B"
           },
           {
             "id": "C",
-            "label": "C · gas → liquid"
+            "label": "Arrow C"
           },
           {
             "id": "D",
-            "label": "D · liquid → solid"
+            "label": "Arrow D"
           }
         ],
         "items": [
@@ -626,17 +632,17 @@
       "id": "particles-14",
       "group": "particles",
       "type": "label",
-      "prompt": "Label the comparison in this particle model. The same liquid is shown at two temperatures.",
+      "prompt": "Label models A and B. Both show the same liquid water at different temperatures.",
       "data": {
         "diagram": "particleCompare",
         "zones": [
           {
             "id": "A",
-            "label": "A · cooler sample"
+            "label": "Model A"
           },
           {
             "id": "B",
-            "label": "B · warmer sample"
+            "label": "Model B"
           }
         ],
         "items": [
@@ -676,9 +682,10 @@
         "options": [
           "The ice was white before melting.",
           "The balance reads 184 g both before and after melting.",
-          "The liquid feels cool.",
+          "The liquid water is measured at 10°C.",
           "The water takes the shape of the container."
-        ]
+        ],
+        "sourceTitle": "Observation notes"
       },
       "answer": 1,
       "explanation": "A balance reading that stays the same for the same closed system is evidence that total mass is conserved.",
@@ -701,7 +708,8 @@
           "The water is colourless.",
           "The ice and water are the same substance.",
           "The water flows and takes the shape of a different container."
-        ]
+        ],
+        "sourceTitle": "Observation notes"
       },
       "answer": 3,
       "explanation": "Flow and changing shape are evidence that particles in a liquid can move past one another.",
@@ -735,20 +743,38 @@
       "id": "particles-18",
       "group": "particles",
       "type": "numeric",
-      "prompt": "A leak-proof closed container and water have a total mass of 175 g. The water freezes. What total mass should the balance show afterward?",
+      "prompt": "Water evaporates from an open container. How much mass leaves the container as water vapour?",
       "data": {
         "unit": "g",
-        "context": "Same closed container · before freezing: 175 g"
+        "context": "No water is spilled. Nothing else enters or leaves the container.",
+        "table": {
+          "caption": "Example balance readings · container and water",
+          "headers": [
+            "When",
+            "Total mass (g)"
+          ],
+          "rows": [
+            [
+              "Before evaporation",
+              "175"
+            ],
+            [
+              "After evaporation",
+              "162"
+            ]
+          ]
+        }
       },
-      "answer": 175,
-      "explanation": "The state and volume may change, but the total mass remains 175 g in this closed system.",
-      "hint": "Track the whole container and everything inside it.",
+      "answer": 13,
+      "explanation": "175 − 162 = 13 g of water leaves as vapour. The matter has moved into the surrounding air; it has not been destroyed.",
+      "hint": "Compare the two balance readings. Include the vapour when thinking about conservation of mass.",
       "refs": [
         "particles.K5",
         "particles.K6",
         "particles.SP3"
       ],
-      "visual": null
+      "visual": null,
+      "revision": 2
     },
     {
       "id": "temperature-01",
@@ -771,7 +797,7 @@
         "temperature.U1",
         "temperature.SP1"
       ],
-      "visual": "thermometer"
+      "visual": "thermoResponse"
     },
     {
       "id": "temperature-02",
@@ -836,7 +862,7 @@
           "Follow teacher instructions and check equipment for damage.",
           "Stir vigorously with the thermometer.",
           "Use suitable protection and a safe holder when handling warm containers.",
-          "Taste the thermometer liquid."
+          "Hold a hot container still with bare hands while measuring."
         ]
       },
       "answer": [
@@ -844,7 +870,7 @@
         1,
         3
       ],
-      "explanation": "Use suitable undamaged equipment and follow supervised handling procedures. Thermometers are measuring tools, not stirrers; never taste thermometer liquid.",
+      "explanation": "Use an appropriate, undamaged thermometer and supervised handling procedures. Use protection or a holder for warm containers. A thermometer is not a stirrer.",
       "hint": "Choose practices that protect people and the measuring tool.",
       "refs": [
         "temperature.SP4"
@@ -855,7 +881,7 @@
       "id": "temperature-04",
       "group": "temperature",
       "type": "multi",
-      "prompt": "At ordinary room pressure, select the TWO correct Celsius reference points for pure water.",
+      "prompt": "At standard atmospheric pressure, select the TWO correct Celsius reference points for pure water.",
       "data": {
         "options": [
           "Melting/freezing: 0°C",
@@ -868,7 +894,7 @@
         0,
         2
       ],
-      "explanation": "The Celsius reference points for pure water are 0°C for melting/freezing and approximately 100°C for boiling at ordinary atmospheric pressure.",
+      "explanation": "The Celsius reference points for pure water are 0°C for melting/freezing and approximately 100°C for boiling at standard atmospheric pressure. The 100°C reference assumes about sea-level air pressure; water can boil at a lower temperature at higher elevations.",
       "hint": "The question asks for Celsius, not Fahrenheit.",
       "refs": [
         "temperature.K2",
@@ -939,7 +965,7 @@
             ]
           },
           {
-            "label": "At ordinary atmospheric pressure, pure water boils at approximately",
+            "label": "At standard atmospheric pressure, pure water boils at approximately",
             "options": [
               "0°C",
               "50°C",
@@ -952,7 +978,7 @@
         "0°C",
         "100°C"
       ],
-      "explanation": "These reference points anchor the Celsius scale. Actual boiling temperature varies with air pressure.",
+      "explanation": "These reference points anchor the Celsius scale. Actual boiling temperature varies with air pressure. The 100°C reference assumes about sea-level air pressure; water can boil at a lower temperature at higher elevations.",
       "hint": "Think of the two water reference points used for Celsius.",
       "refs": [
         "temperature.K2",
@@ -965,7 +991,7 @@
       "id": "temperature-07",
       "group": "temperature",
       "type": "sort",
-      "prompt": "Classify these readings of pure water at ordinary room pressure.",
+      "prompt": "Classify these readings of pure water at standard atmospheric pressure.",
       "data": {
         "zones": [
           {
@@ -1006,7 +1032,7 @@
         "twenty": "between",
         "sixty": "between"
       },
-      "explanation": "0°C and 100°C are the reference points. 20°C and 60°C fall between them.",
+      "explanation": "0°C and 100°C are the reference points. 20°C and 60°C fall between them. The 100°C reference assumes about sea-level air pressure; water can boil at a lower temperature at higher elevations.",
       "hint": "Compare each reading with 0 and 100.",
       "refs": [
         "temperature.K2",
@@ -1076,7 +1102,7 @@
           },
           {
             "id": "place",
-            "text": "Place the bulb correctly in the water using the holder."
+            "text": "Use the holder to suspend the bulb in the water, clear of the container's bottom and sides."
           },
           {
             "id": "wait",
@@ -1094,7 +1120,7 @@
         "wait",
         "read"
       ],
-      "explanation": "Check and position the tool, allow it to reach the water temperature, then read and record the result.",
+      "explanation": "Suspend the bulb in the water without touching the container, wait for a steady level, then read at eye height. Contact with the container or viewing at an angle can affect the reading.",
       "hint": "The measurement comes after the liquid level settles.",
       "refs": [
         "temperature.K1",
@@ -1191,7 +1217,7 @@
         "temperature.SP1",
         "temperature.SP2"
       ],
-      "visual": "thermometer"
+      "visual": null
     },
     {
       "id": "temperature-12",
@@ -1243,15 +1269,15 @@
         "zones": [
           {
             "id": "A",
-            "label": "A · rounded reservoir at the bottom"
+            "label": "Part A"
           },
           {
             "id": "B",
-            "label": "B · narrow central channel"
+            "label": "Part B"
           },
           {
             "id": "C",
-            "label": "C · marks and numbers"
+            "label": "Part C"
           }
         ],
         "items": [
@@ -1282,23 +1308,23 @@
         "temperature.U1",
         "temperature.SP1"
       ],
-      "visual": "thermometer"
+      "visual": null
     },
     {
       "id": "temperature-14",
       "group": "temperature",
       "type": "label",
-      "prompt": "Place the two water reference-point labels on the Celsius scale.",
+      "prompt": "At standard atmospheric pressure, place the water reference-point labels on the Celsius scale.",
       "data": {
         "diagram": "celsiusReference",
         "zones": [
           {
             "id": "A",
-            "label": "A · upper reference mark"
+            "label": "Mark A"
           },
           {
             "id": "B",
-            "label": "B · lower reference mark"
+            "label": "Mark B"
           }
         ],
         "items": [
@@ -1316,7 +1342,7 @@
         "boil": "A",
         "freeze": "B"
       },
-      "explanation": "At ordinary atmospheric pressure, pure water boils at about 100°C and melts/freezes at about 0°C.",
+      "explanation": "At standard atmospheric pressure, pure water boils at about 100°C and melts/freezes at about 0°C. The 100°C reference assumes about sea-level air pressure; water can boil at a lower temperature at higher elevations.",
       "hint": "The higher reference temperature belongs at the higher mark.",
       "refs": [
         "temperature.K2",
@@ -1334,10 +1360,11 @@
         "intro": "The same model thermometer is moved from cool water to warmer water. No liquid is added.",
         "options": [
           "The coloured-liquid level rises in the narrow tube.",
-          "The card behind the tube is white.",
-          "The beaker is round.",
-          "The teacher records the time."
-        ]
+          "The thermometer's total mass stays the same.",
+          "The surrounding water is warmer.",
+          "The glass tube remains unbroken."
+        ],
+        "sourceTitle": "Observation notes"
       },
       "answer": 0,
       "explanation": "With no liquid added, the higher level is evidence that the warmed liquid occupies more volume.",
@@ -1358,11 +1385,12 @@
       "data": {
         "intro": "A class is designing a supervised model that shows the expansion of a liquid.",
         "options": [
-          "An opaque tube that hides the liquid.",
-          "A very wide bowl with no reference marks.",
+          "An opaque, narrow tube beside a marked scale.",
+          "A clear, wide bowl with no reference marks.",
           "A clear, narrow tube beside a marked scale.",
-          "A sealed container that is heated strongly."
-        ]
+          "A clear, narrow tube with no fixed reference marks."
+        ],
+        "sourceTitle": "Design proposals"
       },
       "answer": 2,
       "explanation": "A narrow transparent tube makes a small volume change easier to see, and a scale gives reference values. Follow the teacher's safe model-building instructions.",
@@ -1403,25 +1431,27 @@
       "id": "temperature-18",
       "group": "temperature",
       "type": "numeric",
-      "prompt": "Read the thermometer. Each small interval is 2°C.",
+      "prompt": "Read the outdoor thermometer. Each small interval is 2°C.",
       "data": {
         "unit": "°C",
         "context": "Read the top of the red liquid column.",
         "thermo": {
-          "min": 0,
+          "min": -10,
           "max": 20,
           "step": 2,
-          "value": 14
+          "labelEvery": 10,
+          "value": -4
         }
       },
-      "answer": 14,
-      "explanation": "The liquid level is two 2-degree intervals above 10°C: 12°C, then 14°C.",
-      "hint": "Work out the size of one interval before counting.",
+      "answer": -4,
+      "explanation": "The liquid ends two 2-degree intervals below 0°C: −2°C, then −4°C. Include the minus sign.",
+      "hint": "Find 0°C first. Is the top of the liquid above or below it?",
       "refs": [
         "temperature.K2",
         "temperature.SP3"
       ],
-      "visual": "reading"
+      "visual": "reading",
+      "revision": 2
     },
     {
       "id": "expansion-01",
@@ -1431,9 +1461,9 @@
       "data": {
         "options": [
           "They allow materials to expand and contract as temperature changes.",
-          "They make the bridge colder.",
-          "They allow the bridge to lose mass in summer.",
-          "They stop all particle motion."
+          "They prevent the bridge sections from changing length.",
+          "They remove the need to allow for temperature changes.",
+          "They are needed only when the bridge material melts."
         ]
       },
       "answer": 0,
@@ -1455,19 +1485,19 @@
       "prompt": "Which equal-mass model shows what happens to pure water's volume when it freezes near 0°C?",
       "data": {
         "options": [
-          "A · ice has a smaller volume than liquid water",
-          "B · ice has a larger volume than liquid water",
-          "C · ice and liquid water have the same volume",
-          "D · the ice has almost no volume"
+          "Model A",
+          "Model B",
+          "Model C",
+          "Model D"
         ],
         "optionVisuals": [
           {
             "kind": "volume",
-            "ice": 40
+            "ice": 50
           },
           {
             "kind": "volume",
-            "ice": 95
+            "ice": 90
           },
           {
             "kind": "volume",
@@ -1475,8 +1505,14 @@
           },
           {
             "kind": "volume",
-            "ice": 12
+            "ice": 25
           }
+        ],
+        "optionDescriptions": [
+          "Equal masses: the ice occupies a smaller volume than the liquid water.",
+          "Equal masses: the ice occupies a larger volume than the liquid water.",
+          "Equal masses: the ice and liquid water occupy the same volume.",
+          "Equal masses: the ice occupies a very small volume compared with the liquid water."
         ]
       },
       "answer": 1,
@@ -1497,7 +1533,7 @@
       "data": {
         "options": [
           "Solid water is less dense than liquid water near freezing.",
-          "Ice floats, so freezing begins at the surface.",
+          "Ice that forms stays at the surface because it floats.",
           "The surface ice helps insulate the water underneath.",
           "Ice always makes the entire lake freeze solid immediately.",
           "Freezing creates extra water particles."
@@ -1508,7 +1544,7 @@
         1,
         2
       ],
-      "explanation": "Floating surface ice forms an insulating layer, helping water below remain liquid and supporting aquatic life.",
+      "explanation": "Surface water can cool to its freezing point. The ice that forms is less dense than liquid water, so it floats and helps slow heat loss from the water below. Some water can remain liquid; conditions vary among lakes.",
       "hint": "Connect floating ice with insulation.",
       "refs": [
         "expansion.K4",
@@ -1522,20 +1558,20 @@
       "id": "expansion-04",
       "group": "expansion",
       "type": "multi",
-      "prompt": "Select the TWO observations that support the need to allow for thermal expansion in infrastructure.",
+      "prompt": "Select the TWO observations that directly show bridge material expanding as it warms.",
       "data": {
         "options": [
           "A bridge joint has a smaller gap on a warmer day.",
-          "A road has the same name in summer and winter.",
+          "A bridge section keeps the same total mass when warmed.",
           "A metal section becomes slightly longer when warmed.",
-          "A painted sign changes colour after repainting."
+          "A thermometer beside the bridge shows a higher temperature."
         ]
       },
       "answer": [
         0,
         2
       ],
-      "explanation": "A smaller warm-weather gap and a longer warmed metal section are evidence of thermal expansion. Designs need to allow for this movement.",
+      "explanation": "A narrower joint gap and a longer metal section show increased size. A temperature reading alone does not measure expansion, and unchanged mass does not show a size change.",
       "hint": "Choose observations caused by temperature changes.",
       "refs": [
         "expansion.K1",
@@ -1746,7 +1782,7 @@
         "items": [
           {
             "id": "mark",
-            "text": "Measure a sample of water in a suitable freezer-safe container, allowing expansion space."
+            "text": "Record the water's mass and volume in suitable freezer-safe equipment with expansion space."
           },
           {
             "id": "freeze",
@@ -1754,7 +1790,7 @@
           },
           {
             "id": "compare",
-            "text": "Compare the volume of the ice with the original liquid volume."
+            "text": "Measure the ice's mass and volume, accounting for the same container."
           },
           {
             "id": "conclude",
@@ -1768,7 +1804,7 @@
         "compare",
         "conclude"
       ],
-      "explanation": "For an equal-mass comparison, keep all the water, allow safe expansion space, and compare volumes. This supports an explanation for floating ice.",
+      "explanation": "Record both mass and volume before and after freezing without losing water. An unchanged mass with increased volume supports the conclusion that ice has lower density. Use a teacher-approved method and suitable expansion space.",
       "hint": "The initial liquid measurement must come first.",
       "refs": [
         "expansion.K3",
@@ -1822,40 +1858,46 @@
       "id": "expansion-11",
       "group": "expansion",
       "type": "match",
-      "prompt": "Match each infrastructure feature to its purpose.",
+      "prompt": "Match each temperature change to its effect on the joint.",
       "data": {
         "zones": [
           {
-            "id": "bridge",
-            "label": "Expansion joint in a bridge"
+            "id": "narrow",
+            "label": "Joint gap becomes narrower"
           },
           {
-            "id": "walk",
-            "label": "Planned joints in a sidewalk"
+            "id": "wide",
+            "label": "Joint gap becomes wider"
           }
         ],
         "items": [
           {
-            "id": "bridgepurpose",
-            "text": "Allows bridge sections room for temperature-related movement"
+            "id": "bridgewarm",
+            "text": "Bridge sections warm and expand toward the joint."
           },
           {
-            "id": "walkpurpose",
-            "text": "Helps accommodate movement and manage cracking in concrete sections"
+            "id": "bridgecool",
+            "text": "Bridge sections cool and contract away from the joint."
+          },
+          {
+            "id": "walkwarm",
+            "text": "Concrete sidewalk sections warm and expand toward the joint."
           }
         ]
       },
       "answer": {
-        "bridgepurpose": "bridge",
-        "walkpurpose": "walk"
+        "bridgewarm": "narrow",
+        "bridgecool": "wide",
+        "walkwarm": "narrow"
       },
-      "explanation": "Infrastructure designs account for expansion and contraction. Concrete joints also help manage cracking from other causes.",
-      "hint": "Match the feature to the structure it serves.",
+      "explanation": "Expanding sections take up more of the gap. Contracting sections leave more space. Engineers allow for these movements when designing joints.",
+      "hint": "Follow the movement of the ends of the sections.",
       "refs": [
         "expansion.K7",
         "expansion.SP3"
       ],
-      "visual": null
+      "visual": null,
+      "revision": 2
     },
     {
       "id": "expansion-12",
@@ -1903,17 +1945,17 @@
       "id": "expansion-13",
       "group": "expansion",
       "type": "label",
-      "prompt": "Label the two bridge-joint views. The bridge material is the same in both views.",
+      "prompt": "The same bridge joint is shown at two temperatures. Label views A and B.",
       "data": {
         "diagram": "bridgeCompare",
         "zones": [
           {
             "id": "A",
-            "label": "A · wider joint gap"
+            "label": "View A"
           },
           {
             "id": "B",
-            "label": "B · narrower joint gap"
+            "label": "View B"
           }
         ],
         "items": [
@@ -1952,11 +1994,11 @@
         "zones": [
           {
             "id": "A",
-            "label": "A · floating surface layer"
+            "label": "Region A"
           },
           {
             "id": "B",
-            "label": "B · region underneath"
+            "label": "Region B"
           }
         ],
         "items": [
@@ -1992,11 +2034,12 @@
       "data": {
         "intro": "Students compare equal masses of ice and liquid water near 0°C.",
         "options": [
-          "The ice is cloudy.",
+          "Both samples are measured near 0°C.",
           "The ice occupies more volume than the liquid water.",
           "Both samples contain water.",
-          "The containers are labelled."
-        ]
+          "The balance confirms that the two masses are equal."
+        ],
+        "sourceTitle": "Observation notes"
       },
       "answer": 1,
       "explanation": "With equal masses, the sample occupying more volume has lower density. That is why this observation supports the claim.",
@@ -2020,7 +2063,8 @@
           "Aquatic life would have exactly the same protection.",
           "Sinking ice could reduce the insulating surface layer and allow more water to freeze.",
           "Water could never freeze."
-        ]
+        ],
+        "sourceTitle": "Possible predictions"
       },
       "answer": 2,
       "explanation": "If ice sank, the usual floating insulating layer would be reduced or absent. That could allow more cooling and freezing, affecting aquatic habitats.",
@@ -2036,20 +2080,41 @@
       "id": "expansion-17",
       "group": "expansion",
       "type": "numeric",
-      "prompt": "A sample has a mass of 90 g as liquid water. It freezes without losing any water. What is the mass of the ice?",
+      "prompt": "The same water sample is measured before and after freezing. By how much does its volume increase?",
       "data": {
-        "unit": "g",
-        "context": "The volume increases during freezing. No water enters or leaves."
+        "unit": "mL",
+        "table": {
+          "caption": "Example measurements · no water lost",
+          "headers": [
+            "State",
+            "Mass (g)",
+            "Volume (mL)"
+          ],
+          "rows": [
+            [
+              "Liquid water",
+              "100",
+              "100"
+            ],
+            [
+              "Ice",
+              "100",
+              "109"
+            ]
+          ]
+        },
+        "context": "Use the measurements in the table."
       },
-      "answer": 90,
-      "explanation": "Its mass remains 90 g even though its volume increases and its density decreases.",
-      "hint": "Volume and mass are different properties.",
+      "answer": 9,
+      "explanation": "109 − 100 = 9 mL. The mass stays 100 g, but the ice takes up more space. Equal mass in a larger volume means lower density.",
+      "hint": "Subtract the liquid volume from the ice volume. The masses are equal.",
       "refs": [
         "expansion.K3",
         "expansion.K4",
         "expansion.SP1"
       ],
-      "visual": null
+      "visual": null,
+      "revision": 2
     },
     {
       "id": "expansion-18",
@@ -2058,7 +2123,7 @@
       "prompt": "A model bridge has two sections. When warmed, each section expands 2 mm into the same joint gap. The original gap is 12 mm. How wide is the gap afterward?",
       "data": {
         "unit": "mm",
-        "context": "Left section uses 2 mm of the gap. Right section also uses 2 mm."
+        "context": "The shaded ends show the extra space taken up when each section expands."
       },
       "answer": 8,
       "explanation": "Both sections expand into the gap: 12 − 2 − 2 = 8 mm. This models why engineers allow space for expansion.",
@@ -2068,7 +2133,7 @@
         "expansion.K7",
         "expansion.SP3"
       ],
-      "visual": "bridge"
+      "visual": "bridgeMeasured"
     }
   ]
 };root.ScienceLabData=data;if(typeof module!=='undefined')module.exports=data;})(typeof globalThis!=='undefined'?globalThis:this);

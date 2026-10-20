@@ -46,6 +46,26 @@ jobs:
         run: |
           python -m http.server 8765 --bind 127.0.0.1 >/tmp/science-lab-server.log 2>&1 &
           node science-practice-lab/tests/browser.cjs
+      - name: Build question review contact sheets
+        run: |
+          python - <<'PY'
+          from PIL import Image, ImageOps, ImageDraw, ImageFont
+          from pathlib import Path
+          folder = Path('science-practice-lab/validation/question-review')
+          font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 20)
+          for group in ('particles', 'temperature', 'expansion'):
+              files = sorted(p for p in folder.glob(f'{group}-*.png') if '-phone' not in p.stem)
+              for batch in range(0, len(files), 6):
+                  sheet = Image.new('RGB', (1240, 2070), '#e5edef')
+                  draw = ImageDraw.Draw(sheet)
+                  for index, file in enumerate(files[batch:batch + 6]):
+                      x, y = (index % 2) * 620, (index // 2) * 690
+                      draw.text((x + 12, y + 8), file.stem, fill='#142b3d', font=font)
+                      image = Image.open(file).convert('RGB')
+                      image = ImageOps.contain(image, (600, 640))
+                      sheet.paste(image, (x + 10, y + 40))
+                  sheet.save(folder / f'review-{group}-{batch // 6 + 1}.jpg', quality=90)
+          PY
       - name: Preserve validation images
         if: always()
         uses: actions/upload-artifact@v4

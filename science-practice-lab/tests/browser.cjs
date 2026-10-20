@@ -4,6 +4,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const root=path.join(__dirname,'..'),out=path.join(root,'validation');
 fs.mkdirSync(out,{recursive:true});
+const audit=path.join(out,'question-review');fs.mkdirSync(audit,{recursive:true});
 const base='http://127.0.0.1:8765/science-practice-lab/';
 let checks=0;
 async function noOverflow(page,label){const dim=await page.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth}));assert(dim.scroll<=dim.width+2,label+' horizontal overflow: '+JSON.stringify(dim));checks++;}
@@ -18,6 +19,17 @@ async function solve(page,q){
 async function round(page,n,mode='learn',capture=false){
  const seen=new Set();
  for(let i=0;i<n;i++){const q=await question(page);seen.add(q.type);await noOverflow(page,q.id);
+ if(capture){
+  await page.locator('.question-card').screenshot({path:path.join(audit,q.id+'.png'),animations:'disabled',style:'.question-actions{position:static!important}'});
+  if(q.visual||q.data.diagram||q.data.optionVisuals||q.data.table){
+   const snapshot=await page.evaluate(()=>ScienceLab.getState().run);
+   await page.setViewportSize({width:390,height:667});await noOverflow(page,'visual phone '+q.id);
+   assert.deepEqual(await page.evaluate(()=>ScienceLab.getState().run),snapshot,'Visual resize changed state '+q.id);
+   await page.locator('.question-card').screenshot({path:path.join(audit,q.id+'-phone.png'),animations:'disabled',style:'.question-actions{position:static!important}'});
+   await page.setViewportSize({width:1366,height:650});
+  }
+ }
+
  if(capture&&q.type==='sort'&&!fs.existsSync(path.join(out,'question-sort-desktop.png')))await page.screenshot({path:path.join(out,'question-sort-desktop.png'),fullPage:true});
  if(capture&&q.data.optionVisuals&&q.group==='temperature')await page.screenshot({path:path.join(out,'question-image-thermometers.png'),fullPage:true});
  if(capture&&q.type==='sort'){const item=q.data.items[0];await page.locator('[data-piece="'+item.id+'"]').dragTo(page.locator('[data-zone="'+q.answer[item.id]+'"]'));assert.equal(await page.evaluate(id=>{const s=ScienceLab.getState();return s.run.entries[s.run.queue[s.run.pos]].response[id];},item.id),q.answer[item.id],'Native dragging failed');checks++;}
@@ -73,6 +85,19 @@ async function round(page,n,mode='learn',capture=false){
  await round(page,9,'test');assert.equal(await page.locator('.result-review').count(),9);
  await page.locator('#teacher-open').click();assert(await page.locator('#teacher-dialog').isVisible());assert.equal(await page.locator('.source-outcome').count(),29);await page.keyboard.press('Escape');
  assert.equal(errors.length,0,errors.join('\n'));console.log('PASS wrong answers, retry, resume, test feedback, curriculum mapping, zoom and dialogs');
- await context.close();await browser.close();
+
+ await context.close();
+ // A saved answer to an older question must not appear correct under a revised task.
+ const migration=await browser.newContext({viewport:{width:390,height:667}}),mp=await migration.newPage();
+ await mp.goto(base,{waitUntil:'networkidle'});
+ await mp.evaluate(()=>{
+  const e=response=>({response,attempts:1,submitted:true,checked:true,correct:true,firstCorrect:true,revealed:false,hinted:false,flagged:false,visited:true});
+  localStorage.setItem('science-practice-lab-matter-v1',JSON.stringify({version:ScienceLab.data.version,settings:{mode:'learn',count:'9',format:'all'},progress:{'particles-17':{seen:true,correct:true},'temperature-18':{seen:true,correct:true}},run:{queue:['particles-17','temperature-18'],pos:1,group:'all',mode:'learn',finished:false,entries:{'particles-17':e('236'),'temperature-18':e('14')}}}));
+ });
+ await mp.reload({waitUntil:'networkidle'});assert(await mp.locator('#content-note').isVisible());
+ await mp.locator('#resume').click();assert.equal((await question(mp)).id,'temperature-18');assert.equal(await mp.locator('#number-input').inputValue(),'');
+ assert.equal((await mp.evaluate(()=>ScienceLab.getState())).progress['particles-17'].correct,true);assert.equal(await mp.locator('#feedback-area').innerText(),'');
+ await mp.locator('#number-input').fill('-4');await mp.locator('#check-answer').click();assert.match(await mp.locator('#feedback-area').innerText(),/That’s right/);checks+=5;
+ await migration.close();await browser.close();
  fs.writeFileSync(path.join(out,'browser-report.json'),JSON.stringify({passed:true,viewports,questionChecks:checks,errors},null,2));console.log('TOTAL '+checks+' checks');
 })().catch(e=>{console.error(e);process.exit(1);});

@@ -30,6 +30,21 @@ function round(bank,group,count,progress={},rng=Math.random,format='all'){
 }
 function empty(q,rng=Math.random){if(q.type==='multi')return[];if(q.type==='dropdown')return q.data.blanks.map(()=>'');if(q.type==='order')return shuffle(q.data.items.map(x=>x.id),rng);if(['sort','match','label'].includes(q.type))return{};return q.type==='numeric'?'':null;}
 function answerText(q){if(['single','hotspot'].includes(q.type))return q.data.options[q.answer];if(q.type==='multi')return q.answer.map(i=>q.data.options[i]).join('; ');if(q.type==='numeric')return q.answer+' '+q.data.unit;if(q.type==='dropdown')return q.answer.join(' · ');if(q.type==='order')return q.answer.map(id=>q.data.items.find(x=>x.id===id).text).join(' → ');return q.data.items.map(x=>x.text+' → '+q.data.zones.find(z=>z.id===q.answer[x.id]).label).join('; ');}
-const api={TYPES,shuffle,number,complete,grade,round,empty,answerText};
+
+// Clear only answers whose underlying question task or key has changed.
+function reconcile(saved,bank){
+ const out=JSON.parse(JSON.stringify(saved)),updated=[];
+ if(out.run&&!out.run.entries)out.run=null;
+ out.progress=out.progress&&typeof out.progress==='object'?out.progress:{};
+ const changed=bank.filter(q=>(q.revision||1)>(out.questionRevisions?.[q.id]||1));
+ for(const q of changed){const prior=out.progress[q.id],e=out.run?.entries?.[q.id];if(prior||e?.visited||e?.submitted)updated.push(q.id);delete out.progress[q.id];}
+ const affected=changed.filter(q=>out.run?.queue?.includes(q.id));
+ if(affected.length&&out.run.finished)out.run=null;
+ else if(affected.length){for(const q of affected){const e=out.run.entries?.[q.id];if(e?.visited||e?.submitted)out.run.pos=Math.min(out.run.pos,out.run.queue.indexOf(q.id));out.run.entries[q.id]={response:empty(q),attempts:0,submitted:false,checked:false,correct:false,firstCorrect:null,revealed:false,hinted:false,flagged:!!e?.flagged,visited:false};}}
+ out.questionRevisions=Object.fromEntries(bank.map(q=>[q.id,q.revision||1]));
+ return {saved:out,updated};
+}
+
+const api={reconcile,TYPES,shuffle,number,complete,grade,round,empty,answerText};
 root.ScienceLabCore=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

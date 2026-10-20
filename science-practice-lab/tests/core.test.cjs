@@ -29,3 +29,15 @@ test('Particle and thermometer image choices have explicit alternatives and corr
  assert.equal(D.questions.find(q=>q.id==='temperature-02').data.optionVisuals[1].value,30);
  for(const q of D.questions.filter(q=>q.data.thermo))assert.equal(q.answer,q.data.thermo.value);
 });
+test('Question updates retain unrelated progress and answers, and clear only outdated tasks',()=>{
+ const oldEntry=response=>({response,attempts:1,submitted:true,checked:true,correct:true,firstCorrect:true,flagged:true,visited:true});
+ const saved={version:D.version,progress:{'particles-17':{seen:true,correct:true},'particles-18':{seen:true,correct:true}},run:{queue:['particles-17','particles-18'],pos:1,finished:false,entries:{'particles-17':oldEntry('236'),'particles-18':oldEntry('175')}}};
+ const result=C.reconcile(saved,D.questions);assert.deepEqual(result.updated,['particles-18']);assert.deepEqual(result.saved.progress['particles-17'],saved.progress['particles-17']);assert(!result.saved.progress['particles-18']);assert.deepEqual(result.saved.run.entries['particles-17'],saved.run.entries['particles-17']);assert.equal(result.saved.run.entries['particles-18'].response,'');assert.equal(result.saved.run.entries['particles-18'].checked,false);assert.equal(result.saved.run.entries['particles-18'].flagged,true);assert.equal(saved.run.entries['particles-18'].response,'175','Input snapshot mutated');
+ const again=C.reconcile(result.saved,D.questions);assert.deepEqual(again.updated,[]);
+ saved.run.finished=true;const completed=C.reconcile(saved,D.questions);assert.equal(completed.saved.run,null);assert(completed.saved.progress['particles-17'].correct);
+});
+test('Below-zero readings and mass/volume evidence produce physically consistent results',()=>{
+ const below=D.questions.find(q=>q.id==='temperature-18');assert.equal(below.answer,-4);assert(below.data.thermo.min<below.answer&&below.answer<0);assert(C.grade(below,'-4').correct);assert(!C.grade(below,'4').correct);
+ const evaporation=D.questions.find(q=>q.id==='particles-18'),er=evaporation.data.table.rows;assert.equal(evaporation.answer,Number(er[0][1])-Number(er[1][1]));
+ const volume=D.questions.find(q=>q.id==='expansion-17'),vr=volume.data.table.rows;assert.equal(vr[0][1],vr[1][1]);assert.equal(volume.answer,Number(vr[1][2])-Number(vr[0][2]));
+});
