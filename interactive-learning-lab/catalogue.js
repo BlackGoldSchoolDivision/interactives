@@ -32,7 +32,7 @@ const subjects = [
 const featuredOrder = ['morpheme-missions','vocabularyarcade','mackwoodmapping','word-detective','numberbuilding','moonphases','writerspark','thinking-dialogue'];
 const writingOrder = ['writerspark','infospark'];
 const thinkingOrder = ['thinking-dialogue','thinkingroutines','imagespark','venndiagram','hexthinker','asctriangle','frayermodel'];
-const scienceOrder = ['moonphases','dinodig','walker-bridge'];
+const scienceOrder = ['science-practice-lab','moonphases','dinodig','walker-bridge'];
 let chosen = 'Favourites', chosenGroup = 'All geography', chosenType = 'All types', query = '';
 const cardsNode = document.getElementById('cards');
 const filters = document.getElementById('filters');
@@ -106,6 +106,7 @@ function render() {
   }).join('');
   cardsNode.querySelectorAll('article[data-id]').forEach(card => {
     const activity = catalogue.find(a => a.id === card.dataset.id);
+    if (activity.disable_make_own) return;
     if (activity.own_html_url) {
       const link = document.createElement('a');
       link.className = 'make-own';
