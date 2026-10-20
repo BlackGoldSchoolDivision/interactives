@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot Thinker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f0fdf4; }
+        .bounce { animation: bounce 1s infinite; }
+        .shake { animation: shake 0.5s; }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+        .btn-option { transition: all 0.2s ease; }
+        .btn-option:hover:not(:disabled) { transform: scale(1.02); filter: brightness(1.1); }
+        .btn-option:disabled { opacity: 0.5; cursor: not-allowed; transform: scale(0.95); }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <main class="w-full max-w-4xl bg-white rounded-3xl shadow-2xl overflow-hidden border-4 border-green-200">
+        
+        <!-- HEADER / MASCOT -->
+        <div class="bg-gradient-to-r from-green-400 to-blue-500 p-6 flex flex-col items-center justify-center text-white relative">
+            <div id="robot-mascot" class="text-7xl mb-4 bounce">🤖</div>
+            <h1 class="text-4xl md:text-5xl font-black text-center drop-shadow-md">Robot Thinker!</h1>
+            <p class="text-xl md:text-2xl mt-2 font-bold text-center opacity-90">Can you guess how the robot learns?</p>
+        </div>
+
+        <!-- HOME VIEW -->
+        <div id="view-home" class="p-8 flex flex-col items-center gap-6">
+            <h2 class="text-2xl font-bold text-gray-700 text-center mb-4">Choose a game to play!</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                <button onclick="startGame('rules')" class="group flex flex-col items-center p-8 bg-blue-100 hover:bg-blue-200 border-4 border-blue-300 rounded-3xl transition-transform hover:scale-105 shadow-lg">
+                    <span class="text-6xl mb-4 group-hover:scale-110 transition-transform">🔍</span>
+                    <h3 class="text-3xl font-bold text-blue-700 mb-2">Pattern Detective</h3>
+                    <p class="text-blue-600 text-center text-lg font-medium">Guess the robot's secret rule!</p>
+                </button>
+
+                <button onclick="startGame('bias')" class="group flex flex-col items-center p-8 bg-purple-100 hover:bg-purple-200 border-4 border-purple-300 rounded-3xl transition-transform hover:scale-105 shadow-lg">
+                    <span class="text-6xl mb-4 group-hover:scale-110 transition-transform">🤦‍♂️</span>
+                    <h3 class="text-3xl font-bold text-purple-700 mb-2">Silly Mistakes</h3>
+                    <p class="text-purple-600 text-center text-lg font-medium">Why did the robot get confused?</p>
+                </button>
+            </div>
+        </div>
+
+        <!-- ACTIVITY 1 VIEW (RULES) -->
+        <div id="view-rules" class="hidden p-4 md:p-8 flex flex-col items-center">
+            <div class="w-full flex justify-between items-center mb-6">
+                <button onclick="goHome()" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-full font-bold text-gray-700 transition-colors shadow-sm">🏠 Home</button>
+                <div class="text-xl font-bold text-blue-700 bg-blue-100 border-2 border-blue-300 px-6 py-2 rounded-full shadow-sm">Level <span id="rule-level">1</span> / 5</div>
+            </div>
+
+            <h2 class="text-2xl md:text-3xl font-bold text-center text-blue-700 mb-6">What is the secret rule?</h2>
+            
+            <div class="flex flex-col md:flex-row gap-6 w-full max-w-2xl mb-8">
+                <div class="flex-1 bg-green-50 border-4 border-green-300 p-4 rounded-2xl flex flex-col items-center shadow-inner">
+                    <h3 class="text-xl font-bold text-green-700 mb-2">✅ Robot Likes:</h3>
+                    <div id="rule-likes" class="text-5xl flex gap-2 flex-wrap justify-center bg-white p-4 rounded-xl border-2 border-green-100 w-full min-h-[80px] shadow-sm"></div>
+                </div>
+                <div class="flex-1 bg-red-50 border-4 border-red-300 p-4 rounded-2xl flex flex-col items-center shadow-inner">
+                    <h3 class="text-xl font-bold text-red-700 mb-2">❌ Doesn't Like:</h3>
+                    <div id="rule-dislikes" class="text-5xl flex gap-2 flex-wrap justify-center bg-white p-4 rounded-xl border-2 border-red-100 w-full min-h-[80px] shadow-sm"></div>
+                </div>
+            </div>
+
+            <div id="rule-options" class="grid grid-cols-1 w-full max-w-xl gap-4">
+                <!-- Buttons injected here -->
+            </div>
+
+            <!-- Feedback Area -->
+            <div id="rule-feedback" class="mt-6 hidden flex-col items-center w-full max-w-xl p-4 rounded-2xl">
+                <p id="rule-feedback-text" class="text-2xl font-bold mb-4 text-center"></p>
+                <button id="rule-next-btn" onclick="nextRuleLevel()" class="px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold text-xl rounded-full shadow-lg transform hover:scale-105 transition-all hidden">Next Level! ➔</button>
+            </div>
+        </div>
+
+        <!-- ACTIVITY 2 VIEW (BIAS) -->
+        <div id="view-bias" class="hidden p-4 md:p-8 flex flex-col items-center">
+             <div class="w-full flex justify-between items-center mb-6">
+                <button onclick="goHome()" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-full font-bold text-gray-700 transition-colors shadow-sm">🏠 Home</button>
+                <div class="text-xl font-bold text-purple-700 bg-purple-100 border-2 border-purple-300 px-6 py-2 rounded-full shadow-sm">Level <span id="bias-level">1</span> / 5</div>
+            </div>
+
+            <h2 class="text-2xl md:text-3xl font-bold text-center text-purple-700 mb-6">The robot made a funny mistake!</h2>
+            
+            <div class="w-full max-w-2xl bg-yellow-50 border-4 border-yellow-300 rounded-2xl p-6 mb-8 shadow-inner">
+                <div class="mb-4">
+                    <h3 class="text-lg font-bold text-yellow-800 uppercase tracking-wider mb-1">📚 What it learned from:</h3>
+                    <p id="bias-training" class="text-2xl text-gray-800 font-bold bg-white p-3 rounded-xl border-2 border-yellow-100 shadow-sm"></p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-red-700 uppercase tracking-wider mb-1">🤦‍♂️ The Mistake:</h3>
+                    <p id="bias-mistake" class="text-2xl text-gray-800 font-bold bg-white p-3 rounded-xl border-2 border-red-100 shadow-sm"></p>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-gray-700 mb-4 text-center">Why did the robot get confused?</h3>
+
+            <div id="bias-options" class="grid grid-cols-1 w-full max-w-2xl gap-4">
+                <!-- Buttons injected here -->
+            </div>
+
+            <!-- Feedback Area -->
+            <div id="bias-feedback" class="mt-6 hidden flex-col items-center w-full max-w-2xl p-4 rounded-2xl">
+                <p id="bias-feedback-text" class="text-2xl font-bold mb-4 text-center"></p>
+                <button id="bias-next-btn" onclick="nextBiasLevel()" class="px-8 py-3 bg-purple-500 hover:bg-purple-600 text-white font-bold text-xl rounded-full shadow-lg transform hover:scale-105 transition-all hidden">Next Level! ➔</button>
+            </div>
+        </div>
+
+        <!-- END VIEW -->
+        <div id="view-end" class="hidden p-8 text-center flex flex-col items-center justify-center min-h-[400px]">
+            <div class="text-8xl mb-6 bounce">🎉</div>
+            <h2 class="text-4xl md:text-5xl font-black text-green-500 mb-4 drop-shadow-sm">Great Job!</h2>
+            <p class="text-2xl text-gray-700 mb-8 font-bold">You completed all 5 levels like a true Robot Expert!</p>
+            <button onclick="goHome()" class="px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold text-2xl rounded-full shadow-xl transform hover:scale-105 transition-all border-4 border-blue-300">Play Again 🏠</button>
+        </div>
+
+    </main>
+
+    <script>
+        // Game Data for Activity 1 (Rules) - Expanded
+        const ruleQuestions = [
+            // Diff 1: Easy (Colors & Shapes)
+            { id: 1, diff: 1, likes: ['🍎', '🍓', '🚗'], dislikes: ['🍌', '🐸', '🦋'], options: [
+                { text: "It likes red things!", isCorrect: true, hint: "" },
+                { text: "It likes fruit!", isCorrect: false, hint: "Wait, the car is not a fruit! Try again." },
+                { text: "It likes circles!", isCorrect: false, hint: "A car is not a circle. Look at the colors! Try again." }
+            ]},
+            { id: 2, diff: 1, likes: ['🐶', '🐱', '🐭'], dislikes: ['🎸', '🚗', '📱'], options: [
+                { text: "It likes animals!", isCorrect: true, hint: "" },
+                { text: "It likes soft things!", isCorrect: false, hint: "Maybe, but what exactly are all of those? Try again." },
+                { text: "It likes toys!", isCorrect: false, hint: "A real dog isn't a toy. What group do they belong to?" }
+            ]},
+            { id: 3, diff: 1, likes: ['⚽', '🏀', '⚾'], dislikes: ['🍕', '👕', '🎸'], options: [
+                { text: "It likes balls!", isCorrect: true, hint: "" },
+                { text: "It likes food!", isCorrect: false, hint: "You can't eat a baseball! Try again." },
+                { text: "It likes circles!", isCorrect: false, hint: "They are circles, but there's a better word for what you play sports with!" }
+            ]},
+            { id: 4, diff: 1, likes: ['☀️', '🌻', '🍋'], dislikes: ['🍎', '🥦', '🍇'], options: [
+                { text: "It likes yellow things!", isCorrect: true, hint: "" },
+                { text: "It likes outside things!", isCorrect: false, hint: "A lemon is usually inside the kitchen. Look at the colors!" },
+                { text: "It likes hot things!", isCorrect: false, hint: "A lemon isn't hot! Try again." }
+            ]},
+            // Diff 2: Medium (Attributes & Groups)
+            { id: 5, diff: 2, likes: ['🦅', '🦇', '🦋'], dislikes: ['🐶', '🐍', '🐢'], options: [
+                { text: "It likes things that fly!", isCorrect: true, hint: "" },
+                { text: "It likes birds!", isCorrect: false, hint: "A bat and a butterfly are not birds! Try again." },
+                { text: "It likes animals with legs!", isCorrect: false, hint: "A dog has legs but the robot doesn't like it. Try again." }
+            ]},
+            { id: 6, diff: 2, likes: ['🚗', '🚌', '🚲'], dislikes: ['🚢', '🚁', '🐴'], options: [
+                { text: "It likes things with wheels!", isCorrect: true, hint: "" },
+                { text: "It likes things that go fast!", isCorrect: false, hint: "A helicopter goes fast but it doesn't like it. Try again." },
+                { text: "It likes cars!", isCorrect: false, hint: "A bus and a bike are not cars! Try again." }
+            ]},
+            { id: 7, diff: 2, likes: ['👕', '👖', '👗'], dislikes: ['🍎', '📱', '🏀'], options: [
+                { text: "It likes clothes!", isCorrect: true, hint: "" },
+                { text: "It likes soft things!", isCorrect: false, hint: "It does, but what do you use them for? Try again." },
+                { text: "It likes colors!", isCorrect: false, hint: "Apples have colors too! Look closer at the group." }
+            ]},
+            // Diff 3: Hard (Concepts)
+            { id: 8, diff: 3, likes: ['🍦', '⛄', '🧊'], dislikes: ['☕', '🔥', '☀️'], options: [
+                { text: "It likes cold things!", isCorrect: true, hint: "" },
+                { text: "It likes water!", isCorrect: false, hint: "Ice cream isn't just water. Think about how they feel." },
+                { text: "It likes white things!", isCorrect: false, hint: "Ice cream can be pink or brown too! Try again." }
+            ]},
+            { id: 9, diff: 3, likes: ['🎸', '🎺', '🥁'], dislikes: ['🎧', '📺', '📚'], options: [
+                { text: "It likes musical instruments!", isCorrect: true, hint: "" },
+                { text: "It likes loud things!", isCorrect: false, hint: "A TV can be loud too. What do these objects MAKE?" },
+                { text: "It likes toys!", isCorrect: false, hint: "These are used to play music, not just toys!" }
+            ]},
+            { id: 10, diff: 3, likes: ['🍉', '🍇', '🍓'], dislikes: ['🧀', '🥩', '🍞'], options: [
+                { text: "It likes fruits!", isCorrect: true, hint: "" },
+                { text: "It likes food!", isCorrect: false, hint: "It doesn't like cheese or bread. What KIND of food is it?" },
+                { text: "It likes red things!", isCorrect: false, hint: "Grapes are green or purple! Try again." }
+            ]}
+        ];
+
+        // Game Data for Activity 2 (Bias) - Expanded
+        const biasQuestions = [
+            // Diff 1: Easy
+            { id: 1, diff: 1, training: "Only pictures of green apples 🍏", mistake: "It thinks a red apple 🍎 is a bouncy ball!", options: [
+                { text: "It never saw a red apple before!", isCorrect: true, hint: "" },
+                { text: "Apples are very bouncy.", isCorrect: false, hint: "Apples don't bounce well! Think about what the robot looked at." },
+                { text: "The robot was sleepy.", isCorrect: false, hint: "Robots don't sleep! Why did it get confused?" }
+            ]},
+            { id: 2, diff: 1, training: "Only tiny, little dogs 🐕", mistake: "It thinks a big fluffy dog is a horse 🐎!", options: [
+                { text: "It thought all dogs had to be tiny!", isCorrect: true, hint: "" },
+                { text: "Big dogs like to eat hay.", isCorrect: false, hint: "Dogs don't eat hay! Think about its training." },
+                { text: "It loves horses a lot.", isCorrect: false, hint: "Robots don't have feelings like that. Look at the pictures it learned from." }
+            ]},
+            { id: 3, diff: 1, training: "Only sunny days at the beach 🏖️", mistake: "It thinks snow ❄️ is white sand!", options: [
+                { text: "It never learned about winter or snow!", isCorrect: true, hint: "" },
+                { text: "Snow is actually sand.", isCorrect: false, hint: "Snow is made of water, not sand! Try again." },
+                { text: "The robot likes building sandcastles.", isCorrect: false, hint: "That's fun, but why did it make a mistake?" }
+            ]},
+            // Diff 2: Medium
+            { id: 4, diff: 2, training: "Pictures of cats sleeping on beds 🛌🐈", mistake: "It thinks a cat climbing a tree 🌳 is a bird 🐦!", options: [
+                { text: "It only learned about cats indoors on beds!", isCorrect: true, hint: "" },
+                { text: "Cats can fly like birds.", isCorrect: false, hint: "Cats definitely can't fly! Try again." },
+                { text: "Trees are only for birds.", isCorrect: false, hint: "Lots of animals climb trees! Why was the robot confused?" }
+            ]},
+            { id: 5, diff: 2, training: "Cars driving on black roads 🚗🛣️", mistake: "It thinks a boat on the water 🚤 is a broken car!", options: [
+                { text: "It never saw vehicles on water before!", isCorrect: true, hint: "" },
+                { text: "Boats are just cars without wheels.", isCorrect: false, hint: "Boats and cars are different! Try again." },
+                { text: "Water is just a blue road.", isCorrect: false, hint: "Water and roads are very different. Think about what the robot studied." }
+            ]},
+            { id: 6, diff: 2, training: "People holding umbrellas in the rain ☔🌧️", mistake: "It thinks a person holding an umbrella in the sun ⛱️ is getting rained on!", options: [
+                { text: "It thought umbrellas are ONLY for rain!", isCorrect: true, hint: "" },
+                { text: "The sun makes water fall.", isCorrect: false, hint: "The sun doesn't make rain! Try again." },
+                { text: "Umbrellas are afraid of the sun.", isCorrect: false, hint: "Umbrellas don't have feelings! Why did the AI get it wrong?" }
+            ]},
+            // Diff 3: Hard
+            { id: 7, diff: 3, training: "People smiling when they eat ice cream 🍦😊", mistake: "It thinks a person eating a sour lemon 🍋😖 is sad because yellow is a bad color.", options: [
+                { text: "It didn't understand that sour food makes funny faces!", isCorrect: true, hint: "" },
+                { text: "Lemons are very sad fruits.", isCorrect: false, hint: "Fruits aren't sad! Try again." },
+                { text: "Yellow always makes people cry.", isCorrect: false, hint: "Yellow is a happy color! Think about what the robot missed." }
+            ]},
+            { id: 8, diff: 3, training: "Doctors wearing white coats 🥼🩺", mistake: "It thinks a chef wearing a white apron 🧑‍🍳 is a doctor!", options: [
+                { text: "It learned that 'white clothes' always means 'doctor'!", isCorrect: true, hint: "" },
+                { text: "Chefs fix people with food.", isCorrect: false, hint: "Chefs make food, doctors fix people! Try again." },
+                { text: "Bread is a type of medicine.", isCorrect: false, hint: "Bread is yummy, but it's not medicine. Try again." }
+            ]},
+            { id: 9, diff: 3, training: "Birds flying in the blue sky 🦅🌤️", mistake: "It thinks an airplane ✈️ is a giant metal bird!", options: [
+                { text: "It assumed anything flying in the sky must be a bird!", isCorrect: true, hint: "" },
+                { text: "Airplanes lay giant eggs.", isCorrect: false, hint: "Airplanes don't lay eggs! Try again." },
+                { text: "Birds are made of metal.", isCorrect: false, hint: "Birds have feathers, not metal! Try again." }
+            ]}
+        ];
+
+        // State variables
+        let currentMode = '';
+        let currentLevelNum = 1;      // Displayed level (1, 2, 3...)
+        const MAX_LEVELS = 5;         // Max levels per game
+        let currentDifficulty = 1;    // 1 (Easy), 2 (Medium), 3 (Hard)
+        let streak = 0;               // Consecutive first-try correct answers
+        let playedIds = new Set();    // Track used questions so they don't repeat
+        let firstTry = true;          // Track if they got it right on the very first try for this level
+
+        // Audio setup (Tone.js)
+        let synth = null;
+        function initAudio() {
+            if (!synth) {
+                synth = new Tone.Synth({
+                    oscillator: { type: "sine" },
+                    envelope: { attack: 0.1, decay: 0.2, sustain: 0.5, release: 0.8 }
+                }).toDestination();
+                Tone.start();
+            }
+        }
+
+        function playWinSound() {
+            if (!synth) return;
+            const now = Tone.now();
+            synth.triggerAttackRelease("C5", "8n", now);
+            synth.triggerAttackRelease("E5", "8n", now + 0.15);
+            synth.triggerAttackRelease("G5", "4n", now + 0.3);
+        }
+
+        function playWrongSound() {
+            if (!synth) return;
+            const now = Tone.now();
+            synth.triggerAttackRelease("G3", "8n", now);
+            synth.triggerAttackRelease("C3", "4n", now + 0.2);
+        }
+
+        // DOM Elements
+        const viewHome = document.getElementById('view-home');
+        const viewRules = document.getElementById('view-rules');
+        const viewBias = document.getElementById('view-bias');
+        const viewEnd = document.getElementById('view-end');
+        const mascot = document.getElementById('robot-mascot');
+
+        function hideAllViews() {
+            viewHome.classList.add('hidden');
+            viewRules.classList.add('hidden');
+            viewBias.classList.add('hidden');
+            viewEnd.classList.add('hidden');
+        }
+
+        function goHome() {
+            hideAllViews();
+            viewHome.classList.remove('hidden');
+            mascot.classList.remove('hidden', 'bounce', 'shake');
+            mascot.classList.add('bounce');
+        }
+
+        function startGame(mode) {
+            initAudio();
+            currentMode = mode;
+            currentLevelNum = 1;
+            currentDifficulty = 1;
+            streak = 0;
+            playedIds.clear();
+            
+            hideAllViews();
+            if (mode === 'rules') {
+                viewRules.classList.remove('hidden');
+                loadRuleLevel();
+            } else {
+                viewBias.classList.remove('hidden');
+                loadBiasLevel();
+            }
+        }
+
+        function getRandomScenario(pool) {
+            // Filter by current difficulty AND completely unplayed IDs
+            let available = pool.filter(s => s.diff === currentDifficulty && !playedIds.has(s.id));
+            
+            // If no unplayed questions at this difficulty, pick ANY unplayed question
+            if (available.length === 0) {
+                available = pool.filter(s => !playedIds.has(s.id));
+            }
+            
+            // Extreme Failsafe: Should never happen since we only play 5 and pool has 9-10
+            if (available.length === 0) {
+                return pool[0]; 
+            }
+            
+            // Pick random
+            const randomIndex = Math.floor(Math.random() * available.length);
+            const selected = available[randomIndex];
+            playedIds.add(selected.id);
+            return selected;
+        }
+
+        function loadRuleLevel() {
+            firstTry = true;
+            document.getElementById('rule-level').innerText = currentLevelNum;
+            const data = getRandomScenario(ruleQuestions);
+            
+            document.getElementById('rule-likes').innerHTML = data.likes.join(' ');
+            document.getElementById('rule-dislikes').innerHTML = data.dislikes.join(' ');
+
+            const optionsContainer = document.getElementById('rule-options');
+            optionsContainer.innerHTML = '';
+            
+            // Shuffle options
+            const shuffledOptions = [...data.options].sort(() => Math.random() - 0.5);
+
+            shuffledOptions.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "btn-option w-full p-4 bg-white border-4 border-gray-200 rounded-2xl text-left text-xl font-bold text-gray-700 shadow-sm hover:border-blue-400";
+                btn.innerText = opt.text;
+                btn.onclick = () => checkRuleAnswer(opt.isCorrect, btn, opt.hint);
+                optionsContainer.appendChild(btn);
+            });
+
+            // Reset feedback UI
+            const feedbackBox = document.getElementById('rule-feedback');
+            feedbackBox.classList.add('hidden');
+            feedbackBox.classList.remove('bg-green-100', 'border-4', 'border-green-300', 'bg-red-100', 'border-red-300');
+            document.getElementById('rule-next-btn').classList.add('hidden');
+            mascot.classList.add('bounce');
+            mascot.classList.remove('shake');
+        }
+
+        function checkRuleAnswer(isCorrect, btnElement, hintText) {
+            const feedbackBox = document.getElementById('rule-feedback');
+            const feedbackText = document.getElementById('rule-feedback-text');
+            const nextBtn = document.getElementById('rule-next-btn');
+
+            feedbackBox.classList.remove('hidden', 'bg-green-100', 'bg-red-100', 'border-green-300', 'border-red-300');
+            feedbackBox.classList.add('border-4');
+
+            if (isCorrect) {
+                // Correct path
+                feedbackBox.classList.add('bg-green-100', 'border-green-300');
+                feedbackText.innerText = "Correct! You found the rule! 🎉";
+                feedbackText.className = "text-2xl font-bold mb-4 text-green-700 text-center";
+                mascot.classList.remove('shake');
+                mascot.classList.add('bounce');
+                btnElement.classList.replace('border-gray-200', 'border-green-500');
+                btnElement.classList.add('bg-green-50');
+                playWinSound();
+                
+                nextBtn.innerText = currentLevelNum >= MAX_LEVELS ? "Finish Game! 🌟" : "Next Level! ➔";
+                nextBtn.classList.remove('hidden');
+                
+                // Disable all buttons
+                const buttons = document.querySelectorAll('#rule-options button');
+                buttons.forEach(b => b.disabled = true);
+
+                // Handle streak and difficulty
+                if (firstTry) {
+                    streak++;
+                    if (streak >= 2 && currentDifficulty < 3) {
+                        currentDifficulty++;
+                        streak = 0; // Reset streak after leveling up diff
+                    }
+                }
+            } else {
+                // Incorrect path - try again logic
+                firstTry = false;
+                streak = 0; // Lose streak
+                
+                feedbackBox.classList.add('bg-red-100', 'border-red-300');
+                feedbackText.innerText = "Oops! " + hintText;
+                feedbackText.className = "text-xl font-bold text-red-700 text-center";
+                
+                btnElement.disabled = true; // Disable the wrong button
+                btnElement.classList.replace('border-gray-200', 'border-red-200');
+                btnElement.classList.add('opacity-50');
+
+                mascot.classList.remove('bounce');
+                mascot.classList.add('shake');
+                setTimeout(() => mascot.classList.remove('shake'), 500);
+                playWrongSound();
+            }
+        }
+
+        function nextRuleLevel() {
+            if (currentLevelNum >= MAX_LEVELS) {
+                showEndScreen();
+            } else {
+                currentLevelNum++;
+                loadRuleLevel();
+            }
+        }
+
+        function loadBiasLevel() {
+            firstTry = true;
+            document.getElementById('bias-level').innerText = currentLevelNum;
+            const data = getRandomScenario(biasQuestions);
+            
+            document.getElementById('bias-training').innerText = data.training;
+            document.getElementById('bias-mistake').innerText = data.mistake;
+
+            const optionsContainer = document.getElementById('bias-options');
+            optionsContainer.innerHTML = '';
+            
+            // Shuffle
+            const shuffledOptions = [...data.options].sort(() => Math.random() - 0.5);
+
+            shuffledOptions.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "btn-option w-full p-4 bg-white border-4 border-gray-200 rounded-2xl text-left text-xl font-bold text-gray-700 shadow-sm hover:border-purple-400";
+                btn.innerText = opt.text;
+                btn.onclick = () => checkBiasAnswer(opt.isCorrect, btn, opt.hint);
+                optionsContainer.appendChild(btn);
+            });
+
+            // Reset UI
+            const feedbackBox = document.getElementById('bias-feedback');
+            feedbackBox.classList.add('hidden');
+            feedbackBox.classList.remove('bg-green-100', 'border-4', 'border-green-300', 'bg-red-100', 'border-red-300');
+            document.getElementById('bias-next-btn').classList.add('hidden');
+            mascot.classList.add('bounce');
+            mascot.classList.remove('shake');
+        }
+
+        function checkBiasAnswer(isCorrect, btnElement, hintText) {
+            const feedbackBox = document.getElementById('bias-feedback');
+            const feedbackText = document.getElementById('bias-feedback-text');
+            const nextBtn = document.getElementById('bias-next-btn');
+
+            feedbackBox.classList.remove('hidden', 'bg-green-100', 'bg-red-100', 'border-green-300', 'border-red-300');
+            feedbackBox.classList.add('border-4');
+
+            if (isCorrect) {
+                feedbackBox.classList.add('bg-green-100', 'border-green-300');
+                feedbackText.innerText = "Spot on! That's why AI gets confused! 🎉";
+                feedbackText.className = "text-2xl font-bold mb-4 text-green-700 text-center";
+                mascot.classList.remove('shake');
+                mascot.classList.add('bounce');
+                btnElement.classList.replace('border-gray-200', 'border-green-500');
+                btnElement.classList.add('bg-green-50');
+                playWinSound();
+                
+                nextBtn.innerText = currentLevelNum >= MAX_LEVELS ? "Finish Game! 🌟" : "Next Level! ➔";
+                nextBtn.classList.remove('hidden');
+
+                const buttons = document.querySelectorAll('#bias-options button');
+                buttons.forEach(b => b.disabled = true);
+
+                if (firstTry) {
+                    streak++;
+                    if (streak >= 2 && currentDifficulty < 3) {
+                        currentDifficulty++;
+                        streak = 0;
+                    }
+                }
+            } else {
+                firstTry = false;
+                streak = 0;
+                
+                feedbackBox.classList.add('bg-red-100', 'border-red-300');
+                feedbackText.innerText = "Not quite! " + hintText;
+                feedbackText.className = "text-xl font-bold text-red-700 text-center";
+                
+                btnElement.disabled = true;
+                btnElement.classList.replace('border-gray-200', 'border-red-200');
+                btnElement.classList.add('opacity-50');
+
+                mascot.classList.remove('bounce');
+                mascot.classList.add('shake');
+                setTimeout(() => mascot.classList.remove('shake'), 500);
+                playWrongSound();
+            }
+        }
+
+        function nextBiasLevel() {
+            if (currentLevelNum >= MAX_LEVELS) {
+                showEndScreen();
+            } else {
+                currentLevelNum++;
+                loadBiasLevel();
+            }
+        }
+
+        function showEndScreen() {
+            hideAllViews();
+            viewEnd.classList.remove('hidden');
+            mascot.classList.remove('shake');
+            mascot.classList.add('bounce');
+            
+            // Big celebration sound
+            if (synth) {
+                const now = Tone.now();
+                synth.triggerAttackRelease("C4", "8n", now);
+                synth.triggerAttackRelease("E4", "8n", now + 0.1);
+                synth.triggerAttackRelease("G4", "8n", now + 0.2);
+                synth.triggerAttackRelease("C5", "2n", now + 0.3);
+            }
+        }
+
+    </script>
+</body>
+</html>
