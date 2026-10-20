@@ -41,8 +41,24 @@ async function round(page,n,mode='learn',capture=false){
  const loaded=await page.locator('.hero-image').evaluate(img=>img.complete&&img.naturalWidth>0);assert(loaded,'Missing photographic banner');
  if(index===0)await page.screenshot({path:path.join(out,'home-desktop.png'),fullPage:true});
  if(width===390)await page.screenshot({path:path.join(out,'home-phone.png'),fullPage:true});
- if(index===0){await page.locator('#round-size').selectOption('all');await page.locator('[data-start="all"]').click();assert.equal((await page.evaluate(()=>ScienceLab.getState().run.queue)).length,54);await round(page,54,'learn',true);await page.screenshot({path:path.join(out,'results-desktop.png'),fullPage:true});}
- else {await page.locator('.goal-card [data-start="particles"]').click();assert.equal((await round(page,9)).size,9);}
+ // The start-menu route must remain visible after scrolling, and preserve an unanswered choice.
+ await page.locator('.goal-card [data-start="particles"]').click();
+ await page.locator('[data-choice="0"]').click();
+ const saved=await page.evaluate(()=>ScienceLab.getState().run);
+ await page.evaluate(()=>window.scrollTo(0,document.documentElement.scrollHeight));
+ const menuRect=await page.locator('#start-menu').boundingBox();
+ assert(menuRect&&menuRect.y>=0&&menuRect.y+menuRect.height<=height,'Start menu not visible while scrolling at '+width+'x'+height);
+ await page.locator('#start-menu').click();
+ assert(await page.locator('#home').isVisible(),'Start menu did not show the menu');
+ assert(await page.locator('#resume').isVisible(),'Saved round missing');
+ await page.locator('#resume').click();
+ assert.deepEqual(await page.evaluate(()=>ScienceLab.getState().run),saved,'Menu navigation changed the round or answer');
+ await page.locator('#round-home').click();
+ assert(await page.locator('#home').isVisible(),'Question footer did not return to menu');
+ checks+=4;
+ if(index===0){await page.locator('#round-size').selectOption('all');await page.locator('[data-start="all"]').click();await page.locator('#leave-confirm').click();assert.equal((await page.evaluate(()=>ScienceLab.getState().run.queue)).length,54);await round(page,54,'learn',true);await page.screenshot({path:path.join(out,'results-desktop.png'),fullPage:true});}
+ else {await page.locator('#resume').click();assert.equal((await round(page,9)).size,9);}
+ await page.locator('#start-menu').click();assert(await page.locator('#home').isVisible(),'Results menu route failed');assert(!(await page.locator('#resume').count()),'Completed round incorrectly resumable');checks++;
  assert.equal(errors.length,0,errors.join('\n'));console.log('PASS full responsive play at '+width+'x'+height);await context.close();
  }
  // Wrong answer, explanation, retry, reload/resume, keyboard placement, review and hidden test feedback.
