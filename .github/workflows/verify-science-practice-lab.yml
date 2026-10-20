@@ -1,0 +1,65 @@
+name: Verify Science Practice Lab Matter
+on:
+  push:
+    paths:
+      - 'science-practice-lab/index.html'
+      - 'science-practice-lab/app.js'
+      - 'science-practice-lab/core.js'
+      - 'science-practice-lab/data.js'
+      - 'science-practice-lab/style.css'
+      - 'science-practice-lab/tests/**'
+      - 'science-practice-lab/assets/matter-banner.png'
+      - '.github/workflows/verify-science-practice-lab.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  matter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify content and scoring
+        run: node --test science-practice-lab/tests/core.test.cjs
+      - name: Prepare browser and optimized artwork
+        run: |
+          npm install --no-save --package-lock=false playwright@1.55.0
+          npx playwright install --with-deps chromium
+          python -m pip install pillow
+          python - <<'PY'
+          from PIL import Image
+          from pathlib import Path
+          source = Path('science-practice-lab/assets/matter-banner.png')
+          target = source.with_suffix('.webp')
+          image = Image.open(source).convert('RGB')
+          image.thumbnail((1600, 800))
+          image.save(target, 'WEBP', quality=82, method=6)
+          print(f'Banner optimized: {target.stat().st_size} bytes')
+          PY
+      - name: Exercise all questions and responsive layouts
+        run: |
+          python -m http.server 8765 --bind 127.0.0.1 >/tmp/science-lab-server.log 2>&1 &
+          node science-practice-lab/tests/browser.cjs
+      - name: Preserve validation images
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: matter-browser-validation
+          path: science-practice-lab/validation/
+          if-no-files-found: ignore
+      - name: Publish optimized banner and verified screenshots
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add science-practice-lab/assets/matter-banner.webp science-practice-lab/validation/
+          if ! git diff --cached --quiet; then
+            git commit -m 'Verify Matter practice on six viewports and optimize photographic banner'
+            git pull --rebase origin main
+            git push origin main
+          fi

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#086979">
+<meta name="description" content="Original Alberta Grade 6 Matter practice: 54 questions across three curriculum learning goals and nine digital question formats.">
+<title>Science Practice Lab · Matter</title>
+<link rel="stylesheet" href="style.css?v=matter-1">
+<script defer src="data.js?v=matter-1"></script>
+<script defer src="core.js?v=matter-1"></script>
+<script defer src="app.js?v=matter-1"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to practice</a>
+<header class="masthead">
+<div class="brand"><span class="wordmark">ENGAGING STUDENTS</span><span class="brand-divider"></span><div><strong>Science Practice Lab</strong><span class="subbrand">Grade 6 · Original PAT-style practice</span></div></div>
+<div class="header-actions"><button id="topics-toggle" class="quiet mobile-nav" aria-controls="sidebar" aria-expanded="false">Topics</button><button id="teacher-open" class="quiet">Teacher view</button></div>
+</header>
+<div class="layout">
+<aside class="sidebar" id="sidebar" aria-label="Science learning goals"><button class="topic-home" id="home-button"><span class="topic-monogram" aria-hidden="true">M</span><span>Matter<small>First topic · 54 questions</small></span></button><nav id="goal-nav" aria-label="Matter learning goals"></nav><div class="sidebar-progress" id="sidebar-progress"></div><p class="sidebar-note">One learning goal.<br>Different ways to practise.</p><p class="privacy-note">Progress stays on this device.</p></aside>
+<main id="main" tabindex="-1">
+<section id="home"></section>
+<section id="quiz" hidden aria-label="Practice question"></section>
+<section id="results" hidden aria-label="Round results"></section>
+<p id="storage-note" class="storage-note" role="status" hidden></p>
+</main>
+</div>
+<dialog id="teacher-dialog" aria-labelledby="teacher-title"><div class="dialog-head"><div><span class="eyebrow">Matter · curriculum & coverage</span><h2 id="teacher-title">A clear view of the learning</h2></div><button id="teacher-close" class="quiet" aria-label="Close teacher view">Close</button></div><div id="teacher-content"></div></dialog>
+<dialog id="leave-dialog" aria-labelledby="leave-title"><h2 id="leave-title">Start a different round?</h2><p>Your answers are saved while you browse. Starting a new round replaces the unfinished round.</p><div class="dialog-buttons"><button id="leave-cancel" class="secondary">Keep this round</button><button id="leave-confirm" class="primary">Start new round</button></div></dialog>
+<noscript><p class="noscript">Please enable JavaScript to use the question interactions.</p></noscript>
+</body>
+</html>
