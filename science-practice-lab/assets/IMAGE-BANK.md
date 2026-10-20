@@ -9,7 +9,8 @@ Original generated artwork for Matter and Energy, created 20 October 2026. The a
 | [energy/banner.png](energy/banner.png) | Classroom forces investigation banner |
 | [energy/force-actions.png](energy/force-actions.png) | Rope tension, foam compression, towel torsion, paper shearing |
 | [energy/resource-uses.png](energy/resource-uses.png) | Sailboat, wind-generated electricity, solar electricity, gas cooking |
-| [energy/interaction-contexts.png](energy/interaction-contexts.png) | Hand and sliding box, interacting carts, canoe paddle, bent clip |
+| [energy/interaction-contexts.png](energy/interaction-contexts.png) | Interacting carts, canoe paddle, bent clip; original upper-left hand panel retired |
+| [energy/box-push.png](energy/box-push.png) | Replacement hand pushing a wooden block |
 | [energy/investigation-contexts.png](energy/investigation-contexts.png) | Friction test, elastic band, paper-sail vehicle, solar model fan |
 
 ## Matter

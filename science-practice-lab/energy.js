@@ -305,7 +305,7 @@
           }
         ],
         "photo": {
-          "asset": "interaction-contexts",
+          "asset": "box-push",
           "panel": 0,
           "caption": "A hand pushes the sliding box"
         }
@@ -826,7 +826,7 @@
           }
         ],
         "photo": {
-          "asset": "interaction-contexts",
+          "asset": "box-push",
           "panel": 0,
           "caption": "A hand pushes the sliding box"
         }
