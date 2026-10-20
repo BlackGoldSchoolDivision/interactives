@@ -40,7 +40,9 @@ async function nativeDrop(page,item,zone){
  });
  const source=page.locator('[data-piece="'+item+'"]'),target=page.locator('[data-zone="'+zone+'"]');
  try{
-  await source.hover();await page.mouse.down();
+  await source.hover();const start=await source.boundingBox();await page.mouse.down();
+  // Begin the native drag while the source is still under the pointer, before target scrolling.
+  await page.mouse.move(start.x+start.width/2+10,start.y+start.height/2,{steps:5});
   // Playwright documents two target moves for reliable native dragover delivery.
   await target.hover();await target.hover();const box=await target.boundingBox();await page.mouse.move(box.x+box.width/2+2,box.y+box.height/2+2);await page.mouse.up();
  }finally{
