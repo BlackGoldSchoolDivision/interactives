@@ -1,0 +1,37 @@
+name: Clear stalled Matter Pages deployment
+on:
+  push:
+    paths:
+      - '.github/workflows/recover-matter-pages.yml'
+permissions:
+  contents: read
+  pages: write
+jobs:
+  clear-stalled-matter-deployment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Clear only the failed Matter deployment left in progress
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          node --input-type=module <<'JS'
+          const sha = '6d1abf4e6d457625aaefb4f3e2d4eec93be6e940';
+          const endpoint = 'https://api.github.com/repos/BlackGoldSchoolDivision/interactives/pages/deployments/' + sha;
+          const headers = {Accept:'application/vnd.github+json',Authorization:'Bearer '+process.env.GH_TOKEN,'X-GitHub-Api-Version':'2022-11-28'};
+          const status = await fetch(endpoint,{headers});
+          if(status.status===404){console.log('The stalled deployment no longer exists.');process.exit(0);}
+          if(!status.ok)throw new Error('Deployment status request returned '+status.status);
+          const info=await status.json();
+          console.log('Failed Matter deployment status:',info.status);
+          if(['succeed','success','cancelled','canceled','failed','failure','errored'].includes(info.status)){
+            console.log('Deployment is terminal. No cancellation needed.');
+          }else{
+            const result=await fetch(endpoint+'/cancel',{method:'POST',headers});
+            if(![204,404].includes(result.status))throw new Error('Cancel returned '+result.status+': '+await result.text());
+            console.log('Cleared the exact failed Matter deployment. HTTP '+result.status);
+          }
+          JS
