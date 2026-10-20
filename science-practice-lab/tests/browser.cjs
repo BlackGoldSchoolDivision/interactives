@@ -9,6 +9,13 @@ const base='http://127.0.0.1:8765/science-practice-lab/';
 let checks=0;
 async function noOverflow(page,label){const dim=await page.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth}));assert(dim.scroll<=dim.width+2,label+' horizontal overflow: '+JSON.stringify(dim));checks++;}
 async function question(page){return page.evaluate(()=>{const s=ScienceLab.getState();return ScienceLab.data.questions.find(q=>q.id===s.run.queue[s.run.pos]);});}
+
+async function captureQuestion(page,file){
+ const style=await page.addStyleTag({content:'.question-actions{position:static!important}.masthead{position:static!important}'});
+ try{await page.evaluate(()=>window.scrollTo(0,0));await page.locator('.question-card').screenshot({path:file,animations:'disabled'});}
+ finally{await style.evaluate(el=>el.remove());}
+}
+
 async function solve(page,q){
  if(['single','multi','hotspot'].includes(q.type)){for(const i of q.type==='multi'?q.answer:[q.answer])await page.locator('[data-choice="'+i+'"]').click();}
  else if(q.type==='numeric')await page.locator('#number-input').fill(String(q.answer));
@@ -20,12 +27,12 @@ async function round(page,n,mode='learn',capture=false){
  const seen=new Set();
  for(let i=0;i<n;i++){const q=await question(page);seen.add(q.type);await noOverflow(page,q.id);
  if(capture){
-  await page.locator('.question-card').screenshot({path:path.join(audit,q.id+'.png'),animations:'disabled',style:'.question-actions{position:static!important}'});
+  await captureQuestion(page,path.join(audit,q.id+'.png'));
   if(q.visual||q.data.diagram||q.data.optionVisuals||q.data.table){
    const snapshot=await page.evaluate(()=>ScienceLab.getState().run);
    await page.setViewportSize({width:390,height:667});await noOverflow(page,'visual phone '+q.id);
    assert.deepEqual(await page.evaluate(()=>ScienceLab.getState().run),snapshot,'Visual resize changed state '+q.id);
-   await page.locator('.question-card').screenshot({path:path.join(audit,q.id+'-phone.png'),animations:'disabled',style:'.question-actions{position:static!important}'});
+   await captureQuestion(page,path.join(audit,q.id+'-phone.png'));
    await page.setViewportSize({width:1366,height:650});
   }
  }
