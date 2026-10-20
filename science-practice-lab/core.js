@@ -21,8 +21,9 @@ function grade(q,r){
  else{total=q.data.items.length;earned=q.data.items.filter(x=>r?.[x.id]===q.answer[x.id]).length;}
  return {correct:complete(q,r)&&earned===total,complete:!!complete(q,r),earned,total};
 }
+function hasVisual(q){const d=q.data||{};return Boolean(d.photo||d.scenePair||d.diagram||d.optionVisuals?.length||Object.keys(d.zoneImages||{}).length||q.visual);}
 function round(bank,group,count,progress={},rng=Math.random,format='all'){
- const pool=bank.filter(q=>(group==='all'||q.group===group)&&(format==='all'||q.type===format));
+ const pool=bank.filter(q=>(group==='all'||q.group===group)&&(format==='all'||(format==='visual'?hasVisual(q):q.type===format)));
  const rank=q=>(progress[q.id]?.correct?4:0)+(progress[q.id]?.seen?1:0)+rng();
  const buckets=TYPES.map(type=>pool.filter(q=>q.type===type).map(q=>({q,n:rank(q)})).sort((a,b)=>a.n-b.n).map(x=>x.q));
  const result=[];while(buckets.some(x=>x.length))for(const b of buckets)if(b.length)result.push(b.shift());
@@ -45,6 +46,6 @@ function reconcile(saved,bank){
  return {saved:out,updated};
 }
 
-const api={reconcile,TYPES,shuffle,number,complete,grade,round,empty,answerText};
+const api={reconcile,TYPES,shuffle,number,complete,grade,round,hasVisual,empty,answerText};
 root.ScienceLabCore=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
