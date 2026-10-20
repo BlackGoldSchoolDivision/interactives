@@ -32,6 +32,24 @@ async function solve(page,q){
  else if(q.type==='order'){for(let to=0;to<q.answer.length;to++){let order=await page.locator('[data-order-id]').evaluateAll(els=>els.map(e=>e.dataset.orderId));while(order.indexOf(q.answer[to])>to){await page.locator('[data-move="'+q.answer[to]+'"][data-direction="-1"]').click();order=await page.locator('[data-order-id]').evaluateAll(els=>els.map(e=>e.dataset.orderId));}}}
  else {for(const item of q.data.items){await page.locator('[data-piece="'+item.id+'"]').click();const zone=page.locator('[data-zone="'+q.answer[item.id]+'"]');await zone.focus();await page.keyboard.press('Enter');}}
 }
+
+async function nativeDrop(page,item,zone){
+ await page.evaluate(()=>{
+  window.__scienceDragTrace=[];window.__scienceDragListener=e=>{window.__scienceDragTrace.push({event:e.type,target:e.target.closest('[data-zone]')?.dataset.zone||e.target.closest('[data-piece]')?.dataset.piece||e.target.tagName});window.__scienceDragTrace=window.__scienceDragTrace.slice(-12);};
+  for(const type of ['dragstart','dragenter','dragover','drop','dragend'])document.addEventListener(type,window.__scienceDragListener,true);
+ });
+ const source=page.locator('[data-piece="'+item+'"]'),target=page.locator('[data-zone="'+zone+'"]');
+ try{
+  await source.hover();await page.mouse.down();
+  // Playwright documents two target moves for reliable native dragover delivery.
+  await target.hover();await target.hover();const box=await target.boundingBox();await page.mouse.move(box.x+box.width/2+2,box.y+box.height/2+2);await page.mouse.up();
+ }finally{
+  await page.mouse.up();
+  const trace=await page.evaluate(()=>{for(const type of ['dragstart','dragenter','dragover','drop','dragend'])document.removeEventListener(type,window.__scienceDragListener,true);return window.__scienceDragTrace;});
+  if(!trace.some(e=>e.event==='drop'))console.log('Native drop trace',JSON.stringify({item,zone,trace}));
+ }
+}
+
 async function round(page,n,mode='learn',capture=false){
  const seen=new Set();
  for(let i=0;i<n;i++){const q=await question(page);seen.add(q.type);await noOverflow(page,q.id);await checkQuestionImages(page,q.id);
@@ -55,7 +73,7 @@ async function round(page,n,mode='learn',capture=false){
 
  if(capture&&q.type==='sort'&&!fs.existsSync(path.join(out,'question-sort-desktop.png')))await page.screenshot({path:path.join(out,'question-sort-desktop.png'),fullPage:true});
  if(capture&&q.data.optionVisuals&&q.group==='temperature')await page.screenshot({path:path.join(out,'question-image-thermometers.png'),fullPage:true});
- if(capture&&q.type==='sort'){await page.locator('.bank').evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));const item=q.data.items[0];await page.locator('[data-piece="'+item.id+'"]').dragTo(page.locator('[data-zone="'+q.answer[item.id]+'"]'));assert.equal(await page.evaluate(id=>{const s=ScienceLab.getState();return s.run.entries[s.run.queue[s.run.pos]].response[id];},item.id),q.answer[item.id],'Native dragging failed '+q.id);checks++;}
+ if(capture&&q.type==='sort'){await page.locator('.bank').evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));const item=q.data.items[0];await nativeDrop(page,item.id,q.answer[item.id]);assert.equal(await page.evaluate(id=>{const s=ScienceLab.getState();return s.run.entries[s.run.queue[s.run.pos]].response[id];},item.id),q.answer[item.id],'Native dragging failed '+q.id);checks++;}
  await solve(page,q);assert(!(await page.locator('#check-answer').isDisabled()),'Check remains disabled '+q.id);
  if(capture&&q.type==='sort'){const before=await page.evaluate(()=>ScienceLab.getState().run.entries[ScienceLab.getState().run.queue[ScienceLab.getState().run.pos]].response);await page.setViewportSize({width:390,height:667});assert.deepEqual(await page.evaluate(()=>ScienceLab.getState().run.entries[ScienceLab.getState().run.queue[ScienceLab.getState().run.pos]].response),before,'Resize lost response');await noOverflow(page,'resize '+q.id);if(!fs.existsSync(path.join(out,'question-sort-phone.png')))await page.screenshot({path:path.join(out,'question-sort-phone.png'),fullPage:true});await page.setViewportSize({width:1366,height:650});}
  await page.locator('#check-answer').click();
