@@ -132,6 +132,32 @@
     "image": "https://maltais239.github.io/interactives/learning-lab-images/rootwords.jpg"
   },
   {
+    "id": "science-practice-lab",
+    "path": "science-practice-lab",
+    "repo": "BlackGoldSchoolDivision/interactives",
+    "title": "Vretta Type PAT Practice",
+    "category": "Science",
+    "group": "",
+    "description": "Practise Alberta Grade 6 science with original PAT-style questions, real illustrations, drag-and-drop diagrams, sorting and more. Matter and Energy units include learning and test modes; not official Vretta questions.",
+    "favourite": false,
+    "tags": [
+      "Grade 6",
+      "Matter & Energy",
+      "144 questions"
+    ],
+    "url": "https://interactives.blackgold.ca/science-practice-lab/",
+    "links": [],
+    "credit": "",
+    "captured": "2026-10-20",
+    "types": [
+      "Practice questions",
+      "Sorting",
+      "Matching"
+    ],
+    "image": "https://interactives.blackgold.ca/science-practice-lab/validation/question-image-thermometers.png",
+    "disable_make_own": true
+  },
+  {
     "id": "moonphases",
     "title": "Moon Phase Lab",
     "category": "Science",
