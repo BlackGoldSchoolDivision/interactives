@@ -19,9 +19,9 @@ async function solve(page,q,method){
  for(let i=0;i<q.data.items.length;i++){
   const item=q.data.items[i],zone=q.answer[item.id],p=page.locator('[data-piece="'+item.id+'"]'),z=page.locator('[data-zone="'+zone+'"]');
   if(method==='drag'&&i===0)await dropByMouse(page,item.id,zone);
-  else if(method==='touch'){await p.tap();await z.tap();}
-  else if(method==='keyboard'&&i===0){await p.focus();await page.keyboard.press('Enter');await z.focus();await page.keyboard.press('Enter');}
-  else{await p.click();await z.click();}
+  else if(method==='touch'){await p.tap();await z.locator('.zone-drop-action').tap();}
+  else if(method==='drag'&&i===1){await p.focus();await page.keyboard.press('Enter');await z.focus();await page.keyboard.press('Enter');}
+  else{await p.click();await z.locator('.zone-drop-action').click();}
   const value=await page.evaluate(id=>{const s=ScienceLab.getState();return s.run.entries[s.run.queue[s.run.pos]].response[id];},item.id);
   assert.equal(value,zone,'Placement failed '+q.id+'/'+item.id);
  }
