@@ -24,8 +24,8 @@ test('Each Energy goal supports nine-format tours and all-round selection withou
  for(const type of C.TYPES){const ids=C.round(E.questions,'all','all',{},()=>.4,type);assert.equal(ids.length,10);assert(ids.every(id=>E.questions.find(q=>q.id===id).type===type));}
 });
 test('Topics have distinct storage keys and keep the legacy Matter bank identity',()=>{
- assert.deepEqual(topics.map(t=>[t.id,t.data.questions.length]),[['matter',54],['energy',90],['earth',72]]);
- assert.equal(topics[0].storageKey,'science-practice-lab-matter-v1');assert.equal(new Set(topics.map(t=>t.storageKey)).size,3);assert.equal(M.version,'matter-1.0');
+ assert.deepEqual(topics.map(t=>[t.id,t.data.questions.length]),[['matter',54],['energy',90],['earth',72],['living',54]]);
+ assert.equal(topics[0].storageKey,'science-practice-lab-matter-v1');assert.equal(new Set(topics.map(t=>t.storageKey)).size,4);assert.equal(M.version,'matter-1.0');
 });
 test('Every Energy diagram and image option renders an interpretable source',()=>{
  for(const q of E.questions){if(q.data.diagram)assert(V.render(q).length>80,q.id);

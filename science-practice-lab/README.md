@@ -1,4 +1,4 @@
-# Science Practice Lab — Matter, Energy and Earth Systems
+# Science Practice Lab — Matter, Energy, Earth Systems and Living Systems
 
 Independent Alberta Grade 6 PAT-style practice, hosted in the existing Interactives GitHub Pages site.
 
@@ -9,13 +9,14 @@ Independent Alberta Grade 6 PAT-style practice, hosted in the existing Interacti
 | Matter | 3 | 54 | 29 |
 | Energy | 5 | 90 | 40 |
 | Earth Systems | 4 | 72 | 37 |
-| Total | 12 | 216 | 106 |
+| Living Systems | 3 | 54 | 36 |
+| Total | 15 | 270 | 142 |
 
 Each goal contains 18 questions: two each of single choice (including image choices), multiple select, dropdowns, sorting, ordering, matching, diagram labels, evidence selection and numeric entry. Energy covers both forces and interactions, and selection, use and management of energy resources. See [Energy coverage](ENERGY-COVERAGE.md).
 
 ## Student flow
 
-Select Matter, Energy or Earth Systems, then a goal or mixed unit. Choose a nine-question format tour, 18 questions or all available questions; optionally practise one format. Learning mode offers hints, explanations, retries and shown answers. Test practice withholds feedback until completion.
+Select Matter, Energy, Earth Systems or Living Systems, then a goal or mixed unit. Choose a nine-question format tour, 18 questions or all available questions; optionally practise one format. Learning mode offers hints, explanations, retries and shown answers. Test practice withholds feedback until completion.
 
 Each unit keeps its own device-local progress, settings and unfinished round when browser storage is available. Switching topics and returning to the start menu preserve answers. The original Matter storage key and question identities are retained. Clearing progress affects only the selected unit. No account is required.
 
@@ -23,7 +24,7 @@ Drag placements also work by selecting a card and activating a destination by to
 
 ## Visual question practice
 
-The **Choose a question format** picker now includes **Pictures & diagrams**. This selects illustrated questions across the same nine formats rather than treating pictures as a separate answer type. Currently 94 of the 216 questions qualify across Matter (38), Energy (45) and Earth Systems (11), including generated artwork, credited public-domain source images, coded scientific diagrams, and photo galleries. Fifty Matter/Energy questions contain original illustrated scenes. The selected goal, round length, learning/test mode, and device-local progress still apply. Visual rounds do not pad the requested length with unillustrated questions.
+The **Choose a question format** picker now includes **Pictures & diagrams**. This selects illustrated questions across the same nine formats rather than treating pictures as a separate answer type. Currently at least 94 of the 270 questions qualify across Matter (38), Energy (45) and Earth Systems (11), plus new Living Systems scientific diagrams, including generated artwork, credited public-domain source images, coded scientific diagrams, and photo galleries. Fifty Matter/Energy questions contain original illustrated scenes. The selected goal, round length, learning/test mode, and device-local progress still apply. Visual rounds do not pad the requested length with unillustrated questions.
 
 ## Content and visual sources
 
@@ -37,7 +38,7 @@ Question performance does not certify conducting an investigation, researching a
 
 Run `node --test science-practice-lab/tests/*.test.cjs`.
 
-The GitHub verification workflow checks all answer keys, negative cases, curriculum references, format coverage, separate topic storage and scientific model consistency. Chromium then completes all 216 questions and exercises 1366×650, 1024×540, 768×900, 390×667, 320×568 and 640×360 layouts for both units.
+The GitHub verification workflow checks all answer keys, negative cases, curriculum references, format coverage, separate topic storage and scientific model consistency. Chromium then completes all 270 questions and exercises 1366×650, 1024×540, 768×900, 390×667, 320×568 and 640×360 layouts for both units.
 
 Browser checks cover image loading, keyboard placement, native dragging, resizing, the persistent start menu, topic switching, saved drafts, scoped progress reset, retry, restored rounds, deferred test feedback and teacher dialogs. Both units check 125% CSS zoom; Matter also checks migration of previously revised questions. Image questions additionally check 320-pixel reflow, image loading, crop coverage and saved-state preservation.
 
@@ -78,3 +79,7 @@ The first Earth Systems photographic set uses one **60 KB GitHub-hosted WebP** s
 ## Matter and Energy photo-context pilots · continued visual upgrade
 
 Existing original, checked bank images now support four additional questions without changing scored answers: Matter `particles-12` displays a four-scene phase-change gallery (with an explicit scientific note that visible steam clouds are condensed water droplets), and `temperature-11` shows a glass-liquid thermometer as context for matching its components. Energy `forces-11` shows a hand pushing a block as a familiar force context and `management-12` adds a biomass-fuel process illustration. These are deliberately **illustrated-context upgrades**: their matching cards remain text until accurate item-specific artwork exists. They are not described as fully redesigned image-card questions. All four preserve their IDs, response formats, answer keys and saved progress.
+
+## Living Systems · curriculum-aligned first release (21 October 2026)
+
+54 original PAT-style practice questions in three Grade 6 learning goals: **Ecosystems & biodiversity** (18), **Photosynthesis & investigations** (18), and **Plants, animals & connections** (18). Each has two questions for all nine existing response formats, and all 36 knowledge, understanding, and skills/procedures statements are mapped directly to the Grade 6 source curriculum sheet, rows 156–203. Scenarios include local ecosystem comparisons, energy-flow and food-web models, photosynthesis input/output sorting, controlled leaf-light and starch investigations, plant relationships, and respectful discussion of plants sacred to First Nations and Métis. Test mode and device-local progress are independent of the other three units. First release includes accessible original scientific *schematic diagrams*, not synthetic empirical field photographs; the next artwork checkpoint will add original raster ecosystems and plant-investigation scenes. Illustrative measurements are explicitly labelled as examples. Cultural teachings and protocols must be sourced and approved by local communities rather than invented or generalized.
