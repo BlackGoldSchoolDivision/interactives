@@ -38,7 +38,7 @@ async function tour(page,size,capture=false){
  assert.equal((await p.evaluate(()=>ScienceLab.getState())).topic,'living');
  assert.equal(await p.locator('.goal-card').count(),3);assert.equal(await p.locator('.unit-tab').count(),4);
  await p.screenshot({path:path.join(folder,'home-desktop.png'),fullPage:true});
- await p.locator('#round-size').selectOption('all');await p.locator('.goal-card [data-start="all"]').click();
+ await p.locator('#round-size').selectOption('all');await p.locator('.home-actions [data-start="all"]').click();
  assert.equal((await p.evaluate(()=>ScienceLab.getState().run.queue)).length,54);
  const all=await tour(p,54,true);assert.equal(all.formats,9);total+=all.total;
  await p.locator('#teacher-open').click();assert.equal(await p.locator('.source-outcome').count(),36);
