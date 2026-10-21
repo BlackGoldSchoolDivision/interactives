@@ -189,3 +189,4 @@ body[data-topic="earth"] .unit-tab[data-topic="earth"][aria-pressed="true"]{back
 .zone-drop-action{display:block;width:100%;margin-top:10px;min-height:44px;padding:7px 11px;border:1.5px dashed #76aaba;border-radius:7px;background:#e8f4f7;color:#24576a;font-weight:800;font-size:12px;text-align:center}
 .zone-drop-action:not(:disabled):hover,.zone-drop-action:not(:disabled):focus-visible{background:#d7eef2;border-color:#167b8a}
 .zone-drop-action:disabled{color:#718991;background:#f1f6f7;border-color:#bdcfd5;opacity:.7;cursor:default}
+.zone-drop-action:disabled{pointer-events:none} /* Allow native drag/drop to reach the enclosing zone. */
