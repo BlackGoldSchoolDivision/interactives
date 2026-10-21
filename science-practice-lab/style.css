@@ -327,3 +327,74 @@ body[data-topic="space"] .unit-tab[data-topic="space"][aria-pressed="true"]{back
 body[data-topic="space"] .diagram-panel{border-color:#c9d7e8;background:#f0f5fa;padding:clamp(7px,1.5vw,13px)}
 body[data-topic="space"] .diagram-caption{font-size:12px;color:#3d6480;margin:8px 0 0;text-align:center}
 @media(max-width:600px){.space-topic-hero{min-height:165px;padding:19px}.space-topic-hero:before{right:-160px}.space-topic-hero:after{right:27px;top:95px;width:37px;height:37px}.space-svg{border-radius:8px}body[data-topic="space"] .diagram-panel{padding:5px}}
+
+/* MATTER VRETTA PILOT — actual interactive question screens, not screenshot mockups. */
+.question-card.matter-showcase{padding:0;overflow:hidden;border:1px solid #c4dae0;border-radius:18px;box-shadow:0 12px 34px #1b46531c}
+.matter-showcase-banner{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;background:linear-gradient(115deg,#06677d,#0799ac);padding:17px clamp(14px,2.8vw,30px);color:#fff}
+.matter-showcase-banner span{font-size:11px;letter-spacing:.14em;font-weight:850}
+.matter-showcase-banner strong{font-weight:900;font-size:16px;letter-spacing:.03em;text-align:right}
+.matter-showcase.matter-phase-match .matter-showcase-banner,.matter-showcase.matter-phase-diagram .matter-showcase-banner{background:linear-gradient(110deg,#087c90,#2878be)}
+.matter-showcase.matter-thermometer-cards .matter-showcase-banner,.matter-showcase.matter-thermometer-diagram .matter-showcase-banner{background:linear-gradient(115deg,#945121,#da8b39)}
+.matter-showcase.matter-ice-models .matter-showcase-banner{background:linear-gradient(115deg,#255c91,#5c8eb6)}
+.matter-showcase>.q-top,.matter-showcase>h2,.matter-showcase>.question-instruction,.matter-showcase>#feedback-area,.matter-showcase>.question-actions{margin-left:clamp(13px,2.6vw,29px);margin-right:clamp(13px,2.6vw,29px)}
+.matter-showcase>.q-top{margin-top:17px}
+.matter-showcase>h2{font-size:clamp(20px,2.3vw,28px);line-height:1.31;margin-top:17px;margin-bottom:12px;color:#173e50}
+.matter-showcase>.question-instruction{font-size:14px;margin-bottom:13px;color:#54717e}
+.matter-showcase>.question-actions{margin-bottom:17px}
+.matter-workspace{padding:0 clamp(13px,2.6vw,29px) clamp(14px,2vw,25px);display:grid;gap:17px;min-width:0}
+.matter-work-visual,.matter-work-task{background:#f8fbfc;border:1px solid #d1e2e7;border-radius:14px;padding:clamp(12px,1.5vw,19px);min-width:0}
+.matter-work-visual{background:linear-gradient(140deg,#eaf6f8,#f9fcff)}
+.matter-work-task{background:linear-gradient(150deg,#f4f8fb,#fff)}
+.matter-section-heading{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:950;letter-spacing:.11em;color:#356679;margin:0 0 14px}
+.matter-section-dot{width:9px;height:9px;background:#168fa0;display:inline-block;border-radius:50%;flex:none}
+.matter-work-task>.matter-section-heading .matter-section-dot{background:#eaa642}
+.matter-work-visual .question-visual,.matter-work-visual .gallery-with-model{margin:0;min-width:0}
+.matter-work-visual .question-photo{max-width:100%;border:0;background:white}
+.matter-work-visual .diagram-panel{background:white;border-color:#cadee5;margin:0;padding:12px}
+.matter-work-visual .raster-scene-strip{gap:8px}
+.matter-work-visual .raster-strip-card{background:#fff;border-color:#bed9e3;padding:5px}
+.matter-work-visual .diagram-caption{font-size:12px;line-height:1.4;color:#426b78}
+.matter-workspace.matter-split{grid-template-columns:minmax(0,1.24fr) minmax(275px,1fr);align-items:start}
+.matter-split .matter-work-visual .question-visual.with-model{display:flex;flex-direction:column;gap:12px}
+.matter-split .matter-work-visual .question-photo{width:100%;max-width:340px}
+.matter-split .matter-work-visual .phase-grid{grid-template-columns:1fr;gap:9px}
+.matter-split .matter-work-visual .phase-row{padding:8px 6px;grid-template-columns:minmax(0,1fr) 65px minmax(0,1fr)}
+.matter-split .matter-work-visual .particle-svg{max-height:88px}
+.matter-split .matter-work-visual .gallery-with-model{display:flex;flex-direction:column}
+.matter-split .matter-work-visual .gallery-photo .raster-scene-strip{grid-template-columns:repeat(4,minmax(0,1fr))}
+.matter-split .matter-work-visual .gallery-photo .raster-strip-card{padding:3px}
+.matter-split .matter-work-visual .gallery-photo .scene-art{max-height:125px}
+.matter-split .matter-work-visual .thermo-svg{max-height:300px}
+.matter-showcase .matter-work-task .bank{background:#eef7f9;border:2px dashed #a4c7d1;border-radius:13px;padding:12px;gap:10px}
+.matter-showcase .matter-work-task .piece{background:#fff;border:1.5px solid #a8c6d2;min-height:47px;box-shadow:0 2px 7px #335c6717;border-radius:10px;color:#204c60;font-size:13px;font-weight:800}
+.matter-showcase .matter-work-task .piece[aria-pressed=true]{background:#fff1d8;border-color:#c48a27;box-shadow:0 0 0 2px #ebb94e}
+.matter-showcase .matter-work-task .picture-bank{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:stretch;gap:10px}
+.matter-showcase .matter-work-task .picture-piece{padding:7px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.matter-showcase .matter-work-task .picture-piece .piece-picture{min-width:0;max-width:100%}
+.matter-showcase .matter-work-task .picture-piece .scene-art{min-height:100px;width:100%;aspect-ratio:3/2;border-radius:8px}
+.matter-showcase .matter-work-task .picture-piece .piece-label{font-size:13px;color:#18465a}
+.matter-showcase .matter-showcase-zones{margin-top:15px;display:grid;gap:10px}
+.matter-showcase .matter-showcase-zones .zone{min-height:105px;background:#eff8fa;border:2px dashed #81b6c5;border-radius:13px;padding:10px}
+.matter-showcase .matter-showcase-zones .zone h3{color:#285d72;font-weight:900;font-size:15px;margin:0 0 9px}
+.matter-showcase .matter-showcase-zones .zone-drop-action{background:white;border-color:#76aaba;color:#256076;min-height:42px}
+.matter-showcase .matter-phase-match.matter-showcase-zones{grid-template-columns:repeat(2,minmax(0,1fr))}
+.matter-showcase .matter-phase-match.matter-showcase-zones .zone:nth-child(2),.matter-showcase .matter-phase-match.matter-showcase-zones .zone:nth-child(4){background:#fff6e7;border-color:#dab483}
+.matter-showcase .matter-work-task .zone-pieces:has(.picture-piece) .picture-piece{display:grid;grid-template-columns:90px minmax(0,1fr);align-items:center;background:#fff}
+.matter-showcase .matter-work-task .zone-pieces .picture-piece .scene-art{min-height:55px}
+.matter-visual-note{font-size:12px;color:#496d7b;line-height:1.45;margin:0 0 13px;background:#f4f7fa;border-left:3px solid #82aebc;padding:8px 12px;border-radius:6px}
+.matter-choice-workspace .matter-work-visual .raster-scene-strip{grid-template-columns:repeat(2,minmax(0,1fr))}
+.matter-choice-workspace .matter-work-visual .gallery-photo .raster-strip-card .scene-art{max-height:205px}
+.matter-choice-workspace .matter-work-visual:has(.raster-scene-strip){padding-bottom:12px}
+.matter-choice-workspace .matter-work-task .image-choices{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin:0}
+.matter-showcase .matter-work-task .image-choice{border:2px solid #c5dbe2;background:#fff;border-radius:12px;padding:12px;min-height:160px;box-shadow:0 3px 9px #1f53641c;transition:box-shadow .12s,border-color .12s,background .12s}
+.matter-showcase .matter-work-task .image-choice[aria-pressed=true]{border-color:#087b9e;background:#e7f5fa;box-shadow:0 0 0 2px #57adc4}
+.matter-showcase .matter-work-task .image-choice:focus-visible{outline:3px solid #e9a845;outline-offset:2px}
+.matter-showcase .matter-work-task .image-choice:hover:not(:disabled){box-shadow:0 6px 20px #1b60722e;border-color:#83b8c8}
+.matter-showcase .matter-work-task .image-choice .image-art{background:#f0f7f9;border-radius:8px;border:1px solid #dce9ee}
+.matter-showcase .matter-work-task .image-choice .image-caption{font-size:13px;color:#21546b;text-align:center;font-weight:900}
+.matter-showcase .matter-work-task .image-choice .particle-svg{height:155px}
+.matter-showcase.matter-thermometer-cards .matter-work-task .image-art svg{height:220px}
+.matter-showcase.matter-ice-models .matter-work-task .image-art svg{height:177px}
+@media(max-width:1050px){.matter-workspace.matter-split{grid-template-columns:1fr}.matter-split .matter-work-visual .phase-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.matter-split .matter-work-visual .gallery-with-model{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:13px}.matter-split .matter-work-visual .gallery-photo .raster-scene-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.matter-split .matter-work-visual .question-visual.with-model{display:grid;grid-template-columns:220px minmax(0,1fr);gap:13px}.matter-showcase .matter-work-task .picture-bank{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.matter-showcase-banner{padding:12px 14px}.matter-showcase-banner span{font-size:10px}.matter-showcase-banner strong{font-size:13px}.matter-workspace{padding:0 10px 13px;gap:10px}.matter-work-visual,.matter-work-task{padding:11px}.matter-split .matter-work-visual .gallery-with-model{display:flex;flex-direction:column}.matter-split .matter-work-visual .question-visual.with-model{display:flex;flex-direction:column}.matter-split .matter-work-visual .phase-grid{grid-template-columns:1fr}.matter-split .matter-work-visual .gallery-photo .raster-scene-strip{grid-template-columns:repeat(4,minmax(0,1fr))}.matter-showcase .matter-work-task .image-choice{padding:8px;min-height:135px}.matter-showcase.matter-thermometer-cards .matter-work-task .image-art svg{height:160px}.matter-showcase.matter-ice-models .matter-work-task .image-art svg{height:135px}.matter-showcase .matter-work-task .picture-piece .scene-art{min-height:83px}.matter-showcase .matter-work-task .picture-piece .piece-label{font-size:12px}.matter-showcase .matter-showcase-zones .zone{padding:8px;min-height:92px}}
+@media(max-width:380px){.matter-showcase .matter-work-task .picture-bank{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;padding:7px}.matter-showcase .matter-phase-match.matter-showcase-zones{grid-template-columns:1fr}.matter-showcase .matter-work-task .image-choices{gap:7px}.matter-showcase .matter-work-task .image-choice .image-caption{font-size:12px}.matter-split .matter-work-visual .gallery-photo .raster-scene-strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
