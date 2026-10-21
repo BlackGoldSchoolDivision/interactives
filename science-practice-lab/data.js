@@ -568,7 +568,19 @@
             "id": "d",
             "text": "Condensation"
           }
-        ]
+        ],
+        "sceneStrip": {
+          "asset": "phase-change-scenes",
+          "panels": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "columns": 4,
+          "groupLabel": "Illustrative water and phase-change investigation contexts",
+          "caption": "Observe ice, liquid water, a kettle with visible condensed droplets, and condensation on a lid. Water vapour itself is invisible."
+        }
       },
       "answer": {
         "a": "melt",
@@ -1289,7 +1301,12 @@
             "id": "value",
             "text": "Connects the liquid level to a temperature value"
           }
-        ]
+        ],
+        "photo": {
+          "asset": "temperature-contexts",
+          "panel": 0,
+          "caption": "Glass-liquid thermometer in a beaker. Identify how its parts help show temperature."
+        }
       },
       "answer": {
         "holds": "bulb",

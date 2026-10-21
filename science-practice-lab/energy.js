@@ -639,7 +639,12 @@
             "id": "launch",
             "text": "A compressed spring pushes a cart while touching it."
           }
-        ]
+        ],
+        "photo": {
+          "asset": "box-push",
+          "panel": 0,
+          "caption": "A hand applies a force to a sliding block. Compare applied, frictional and elastic forces."
+        }
       },
       "answer": {
         "push": "applied",
@@ -3745,7 +3750,12 @@
             "id": "bio",
             "text": "Plant material is processed into a transport fuel."
           }
-        ]
+        ],
+        "photo": {
+          "asset": "energy-resource-flow-extended",
+          "panel": 1,
+          "caption": "Plant material can be processed into transport fuel. Compare four pathways for using resources."
+        }
       },
       "answer": {
         "sail": "winddirect",
