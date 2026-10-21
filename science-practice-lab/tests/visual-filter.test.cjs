@@ -1,7 +1,7 @@
 const test=require('node:test'),assert=require('node:assert/strict');
 const Core=require('../core.js'),Matter=require('../data.js'),Energy=require('../energy.js');
 test('Picture and diagram practice selects only illustrated questions',()=>{
- for(const [data,count] of [[Matter,36],[Energy,42]]){
+ for(const [data,count] of [[Matter,36],[Energy,43]]){
   const illustrated=data.questions.filter(Core.hasVisual);
   assert.equal(illustrated.length,count);
   const ids=Core.round(data.questions,'all','all',{},()=>0.4,'visual');
