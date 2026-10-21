@@ -2,6 +2,10 @@
 (function(root){
 'use strict';
 const assets={
+'phase-change-scenes':{file:'matter/phase-change-scenes.webp',cols:4,rows:1,ratio:'163/181',alts:['Ice cubes on a cold surface.','A beaker of clear liquid water.','A kettle with a light plume over it.','Water droplets on a metal lid.']},
+'thermometer-study':{file:'matter/thermometer-study.webp',cols:2,rows:1,ratio:'191/148',alts:['A temperature probe placed into ice water.','A probe in a heated beaker with bubbles.']},
+'equal-mass-ice-water':{file:'matter/equal-mass-ice-water.webp',cols:2,rows:1,ratio:'199/147',alts:['Ice in a glass beaker; no reading is supplied.','Water in a glass beaker; no reading is supplied.']},
+'bridge-joint-seasons':{file:'matter/bridge-joint-seasons.webp',cols:2,rows:1,ratio:'325/94',alts:['A bridge above a partly frozen river in winter.','The same style of bridge above a river in summer.']},
 'box-push':{file:'energy/box-push.webp',cols:1,rows:1,ratio:'3/2',alts:['A closed hand gently pushes the left face of a wooden block toward the right.']},
 "interaction-contexts":{"file":"energy/interaction-contexts.webp","cols":2,"rows":2,"ratio":"3/2","frames":[[0,0,0.5,0.455078125],[0.5,0,0.5,0.455078125],[0,0.455078125,0.5,0.544921875],[0.5,0.455078125,0.5,0.544921875]],"alts":["A hand pushes a wooden box to the right across a table.","Two wooden dynamics carts meet bumper to bumper on a horizontal track.","A canoe paddle blade is immersed beside a canoe facing to the right.","A bent metal paper clip rests on a white classroom bench."]},
 "investigation-contexts":{"file":"energy/investigation-contexts.webp","cols":2,"rows":2,"ratio":"3/2","frames":[[0,0,0.5,0.4921875],[0.5,0,0.5,0.4921875],[0,0.4921875,0.5,0.5078125],[0.5,0.4921875,0.5,0.5078125]],"alts":["A wooden block is pulled by a cord along a rough test surface.","Hands gently stretch a yellow elastic band over a classroom bench.","A simple wheeled model vehicle has a paper sail.","A small classroom solar panel is connected to a low-voltage fan beside a paper strip."]},
@@ -16,6 +20,7 @@ function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 function describe(id,panel=0){return assets[id]?.alts[panel]||'';}
 function scene(id,panel=0){const a=assets[id];if(!a||!a.alts[panel])return'';const f=a.frames?.[panel]||[(panel%a.cols)/a.cols,Math.floor(panel/a.cols)/a.rows,1/a.cols,1/a.rows],ratio=a.frames?(1536*f[2])+'/'+(1024*f[3]):a.ratio;
 return'<span class="scene-art" role="img" aria-label="'+esc(describe(id,panel))+'" style="--scene-width:'+(100/f[2])+'%;--scene-height:'+(100/f[3])+'%;--scene-left:'+(-100*f[0]/f[2])+'%;--scene-top:'+(-100*f[1]/f[3])+'%;--scene-ratio:'+ratio+'"><img src="assets/'+a.file+'" onerror="this.onerror=null;this.src=\'assets/'+(a.file.slice(0,-5)+'.png')+'\'" alt="" decoding="async" width="1536" height="1024"></span>';}
+function sceneStrip(p){const asset=assets[p.asset];if(!asset)return'';const panels=p.panels||asset.alts.map((_,i)=>i),limit=p.columns||Math.min(panels.length,4);return'<div class="raster-scene-strip strip-'+limit+'" role="group" aria-label="'+esc(p.groupLabel||'Observation photographs')+'">'+panels.map((i)=>'<figure class="raster-strip-card">'+scene(p.asset,i)+'</figure>').join('')+'</div>'+(p.caption?'<p class="diagram-caption">'+esc(p.caption)+'</p>':'');}
 function contextPhoto(p){return'<figure class="question-photo">'+scene(p.asset,p.panel)+'<figcaption>'+esc(p.caption||'Investigation scene')+'</figcaption></figure>';}
 function arrow(x1,y,x2,colour='#087788'){const s=x2>x1?1:-1;return'<path d="M'+x1+' '+y+'H'+x2+'M'+(x2-s*10)+' '+(y-6)+'L'+x2+' '+y+'L'+(x2-s*10)+' '+(y+6)+'" fill="none" stroke="'+colour+'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>';}
 function pairModel(v={},labels=false){const left=v.left||'left',right=v.right||'right',same=!!v.sameObject,equal=v.equal!==false;const aStart=95,bStart=same?95:205;
@@ -50,6 +55,6 @@ if(v.kind==='recovery')return record(v);
 if(v.kind==='site')return'<div class="site-record"><span><b>Resource</b>'+esc(v.resource)+'</span><span><b>Access</b>'+esc(v.access)+'</span><span><b>Habitat</b>'+esc(v.habitat)+'</span></div>';
 return'';
 }
-const api={assets,scene,describe,contextPhoto,render,optionArt,canRender:v=>['scene','pair','recovery','site'].includes(v.kind)};
+const api={assets,scene,sceneStrip,describe,contextPhoto,render,optionArt,canRender:v=>['scene','pair','recovery','site'].includes(v.kind)};
 root.ScienceLabVisuals=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

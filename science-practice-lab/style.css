@@ -150,3 +150,20 @@ body[data-topic="earth"] .unit-tab[data-topic="earth"][aria-pressed="true"]{back
 .earth-energy{display:block;width:100%;height:auto;max-height:330px}
 @media(max-width:600px){.earth-topic-hero{min-height:165px;padding:18px}.earth-board{gap:8px}.earth-tile{min-height:105px;padding:7px}.earth-letter{left:7px;top:7px;font-size:13px;padding:3px 7px}.earth-tile svg{max-height:115px}}
 @media(max-width:380px){.earth-board{grid-template-columns:1fr}.earth-tile svg{max-height:130px}.earth-topic-hero:before{right:-170px}}
+
+/* Approved Matter context photographs remain separate from exact scientific models. */
+.gallery-with-model{display:grid;grid-template-columns:minmax(0,1fr);gap:13px;margin:12px 0 18px}
+.gallery-photo{min-width:0}
+.gallery-photo .diagram-caption{margin:6px 0 0;color:#5a7580;font-size:12px}
+.raster-scene-strip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;min-width:0}
+.raster-scene-strip.strip-1{grid-template-columns:1fr}
+.raster-strip-card{min-width:0;margin:0;padding:5px;border:1px solid #cce0e6;border-radius:10px;background:#f7fafb;overflow:hidden}
+.raster-strip-card .scene-art{width:100%;border-radius:7px}
+.gallery-with-model .context-model{min-width:0}
+.gallery-with-model .diagram-panel{margin:0}
+.particle-choices.image-choices{gap:12px}
+.particle-choices .image-choice{background:linear-gradient(#f2f9fa,#fff);border-color:#bdd5de;box-shadow:0 3px 12px #143f5210}
+.particle-choices .image-art{background:radial-gradient(circle at 45% 12%,#fcfeff,#d9eaf0);border-radius:9px}
+.particle-choices .particle-svg{width:100%;max-height:182px}
+@media(min-width:980px){.gallery-with-model:has(.context-model){grid-template-columns:minmax(250px,40%) minmax(0,1fr);align-items:start}}
+@media(max-width:580px){.gallery-with-model{gap:8px}.raster-scene-strip{gap:6px}.raster-strip-card{padding:3px}.gallery-photo .diagram-caption{font-size:11px}.particle-choices .particle-svg{max-height:120px}}

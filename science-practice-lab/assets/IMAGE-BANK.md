@@ -27,3 +27,9 @@ Original generated artwork for Matter and Energy, created 20 October 2026. The a
 These scenes provide context and observable actions. They do not encode precise measured values. The application adds exact readings, arrows, labels and interactive destinations. Generated balance displays are intentionally blank. Illustrative resource systems omit engineering and safety components and are not construction instructions. No Vretta screenshot images are republished here.
 
 The app now adds scene photographs to 24 Matter and 26 Energy questions. Three Energy placements connect illustrations directly to their drop areas. Some questions combine a photograph, a coded scientific model and drag-and-drop labels. The photographs show apparatus and contexts; the coded model or question text supplies exact measurements.
+
+## Matter original photo-context pack 01
+
+Four **optimized WebP** sets are now live in the bank (`matter/phase-change-scenes.webp`, `matter/thermometer-study.webp`, `matter/equal-mass-ice-water.webp`, `matter/bridge-joint-seasons.webp`). Their source PNGs are in the separately supplied teacher artwork ZIP pending archival upload.
+
+They are used only as illustrative contexts alongside code-controlled exact particle arrangements, temperature levels, equal-mass water/ice comparisons and bridge joint gaps. Correct answers and numeric values are **not** derived from generated art. The generated particle-model collage is rejected and remains **out of the live bank**. See `source-notes/MATTER-PACK-01.md`.

@@ -54,11 +54,10 @@
       ],
       "notes": "Leave arrow labels, transitions and exact positions for coded diagrams; do not bake answer letters into scene.",
       "prototype": {
-        "status": "needs-science-caption-review",
-        "note": "Visible white steam clouds are tiny droplets, not invisible water vapour; use phase-context art only.",
+        "status": "approved-context",
+        "published": true,
         "reviewed": "2026-10-20",
-        "published": false,
-        "format": "PNG source crop and optimized WebP candidate"
+        "note": "Optimized WebP committed; do not use as quantitative evidence; original PNG remains in teacher ZIP."
       }
     },
     {
@@ -77,11 +76,9 @@
       ],
       "notes": "Empty containers/background only: count, spacing and particle states must be programmatically drawn with identical particle size.",
       "prototype": {
-        "status": "reject-for-scored-model",
-        "note": "Generated particle counts differ; regenerate empty glassware and overlay a code-drawn equal-count particle model.",
-        "reviewed": "2026-10-20",
+        "status": "rejected-for-scored-model",
         "published": false,
-        "format": "PNG source crop and optimized WebP candidate"
+        "note": "Unequal particles; coded equal-count models retained."
       }
     },
     {
@@ -100,11 +97,10 @@
       ],
       "notes": "No readable or invented graduation numbers in generated imagery; actual temperatures and scale ticks are coded.",
       "prototype": {
-        "status": "review-candidate",
-        "note": "Digital numeric readouts cropped out. Only use as a qualitative apparatus context.",
+        "status": "approved-context",
+        "published": true,
         "reviewed": "2026-10-20",
-        "published": false,
-        "format": "PNG source crop and optimized WebP candidate"
+        "note": "Optimized WebP committed; do not use as quantitative evidence; original PNG remains in teacher ZIP."
       }
     },
     {
@@ -123,11 +119,10 @@
       ],
       "notes": "A generated beaker volume is not quantitative evidence: measurements and water lines must be programmatic.",
       "prototype": {
-        "status": "hold-for-science-model",
-        "note": "The illustration cannot demonstrate equal masses or actual measured density; code must provide controlled readings.",
+        "status": "approved-context",
+        "published": true,
         "reviewed": "2026-10-20",
-        "published": false,
-        "format": "PNG source crop and optimized WebP candidate"
+        "note": "Optimized WebP committed; do not use as quantitative evidence; original PNG remains in teacher ZIP."
       }
     },
     {
@@ -146,11 +141,10 @@
       ],
       "notes": "Exact gap changes shown by coded overlays not the photograph; bridge must not look structurally broken.",
       "prototype": {
-        "status": "review-candidate",
-        "note": "Magnified joint detail is illustrative; verify whether the bridge joint is mechanically plausible.",
+        "status": "approved-context",
+        "published": true,
         "reviewed": "2026-10-20",
-        "published": false,
-        "format": "PNG source crop and optimized WebP candidate"
+        "note": "Optimized WebP committed; do not use as quantitative evidence; original PNG remains in teacher ZIP."
       }
     },
     {
@@ -373,14 +367,15 @@
   "productionCheckpoint": {
     "id": "matter-pack-01",
     "date": "2026-10-20",
-    "status": "generated-locally-awaiting-teacher-review",
+    "status": "four-context-assets-published",
     "assetsCreated": 5,
     "artifactState": "Original PNG and optimized WebP candidates exist as a separately downloadable local pack, not yet in this GitHub repository.",
-    "studentDeployment": "No student-facing questions modified; no new binary files in GitHub until teacher approval and science checks.",
+    "studentDeployment": "Four context assets linked to first pilot questions; no answer keys or storage changed.",
     "qualityExceptions": [
       "A visible white kettle plume should not be misrepresented as gaseous water vapour.",
       "The generated particle illustrations contain different counts and must not be used for particle conservation or state comparisons.",
       "Generated images alone cannot validate equal mass or measured temperature."
-    ]
+    ],
+    "assetWebpsPublished": 4
   }
 }

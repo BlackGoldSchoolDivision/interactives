@@ -228,6 +228,88 @@
       "panels": [
         "A closed hand gently pushes the left face of a wooden block toward the right."
       ]
+    },
+    {
+      "id": "phase-change-scenes",
+      "unit": "matter",
+      "title": "Phase-change water context images",
+      "web": "matter/phase-change-scenes.webp",
+      "sourceArchive": "Matter_Artwork_Pack_1.zip (teacher source package; archival PNG not published)",
+      "grid": {
+        "columns": 4,
+        "rows": 1
+      },
+      "panels": [
+        "Ice cubes on a cold surface.",
+        "A beaker containing water.",
+        "Kettle with light visible plume.",
+        "Condensation droplets on a kettle lid."
+      ],
+      "questionIds": [
+        "particles-13"
+      ],
+      "scientificNote": "The white plume is droplets, not pure water vapour; use as scene context only.",
+      "approvedFor": "qualitative context only"
+    },
+    {
+      "id": "thermometer-study",
+      "unit": "matter",
+      "title": "Qualitative thermal-apparatus scenes",
+      "web": "matter/thermometer-study.webp",
+      "sourceArchive": "Matter_Artwork_Pack_1.zip (teacher source package; archival PNG not published)",
+      "grid": {
+        "columns": 2,
+        "rows": 1
+      },
+      "panels": [
+        "Temperature probe in ice water.",
+        "Probe in a beaker of bubbling water."
+      ],
+      "questionIds": [
+        "temperature-02"
+      ],
+      "scientificNote": "Photo has no calibrated readings; scored thermometer levels are rendered in code.",
+      "approvedFor": "qualitative context only"
+    },
+    {
+      "id": "equal-mass-ice-water",
+      "unit": "matter",
+      "title": "Ice and water context scenes",
+      "web": "matter/equal-mass-ice-water.webp",
+      "sourceArchive": "Matter_Artwork_Pack_1.zip (teacher source package; archival PNG not published)",
+      "grid": {
+        "columns": 2,
+        "rows": 1
+      },
+      "panels": [
+        "Ice in a glass beaker.",
+        "Liquid water in a glass beaker."
+      ],
+      "questionIds": [
+        "expansion-02"
+      ],
+      "scientificNote": "Illustrations are not evidence of equal mass; scored comparisons use identical-mass models in code.",
+      "approvedFor": "qualitative context only"
+    },
+    {
+      "id": "bridge-joint-seasons",
+      "unit": "matter",
+      "title": "Bridge during winter and summer",
+      "web": "matter/bridge-joint-seasons.webp",
+      "sourceArchive": "Matter_Artwork_Pack_1.zip (teacher source package; archival PNG not published)",
+      "grid": {
+        "columns": 2,
+        "rows": 1
+      },
+      "panels": [
+        "Bridge crossing a partly icy stream.",
+        "Bridge crossing a summer stream."
+      ],
+      "questionIds": [
+        "expansion-13"
+      ],
+      "scientificNote": "Photographs are not evidence of exact joint dimension; coded comparison diagrams provide that model.",
+      "approvedFor": "qualitative context only"
     }
   ],
   "existingMatterBanner": {
@@ -243,6 +325,13 @@
       "matter",
       "energy"
     ],
-    "notes": "Generated scene dimensions are not measurement evidence; exact readings, force arrows and scientific models remain controlled in code."
+    "notes": "Generated scene dimensions are not measurement evidence; exact readings, force arrows and scientific models remain controlled in code.",
+    "nowIncludesMatterArtworkPack01": 4,
+    "matterPack01QuestionIds": [
+      "particles-13",
+      "temperature-02",
+      "expansion-02",
+      "expansion-13"
+    ]
   }
 }

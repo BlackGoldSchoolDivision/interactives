@@ -139,7 +139,8 @@
           "Nine particles close together in an irregular cluster.",
           "Nine particles spread throughout the container.",
           "Nine particles close together across the bottom of the container."
-        ]
+        ],
+        "layout": "particle-image-card"
       },
       "answer": 2,
       "explanation": "Gas particles are much farther apart than particles in a solid or liquid. All four models keep the particles the same size and number.",
@@ -625,7 +626,19 @@
             "id": "f",
             "text": "Freezing"
           }
-        ]
+        ],
+        "sceneStrip": {
+          "asset": "phase-change-scenes",
+          "panels": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "columns": 2,
+          "groupLabel": "Four original water-state context images",
+          "caption": "Four water-related settings. Use the diagram arrows, not the pictures, to label each change of state."
+        }
       },
       "answer": {
         "m": "A",
@@ -894,7 +907,12 @@
             "step": 5,
             "value": 40
           }
-        ]
+        ],
+        "photo": {
+          "asset": "thermometer-study",
+          "panel": 0,
+          "caption": "An example temperature probe in an ice bath. Read the separate calibrated models below."
+        }
       },
       "answer": 1,
       "explanation": "Thermometer B has its liquid level at the 30°C mark. Read the scale at the top of the coloured liquid column.",
@@ -1602,7 +1620,17 @@
           "Equal masses: the ice occupies a larger volume than the liquid water.",
           "Equal masses: the ice and liquid water occupy the same volume.",
           "Equal masses: the ice occupies a very small volume compared with the liquid water."
-        ]
+        ],
+        "sceneStrip": {
+          "asset": "equal-mass-ice-water",
+          "panels": [
+            0,
+            1
+          ],
+          "columns": 2,
+          "groupLabel": "Ice and water beakers, illustrative only",
+          "caption": "Illustrative beakers; their pictured levels are not measurements. Compare the four equal-mass scientific models below."
+        }
       },
       "answer": 1,
       "explanation": "Model B shows a larger volume for the same mass of water when frozen. The same mass occupies more space as ice, so its density is lower.",
@@ -2101,6 +2129,16 @@
           "asset": "matter-contexts",
           "panel": 0,
           "caption": "Bridge expansion joint"
+        },
+        "sceneStrip": {
+          "asset": "bridge-joint-seasons",
+          "panels": [
+            0,
+            1
+          ],
+          "columns": 1,
+          "groupLabel": "Bridge in contrasting weather conditions",
+          "caption": "Examples of a bridge in different weather. The separate model uses exaggerated gap sizes."
         }
       },
       "answer": {
