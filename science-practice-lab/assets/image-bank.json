@@ -325,7 +325,7 @@
       "matter",
       "energy"
     ],
-    "notes": "Generated scene dimensions are not measurement evidence; exact readings, force arrows and scientific models remain controlled in code. Twelve original scene panels appear on draggable cards in three Energy questions without identical destination photos.",
+    "notes": "Generated scene dimensions are not measurement evidence; exact readings, force arrows and scientific models remain controlled in code. Twelve original scene panels appear on draggable cards in three Energy questions without identical destination photos. Resource-flow branch management-07 has two original illustrated cards and two unillustrated text cards; a future pack will fill the missing scientifically accurate scenes.",
     "nowIncludesMatterArtworkPack01": 4,
     "matterPack01QuestionIds": [
       "particles-13",
@@ -333,11 +333,15 @@
       "expansion-02",
       "expansion-13"
     ],
-    "imageBackedCardQuestions": 3,
+    "imageBackedCardQuestions": 4,
     "imageBackedQuestionIds": [
       "forces-07",
       "forces-08",
-      "forces-12"
+      "forces-12",
+      "management-07"
+    ],
+    "partialPictureQuestions": [
+      "management-07"
     ]
   }
 }
