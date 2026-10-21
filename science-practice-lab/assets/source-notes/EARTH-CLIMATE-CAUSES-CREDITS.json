@@ -1,0 +1,45 @@
+{
+  "output": "earth/climate-causes-contexts.webp",
+  "panels": [
+    {
+      "item": "eruption",
+      "file": "Eruption at the summit of K\u012blauea (118583).jpeg",
+      "author": "U.S. Geological Survey / M. Zoeller",
+      "license": "US Federal Government public domain",
+      "use": "Eruption at a Hawaiian volcano; ash, aerosols and gases from volcanism can influence climate.",
+      "source": "https://commons.wikimedia.org/wiki/File:Eruption_at_the_summit_of_K%C4%ABlauea_%28118583%29.jpeg",
+      "crop": "centre-cropped to 3:2"
+    },
+    {
+      "item": "orbit",
+      "file": "Earth's orbit parameters for the Milankovitch cycles.png",
+      "author": "Sciencia58",
+      "license": "CC0 1.0 public domain dedication",
+      "use": "Scientific explanatory diagram of slowly changing orbital geometry, not a weather photograph.",
+      "source": "https://commons.wikimedia.org/wiki/File:Earth%27s_orbit_parameters_for_the_Milankovitch_cycles.png",
+      "crop": "centre-cropped to 3:2"
+    },
+    {
+      "item": "fuel",
+      "file": "Exhaust.jpg",
+      "author": "Jensbn",
+      "license": "Author-released public domain",
+      "use": "Vehicle exhaust context. Visible plume is mostly condensed water; carbon dioxide is invisible.",
+      "source": "https://commons.wikimedia.org/wiki/File:Exhaust.jpg",
+      "crop": "centre-cropped to 3:2"
+    },
+    {
+      "item": "industry",
+      "file": "Alfred Palmer Smokestacks.jpg",
+      "author": "Alfred T. Palmer / U.S. Office of War Information",
+      "license": "US Federal Government public domain",
+      "use": "Industrial smokestacks (1942). A historical context photo, not a measured greenhouse-gas reading.",
+      "source": "https://commons.wikimedia.org/wiki/File:Alfred_Palmer_Smokestacks.jpg",
+      "crop": "centre-cropped to 3:2"
+    }
+  ],
+  "size": [
+    720,
+    480
+  ]
+}
