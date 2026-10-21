@@ -53,6 +53,9 @@ jobs:
           if [ -f science-practice-lab/tests/earth-browser.cjs ]; then
             node science-practice-lab/tests/earth-browser.cjs
           fi
+          if [ -f science-practice-lab/tests/picture-card-browser.cjs ]; then
+            node science-practice-lab/tests/picture-card-browser.cjs
+          fi
       - name: Build question review contact sheets
         if: always()
         run: |
