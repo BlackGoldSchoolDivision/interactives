@@ -15,6 +15,12 @@ Independent Alberta Grade 6 PAT-style practice, hosted in the existing Interacti
 
 Each goal contains 18 questions: two each of single choice (including image choices), multiple select, dropdowns, sorting, ordering, matching, diagram labels, evidence selection and numeric entry. Energy covers both forces and interactions, and selection, use and management of energy resources. See [Energy coverage](ENERGY-COVERAGE.md).
 
+## Teacher question browser (21 October 2026)
+
+Click **Browse questions** in the app header to enter a non-scoring review mode. Choose any of the five unit tabs, search by prompt or question ID, filter to a response format or illustrated questions, jump directly to any question, or open the scrollable question index. The main preview uses the same live visual and interaction renderer as student practice, including illustrated cards, matching, and drag-and-drop.
+
+**No answers need to be submitted:** Previous and Next navigate directly, even with an empty response. No correct-answer key, hints, explanations, scoring, or answer feedback appears in this mode. Temporary preview interactions are not saved, do not count as seen, and do not replace an unfinished student practice round; exiting review restores the student's session. The browser is a convenience view, not a secured teacher-authentication system.
+
 ## Student flow
 
 Select Matter, Energy, Earth Systems, Living Systems or Space, then a goal or mixed unit. Choose a nine-question format tour, 18 questions or all available questions; optionally practise one format. Learning mode offers hints, explanations, retries and shown answers. Test practice withholds feedback until completion.
