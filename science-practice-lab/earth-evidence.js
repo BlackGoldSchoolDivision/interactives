@@ -170,7 +170,12 @@
             "proves that the entire trend is false"
           ]
         }
-      ]
+      ],
+      "photo": {
+        "asset": "noaa-forecast-sources",
+        "panel": 2,
+        "caption": "Real surface weather station. Photo: NOAA/NWS."
+      }
     },
     "answer": [
       "climate trends",
@@ -348,7 +353,12 @@
           "id": "update",
           "text": "Monitor new information and update guidance."
         }
-      ]
+      ],
+      "photo": {
+        "asset": "noaa-forecast-sources",
+        "panel": 3,
+        "caption": "Weather forecasting workstations support the interpretation of observations and forecasts. Photo: JonathanLamb, public domain."
+      }
     },
     "answer": [
       "observe",

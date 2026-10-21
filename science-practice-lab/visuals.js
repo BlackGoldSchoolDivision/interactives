@@ -2,6 +2,15 @@
 (function(root){
 'use strict';
 const assets={
+'noaa-forecast-sources':{
+ file:'earth/noaa-forecast-sources.webp',cols:2,rows:2,ratio:'46/27',
+ alts:[
+  'A National Severe Storms Laboratory Doppler weather radar structure.',
+  'Official NOAA illustration of a GOES weather satellite against Earth.',
+  'An automated surface weather station with measuring instruments.',
+  'An advanced weather forecasting computer workstation with weather maps.'
+ ]
+},
 'energy-resource-flow-extended':{file:'energy/resource-flow-extended.avif',cols:2,rows:1,ratio:'3/2',alts:['An overshot wooden waterwheel turns an axle and millstone beside a flowing stream.','Plant residues and storage tanks near a facility; a vehicle is being filled with fuel.']},
 
 'phase-change-scenes':{file:'matter/phase-change-scenes.webp',cols:4,rows:1,ratio:'163/181',alts:['Ice cubes on a cold surface.','A beaker of clear liquid water.','A kettle with a light plume over it.','Water droplets on a metal lid.']},

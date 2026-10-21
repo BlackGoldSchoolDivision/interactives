@@ -276,3 +276,10 @@ body[data-topic="earth"] .unit-tab[data-topic="earth"][aria-pressed="true"]{back
 @media(max-width:900px){.earth-workspace.with-evidence{grid-template-columns:1fr}.earth-workspace .earth-forecast-lab,.earth-workspace .earth-coast-lab{grid-template-columns:repeat(2,minmax(0,1fr))}.earth-workspace .earth-work-answer:has(.earth-forecast-lab) .bank,.earth-workspace .earth-work-answer:has(.earth-coast-lab) .bank{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:580px){.earth-showcase-banner{padding:11px 13px}.earth-showcase-banner span{font-size:10px}.earth-showcase-banner strong{font-size:13px}.earth-workspace{padding:0 10px 14px;gap:10px}.earth-workspace .earth-work-evidence,.earth-workspace .earth-work-answer{padding:10px}.earth-workspace .earth-board{gap:5px}.earth-workspace .earth-tile{padding:4px}.earth-workspace .earth-tile svg{max-height:110px}.earth-workspace .bank .piece{font-size:12px;min-height:52px;padding:8px}.earth-workspace .earth-showcase-zones .zone{padding:9px;min-height:92px}.earth-workspace .earth-showcase-zones .zone h3{font-size:12px}.earth-workspace .earth-storm-match,.earth-workspace .earth-climate-sort{grid-template-columns:1fr}.earth-workspace .earth-work-answer:has(.earth-forecast-lab) .bank,.earth-workspace .earth-work-answer:has(.earth-coast-lab) .bank{grid-template-columns:1fr}}
 @media(max-width:350px){.earth-workspace .earth-forecast-lab,.earth-workspace .earth-coast-lab{grid-template-columns:1fr}.earth-workspace .earth-board{grid-template-columns:1fr}}
+
+/* Credited photo-backed forecast illustration panels. */
+.earth-work-evidence .earth-tile:has(.scene-art){background:#fff;padding:8px;border-color:#d1e2e8}
+.earth-work-evidence .earth-tile .earth-art .scene-art{display:block;width:100%;aspect-ratio:46/27;min-height:90px;border-radius:8px;overflow:hidden}
+.earth-work-evidence .earth-tile .earth-art img{display:block;max-width:none}
+.earth-work-evidence .earth-tile .earth-letter{z-index:2;background:#fff;box-shadow:0 2px 5px #1d465c30}
+@media(max-width:520px){.earth-work-evidence .earth-tile .earth-art .scene-art{min-height:70px}}
