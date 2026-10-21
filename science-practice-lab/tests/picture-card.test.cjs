@@ -11,5 +11,5 @@ test('Original image cards across three Energy placements preserve keys and avoi
 test('Existing unit totals and question IDs remain stable',()=>{
  assert.deepEqual([M.questions.length,E.questions.length,Earth.questions.length],[54,90,72]);
  assert.equal(new Set([...M.questions,...E.questions,...Earth.questions].map(q=>q.id)).size,216);
- assert.equal(E.questions.filter(C.hasVisual).length,43);
+ assert.equal(E.questions.filter(C.hasVisual).length,45);
 });
