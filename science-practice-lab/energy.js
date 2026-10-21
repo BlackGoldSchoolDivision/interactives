@@ -3455,7 +3455,18 @@
             "text": "Biomass is made into fuel for a vehicle."
           }
         ],
-        "context": "Direct use does not first turn the resource into electricity or a manufactured fuel."
+        "context": "Choose whether each resource is used directly to do a job or converted or processed first. The picture cards show two cases; classify all four pathways.",
+        "layout": "energy-branch-flow",
+        "itemVisuals": {
+          "sail": {
+            "asset": "resource-uses",
+            "panel": 0
+          },
+          "lamp": {
+            "asset": "resource-uses",
+            "panel": 1
+          }
+        }
       },
       "answer": {
         "sail": "direct",
@@ -3787,7 +3798,9 @@
           "asset": "resource-uses",
           "panel": 1,
           "caption": "Wind-generated lighting"
-        }
+        },
+        "layout": "energy-stage-flow",
+        "context": "Complete the three blank stages of the wind-powered lighting system."
       },
       "answer": {
         "resource": "A",
