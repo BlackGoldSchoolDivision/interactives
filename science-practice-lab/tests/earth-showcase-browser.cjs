@@ -51,6 +51,18 @@ async function checkScreenshot(page,scenario,width){
     if(q.id===scenario.id){
      visited=true;
      await checkScreenshot(page,scenario,width);
+     if(q.id==='evidence-12'){
+      assert.equal(await page.locator('.picture-bank .picture-piece').count(),4,'Missing four weather photo cards');
+      const imgs=await page.locator('.picture-bank img').evaluateAll(async els=>Promise.all(els.map(async img=>{try{await img.decode()}catch{}return img.naturalWidth>0})));
+      assert.deepEqual(imgs,[true,true,true,true],'One or more weather photographs did not load');
+      assert.equal(await page.locator('.earth-storm-match .zone-illustration').count(),0,'Answer destination repeats clue imagery');
+     }
+     if(q.id==='evidence-14'){
+      assert.equal(await page.locator('.earth-work-evidence .scene-art').count(),3,'Expect three real forecasting pictures');
+      const imgs=await page.locator('.earth-work-evidence .scene-art img').evaluateAll(async els=>Promise.all(els.map(async img=>{try{await img.decode()}catch{}return img.naturalWidth>0})));
+      assert.deepEqual(imgs,[true,true,true],'Forecast equipment photos did not load');
+     }
+
      await put(page,q,touch);checked++;
     }else{
      await put(page,q,touch);

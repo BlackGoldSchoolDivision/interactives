@@ -2,6 +2,15 @@
 (function(root){
 'use strict';
 const assets={
+'noaa-weather-events':{
+ file:'earth/noaa-weather-events.webp',cols:2,rows:2,ratio:'46/27',
+ alts:[
+  'Official National Weather Service illustration of a high-pressure heat dome; not a thermometer reading.',
+  'A photographed tornado crossing the Texas Plains.',
+  'An NWS employee works amid strong blowing snow during a blizzard.',
+  'A NASA satellite composite showing a rain-producing monsoon-related low over Australia.'
+ ]
+},
 'noaa-forecast-sources':{
  file:'earth/noaa-forecast-sources.webp',cols:2,rows:2,ratio:'46/27',
  alts:[

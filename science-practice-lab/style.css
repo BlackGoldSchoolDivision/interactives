@@ -283,3 +283,12 @@ body[data-topic="earth"] .unit-tab[data-topic="earth"][aria-pressed="true"]{back
 .earth-work-evidence .earth-tile .earth-art img{display:block;max-width:none}
 .earth-work-evidence .earth-tile .earth-letter{z-index:2;background:#fff;box-shadow:0 2px 5px #1d465c30}
 @media(max-width:520px){.earth-work-evidence .earth-tile .earth-art .scene-art{min-height:70px}}
+
+/* Earth Systems severe-weather matching: photographs form the movable tiles, not the destinations. */
+.earth-storm-match .picture-bank{grid-template-columns:repeat(2,minmax(0,1fr));background:#eaf4fa;border:2px dashed #98c4d4;gap:12px}
+.earth-storm-match .picture-piece{background:#fff;border:1.5px solid #a7c6d4;padding:9px;border-radius:12px;min-width:0}
+.earth-storm-match .picture-piece .piece-picture .scene-art{display:block;aspect-ratio:46/27;min-height:95px}
+.earth-storm-match .picture-piece .piece-label{font-size:13px;line-height:1.33}
+.earth-storm-match .zone-pieces .picture-piece .piece-picture{width:96px;flex:none}
+@media(max-width:580px){.earth-storm-match .picture-bank{gap:8px;padding:8px}.earth-storm-match .picture-piece .piece-picture .scene-art{min-height:67px}.earth-storm-match .picture-piece .piece-label{font-size:11px}.earth-storm-match .zone-pieces .picture-piece .piece-picture{width:70px}}
+@media(max-width:340px){.earth-storm-match .picture-bank{grid-template-columns:1fr}.earth-storm-match .picture-bank .picture-piece{display:flex;flex-direction:row;align-items:center}.earth-storm-match .picture-bank .piece-picture{width:110px;flex:none}}

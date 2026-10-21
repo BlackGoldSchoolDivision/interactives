@@ -439,7 +439,7 @@
     "id": "evidence-12",
     "group": "evidence",
     "type": "match",
-    "prompt": "Match the extreme weather description to the event.",
+    "prompt": "Study each image and description. Match the weather event to its correct term.",
     "data": {
       "zones": [
         {
@@ -477,7 +477,26 @@
           "text": "Seasonal circulation linked to heavy rainfall in some regions."
         }
       ],
-      "layout": "earth-storm-match"
+      "layout": "earth-storm-match",
+      "itemVisuals": {
+        "hot": {
+          "asset": "noaa-weather-events",
+          "panel": 0
+        },
+        "funnel": {
+          "asset": "noaa-weather-events",
+          "panel": 1
+        },
+        "snow": {
+          "asset": "noaa-weather-events",
+          "panel": 2
+        },
+        "season": {
+          "asset": "noaa-weather-events",
+          "panel": 3
+        }
+      },
+      "context": "Image sources: NOAA/NWS and NASA. The heatwave panel is a scientific model; the monsoon panel is a satellite view. These pictures illustrate the concepts, not current weather conditions."
     },
     "answer": {
       "hot": "heat",
