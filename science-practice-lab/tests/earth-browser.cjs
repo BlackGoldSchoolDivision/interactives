@@ -96,7 +96,7 @@ const critical=new Set(['climate-13','climate-14','impacts-13','impacts-14','evi
  await page.goto(base+'?topic=earth',{waitUntil:'networkidle'});
  assert.equal((await page.evaluate(()=>ScienceLab.getState())).topic,'earth');
  assert.equal(await page.locator('.goal-card').count(),4);
- assert.equal(await page.locator('.unit-tab').count(),3);
+ assert.equal(await page.locator('.unit-tab').count(),4);
  assert(await page.locator('.earth-topic-hero').isVisible());
  await noOverflow(page,'Earth home desktop');
  await page.screenshot({path:path.join(out,'home-desktop.png'),fullPage:true});
