@@ -4,13 +4,15 @@
 
 | Unit | Questions | With an image or diagram | Image/diagram-free placement questions | Custom layouts |
 |---|---:|---:|---:|---:|
-| Matter | 54 | 36 | 8 | 1 |
-| Energy | 90 | 43 | 16 | 2 |
+| Matter | 54 | 38 | 6 | 1 |
+| Energy | 90 | 45 | 14 | 2 |
 | Earth Systems | 72 | 11 | 15 | 4 |
 
-**Immediate priority:** 39 unanswered visual-design opportunities within existing sorting, matching and diagram-labelling questions. These currently function with text cards; they are not missing questions or broken assessments. A real photo/diagram improves only when it clarifies the concept without leaking the answer or fabricating measurement.
+**Immediate priority:** 35 remaining visual-design opportunities within existing sorting, matching and diagram-labelling questions. These currently function with text cards; they are not missing questions or broken assessments. A real photo/diagram improves only when it clarifies the concept without leaking the answer or fabricating measurement.
 
 ## Pilot queue for the next practical batches
+
+The initial photo-context step has been completed for `particles-12`, `temperature-11`, `forces-11` and `management-12`, without converting their movable text cards. Those questions remain candidates for a deeper visual-interaction update.
 
 ### Matter
 
@@ -51,7 +53,7 @@
 | Matter | `particles-09` | order | Raster or picture cards | Default | Review current presentation |
 | Matter | `particles-10` | order | Text only | Default | Review current presentation |
 | Matter | `particles-11` | match | Text only | Default | Visual placement candidate |
-| Matter | `particles-12` | match | Text only | Default | Visual placement candidate |
+| Matter | `particles-12` | match | Raster scene gallery | Default | Review current presentation |
 | Matter | `particles-13` | label | Raster or picture cards + Coded diagram | Default | Review current presentation |
 | Matter | `particles-14` | label | Coded diagram | Default | Review current presentation |
 | Matter | `particles-15` | hotspot | Raster or picture cards | Default | Review current presentation |
@@ -68,7 +70,7 @@
 | Matter | `temperature-08` | sort | Raster or picture cards | Default | Review current presentation |
 | Matter | `temperature-09` | order | Raster or picture cards | Default | Review current presentation |
 | Matter | `temperature-10` | order | Text only | Default | Review current presentation |
-| Matter | `temperature-11` | match | Text only | Default | Visual placement candidate |
+| Matter | `temperature-11` | match | Raster context photo | Default | Review current presentation |
 | Matter | `temperature-12` | match | Text only | Default | Visual placement candidate |
 | Matter | `temperature-13` | label | Raster or picture cards + Coded diagram | Default | Review current presentation |
 | Matter | `temperature-14` | label | Coded diagram | Default | Review current presentation |
@@ -104,7 +106,7 @@
 | Energy | `forces-08` | sort | Raster or picture cards | Default | Review current presentation |
 | Energy | `forces-09` | order | Raster or picture cards | Default | Review current presentation |
 | Energy | `forces-10` | order | Raster or picture cards | Default | Review current presentation |
-| Energy | `forces-11` | match | Text only | Default | Visual placement candidate |
+| Energy | `forces-11` | match | Raster context photo | Default | Review current presentation |
 | Energy | `forces-12` | match | Raster or picture cards | Default | Review current presentation |
 | Energy | `forces-13` | label | Raster or picture cards + Coded diagram | Default | Review current presentation |
 | Energy | `forces-14` | label | Raster or picture cards + Coded diagram | Default | Review current presentation |
@@ -177,7 +179,7 @@
 | Energy | `management-09` | order | Raster or picture cards | Default | Review current presentation |
 | Energy | `management-10` | order | Raster or picture cards | Default | Review current presentation |
 | Energy | `management-11` | match | Text only | Default | Visual placement candidate |
-| Energy | `management-12` | match | Text only | Default | Visual placement candidate |
+| Energy | `management-12` | match | Raster context photo | Default | Review current presentation |
 | Energy | `management-13` | label | Raster or picture cards + Coded diagram | energy-stage-flow | Review current presentation |
 | Energy | `management-14` | label | Coded diagram | Default | Review current presentation |
 | Energy | `management-15` | hotspot | Raster or picture cards | Default | Review current presentation |

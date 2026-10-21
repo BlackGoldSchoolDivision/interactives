@@ -23,7 +23,7 @@ Drag placements also work by selecting a card and activating a destination by to
 
 ## Visual question practice
 
-The **Choose a question format** picker now includes **Pictures & diagrams**. This selects illustrated questions across the same nine formats rather than treating pictures as a separate answer type. Currently 78 of the 216 questions qualify across Matter and Energy (36 Matter and 42 Energy); Earth Systems has additional coded illustrations. Fifty Matter/Energy questions contain original illustrated scenes. The selected goal, round length, learning/test mode, and device-local progress still apply. Visual rounds do not pad the requested length with unillustrated questions.
+The **Choose a question format** picker now includes **Pictures & diagrams**. This selects illustrated questions across the same nine formats rather than treating pictures as a separate answer type. Currently 94 of the 216 questions qualify across Matter (38), Energy (45) and Earth Systems (11), including generated artwork, credited public-domain source images, coded scientific diagrams, and photo galleries. Fifty Matter/Energy questions contain original illustrated scenes. The selected goal, round length, learning/test mode, and device-local progress still apply. Visual rounds do not pad the requested length with unillustrated questions.
 
 ## Content and visual sources
 
