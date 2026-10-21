@@ -220,7 +220,8 @@
           "id": "industry",
           "text": "Industrial activity increases greenhouse gas emissions."
         }
-      ]
+      ],
+      "layout": "earth-climate-sort"
     },
     "answer": {
       "eruption": "natural",

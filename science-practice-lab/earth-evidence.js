@@ -466,7 +466,8 @@
           "id": "season",
           "text": "Seasonal circulation linked to heavy rainfall in some regions."
         }
-      ]
+      ],
+      "layout": "earth-storm-match"
     },
     "answer": {
       "hot": "heat",
@@ -574,7 +575,8 @@
           "id": "model",
           "text": "Computer weather-model output"
         }
-      ]
+      ],
+      "layout": "earth-forecast-lab"
     },
     "answer": {
       "radar": "A",

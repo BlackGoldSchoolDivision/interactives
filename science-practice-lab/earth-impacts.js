@@ -514,7 +514,8 @@
           "id": "fish",
           "text": "Changes in fishing conditions"
         }
-      ]
+      ],
+      "layout": "earth-coast-lab"
     },
     "answer": {
       "ice": "A",
