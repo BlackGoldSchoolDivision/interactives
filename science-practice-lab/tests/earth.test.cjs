@@ -54,8 +54,8 @@ test('Earth diagrams supply descriptive visual content and answer destinations',
  }
 });
 test('Three topics use distinct storage and retain unchanged Matter and Energy',()=>{
- assert.deepEqual(topics.map(t=>[t.id,t.data.questions.length]),[['matter',54],['energy',90],['earth',72],['living',54]]);
- assert.equal(new Set(topics.map(t=>t.storageKey)).size,4);
+ assert.deepEqual(topics.map(t=>[t.id,t.data.questions.length]),[['matter',54],['energy',90],['earth',72],['living',54],['space',36]]);
+ assert.equal(new Set(topics.map(t=>t.storageKey)).size,5);
  assert.equal(topics[0].storageKey,'science-practice-lab-matter-v1');
  assert.equal(topics[1].storageKey,'science-practice-lab-energy-v1');
  assert.equal(topics[2].storageKey,'science-practice-lab-earth-v1');

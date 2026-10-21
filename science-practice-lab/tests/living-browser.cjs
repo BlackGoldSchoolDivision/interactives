@@ -36,7 +36,7 @@ async function tour(page,size,capture=false){
  p.on('pageerror',e=>errors.push(e.message));
  await p.goto(base,{waitUntil:'networkidle'});
  assert.equal((await p.evaluate(()=>ScienceLab.getState())).topic,'living');
- assert.equal(await p.locator('.goal-card').count(),3);assert.equal(await p.locator('.unit-tab').count(),4);
+ assert.equal(await p.locator('.goal-card').count(),3);assert.equal(await p.locator('.unit-tab').count(),5);
  await p.screenshot({path:path.join(folder,'home-desktop.png'),fullPage:true});
  await p.locator('#round-size').selectOption('all');await p.locator('.home-actions [data-start="all"]').click();
  assert.equal((await p.evaluate(()=>ScienceLab.getState().run.queue)).length,54);

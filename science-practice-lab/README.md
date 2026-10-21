@@ -1,4 +1,4 @@
-# Science Practice Lab — Matter, Energy, Earth Systems and Living Systems
+# Science Practice Lab — Matter, Energy, Earth Systems, Living Systems and Space
 
 Independent Alberta Grade 6 PAT-style practice, hosted in the existing Interactives GitHub Pages site.
 
@@ -10,13 +10,14 @@ Independent Alberta Grade 6 PAT-style practice, hosted in the existing Interacti
 | Energy | 5 | 90 | 40 |
 | Earth Systems | 4 | 72 | 37 |
 | Living Systems | 3 | 54 | 36 |
-| Total | 15 | 270 | 142 |
+| Space | 2 | 36 | 26 |
+| Total | 17 | 306 | 168 |
 
 Each goal contains 18 questions: two each of single choice (including image choices), multiple select, dropdowns, sorting, ordering, matching, diagram labels, evidence selection and numeric entry. Energy covers both forces and interactions, and selection, use and management of energy resources. See [Energy coverage](ENERGY-COVERAGE.md).
 
 ## Student flow
 
-Select Matter, Energy, Earth Systems or Living Systems, then a goal or mixed unit. Choose a nine-question format tour, 18 questions or all available questions; optionally practise one format. Learning mode offers hints, explanations, retries and shown answers. Test practice withholds feedback until completion.
+Select Matter, Energy, Earth Systems, Living Systems or Space, then a goal or mixed unit. Choose a nine-question format tour, 18 questions or all available questions; optionally practise one format. Learning mode offers hints, explanations, retries and shown answers. Test practice withholds feedback until completion.
 
 Each unit keeps its own device-local progress, settings and unfinished round when browser storage is available. Switching topics and returning to the start menu preserve answers. The original Matter storage key and question identities are retained. Clearing progress affects only the selected unit. No account is required.
 
@@ -87,3 +88,7 @@ Existing original, checked bank images now support four additional questions wit
 ## Earth Systems — climate causes picture-card pilot
 
 The `climate-07` Natural versus Human Climate Causes sorting activity now includes **four movable photo/diagram cards** for volcanism, orbital geometry, combustion and industrial emissions. Their backgrounds come from `assets/earth/climate-causes-contexts.webp` (25 KB, 2×2 image atlas) built from public-domain or CC0 sources, documented in `assets/source-notes/EARTH-CLIMATE-CAUSES-CREDITS.json`. The pictures are **not** measurements of greenhouse gas concentrations or climate attribution: the questions' descriptions supply the scientific processes. Correct answers, score logic and student progress are unchanged. Original pictures are credited with cropping notes. The browser test confirms all four images decode and remain draggable and tappable on desktop, 390 px and 320 px widths.
+
+## Space · curriculum-aligned first release (21 October 2026)
+
+36 original assessment-style questions in two goals, **Solar system & celestial bodies** (18) and **Space exploration & satellites** (18). Both cover all nine answer formats with two questions per format; all **26 source curriculum statements** from Grade 6 Science rows 204–238 are explicitly mapped. Includes planet ordering, the main asteroid belt, emission versus reflection of light, Pluto's reclassification, model scale, telescope/rover/satellite uses, natural and human-built satellites, the International Space Station, barriers to living in space and University of Alberta's Ex-Alta 1 CubeSat deployed from the ISS in 2017. Initial release uses eight original scientifically labelled **not-to-scale** schematic diagrams; a later visual redesign will add licensed NASA/CSA photos, original high-fidelity illustrations and photographic drag cards without replacing accurate positional models. All new scores/progress are independent of the original four units (`science-practice-lab-space-v1`). No previous answers or student progress have been changed.

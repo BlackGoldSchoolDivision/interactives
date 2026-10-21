@@ -47,8 +47,8 @@ test('Original Living Systems diagram models render and leave answers out of seq
  const chain=V.render(Living.questions.find(q=>q.id==='ecosystems-10'));
  assert(chain.includes('Stage 1'));assert(!chain.includes('Sunlight provides energy'), 'Sequence drawing leaks the first step');
 });
-test('All four learning units are distinct with independent saved progress',()=>{
- assert.deepEqual(topics.map(t=>[t.id,t.data.questions.length]),[['matter',54],['energy',90],['earth',72],['living',54]]);
- assert.equal(new Set(topics.map(t=>t.storageKey)).size,4);
+test('All five learning units are distinct with independent saved progress',()=>{
+ assert.deepEqual(topics.map(t=>[t.id,t.data.questions.length]),[['matter',54],['energy',90],['earth',72],['living',54],['space',36]]);
+ assert.equal(new Set(topics.map(t=>t.storageKey)).size,5);
  assert.equal(topics[3].storageKey,'science-practice-lab-living-v1');
 });

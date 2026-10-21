@@ -313,3 +313,17 @@ body[data-topic="living"] .unit-tab[data-topic="living"][aria-pressed="true"]{ba
 .living-leaf{padding:23px 28px;background:#4b9372;border:2px solid #33765a;color:white;border-radius:45% 5% 45% 5%;font-weight:900;transform:rotate(-8deg)}
 .living-flow-blanks{border:2px dashed #94b8aa;border-radius:10px;padding:16px;background:#fff;color:#416e5d;font-size:14px;font-weight:750}
 @media(max-width:600px){.living-topic-hero{min-height:165px;padding:20px}.living-chain{flex-direction:column;padding:10px}.living-chain-box{min-width:100%;padding:7px}.living-chain-arrow{transform:rotate(90deg);line-height:1}.living-photosynthesis-context{flex-wrap:wrap;gap:8px}.living-flow-blanks{padding:10px}.living-leaf{padding:14px 20px}}
+
+/* Space first release: accurate coded astronomy diagrams; future raster artwork is a separate visual-design phase. */
+body[data-topic="space"]{--teal:#385f9b;--teal-dark:#254e87;--pale:#ecf1fb;--bg:#f6f7fb}
+body[data-topic="space"] .unit-tab[data-topic="space"][aria-pressed="true"]{background:#e4eaf8;border-color:#4873b0;color:#224c8a;box-shadow:inset 0 -2px #4873b0}
+.space-topic-hero{min-height:195px;background:linear-gradient(115deg,#0b2445,#254f86 62%,#778bbb);color:#fff;border-radius:15px;margin:22px 0;padding:28px clamp(19px,4vw,41px);position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.space-topic-hero:before{content:"";pointer-events:none;width:340px;height:340px;position:absolute;right:-25px;top:-144px;border:1px solid #b6defb6b;border-radius:50%;box-shadow:0 0 0 30px #d7f1ff12,0 0 0 65px #d7f1ff12,0 0 0 101px #d7f1ff0e}
+.space-topic-hero:after{content:"";width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#69b9de,#3067b1);position:absolute;right:75px;top:86px;box-shadow:-84px -24px 0 -23px #debf8c,84px 18px 0 -24px #e8d3ad}
+.space-topic-hero span{font-size:12px;font-weight:900;letter-spacing:.16em;color:#c3e8ff;z-index:1}
+.space-topic-hero strong{font-size:clamp(23px,3.3vw,37px);line-height:1.16;z-index:1;max-width:540px}
+.space-topic-hero em{font-size:13px;color:#e0eefc;font-style:normal;z-index:1}
+.space-svg{width:100%;height:auto;max-width:100%;display:block;margin:0 auto;border-radius:12px}
+body[data-topic="space"] .diagram-panel{border-color:#c9d7e8;background:#f0f5fa;padding:clamp(7px,1.5vw,13px)}
+body[data-topic="space"] .diagram-caption{font-size:12px;color:#3d6480;margin:8px 0 0;text-align:center}
+@media(max-width:600px){.space-topic-hero{min-height:165px;padding:19px}.space-topic-hero:before{right:-160px}.space-topic-hero:after{right:27px;top:95px;width:37px;height:37px}.space-svg{border-radius:8px}body[data-topic="space"] .diagram-panel{padding:5px}}
