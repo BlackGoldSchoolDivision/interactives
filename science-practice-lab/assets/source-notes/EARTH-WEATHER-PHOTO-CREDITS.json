@@ -1,0 +1,45 @@
+{
+  "output": "earth/extreme-weather-contexts.webp",
+  "size": [
+    720,
+    480
+  ],
+  "panels": [
+    {
+      "item": "hot",
+      "file": "Heat Wave.jpg",
+      "author": "NOAA National Weather Service / National Ocean Service",
+      "license": "US Federal Government public domain",
+      "use": "A diagram about a heat dome; illustration, not a measured temperature map.",
+      "source": "https://commons.wikimedia.org/wiki/File:Heat_Wave.jpg",
+      "crop": "centre-cropped to 3:2"
+    },
+    {
+      "item": "funnel",
+      "file": "60163 Tornado funnel.jpg",
+      "author": "Ultra7",
+      "license": "Author-released public domain",
+      "use": "Photograph of an observed tornado funnel.",
+      "source": "https://commons.wikimedia.org/wiki/File:60163_Tornado_funnel.jpg",
+      "crop": "centre-cropped to 3:2"
+    },
+    {
+      "item": "snow",
+      "file": "Blizzard1 - NOAA.jpg",
+      "author": "Brad Schick / National Weather Service",
+      "license": "US Federal Government public domain",
+      "use": "Photograph of blowing snow and severe winter conditions.",
+      "source": "https://commons.wikimedia.org/wiki/File:Blizzard1_-_NOAA.jpg",
+      "crop": "centre-cropped to 3:2"
+    },
+    {
+      "item": "season",
+      "file": "India - Chennai - Monsoon - 07 (3059060932).jpg",
+      "author": "McKay Savage",
+      "license": "CC BY 2.0 (https://creativecommons.org/licenses/by/2.0/)",
+      "use": "Photo of flooded streets during monsoon rain in Chennai, India.",
+      "source": "https://commons.wikimedia.org/wiki/File:India_-_Chennai_-_Monsoon_-_07_%283059060932%29.jpg",
+      "crop": "centre-cropped to 3:2"
+    }
+  ]
+}
