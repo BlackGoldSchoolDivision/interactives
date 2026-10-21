@@ -1,9 +1,10 @@
-# Earth Systems · NOAA forecasting image pack
+# Forecasting photos · verified public-domain sources
 
-These **four** images are from [NOAA's article *6 tools our meteorologists use to forecast the weather*](https://www.noaa.gov/stories/6-tools-our-meteorologists-use-to-forecast-weather), where each relevant image is credited NOAA. **Do not use the article's lead photo**, credited iStock. Reuse of NOAA-owned photos is documented in the [NOAA Education content guidance](https://www.noaa.gov/office-education/outreach-communication/faq).
+This Earth Systems image set is derived from government-owned photos and a public-domain donated image. Unlike the generated UI concept sheets, these are actual images of weather equipment, with scientifically accurate photo descriptions and no answer overlays.
 
-The generated in-repository sprite `assets/earth/noaa-forecast-sources.webp` is **736 × 432 px** (two columns, two rows). Crop panel mapping (zero-based): 0 Doppler radar, 1 an official weather-satellite *illustration*, 2 automated surface-observing station, 3 forecaster's weather workstation. Credit: **NOAA / National Weather Service**. Images have been cropped for classroom layout; no manipulation of meteorological data.
+* Radar: [NOAA Doppler Weather Radar](https://commons.wikimedia.org/wiki/File:Doppler_Weather_Radar_-_NOAA.jpg), NOAA / NSSL, public domain.
+* Satellite: [GOES-16 with Earth](https://commons.wikimedia.org/wiki/File:GOES-16-GOES_East_with_Earth_in_Background_(46234058505).png), official NOAA **illustration** (not an observational photo), public domain.
+* Weather station: [Peoria ASOS](https://commons.wikimedia.org/wiki/File:Peoria_ASOS.jpg), US National Weather Service, public domain.
+* Computer forecast workstation: [AWIPS-3-head-workstation](https://commons.wikimedia.org/wiki/File:AWIPS-3-head-workstation.jpg), JonathanLamb, photographer released into public domain.
 
-Provenance and exact source IDs are in `tools/build-earth-noaa-bank.py`. This is **credited public-domain source imagery, not AI-generated artwork**. Image filenames, alternative text, and on-screen presentation must not disclose correct response mappings to the student.
-
-No graphic is evidence of a particular local climate trend; this pack illustrates the tools meteorologists use. The satellite illustration is clearly described as a rendering.
+Images are fetched and cropped by `tools/build-earth-noaa-bank.py` to a compact 2 × 2 WebP image bank sprite. No observed numerical data are extracted from the images. NOAA's own [meteorologist equipment article](https://www.noaa.gov/stories/6-tools-our-meteorologists-use-to-forecast-weather) independently describes the science, but its original image downloads blocked automated requests. Wikimedia Commons copies permit attribution and reproducible assembly.
