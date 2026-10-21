@@ -21,7 +21,7 @@ function grade(q,r){
  else{total=q.data.items.length;earned=q.data.items.filter(x=>r?.[x.id]===q.answer[x.id]).length;}
  return {correct:complete(q,r)&&earned===total,complete:!!complete(q,r),earned,total};
 }
-function hasVisual(q){const d=q.data||{};return Boolean(d.photo||d.scenePair||d.diagram||d.optionVisuals?.length||Object.keys(d.zoneImages||{}).length||q.visual);}
+function hasVisual(q){const d=q.data||{};return Boolean(d.photo||d.scenePair||d.diagram||d.optionVisuals?.length||Object.keys(d.zoneImages||{}).length||Object.keys(d.itemVisuals||{}).length||q.visual);}
 function round(bank,group,count,progress={},rng=Math.random,format='all'){
  const pool=bank.filter(q=>(group==='all'||q.group===group)&&(format==='all'||(format==='visual'?hasVisual(q):q.type===format)));
  const rank=q=>(progress[q.id]?.correct?4:0)+(progress[q.id]?.seen?1:0)+rng();

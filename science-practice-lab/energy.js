@@ -389,7 +389,7 @@
         "items": [
           {
             "id": "sponge",
-            "text": "Compression within a squeezed sponge"
+            "text": "Compression within a squeezed foam block"
           },
           {
             "id": "towel",
@@ -403,7 +403,25 @@
             "id": "table",
             "text": "The table's friction force on a sliding box"
           }
-        ]
+        ],
+        "itemVisuals": {
+          "sponge": {
+            "asset": "force-actions",
+            "panel": 1
+          },
+          "towel": {
+            "asset": "force-actions",
+            "panel": 2
+          },
+          "hand": {
+            "asset": "box-push",
+            "panel": 0
+          },
+          "table": {
+            "asset": "investigation-contexts",
+            "panel": 0
+          }
+        }
       },
       "answer": {
         "sponge": "internal",
@@ -464,20 +482,20 @@
             "text": "A towel is twisted along its length."
           }
         ],
-        "zoneImages": {
-          "tension": {
+        "itemVisuals": {
+          "rope": {
             "asset": "force-actions",
             "panel": 0
           },
-          "compression": {
+          "foam": {
             "asset": "force-actions",
             "panel": 1
           },
-          "shear": {
+          "paper": {
             "asset": "force-actions",
             "panel": 3
           },
-          "torsion": {
+          "cloth": {
             "asset": "force-actions",
             "panel": 2
           }
@@ -681,20 +699,20 @@
             "text": "Twisting a material"
           }
         ],
-        "zoneImages": {
-          "tension": {
+        "itemVisuals": {
+          "pull": {
             "asset": "force-actions",
             "panel": 0
           },
-          "compression": {
+          "squeeze": {
             "asset": "force-actions",
             "panel": 1
           },
-          "shear": {
+          "slide": {
             "asset": "force-actions",
             "panel": 3
           },
-          "torsion": {
+          "twist": {
             "asset": "force-actions",
             "panel": 2
           }

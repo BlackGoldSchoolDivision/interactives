@@ -1,7 +1,7 @@
 const test=require('node:test'),assert=require('node:assert/strict');
 const Core=require('../core.js'),Matter=require('../data.js'),Energy=require('../energy.js');
 test('Picture and diagram practice selects only illustrated questions',()=>{
- for(const [data,count] of [[Matter,36],[Energy,41]]){
+ for(const [data,count] of [[Matter,36],[Energy,42]]){
   const illustrated=data.questions.filter(Core.hasVisual);
   assert.equal(illustrated.length,count);
   const ids=Core.round(data.questions,'all','all',{},()=>0.4,'visual');
@@ -26,4 +26,5 @@ test('Visual filter preserves normal selection and question content',()=>{
  }
  assert.equal(Core.hasVisual({data:{}}),false);
  assert.equal(Core.hasVisual({data:{photo:{asset:'sample',panel:0}}}),true);
+ assert.equal(Core.hasVisual({data:{itemVisuals:{x:{asset:'sample',panel:0}}}}),true);
 });

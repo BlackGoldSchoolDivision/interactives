@@ -23,13 +23,13 @@ Drag placements also work by selecting a card and activating a destination by to
 
 ## Visual question practice
 
-The **Choose a question format** picker now includes **Pictures & diagrams**. This selects illustrated questions across the same nine formats rather than treating pictures as a separate answer type. Currently 77 of the 144 questions qualify (36 Matter and 41 Energy); 50 include original illustrated scenes. The selected goal, round length, learning/test mode, and device-local progress still apply. Visual rounds do not pad the requested length with unillustrated questions.
+The **Choose a question format** picker now includes **Pictures & diagrams**. This selects illustrated questions across the same nine formats rather than treating pictures as a separate answer type. Currently 78 of the 216 questions qualify across Matter and Energy (36 Matter and 42 Energy); Earth Systems has additional coded illustrations. Fifty Matter/Energy questions contain original illustrated scenes. The selected goal, round length, learning/test mode, and device-local progress still apply. Visual rounds do not pad the requested length with unillustrated questions.
 
 ## Content and visual sources
 
 Curriculum mapping follows the supplied *Science 1–6 Curriculum NEW Alberta* sheet. Questions are original and independent of Alberta Education and Vretta. They are not released PAT items or a verified reproduction of Vretta's interface.
 
-The [shared image bank](assets/IMAGE-BANK.md) contains original generated classroom illustrations for both units, with a machine-readable manifest. Source PNGs and optimized WebPs are committed alongside the app. Apparatus readings, force arrows, scales, particle diagrams and other precise scientific models are rendered in code. Generated image dimensions are not measurement evidence. Fifty questions include apparatus or context photographs, including questions that pair an image with a coded diagram and label placement. Three Energy activities place the illustrations inside their sorting or matching destinations.
+The [shared image bank](assets/IMAGE-BANK.md) contains original generated classroom illustrations for both units, with a machine-readable manifest. Source PNGs and optimized WebPs are committed alongside the app. Apparatus readings, force arrows, scales, particle diagrams and other precise scientific models are rendered in code. Generated image dimensions are not measurement evidence. Fifty questions include apparatus or context photographs, including questions that pair an image with a coded diagram and label placement. One Energy activity places images inside its labelling destinations; three others now put existing original photographs on the draggable cards.
 
 Question performance does not certify conducting an investigation, researching a community decision or building a device. Teacher view maps individual statements and suggests supervised investigations for practical evidence.
 
@@ -37,7 +37,7 @@ Question performance does not certify conducting an investigation, researching a
 
 Run `node --test science-practice-lab/tests/*.test.cjs`.
 
-The GitHub verification workflow checks all answer keys, negative cases, curriculum references, format coverage, separate topic storage and scientific model consistency. Chromium then completes all 144 questions and exercises 1366×650, 1024×540, 768×900, 390×667, 320×568 and 640×360 layouts for both units.
+The GitHub verification workflow checks all answer keys, negative cases, curriculum references, format coverage, separate topic storage and scientific model consistency. Chromium then completes all 216 questions and exercises 1366×650, 1024×540, 768×900, 390×667, 320×568 and 640×360 layouts for both units.
 
 Browser checks cover image loading, keyboard placement, native dragging, resizing, the persistent start menu, topic switching, saved drafts, scoped progress reset, retry, restored rounds, deferred test feedback and teacher dialogs. Both units check 125% CSS zoom; Matter also checks migration of previously revised questions. Image questions additionally check 320-pixel reflow, image loading, crop coverage and saved-state preservation.
 
@@ -50,3 +50,7 @@ Reports and screenshots are retained under `validation/`; Energy reports and sel
 ## Matter visual redesign · pilot 01 (20 October 2026)
 
 Four original qualitative context-photo strips were added to the published Matter image bank, and five existing Matter questions received opt-in visual presentation improvements: `particles-02`, `particles-13`, `temperature-02`, `expansion-02` and `expansion-13`. Generated particle collages were deliberately rejected because they used unequal particle counts: the student question retains nine identical-sized code-controlled particles per option. Temperature graduations, equal-mass volume comparisons, and precise bridge-joint gaps are also still coded. The image strips are not measurement evidence and no answer keys, feedback rules, question identities or saved-storage keys changed. The newly uploaded WebPs have source PNGs in the separate teacher artwork ZIP; those archival PNGs are not yet in GitHub. See [image-bank manifest](assets/image-bank.json) and [Matter pack science review](assets/source-notes/MATTER-PACK-01.md).
+
+## Energy picture-card drag-and-drop · 21 October 2026
+
+Three existing activities now use **twelve original photograph-backed draggable cards**: `forces-07` (internal/external forces), `forces-08` (force classification) and `forces-12` (force terminology matching). All reuse tested `force-actions`, `box-push` and `investigation-contexts` image assets. The last two activities moved the original art from destination areas to movable cards, rather than letting identical pictures disclose where to drop each card. Students may also choose a card and tap or use the keyboard to activate a destination. Question IDs, underlying scoring/answer keys and storage keys are unchanged. One caption was corrected to say “foam block” rather than “sponge.” This incremental pilot precedes the more involved image flowchart layouts.
