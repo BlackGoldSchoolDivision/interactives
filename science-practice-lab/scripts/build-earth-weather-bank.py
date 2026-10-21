@@ -99,5 +99,62 @@ def main() -> None:
         "size": list(sheet.size), "panels": details}, indent=2) + "\n", encoding="utf-8")
     print(f"Created {ASSET}, {ASSET.stat().st_size} bytes; source credits in {credits}")
 
+
+def build_climate_causes() -> None:
+    """Four equal-footprint picture cards for an existing natural/human causes sort."""
+    sources = [
+        {
+            "item": "eruption",
+            "file": "Eruption at the summit of Kīlauea (118583).jpeg",
+            "author": "U.S. Geological Survey / M. Zoeller",
+            "license": "US Federal Government public domain",
+            "use": "Eruption at a Hawaiian volcano; ash, aerosols and gases from volcanism can influence climate.",
+        },
+        {
+            "item": "orbit",
+            "file": "Earth's orbit parameters for the Milankovitch cycles.png",
+            "author": "Sciencia58",
+            "license": "CC0 1.0 public domain dedication",
+            "use": "Scientific explanatory diagram of slowly changing orbital geometry, not a weather photograph.",
+        },
+        {
+            "item": "fuel",
+            "file": "Exhaust.jpg",
+            "author": "Jensbn",
+            "license": "Author-released public domain",
+            "use": "Vehicle exhaust context. Visible plume is mostly condensed water; carbon dioxide is invisible.",
+        },
+        {
+            "item": "industry",
+            "file": "Alfred Palmer Smokestacks.jpg",
+            "author": "Alfred T. Palmer / U.S. Office of War Information",
+            "license": "US Federal Government public domain",
+            "use": "Industrial smokestacks (1942). A historical context photo, not a measured greenhouse-gas reading.",
+        },
+    ]
+    destination = TARGET / "climate-causes-contexts.webp"
+    sheet = Image.new("RGB", (2 * TILE_SIZE[0], 2 * TILE_SIZE[1]), "white")
+    credits = []
+    for index, info in enumerate(sources):
+        original = Image.open(io.BytesIO(download(info["file"])))
+        original = ImageOps.exif_transpose(original).convert("RGB")
+        if min(original.size) < 240:
+            raise ValueError("Climate asset too small: " + info["file"])
+        fitted = ImageOps.fit(original, TILE_SIZE, method=Image.Resampling.LANCZOS)
+        sheet.paste(fitted, ((index % 2) * TILE_SIZE[0], (index // 2) * TILE_SIZE[1]))
+        credits.append({**info, "source": "https://commons.wikimedia.org/wiki/File:" +
+                        urllib.parse.quote(info["file"].replace(" ", "_")), "crop": "centre-cropped to 3:2"})
+    for quality in (76, 72, 68, 64, 60, 56):
+        sheet.save(destination, "WEBP", quality=quality, method=6)
+        if destination.stat().st_size <= 150000:
+            break
+    if destination.stat().st_size > 150000:
+        raise ValueError("Climate source sprite exceeds 150 KB")
+    note = ROOT / "assets" / "source-notes" / "EARTH-CLIMATE-CAUSES-CREDITS.json"
+    note.write_text(json.dumps({"output": "earth/climate-causes-contexts.webp",
+                                  "panels": credits, "size": list(sheet.size)}, indent=2) + "\n", encoding="utf-8")
+    print(f"Created {destination} ({destination.stat().st_size} bytes)")
+
 if __name__ == "__main__":
     main()
+    build_climate_causes()

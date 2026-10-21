@@ -24,6 +24,8 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add science-practice-lab/assets/earth/extreme-weather-contexts.webp
           git add science-practice-lab/assets/source-notes/EARTH-WEATHER-PHOTO-CREDITS.json
+          git add science-practice-lab/assets/earth/climate-causes-contexts.webp
+          git add science-practice-lab/assets/source-notes/EARTH-CLIMATE-CAUSES-CREDITS.json
           if ! git diff --cached --quiet; then
             git commit -m 'Add licensed real-weather photograph bank for Earth Systems'
             git pull --rebase origin main
