@@ -217,3 +217,8 @@ body[data-topic="earth"] .unit-tab[data-topic="earth"][aria-pressed="true"]{back
 .branch-route .zone h3{font-size:15px;color:#315a6d}
 @media(max-width:670px){.energy-stage-diagram .flow-steps{flex-direction:column;gap:3px}.flow-connector{width:100%;height:29px;transform:rotate(90deg);font-size:24px}.stage-slot .zone{min-height:112px}.stage-slot .zone h3{font-size:15px;padding:6px}.stage-slot .zone-drop-action{margin-top:8px}.energy-branch-diagram .branch-routes{gap:9px}.branch-route .zone{padding:8px}.branch-waypoint{min-height:55px;font-size:12px}}
 @media(max-width:400px){.energy-branch-diagram .branch-routes{grid-template-columns:1fr}.flow-fork{display:none}.branch-waypoint{min-height:0}.branch-route+.branch-route{margin-top:12px}.branch-route .zone{min-height:115px}.energy-stage-diagram,.energy-branch-diagram{padding:10px}}
+
+/* Mobile flowchart tap-safety: arrows cannot cover drop targets, and controls never sit under sticky footer. */
+.flow-connector,.branch-arrow,.flow-fork{pointer-events:none}
+.energy-stage-diagram .zone-drop-action,.energy-branch-diagram .zone-drop-action{scroll-margin-block:120px}
+@media(max-width:670px){.energy-stage-diagram .flow-connector{transform:none;font-size:0;height:30px;min-height:30px;line-height:30px}.energy-stage-diagram .flow-connector:after{content:"↓";font-size:26px;line-height:30px;color:#287a8b;display:block;text-align:center}.question-card:has(.energy-stage-diagram) .question-actions,.question-card:has(.energy-branch-diagram) .question-actions{position:static;box-shadow:none}}
