@@ -37,6 +37,8 @@ The frontend should select presentation from explicit `q.data.layout` metadata w
 
 Some of the 20 visual references involve **Living Systems and Space**, beyond the three currently coded units. Preserve these as ideas for future units rather than mislabelling them Earth Systems.
 
+**Checkpoint update (20 October 2026):** Four optimized Matter image sets are in the live GitHub bank and five Matter pilot questions have opt-in visual upgrades. The rejected particle collage is not published; each particle model still uses code-defined equal-size, equal-count particles. The complete 216-question validation and responsive browser workflow passed for the pilot code. See [published-pack QA notes](assets/source-notes/MATTER-PACK-01.md).
+
 ## Asset-quality gates (before an image becomes live)
 
 1. Clear purpose and original composition; no screenshots, watermarks or brand-copying.

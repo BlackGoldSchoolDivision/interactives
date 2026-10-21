@@ -1,21 +1,28 @@
-# Matter artwork pack 01 — teacher approval checkpoint
+# Matter artwork pack 01 — published pilot checkpoint
 
-**Created:** 20 October 2026  
-**Stage:** Chunk 2, visual prototype. **Nothing in this pack is loaded by the student app.** The rendered source files are in the teacher's downloadable `Matter_Artwork_Pack_1.zip`; these candidate binary assets **have not been uploaded to GitHub yet**.
+**Reviewed and integrated:** 20 October 2026
 
-Five original candidate sets were generated as colourful, photo-rich Matter contexts. Each was cropped to remove heading/caption labels and to keep numeric readouts out of visual question backgrounds. The originals are original generative artwork, not Vretta screenshots, and are not claimed to be scientific observational photographs.
+## Published imagery (GitHub)
 
-| Planned image | Science/visual gate | Use only after approval |
+Four original optimized image **WebP** files were committed to the live Matter image bank, with descriptive alt text and qualitative-only notes in `assets/image-bank.json`. Their source PNGs are available in the separate teacher-supplied `Matter_Artwork_Pack_1.zip` but are **not yet uploaded to the repository**.
+
+| Asset | Student question | Science and presentation safeguard |
 | --- | --- | --- |
-| `matter/phase-change-scenes` | Needs science caption review: visible white steam is tiny *condensed droplets*, not invisible water vapour | Illustrative changes of state; put transition names in question controls |
-| `matter/particle-model-beakers` | **Rejected as a scored particle model:** there are unequal particle counts among vessels | Regenerate empty backplates; overlay identical particle counts and differing spacing/arrangements using validated code |
-| `matter/thermometer-study` | Qualitative context candidate; readings were cropped from the prototype | Show apparatus context with code-controlled numeric measurements |
-| `matter/equal-mass-ice-water` | **Hold:** equal mass or density cannot be established by generated pictures alone | Pair the image with a controlled measurement table or a coded balance |
-| `matter/bridge-joint-seasons` | Context candidate, verify that joint geometry makes sense | Show climate conditions; use code for exact gap/expansion data |
+| `matter/phase-change-scenes.webp` | `particles-13` | Four unlabeled contexts; the exact state transitions and A–D arrow directions remain code-controlled. The visible kettle plume is condensed droplets, not pure invisible vapour. |
+| `matter/thermometer-study.webp` | `temperature-02` | Ice-bath apparatus context only. The four exact graduated Celsius options are coded, not generated. |
+| `matter/equal-mass-ice-water.webp` | `expansion-02` | Contextual beakers are **not** measured equal masses. Students must compare the four code-rendered, equal-mass volume models. |
+| `matter/bridge-joint-seasons.webp` | `expansion-13` | Seasonal photos illustrate a bridge setting, while exact expansion and joint-gap differences are represented only by the A/B diagram in code. |
 
-## Readiness and integration
+**Rejected:** Generated `particle-model-beakers` illustrated particle counts inconsistently and was **not published or connected to student questions**. The `particles-02` question keeps nine identical-sized, precisely arranged particles in each of its four code-controlled models; its answer-card visual styling was refreshed.
 
-- Candidate pack files: five source PNG crops and five optimized WebPs, all under 150 KB per WebP, along with a gallery, contact sheet, metadata, and quality notes.
-- Pilot targets remain `particles-02`, `particles-13`, `temperature-02`, `expansion-02` and `expansion-13`. **No answer keys, progress data or test-mode controls changed.**
-- The next activity is teacher review of the image set and scientific treatment, then replacement/revision of any held items, followed by a deliberately small GitHub binary upload and visual tests.
-- Keep rejected or unapproved drafts out of `assets/image-bank.json` and out of the app's `data.photo`, `data.zoneImages` and `data.optionVisuals` fields.
+## Validation
+
+The published changes preserve all five original correct answers, stable question IDs, student test mode and saved progress. New regression tests verify every pilot answer, artwork-bank linkage, asset sizes, descriptive panel metadata and the scene gallery rendering. The standard suite checks all Matter, Energy and Earth Systems questions and responsive browsers.
+
+The optimized WebPs are each under 15 KB. The current student app is at `https://interactives.blackgold.ca/science-practice-lab/`, and the teacher's standalone review file now supports these photo galleries.
+
+## Next asset steps
+
+- Generate accurate *empty* beaker photo backplates (rather than generated particle beads), then place equal-count, coded particles over them.
+- Review original source PNGs and decide whether to archive them in GitHub. If added, adjust CI image optimization not to replace the already-optimized small WebPs.
+- Continue to a small Energy and Earth Systems pilot only after checking the Matter question previews for visual readability.
