@@ -12,7 +12,7 @@ test('Two Energy flowchart pilots preserve exactly the original answer maps and 
 });
 test('The photo cards depict only accurate resource examples and no destination image duplicates',()=>{
  const a=by('management-07');
- assert.deepEqual(Object.keys(a.data.itemVisuals).sort(),['lamp','sail']);
+ assert.deepEqual(Object.keys(a.data.itemVisuals).sort(),['fuel','lamp','sail','wheel']);
  assert.deepEqual(a.data.itemVisuals.sail,{asset:'resource-uses',panel:0});
  assert.deepEqual(a.data.itemVisuals.lamp,{asset:'resource-uses',panel:1});
  assert.equal(a.data.zoneImages,undefined);

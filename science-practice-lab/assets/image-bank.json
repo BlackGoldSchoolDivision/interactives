@@ -310,6 +310,36 @@
       ],
       "scientificNote": "Photographs are not evidence of exact joint dimension; coded comparison diagrams provide that model.",
       "approvedFor": "qualitative context only"
+    },
+    {
+      "id": "energy-resource-flow-extended",
+      "unit": "energy",
+      "title": "Mechanical waterwheel and biomass-to-transport-fuel contexts",
+      "web": "energy/resource-flow-extended.avif",
+      "sourceArchive": "Energy_Resource_Flow_Artwork.zip (original generated PNG source files; downloadable in teacher conversation)",
+      "grid": {
+        "columns": 2,
+        "rows": 1
+      },
+      "dimensions": {
+        "width": 520,
+        "height": 173
+      },
+      "bytes": 5284,
+      "panels": [
+        "Illustrated stream directly powers a wooden waterwheel and flour mill.",
+        "Illustrated crop and wood residues, processing facilities and vehicle fuelling."
+      ],
+      "questionIds": [
+        "management-07"
+      ],
+      "scientificNote": "These are synthetic educational illustrations, not actual photographs, plant-process evidence or a claim that every wood feedstock becomes vehicle fuel. The waterwheel illustrates direct mechanical use; the facility and vehicle illustrate processing plant material into usable fuel. The correct placements come only from question data.",
+      "approvedFor": "qualitative drag-card contexts",
+      "provenance": {
+        "created": "2026-10-21",
+        "kind": "original generated raster artwork",
+        "review": "visual and mechanical plausibility reviewed; quantitative details not used for scoring"
+      }
     }
   ],
   "existingMatterBanner": {
@@ -325,7 +355,7 @@
       "matter",
       "energy"
     ],
-    "notes": "Generated scene dimensions are not measurement evidence; exact readings, force arrows and scientific models remain controlled in code. Twelve original scene panels appear on draggable cards in three Energy questions without identical destination photos. Resource-flow branch management-07 has two original illustrated cards and two unillustrated text cards; a future pack will fill the missing scientifically accurate scenes.",
+    "notes": "Generated scene dimensions are not measurement evidence; exact readings, force arrows and scientific models remain controlled in code. Twelve original scene panels appear on draggable cards in three Energy questions without identical destination photos. Resource-flow branch management-07 has two original illustrated cards and two unillustrated text cards; a future pack will fill the missing scientifically accurate scenes. Two original illustrated panels (waterwheel and biomass-derived vehicle fuel) complete all four movable cards in management-07. Optimized AVIF sprite is stored in GitHub; full-resolution PNG originals are in the teacher source archive.",
     "nowIncludesMatterArtworkPack01": 4,
     "matterPack01QuestionIds": [
       "particles-13",
@@ -340,7 +370,8 @@
       "forces-12",
       "management-07"
     ],
-    "partialPictureQuestions": [
+    "partialPictureQuestions": [],
+    "fullyIllustratedFlowcharts": [
       "management-07"
     ]
   }

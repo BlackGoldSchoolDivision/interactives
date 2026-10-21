@@ -213,7 +213,7 @@
       "aspectRatio": "2x2 panels",
       "description": "Safe classroom tabletop sail car, wind stream and a simple testing setup.",
       "questionIds": [],
-      "notes": "Reserve for new direct versus processed resource questions; no impossible wheel or sail geometry."
+      "notes": "Reserve for new direct versus processed resource questions; no impossible wheel or sail geometry. Original biomass fuel example now represented in resource-flow AVIF pack; not the wind-powered model car asset itself."
     },
     {
       "id": "energy--hydropower-context",
@@ -226,7 +226,12 @@
       "aspectRatio": "2x1 panels",
       "description": "Original dam-turbine context scenes designed for a renewable energy flowchart.",
       "questionIds": [],
-      "notes": "Resource classification and flow arrows remain interactive text layers."
+      "notes": "Resource classification and flow arrows remain interactive text layers. Added an original waterwheel/mechanical-mill context as two-panel resource-flow pack; separate from hydroelectric turbine imagery.",
+      "prototype": {
+        "status": "live-in-bank",
+        "file": "energy/resource-flow-extended.avif",
+        "questionId": "management-07"
+      }
     },
     {
       "id": "energy--force-in-context",

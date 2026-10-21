@@ -34,9 +34,9 @@ async function answer(page,q,method){
      assert.equal(await board.locator('.zone-drop-action').count(),q.data.zones.length);
      assert.equal(await board.locator('.zone-pieces .piece').count(),0,'Diagram filled before response');
      if(q.id==='management-07'){
-      assert.equal(await page.locator('.picture-bank .picture-piece').count(),2);
+      assert.equal(await page.locator('.picture-bank .picture-piece').count(),4);
       const good=await page.locator('.picture-bank img').evaluateAll(async nodes=>Promise.all(nodes.map(async img=>{try{await img.decode();}catch{}return img.naturalWidth>0})));
-      assert.deepEqual(good,[true,true],'Flowchart source image not loaded');
+      assert.deepEqual(good,[true,true,true,true],'Flowchart source image not loaded');
      }else{
       const before=await board.innerText();
       assert(!before.includes('Resource: wind'));assert(!before.includes('Output: electricity'));assert(!before.includes('Daily use: lighting'));

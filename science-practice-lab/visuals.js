@@ -2,6 +2,8 @@
 (function(root){
 'use strict';
 const assets={
+'energy-resource-flow-extended':{file:'energy/resource-flow-extended.avif',cols:2,rows:1,ratio:'3/2',alts:['An overshot wooden waterwheel turns an axle and millstone beside a flowing stream.','Plant residues and storage tanks near a facility; a vehicle is being filled with fuel.']},
+
 'phase-change-scenes':{file:'matter/phase-change-scenes.webp',cols:4,rows:1,ratio:'163/181',alts:['Ice cubes on a cold surface.','A beaker of clear liquid water.','A kettle with a light plume over it.','Water droplets on a metal lid.']},
 'thermometer-study':{file:'matter/thermometer-study.webp',cols:2,rows:1,ratio:'191/148',alts:['A temperature probe placed into ice water.','A probe in a heated beaker with bubbles.']},
 'equal-mass-ice-water':{file:'matter/equal-mass-ice-water.webp',cols:2,rows:1,ratio:'199/147',alts:['Ice in a glass beaker; no reading is supplied.','Water in a glass beaker; no reading is supplied.']},

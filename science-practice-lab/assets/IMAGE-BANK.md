@@ -33,3 +33,5 @@ The app now adds scene photographs to 24 Matter and 26 Energy questions. Three E
 Four **optimized WebP** sets are now live in the bank (`matter/phase-change-scenes.webp`, `matter/thermometer-study.webp`, `matter/equal-mass-ice-water.webp`, `matter/bridge-joint-seasons.webp`). Their source PNGs are in the separately supplied teacher artwork ZIP pending archival upload.
 
 They are used only as illustrative contexts alongside code-controlled exact particle arrangements, temperature levels, equal-mass water/ice comparisons and bridge joint gaps. Correct answers and numeric values are **not** derived from generated art. The generated particle-model collage is rejected and remains **out of the live bank**. See `source-notes/MATTER-PACK-01.md`.
+
+| [energy/resource-flow-extended.avif](energy/resource-flow-extended.avif) | Original generated educational scene pair: mechanically driven watermill; plant residues processed for transport fuel. Two-panel AVIF sprite, 520 × 173 px, 5.2 KB. Source full-resolution PNGs retained in teacher download. Not a real-world photo or evidence of particular production process. |

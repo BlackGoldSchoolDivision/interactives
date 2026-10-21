@@ -3465,6 +3465,14 @@
           "lamp": {
             "asset": "resource-uses",
             "panel": 1
+          },
+          "wheel": {
+            "asset": "energy-resource-flow-extended",
+            "panel": 0
+          },
+          "fuel": {
+            "asset": "energy-resource-flow-extended",
+            "panel": 1
           }
         }
       },
