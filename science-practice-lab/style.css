@@ -190,3 +190,30 @@ body[data-topic="earth"] .unit-tab[data-topic="earth"][aria-pressed="true"]{back
 .zone-drop-action:not(:disabled):hover,.zone-drop-action:not(:disabled):focus-visible{background:#d7eef2;border-color:#167b8a}
 .zone-drop-action:disabled{color:#718991;background:#f1f6f7;border-color:#bdcfd5;opacity:.7;cursor:default}
 .zone-drop-action:disabled{pointer-events:none} /* Allow native drag/drop to reach the enclosing zone. */
+
+/* Resource-use flowcharts. Answer content appears only in movable cards, never pre-filled in the chart. */
+.energy-stage-diagram,.energy-branch-diagram{padding:clamp(12px,2.5vw,22px);border:1.5px solid #b9d7db;border-radius:15px;background:linear-gradient(135deg,#eff8fa 0%,#f5f5fc 100%);margin-top:16px}
+.energy-stage-diagram .flow-title,.energy-branch-diagram .flow-title{font-size:12px;color:#315669;font-weight:900;letter-spacing:.11em;text-align:center;margin:0 0 19px}
+.energy-stage-diagram .flow-steps{display:flex;align-items:stretch;gap:8px;min-width:0}
+.stage-slot{min-width:0;flex:1;display:flex}
+.stage-slot .zone{width:100%;background:#fff;border:2px dashed #75a9b5;min-height:175px;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start}
+.stage-slot .zone h3{background:#e0f2f2;color:#295666;text-align:center;border-radius:8px;padding:10px;margin:0 0 12px;font-size:17px}
+.stage-slot .zone-pieces{flex:1;display:flex;flex-direction:column;align-items:stretch}
+.stage-slot .zone .piece{font-size:13px;background:#fffef9;border-color:#b0ccd2}
+.stage-slot .zone-drop-action{margin-top:auto}
+.flow-connector{display:flex;align-items:center;justify-content:center;flex:none;font-size:29px;font-weight:900;color:#287a8b;width:32px}
+.energy-stage-diagram .diagram-caption,.energy-branch-diagram .diagram-caption{margin:15px 0 0;text-align:center;font-size:12px;color:#597784}
+.energy-branch-diagram .flow-source-chip{background:#255d77;color:white;padding:10px 24px;border-radius:999px;text-align:center;max-width:230px;margin:0 auto;font-size:15px;font-weight:850}
+.flow-fork{height:28px;max-width:68%;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-around}
+.flow-fork span{display:block;width:2px;height:19px;background:#80afba}
+.branch-routes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.branch-route{min-width:0;display:flex;flex-direction:column;align-items:stretch}
+.branch-waypoint{padding:11px 8px;background:#dfeff2;border:1px solid #acd0d8;border-radius:9px;font-size:13px;font-weight:850;color:#1f5469;text-align:center}
+.branch-route:nth-child(2) .branch-waypoint{background:#e9e8f7;border-color:#c4c0e5;color:#4c5186}
+.branch-arrow{text-align:center;color:#448799;font-size:24px;line-height:1.5;font-weight:900}
+.branch-route .zone{height:100%;min-height:155px;background:#fff;border:2px dashed #91bcc6;display:flex;flex-direction:column}
+.branch-route .zone .zone-pieces{flex:1}
+.branch-route .zone .zone-drop-action{margin-top:auto}
+.branch-route .zone h3{font-size:15px;color:#315a6d}
+@media(max-width:670px){.energy-stage-diagram .flow-steps{flex-direction:column;gap:3px}.flow-connector{width:100%;height:29px;transform:rotate(90deg);font-size:24px}.stage-slot .zone{min-height:112px}.stage-slot .zone h3{font-size:15px;padding:6px}.stage-slot .zone-drop-action{margin-top:8px}.energy-branch-diagram .branch-routes{gap:9px}.branch-route .zone{padding:8px}.branch-waypoint{min-height:55px;font-size:12px}}
+@media(max-width:400px){.energy-branch-diagram .branch-routes{grid-template-columns:1fr}.flow-fork{display:none}.branch-waypoint{min-height:0}.branch-route+.branch-route{margin-top:12px}.branch-route .zone{min-height:115px}.energy-stage-diagram,.energy-branch-diagram{padding:10px}}
