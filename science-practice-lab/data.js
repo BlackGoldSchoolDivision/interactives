@@ -140,7 +140,7 @@
           "Nine particles spread throughout the container.",
           "Nine particles close together across the bottom of the container."
         ],
-        "layout": "particle-image-card"
+        "layout": "matter-particle-cards"
       },
       "answer": 2,
       "explanation": "Gas particles are much farther apart than particles in a solid or liquid. All four models keep the particles the same size and number.",
@@ -569,18 +569,26 @@
             "text": "Condensation"
           }
         ],
-        "sceneStrip": {
-          "asset": "phase-change-scenes",
-          "panels": [
-            0,
-            1,
-            2,
-            3
-          ],
-          "columns": 4,
-          "groupLabel": "Illustrative water and phase-change investigation contexts",
-          "caption": "Observe ice, liquid water, a kettle with visible condensed droplets, and condensation on a lid. Water vapour itself is invisible."
-        }
+        "layout": "matter-phase-match",
+        "itemVisuals": {
+          "a": {
+            "asset": "phase-change-scenes",
+            "panel": 1
+          },
+          "b": {
+            "asset": "phase-change-scenes",
+            "panel": 0
+          },
+          "c": {
+            "asset": "phase-change-scenes",
+            "panel": 2
+          },
+          "d": {
+            "asset": "phase-change-scenes",
+            "panel": 3
+          }
+        },
+        "visualContext": "Photographs illustrate ice, liquid water, heating and condensed droplets. They are examples of materials and conditions—not measurements or step-by-step recordings of each change."
       },
       "answer": {
         "a": "melt",
@@ -650,7 +658,8 @@
           "columns": 2,
           "groupLabel": "Four original water-state context images",
           "caption": "Four water-related settings. Use the diagram arrows, not the pictures, to label each change of state."
-        }
+        },
+        "layout": "matter-phase-diagram"
       },
       "answer": {
         "m": "A",
@@ -924,7 +933,8 @@
           "asset": "thermometer-study",
           "panel": 0,
           "caption": "An example temperature probe in an ice bath. Read the separate calibrated models below."
-        }
+        },
+        "layout": "matter-thermometer-cards"
       },
       "answer": 1,
       "explanation": "Thermometer B has its liquid level at the 30°C mark. Read the scale at the top of the coloured liquid column.",
@@ -1402,7 +1412,8 @@
           "asset": "temperature-contexts",
           "panel": 0,
           "caption": "Classroom thermometer setup"
-        }
+        },
+        "layout": "matter-thermometer-diagram"
       },
       "answer": {
         "bulb": "A",
@@ -1647,7 +1658,8 @@
           "columns": 2,
           "groupLabel": "Ice and water beakers, illustrative only",
           "caption": "Illustrative beakers; their pictured levels are not measurements. Compare the four equal-mass scientific models below."
-        }
+        },
+        "layout": "matter-ice-models"
       },
       "answer": 1,
       "explanation": "Model B shows a larger volume for the same mass of water when frozen. The same mass occupies more space as ice, so its density is lower.",
