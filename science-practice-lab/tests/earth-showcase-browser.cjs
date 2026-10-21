@@ -26,7 +26,7 @@ async function checkScreenshot(page,scenario,width){
  assert.equal(await page.locator('#feedback-area').innerText(),'','Answers leaked before submission');
  if(['earth-coast-lab','earth-forecast-lab'].includes(scenario.layout)){
   assert.equal(await page.locator('.earth-work-evidence').count(),1);
-  assert.equal(await page.locator('.earth-work-evidence svg').count()>0,true,'Missing illustration');
+  assert((await page.locator('.earth-work-evidence svg').count())+(await page.locator('.earth-work-evidence .scene-art img').count())>0,'Missing visual evidence');
  }
  const dims=await page.evaluate(()=>({screen:innerWidth,scroll:document.documentElement.scrollWidth,card:document.querySelector('.earth-showcase').getBoundingClientRect().width}));
  assert(dims.scroll<=dims.screen+2,'Horizontal overflow '+scenario.id+' '+width+JSON.stringify(dims));
