@@ -5,10 +5,10 @@ const assets={
 'noaa-weather-events':{
  file:'earth/noaa-weather-events.webp',cols:2,rows:2,ratio:'46/27',
  alts:[
-  'Official National Weather Service illustration of a high-pressure heat dome; not a thermometer reading.',
-  'A photographed tornado crossing the Texas Plains.',
-  'An NWS employee works amid strong blowing snow during a blizzard.',
-  'A NASA satellite composite showing a rain-producing monsoon-related low over Australia.'
+  'A weather map diagram shows high pressure and warmer surface air.',
+  'A narrow rotating funnel-shaped cloud reaches the ground over flat farmland.',
+  'A person works near observing equipment in strong blowing snow.',
+  'A satellite composite shows broad swirling cloud bands over northern Australia.'
  ]
 },
 'noaa-forecast-sources':{

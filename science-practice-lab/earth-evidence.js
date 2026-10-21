@@ -496,7 +496,7 @@
           "panel": 3
         }
       },
-      "context": "Image sources: NOAA/NWS and NASA. The heatwave panel is a scientific model; the monsoon panel is a satellite view. These pictures illustrate the concepts, not current weather conditions."
+      "context": "Source imagery: NOAA/NWS and NASA. Panels include photographs, one scientific weather diagram, and a satellite composite. These examples are not current conditions."
     },
     "answer": {
       "hot": "heat",
