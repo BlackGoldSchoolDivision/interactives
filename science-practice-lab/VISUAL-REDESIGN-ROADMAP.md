@@ -52,7 +52,7 @@ Some of the 20 visual references involve **Living Systems and Space**, beyond th
 ## Work chunks and explicit stops
 
 - **Chunk 1 (this commit):** inventory current resources, establish directories and manifests, define templates and 15 pilot targets, automated manifest consistency test. No public app behavior change.
-- **Chunk 2 (teacher check-in first):** generate **one cohesive five-scene Matter pack** from P0 queue, inspect at full size for credibility, export PNG and optimized WebP, and add entries to the live manifest only after actual files exist.
+- **Chunk 2 (in review, 20 Oct 2026):** generated and cropped five colourful Matter context sets as local PNG/WebP prototypes, available in a teacher review ZIP. Checked image-science accuracy; the particle illustration is not suitable as a scored particle model, and mass/temperature scenes require code-based measurements. **No binary upload or student-question changes until teacher approval.** See [QA report](assets/source-notes/MATTER-PACK-01.md).
 - **Chunk 3:** implement visual layout helpers incrementally behind data opt-in; browser and phone checks.
 - **Chunk 4:** refit five Matter questions and validate every answer; review screenshots with teacher.
 - **Chunk 5:** approve and expand Energy and Earth Systems in short batches.
