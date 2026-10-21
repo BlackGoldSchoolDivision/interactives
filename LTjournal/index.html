@@ -334,7 +334,7 @@
 
             <div class="max-w-2xl mx-auto bg-white/60 backdrop-blur-sm p-6 rounded-lg shadow-sm border border-gray-100 theme-midnight:bg-gray-800/60 mt-4">
                 <h2 class="text-3xl font-bold mb-2 font-serif" style="color: var(--journal-accent)">Chapter 3: The Identity Lens</h2>
-                <p class="mb-6 opacity-90 leading-relaxed text-sm">How did <span id="display-transition-name" class="font-bold underline decoration-wavy decoration-indigo-400">your transition</span> impact who you are? Let's break down your personal and social identity. Reflect on how this transition changed, challenged, or reinforced these parts of you.</p>
+                <p class="mb-6 opacity-90 leading-relaxed text-sm">How did this change or shift impact who you are? Let's break down your personal and social identity. Reflect on how this transition changed, challenged, or reinforced these parts of you.</p>
                 
                 <div class="space-y-6">
                     <!-- Goals & Values -->
@@ -477,16 +477,6 @@
         // 3D Page Turn Animation Logic
         function turnPage(currentStep, targetStep) {
             if (currentStep === targetStep) return; // Prevent animating to the same page
-
-            // Update transition name display if moving to later pages
-            if(targetStep >= 3) {
-                const tName = document.getElementById('transition-name').value.trim();
-                if(tName) {
-                    document.getElementById('display-transition-name').textContent = tName;
-                } else {
-                    document.getElementById('display-transition-name').textContent = "your transition";
-                }
-            }
 
             const currentElement = document.getElementById(`step-${currentStep}`);
             const targetElement = document.getElementById(`step-${targetStep}`);
