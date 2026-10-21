@@ -55,7 +55,7 @@ async function nativeDrop(page,item,zone){
 async function round(page,n,mode='learn',capture=false){
  const seen=new Set();
  for(let i=0;i<n;i++){const q=await question(page);seen.add(q.type);await noOverflow(page,q.id);await checkQuestionImages(page,q.id);
- if(capture&&(q.data.photo||q.data.zoneImages)){
+ if(capture&&(q.data.photo||q.data.zoneImages||q.data.sceneStrip)){
   const savedImageRun=await page.evaluate(()=>ScienceLab.getState().run);
   await page.setViewportSize({width:320,height:568});await noOverflow(page,'image question at 320 '+q.id);await checkQuestionImages(page,q.id);
   assert.deepEqual(await page.evaluate(()=>ScienceLab.getState().run),savedImageRun,'Image layout resize lost state '+q.id);
@@ -64,7 +64,7 @@ async function round(page,n,mode='learn',capture=false){
  
  if(capture){
   await captureQuestion(page,path.join(audit,q.id+'.png'));
-  if(q.visual||q.data.diagram||q.data.optionVisuals||q.data.table||q.data.scenePair||q.data.photo||q.data.zoneImages){
+  if(q.visual||q.data.diagram||q.data.optionVisuals||q.data.table||q.data.scenePair||q.data.photo||q.data.zoneImages||q.data.sceneStrip){
    const snapshot=await page.evaluate(()=>ScienceLab.getState().run);
    await page.setViewportSize({width:390,height:667});await noOverflow(page,'visual phone '+q.id);
    assert.deepEqual(await page.evaluate(()=>ScienceLab.getState().run),snapshot,'Visual resize changed state '+q.id);
