@@ -1,0 +1,31 @@
+name: Build Earth Weather Image Bank
+on:
+  push:
+    paths:
+      - '.github/workflows/build-earth-weather-bank.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --quiet Pillow requests
+      - name: Download verified public-domain and attributed weather scenes
+        run: python science-practice-lab/scripts/build-earth-weather-bank.py
+      - name: Commit optimized images and source attribution to GitHub
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add science-practice-lab/assets/earth/extreme-weather-contexts.webp
+          git add science-practice-lab/assets/source-notes/EARTH-WEATHER-PHOTO-CREDITS.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Add licensed real-weather photograph bank for Earth Systems'
+            git pull --rebase origin main
+            git push origin main
+          fi
