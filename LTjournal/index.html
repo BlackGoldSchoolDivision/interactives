@@ -264,10 +264,10 @@
         <section id="step-1" class="journal-page active p-8 md:p-12 pl-12 md:pl-16">
             <div class="binding"></div>
             <div class="binding-rings" id="rings-1"></div>
-            <div class="journal-tab active-tab" style="top: 50px;">Ch. 1</div>
-            <div class="journal-tab" style="top: 150px;">Ch. 2</div>
-            <div class="journal-tab" style="top: 250px;">Ch. 3</div>
-            <div class="journal-tab" style="top: 350px;">Map</div>
+            <div class="journal-tab active-tab" style="top: 50px;" onclick="turnPage(1, 1)">Ch. 1</div>
+            <div class="journal-tab" style="top: 150px;" onclick="turnPage(1, 2)">Ch. 2</div>
+            <div class="journal-tab" style="top: 250px;" onclick="turnPage(1, 3)">Ch. 3</div>
+            <div class="journal-tab" style="top: 350px;" onclick="generateMap(1)">Map</div>
 
             <div class="max-w-2xl mx-auto bg-white/60 backdrop-blur-sm p-6 rounded-lg shadow-sm border border-gray-100 theme-midnight:bg-gray-800/60 theme-midnight:border-gray-700 mt-4">
                 <h2 class="text-3xl font-bold mb-4 font-serif" style="color: var(--journal-accent)">Chapter 1: The Ripple Effect of Change</h2>
@@ -302,10 +302,10 @@
         <section id="step-2" class="journal-page p-8 md:p-12 pl-12 md:pl-16">
             <div class="binding"></div>
             <div class="binding-rings" id="rings-2"></div>
-            <div class="journal-tab" style="top: 50px;">Ch. 1</div>
-            <div class="journal-tab active-tab" style="top: 150px;">Ch. 2</div>
-            <div class="journal-tab" style="top: 250px;">Ch. 3</div>
-            <div class="journal-tab" style="top: 350px;">Map</div>
+            <div class="journal-tab" style="top: 50px;" onclick="turnPage(2, 1)">Ch. 1</div>
+            <div class="journal-tab active-tab" style="top: 150px;" onclick="turnPage(2, 2)">Ch. 2</div>
+            <div class="journal-tab" style="top: 250px;" onclick="turnPage(2, 3)">Ch. 3</div>
+            <div class="journal-tab" style="top: 350px;" onclick="generateMap(2)">Map</div>
 
             <div class="max-w-2xl mx-auto bg-white/60 backdrop-blur-sm p-6 rounded-lg shadow-sm border border-gray-100 theme-midnight:bg-gray-800/60 mt-4">
                 <h2 class="text-3xl font-bold mb-4 font-serif" style="color: var(--journal-accent)">Chapter 2: My Personal Transition</h2>
@@ -313,8 +313,8 @@
                 
                 <div class="p-6 rounded-xl border-2 border-dashed border-gray-300 mt-8 mb-8 relative">
                     <div class="absolute -top-3 left-4 bg-yellow-100 text-yellow-800 text-xs font-bold px-2 py-1 rounded shadow-sm transform -rotate-2">Sticky Note</div>
-                    <label for="transition-name" class="block text-sm font-bold opacity-80 mb-4">Name a meaningful transition you went through:</label>
-                    <input type="text" id="transition-name" class="w-full text-center" placeholder="e.g., Transitioning from middle school to Grade 9...">
+                    <label for="transition-name" class="block text-sm font-bold opacity-80 mb-4">Think about a big change you have experienced in your life, like starting jr. high, switching friend groups, moving to a new city, picking up a new hobby, or trying a new sport. Describe that transition and explain why it was meaningful or important to you.</label>
+                    <textarea id="transition-name" rows="3" class="w-full text-left" placeholder="e.g., Transitioning from middle school to Grade 9 was a huge shift because..."></textarea>
                 </div>
 
                 <div class="mt-12 flex justify-between border-t border-dashed border-gray-300 pt-4">
@@ -327,10 +327,10 @@
         <section id="step-3" class="journal-page p-8 md:p-12 pl-12 md:pl-16">
             <div class="binding"></div>
             <div class="binding-rings" id="rings-3"></div>
-            <div class="journal-tab" style="top: 50px;">Ch. 1</div>
-            <div class="journal-tab" style="top: 150px;">Ch. 2</div>
-            <div class="journal-tab active-tab" style="top: 250px;">Ch. 3</div>
-            <div class="journal-tab" style="top: 350px;">Map</div>
+            <div class="journal-tab" style="top: 50px;" onclick="turnPage(3, 1)">Ch. 1</div>
+            <div class="journal-tab" style="top: 150px;" onclick="turnPage(3, 2)">Ch. 2</div>
+            <div class="journal-tab active-tab" style="top: 250px;" onclick="turnPage(3, 3)">Ch. 3</div>
+            <div class="journal-tab" style="top: 350px;" onclick="generateMap(3)">Map</div>
 
             <div class="max-w-2xl mx-auto bg-white/60 backdrop-blur-sm p-6 rounded-lg shadow-sm border border-gray-100 theme-midnight:bg-gray-800/60 mt-4">
                 <h2 class="text-3xl font-bold mb-2 font-serif" style="color: var(--journal-accent)">Chapter 3: The Identity Lens</h2>
@@ -370,7 +370,7 @@
 
                 <div class="mt-8 flex justify-between border-t border-dashed border-gray-300 pt-4">
                     <button onclick="turnPage(3, 2)" class="px-6 py-2 rounded font-bold border-2 transition-transform hover:scale-105" style="color: var(--journal-accent); border-color: var(--journal-accent)">&larr; Flip Back</button>
-                    <button onclick="generateMap()" class="px-6 py-2 rounded font-bold text-white shadow-md transition-transform hover:scale-105" style="background-color: var(--journal-cover)">Finalize Journal &rarr;</button>
+                    <button onclick="generateMap(3)" class="px-6 py-2 rounded font-bold text-white shadow-md transition-transform hover:scale-105" style="background-color: var(--journal-cover)">Finalize Journal &rarr;</button>
                 </div>
             </div>
         </section>
@@ -378,10 +378,10 @@
         <section id="step-4" class="journal-page p-8 md:p-12 pl-12 md:pl-16">
             <div class="binding"></div>
             <div class="binding-rings" id="rings-4"></div>
-            <div class="journal-tab" style="top: 50px;">Ch. 1</div>
-            <div class="journal-tab" style="top: 150px;">Ch. 2</div>
-            <div class="journal-tab" style="top: 250px;">Ch. 3</div>
-            <div class="journal-tab active-tab" style="top: 350px;">Map</div>
+            <div class="journal-tab" style="top: 50px;" onclick="turnPage(4, 1)">Ch. 1</div>
+            <div class="journal-tab" style="top: 150px;" onclick="turnPage(4, 2)">Ch. 2</div>
+            <div class="journal-tab" style="top: 250px;" onclick="turnPage(4, 3)">Ch. 3</div>
+            <div class="journal-tab active-tab" style="top: 350px;" onclick="generateMap(4)">Map</div>
 
             <div class="max-w-3xl mx-auto bg-white/80 backdrop-blur-sm p-6 md:p-8 rounded-lg shadow-md border border-gray-200 theme-midnight:bg-gray-800/80 mt-2">
                 
@@ -476,18 +476,16 @@
 
         // 3D Page Turn Animation Logic
         function turnPage(currentStep, targetStep) {
-            // Logic prior to moving to step 3
-            if(targetStep === 3 && currentStep === 2) {
+            if (currentStep === targetStep) return; // Prevent animating to the same page
+
+            // Update transition name display if moving to later pages
+            if(targetStep >= 3) {
                 const tName = document.getElementById('transition-name').value.trim();
-                if(!tName) {
-                    // Small inline shake effect instead of alert
-                    const input = document.getElementById('transition-name');
-                    input.style.borderBottomColor = 'red';
-                    setTimeout(() => input.style.borderBottomColor = '', 1000);
-                    input.placeholder = "Please write something here first!";
-                    return;
+                if(tName) {
+                    document.getElementById('display-transition-name').textContent = tName;
+                } else {
+                    document.getElementById('display-transition-name').textContent = "your transition";
                 }
-                document.getElementById('display-transition-name').textContent = tName;
             }
 
             const currentElement = document.getElementById(`step-${currentStep}`);
@@ -512,7 +510,9 @@
         }
 
         // Gather data and prepare the final journal map
-        function generateMap() {
+        function generateMap(currentStep = 3) {
+            if (currentStep === 4) return; // Already on map
+
             const tName = document.getElementById('transition-name').value.trim() || 'My Transition';
             document.getElementById('out-transition-name').textContent = tName;
 
@@ -526,7 +526,7 @@
                 document.getElementById(`out-${field}`).textContent = getVal(idPrefix);
             });
 
-            turnPage(3, 4);
+            turnPage(currentStep, 4);
         }
     </script>
 </body>
