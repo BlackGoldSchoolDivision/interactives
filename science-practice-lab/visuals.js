@@ -2,6 +2,13 @@
 (function(root){
 'use strict';
 const assets={
+'earth-climate-causes':{file:'earth/climate-causes-contexts.webp',cols:2,rows:2,ratio:'3/2',alts:[
+ 'Volcanic eruption inside a summit crater; gases and aerosols can enter the atmosphere.',
+ 'Educational diagram comparing long-term changes in Earth orbital geometry.',
+ 'Visible water droplets in cold vehicle exhaust, a context for fossil-fuel combustion; carbon dioxide itself is invisible.',
+ 'Historic photograph of a large industrial site with smokestacks; no emission measurements are shown.'
+]},
+
 'noaa-weather-events':{
  file:'earth/noaa-weather-events.webp',cols:2,rows:2,ratio:'46/27',
  alts:[

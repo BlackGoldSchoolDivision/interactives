@@ -221,7 +221,26 @@
           "text": "Industrial activity increases greenhouse gas emissions."
         }
       ],
-      "layout": "earth-climate-sort"
+      "layout": "earth-climate-sort",
+      "itemVisuals": {
+        "eruption": {
+          "asset": "earth-climate-causes",
+          "panel": 0
+        },
+        "orbit": {
+          "asset": "earth-climate-causes",
+          "panel": 1
+        },
+        "fuel": {
+          "asset": "earth-climate-causes",
+          "panel": 2
+        },
+        "industry": {
+          "asset": "earth-climate-causes",
+          "panel": 3
+        }
+      },
+      "assetNote": "The photographs and diagram illustrate processes, not measurements or proof of climate attribution."
     },
     "answer": {
       "eruption": "natural",

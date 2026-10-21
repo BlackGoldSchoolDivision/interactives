@@ -51,6 +51,12 @@ async function checkScreenshot(page,scenario,width){
     if(q.id===scenario.id){
      visited=true;
      await checkScreenshot(page,scenario,width);
+     if(q.id==='climate-07'){
+      assert.equal(await page.locator('.picture-bank .picture-piece').count(),4);
+      assert.equal(await page.locator('.earth-showcase-zones .zone-illustration').count(),0);
+      const imageOk=await page.locator('.picture-bank img').evaluateAll(async imgs=>Promise.all(imgs.map(async im=>{try{await im.decode()}catch{}return im.naturalWidth>0})));
+      assert.deepEqual(imageOk,[true,true,true,true], 'Climate driver images did not load');
+     }
      if(q.id==='evidence-12'){
       assert.equal(await page.locator('.picture-bank .picture-piece').count(),4,'Missing four weather photo cards');
       const imgs=await page.locator('.picture-bank img').evaluateAll(async els=>Promise.all(els.map(async img=>{try{await img.decode()}catch{}return img.naturalWidth>0})));
