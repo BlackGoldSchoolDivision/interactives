@@ -340,6 +340,32 @@
         "kind": "original generated raster artwork",
         "review": "visual and mechanical plausibility reviewed; quantitative details not used for scoring"
       }
+    },
+    {
+      "id": "noaa-forecast-sources",
+      "unit": "earth",
+      "title": "NOAA weather-forecasting tools and real observation equipment",
+      "source": null,
+      "web": "earth/noaa-forecast-sources.webp",
+      "grid": {
+        "columns": 2,
+        "rows": 2
+      },
+      "panels": [
+        "An early NSSL Doppler weather radar tower.",
+        "Official illustration of a NOAA GOES satellite in Earth orbit.",
+        "An automated surface station with weather sensors.",
+        "Multi-monitor weather forecasting workstation."
+      ],
+      "credit": "NOAA/NWS; forecast workstation JonathanLamb (public domain); cropped for teaching use",
+      "sourcePage": "https://commons.wikimedia.org/",
+      "sourceURLs": [
+        "https://commons.wikimedia.org/wiki/File:Doppler_Weather_Radar_-_NOAA.jpg",
+        "https://commons.wikimedia.org/wiki/File:GOES-16-GOES_East_with_Earth_in_Background_(46234058505).png",
+        "https://commons.wikimedia.org/wiki/File:Peoria_ASOS.jpg",
+        "https://commons.wikimedia.org/wiki/File:AWIPS-3-head-workstation.jpg"
+      ],
+      "note": "Panel 2 is an official satellite rendering; remaining three are photographs. No measured values are inferred from these pictures."
     }
   ],
   "existingMatterBanner": {
