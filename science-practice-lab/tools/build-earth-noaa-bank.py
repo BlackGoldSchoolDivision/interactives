@@ -13,25 +13,22 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "assets" / "earth"
 OUT.mkdir(parents=True, exist_ok=True)
 DEST = OUT / "noaa-forecast-sources.webp"
-SOURCE_PAGE = "https://www.noaa.gov/stories/6-tools-our-meteorologists-use-to-forecast-weather"
+SOURCE_PAGE = "https://commons.wikimedia.org/"
 SOURCES = [
-    ("radar", "c19e6fcd-4535-42de-8f10-afe988570f37",
-     "A white-domed National Weather Service Doppler radar tower beneath a stormy sky.",
-     "NOAA / National Weather Service"),
-    ("satellite", "777803de-891c-48cd-8edd-4e4320e967c7",
-     "A NOAA weather satellite shown above Earth in an official rendering.",
-     "NOAA (official illustrative rendering, not a satellite photograph)"),
-    ("station", "3e3c78ca-cb2b-491f-a258-c28533e8ebbd",
-     "An automated surface weather station with a mast and measuring instruments.",
-     "NOAA / National Weather Service"),
-    ("workstation", "28f4063f-f87a-4a05-b734-62590e937e33",
-     "A weather-forecast workstation displaying maps and processed observational data.",
-     "NOAA / National Weather Service"),
+    ("radar", "Doppler Weather Radar - NOAA.jpg",
+     "An early NSSL Doppler weather radar tower.", "NOAA / NSSL"),
+    ("satellite", "GOES-16-GOES East with Earth in Background (46234058505).png",
+     "Official illustration of a NOAA GOES satellite in Earth orbit.", "NOAA Satellites"),
+    ("station", "Peoria ASOS.jpg",
+     "An automated surface station with weather sensors.", "NOAA / National Weather Service"),
+    ("workstation", "AWIPS-3-head-workstation.jpg",
+     "Multi-monitor weather forecasting workstation.", "JonathanLamb, public-domain donation"),
 ]
 SIDE = (368, 216)
 CANVAS = Image.new("RGB", (SIDE[0] * 2, SIDE[1] * 2), "#eaf2f3")
 for i, (key, uid, alt, credit) in enumerate(SOURCES):
-    url = "https://www.noaa.gov/media/image_download/" + uid
+    from urllib.parse import quote
+    url = "https://commons.wikimedia.org/wiki/Special:FilePath/" + quote(uid, safe="") + "?width=700"
     raw = None
     for attempt in range(3):
         try:
@@ -64,9 +61,9 @@ record = {
     "web": "earth/noaa-forecast-sources.webp",
     "grid": {"columns": 2, "rows": 2},
     "panels": [x[2] for x in SOURCES],
-    "credit": "NOAA / National Weather Service; cropped and compiled for educational use",
+    "credit": "NOAA/NWS; forecast workstation JonathanLamb (public domain); cropped for teaching use",
     "sourcePage": SOURCE_PAGE,
-    "sourceURLs": ["https://www.noaa.gov/media/image_download/" + x[1] for x in SOURCES],
+    "sourceURLs": ["https://commons.wikimedia.org/wiki/File:" + quote(x[1].replace(" ", "_"), safe=":_()-") for x in SOURCES],
     "note": "Panel 2 is an official satellite rendering; remaining three are photographs. No measured values are inferred from these pictures."
 }
 data["assets"] = [a for a in data["assets"] if a.get("id") != record["id"]] + [record]
