@@ -51,6 +51,55 @@ CANVAS.save(DEST, format="WEBP", quality=82, method=6)
 check = Image.open(DEST)
 assert check.size == (736, 432)
 assert DEST.stat().st_size < 150_000, f"Sprite too large: {DEST.stat().st_size} bytes"
+# Companion weather-event panels: three NWS/NOAA and one NASA source, all PD.
+EVENT_SOURCES = [
+    ("heat", "Heat Wave.jpg",
+     "Official National Weather Service explanation of a high-pressure heat dome.",
+     "NOAA / National Weather Service (explanatory diagram)"),
+    ("tornado", "Dimmitt Tornado1 - NOAA.jpg",
+     "Photograph of the Dimmitt tornado over the Texas Plains.",
+     "Harald Richter / NOAA NSSL"),
+    ("blizzard", "Blizzard1 - NOAA.jpg",
+     "National Weather Service employee working in blowing snow during a blizzard.",
+     "Brad Schick / NWS"),
+    ("monsoon", "Monsoon Low 01 feb 2006 0150Z.jpg",
+     "NASA satellite view of a monsoon-related rain-producing low over Australia.",
+     "NASA Earth Observatory / Jesse Allen (satellite composite)"),
+]
+EVENT_OUT = OUT / "noaa-weather-events.webp"
+events = Image.new("RGB", (SIDE[0] * 2, SIDE[1] * 2), "#eaf2f3")
+for i, (key, filename, alt, credit) in enumerate(EVENT_SOURCES):
+    url = "https://commons.wikimedia.org/wiki/Special:FilePath/" + quote(filename, safe="") + "?width=700"
+    raw = None
+    for attempt in range(3):
+        try:
+            req = Request(url, headers={"User-Agent": "BlackGoldSchoolDivision-ScienceEducation/1.0"})
+            with urlopen(req, timeout=35) as response:
+                if not response.headers.get("Content-Type", "").startswith("image/"):
+                    raise ValueError(f"Unexpected type for {key}")
+                raw = response.read(8_000_001)
+                if len(raw) > 8_000_000: raise ValueError("Source exceeds 8 MB")
+            break
+        except Exception:
+            if attempt == 2: raise
+            time.sleep(3 * (attempt + 1))
+    im = Image.open(BytesIO(raw)).convert("RGB")
+    if im.width < 300 or im.height < 170:
+        raise ValueError(f"Weather event image too small {key}: {im.size}")
+    events.paste(ImageOps.fit(im, SIDE, method=Image.Resampling.LANCZOS),((i % 2)*SIDE[0],(i // 2)*SIDE[1]))
+events.save(EVENT_OUT, "WEBP", quality=82, method=6)
+assert EVENT_OUT.stat().st_size < 150_000
+event_record = {
+    "id": "noaa-weather-events", "unit": "earth",
+    "title": "Real weather events and official heat-dome model",
+    "source": None, "web": "earth/noaa-weather-events.webp",
+    "grid": {"columns":2, "rows":2},
+    "panels":[x[2] for x in EVENT_SOURCES],
+    "credit":"NOAA/NWS, Harald Richter (NOAA NSSL), Brad Schick (NWS), NASA/Jesse Allen",
+    "sourceURLs":["https://commons.wikimedia.org/wiki/File:" + quote(x[1].replace(" ", "_"), safe=":_()-") for x in EVENT_SOURCES],
+    "note":"Heatwave panel is a NOAA explanatory diagram, tornado and blizzard panels are photographs, monsoon panel is NASA satellite data artwork. They illustrate hazards without proving climate attribution or giving exact measurements."
+}
+
 manifest = ROOT / "assets" / "image-bank.json"
 data = json.loads(manifest.read_text(encoding="utf-8"))
 record = {
@@ -66,6 +115,6 @@ record = {
     "sourceURLs": ["https://commons.wikimedia.org/wiki/File:" + quote(x[1].replace(" ", "_"), safe=":_()-") for x in SOURCES],
     "note": "Panel 2 is an official satellite rendering; remaining three are photographs. No measured values are inferred from these pictures."
 }
-data["assets"] = [a for a in data["assets"] if a.get("id") != record["id"]] + [record]
+data["assets"] = [a for a in data["assets"] if a.get("id") not in (record["id"], event_record["id"])] + [record, event_record]
 manifest.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 print(f"Prepared {DEST}: {DEST.stat().st_size} bytes, {len(SOURCES)} NOAA source panels")
