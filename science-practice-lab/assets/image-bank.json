@@ -366,6 +366,31 @@
         "https://commons.wikimedia.org/wiki/File:AWIPS-3-head-workstation.jpg"
       ],
       "note": "Panel 2 is an official satellite rendering; remaining three are photographs. No measured values are inferred from these pictures."
+    },
+    {
+      "id": "noaa-weather-events",
+      "unit": "earth",
+      "title": "Real weather events and official heat-dome model",
+      "source": null,
+      "web": "earth/noaa-weather-events.webp",
+      "grid": {
+        "columns": 2,
+        "rows": 2
+      },
+      "panels": [
+        "Official National Weather Service explanation of a high-pressure heat dome.",
+        "Photograph of the Dimmitt tornado over the Texas Plains.",
+        "National Weather Service employee working in blowing snow during a blizzard.",
+        "NASA satellite view of a monsoon-related rain-producing low over Australia."
+      ],
+      "credit": "NOAA/NWS, Harald Richter (NOAA NSSL), Brad Schick (NWS), NASA/Jesse Allen",
+      "sourceURLs": [
+        "https://commons.wikimedia.org/wiki/File:Heat_Wave.jpg",
+        "https://commons.wikimedia.org/wiki/File:Dimmitt_Tornado1_-_NOAA.jpg",
+        "https://commons.wikimedia.org/wiki/File:Blizzard1_-_NOAA.jpg",
+        "https://commons.wikimedia.org/wiki/File:Monsoon_Low_01_feb_2006_0150Z.jpg"
+      ],
+      "note": "Heatwave panel is a NOAA explanatory diagram, tornado and blizzard panels are photographs, monsoon panel is NASA satellite data artwork. They illustrate hazards without proving climate attribution or giving exact measurements."
     }
   ],
   "existingMatterBanner": {
