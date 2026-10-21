@@ -222,3 +222,57 @@ body[data-topic="earth"] .unit-tab[data-topic="earth"][aria-pressed="true"]{back
 .flow-connector,.branch-arrow,.flow-fork{pointer-events:none}
 .energy-stage-diagram .zone-drop-action,.energy-branch-diagram .zone-drop-action{scroll-margin-block:120px}
 @media(max-width:670px){.energy-stage-diagram .flow-connector{transform:none;font-size:0;height:30px;min-height:30px;line-height:30px}.energy-stage-diagram .flow-connector:after{content:"↓";font-size:26px;line-height:30px;color:#287a8b;display:block;text-align:center}.question-card:has(.energy-stage-diagram) .question-actions,.question-card:has(.energy-branch-diagram) .question-actions{position:static;box-shadow:none}}
+
+/* EARTH SHOWCASE LIVE — genuine Grade 6 question panels, not mockup images. */
+.earth-showcase{padding:0;overflow:hidden;border-radius:18px;border:1px solid #bfdae5;box-shadow:0 9px 32px #23465920}
+.earth-showcase-banner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;background:linear-gradient(110deg,#1c5686,#0798a1);color:#fff;padding:16px clamp(14px,3vw,27px);font-weight:850}
+.earth-showcase-banner span{font-size:11px;letter-spacing:.12em;font-weight:800}
+.earth-showcase-banner strong{font-size:16px;line-height:1.2}
+.earth-showcase.earth-storm-match .earth-showcase-banner{background:linear-gradient(110deg,#165585,#3c87c4)}
+.earth-showcase.earth-forecast-lab .earth-showcase-banner{background:linear-gradient(110deg,#10587b,#009eab)}
+.earth-showcase.earth-climate-sort .earth-showcase-banner{background:linear-gradient(110deg,#3864a0,#8052b2)}
+.earth-showcase.earth-coast-lab .earth-showcase-banner{background:linear-gradient(110deg,#245a78,#1c9889)}
+.earth-showcase>.q-top,.earth-showcase>h2,.earth-showcase>.question-instruction,.earth-showcase>.context,.earth-showcase>#feedback-area,.earth-showcase>.question-actions{margin-left:clamp(13px,2.5vw,26px);margin-right:clamp(13px,2.5vw,26px)}
+.earth-showcase>.q-top{margin-top:16px}
+.earth-showcase>h2{font-size:clamp(21px,2.3vw,28px);margin:14px clamp(13px,2.5vw,26px) 10px;line-height:1.25}
+.earth-showcase>.question-instruction{color:#567382;font-size:14px;margin-bottom:16px}
+.earth-showcase>.question-actions{margin-bottom:16px}
+.earth-workspace{display:grid;gap:17px;padding:0 clamp(13px,2.5vw,26px) 20px;min-width:0}
+.earth-workspace.with-evidence{grid-template-columns:minmax(0,1.13fr) minmax(0,1fr);align-items:start}
+.earth-workspace .earth-work-evidence,.earth-workspace .earth-work-answer{border-radius:14px;padding:14px;min-width:0;background:#f8fbfd;border:1px solid #cddfe7}
+.earth-workspace .earth-work-evidence{background:linear-gradient(155deg,#eaf6f9,#f8fcfc)}
+.earth-workspace .earth-work-answer{background:linear-gradient(155deg,#f4f8fd,#fff)}
+.earth-workspace .earth-work-eyebrow{font-size:11px;font-weight:900;color:#2d697e;letter-spacing:.12em;margin:0 0 12px}
+.earth-workspace .diagram-panel{margin:0;background:#fff;padding:12px;border:1px solid #cddfe7;border-radius:12px}
+.earth-workspace .earth-board{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.earth-workspace .earth-tile{border-radius:9px;background:#fff;padding:6px;border:1px solid #d3e3e6}
+.earth-workspace .earth-tile svg{max-height:130px}
+.earth-workspace .earth-art{margin:0 auto;max-width:220px}
+.earth-workspace .earth-letter{font-size:16px;left:6px;top:6px;padding:3px 9px}
+.earth-workspace .sort-tools{font-weight:700;padding:6px 0}
+.earth-workspace .bank{padding:12px;border:2px dashed #a9cbd7;background:#edf7fa;gap:9px;border-radius:12px}
+.earth-workspace .bank .piece{background:#fff;border:1.5px solid #b1ced7;border-radius:10px;box-shadow:0 3px 8px #194e6314;padding:11px 13px;font-size:14px;font-weight:750;min-height:58px}
+.earth-workspace .bank .piece[aria-pressed=true]{background:#fff0d4;border-color:#cb8b3a;box-shadow:0 0 0 2px #dba454}
+.earth-workspace .earth-showcase-zones{gap:11px;margin-top:12px}
+.earth-workspace .earth-showcase-zones .zone{border:2px dashed #83b9c7;border-radius:12px;background:#eff8fa;min-height:128px;padding:12px}
+.earth-workspace .earth-showcase-zones .zone h3{font-weight:900;color:#285b73;padding-bottom:8px;border-bottom:1px solid #c1dce3;font-size:15px}
+.earth-workspace .earth-showcase-zones .zone .piece{background:#fff;font-size:13px}
+.earth-workspace .earth-showcase-zones .zone.drag-over{background:#fff4dc;outline:3px solid #edb75d}
+.earth-workspace .earth-showcase-zones .zone-drop-action{background:#fff;border-color:#89bcc7;color:#225d6e}
+.earth-workspace .earth-storm-match .zone:nth-child(1){background:#eef5ff;border-color:#8db8d9}
+.earth-workspace .earth-storm-match .zone:nth-child(2){background:#f0f0fe;border-color:#a3a4de}
+.earth-workspace .earth-storm-match .zone:nth-child(3){background:#f0f8fb;border-color:#89bfcd}
+.earth-workspace .earth-storm-match .zone:nth-child(4){background:#eefaf4;border-color:#a1cbaf}
+.earth-workspace .earth-climate-sort .zone:nth-child(1){background:#eaf4ff;border-color:#89b7dd}
+.earth-workspace .earth-climate-sort .zone:nth-child(2){background:#f2edff;border-color:#b1a0d5}
+.earth-workspace .earth-climate-sort,.earth-workspace .earth-storm-match{grid-template-columns:repeat(2,minmax(0,1fr))}
+.earth-workspace .earth-forecast-lab,.earth-workspace .earth-coast-lab{grid-template-columns:1fr}
+.earth-workspace .earth-forecast-lab .zone,.earth-workspace .earth-coast-lab .zone{min-height:75px;padding:8px 11px}
+.earth-workspace .earth-forecast-lab .zone h3,.earth-workspace .earth-coast-lab .zone h3{margin:0 0 7px;font-size:13px;padding:0 0 5px}
+.earth-workspace .earth-forecast-lab .zone-drop-action,.earth-workspace .earth-coast-lab .zone-drop-action{min-height:38px;margin-top:6px}
+.earth-workspace .earth-work-answer:has(.earth-forecast-lab) .bank,.earth-workspace .earth-work-answer:has(.earth-coast-lab) .bank{display:grid;grid-template-columns:1fr;align-items:stretch}
+.earth-showcase .question-actions .primary{background:#087fb9;border-color:#087fb9;min-height:48px;padding:10px 23px}
+.earth-showcase .question-actions .primary:hover{background:#08618d}
+@media(max-width:900px){.earth-workspace.with-evidence{grid-template-columns:1fr}.earth-workspace .earth-forecast-lab,.earth-workspace .earth-coast-lab{grid-template-columns:repeat(2,minmax(0,1fr))}.earth-workspace .earth-work-answer:has(.earth-forecast-lab) .bank,.earth-workspace .earth-work-answer:has(.earth-coast-lab) .bank{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:580px){.earth-showcase-banner{padding:11px 13px}.earth-showcase-banner span{font-size:10px}.earth-showcase-banner strong{font-size:13px}.earth-workspace{padding:0 10px 14px;gap:10px}.earth-workspace .earth-work-evidence,.earth-workspace .earth-work-answer{padding:10px}.earth-workspace .earth-board{gap:5px}.earth-workspace .earth-tile{padding:4px}.earth-workspace .earth-tile svg{max-height:110px}.earth-workspace .bank .piece{font-size:12px;min-height:52px;padding:8px}.earth-workspace .earth-showcase-zones .zone{padding:9px;min-height:92px}.earth-workspace .earth-showcase-zones .zone h3{font-size:12px}.earth-workspace .earth-storm-match,.earth-workspace .earth-climate-sort{grid-template-columns:1fr}.earth-workspace .earth-work-answer:has(.earth-forecast-lab) .bank,.earth-workspace .earth-work-answer:has(.earth-coast-lab) .bank{grid-template-columns:1fr}}
+@media(max-width:350px){.earth-workspace .earth-forecast-lab,.earth-workspace .earth-coast-lab{grid-template-columns:1fr}.earth-workspace .earth-board{grid-template-columns:1fr}}
