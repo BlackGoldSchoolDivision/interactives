@@ -62,6 +62,9 @@ jobs:
           if [ -f science-practice-lab/tests/earth-showcase-browser.cjs ]; then
             node science-practice-lab/tests/earth-showcase-browser.cjs
           fi
+          if [ -f science-practice-lab/tests/matter-showcase-browser.cjs ]; then
+            node science-practice-lab/tests/matter-showcase-browser.cjs
+          fi
           if [ -f science-practice-lab/tests/picture-card-browser.cjs ]; then
             node science-practice-lab/tests/picture-card-browser.cjs
           fi

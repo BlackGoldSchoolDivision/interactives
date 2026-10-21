@@ -92,3 +92,16 @@ The `climate-07` Natural versus Human Climate Causes sorting activity now includ
 ## Space · curriculum-aligned first release (21 October 2026)
 
 36 original assessment-style questions in two goals, **Solar system & celestial bodies** (18) and **Space exploration & satellites** (18). Both cover all nine answer formats with two questions per format; all **26 source curriculum statements** from Grade 6 Science rows 204–238 are explicitly mapped. Includes planet ordering, the main asteroid belt, emission versus reflection of light, Pluto's reclassification, model scale, telescope/rover/satellite uses, natural and human-built satellites, the International Space Station, barriers to living in space and University of Alberta's Ex-Alta 1 CubeSat deployed from the ISS in 2017. Initial release uses eight original scientifically labelled **not-to-scale** schematic diagrams; a later visual redesign will add licensed NASA/CSA photos, original high-fidelity illustrations and photographic drag cards without replacing accurate positional models. All new scores/progress are independent of the original four units (`science-practice-lab-space-v1`). No previous answers or student progress have been changed.
+
+## Matter visual redesign — six real question screens (Batch 1, 21 October 2026)
+
+Against the teacher-supplied Vretta practice-exam *quality benchmark* (not its artwork or branded UI), six existing Matter questions now have fully functional, colourful answer layouts, not screenshot mockups:
+
+- `particles-02`: four large, accurate **equal-count particle-model image choices**, scored exactly as before.
+- `particles-12`: **four photographed picture cards to drag and match**. Original imagery from the already-published Matter asset bank is attached to the moveable process cards and no longer repeated in a separate gallery. The stills are illustrations of ice/liquid/heating/condensed droplets; they are not claimed to measure or record the full transitions.
+- `particles-13`: illustrated phase-change context gallery and accurate coded reversible-arrows model next to the draggable label placements.
+- `temperature-02`: large calibrated thermometer image choices, original answer retained.
+- `temperature-13`: laboratory photograph and precise coded parts diagram with a dedicated label-placement panel. Accessible diagram wording no longer discloses the full matching key.
+- `expansion-02`: original glassware photography next to accurate *code-drawn* equal-mass ice/water volume models. Photos are contextual; level measurements and scoring are never inferred from them.
+
+All six use varied turquoise/amber/blue student-facing banners, larger tap areas and high-contrast scientific illustrations; diagram-and-response panels stack on narrow screens. Original image assets are reused rather than copied or duplicated from Vretta. The question banks, IDs, grade statements, nine answer formats, saved student progress and keys remain unchanged. Tests include `tests/matter-showcase.test.cjs` and `tests/matter-showcase-browser.cjs` at desktop, 390 px and 320 px. This is Batch 1 of a unit-by-unit review, **not a claim that all 306 questions are visually redesigned**.
