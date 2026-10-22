@@ -26,14 +26,15 @@ const cities={
 };
 const criteria={sea:'Access to sea trade',wealth:'Ways to earn wealth',overall:'Overall trading advantages'};
 const blank=()=>({part:'map',index:0,found:[],visited:[],evidence:{florence:[],venice:[],genoa:[]},notes:{florence:'',venice:'',genoa:''},order:['florence','venice','genoa'],reasons:{florence:'',venice:'',genoa:''},italy:'',counter:'',criterion:'sea',liam:false,hold:false,city:'florence'});
+const owns=(o,k)=>typeof k==='string'&&Object.prototype.hasOwnProperty.call(o,k);
 function clean(raw){
  if(!raw||raw.format!==FORMAT||raw.version!==VERSION||!raw.state||typeof raw.state!=='object')throw Error('Choose a City-States Atlas work file.');
  const x=raw.state,b=blank(),str=v=>typeof v==='string'?v.slice(0,12000):'';
  b.part=['map','investigate','rank'].includes(x.part)?x.part:'map';b.index=Number.isInteger(x.index)?Math.max(0,Math.min(12,x.index)):0;
- b.found=Array.isArray(x.found)?[...new Set(x.found.filter(v=>byId[v]))]:[];b.visited=Array.isArray(x.visited)?[...new Set(x.visited.filter(v=>cities[v]))]:[];
- b.order=Array.isArray(x.order)&&x.order.length===3&&new Set(x.order).size===3&&x.order.every(v=>cities[v])?x.order:b.order;
+ b.found=Array.isArray(x.found)?[...new Set(x.found.filter(v=>owns(byId,v)))]:[];b.visited=Array.isArray(x.visited)?[...new Set(x.visited.filter(v=>owns(cities,v)))]:[];
+ b.order=Array.isArray(x.order)&&x.order.length===3&&new Set(x.order).size===3&&x.order.every(v=>owns(cities,v))?x.order:b.order;
  for(const id of Object.keys(cities)){b.notes[id]=str(x.notes?.[id]);b.reasons[id]=str(x.reasons?.[id]);b.evidence[id]=Array.isArray(x.evidence?.[id])?[...new Set(x.evidence[id].filter(n=>n===0||n===1))]:[];}
- b.italy=str(x.italy);b.counter=str(x.counter);b.criterion=criteria[x.criterion]?x.criterion:'sea';b.liam=x.liam===true;b.hold=x.hold===true;b.city=cities[x.city]?x.city:'florence';return b;
+ b.italy=str(x.italy);b.counter=str(x.counter);b.criterion=owns(criteria,x.criterion)?x.criterion:'sea';b.liam=x.liam===true;b.hold=x.hold===true;b.city=owns(cities,x.city)?x.city:'florence';return b;
 }
 let state=blank(),storageOK=true,storageMessage='';
 try{const raw=localStorage.getItem(KEY);if(raw)state=clean(JSON.parse(raw));}catch(_){storageMessage='Saved progress could not be opened. You can still use Download work.';}
@@ -53,6 +54,7 @@ function speak(text){if(!('speechSynthesis'in window)){announce('Read-aloud is u
 function currentText(){if(state.part==='map')return `Find ${places[state.index].name}. ${places[state.index].clue}`;if(state.part==='investigate'){const c=cities[selectedCity];return state.liam?c.name+'. '+c.short:[c.name,c.geography,c.wealth,c.challenge].join(' ');}return 'Rank Florence, Venice and Genoa. Your criterion is '+criteria[state.criterion]+'. Use evidence to explain each rank.';}
 function announce(text){$('save-status').textContent=text;}
 function render(){
+ clearTimeout(dwellTimer);
  document.body.classList.toggle('support',state.liam);$('liam').setAttribute('aria-pressed',state.liam);$('liam-status').textContent=state.liam?'on':'off';
  document.querySelectorAll('[data-part]').forEach(b=>{if(b.dataset.part===state.part)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');});
  $('map-count').textContent=state.found.length+'/13';$('research-count').textContent=state.visited.length+'/3';
