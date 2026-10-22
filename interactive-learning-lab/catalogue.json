@@ -1,50 +1,5 @@
 [
   {
-    "id": "morpheme-missions",
-    "title": "Morpheme Missions",
-    "category": "Morphology",
-    "group": "",
-    "description": "Build words from full bases, prefixes and suffixes. Practise spelling changes and meaning in context, or print a six-word activity.",
-    "favourite": true,
-    "tags": [
-      "36 missions",
-      "Word Lab"
-    ],
-    "url": "https://interactives.blackgold.ca/morpheme-missions/",
-    "links": [],
-    "credit": "",
-    "captured": "2026-10-04",
-    "types": [
-      "Word work",
-      "Practice questions",
-      "Printables"
-    ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/morpheme-missions.jpg"
-  },
-  {
-    "id": "word-detective",
-    "title": "Word Detective",
-    "category": "Morphology",
-    "group": "",
-    "description": "Sort word families, investigate lookalikes and compare affix jobs. Ten cases include explained feedback and printable activities.",
-    "favourite": true,
-    "tags": [
-      "10 investigations",
-      "Sort & explain"
-    ],
-    "url": "https://interactives.blackgold.ca/word-detective/",
-    "links": [],
-    "credit": "",
-    "captured": "2026-10-04",
-    "types": [
-      "Word work",
-      "Sorting",
-      "Practice questions",
-      "Printables"
-    ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/word-detective.jpg"
-  },
-  {
     "id": "vocabularyarcade",
     "title": "Vocabulary Arcade",
     "category": "Reading & writing",
@@ -354,21 +309,21 @@
     "title": "WordWorks Lab",
     "category": "Morphology",
     "group": "",
-    "description": "Explore word families, compare affix meanings and spelling changes, then build words in an eight-question quest with clues and feedback.",
+    "description": "Solve eight meaning clues by combining prefixes, base words and suffixes. Choose from three Word Quest levels, use hints and discover spelling changes.",
     "favourite": false,
     "tags": [
-      "Word building",
-      "Hear the words"
+      "Word Quest",
+      "Three levels"
     ],
     "url": "https://interactives.blackgold.ca/wordworks-lab/",
     "links": [],
     "credit": "",
-    "captured": "2026-10-04",
+    "captured": "2026-10-22",
     "types": [
       "Word work",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/wordworks.jpg"
+    "image": "https://interactives.blackgold.ca/interactive-learning-lab/images/wordworks-quest-20261022.jpg?v=eacb74dad29b"
   },
   {
     "id": "alphabetcards",

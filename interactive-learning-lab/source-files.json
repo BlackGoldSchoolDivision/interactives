@@ -2,34 +2,6 @@
   "schema_version": 1,
   "generated": "2026-10-19",
   "activities": {
-    "morpheme-missions": {
-      "kind": "html",
-      "title": "Morpheme Missions",
-      "credit": "",
-      "category": "Morphology",
-      "versions": [
-        {
-          "label": "Morpheme Missions",
-          "repo": "BlackGoldSchoolDivision/interactives",
-          "path": "morpheme-missions/index.html",
-          "url": "https://interactives.blackgold.ca/morpheme-missions/"
-        }
-      ]
-    },
-    "word-detective": {
-      "kind": "html",
-      "title": "Word Detective",
-      "credit": "",
-      "category": "Morphology",
-      "versions": [
-        {
-          "label": "Word Detective",
-          "repo": "BlackGoldSchoolDivision/interactives",
-          "path": "word-detective/index.html",
-          "url": "https://interactives.blackgold.ca/word-detective/"
-        }
-      ]
-    },
     "vocabularyarcade": {
       "kind": "html",
       "title": "Vocabulary Arcade",
@@ -8652,7 +8624,7 @@
     "Maltais239/interactives/wordworks-lab": [
       {
         "path": "wordworks-lab/index.html",
-        "bytes": 30922
+        "bytes": 39130
       }
     ],
     "Maltais239/interactives/worldgeography": [
@@ -8931,12 +8903,6 @@
       {
         "path": "mapmastersubregions/index.html",
         "bytes": 92294
-      }
-    ],
-    "BlackGoldSchoolDivision/interactives/morpheme-missions": [
-      {
-        "path": "morpheme-missions/index.html",
-        "bytes": 55257
       }
     ],
     "BlackGoldSchoolDivision/interactives/morphology-resources": [
@@ -9287,16 +9253,10 @@
         "bytes": 2741995
       }
     ],
-    "BlackGoldSchoolDivision/interactives/word-detective": [
-      {
-        "path": "word-detective/index.html",
-        "bytes": 58342
-      }
-    ],
     "BlackGoldSchoolDivision/interactives/wordworks-lab": [
       {
         "path": "wordworks-lab/index.html",
-        "bytes": 30922
+        "bytes": 39130
       }
     ],
     "BlackGoldSchoolDivision/interactives/canada-through-time-expanded": [

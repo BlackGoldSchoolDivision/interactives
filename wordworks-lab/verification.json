@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-22",
+  "scope": "Word Quest only; Explore and Teacher sections removed",
+  "curated_content": {
+    "words": 62,
+    "tiers": {
+      "Starter": 22,
+      "Builder": 26,
+      "Advanced": 14
+    },
+    "original_word_records": "unchanged"
+  },
+  "browser_checks": {
+    "Starter": "8 words completed, one retry and one hint: 765/800",
+    "Builder": "8 words completed without support: 800/800",
+    "Advanced": "8 words completed with three hints on one word: 740/800",
+    "mobile_Advanced": "8 words completed: 800/800",
+    "best_scores": "retained after reload",
+    "keyboard": "Enter and Space select pieces",
+    "spelling_feedback": [
+      "runner",
+      "unhappiness",
+      "careful",
+      "hopeful"
+    ],
+    "viewports": [
+      "1024x540",
+      "1366x650",
+      "768x900",
+      "390x667",
+      "320x568",
+      "640x360"
+    ],
+    "all_viewports": {
+      "level_selection": "no horizontal overflow",
+      "active_question": "no horizontal overflow; selected pieces and clue retained during resizing",
+      "complete_round": "no horizontal overflow"
+    },
+    "touch_targets_css_px": 44,
+    "phone_controls": "Check Word and Next Word fixed within viewport",
+    "CSS_200_percent_scale_at_390_width": "no horizontal overflow",
+    "native_browser_zoom": "not independently verified"
+  },
+  "hub_changes": {
+    "removed": [
+      "morpheme-missions",
+      "word-detective"
+    ],
+    "WordWorks": "second card in row 2, directly after Rooting For You",
+    "screenshot": "actual game screen; 900x620 JPEG under 60 KB"
+  }
+}
