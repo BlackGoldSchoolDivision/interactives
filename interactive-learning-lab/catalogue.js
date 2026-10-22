@@ -30,7 +30,7 @@ const subjects = [
   {label:'Thinking tools',category:'Thinking tools',id:'thinkingroutines',colour:'#9651ac',ink:'#fff'}
 ];
 const featuredOrder = ['morpheme-missions','vocabularyarcade','mackwoodmapping','word-detective','numberbuilding','moonphases','writerspark','thinking-dialogue'];
-const writingOrder = ['writerspark','infospark'];
+const writingOrder = ['writerspark','infospark','vocabularyarcade','rootwords'];
 const thinkingOrder = ['thinking-dialogue','thinkingroutines','imagespark','venndiagram','hexthinker','asctriangle','frayermodel'];
 const scienceOrder = ['science-practice-lab','moonphases','dinodig','walker-bridge'];
 let chosen = 'Favourites', chosenGroup = 'All geography', chosenType = 'All types', query = '';
