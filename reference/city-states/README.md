@@ -1,0 +1,11 @@
+# City-States Atlas
+
+A separate Grade 8 activity adapted from Mapping the Italian City-States. The original Renaissance Atlas and its saved work remain separate.
+
+Build from repository root with `node reference/build-city-states.cjs`. The built `renaissance-map/city-states.html` is a single file using the existing atlas assets. The build reuses Natural Earth coastlines and rivers plus generated paper and mountain artwork from `scene-map-fragment.html`; it removes the original labels, Ottoman layer and continental historical borders because this activity locates cities and seas rather than reconstructing political boundaries.
+
+Activity: nine cities, Sicily as an island, and three seas; source-linked information on Florence, Venice and Genoa; selectable evidence and optional notes; a criterion-based ranking with four written responses and an optional counterargument. Rankings are not automatically graded. LIAM mode uses two large options, shorter prompts, read-aloud and selectable response sentences; hold-to-choose is optional. Work saves in a separate browser key and can be downloaded/imported as versioned JSON. Print output includes a reference map, collected evidence and responses. The teacher-copy download resolves only external assets, preserving local SVG fragment references.
+
+Trade paths are conceptual connections rather than historical voyages. Florence to Pisa is an overland/valley connection, not a claim that large seagoing vessels reached Florence. The reference map is geographic and has no sovereign-state borders. Information sources are linked from the activity help and individual city files.
+
+Browser verification on October 22, 2026: all 13 mapping tasks, incorrect-answer feedback, city files, evidence collection, ranking reorder, writing and reload persistence; responsive iframe checks at 1366×650, 1024×540, 768×900, 390×667, 320×568 and 640×360. See task verification notes for the final download/import and print checks.
