@@ -6,15 +6,15 @@ const ITEMS=[
 {id:'clip',name:'Steel paper clip',icon:'📎',mag:true,xy:[.13,.20],mobile:[.18,.17]},
 {id:'pencil',name:'Wooden pencil',icon:'✏️',mag:false,xy:[.39,.17],mobile:[.50,.17]},
 {id:'bolt',name:'Steel bolt',icon:'🔩',mag:true,xy:[.66,.18],mobile:[.82,.17]},
-{id:'eraser',name:'Rubber eraser',icon:'🧽',mag:false,xy:[.86,.21],mobile:[.18,.36]},
+{id:'eraser',name:'Kitchen sponge',icon:'🧽',mag:false,xy:[.86,.21],mobile:[.18,.36]},
 {id:'pin',name:'Steel safety pin',icon:'🧷',mag:true,xy:[.18,.41],mobile:[.50,.36]},
 {id:'block',name:'Wood block',icon:'🪵',mag:false,xy:[.46,.41],mobile:[.82,.36]},
-{id:'washer',name:'Steel washer',icon:'⚙️',mag:true,xy:[.72,.40],mobile:[.18,.56]},
-{id:'toy',name:'Plastic toy',icon:'🧸',mag:false,xy:[.88,.55],mobile:[.50,.56]},
+{id:'washer',name:'Steel gear',icon:'⚙️',mag:true,xy:[.72,.40],mobile:[.18,.56]},
+{id:'toy',name:'Stuffed teddy',icon:'🧸',mag:false,xy:[.88,.55],mobile:[.50,.56]},
 {id:'tack',name:'Steel thumbtack',icon:'📌',mag:true,xy:[.12,.65],mobile:[.82,.56]},
 {id:'ruler',name:'Plastic ruler',icon:'📏',mag:false,xy:[.35,.74],mobile:[.18,.77]},
 {id:'key',name:'Steel key',icon:'🗝️',mag:true,xy:[.63,.78],mobile:[.50,.77]},
-{id:'foil',name:'Aluminum foil',icon:'🔳',mag:false,xy:[.85,.79],mobile:[.82,.77]}
+{id:'foil',name:'Paper sheet',icon:'📄',mag:false,xy:[.85,.79],mobile:[.82,.77]}
 ];
 const board=$('freeBoard'),magnet=$('freeMagnet'),table=$('freeObjects'),carry=$('freeCarry');
 let active=false,holding=false,px=.52,py=.48,lastNonmag='',found=new Set();
