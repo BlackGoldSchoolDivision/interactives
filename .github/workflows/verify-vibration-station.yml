@@ -74,6 +74,33 @@ jobs:
               return {width:el.width,nonempty:pixels.some((a,i)=>i%4===3&&a>0)};
             });
             assert(physical.width>0&&physical.nonempty,'Physical string demonstration should be visible');
+
+            // The physical string panel must be its own prominent section:
+            // beneath the instrument, above the actual audio wave display.
+            const visualSplit=await page.evaluate(()=>{
+              const photo=document.querySelector('#photoPanel').getBoundingClientRect();
+              const physical=document.querySelector('#movementLab').getBoundingClientRect();
+              const air=document.querySelector('#soundLab').getBoundingClientRect();
+              const canvas=document.querySelector('#physicalString').getBoundingClientRect();
+              return {photoBottom:photo.bottom,physicalTop:physical.top,
+                physicalBottom:physical.bottom,physicalHeight:physical.height,
+                canvasHeight:canvas.height,airTop:air.top};
+            });
+            assert(visualSplit.physicalTop>=visualSplit.photoBottom-3,
+              'String motion must not be floating over the instrument: '+JSON.stringify(visualSplit));
+            assert(visualSplit.airTop>=visualSplit.physicalBottom-3,
+              'Sound wave must follow the physical vibration panel: '+JSON.stringify(visualSplit));
+            assert(visualSplit.physicalHeight>=75&&visualSplit.canvasHeight>=30,
+              'Slow motion panel must be large enough to notice: '+JSON.stringify(visualSplit));
+            await page.locator('#tension').evaluate(el=>{el.value='50';el.dispatchEvent(new Event('input',{bubbles:true}));});
+            await page.locator('#stringControls .pick[data-string="1"]').click();
+            assert.equal(await page.locator('#physicalString').getAttribute('data-vibration-hz'),'440',
+              'Middle yellow string should be concert A at 440Hz');
+            assert((await page.locator('#motionFrequency').innerText()).includes('440 Hz'),
+              '440Hz tuning should be obvious without reading teacher notes');
+            await page.waitForTimeout(200);
+            await page.screenshot({path:'/tmp/vibration-440-slow-motion.png',animations:'disabled'});
+
             const monitor=await page.locator('#soundLab').boundingBox();
             const stage=await page.locator('#photoPanel').boundingBox();
             assert(monitor.y>=stage.y+stage.height-2,'Sound waveform panel must sit below the photographed instrument');
@@ -140,6 +167,9 @@ jobs:
           from PIL import Image,ImageStat
           from pathlib import Path
           root=Path('vibration-station/validation');root.mkdir(parents=True,exist_ok=True)
+          im=Image.open('/tmp/vibration-440-slow-motion.png').convert('RGB')
+          im.thumbnail((1100,1000),Image.Resampling.LANCZOS)
+          im.save(root/'string-440-slow-motion.webp','WEBP',quality=90,method=6)
           for label in ['strings','drum','hunt','phone']:
               im=Image.open('/tmp/vibration-'+label+'.png').convert('RGB')
               im.thumbnail((1100,1100),Image.Resampling.LANCZOS)
