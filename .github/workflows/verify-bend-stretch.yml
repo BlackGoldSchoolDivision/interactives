@@ -1,0 +1,102 @@
+name: Verify Bend Stretch Change and capture Learning Lab image
+on:
+  push:
+    paths:
+      - '.github/workflows/verify-bend-stretch.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  screenshot-and-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install screenshot tools
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+          python -m pip install pillow
+      - name: Exercise the real material images and interactions
+        run: |
+          python -m http.server 8765 --bind 127.0.0.1 >/tmp/bend-server.log 2>&1 &
+          sleep 2
+          node <<'JS'
+          const { chromium } = require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const page=await browser.newPage({viewport:{width:1200,height:900},deviceScaleFactor:1});
+            const errors=[];
+            page.on('pageerror',e=>errors.push(e.message));
+            await page.goto('http://127.0.0.1:8765/bend-stretch-change/',{waitUntil:'networkidle'});
+            for (const k of ['sponge','clay','band','pipe']){
+              const response=await page.request.get('http://127.0.0.1:8765/bend-stretch-change/assets/'+k+'.webp');
+              if(!response.ok())throw Error(k+' image missing: '+response.status());
+            }
+            let bg=await page.locator('#prop').evaluate(el=>getComputedStyle(el).backgroundImage);
+            if(!bg.includes('sponge.webp'))throw Error('Sponge cutout not displayed: '+bg);
+            await page.screenshot({path:'/tmp/bend-materials.png'});
+            await page.locator('#backChoice').click();
+            await page.locator('#test').click();
+            await page.waitForTimeout(1800);
+            if(!((await page.locator('#question').innerText()).includes('springs back')))throw Error('Sponge did not finish');
+            await page.locator('[data-material="1"]').click();
+            bg=await page.locator('#prop').evaluate(el=>getComputedStyle(el).backgroundImage);
+            if(!bg.includes('clay.webp'))throw Error('Clay image did not change');
+            await page.locator('#staysChoice').click();
+            await page.locator('#test').click();
+            await page.waitForTimeout(1800);
+            if(!((await page.locator('#question').innerText()).includes('stays changed')))throw Error('Clay did not stay changed');
+            for(const [index,name] of [[2,'band'],[3,'pipe']]){
+              await page.locator('[data-material="'+index+'"]').click();
+              bg=await page.locator('#prop').evaluate(el=>getComputedStyle(el).backgroundImage);
+              if(!bg.includes(name+'.webp'))throw Error(name+' image not displayed');
+            }
+            await page.setViewportSize({width:390,height:667});
+            const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+1);
+            if(overflow)throw Error('Horizontal scrolling at 390px');
+            await page.setViewportSize({width:320,height:568});
+            const overflow2=await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+1);
+            if(overflow2)throw Error('Horizontal scrolling at 320px');
+            if(errors.length)throw Error('JavaScript errors: '+errors.join('; '));
+            await browser.close();
+            console.log('All four material images, observation states, and mobile widths passed');
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+      - name: Prepare actual game screenshot for the hub
+        run: |
+          python - <<'PY'
+          from PIL import Image
+          import json
+          from pathlib import Path
+          im=Image.open('/tmp/bend-materials.png').convert('RGB')
+          im.resize((600,450),Image.Resampling.LANCZOS).save('interactive-learning-lab/images/bend-stretch-change-20261023.webp','WEBP',quality=83,method=6)
+          cat=Path('interactive-learning-lab/catalogue.json')
+          entries=json.loads(cat.read_text())
+          for a in entries:
+              if a['id']=='bend-stretch-change': a['image']='images/bend-stretch-change-20261023.webp?v=20261023a'
+          cat.write_text(json.dumps(entries,indent=2,ensure_ascii=False)+'\n')
+          hub=Path('interactive-learning-lab/index.html')
+          h=hub.read_text()
+          start='<script id="catalogue-data" type="application/json">'
+          i=h.index(start)+len(start);j=h.index('</script>',i)
+          data=json.loads(h[i:j])
+          for a in data:
+              if a['id']=='bend-stretch-change':a['image']='images/bend-stretch-change-20261023.webp?v=20261023a'
+          hub.write_text(h[:i]+json.dumps(data,ensure_ascii=False,separators=(',',':'))+h[j:])
+          print('Saved screenshot and refreshed catalogue')
+          PY
+      - name: Commit verified screenshot and catalogue
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add interactive-learning-lab/images/bend-stretch-change-20261023.webp interactive-learning-lab/catalogue.json interactive-learning-lab/index.html
+          git commit -m 'Capture actual Bend Stretch Change material experiment thumbnail'
+          git pull --rebase origin main
+          git push origin main
