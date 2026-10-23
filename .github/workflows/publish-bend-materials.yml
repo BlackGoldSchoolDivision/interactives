@@ -1,0 +1,51 @@
+name: Publish Bend Stretch Change material images
+on:
+  push:
+    paths:
+      - '.github/workflows/publish-bend-materials.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  import-material-images:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Pillow
+        run: python -m pip install pillow
+      - name: Save the four generated material cutouts to the repository
+        env:
+          URL_SPONGE: "https://media.canva.com/v2/image-resize/format:PNG/height:200/quality:100/uri:ifs%3A%2F%2FM%2F87387026-2217-48ab-83d3-1b3885f09549/watermark:F/width:200?csig=AAAAAAAAAAAAAAAAAAAAAJhjDQ_h14RK4_mLt9lujbkxGzhueaBG93qGziNfoumT&exp=1792783175&osig=AAAAAAAAAAAAAAAAAAAAAPnBfw7qxBX_GuB4YERISVHMra8D9xvxXhH5vlK5hnXO&signer=media-rpc&token=AAIAAU0AJDg3Mzg3MDI2LTIyMTctNDhhYi04M2QzLTFiMzg4NWYwOTU0OQAAAAABoWo0TVgNPt4p9C8Q88-0Hxj2RUtOZFog0NZxyEcny0hoNVS37w&x-canva-quality=thumbnail"
+          URL_CLAY: "https://media.canva.com/v2/image-resize/format:PNG/height:200/quality:100/uri:ifs%3A%2F%2FM%2Fa0b63d71-11e6-48f0-9838-05bc099b69fe/watermark:F/width:200?csig=AAAAAAAAAAAAAAAAAAAAAOd1V-hu2AEgDxZf33NYKkZ0p2Ijq_sCqHIt14HQ5YE-&exp=1792783364&osig=AAAAAAAAAAAAAAAAAAAAAAOLSOi6JSUckS4O1JvcnPd7leWCgYBL-GBzuFXDC-Of&signer=media-rpc&token=AAIAAU0AJGEwYjYzZDcxLTExZTYtNDhmMC05ODM4LTA1YmMwOTliNjlmZQAAAAABoWo3L6BfWeutOsOC8aui12sElf8ClnsX3qOb4MZ-QaRAgsxUQA&x-canva-quality=thumbnail"
+          URL_BAND: "https://media.canva.com/v2/image-resize/format:PNG/height:200/quality:100/uri:ifs%3A%2F%2FM%2Fb4ca26e9-2b65-4ec9-943a-a7d12207dbc9/watermark:F/width:200?csig=AAAAAAAAAAAAAAAAAAAAAEfmywf4xl7rhn1CcYwhkf9509_YKNBP9vUHEmYUoyN-&exp=1792785119&osig=AAAAAAAAAAAAAAAAAAAAAD-MkZHprVflvy44ODd_5ALILlsxohguiN0BveU-cPYk&signer=media-rpc&token=AAIAAU0AJGI0Y2EyNmU5LTJiNjUtNGVjOS05NDNhLWE3ZDEyMjA3ZGJjOQAAAAABoWpR9xg7fPLbVme9YPPo2R20GCKWBp7RjkpCrUWWDuFYCcQa2A&x-canva-quality=thumbnail"
+          URL_PIPE: "https://media.canva.com/v2/image-resize/format:PNG/height:200/quality:100/uri:ifs%3A%2F%2FM%2F7de3f364-d81c-4ad9-96ff-7e2f3d3a449b/watermark:F/width:200?csig=AAAAAAAAAAAAAAAAAAAAAO3zr-nwkGn3qO1m7UoBX19dbJkIuV0PVdFyWzH7y3N3&exp=1792783246&osig=AAAAAAAAAAAAAAAAAAAAAKCJP17uKIF54fIP2Fdgzr2UVJIEQH0f19ERkjusCx9q&signer=media-rpc&token=AAIAAU0AJDdkZTNmMzY0LWQ4MWMtNGFkOS05NmZmLTdlMmYzZDNhNDQ5YgAAAAABoWo1YrAMsf5m4yuWkeZsCAFdt2LZHxjW8-hnvEkI3SntW00lvQ&x-canva-quality=thumbnail"
+        run: |
+          python - <<'PY'
+          import io,os,urllib.request
+          from pathlib import Path
+          from PIL import Image
+          dest=Path('bend-stretch-change/assets')
+          dest.mkdir(parents=True,exist_ok=True)
+          for name in ['sponge','clay','band','pipe']:
+              req=urllib.request.Request(os.environ['URL_'+name.upper()],headers={'User-Agent':'Mozilla/5.0'})
+              with urllib.request.urlopen(req,timeout=30) as response:
+                  raw=response.read()
+              im=Image.open(io.BytesIO(raw)).convert('RGBA')
+              assert im.width>=180 and im.height>=180, (name,im.size)
+              assert im.getchannel('A').getextrema()[0]<255, f'{name}: image was not cut out'
+              path=dest/(name+'.webp')
+              im.save(path,'WEBP',quality=92,method=6)
+              print(name,im.size,path.stat().st_size)
+          PY
+      - name: Publish material image assets
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add bend-stretch-change/assets/*.webp
+          git commit -m 'Publish realistic cutout material images for Grade 1'
+          git pull --rebase origin main
+          git push origin main
