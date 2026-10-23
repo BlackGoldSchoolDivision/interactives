@@ -2400,6 +2400,20 @@
           "url": "https://interactives.blackgold.ca/bend-stretch-change/"
         }
       ]
+    },
+    "magnet-workshop": {
+      "kind": "html",
+      "title": "Magnet Workshop",
+      "credit": "Engaging Students · Black Gold School Division",
+      "category": "Science",
+      "versions": [
+        {
+          "label": "Magnet Workshop",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "magnet-workshop/index.html",
+          "url": "https://interactives.blackgold.ca/magnet-workshop/"
+        }
+      ]
     }
   },
   "files": {
