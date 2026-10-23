@@ -86,6 +86,20 @@ jobs:
               if(w>=1024)assert(metrics.height<=h+10,'Desktop requires vertical scrolling '+w+'x'+h+': '+JSON.stringify(metrics));
               if(w===390)await page.screenshot({path:'/tmp/vibration-phone.png',fullPage:true,animations:'disabled'});
             }
+            // Verify that "Make it my own" exports a standalone HTML with
+            // the local photograph and working Web Audio code embedded.
+            await page.locator('#teacher').click();
+            const [download]=await Promise.all([
+              page.waitForEvent('download'),
+              page.locator('#makeOwn').click()
+            ]);
+            const dl=await download.path();
+            const offline=require('node:fs').readFileSync(dl,'utf8');
+            assert(offline.includes('data:image/webp;base64,'),'Offline copy should embed artwork');
+            assert(offline.includes('createAnalyser'),'Offline copy should embed the real waveform engine');
+            assert(!offline.includes('src="./app.js'),'Offline copy should not depend on external scripts');
+            assert(offline.includes('<style>'),'Offline copy should embed its styles');
+            await page.locator('#closeTeacher').click();
             assert.deepEqual(errors,[],'Runtime JavaScript errors');
             await browser.close();console.log('Passed Grade 2 pitch, volume, duration, sampled waveform and responsive tests');
           })().catch(e=>{console.error(e);process.exit(1)});
