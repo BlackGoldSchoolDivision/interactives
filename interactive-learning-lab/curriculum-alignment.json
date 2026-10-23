@@ -4138,6 +4138,15 @@
           "coverage": "partial"
         }
       ]
+    },
+    "magnet-workshop": {
+      "grades": [
+        4
+      ],
+      "basis": "curriculum",
+      "reviewed": "2026-10-23",
+      "rationale": "Alberta Grade 4 Science: investigate magnetism as a non-contact force, the attraction and repulsion of poles, the effect of distance, and selected magnetic materials. This is an illustrative, partial coverage of non-contact forces.",
+      "alignments": []
     }
   }
 }
