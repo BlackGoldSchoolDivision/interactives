@@ -126,6 +126,20 @@ function drawPhysical(){
  c.clearRect(0,0,w,h);
  c.strokeStyle='#ffffff55';c.setLineDash([3*d,3*d]);c.lineWidth=1;
  c.beginPath();c.moveTo(left,y0);c.lineTo(right,y0);c.stroke();c.setLineDash([]);
+ // Dashed positions trace the physical band above and below its resting line.
+ // They are intentionally distinct from the audio waveform beneath.
+ const travel=active?Math.max(amplitude,h*.16):h*.10;
+ c.strokeStyle=COLORS[motion.index]+'77';c.lineWidth=1.2*d;c.setLineDash([4*d,5*d]);
+ for(const direction of [-1,1]){
+  c.beginPath();
+  for(let i=0;i<=90;i++){
+   const t=i/90,x=left+(right-left)*t;
+   const yy=y0+direction*travel*Math.sin(Math.PI*t);
+   if(i===0)c.moveTo(x,yy);else c.lineTo(x,yy);
+  }
+  c.stroke();
+ }
+ c.setLineDash([]);
  c.strokeStyle=COLORS[motion.index];c.lineWidth=2.5*d;c.shadowColor=COLORS[motion.index];c.shadowBlur=6*d;
  c.beginPath();
  for(let i=0;i<=100;i++){
