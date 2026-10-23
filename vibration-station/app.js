@@ -144,7 +144,7 @@ function draw(canvas,index){
  c.shadowColor=COLORS[index];c.shadowBlur=7;
  if(!samples){c.moveTo(0,h/2);c.lineTo(w,h/2);}
  else for(let i=0;i<samples.length;i+=2){
-  const xx=i/(samples.length-1)*w,yy=(.5+(samples[i]-128)/255*.88)*h;
+  const xx=i/(samples.length-1)*w,yy=Math.max(h*.04,Math.min(h*.96,(.5+(samples[i]-128)/128*1.3)*h));
   if(i===0)c.moveTo(xx,yy);else c.lineTo(xx,yy);
  }
  c.stroke();c.shadowBlur=0;
