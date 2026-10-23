@@ -1,30 +1,39 @@
-name: Prepare Vibration Station photographic asset
+name: Publish approved Vibration Station artwork
 on:
   push:
     paths:
       - '.github/workflows/vibration-station-photo.yml'
-      - 'vibration-station/tools/make-photo.py'
+      - 'vibration-station/tools/approved-photo.b64'
   workflow_dispatch:
 permissions:
   contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 6
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - run: pip install Pillow
-      - run: python vibration-station/tools/make-photo.py
-      - name: Publish photograph
+      - name: Decode approved artwork into WebP
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import base64
+          source=Path('vibration-station/tools/approved-photo.b64')
+          target=Path('vibration-station/assets/string-box.webp')
+          target.parent.mkdir(parents=True,exist_ok=True)
+          payload=base64.b64decode(source.read_text().strip(),validate=True)
+          assert payload[:4]==b'RIFF' and payload[8:12]==b'WEBP', 'Invalid WEBP asset'
+          assert len(payload)>10000
+          target.write_bytes(payload)
+          print('Published user-approved artwork',len(payload),'bytes')
+          PY
+      - name: Commit approved local artwork
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add vibration-station/assets/string-box.webp
           if ! git diff --cached --quiet; then
-            git commit -m 'Add Creative Commons wooden instrument photograph to Vibration Station'
+            git commit -m 'Use approved realistic box-string artwork in Vibration Station'
             git pull --rebase origin main
             git push origin main
           fi
