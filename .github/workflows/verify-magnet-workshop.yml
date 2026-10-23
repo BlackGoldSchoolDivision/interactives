@@ -58,13 +58,13 @@ jobs:
             await page.locator('[data-mode="distance"]').click();
             await page.locator('#choiceB').click();await page.locator('#test').click();await page.waitForTimeout(1350);
             assert((await page.locator('#question').innerText()).includes('weaker'),'Far-distance result');
-            await page.locator('#distance').fill('8');
+            await page.locator('#distance').evaluate(el=>{el.value='8';el.dispatchEvent(new Event('input',{bubbles:true}));});
             await page.locator('#choiceA').click();await page.locator('#test').click();await page.waitForTimeout(1350);
             assert((await page.locator('#question').innerText()).includes('stronger'),'Near-distance result');
             await page.locator('[data-mode="objects"]').click();
             await page.locator('#choiceA').click();await page.locator('#test').click();await page.waitForTimeout(1350);
             assert((await page.locator('#question').innerText()).includes('pulls'),'Paperclip result');
-            await page.locator('[data-object="1"]').click();
+            await page.locator('#test').click();
             await page.locator('#choiceB').click();await page.locator('#test').click();await page.waitForTimeout(1350);
             assert((await page.locator('#question').innerText()).includes('No pull'),'Pencil result');
             await page.setViewportSize({width:390,height:844});
