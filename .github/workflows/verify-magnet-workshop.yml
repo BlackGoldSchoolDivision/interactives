@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - '.github/workflows/verify-magnet-workshop.yml'
+      - 'magnet-workshop/index.html'
   workflow_dispatch:
 permissions:
   contents: write
