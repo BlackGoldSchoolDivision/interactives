@@ -4685,5 +4685,40 @@
     ],
     "grade_basis": "curriculum",
     "grade_note": "Alberta Grade 4 Science: investigate magnetism as a non-contact force, the attraction and repulsion of poles, the effect of distance, and selected magnetic materials. This is an illustrative, partial coverage of non-contact forces."
+  },
+  {
+    "id": "vibration-station",
+    "path": "vibration-station",
+    "repo": "division",
+    "title": "Vibration Station",
+    "category": "Science",
+    "group": "",
+    "description": "Pluck a string to explore high and low pitch, change drum loudness and compare how long sounds last. Interactive waveforms are sampled from the actual browser-generated audio.",
+    "types": [
+      "Simulations & models",
+      "Decision games"
+    ],
+    "tags": [
+      "Grade 2",
+      "Sound",
+      "Vibration",
+      "Pitch",
+      "Volume",
+      "Duration",
+      "Real audio",
+      "Waveform"
+    ],
+    "url": "https://interactives.blackgold.ca/vibration-station/",
+    "links": [],
+    "favourite": false,
+    "credit": "Engaging Students · Black Gold School Division",
+    "image": "images/vibration-station-20261023.webp?v=20261023-final",
+    "captured": "2026-10-23",
+    "original_urls": [],
+    "grades": [
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Alberta Grade 2 Science: sound is made by vibrating objects. Explore pitch (high/low), volume (loud/quiet), and duration (short/long), plus sources of sound. A focused partial coverage of the Light and Sound learning outcome."
   }
 ]
