@@ -2,10 +2,11 @@
 'use strict';
 const $=id=>document.getElementById(id);
 const COLORS=['#ff6a65','#ffe34e','#39bafa','#83d9fd'];
-const STRINGS=[{name:'Red',hz:170},{name:'Yellow',hz:228},{name:'Blue',hz:310}];
+const STRINGS=[{name:'Red',hz:124,timbre:[1,.06,.03],decay:1.5},{name:'Yellow',hz:248,timbre:[1,.20,.10],decay:1.25},{name:'Blue',hz:496,timbre:[1,.37,.17],decay:1.05}];
 const SOUNDS=[{name:'Bell',icon:'🔔',length:'long',explain:'The bell keeps ringing after the strike.'},{name:'Bee',icon:'🐝',length:'long',explain:'A bee buzzes while its wings continue vibrating.'},{name:'Clap',icon:'👏',length:'short',explain:'A handclap stops quickly.'}];
 const S={mode:'strings',string:0,tension:50,force:50,source:0,pitch:null,duration:null};
-let actx,analysers=[],caches=[null,null,null,null],master,raf;
+let actx,analysers=[],master,raf,huntMotionTimer;
+let motion={index:0,start:0,hz:124,duration:1500};
 function startAudio(){
  try{
   if(!actx){
@@ -24,20 +25,24 @@ function noise(seconds){
  const b=actx.createBuffer(1,Math.round(actx.sampleRate*seconds),actx.sampleRate),a=b.getChannelData(0);
  for(let i=0;i<a.length;i++)a[i]=Math.random()*2-1;return b;
 }
-function selectString(index){S.string=index;document.querySelectorAll('[data-string]').forEach(b=>{const y=Number(b.dataset.string)===index;b.classList.toggle('active',y);b.setAttribute('aria-pressed',String(y));});}
+function selectString(index){S.string=index;document.querySelectorAll('[data-string]').forEach(b=>{const y=Number(b.dataset.string)===index;b.classList.toggle('active',y);b.setAttribute('aria-pressed',String(y));});$('motionCaption').textContent=STRINGS[index].name+' band · slow-motion movement';}
 function pluck(index=S.string){
  if(!startAudio())return;selectString(index);
- const t=actx.currentTime+.01,f=STRINGS[index].hz*Math.sqrt(.38+1.62*S.tension/100);
- const env=envelope(index,.13,t,1.25);
- [[1,1],[2,.22],[3,.10]].forEach(([harm,volume])=>{
-  const osc=actx.createOscillator(),v=actx.createGain();
-  osc.type=harm===1?'triangle':'sine';osc.frequency.value=f*harm;v.gain.value=volume;
-  osc.connect(v);v.connect(env);osc.start(t);osc.stop(t+1.28);
+
+ const t=actx.currentTime+.01,spec=STRINGS[index],f=spec.hz*Math.sqrt(.5+S.tension/100);
+ const env=envelope(index,.17,t,spec.decay);
+ spec.timbre.forEach((volume,i)=>{
+   const osc=actx.createOscillator(),v=actx.createGain();
+   osc.type=i===0?'triangle':'sine';osc.frequency.value=f*(i+1);v.gain.value=volume;
+   osc.connect(v);v.connect(env);osc.start(t);osc.stop(t+spec.decay+.05);
  });
+ motion={index,start:performance.now(),hz:f,duration:1500};
+ $('physicalString').dataset.vibrationHz=String(Math.round(f));
  $('pluckingFlash').classList.remove('active');void $('pluckingFlash').offsetWidth;$('pluckingFlash').classList.add('active');
- const pitch=f>=265?'high':'low';
- $('question').textContent='Do you hear a high or low pitch?';
- $('response').textContent=STRINGS[index].name+' string: '+Math.round(f)+' vibrations each second. '+(S.pitch?(S.pitch===pitch?'Your prediction matched!':'Try a different tension and compare.'):'Listen and compare the strings.');
+ const pitch=f<205?'low':f<355?'middle':'high';
+ $('physicalString').dataset.pitch=pitch;
+ $('question').textContent='Is the pitch low, middle, or high?';
+ $('response').textContent=STRINGS[index].name+' string: '+Math.round(f)+' vibrations each second — '+pitch+' pitch. '+(S.pitch?(S.pitch===pitch?'Your prediction matched!':'Change the tension and listen again.'):'Compare the strings.');
 }
 function hitDrum(){
  if(!startAudio())return;
@@ -66,6 +71,8 @@ function hunt(){
   const white=actx.createBufferSource(),filter=actx.createBiquadFilter(),env=envelope(3,.16,t,.16);
   white.buffer=noise(.2);filter.type='bandpass';filter.frequency.value=1900;white.connect(filter);filter.connect(env);white.start(t);white.stop(t+.2);
  }
+ $('huntSource').classList.remove('vibrating');void $('huntSource').offsetWidth;$('huntSource').classList.add('vibrating');
+ clearTimeout(huntMotionTimer);huntMotionTimer=setTimeout(()=>$('huntSource').classList.remove('vibrating'),id===2?220:2050);
  $('question').textContent='Was the sound short or long?';
  $('response').textContent=src.name+': '+src.explain+(S.duration?' '+(S.duration===src.length?'That was a good observation!':'Listen again to when the sound ends.'):'');
 }
@@ -91,33 +98,58 @@ function renderSource(){
  document.querySelectorAll('[data-source]').forEach(b=>b.classList.toggle('selected',Number(b.dataset.source)===S.source));
  document.querySelectorAll('[data-duration]').forEach(b=>{const y=b.dataset.duration===S.duration;b.classList.toggle('selected',y);b.setAttribute('aria-pressed',String(y));});
 }
+
+// Physical transverse string motion in SLOW MOTION with fixed endpoints.
+// Not the waveform of air pressure recorded by the sound analyzer.
+function drawPhysical(){
+ const el=$('physicalString'),box=el.getBoundingClientRect();
+ if(!box.width||!box.height)return;
+ const d=Math.min(devicePixelRatio||1,2),w=Math.round(box.width*d),h=Math.round(box.height*d);
+ if(el.width!==w||el.height!==h){el.width=w;el.height=h;}
+ const c=el.getContext('2d'),elapsed=performance.now()-motion.start;
+ const active=motion.start>0&&elapsed>=0&&elapsed<motion.duration;
+ const amplitude=active?Math.pow(1-elapsed/motion.duration,1.9)*h*.3:0;
+ // The real frequency (>100 Hz) cannot be portrayed directly at 60 fps.
+ const slowRate=Math.min(5,1.4+motion.hz/145);
+ const phase=elapsed/1000*2*Math.PI*slowRate;
+ const left=w*.07,right=w*.93,y0=h*.53;
+ c.clearRect(0,0,w,h);
+ c.strokeStyle='#ffffff55';c.setLineDash([3*d,3*d]);c.lineWidth=1;
+ c.beginPath();c.moveTo(left,y0);c.lineTo(right,y0);c.stroke();c.setLineDash([]);
+ c.strokeStyle=COLORS[motion.index];c.lineWidth=2.5*d;c.shadowColor=COLORS[motion.index];c.shadowBlur=6*d;
+ c.beginPath();
+ for(let i=0;i<=100;i++){
+  const t=i/100,x=left+(right-left)*t,y=y0+amplitude*Math.sin(Math.PI*t)*Math.sin(phase);
+  if(!i)c.moveTo(x,y);else c.lineTo(x,y);
+ }
+ c.stroke();c.shadowBlur=0;
+ c.fillStyle='#f5f9fc';c.beginPath();c.arc(left,y0,2.5*d,0,Math.PI*2);c.arc(right,y0,2.5*d,0,Math.PI*2);c.fill();
+}
 function draw(canvas,index){
  if(canvas.closest('[hidden]'))return;
  const box=canvas.getBoundingClientRect();if(!box.width||!box.height)return;
- const dpr=Math.min(2,devicePixelRatio||1),w=Math.round(box.width*dpr),h=Math.round(box.height*dpr);
+ const d=Math.min(2,devicePixelRatio||1),w=Math.round(box.width*d),h=Math.round(box.height*d);
  if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;}
  const c=canvas.getContext('2d');c.clearRect(0,0,w,h);
  c.strokeStyle='#98c0db33';c.lineWidth=1;
- for(let n=1;n<5;n++){const y=h*n/5;c.beginPath();c.moveTo(0,y);c.lineTo(w,y);c.stroke();}
- let buf=caches[index];
+ for(let n=1;n<5;n++){const yy=h*n/5;c.beginPath();c.moveTo(0,yy);c.lineTo(w,yy);c.stroke();}
+ let samples=null;
  if(analysers[index]){
-  const b=new Uint8Array(analysers[index].fftSize);analysers[index].getByteTimeDomainData(b);
+  const b=new Uint8Array(analysers[index].fftSize);
+  analysers[index].getByteTimeDomainData(b);
   const energy=b.reduce((a,v)=>a+Math.abs(v-128),0)/b.length;
-  if(energy>1.8){buf=b;caches[index]=b.slice();}
+  if(energy>1)samples=b;
  }
- c.beginPath();c.lineCap='round';c.lineWidth=Math.max(2,w/180);c.strokeStyle=COLORS[index];c.shadowColor=COLORS[index];c.shadowBlur=7;
- if(!buf){c.moveTo(0,h/2);c.lineTo(w,h/2);}
- else for(let i=0;i<buf.length;i+=2){
-  const x=i/(buf.length-1)*w;
-  // Magnify the string traces for visibility; preserve relative drum amplitude.
-  // Every plotted sample still comes directly from the connected AnalyserNode.
-  const displacement=Math.max(-.46,Math.min(.46,((buf[i]-128)/128)*(index<3?1.8:.9)*.5));
-  const y=(.5+displacement)*h;
-  if(i===0)c.moveTo(x,y);else c.lineTo(x,y);
+ c.beginPath();c.lineCap='round';c.lineWidth=Math.max(2,w/180);c.strokeStyle=COLORS[index];
+ c.shadowColor=COLORS[index];c.shadowBlur=7;
+ if(!samples){c.moveTo(0,h/2);c.lineTo(w,h/2);}
+ else for(let i=0;i<samples.length;i+=2){
+  const xx=i/(samples.length-1)*w,yy=(.5+(samples[i]-128)/255*.88)*h;
+  if(i===0)c.moveTo(xx,yy);else c.lineTo(xx,yy);
  }
  c.stroke();c.shadowBlur=0;
 }
-function frame(){for(let i=0;i<3;i++)draw($('wave'+i),i);draw($('waveSingle'),3);requestAnimationFrame(frame);}
+function frame(){drawPhysical();for(let i=0;i<3;i++)draw($('wave'+i),i);draw($('waveSingle'),3);requestAnimationFrame(frame);}
 function closeNotes(){$('teacherOverlay').hidden=true;$('teacher').focus();}
 $('teacher').onclick=()=>{$('teacherOverlay').hidden=false;$('closeTeacher').focus();};
 $('closeTeacher').onclick=closeNotes;
@@ -136,8 +168,8 @@ $('makeOwn').onclick=async()=>{
  const button=$('makeOwn');button.disabled=true;$('downloadStatus').textContent='Preparing your offline copy…';
  try{
   const [style,script,blob]=await Promise.all([
-    fetch('./style.css?v=2').then(r=>{if(!r.ok)throw Error('style');return r.text();}),
-    fetch('./app.js?v=2').then(r=>{if(!r.ok)throw Error('script');return r.text();}),
+    fetch('./style.css?v=3').then(r=>{if(!r.ok)throw Error('style');return r.text();}),
+    fetch('./app.js?v=3').then(r=>{if(!r.ok)throw Error('script');return r.text();}),
     fetch('./assets/string-box.webp').then(r=>{if(!r.ok)throw Error('image');return r.blob();})
   ]);
   const image=await new Promise((ok,bad)=>{const f=new FileReader();f.onload=()=>ok(f.result);f.onerror=bad;f.readAsDataURL(blob);});
