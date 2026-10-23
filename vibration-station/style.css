@@ -19,3 +19,70 @@
 .single-wave{height:105px}
 }
 @media(max-width:800px){.single-wave{right:7px;top:10px;width:clamp(150px,38%,260px);height:100px}}
+
+
+/* v3 | Distinct physical vibration and travelling audio wave: neither obscures controls. */
+.showcase .photo-panel{flex:1 1 0;min-height:0}
+.showcase .sound-lab{flex:0 0 auto;position:relative;width:100%;background:#0b2743;border-top:3px solid #204b70;padding:7px 10px 9px;overflow:hidden;color:white}
+.sound-lab-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:0 4px 6px;font-size:11px;line-height:1.2}
+.sound-lab-heading strong{font-size:11px;letter-spacing:.08em;font-weight:1000;color:#8ee9fa;white-space:nowrap}
+.sound-lab-heading span{font-size:10px;color:#b6c9d9;font-weight:800}
+.sound-lab .wave-stack{position:static;inset:auto;transform:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;gap:9px;pointer-events:none}
+.sound-lab .wave-card{height:78px;min-height:0;position:relative;padding:22px 8px 5px;border-radius:11px;box-shadow:none;background:#071931;border:1px solid #ffffff21}
+.sound-lab .wave-card span{font-size:10px;padding:3px 9px}
+.sound-lab .single-wave{position:static;inset:auto;right:auto;bottom:auto;top:auto;transform:none;width:100%;height:78px;min-height:0;padding:5px 9px 5px;border-radius:11px;box-shadow:none;background:#071931;border:1px solid #ffffff21;pointer-events:none}
+.sound-lab .single-wave canvas{height:calc(100% - 18px)}
+.sound-lab .wave-title{font-size:11px}
+.sound-lab .wave-title strong{font-size:10px}
+.showcase .below-photo{flex:0 0 auto}
+.motion-demo{position:absolute;z-index:4;left:13px;bottom:13px;width:clamp(180px,29%,298px);padding:7px 10px 6px;border:1px solid #ffffff7b;border-radius:14px;background:#071d37e5;color:white;box-shadow:0 5px 17px #07182972;pointer-events:none}
+.motion-heading{display:flex;justify-content:space-between;align-items:center;gap:4px}
+.motion-heading strong{font-size:10px;color:#ffdf70;font-weight:1000;letter-spacing:.03em}
+.motion-heading span{font-size:8px;border:1px solid #83dafa7c;color:#9de9ff;border-radius:99px;padding:2px 5px;white-space:nowrap;font-weight:1000}
+.motion-demo canvas{display:block;width:100%;height:42px}
+.motion-caption{text-align:center;font-size:10px;font-weight:900;color:#e2f2fe;min-height:13px}
+.string-photo .string-hint{z-index:5}
+.string-photo .str-tap.active{background:linear-gradient(90deg,#ffffff00,#ffffff2c,#ffffff00)}
+.hunt-source.vibrating{animation:hunt-vibrate .16s ease-in-out infinite alternate}
+@keyframes hunt-vibrate{from{transform:rotate(-4deg) translateY(-2px)}to{transform:rotate(4deg) translateY(2px)}}
+.prediction-grid.pitch-answers{grid-template-columns:repeat(3,minmax(0,1fr))}
+.prediction-grid.pitch-answers .answer{min-width:0;font-size:clamp(11px,1.1vw,15px);min-height:80px;gap:2px;padding-inline:4px}
+.prediction-grid.pitch-answers .answer:nth-child(2){background:#eaf7ef;border-color:#8cceaa;border-bottom-color:#63b183;color:#217551}
+.prediction-grid.pitch-answers .answer:nth-child(3){background:#fff1c5;border-color:#ffd450;border-bottom-color:#e9b727;color:#cf5b16}
+.prediction-grid.pitch-answers .answer-shape{font-size:clamp(21px,2.4vw,32px)}
+@media (min-width:801px) and (max-height:870px){
+ .shell{gap:6px;padding-block:6px}
+ .showcase .sound-lab{padding:5px 8px 6px}
+ .sound-lab-heading{padding-bottom:4px}
+ .sound-lab .wave-card,.sound-lab .single-wave{height:60px;padding-top:19px}
+ .sound-lab .single-wave{padding-top:5px}
+ .showcase .below-photo{padding:3px 10px;min-height:31px}
+ .motion-demo{padding:5px 8px;bottom:7px}
+ .motion-demo canvas{height:33px}
+ .motion-caption{font-size:9px}
+ .prediction-grid.pitch-answers .answer{min-height:63px}
+}
+@media(max-width:800px){
+ .showcase .photo-panel{min-height:clamp(270px,53vw,460px)}
+ .showcase .sound-lab{padding:6px}
+ .sound-lab-heading span{font-size:9px}
+ .sound-lab .wave-card,.sound-lab .single-wave{height:65px}
+ .motion-demo{left:7px;bottom:7px;width:clamp(159px,45%,262px)}
+ .motion-demo canvas{height:36px}
+ .prediction-grid.pitch-answers .answer{font-size:12px}
+}
+@media(max-width:470px){
+ .showcase .photo-panel{min-height:265px}
+ .sound-lab-heading{align-items:flex-start}
+ .sound-lab-heading span{max-width:55%;text-align:right}
+ .sound-lab .wave-stack{gap:4px}
+ .sound-lab .wave-card{height:61px;padding:18px 3px 4px}
+ .sound-lab .wave-card span{font-size:9px;padding:2px 5px}
+ .sound-lab .single-wave{height:69px}
+ .motion-demo{width:160px;padding:4px 6px}
+ .motion-demo canvas{height:26px}
+ .motion-heading strong{font-size:8px}
+ .motion-heading span{font-size:7px;padding:2px 3px}
+ .motion-caption{font-size:9px}
+ .prediction-grid.pitch-answers .answer{font-size:10px;min-height:71px}
+}
