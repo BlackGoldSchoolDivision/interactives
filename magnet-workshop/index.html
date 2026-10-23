@@ -34,10 +34,10 @@
 .kit.left{left:10%;transform:translateX(var(--slide,0px))}
 .kit.right{right:var(--right,9%);width:32%}
 .mag{width:100%;height:auto;aspect-ratio:3.15/1;position:relative;background:linear-gradient(90deg,#174a90 0%,#122d72 50%,#f3463e 50%,#cd2b30 100%);border-radius:12px;border:2px solid #113d6980;box-shadow:inset 0 7px 9px #ffffff26,inset 0 -7px 15px #120c1d3d,0 11px 9px #201e244b;overflow:hidden}
-.mag:after{content:"";position:absolute;inset:0;background:url("./assets/bar-magnet.webp") center / cover no-repeat;mix-blend-mode:normal}
+.mag:after{content:"";position:absolute;inset:0;background:url("./assets/bar-magnet.webp") center / contain no-repeat;mix-blend-mode:normal}
 .mag.flipped{transform:scaleX(-1)}
 .mag .pole{position:absolute;z-index:2;top:48%;transform:translate(-50%,-50%);font-size:clamp(16px,2.9vw,36px);line-height:1;text-shadow:0 2px 4px #10112660;color:#fff;font-weight:1000;pointer-events:none}
-.mag .pole.s{left:25%}.mag .pole.n{left:75%}
+.mag .pole.s{left:13%}.mag .pole.n{left:87%}
 .cart-base{height:23px;margin:-4px 4% 0;background:linear-gradient(180deg,#e6c29a,#b58f5d);border:3px solid #9b7248;border-radius:6px;box-shadow:0 7px 0 #51382022;position:relative}
 .cart-base:before,.cart-base:after{content:"";position:absolute;top:13px;width:21px;height:21px;background:radial-gradient(circle at 48% 45%,#ccc 0 17%,#2c2b2e 18% 55%,#080e16 56% 100%);border-radius:50%;border:1px solid #283749}
 .cart-base:before{left:11%}.cart-base:after{right:11%}
@@ -200,14 +200,14 @@ function animate(){
  const isObjects=state.mode==='objects';
  const repels=endsMatch();
  const magnetic=isObjects&&OBJECTS[state.round].mag;
- const correct=isObjects?(magnetic?'a':'b'):state.mode==='distance'?(strength()>=.40?'a':'b'):(repels?'b':'a');
+ const correct=isObjects?(magnetic?'a':'b'):state.mode==='distance'?(strength()>=.36?'a':'b'):(repels?'b':'a');
  $('stage').classList.add('tested');
  if(isObjects){
   if(magnetic)$('objectLab').classList.add('moving');
  }else{
   const stageWidth=$('stage').getBoundingClientRect().width;
-  const gap=Math.max(10,(24-state.distance*.155)*stageWidth/100);
-  const amount=repels?-(12+strength()*11)*stageWidth/100:Math.min(gap-8,(12+strength()*11)*stageWidth/100);
+  const gap=Math.max(10,(3+state.distance*.15)*stageWidth/100);
+  const amount=repels?-Math.min(stageWidth*.085,(10+strength()*14)*stageWidth/100):Math.max(0,Math.min(gap-12,(8+strength()*12)*stageWidth/100));
   $('leftKit').style.setProperty('--slide',Math.round(amount)+'px');
  }
  animationTimer=setTimeout(()=>{
