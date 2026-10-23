@@ -29,7 +29,7 @@ Artwork provenance is in `assets/ARTWORK.md`.
 
 ## Mixed heights and materials — 22 October 2026 (Edmonton)
 
-Mix & test is available directly on the main screen. Each track independently cycles wood, felt, cork and sandpaper, and has minus/plus controls for 9, 14, 19 and 22 cm ramp heights. The track and car update immediately. Height and material changes have bundled spoken cues. Changing a setting resets the cars from rest and clears the previous prediction; settings are locked during rolling/paused trials. Mixed setups survive a reload, and Back to 1–6 returns to the guided investigations.
+Mix & test is available directly on the main screen. Each track independently cycles wood, felt, cork and sandpaper, and has minus/plus controls for 9, 14, 19 and 22 cm ramp heights. The track and car update immediately. Height and material changes are reflected visually. Changing a setting resets the cars from rest and clears the previous prediction; settings are locked during rolling/paused trials. Mixed setups survive a reload, and Back to 1–6 returns to the guided investigations.
 
 A tested model comparison: 9 cm wood coasts about 59 cm; 19 cm felt about 53 cm. Raising only felt to 22 cm produces about 63 cm, reversing the result. Height does not overcome every material comparison. These are outputs of this illustrative rolling model.
 
