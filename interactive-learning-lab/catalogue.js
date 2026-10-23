@@ -32,7 +32,7 @@ const subjects = [
 const featuredOrder = ['vocabularyarcade','mackwoodmapping','numberbuilding','moonphases','writerspark','thinking-dialogue'];
 const writingOrder = ['writerspark','infospark','vocabularyarcade','rootwords','wordworks'];
 const thinkingOrder = ['thinking-dialogue','thinkingroutines','imagespark','venndiagram','hexthinker','asctriangle','frayermodel'];
-const scienceOrder = ['science-practice-lab','moonphases','dinodig','walker-bridge','bend-stretch-change'];
+const scienceOrder = ['science-practice-lab','moonphases','dinodig','walker-bridge','bend-stretch-change','magnet-workshop'];
 let chosen = 'Favourites', chosenGroup = 'All geography', chosenType = 'All types', chosenGrade = 'all', query = '';
 const cardsNode = document.getElementById('cards');
 const filters = document.getElementById('filters');
