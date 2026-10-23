@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#fbf7ef">
+<meta name="description" content="A picture-led Grade 1 science lab: squeeze, stretch, and bend familiar materials. Predict what happens when you let go.">
+<title>Bend, Stretch, Change! · Interactive Learning Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{font-family:Nunito,system-ui,sans-serif;color:#243744;background:#fbf7ef;font-synthesis:none}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-width:280px}
+button{font:inherit;cursor:pointer;touch-action:manipulation}button:focus-visible,a:focus-visible{outline:4px solid #186aa3;outline-offset:3px}
+button:disabled{cursor:not-allowed;opacity:.52}
+a{color:inherit}.shell{max-width:1320px;margin:auto;padding:clamp(10px,1.8vw,22px) clamp(12px,2.3vw,28px) 30px}
+header{display:flex;align-items:center;gap:14px;justify-content:space-between;margin-bottom:11px}
+.brand{display:flex;align-items:center;gap:13px;min-width:0}.back{display:grid;place-items:center;width:43px;height:43px;border-radius:14px;background:white;text-decoration:none;border:1px solid #e5e5df;font-size:25px;flex:none}
+.eyebrow{font-size:11px;text-transform:uppercase;font-weight:900;letter-spacing:.12em;color:#54747a;margin:0}
+h1{font-size:clamp(22px,2.6vw,35px);line-height:1.04;letter-spacing:-.055em;margin:2px 0 0}
+.tools{display:flex;align-items:center;gap:8px;flex:none}
+.iconbtn,.teacherbtn{min-height:44px;background:white;border:1.5px solid #d9e0dd;border-radius:13px;color:#234950;font-weight:900}
+.iconbtn{width:46px;font-size:23px}.teacherbtn{padding:0 15px;font-size:13px}
+.lesson{background:#fff;border:1px solid #e8e8e1;box-shadow:0 12px 36px #2838400a;border-radius:25px;overflow:hidden}
+.lesson-head{padding:12px 18px;background:#f0f6f2;display:flex;align-items:center;gap:12px;justify-content:space-between;min-height:67px}
+.progress{display:flex;gap:8px;align-items:center}.dot{width:26px;height:26px;border-radius:50%;border:2px solid #bbcfc4;background:white;color:#426056;display:grid;place-items:center;font-size:12px;font-weight:900}
+.dot.active{background:#187d71;color:white;border-color:#187d71}.dot.done{background:#d5ece0;border-color:#54a38a;color:#187d71}
+.lesson-title{font-size:clamp(16px,2vw,22px);font-weight:900;letter-spacing:-.035em;text-align:right}
+.experiment{display:grid;grid-template-columns:minmax(0,1.28fr) minmax(270px,.83fr);min-height:460px}
+.stage-panel{border-right:1px solid #e9e8df;display:flex;flex-direction:column;min-width:0;min-height:0}
+.stage-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:17px 20px 6px}
+.material-label{display:flex;align-items:center;gap:10px}
+.material-number{font-size:11px;font-weight:900;letter-spacing:.05em;padding:7px 10px;border-radius:9px;background:#e3ece6}
+.material-name{font-size:clamp(18px,2.2vw,25px);font-weight:900;line-height:1}
+.action-tag{font-weight:900;border-radius:999px;padding:8px 13px;background:#ffe7bd;color:#7e4c12;white-space:nowrap;font-size:14px}
+.display{position:relative;display:grid;place-items:center;flex:1;min-height:265px;margin:6px 16px 0;border-radius:23px;overflow:hidden;background:linear-gradient(180deg,#f8f7ef,#eee9df)}
+.display:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 11%,#fff8 0,transparent 57%),radial-gradient(circle at 50% 120%,#c5cfc155,transparent 55%);pointer-events:none}
+.workbench{position:absolute;height:20%;width:100%;bottom:0;background:linear-gradient(180deg,#d3ad83 0%,#e9c49c 20%,#dfb58b 85%,#ca9a71);border-top:5px solid #be926c;box-shadow:0 -8px 26px #684d2620}
+.workbench:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(95deg,#80552613 0 2px,transparent 3px 30px)}
+.object-wrap{height:190px;width:100%;display:grid;place-items:center;position:relative;z-index:1;margin-top:8px}
+.prop{position:relative;transition:transform 650ms cubic-bezier(.2,.8,.22,1),height 650ms cubic-bezier(.2,.8,.22,1),width 650ms cubic-bezier(.2,.8,.22,1),border-radius 650ms ease;will-change:transform;filter:drop-shadow(0 21px 10px #5e524144)}
+.prop.sponge{width:235px;height:116px;border-radius:15px 21px 14px 17px;background:radial-gradient(circle at 12px 13px,#afc571 0 2px,transparent 3px) 0 0/19px 18px,radial-gradient(circle at 7px 7px,#8fa94a 0 2px,transparent 3px) 0 0/15px 14px,linear-gradient(145deg,#cfea80,#98b449 65%,#819c39);box-shadow:inset 6px 7px 15px #f2ffa866,inset -10px -11px 24px #607c2550,0 6px 0 #7f9b40}
+.prop.sponge:after{content:"";position:absolute;inset:9px;border:2px dotted #f2ffab45;border-radius:12px}
+.prop.clay{width:195px;height:160px;border-radius:55% 48% 42% 49%/60% 60% 38% 40%;transform:rotate(-8deg);background:radial-gradient(ellipse at 26% 23%,#ffc3a1,#ed8769 48%,#bc5d51 76%,#a74e4b);box-shadow:inset -18px -20px 22px #8e414340,inset 14px 11px 19px #ffe0b044}
+.prop.clay:after{content:"";position:absolute;width:60%;height:19%;left:16%;top:19%;transform:rotate(-15deg);border-top:3px solid #ffe1c944;border-radius:50%}
+.prop.band{width:150px;height:105px;border:17px solid #e66173;border-radius:52% 45% 50% 48%;transform:rotate(-17deg);background:transparent;box-shadow:inset 4px 4px 5px #91344b20,4px 6px 0 #ad4057}
+.prop.band:after{content:"";position:absolute;inset:-15px;border-top:4px solid #ff9aab66;border-radius:inherit;transform:rotate(3deg)}
+.prop.stem{width:255px;height:16px;background:transparent;filter:drop-shadow(0 9px 5px #66584144)}
+.stem-piece{position:absolute;top:0;width:50%;height:15px;background:repeating-radial-gradient(circle at 5px 2px,#f8bb53 0 1.4px,#d38a2b 2px 4px,transparent 5px 6px),linear-gradient(#f3b248,#d99337);border-radius:20px;box-shadow:0 0 0 5px #df9a4180,0 0 0 8px #e1a35230;transition:transform 650ms cubic-bezier(.2,.8,.22,1);transform-origin:center right}
+.stem-piece.left{left:0}.stem-piece.right{right:0;transform-origin:left center}
+.display.working .prop.sponge{transform:scale(1.16,.45) translateY(35px)}
+.display.working .prop.clay{transform:scale(1.30,.49) translateY(35px) rotate(-4deg)}
+.display.working .prop.band{transform:scale(1.92,.75) rotate(-4deg)}
+.display.working .stem-piece.right,.display.changed .stem-piece.right{transform:rotate(-67deg)}
+.display.changed .prop.clay{transform:scale(1.30,.49) translateY(35px) rotate(-4deg)}
+.display.changed .prop.sponge,.display.changed .prop.band{transform:initial}
+.display.changed .prop.band{transform:rotate(-17deg)}
+.hand{font-size:45px;line-height:1;position:absolute;z-index:3;top:8%;left:calc(50% + 70px);opacity:0;transform:translateY(-25px);transition:transform .45s,opacity .35s;filter:drop-shadow(2px 3px 2px #4c402438);pointer-events:none}
+.display.working .hand{opacity:1;transform:translateY(25px)}
+.stage-caption{min-height:51px;display:flex;align-items:center;justify-content:center;text-align:center;gap:9px;font-weight:900;color:#59706b;padding:8px 14px;font-size:14px}
+.result-label{display:inline-flex;border-radius:99px;padding:6px 14px;font-weight:900;background:#e0eee7;color:#247a63}
+.result-label.stays{background:#ffe9d9;color:#ae5833}
+.prediction{padding:clamp(16px,2.5vw,25px);display:flex;flex-direction:column;justify-content:space-between;gap:13px;min-width:0}
+.step{font-size:12px;letter-spacing:.09em;font-weight:1000;color:#53756e;text-transform:uppercase}
+h2{font-size:clamp(25px,3vw,38px);letter-spacing:-.05em;line-height:1.11;margin:6px 0 4px}
+.hint{color:#657977;font-size:14px;line-height:1.3;margin:0;font-weight:700}
+.answer-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.answer{border:3px solid #e2e5e0;border-radius:18px;min-height:119px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:16px;font-weight:900;line-height:1.15;text-align:center;color:#243b3b}
+.answer .answer-art{font-size:45px;height:48px;line-height:1}
+.answer.selected{border-color:#238a70;background:#e8f7ed;box-shadow:0 0 0 3px #238a7020}
+.answer:active{transform:translateY(2px)}
+.test{width:100%;min-height:64px;background:#ef7b4d;color:#fff;border:0;border-bottom:5px solid #be5839;border-radius:17px;font-size:21px;font-weight:1000;letter-spacing:-.02em}
+.test:active:not(:disabled){transform:translateY(2px);border-bottom-width:3px}
+.test.done{background:#1d8c7e;border-bottom-color:#12665e}
+.small-feedback{font-size:14px;font-weight:800;color:#497567;min-height:22px;text-align:center}
+.footer-strip{margin-top:12px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.footnote{font-size:12px;font-weight:800;color:#61726e}
+.pills{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pill{background:#fff;border:1px solid #e4e4df;border-radius:99px;padding:7px 11px;font-size:11px;font-weight:900;color:#536963}
+.darken{background:#182f35b8;position:fixed;inset:0;z-index:15;display:none;align-items:center;justify-content:center;padding:14px}
+.darken.open{display:flex}
+.dialog{background:#fffaf3;max-width:690px;width:100%;max-height:min(92dvh,820px);overflow:auto;border-radius:24px;padding:24px;box-shadow:0 30px 80px #10262f70;position:relative}
+.dialog h2{font-size:29px}.dialog p,.dialog li{line-height:1.55;color:#3c5660}
+.dialog h3{margin-bottom:4px;font-size:18px}.dialog ul{padding-left:23px}.dialog .close{float:right;background:#e5efeb;border:0;border-radius:12px;padding:10px 17px;font-weight:900;min-height:45px}
+.dialog .note{background:#eef5ec;padding:13px 16px;border-radius:14px}
+.complete{display:none;padding:25px;text-align:center;min-height:450px}
+.complete h2{font-size:clamp(31px,5vw,48px)}.complete .medal{font-size:70px}
+.outcomes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:25px 0}
+.outcome{border:1px solid #dde6e1;border-radius:18px;padding:17px 8px;background:#f8faf6;font-weight:900}
+.outcome .glyph{font-size:43px;display:block}.outcome small{display:block;margin-top:5px;color:#66827a}.complete .test{max-width:340px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+@media(max-width:800px){.experiment{grid-template-columns:1fr}.stage-panel{border-right:0;border-bottom:1px solid #e9e8df}.display{min-height:210px}.prediction{gap:5px;padding:16px 18px}.prediction h2{font-size:26px}.answer{min-height:90px;flex-direction:row;gap:10px}.answer .answer-art{font-size:35px;height:auto}.lesson-head{min-height:50px}.stage-top{padding:12px 15px 4px}.stage-caption{min-height:35px}.object-wrap{height:175px}}
+@media(max-width:500px){.shell{padding:8px 8px 22px}header{gap:6px}.brand{gap:7px}.back{width:37px;height:40px}.eyebrow{font-size:9px}h1{font-size:20px}.teacherbtn{padding:0 8px;font-size:12px}.iconbtn{width:40px}.lesson{border-radius:18px}.lesson-head{padding:9px 12px}.lesson-title{font-size:15px}.dot{width:21px;height:21px}.display{margin:4px 10px 0;min-height:190px}.object-wrap{height:155px;transform:scale(.83)}.stage-caption{font-size:12px}.material-name{font-size:19px}.prediction{padding:12px}.answer{min-height:76px;font-size:14px;border-width:2px}.answer .answer-art{font-size:27px}.test{min-height:56px;font-size:18px}.outcomes{grid-template-columns:repeat(2,1fr)}}
+@media(max-height:570px) and (min-width:801px){.shell{padding-top:7px}.lesson-head{min-height:48px;padding:7px 15px}.experiment{min-height:360px}.stage-top{padding-top:9px}.display{min-height:200px}.object-wrap{height:150px;transform:scale(.82)}.stage-caption{min-height:34px}.prediction{padding:14px;gap:4px}.answer{min-height:90px}.test{min-height:53px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition-duration:.001s!important;animation-duration:.001s!important}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header>
+  <div class="brand"><a class="back" aria-label="Back to Interactive Learning Lab" href="https://interactives.blackgold.ca/interactive-learning-lab/">←</a>
+    <div><p class="eyebrow">SCIENCE · GRADE 1</p><h1>Bend, Stretch, Change!</h1></div>
+  </div>
+  <div class="tools"><button class="iconbtn" id="hear" aria-label="Read the question aloud" title="Read aloud">🔊</button><button class="teacherbtn" id="teacher">Teacher notes</button></div>
+</header>
+<main>
+<section class="lesson" id="lesson">
+  <div class="lesson-head"><div class="progress" id="progress" aria-label="Experiment progress"></div><div class="lesson-title">Let's test materials!</div></div>
+  <div class="experiment" id="experiment">
+    <section class="stage-panel" aria-label="Materials testing table">
+      <div class="stage-top"><div class="material-label"><span class="material-number" id="stepNo">1 OF 4</span><strong class="material-name" id="materialName">Sponge</strong></div><span class="action-tag" id="actionTag">SQUEEZE ↓</span></div>
+      <div class="display" id="display" aria-label="Object in its original shape">
+        <div class="object-wrap"><div id="prop" class="prop sponge" role="img" aria-label="A green sponge"></div><div class="hand" aria-hidden="true">👇</div></div>
+        <div class="workbench" aria-hidden="true"></div>
+      </div>
+      <div class="stage-caption" id="stageCaption">Look at its shape. What will happen?</div>
+    </section>
+    <section class="prediction">
+      <div><div class="step" id="stepLabel">1 · PREDICT</div><h2 id="question">When we let go, what will happen?</h2><p class="hint" id="hint">Choose a picture. Then test it!</p></div>
+      <div class="answer-buttons" id="answerButtons">
+        <button class="answer" id="backChoice" data-choice="back" aria-pressed="false"><span class="answer-art" aria-hidden="true">↩️</span><span>Goes back</span></button>
+        <button class="answer" id="staysChoice" data-choice="stays" aria-pressed="false"><span class="answer-art" aria-hidden="true">📌</span><span>Stays changed</span></button>
+      </div>
+      <div><button class="test" id="test" disabled>Choose a picture ↑</button><div class="small-feedback" id="feedback" role="status" aria-live="polite"></div></div>
+    </section>
+  </div>
+  <section class="complete" id="complete" aria-live="polite">
+    <div class="medal" aria-hidden="true">🌟</div>
+    <h2>You're a material scientist!</h2>
+    <p>Some materials spring back. Others keep their new shape.</p>
+    <div class="outcomes" id="outcomes"></div>
+    <button class="test" id="restart">Play again ↻</button>
+  </section>
+</section>
+<div class="footer-strip"><span class="pill">👀 Look</span><span class="pill">💭 Predict</span><span class="pill">🧪 Test</span><span class="pill">💬 Talk</span><span class="footnote">Classroom-friendly · No sign-in · No data collection</span></div>
+</main>
+</div>
+<div class="darken" id="overlay">
+<div class="dialog" role="dialog" aria-modal="true" aria-labelledby="teacherTitle">
+  <button class="close" id="close">Close ✕</button>
+  <p class="eyebrow">ON THE INTERACTIVE BOARD</p><h2 id="teacherTitle">Teacher notes</h2>
+  <p><strong>Big question:</strong> What happens to the shape of a material when we push, pull, or bend it—and what happens when we let go?</p>
+  <div class="note"><strong>Suggested routine:</strong> Show one object. Invite a prediction by pointing to one of two pictures. Test it. Ask students to describe what changed and whether it returned to its original shape. Repeat with real classroom materials.</div>
+  <h3>Four small experiments</h3>
+  <ul><li><strong>Sponge:</strong> Squeeze a dry sponge gently. It usually springs back.</li><li><strong>Modelling clay:</strong> Squish soft clay. It holds its new shape.</li><li><strong>Rubber band:</strong> Stretch gently. It usually returns to its original shape when released.</li><li><strong>Pipe cleaner:</strong> Bend a chenille stem. It generally stays bent.</li></ul>
+  <h3>Questions to ask</h3>
+  <ul><li>What did you predict? What did you observe?</li><li>Which materials went back to their old shape? Which stayed changed?</li><li>Is it still the same material after its shape changes?</li><li>Can you find something else that behaves the same way?</li></ul>
+  <p><strong>Curriculum connection:</strong> Grade 1 Science—investigating observable material properties, physical changes, and making predictions based on evidence. This is one focused investigation, not complete outcome coverage.</p>
+  <p><strong>Safety and accuracy:</strong> Use gentle force. Keep elastic bands away from faces; avoid overstretching. Real materials vary in thickness, temperature, wear and force. This visual model is illustrative, not a precise physical simulation.</p>
+  <p><strong>Accessibility:</strong> All student actions are click/tap/keyboard accessible. The speaker reads questions aloud using the device's speech engine when available. Students can respond by pointing instead of reading.</p>
+</div></div>
+<script>
+'use strict';
+const rounds=[
+  {id:'sponge',name:'Sponge',action:'SQUEEZE ↓',verb:'squeeze',outcome:'back',read:'A sponge. We squeeze it. When we let go, will it go back to its old shape, or stay changed?',explain:'The sponge squishes, then springs back.',glyph:'🧽',alt:'A green rectangular sponge'},
+  {id:'clay',name:'Modelling clay',action:'SQUISH ↓',verb:'squish',outcome:'stays',read:'Soft modelling clay. We squish it. When we let go, will it go back to its old shape, or stay changed?',explain:'The clay stays squished. It keeps its new shape.',glyph:'🟠',alt:'A round mound of orange modelling clay'},
+  {id:'band',name:'Rubber band',action:'STRETCH ↔',verb:'stretch',outcome:'back',read:'A rubber band. We stretch it gently. When we let go, will it go back to its old shape, or stay changed?',explain:'The rubber band stretches, then springs back.',glyph:'⭕',alt:'A pink rubber band'},
+  {id:'stem',name:'Pipe cleaner',action:'BEND ↷',verb:'bend',outcome:'stays',read:'A pipe cleaner. We bend it. When we let go, will it go back to its old shape, or stay changed?',explain:'The pipe cleaner stays bent.',glyph:'〰️',alt:'A yellow craft pipe cleaner'}
+];
+const $=id=>document.getElementById(id);
+let round=0,choice=null,phase='predict',timer=null,completed=[];
+function speak(t){
+  if(!('speechSynthesis' in window)){ $('feedback').textContent='Read-aloud is not available on this device.';return;}
+  window.speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(t);
+  u.lang='en-CA';u.rate=.88;u.pitch=1.04;
+  window.speechSynthesis.speak(u);
+}
+function render(){
+  clearTimeout(timer);
+  const r=rounds[round];
+  choice=null;phase='predict';
+  $('lesson').classList.remove('finished');
+  $('experiment').hidden=false;$('complete').style.display='none';
+  $('stepNo').textContent=(round+1)+' OF 4';
+  $('materialName').textContent=r.name;
+  $('actionTag').textContent=r.action;
+  $('prop').className='prop '+r.id;
+  $('prop').setAttribute('aria-label',r.alt);
+  $('prop').innerHTML=r.id==='stem'?'<span class="stem-piece left"></span><span class="stem-piece right"></span>':'';
+  $('display').className='display';
+  $('stageCaption').textContent='Look at its shape. What will happen?';
+  $('question').textContent='When we let go, what will happen?';
+  $('hint').textContent='Choose a picture. Then test it!';
+  $('stepLabel').textContent='1 · PREDICT';
+  $('feedback').textContent='';
+  $('test').textContent='Choose a picture ↑';$('test').disabled=true;$('test').classList.remove('done');
+  $('answerButtons').style.display='grid';
+  for(const el of document.querySelectorAll('.answer')){el.classList.remove('selected');el.setAttribute('aria-pressed','false');el.disabled=false;}
+  $('progress').innerHTML=rounds.map((_,i)=>'<span class="dot '+(i===round?'active':i<round?'done':'')+'">'+(i<round?'✓':i+1)+'</span>').join('');
+}
+function predict(v){
+  if(phase!=='predict')return;
+  choice=v;
+  for(const el of document.querySelectorAll('.answer')){const selected=el.dataset.choice===v;el.classList.toggle('selected',selected);el.setAttribute('aria-pressed',String(selected));}
+  $('test').disabled=false;$('test').textContent='Test it! ▶';
+  $('feedback').textContent='Ready to discover!';
+}
+function test(){
+  if(phase==='observed'){next();return;}
+  if(phase!=='predict'||!choice)return;
+  phase='testing';
+  const r=rounds[round];
+  $('test').disabled=true;
+  $('test').textContent='Watch closely…';
+  $('feedback').textContent='';
+  $('stepLabel').textContent='2 · TEST';
+  $('stageCaption').textContent='Changing shape…';
+  $('display').classList.add('working');
+  for(const el of document.querySelectorAll('.answer'))el.disabled=true;
+  timer=setTimeout(()=>{
+    $('display').classList.remove('working');
+    if(r.outcome==='stays')$('display').classList.add('changed');
+    $('stageCaption').innerHTML='<span class="result-label '+r.outcome+'">'+(r.outcome==='back'?'↩ Back to its shape':'📌 Kept its new shape')+'</span>';
+    $('stepLabel').textContent='3 · OBSERVE';
+    $('question').textContent=r.outcome==='back'?'It springs back!':'It stays changed!';
+    $('hint').textContent=r.explain;
+    $('feedback').textContent=choice===r.outcome?'Your prediction matched!':'Good thinking! Scientists learn by testing.';
+    $('answerButtons').style.display='none';
+    $('test').disabled=false;
+    $('test').classList.add('done');
+    $('test').textContent=round===rounds.length-1?'See what you found! →':'Next material →';
+    phase='observed';
+    completed[round]=true;
+  },1550);
+}
+function next(){if(round===rounds.length-1){finish();return;}round++;render();}
+function finish(){
+  phase='finished';$('experiment').hidden=true;$('complete').style.display='block';
+  $('outcomes').innerHTML=rounds.map(r=>'<div class="outcome"><span class="glyph">'+r.glyph+'</span>'+r.name+'<small>'+(r.outcome==='back'?'↩ Goes back':'📌 Stays changed')+'</small></div>').join('');
+  $('complete').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+$('backChoice').addEventListener('click',()=>predict('back'));
+$('staysChoice').addEventListener('click',()=>predict('stays'));
+$('test').addEventListener('click',test);
+$('restart').addEventListener('click',()=>{round=0;completed=[];render();window.scrollTo({top:0,behavior:'smooth'});});
+$('hear').addEventListener('click',()=>{
+  const r=rounds[round];
+  if(phase==='finished')speak('You are a material scientist! Some materials spring back. Others keep their new shape.');
+  else if(phase==='observed')speak(r.explain);
+  else speak(r.read);
+});
+function closeTeacher(){$('overlay').classList.remove('open');$('teacher').focus();}
+$('teacher').addEventListener('click',()=>{$('overlay').classList.add('open');$('close').focus();});
+$('close').addEventListener('click',closeTeacher);
+$('overlay').addEventListener('click',e=>{if(e.target===$('overlay'))closeTeacher();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('overlay').classList.contains('open'))closeTeacher();});
+render();
+</script>
+</body></html>
