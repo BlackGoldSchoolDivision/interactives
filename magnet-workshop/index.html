@@ -299,12 +299,15 @@ $('download').onclick=async()=>{
   copy.querySelector('#backdrop').classList.remove('open');
   const source=copy.querySelector('#stage');
   if(source)source.classList.remove('tested');
-  const pic=await fetch('./assets/bar-magnet-blue-red.webp');
-  if(pic.ok){
-    const blob=await pic.blob();
-    const data=await new Promise((resolve,reject)=>{const rd=new FileReader();rd.onload=()=>resolve(rd.result);rd.onerror=reject;rd.readAsDataURL(blob);});
-    const style=document.createElement('style');style.textContent='.mag:after{background-image:url("'+data+'")}';copy.querySelector('head').append(style);
-  }
+  const imgs=await Promise.all(['bar-magnet-blue-red.webp','bar-magnet-red-blue.webp'].map(n=>fetch('./assets/'+n)));
+  if(imgs.some(r=>!r.ok))throw new Error('Missing magnet image');
+  const data=await Promise.all(imgs.map(async r=>{
+    const blob=await r.blob();
+    return await new Promise((resolve,reject)=>{const rd=new FileReader();rd.onload=()=>resolve(rd.result);rd.onerror=reject;rd.readAsDataURL(blob);});
+  }));
+  const style=document.createElement('style');
+  style.textContent='.mag:after{background-image:url("'+data[0]+'")}.mag.flipped:after{background-image:url("'+data[1]+'")}';
+  copy.querySelector('head').append(style);
   const doc='<!doctype html>\n'+copy.outerHTML;
   const url=URL.createObjectURL(new Blob([doc],{type:'text/html;charset=utf-8'}));
   const link=document.createElement('a');link.href=url;link.download='magnet-workshop.html';link.click();setTimeout(()=>URL.revokeObjectURL(url),20000);
