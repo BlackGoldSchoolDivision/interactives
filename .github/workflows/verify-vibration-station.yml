@@ -1,0 +1,115 @@
+name: Verify Vibration Station and capture thumbnail
+on:
+  push:
+    paths:
+      - '.github/workflows/verify-vibration-station.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: vibration-station-qa
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Install browser test requirements
+        run: |
+          npm install --no-save playwright-core@1.55.0
+          python -m pip install Pillow
+      - name: Verify syntax
+        run: |
+          node --check vibration-station/app.js
+          test -s vibration-station/assets/string-box.webp
+      - name: Run sound and layout tests
+        run: |
+          python -m http.server 8765 --bind 127.0.0.1 >/tmp/vibration-web.log 2>&1 &
+          sleep 2
+          node <<'JS'
+          const {chromium}=require('playwright-core');
+          const assert=require('node:assert/strict');
+          (async()=>{
+            const browser=await chromium.launch({headless:true,executablePath:'/usr/bin/google-chrome',args:['--no-sandbox','--autoplay-policy=no-user-gesture-required']});
+            const page=await browser.newPage({viewport:{width:1440,height:900},deviceScaleFactor:1});
+            const errors=[];page.on('pageerror',e=>errors.push(e.message));
+            await page.goto('http://127.0.0.1:8765/vibration-station/',{waitUntil:'networkidle'});
+            assert.equal(await page.locator('h1').innerText(),'Vibration Station');
+            const image=await page.request.get('http://127.0.0.1:8765/vibration-station/assets/string-box.webp');
+            assert(image.ok(),'Photographic box instrument missing');
+            await page.locator('#pluck').click();await page.waitForTimeout(180);
+            assert((await page.locator('#response').innerText()).includes('vibrations each second'));
+            // Actual recorded waveform pixels must leave the centre line.
+            const realWave=await page.locator('#wave0').evaluate(el=>{
+              const c=el.getContext('2d'),w=el.width,h=el.height;
+              const d=c.getImageData(0,0,w,h).data;
+              let count=0;for(let i=0;i<d.length;i+=4)if(d[i]>170&&d[i+1]<170&&d[i+2]<180)count++;
+              return {count,w,h};
+            });
+            assert(realWave.count>20,'String waveform did not render sampled audio: '+JSON.stringify(realWave));
+            await page.locator('#tension').evaluate(el=>{el.value='90';el.dispatchEvent(new Event('input',{bubbles:true}));});
+            await page.locator('#pluck').click();await page.waitForTimeout(220);
+            assert((await page.locator('#response').innerText()).includes('vibrations each second'));
+            await page.screenshot({path:'/tmp/vibration-strings.png',animations:'disabled'});
+            await page.locator('[data-mode="drum"]').click();
+            await page.locator('#force').evaluate(el=>{el.value='10';el.dispatchEvent(new Event('input',{bubbles:true}));});
+            await page.locator('#hitDrum').click();
+            assert((await page.locator('#response').innerText()).includes('Gentler'));
+            await page.locator('#force').evaluate(el=>{el.value='95';el.dispatchEvent(new Event('input',{bubbles:true}));});
+            await page.locator('#hitDrum').click();
+            assert((await page.locator('#response').innerText()).includes('Stronger'));
+            await page.waitForTimeout(120);await page.screenshot({path:'/tmp/vibration-drum.png',animations:'disabled'});
+            await page.locator('[data-mode="hunt"]').click();
+            await page.locator('[data-source="2"]').click();
+            assert((await page.locator('#huntName').innerText())==='Clap');
+            await page.locator('[data-duration="short"]').click();
+            await page.locator('#playHunt').click();
+            assert((await page.locator('#response').innerText()).includes('good observation'));
+            await page.locator('[data-source="0"]').click();await page.waitForTimeout(100);
+            assert((await page.locator('#huntName').innerText())==='Bell');
+            await page.screenshot({path:'/tmp/vibration-hunt.png',animations:'disabled'});
+            await page.locator('[data-mode="strings"]').click();
+            for(const [w,h] of [[1440,900],[1366,768],[1280,720],[1024,768],[390,844],[320,700]]){
+              await page.setViewportSize({width:w,height:h});
+              await page.waitForTimeout(100);
+              const metrics=await page.evaluate(()=>({width:document.documentElement.scrollWidth,viewport:innerWidth,height:document.documentElement.scrollHeight,innerHeight}));
+              assert(metrics.width<=w+2,'Unexpected horizontal scrolling '+w+'x'+h+': '+JSON.stringify(metrics));
+              if(w>=1024)assert(metrics.height<=h+10,'Desktop requires vertical scrolling '+w+'x'+h+': '+JSON.stringify(metrics));
+              if(w===390)await page.screenshot({path:'/tmp/vibration-phone.png',fullPage:true,animations:'disabled'});
+            }
+            assert.deepEqual(errors,[],'Runtime JavaScript errors');
+            await browser.close();console.log('Passed Grade 2 pitch, volume, duration, sampled waveform and responsive tests');
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+      - name: Capture Lab thumbnail and validation screenshots
+        run: |
+          python - <<'PY'
+          from PIL import Image,ImageStat
+          from pathlib import Path
+          root=Path('vibration-station/validation');root.mkdir(parents=True,exist_ok=True)
+          for label in ['strings','drum','hunt','phone']:
+              im=Image.open('/tmp/vibration-'+label+'.png').convert('RGB')
+              im.thumbnail((1100,1100),Image.Resampling.LANCZOS)
+              im.save(root/(label+'.webp'),'WEBP',quality=86,method=6)
+          im=Image.open('/tmp/vibration-strings.png').convert('RGB')
+          assert max(ImageStat.Stat(im).stddev)>20
+          im.thumbnail((600,450),Image.Resampling.LANCZOS)
+          bg=Image.new('RGB',(600,450),(244,248,247))
+          bg.paste(im,((600-im.width)//2,(450-im.height)//2))
+          p=Path('interactive-learning-lab/images/vibration-station-20261023.webp')
+          bg.save(p,'WEBP',quality=86,method=6)
+          print(p,p.stat().st_size)
+          PY
+      - name: Publish screenshot after successful QA
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add vibration-station/validation/*.webp interactive-learning-lab/images/vibration-station-20261023.webp
+          git commit -m 'Capture tested Vibration Station gameplay and Lab screenshot'
+          git pull --rebase origin main
+          git push origin main
