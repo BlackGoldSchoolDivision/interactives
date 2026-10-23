@@ -281,7 +281,21 @@ function moveMagnetCart(repels){
  const shift=repels?-Math.min(stageWidth*.085,(10+strength()*14)*stageWidth/100):Math.max(0,gap-1);
  $('leftKit').style.setProperty('--slide',Math.round(shift)+'px');
 }
-function setMode(mode){if(!['poles','distance','objects'].includes(mode))return;state.mode=mode;state.round=0;loadRound();document.querySelector('.lesson').scrollIntoView({behavior:'smooth',block:'start'});}
+function setMode(mode){
+ if(!['poles','distance','objects','free'].includes(mode))return;
+ if(mode==='free'){
+  state.mode='free';clearExperiment();
+  $('lesson').hidden=true;$('freeLab').hidden=false;
+  modeNodes.forEach(b=>{const selected=b.dataset.mode===mode;b.classList.toggle('active',selected);b.setAttribute('aria-current',String(selected));});
+  window.MagnetFreePlay?.enter();
+  $('freeLab').scrollIntoView({behavior:'smooth',block:'start'});
+  return;
+ }
+ window.MagnetFreePlay?.exit();
+ $('freeLab').hidden=true;$('lesson').hidden=false;
+ state.mode=mode;state.round=0;loadRound();
+ document.querySelector('.lesson').scrollIntoView({behavior:'smooth',block:'start'});
+}
 function loadRound(){
  clearExperiment();
  const r=getRound();
@@ -398,6 +412,14 @@ $('download').onclick=async()=>{
  try{
   const copy=document.documentElement.cloneNode(true);
   copy.querySelector('#backdrop').classList.remove('open');
+  copy.querySelector('#lesson').hidden=false;
+  copy.querySelector('#freeLab').hidden=true;
+  copy.querySelectorAll('script[src*="freeplay.js"]').forEach(n=>n.remove());
+  const freeResponse=await fetch('./freeplay.js?v=20261023-1');
+  if(!freeResponse.ok)throw new Error('Missing free-play script');
+  const freeInline=document.createElement('script');
+  freeInline.textContent=(await freeResponse.text()).replace(/<\/script/gi,'<\\/script');
+  copy.querySelector('body').append(freeInline);
   const source=copy.querySelector('#stage');
   if(source)source.classList.remove('tested');
   const imgs=await Promise.all(['bar-magnet-blue-red.webp','bar-magnet-red-blue.webp'].map(n=>fetch('./assets/'+n)));
@@ -407,7 +429,7 @@ $('download').onclick=async()=>{
     return await new Promise((resolve,reject)=>{const rd=new FileReader();rd.onload=()=>resolve(rd.result);rd.onerror=reject;rd.readAsDataURL(blob);});
   }));
   const style=document.createElement('style');
-  style.textContent='.mag:after{background-image:url("'+data[0]+'")}.mag.flipped:after{background-image:url("'+data[1]+'")}';
+  style.textContent='.mag:after{background-image:url("'+data[0]+'")}.mag.flipped:after{background-image:url("'+data[1]+'")}.free-magnet-face:before{background-image:url("'+data[0]+'")}';
   copy.querySelector('head').append(style);
   const doc='<!doctype html>\n'+copy.outerHTML;
   const url=URL.createObjectURL(new Blob([doc],{type:'text/html;charset=utf-8'}));
@@ -422,4 +444,4 @@ new ResizeObserver(()=>{
 }).observe($('stage'));
 loadRound();
 })();
-</script></body></html>
+</script><script src="./freeplay.js?v=20261023-1"></script></body></html>
