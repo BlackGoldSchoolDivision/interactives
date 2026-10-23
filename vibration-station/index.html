@@ -69,13 +69,13 @@
     <label class="control-label" for="tension">String tension <span id="tensionValue">Medium</span></label>
     <div class="range-row"><span>LOOSE</span><input type="range" id="tension" min="0" max="100" value="50" step="5"><span>TIGHT</span></div>
     <button class="play-btn" id="pluck"><span class="triangle">▶</span> PLUCK!</button>
-    <p class="guided-hint">Tightening this string makes it vibrate faster.</p>
+    <p class="guided-hint">Red sounds deep, yellow is in the middle, blue sounds high. Tension changes each pitch too!</p>
    </div>
    <div class="drum-controls" id="drumControls" hidden>
      <label class="control-label" for="force">How hard will you hit? <span id="forceValue">Medium</span></label>
      <div class="range-row"><span>GENTLE</span><input type="range" min="0" max="100" value="50" id="force" step="5"><span>STRONG</span></div>
      <button class="play-btn" id="hitDrum"><span class="triangle">▶</span> BEAT THE DRUM!</button>
-     <p class="guided-hint">A stronger strike makes a larger sound wave.</p>
+     <p class="guided-hint">The drum skin vibrates; harder hits make bigger air-pressure changes.</p>
    </div>
    <div class="hunt-controls" id="huntControls" hidden>
     <div class="hunt-question">How long does this sound last?</div>
@@ -85,7 +85,7 @@
    </div>
    <div class="question-box" id="questionBox">
     <h3 id="question">Which pitch do you hear?</h3>
-    <div class="prediction-grid" id="pitchChoices"><button class="answer" data-answer="low"><span class="answer-shape">∿</span>LOW PITCH</button><button class="answer" data-answer="high"><span class="answer-shape">∿∿∿</span>HIGH PITCH</button></div>
+    <div class="prediction-grid pitch-answers" id="pitchChoices"><button class="answer" data-answer="low"><span class="answer-shape">∿</span>LOW</button><button class="answer" data-answer="middle"><span class="answer-shape">∿∿</span>MIDDLE</button><button class="answer" data-answer="high"><span class="answer-shape">∿∿∿</span>HIGH</button></div>
     <div class="response" id="response" role="status" aria-live="polite">Choose a sound, listen, and make a prediction!</div>
    </div>
  </section>
@@ -104,6 +104,7 @@
 <div class="note"><b>Three investigations:</b> Strings explore how vibration frequency relates to pitch; drum strikes change amplitude and perceived loudness; Sound Hunt contrasts sources and short/long durations.</div>
 <h3>Try these prompts</h3>
 <ul><li>What object is vibrating to make each sound?</li><li>How does tightening a string change its vibration and pitch?</li><li>What happens to the waveform when you hit the drum harder?</li><li>Which sounds end quickly? Which last longer?</li></ul>
+<p><b>Different pictures, different science:</b> The physical rubber-band movement is shown in slow motion to make it visible. Sound in air is a series of pressure changes; its monitor plots actual audio samples, not the string's shape.</p>
 <p><b>Science accuracy:</b> Sound is synthesized in the browser. The upper string-motion drawing is a slow-motion illustration of the physical band's transverse vibration (fixed ends, moving middle), not a picture of sound travelling through air. The separate SOUND IN THE AIR monitor plots actual audio samples through the Web Audio graph, not decorative sine waves. The waveform returns to a flat line when the sound ends. The string/duration models are simplified teaching models; real instruments also depend on length, mass, materials, resonances and tension. Turn the device volume down before use.</p>
 <p><b>Privacy and accessibility:</b> No recordings, microphone, login or analytics. Keyboard-accessible choices and visible text feedback work even when device audio is muted.</p>
 <button class="download" id="makeOwn">↓ Make it my own · Save a copy</button><p class="download-status" id="downloadStatus"></p>
