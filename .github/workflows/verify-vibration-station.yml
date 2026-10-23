@@ -56,11 +56,37 @@ jobs:
               return {count,w,h};
             });
             assert(realWave.count>20,'String waveform did not render sampled audio: '+JSON.stringify(realWave));
+
+            // Three string pitches must really differ at the same tension,
+            // and their physical slow-motion diagram must be rendered separately.
+            await page.locator('#tension').evaluate(el=>{el.value='50';el.dispatchEvent(new Event('input',{bubbles:true}));});
+            const stringFrequencies=[];
+            for(let i=0;i<3;i++){
+              await page.locator('#stringControls .pick[data-string="'+i+'"]').click();
+              const hz=Number(await page.locator('#physicalString').getAttribute('data-vibration-hz'));
+              stringFrequencies.push(hz);
+              await page.waitForTimeout(70);
+            }
+            assert(stringFrequencies[1]>stringFrequencies[0]*1.85,'Yellow pitch should be clearly higher than red: '+stringFrequencies);
+            assert(stringFrequencies[2]>stringFrequencies[1]*1.85,'Blue pitch should be clearly higher than yellow: '+stringFrequencies);
+            const physical=await page.locator('#physicalString').evaluate(el=>{
+              const pixels=el.getContext('2d').getImageData(0,0,el.width,el.height).data;
+              return {width:el.width,nonempty:pixels.some((a,i)=>i%4===3&&a>0)};
+            });
+            assert(physical.width>0&&physical.nonempty,'Physical string demonstration should be visible');
+            const monitor=await page.locator('#soundLab').boundingBox();
+            const stage=await page.locator('#photoPanel').boundingBox();
+            assert(monitor.y>=stage.y+stage.height-2,'Sound waveform panel must sit below the photographed instrument');
+
             await page.locator('#tension').evaluate(el=>{el.value='90';el.dispatchEvent(new Event('input',{bubbles:true}));});
             await page.locator('#pluck').click();await page.waitForTimeout(220);
             assert((await page.locator('#response').innerText()).includes('vibrations each second'));
             await page.screenshot({path:'/tmp/vibration-strings.png',animations:'disabled'});
             await page.locator('[data-mode="drum"]').click();
+            const drumSurface=await page.locator('#drumTouch').boundingBox();
+            const drumWave=await page.locator('#singleWave').boundingBox();
+            assert(drumWave.y>=drumSurface.y+drumSurface.height,'Sound wave must not cover the drum button');
+
             await page.locator('#force').evaluate(el=>{el.value='10';el.dispatchEvent(new Event('input',{bubbles:true}));});
             await page.locator('#hitDrum').click();
             assert((await page.locator('#response').innerText()).includes('Gentler'));
@@ -69,6 +95,10 @@ jobs:
             assert((await page.locator('#response').innerText()).includes('Stronger'));
             await page.waitForTimeout(120);await page.screenshot({path:'/tmp/vibration-drum.png',animations:'disabled'});
             await page.locator('[data-mode="hunt"]').click();
+            const huntButtons=await page.locator('.hunt-options').boundingBox();
+            const huntWave=await page.locator('#singleWave').boundingBox();
+            assert(huntWave.y>=huntButtons.y+huntButtons.height,'Sound wave must not cover Sound Hunt buttons');
+
             await page.locator('[data-source="2"]').click();
             assert((await page.locator('#huntName').innerText())==='Clap');
             await page.locator('[data-duration="short"]').click();
