@@ -1,0 +1,62 @@
+name: Rebuild Ready Set Roll standalone game
+on:
+  push:
+    paths:
+      - 'ready-set-roll/index.html'
+      - 'ready-set-roll/app.js'
+      - 'ready-set-roll/physics.js'
+      - 'ready-set-roll/style.css'
+      - 'ready-set-roll/source/package.mjs'
+      - '.github/workflows/rebuild-ready-set-roll.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: ready-set-roll-package
+  cancel-in-progress: true
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify physics and JavaScript
+        run: |
+          node --check ready-set-roll/app.js
+          node --check ready-set-roll/physics.js
+          node --check ready-set-roll/source/package.mjs
+          node ready-set-roll/source/test-physics.cjs
+      - name: Rebuild downloadable self-contained HTML
+        run: node ready-set-roll/source/package.mjs
+      - name: Check narration is absent from both editions
+        run: |
+          node --input-type=module <<'JS'
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+          const html=fs.readFileSync('ready-set-roll/index.html','utf8');
+          const bundle=fs.readFileSync('ready-set-roll/ready-set-roll.html','utf8');
+          const app=fs.readFileSync('ready-set-roll/app.js','utf8');
+          for(const s of [html,bundle,app]){
+            for(const term of ['speech.mp3','RollSpeech','speechSynthesis','id="voice"','id="read"','id="narrator"','speech.js']){
+              assert(!s.includes(term),'Found removed audio reference: '+term);
+            }
+          }
+          assert(bundle.includes('inline-physics'),'Physics missing from bundle');
+          assert(bundle.includes('inline-app'),'App code missing from bundle');
+          assert(bundle.includes('data:image/webp;base64,'),'Images missing from bundle');
+          assert(!bundle.includes('<script defer src='),'External scripts in standalone bundle');
+          console.log('Voice-free hosted and standalone editions confirmed.');
+          JS
+      - name: Publish refreshed downloadable game
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add ready-set-roll/ready-set-roll.html
+          if ! git diff --cached --quiet; then
+            git commit -m 'Rebuild voice-free Ready Set Roll downloadable game'
+            git pull --rebase origin main
+            git push origin main
+          fi
