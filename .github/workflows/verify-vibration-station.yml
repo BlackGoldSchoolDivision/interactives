@@ -3,6 +3,10 @@ on:
   push:
     paths:
       - '.github/workflows/verify-vibration-station.yml'
+      - 'vibration-station/index.html'
+      - 'vibration-station/style.css'
+      - 'vibration-station/app.js'
+      - 'vibration-station/assets/string-box.webp'
   workflow_dispatch:
 permissions:
   contents: write
