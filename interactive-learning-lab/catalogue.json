@@ -4548,7 +4548,7 @@
     "title": "Ready, Set, Roll!",
     "category": "Science",
     "group": "",
-    "description": "Predict, roll and compare two realistic toy cars. Six spoken investigations explore surfaces, speed and ramp heights, with replay and a free-play rolling lab.",
+    "description": "Predict, roll and compare two realistic toy cars. Six picture-led investigations explore surfaces, speed and ramp heights, with replay and a free-play rolling lab.",
     "types": [
       "Simulations & models",
       "Decision games"
@@ -4557,8 +4557,7 @@
       "Motion",
       "Ramps",
       "Surfaces",
-      "Fair comparisons",
-      "Spoken prompts"
+      "Fair comparisons"
     ],
     "url": "https://interactives.blackgold.ca/ready-set-roll/",
     "links": [],
@@ -4571,7 +4570,7 @@
       1
     ],
     "grade_basis": "curriculum",
-    "grade_note": "Grade 1 Science: compare how surfaces and ramp height affect rolling movement and speed. Spoken prompts support beginning readers. This is a partial connection to movement investigations; it does not cover every pathway, animal movement or influence on motion."
+    "grade_note": "Grade 1 Science: compare how surfaces and ramp height affect rolling movement and speed. This is a partial connection to movement investigations; it does not cover every pathway, animal movement or influence on motion."
   },
   {
     "id": "walker-plurals",
