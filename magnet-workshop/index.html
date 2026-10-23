@@ -219,6 +219,15 @@ function touchMagnet(){
  object.style.setProperty('--contact-y',y.toFixed(1)+'px');
  object.classList.add('moving');
 }
+// After a result panel or viewport changes size, correct the final contact
+// instantly rather than beginning a second animation after the collision.
+function settleContact(){
+ const item=$('objectLab');
+ item.style.transition='none';
+ touchMagnet();
+ void item.offsetWidth;
+ item.style.removeProperty('transition');
+}
 // Like poles push away. Opposite poles pull the cart until its magnet touches
 // the fixed magnet, regardless of starting gap or viewport width.
 function moveMagnetCart(repels){
@@ -274,7 +283,7 @@ function animate(){
    renderSteps();
    // Result controls collapse after testing. Re-align with the finished layout,
    // so the object stays touching even as the surrounding panel changes height.
-   if(isObjects&&magnetic)requestAnimationFrame(touchMagnet);
+   if(isObjects&&magnetic)requestAnimationFrame(settleContact);
  },1250);
 }
 function next(){
@@ -365,7 +374,7 @@ $('download').onclick=async()=>{
 };
 // Recalculate contact after phone orientation changes or dynamic text reflow.
 new ResizeObserver(()=>{
- if(state.mode==='objects'&&state.tested&&OBJECTS[state.round].mag)requestAnimationFrame(touchMagnet);
+ if(state.mode==='objects'&&state.tested&&OBJECTS[state.round].mag)requestAnimationFrame(settleContact);
 }).observe($('stage'));
 loadRound();
 })();
