@@ -5,15 +5,15 @@
   <meta name="theme-color" content="#FAF8F2"><meta name="description" content="Predict, roll and compare. Explore gravity, ramp heights and rolling resistance with six picture-led investigations and a free-play lab.">
   <title>Ready, Set, Roll! · Learning Lab</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261023-3">
-  <script defer src="physics.js?v=20261023-3"></script><script defer src="speech.js?v=20261023-3"></script><script defer src="app.js?v=20261023-3"></script>
+  <link rel="stylesheet" href="style.css?v=20261023-no-voice">
+  <script defer src="physics.js?v=20261023-no-voice"></script><script defer src="app.js?v=20261023-no-voice"></script>
 </head>
 <body>
 <main class="app">
   <header class="header">
     <a class="back" href="https://interactives.blackgold.ca/interactive-learning-lab/" aria-label="Back to Interactive Learning Lab"><span aria-hidden="true">←</span><span>Learning Lab</span></a>
     <h1>Ready, Set, Roll!</h1>
-    <div class="header-actions"><button id="read" class="icon" aria-label="Hear the instructions again" title="Hear it again"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4zM17 8a6 6 0 0 1 0 8M20 5a10 10 0 0 1 0 14"/></svg></button><button id="more" class="icon" aria-label="Grown-up lab options" title="Grown-up options"><span aria-hidden="true">•••</span></button></div>
+    <div class="header-actions"><button id="more" class="icon" aria-label="Grown-up lab options" title="Grown-up options"><span aria-hidden="true">•••</span></button></div>
   </header>
   <section class="question-area" aria-labelledby="question">
     <p class="round-label" id="round">1 / 6</p>
@@ -50,9 +50,7 @@
     <div class="mode-row"><button id="mix" class="mode-button" aria-label="Mix ramp heights and surfaces">Mix &amp; test</button><button id="guided" class="mode-button" hidden>Back to 1–6</button></div>
   </section>
 </main>
-<audio id="narrator" preload="auto" src="assets/speech.mp3?v=20261023-3"></audio>
 <dialog id="options" aria-labelledby="options-title"><div class="dialog-heading"><h2 id="options-title">Your rolling lab</h2><button class="close" aria-label="Close lab options">×</button></div>
-  <label class="voice-control"><input type="checkbox" id="voice" checked> Spoken guidance</label><p id="voice-status" role="status">Prompts, choices and results are spoken after the child presses Play. The speaker button repeats the current instructions.</p>
   <button id="free" class="primary wide">Try your own experiment</button>
   <button id="journey" class="secondary wide" hidden>Back to the investigations</button>
   <details><summary>Your observations</summary><p>Each completed roll is saved in this browser. Predictions can change as you learn.</p><div id="observations"></div><button id="export" class="secondary">Download observations</button></details>
