@@ -2,11 +2,11 @@
 'use strict';
 const $=id=>document.getElementById(id);
 const COLORS=['#ff6a65','#ffe34e','#39bafa','#83d9fd'];
-const STRINGS=[{name:'Red',hz:124,timbre:[1,.06,.03],decay:1.5},{name:'Yellow',hz:248,timbre:[1,.20,.10],decay:1.25},{name:'Blue',hz:496,timbre:[1,.37,.17],decay:1.05}];
+const STRINGS=[{name:'Red',hz:220,timbre:[1,.06,.03],decay:1.5},{name:'Yellow',hz:440,timbre:[1,.20,.10],decay:1.25},{name:'Blue',hz:880,timbre:[1,.37,.17],decay:1.05}];
 const SOUNDS=[{name:'Bell',icon:'🔔',length:'long',explain:'The bell keeps ringing after the strike.'},{name:'Bee',icon:'🐝',length:'long',explain:'A bee buzzes while its wings continue vibrating.'},{name:'Clap',icon:'👏',length:'short',explain:'A handclap stops quickly.'}];
 const S={mode:'strings',string:0,tension:50,force:50,source:0,pitch:null,duration:null};
 let actx,analysers=[],master,raf,huntMotionTimer;
-let motion={index:0,start:0,hz:124,duration:1500};
+let motion={index:0,start:0,hz:220,duration:1700};
 function startAudio(){
  try{
   if(!actx){
@@ -25,21 +25,31 @@ function noise(seconds){
  const b=actx.createBuffer(1,Math.round(actx.sampleRate*seconds),actx.sampleRate),a=b.getChannelData(0);
  for(let i=0;i<a.length;i++)a[i]=Math.random()*2-1;return b;
 }
-function selectString(index){S.string=index;document.querySelectorAll('[data-string]').forEach(b=>{const y=Number(b.dataset.string)===index;b.classList.toggle('active',y);b.setAttribute('aria-pressed',String(y));});$('motionCaption').textContent=STRINGS[index].name+' band · slow-motion movement';}
+function currentFrequency(){return STRINGS[S.string].hz*Math.sqrt(.5+S.tension/100);}
+function refreshFrequency(){
+ const hz=Math.round(currentFrequency());
+ $('motionFrequency').textContent=STRINGS[S.string].name.toUpperCase()+' STRING · '+hz+' Hz'+(S.string===1&&S.tension===50?' · CONCERT A (A4)':'');
+ $('motionCaption').textContent='Both ends stay fixed. The '+STRINGS[S.string].name.toLowerCase()+' band vibrates in the middle.';
+}
+function selectString(index){
+ S.string=index;
+ document.querySelectorAll('[data-string]').forEach(b=>{const y=Number(b.dataset.string)===index;b.classList.toggle('active',y);b.setAttribute('aria-pressed',String(y));});
+ refreshFrequency();
+}
 function pluck(index=S.string){
  if(!startAudio())return;selectString(index);
 
- const t=actx.currentTime+.01,spec=STRINGS[index],f=spec.hz*Math.sqrt(.5+S.tension/100);
+ const t=actx.currentTime+.01,spec=STRINGS[index],f=currentFrequency();
  const env=envelope(index,.17,t,spec.decay);
  spec.timbre.forEach((volume,i)=>{
    const osc=actx.createOscillator(),v=actx.createGain();
    osc.type=i===0?'triangle':'sine';osc.frequency.value=f*(i+1);v.gain.value=volume;
    osc.connect(v);v.connect(env);osc.start(t);osc.stop(t+spec.decay+.05);
  });
- motion={index,start:performance.now(),hz:f,duration:1500};
+ motion={index,start:performance.now(),hz:f,duration:1700};
  $('physicalString').dataset.vibrationHz=String(Math.round(f));
  $('pluckingFlash').classList.remove('active');void $('pluckingFlash').offsetWidth;$('pluckingFlash').classList.add('active');
- const pitch=f<205?'low':f<355?'middle':'high';
+ const pitch=f<300?'low':f<600?'middle':'high';
  $('physicalString').dataset.pitch=pitch;
  $('question').textContent='Is the pitch low, middle, or high?';
  $('response').textContent=STRINGS[index].name+' string: '+Math.round(f)+' vibrations each second — '+pitch+' pitch. '+(S.pitch?(S.pitch===pitch?'Your prediction matched!':'Change the tension and listen again.'):'Compare the strings.');
@@ -79,7 +89,7 @@ function hunt(){
 function render(){
  document.querySelectorAll('[data-mode]').forEach(b=>{const y=b.dataset.mode===S.mode;b.classList.toggle('active',y);b.setAttribute('aria-current',String(y));});
  const ss=S.mode==='strings',dd=S.mode==='drum',hh=S.mode==='hunt';
- $('stringPhoto').hidden=!ss;$('stringWaveStack').hidden=!ss;$('stringControls').hidden=!ss;
+ $('stringPhoto').hidden=!ss;$('stringWaveStack').hidden=!ss;$('stringControls').hidden=!ss;$('movementLab').hidden=!ss;
  $('drumScene').hidden=!dd;$('drumControls').hidden=!dd;
  $('huntScene').hidden=!hh;$('huntControls').hidden=!hh;
  $('singleWave').hidden=ss;$('pitchChoices').hidden=!ss;
@@ -157,7 +167,7 @@ $('teacherOverlay').onclick=e=>{if(e.target===$('teacherOverlay'))closeNotes();}
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('teacherOverlay').hidden)closeNotes();});
 $('pluck').onclick=()=>pluck();
 document.querySelectorAll('[data-string]').forEach(b=>b.onclick=()=>pluck(Number(b.dataset.string)));
-$('tension').oninput=e=>{S.tension=Number(e.target.value);$('tensionValue').textContent=S.tension<=30?'Loose':S.tension>=70?'Tight':'Medium';};
+$('tension').oninput=e=>{S.tension=Number(e.target.value);$('tensionValue').textContent=S.tension<=30?'Loose':S.tension>=70?'Tight':'Medium';refreshFrequency();};
 document.querySelectorAll('[data-answer]').forEach(b=>b.onclick=()=>{S.pitch=b.dataset.answer;document.querySelectorAll('[data-answer]').forEach(n=>n.classList.toggle('selected',n===b));$('response').textContent='Good prediction! Pluck the string to test it.';});
 $('force').oninput=e=>{S.force=Number(e.target.value);$('forceValue').textContent=S.force<=30?'Gentle':S.force>=70?'Strong':'Medium';};
 $('hitDrum').onclick=hitDrum;$('drumTouch').onclick=hitDrum;$('playHunt').onclick=hunt;
@@ -168,8 +178,8 @@ $('makeOwn').onclick=async()=>{
  const button=$('makeOwn');button.disabled=true;$('downloadStatus').textContent='Preparing your offline copy…';
  try{
   const [style,script,blob]=await Promise.all([
-    fetch('./style.css?v=3').then(r=>{if(!r.ok)throw Error('style');return r.text();}),
-    fetch('./app.js?v=3').then(r=>{if(!r.ok)throw Error('script');return r.text();}),
+    fetch('./style.css?v=4').then(r=>{if(!r.ok)throw Error('style');return r.text();}),
+    fetch('./app.js?v=4').then(r=>{if(!r.ok)throw Error('script');return r.text();}),
     fetch('./assets/string-box.webp').then(r=>{if(!r.ok)throw Error('image');return r.blob();})
   ]);
   const image=await new Promise((ok,bad)=>{const f=new FileReader();f.onload=()=>ok(f.result);f.onerror=bad;f.readAsDataURL(blob);});
