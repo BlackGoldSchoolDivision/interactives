@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#fbf7ef">
+<link rel="preload" as="image" href="./assets/sponge.webp">
 <meta name="description" content="A picture-led Grade 1 science lab: squeeze, stretch, and bend familiar materials. Predict what happens when you let go.">
 <title>Bend, Stretch, Change! · Interactive Learning Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -161,6 +162,42 @@ h2{color:#242b55;font-size:clamp(26px,3vw,42px);font-weight:1000}
 @media(max-height:570px) and (min-width:901px){.experiment{min-height:360px}.display{min-height:198px}.object-wrap{height:185px}.prop.sponge{height:172px;width:345px}.quick-actions{margin-top:8px}.action-card{min-height:75px;padding:8px}.test{min-height:56px}.answer{min-height:86px}}
 
 [hidden]{display:none!important}
+
+/* Real cutout artwork stored alongside the game; keep the existing approved screen layout. */
+.prop.sponge,.prop.clay,.prop.band,.prop.stem {
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  background-position:center center!important;
+  background-repeat:no-repeat!important;
+  background-size:contain!important;
+  filter:drop-shadow(0 18px 11px #4a402442);
+}
+.prop.sponge{background-image:url("./assets/sponge.webp")!important; width:min(45vw,390px);height:min(31vw,300px);min-width:230px;min-height:195px}
+.prop.clay{background-image:url("./assets/clay.webp")!important;width:min(35vw,320px);height:min(30vw,275px);min-width:200px;min-height:185px}
+.prop.band{background-image:url("./assets/band.webp")!important;width:min(36vw,320px);height:min(31vw,280px);min-width:190px;min-height:170px}
+.prop.stem{background-image:url("./assets/pipe.webp")!important;width:min(38vw,340px);height:min(30vw,275px);min-width:210px;min-height:185px;max-width:100%}
+.prop.sponge:after,.prop.clay:after,.prop.band:after{content:none!important;display:none!important}
+.display.working .prop.sponge{transform:scale(1.12,.65) translateY(24px)}
+.display.working .prop.clay,.display.changed .prop.clay{transform:scale(1.22,.64) translateY(28px) rotate(-4deg)}
+.display.working .prop.band{transform:scaleX(1.55) scaleY(.88)}
+.display.changed .prop.band{transform:rotate(-17deg)}
+.display.working .prop.stem,.display.changed .prop.stem{transform:rotate(21deg) scaleX(.78) skewY(-8deg)}
+@media(max-width:900px){
+  .prop.sponge{width:min(72vw,390px);height:clamp(180px,39vw,270px);min-width:0;min-height:0}
+  .prop.clay,.prop.band,.prop.stem{width:min(70vw,310px);height:clamp(180px,40vw,265px);min-width:0;min-height:0}
+  .object-wrap{height:clamp(210px,45vw,285px);transform:none}
+}
+@media(max-width:500px){
+ .object-wrap{height:188px;transform:none}
+ .prop.sponge,.prop.clay,.prop.band,.prop.stem{height:175px;width:min(78vw,280px);min-width:0;min-height:0}
+ .display{min-height:208px}
+}
+@media(max-height:570px) and (min-width:901px){
+ .object-wrap{height:186px;transform:none}
+ .prop.sponge,.prop.clay,.prop.band,.prop.stem{height:180px;width:290px;min-width:0;min-height:0}
+}
+
 </style>
 </head>
 <body>
@@ -219,7 +256,7 @@ h2{color:#242b55;font-size:clamp(26px,3vw,42px);font-weight:1000}
   <ul><li><strong>Sponge:</strong> Squeeze a dry sponge gently. It usually springs back.</li><li><strong>Modelling clay:</strong> Squish soft clay. It holds its new shape.</li><li><strong>Rubber band:</strong> Stretch gently. It usually returns to its original shape when released.</li><li><strong>Pipe cleaner:</strong> Bend a chenille stem. It generally stays bent.</li></ul>
   <h3>Questions to ask</h3>
   <ul><li>What did you predict? What did you observe?</li><li>Which materials went back to their old shape? Which stayed changed?</li><li>Is it still the same material after its shape changes?</li><li>Can you find something else that behaves the same way?</li></ul>
-  <p><strong>Image credits:</strong> Sponge photo: Pascua Theus (GFDL), and material photographs from Wikimedia Commons under their respective file licences. <a href="https://commons.wikimedia.org/wiki/File:Sponge_on_white_background.jpg" target="_blank" rel="noopener">Sponge source</a>, <a href="https://commons.wikimedia.org/wiki/File:Play_dough_04751.jpg" target="_blank" rel="noopener">play dough source (Nevit Dilmen, CC BY-SA 3.0)</a>, <a href="https://commons.wikimedia.org/wiki/File:Rubber_bands.jpg" target="_blank" rel="noopener">rubber band source</a>.</p>
+  <p><strong>Material artwork:</strong> Custom cutout images generated for this activity and stored in the <code>bend-stretch-change/assets/</code> folder of the division repository.</p>
   <p><strong>Curriculum connection:</strong> Grade 1 Science—investigating observable material properties, physical changes, and making predictions based on evidence. This is one focused investigation, not complete outcome coverage.</p>
   <p><strong>Safety and accuracy:</strong> Use gentle force. Keep elastic bands away from faces; avoid overstretching. Real materials vary in thickness, temperature, wear and force. This visual model is illustrative, not a precise physical simulation.</p>
   <p><strong>Accessibility:</strong> All student actions are click/tap/keyboard accessible. The speaker reads questions aloud using the device's speech engine when available. Students can respond by pointing instead of reading.</p>
@@ -253,7 +290,7 @@ function render(){
   $('actionTag').textContent=r.action;
   $('prop').className='prop '+r.id;
   $('prop').setAttribute('aria-label',r.alt);
-  $('prop').innerHTML=r.id==='stem'?'<span class="stem-piece left"></span><span class="stem-piece right"></span>':'';
+  $('prop').innerHTML='';
   $('display').className='display';
   $('stageCaption').textContent='Look at its shape. What will happen?';
   $('question').textContent='When we let go, what will happen?';
