@@ -19,7 +19,16 @@ texts={
  'free-a':'The top car went farther. Look at what changed. Press the arrow to change your experiment.',
  'free-b':'The bottom car went farther. Look at what changed. Press the arrow to change your experiment.',
  'free-same':'They matched! Press the arrow to change your experiment.',
- 'complete':'You did it! You made predictions and tested your ideas. Press the round arrow to play again.'
+ 'complete':'You did it! You made predictions and tested your ideas. Press the round arrow to play again.',
+ 'mix-intro':'Tap a surface to change it. Use plus and minus to change each ramp. Pick a track. Then press play.',
+ 'surface-wood':'Wood.',
+ 'surface-felt':'Felt.',
+ 'surface-cork':'Cork.',
+ 'surface-sandpaper':'Sandpaper.',
+ 'height-9':'Nine centimetres high.',
+ 'height-14':'Fourteen centimetres high.',
+ 'height-19':'Nineteen centimetres high.',
+ 'height-22':'Twenty two centimetres high.'
 }
 rate=22050;cues={};parts=[];cursor=0
 for i,(key,text) in enumerate(texts.items()):
@@ -34,6 +43,8 @@ joined=work/'speech.wav'
 with wave.open(str(joined),'wb') as f:
     f.setnchannels(1);f.setsampwidth(2);f.setframerate(rate);f.writeframes(b''.join(parts))
 dest=root/'assets/speech.mp3'
-subprocess.run(['ffmpeg','-hide_banner','-loglevel','error','-y','-i',str(joined),'-codec:a','libmp3lame','-b:a','48k',str(dest)],check=True)
+encoded=work/'speech.mp3'
+subprocess.run(['ffmpeg','-hide_banner','-loglevel','error','-y','-i',str(joined),'-codec:a','libmp3lame','-b:a','48k',str(encoded)],check=True)
+encoded.replace(dest)
 (root/'speech.js').write_text('/* Local synthesized English prompts. Build: python3 source/make-speech.py */\nwindow.RollSpeech='+json.dumps({'cues':cues},separators=(',',':'))+';\n')
 print(json.dumps({'clips':len(cues),'seconds':round(cursor/rate,1),'bytes':dest.stat().st_size}))

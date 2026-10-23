@@ -3,6 +3,7 @@
   'use strict';
   const G=9.81,STEP=1/240,WHEEL_RADIUS=.0322,WHEELBASE=.25,INERTIA_RATIO=.085;
   const RAMP_START=.08,TOE_START=.78,RAMP_END=.98,RELEASE=.25,TRACK_END=3.75;
+  const HEIGHTS=Object.freeze([.09,.14,.19,.22]);
   // Effective rolling resistance, not a table of measured material coefficients.
   const surfaces={wood:{name:'Wood',resistance:.085,tile:0,color:'#D6AE76'},felt:{name:'Felt',resistance:.24,tile:1,color:'#BD604C'},sandpaper:{name:'Sandpaper',resistance:.34,tile:2,color:'#62646B'},cork:{name:'Cork',resistance:.15,tile:3,color:'#B99065'}};
   function profile(x,h){
@@ -62,5 +63,5 @@
     {id:'same',name:'A fair comparison',question:'Which car will go farther?',kind:'distance',lanes:[{label:'Top track',surface:'wood',height:.14},{label:'Bottom track',surface:'wood',height:.14}],explain:'Matching cars, ramp heights and surfaces produced the same result. In a real test, repeat your trials to check small differences.'},
     {id:'flag',name:'Reach the flag',question:'Which car will reach its flag?',kind:'target',target:1,lanes:[{label:'Felt',surface:'felt',height:.16},{label:'Wood',surface:'wood',height:.16}],explain:'The flags are equally far from the ramps. The wood car kept enough of its motion to reach its flag. The felt car slowed and stopped before it.'}
   ];
-  return {G,STEP,WHEEL_RADIUS,WHEELBASE,INERTIA_RATIO,RAMP_START,TOE_START,RAMP_END,RELEASE,TRACK_END,surfaces,profile,chassis,makeCar,step,run,distance,outcome,levels};
+  return {G,STEP,WHEEL_RADIUS,WHEELBASE,INERTIA_RATIO,RAMP_START,TOE_START,RAMP_END,RELEASE,TRACK_END,HEIGHTS,surfaces,profile,chassis,makeCar,step,run,distance,outcome,levels};
 });

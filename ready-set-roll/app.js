@@ -7,14 +7,15 @@
   let assetsReady=false,assetFailed=false,width=0,height=0,dpr=1,lastTime=0,accumulator=0,oldFocus=null;
   let saved={};try{saved=JSON.parse(localStorage.getItem(STORAGE))||{};}catch{}
   const validPrediction=v=>['a','b','same'].includes(v);
-  const state={index:Number.isInteger(saved.index)&&saved.index>=0&&saved.index<6?saved.index:0,free:false,freeLanes:null,phase:'ready',started:false,voice:saved.voice!==false,prediction:validPrediction(saved.prediction)?saved.prediction:null,cars:[],slow:typeof saved.slow==='boolean'?saved.slow:matchMedia('(prefers-reduced-motion: reduce)').matches,completed:new Set(Array.isArray(saved.completed)?saved.completed.filter(v=>Number.isInteger(v)&&v>=0&&v<6):[]),trials:Array.isArray(saved.trials)?saved.trials.filter(t=>t&&typeof t.id==='string'&&Array.isArray(t.lanes)&&t.lanes.length===2).slice(-60):[],elapsed:0};
+  const validLanes=Array.isArray(saved.freeLanes)&&saved.freeLanes.length===2&&saved.freeLanes.every(l=>l&&E.surfaces[l.surface]&&E.HEIGHTS.includes(l.height));
+  const state={index:Number.isInteger(saved.index)&&saved.index>=0&&saved.index<6?saved.index:0,free:saved.free===true&&validLanes,freeLanes:validLanes?saved.freeLanes.map(l=>({surface:l.surface,height:l.height,label:E.surfaces[l.surface].name})):null,phase:'ready',started:false,voice:saved.voice!==false,prediction:validPrediction(saved.prediction)?saved.prediction:null,cars:[],slow:typeof saved.slow==='boolean'?saved.slow:matchMedia('(prefers-reduced-motion: reduce)').matches,completed:new Set(Array.isArray(saved.completed)?saved.completed.filter(v=>Number.isInteger(v)&&v>=0&&v<6):[]),trials:Array.isArray(saved.trials)?saved.trials.filter(t=>t&&typeof t.id==='string'&&Array.isArray(t.lanes)&&t.lanes.length===2).slice(-60):[],elapsed:0};
   let embedded={};try{embedded=JSON.parse($('roll-assets')?.textContent||'{}');}catch{}
   const narrator=$('narrator');if(embedded.audio)narrator.src=embedded.audio;
   let speechEnd=0,speechTimer=0,speechToken=0;
   function stopSpeech(){speechToken++;clearTimeout(speechTimer);narrator.pause();if('speechSynthesis' in window)speechSynthesis.cancel();}
   narrator.addEventListener('timeupdate',()=>{if(speechEnd&&narrator.currentTime>=speechEnd){narrator.pause();clearTimeout(speechTimer);}});
   function level(){return state.free?{id:'free',name:'Your own experiment',question:'Which car will go farther?',kind:'distance',lanes:state.freeLanes,explain:'Compare the cars, ramp heights and surfaces. Change one thing, predict again and repeat your test.'}:E.levels[state.index];}
-  function persist(){try{localStorage.setItem(STORAGE,JSON.stringify({index:state.index,prediction:state.prediction,slow:state.slow,voice:state.voice,completed:[...state.completed],trials:state.trials.slice(-60)}));}catch{}}
+  function persist(){try{localStorage.setItem(STORAGE,JSON.stringify({index:state.index,free:state.free,freeLanes:state.freeLanes,prediction:state.prediction,slow:state.slow,voice:state.voice,completed:[...state.completed],trials:state.trials.slice(-60)}));}catch{}}
   function busy(){return state.phase==='rolling'||state.phase==='paused';}
   function status(text){$('status').textContent=text;}
   function setup(){state.cars=level().lanes.map(E.makeCar);state.phase='ready';state.elapsed=0;accumulator=0;lastTime=0;renderUI();draw();}
@@ -44,14 +45,14 @@
   function speakResult(force=false){speak(spokenResult(),force,state.free?'free-'+E.outcome(state.cars):'result-'+level().id);}
   function spokenResult(){
     const l=level(),winner=E.outcome(state.cars,l.kind,l.target),where=winner==='a'?'top':'bottom';
-    if(winner==='same')return 'They matched! Both cars went the same distance. Both tracks were the same. Press the arrow to try the next one.';
+    if(winner==='same')return state.free?'They matched! Both cars went about the same distance. Press the arrow to change your experiment.':'They matched! Both cars went the same distance. Both tracks were the same. Press the arrow to try the next one.';
     const action=l.kind==='speed'?'went faster at the white line':l.kind==='stop'?'stopped first':l.kind==='target'?'reached the flag':'went farther';
     const why=l.id==='height'?'It started higher.':l.id==='wood-felt'?'The felt slowed the other car more.':l.id==='sandpaper'?'The sandpaper slowed that car more.':l.id==='speed'?'The wood slowed its car less.':l.id==='flag'?'The felt car stopped before its flag.':'Look at what changed on your tracks.';
     return 'Look! The '+where+' car '+action+'. '+why+' Press the arrow to '+(state.free?'change your experiment.':'keep exploring.');
   }
   function renderUI(){
     const l=level(),ready=state.phase==='ready',running=state.phase==='rolling',paused=state.phase==='paused',result=state.phase==='result',complete=state.phase==='complete';
-    $('round').textContent=state.free?'⚒':`${state.index+1} / 6`;
+    $('round').textContent=state.free?'MIX & TEST':`${state.index+1} / 6`;
     $('round').setAttribute('aria-label',state.free?'Your own experiment':`Investigation ${state.index+1} of 6`);
     $('question').textContent=complete?'You did it!':l.question;
     $('subline').textContent=complete?'You predicted, tested and compared.':state.free?'Try a change. Keep the rest the same.':l.id==='height'?'Same cars and surfaces. Different ramp heights.':l.id==='same'?'Same cars. Same heights. Same surfaces.':l.kind==='speed'?'Compare the cars at the white stripes.':'Same cars. Matching ramps. Different surfaces.';
@@ -78,13 +79,28 @@
     $('journey').hidden=!state.free;
     $('free').textContent=state.free?'Change my experiment':'Try your own experiment';
     $('voice').checked=state.voice;
+    $('mix-controls').hidden=!state.free;
+    $('mix').hidden=state.free;$('guided').hidden=!state.free;
+    $('mix').disabled=busy();$('guided').disabled=busy();
+    document.body.classList.toggle('mixing',state.free);
+    if(state.free)renderMix();
     describe();
+  }
+  function renderMix(){
+    state.freeLanes.forEach((lane,i)=>{
+      const key=i===0?'a':'b',surface=E.surfaces[lane.surface],cm=Math.round(lane.height*100),index=E.HEIGHTS.indexOf(lane.height),button=$('material-'+key);
+      button.disabled=busy();button.setAttribute('aria-label',`${i===0?'Top':'Bottom'} surface: ${surface.name}. Change surface`);
+      button.querySelector('.material-name').textContent=surface.name;
+      const photo=button.querySelector('.material-photo');photo.style.backgroundImage=`url("${embedded.materials||'assets/materials.webp'}")`;photo.style.backgroundPosition=`${surface.tile%2?100:0}% ${surface.tile>1?100:0}%`;
+      $('ramp-'+key).innerHTML=cm+' <small>cm</small>';$('ramp-'+key).setAttribute('aria-label',`${i===0?'Top':'Bottom'} ramp ${cm} centimetres`);
+      $('lower-'+key).disabled=busy()||index===0;$('raise-'+key).disabled=busy()||index===E.HEIGHTS.length-1;
+    });
   }
   function describe(){
     const l=level();
     canvas.setAttribute('aria-label',l.lanes.map((lane,i)=>{
       const car=state.cars[i],motion=state.phase==='ready'?'waiting on its ramp':car.stopped?'stopped':state.phase==='paused'?'paused':'rolling';
-      return `${i===0?'Top':'Bottom'} track: ${lane.label}, ${E.surfaces[lane.surface].name} surface. The blue car is ${motion}${state.phase==='ready'?'':`, ${Math.round(E.distance(car)*100)} centimetres past the ramp`}.`;
+      return `${i===0?'Top':'Bottom'} track: ${lane.label}, ${E.surfaces[lane.surface].name} surface, ramp ${Math.round(lane.height*100)} centimetres high. The blue car is ${motion}${state.phase==='ready'?'':`, ${Math.round(E.distance(car)*100)} centimetres past the ramp`}.`;
     }).join(' '));
   }
   function choose(value){if(state.phase!=='ready')return;const first=!state.started;state.started=true;state.prediction=value;renderUI();draw();persist();if(first)speakQuestion();else speak(value==='same'?'Both tracks. Press play to test your idea.':(value==='a'?'The top track.':'The bottom track.')+' Press play to test your idea.',false,'choose-'+value);status('Prediction chosen. Ready to roll!');}
@@ -114,17 +130,26 @@
   $('more').onclick=()=>{renderObservations();dialog('options');};
   document.querySelectorAll('.close').forEach(b=>b.onclick=()=>b.closest('dialog').close());
   function openSettings(){
-    if(state.phase==='rolling')pause();
-    const lanes=state.free?state.freeLanes:level().lanes;
-    ['a','b'].forEach((key,i)=>{$('surface-'+key).value=lanes[i].surface;$('height-'+key).value=String([.09,.14,.19].reduce((a,b)=>Math.abs(b-lanes[i].height)<Math.abs(a-lanes[i].height)?b:a));});
-    $('options').close();dialog('free-settings');
+    stopSpeech();
+    if(!state.free)state.freeLanes=level().lanes.map(l=>({surface:l.surface,label:E.surfaces[l.surface].name,height:E.HEIGHTS.reduce((a,b)=>Math.abs(b-l.height)<Math.abs(a-l.height)?b:a)}));
+    state.free=true;state.started=true;state.prediction=null;$('options').close();setup();persist();
+    status('Tap a surface to change it. Use plus or minus to change a ramp. Make a prediction and roll.');
+    $('material-a').focus();speak('Tap a surface to change it. Use plus and minus to change each ramp. Pick a track. Then press play.',false,'mix-intro');
   }
-  $('free').onclick=openSettings;
-  $('apply-free').onclick=()=>{
-    state.freeLanes=['a','b'].map((key,i)=>{const surface=$('surface-'+key).value,height=Number($('height-'+key).value);return {label:`${i===0?'Top':'Bottom'}: ${E.surfaces[surface].name}`,surface,height};});
-    state.free=true;state.started=true;state.prediction=null;$('free-settings').close();setup();status('Your experiment is ready. Make a prediction.');speakQuestion();
-  };
-  $('journey').onclick=()=>{state.free=false;state.started=true;state.prediction=null;$('options').close();setup();persist();status('Back to your investigations.');speakQuestion();};
+  $('free').onclick=$('mix').onclick=openSettings;
+  $('journey').onclick=$('guided').onclick=()=>{stopSpeech();state.free=false;state.started=true;state.prediction=null;$('options').close();setup();persist();status('Back to your investigations.');$('question').focus({preventScroll:true});speakQuestion();};
+  function changeTrack(i,kind,delta=1){
+    if(!state.free||busy())return;
+    const lane=state.freeLanes[i];let key,text;
+    if(kind==='height'){
+      const index=E.HEIGHTS.indexOf(lane.height),next=Math.max(0,Math.min(E.HEIGHTS.length-1,index+delta));if(next===index)return;
+      lane.height=E.HEIGHTS[next];const cm=Math.round(lane.height*100);key='height-'+cm;text=cm+' centimetres high.';
+    }else{
+      const materials=['wood','felt','cork','sandpaper'];lane.surface=materials[(materials.indexOf(lane.surface)+1)%materials.length];lane.label=E.surfaces[lane.surface].name;key='surface-'+lane.surface;text=lane.label+'.';
+    }
+    state.started=true;state.prediction=null;setup();persist();status('Track changed. Make a new prediction.');speak(text,false,key);
+  }
+  ['a','b'].forEach((key,i)=>{$('material-'+key).onclick=()=>changeTrack(i,'surface');$('lower-'+key).onclick=()=>changeTrack(i,'height',-1);$('raise-'+key).onclick=()=>changeTrack(i,'height',1);});
   function renderObservations(){
     const node=$('observations');node.replaceChildren();
     if(!state.trials.length){const p=document.createElement('p');p.textContent='Your first roll will start the notebook.';node.append(p);return;}
@@ -172,9 +197,11 @@
   function draw(){
     if(!width||!height)return;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,width,height);
     const backdrop=ctx.createLinearGradient(0,0,0,height);backdrop.addColorStop(0,'#fffdf8');backdrop.addColorStop(1,'#f8f4ea');ctx.fillStyle=backdrop;ctx.fillRect(0,0,width,height);
-    const left=width<500?12:30,right=width<500?18:35,scale=(width-left-right)/3.15;
+    const l=level(),sideSpace=width<500?30:65;
+    // Fit the tallest starting car as well as the track on short/wide screens.
+    const startExtent=Math.max(...l.lanes.map(lane=>E.chassis(E.RELEASE,lane.height).y))+.16;
+    const scale=Math.min((width-sideSpace)/3.15,(height*.4-12)/startExtent),left=(width-scale*3.15)/2;
     const baselines=[height*.40,height*.83],depth=Math.max(7,Math.min(20,scale*.058)),thickness=Math.max(4,scale*.026);
-    const l=level();
     l.lanes.forEach((lane,i)=>{
       const base=baselines[i],car=state.cars[i];if(!car)return;
       const px=x=>left+x*scale,py=x=>base-E.profile(x,lane.height).y*scale;
@@ -198,8 +225,8 @@
         const fx=px(E.RAMP_END+l.target);ctx.beginPath();ctx.moveTo(fx,base-1);ctx.lineTo(fx,base-42);ctx.strokeStyle='#223550';ctx.lineWidth=2;ctx.stroke();path([{x:fx,y:base-43},{x:fx+23,y:base-35},{x:fx,y:base-27}]);ctx.fillStyle='#f7c631';ctx.fill();
       }
       const labelY=base-Math.max(28,depth+14),fontSize=width<500?12:16;
-      label(lane.label,px(3.05),labelY,fontSize,'#263954','right');
-      const badgeX=width<500?12:19,badgeY=base-lane.height*scale-22,badgeR=width<500?10:13;
+      label(state.free?`${lane.label} · ${Math.round(lane.height*100)} cm`:lane.label,px(3.05),labelY,fontSize,'#263954','right');
+      const badgeX=Math.max(12,left-11),badgeY=Math.max(16,base-lane.height*scale-22),badgeR=width<500?10:13;
       ctx.beginPath();ctx.arc(badgeX,badgeY,badgeR,0,Math.PI*2);ctx.fillStyle=colors[i];ctx.fill();label(String(i+1),badgeX,badgeY,width<500?12:15,'#fff','center');
       // A matching coloured trail lets children directly compare where the cars stopped.
       if(state.phase!=='ready'&&car.x>E.RAMP_END){
@@ -237,10 +264,10 @@
     $('download').disabled=true;$('download-status').textContent='Preparing your complete game…';
     try{
       const [css,physics,speech,app,car,materials,audio]=await Promise.all([
-        document.querySelector('#inline-style')?.textContent||fetch('style.css?v=20261023-2').then(r=>{if(!r.ok)throw Error();return r.text();}),
-        document.querySelector('#inline-physics')?.textContent||fetch('physics.js?v=20261023-2').then(r=>{if(!r.ok)throw Error();return r.text();}),
-        document.querySelector('#inline-speech')?.textContent||fetch('speech.js?v=20261023-2').then(r=>{if(!r.ok)throw Error();return r.text();}),
-        document.querySelector('#inline-app')?.textContent||fetch('app.js?v=20261023-2').then(r=>{if(!r.ok)throw Error();return r.text();}),dataURL(images.car),dataURL(images.materials),embedded.audio||dataURL(narrator)
+        document.querySelector('#inline-style')?.textContent||fetch('style.css?v=20261023-3').then(r=>{if(!r.ok)throw Error();return r.text();}),
+        document.querySelector('#inline-physics')?.textContent||fetch('physics.js?v=20261023-3').then(r=>{if(!r.ok)throw Error();return r.text();}),
+        document.querySelector('#inline-speech')?.textContent||fetch('speech.js?v=20261023-3').then(r=>{if(!r.ok)throw Error();return r.text();}),
+        document.querySelector('#inline-app')?.textContent||fetch('app.js?v=20261023-3').then(r=>{if(!r.ok)throw Error();return r.text();}),dataURL(images.car),dataURL(images.materials),embedded.audio||dataURL(narrator)
       ]);
       const clone=document.documentElement.cloneNode(true);clone.querySelectorAll('script,link,style').forEach(n=>n.remove());clone.querySelector('body').classList.remove('expanded');clone.querySelectorAll('[inert]').forEach(n=>n.removeAttribute('inert'));clone.querySelectorAll('dialog[open]').forEach(n=>n.removeAttribute('open'));clone.querySelector('#observations').replaceChildren();
       const style=document.createElement('style');style.id='inline-style';style.textContent=css;clone.querySelector('head').append(style);

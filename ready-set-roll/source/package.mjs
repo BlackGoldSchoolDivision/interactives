@@ -5,10 +5,11 @@ html=html.replace(/<link\b[^>]*>/g,'').replace(/<script\b[^>]*src=[^>]*><\/scrip
 const css=await fs.readFile(new URL('style.css',root),'utf8');
 const assets={};for(const name of ['car','materials'])assets[name]='data:image/webp;base64,'+(await fs.readFile(new URL('assets/'+name+'.webp',root))).toString('base64');
 assets.audio='data:audio/mpeg;base64,'+(await fs.readFile(new URL('assets/speech.mp3',root))).toString('base64');
-html=html.replace('src="assets/speech.mp3"','');
+html=html.replace(/src="assets\/speech\.mp3[^"]*"/,'');
 html=html.replace('</head>','<style id="inline-style">'+css+'</style></head>');
 let scripts='<script type="application/json" id="roll-assets">'+JSON.stringify(assets)+'</script>';
 for(const name of ['physics','speech','app'])scripts+='<script id="inline-'+name+'">'+(await fs.readFile(new URL(name+'.js',root),'utf8')).replace(/<\/script/gi,'<\\/script')+'</script>';
 html=html.replace('</body>',scripts+'</body>');
-await fs.writeFile(new URL('ready-set-roll.html',root),html);
+await fs.writeFile(new URL('ready-set-roll.html.tmp',root),html);
+await fs.rename(new URL('ready-set-roll.html.tmp',root),new URL('ready-set-roll.html',root));
 console.log(JSON.stringify({bytes:Buffer.byteLength(html),embeddedImages:2,externalScripts:0}));

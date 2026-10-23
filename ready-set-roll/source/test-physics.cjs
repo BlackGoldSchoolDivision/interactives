@@ -27,4 +27,14 @@ check(maxIncrease<.00002,'No artificial energy added: max increase '+maxIncrease
 function framed(fps){const c=E.makeCar({surface:'wood',height:.14});let debt=0;while(!c.stopped){debt+=1/fps;while(debt>=E.STEP&&!c.stopped){E.step(c);debt-=E.STEP;}}return c;}
 const frameResults=[1,30,60,120].map(framed);check(frameResults.every(c=>c.x===frameResults[0].x&&c.time===frameResults[0].time),'Frame-rate invariant result');
 check(E.profile(E.RAMP_END,.14).dy===0&&E.profile(E.RAMP_END,.14).y===0,'Ramp joins the flat smoothly');
-console.log(JSON.stringify({pass:true,assertions,maxEnergyIncrease:maxIncrease,expectedWinners:winners,freePlayCombinations:20,frameRates:[1,30,60,120]},null,2));
+// Raising a rougher track can reverse the comparison; a small increase need not suffice.
+const lowWood=E.run({surface:'wood',height:.09}),highFelt=E.run({surface:'felt',height:.19}),extraHighFelt=E.run({surface:'felt',height:.22});
+check(E.outcome([lowWood,highFelt])==='a','19 cm felt still rolls less far than 9 cm wood');
+check(E.outcome([lowWood,extraHighFelt])==='b','22 cm felt compensates and rolls farther than 9 cm wood');
+check(E.outcome([E.run({surface:'wood',height:.14}),extraHighFelt])==='a','A higher start does not overcome every surface comparison');
+for(const surface of Object.keys(E.surfaces)){
+  const runs=E.HEIGHTS.map(height=>E.run({surface,height}));
+  check(runs.every(c=>c.stopped&&!c.atEnd),'Each selectable height coasts to rest on '+surface);
+  check(runs.every((c,i)=>!i||E.distance(c)>E.distance(runs[i-1])),'Each height step increases distance on '+surface);
+}
+console.log(JSON.stringify({pass:true,assertions,maxEnergyIncrease:maxIncrease,expectedWinners:winners,selectableHeightsCm:E.HEIGHTS.map(h=>Math.round(h*100)),compensationCm:{wood9:Math.round(E.distance(lowWood)*100),felt19:Math.round(E.distance(highFelt)*100),felt22:Math.round(E.distance(extraHighFelt)*100)},freePlayCombinations:20,frameRates:[1,30,60,120]},null,2));
