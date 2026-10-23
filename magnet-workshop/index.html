@@ -206,9 +206,15 @@ function touchMagnet(){
  const object=$('objectLab');
  const magnet=$('magLeft').getBoundingClientRect();
  const obj=object.getBoundingClientRect();
+ // Read the element's original position, even if it is mid-animation.
+ const current=getComputedStyle(object).transform;
+ const transform=current==='none'?null:new DOMMatrixReadOnly(current);
+ const baseLeft=obj.left-(transform?.m41||0);
+ const baseMidY=obj.top-(transform?.m42||0)+obj.height*.5;
+ // The glyph's transparent edge is inset slightly into the magnet surface.
  const overlap=Math.min(obj.width*.15,22);
- const x=magnet.right-obj.left+overlap;
- const y=(magnet.top+magnet.height*.5)-(obj.top+obj.height*.5);
+ const x=magnet.right-overlap-baseLeft;
+ const y=(magnet.top+magnet.height*.5)-baseMidY;
  object.style.setProperty('--contact-x',x.toFixed(1)+'px');
  object.style.setProperty('--contact-y',y.toFixed(1)+'px');
  object.classList.add('moving');
@@ -266,6 +272,9 @@ function animate(){
    $('test').textContent=state.round+1<progressCount()?'NEXT TEST →':'EXPLORE AGAIN ↻';
    $('test').disabled=false;
    renderSteps();
+   // Result controls collapse after testing. Re-align with the finished layout,
+   // so the object stays touching even as the surrounding panel changes height.
+   if(isObjects&&magnetic)requestAnimationFrame(touchMagnet);
  },1250);
 }
 function next(){
@@ -354,6 +363,10 @@ $('download').onclick=async()=>{
  }catch(err){$('downloadStatus').textContent='Could not package the image; check your connection and retry.';}
  button.disabled=false;
 };
+// Recalculate contact after phone orientation changes or dynamic text reflow.
+new ResizeObserver(()=>{
+ if(state.mode==='objects'&&state.tested&&OBJECTS[state.round].mag)requestAnimationFrame(touchMagnet);
+}).observe($('stage'));
 loadRound();
 })();
 </script></body></html>
