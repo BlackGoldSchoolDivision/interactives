@@ -139,6 +139,15 @@ jobs:
             await page.screenshot({path:'/tmp/magnet-free-phone.png',fullPage:true});
             await page.setViewportSize({width:320,height:700});
             assert(!await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+2),'Horizontal overflow in Free Play at 320px');
+            const touch=await browser.newPage({viewport:{width:390,height:844},hasTouch:true,isMobile:true});
+            await touch.goto('http://127.0.0.1:8765/magnet-workshop/',{waitUntil:'networkidle'});
+            await touch.locator('[data-mode="free"]').click();
+            const clip=await touch.locator('[data-free-item="clip"] .specimen').boundingBox();
+            await touch.touchscreen.tap(clip.x+clip.width/2,clip.y+clip.height/2+37);
+            await touch.waitForTimeout(100);
+            const caught=await touch.evaluate(()=>window.MagnetFreePlay.getState().collected);
+            assert(caught.includes('clip'),'Finger touch did not pick up steel paper clip: '+JSON.stringify(caught));
+            await touch.close();
             assert.equal(errors.length,0,'Browser JS errors: '+errors.join(', '));
             await browser.close();console.log('Magnet Workshop passed poles, flip, force-distance, magnetic-object and mobile smoke tests');
           })().catch(e=>{console.error(e);process.exit(1)});
