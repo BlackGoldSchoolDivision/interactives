@@ -1,0 +1,104 @@
+name: Verify Magnet Workshop and capture Lab screenshot
+on:
+  push:
+    paths:
+      - '.github/workflows/verify-magnet-workshop.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install lean browser test tools
+        run: |
+          npm install --no-save playwright-core@1.55.0
+          python -m pip install Pillow
+      - name: Validate browser script syntax
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          content=Path('magnet-workshop/index.html').read_text()
+          blocks=re.findall(r'<script>([\s\S]*?)</script>',content)
+          assert len(blocks)==1
+          Path('/tmp/magnet-workshop.js').write_text(blocks[0])
+          PY
+          node --check /tmp/magnet-workshop.js
+      - name: Test experiments and capture actual screen
+        run: |
+          python -m http.server 8765 --bind 127.0.0.1 >/tmp/magnet-server.log 2>&1 &
+          sleep 2
+          node <<'JS'
+          const {chromium}=require('playwright-core');
+          const assert=require('node:assert/strict');
+          (async()=>{
+            const browser=await chromium.launch({headless:true,executablePath:'/usr/bin/google-chrome',args:['--no-sandbox']});
+            const page=await browser.newPage({viewport:{width:1440,height:900},deviceScaleFactor:1});
+            const errors=[];page.on('pageerror',e=>errors.push(e.message));
+            await page.goto('http://127.0.0.1:8765/magnet-workshop/',{waitUntil:'networkidle'});
+            assert.equal(await page.locator('#experimentTitle').innerText(),'Same Poles');
+            assert.equal(await page.locator('#test').isDisabled(),true);
+            const asset=await page.request.get('http://127.0.0.1:8765/magnet-workshop/assets/bar-magnet.webp');
+            assert(asset.ok(),'Photographic magnet asset missing');
+            await page.screenshot({path:'/tmp/magnet-workshop-desktop.png',animations:'disabled'});
+            await page.locator('#choiceB').click();await page.locator('#test').click();await page.waitForTimeout(1350);
+            assert((await page.locator('#question').innerText()).includes('Push apart'),'Repulsion result');
+            await page.locator('#flip').click();
+            await page.locator('#choiceA').click();await page.locator('#test').click();await page.waitForTimeout(1350);
+            assert((await page.locator('#question').innerText()).includes('Pull together'),'Attraction result after flip');
+            await page.locator('[data-mode="distance"]').click();
+            await page.locator('#choiceB').click();await page.locator('#test').click();await page.waitForTimeout(1350);
+            assert((await page.locator('#question').innerText()).includes('weaker'),'Far-distance result');
+            await page.locator('#distance').fill('8');
+            await page.locator('#choiceA').click();await page.locator('#test').click();await page.waitForTimeout(1350);
+            assert((await page.locator('#question').innerText()).includes('stronger'),'Near-distance result');
+            await page.locator('[data-mode="objects"]').click();
+            await page.locator('#choiceA').click();await page.locator('#test').click();await page.waitForTimeout(1350);
+            assert((await page.locator('#question').innerText()).includes('pulls'),'Paperclip result');
+            await page.locator('[data-object="1"]').click();
+            await page.locator('#choiceB').click();await page.locator('#test').click();await page.waitForTimeout(1350);
+            assert((await page.locator('#question').innerText()).includes('No pull'),'Pencil result');
+            await page.setViewportSize({width:390,height:844});
+            await page.reload({waitUntil:'networkidle'});
+            assert(!await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+2),'Unexpected horizontal overflow at 390px');
+            await page.screenshot({path:'/tmp/magnet-workshop-phone.png',fullPage:true});
+            await page.setViewportSize({width:320,height:700});
+            assert(!await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+2),'Unexpected horizontal overflow at 320px');
+            assert.equal(errors.length,0,'Browser JS errors: '+errors.join(', '));
+            await browser.close();console.log('Magnet Workshop passed poles, flip, force-distance, magnetic-object and mobile smoke tests');
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+      - name: Prepare full-screen Learning Lab image
+        run: |
+          python - <<'PY'
+          from PIL import Image,ImageStat
+          from pathlib import Path
+          im=Image.open('/tmp/magnet-workshop-desktop.png').convert('RGB')
+          assert im.size==(1440,900),im.size
+          assert max(ImageStat.Stat(im).stddev)>22
+          thumb=im.copy();thumb.thumbnail((600,450),Image.Resampling.LANCZOS)
+          out=Image.new('RGB',(600,450),(250,246,239))
+          out.paste(thumb,((600-thumb.width)//2,(450-thumb.height)//2))
+          dest=Path('interactive-learning-lab/images/magnet-workshop-full-20261023.webp')
+          out.save(dest,'WEBP',quality=88,method=6)
+          print(dest,dest.stat().st_size)
+          PY
+      - name: Publish screenshot and mobile QA artifact
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add interactive-learning-lab/images/magnet-workshop-full-20261023.webp
+          if ! git diff --cached --quiet; then
+            git commit -m 'Capture verified Magnet Workshop gameplay screenshot'
+            git pull --rebase origin main
+            git push origin main
+          fi
