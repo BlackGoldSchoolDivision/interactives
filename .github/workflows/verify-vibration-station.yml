@@ -174,7 +174,7 @@ jobs:
               im=Image.open('/tmp/vibration-'+label+'.png').convert('RGB')
               im.thumbnail((1100,1100),Image.Resampling.LANCZOS)
               im.save(root/(label+'.webp'),'WEBP',quality=86,method=6)
-          im=Image.open('/tmp/vibration-strings.png').convert('RGB')
+          im=Image.open('/tmp/vibration-440-slow-motion.png').convert('RGB')
           assert max(ImageStat.Stat(im).stddev)>20
           im.thumbnail((600,450),Image.Resampling.LANCZOS)
           bg=Image.new('RGB',(600,450),(244,248,247))
