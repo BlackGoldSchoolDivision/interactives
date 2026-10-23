@@ -107,7 +107,14 @@ function draw(canvas,index){
  }
  c.beginPath();c.lineCap='round';c.lineWidth=Math.max(2,w/180);c.strokeStyle=COLORS[index];c.shadowColor=COLORS[index];c.shadowBlur=7;
  if(!buf){c.moveTo(0,h/2);c.lineTo(w,h/2);}
- else for(let i=0;i<buf.length;i+=2){const x=i/(buf.length-1)*w,y=(.5+(buf[i]-128)/255*.88)*h;if(i===0)c.moveTo(x,y);else c.lineTo(x,y);}
+ else for(let i=0;i<buf.length;i+=2){
+  const x=i/(buf.length-1)*w;
+  // Magnify the string traces for visibility; preserve relative drum amplitude.
+  // Every plotted sample still comes directly from the connected AnalyserNode.
+  const displacement=Math.max(-.46,Math.min(.46,((buf[i]-128)/128)*(index<3?1.8:.9)*.5));
+  const y=(.5+displacement)*h;
+  if(i===0)c.moveTo(x,y);else c.lineTo(x,y);
+ }
  c.stroke();c.shadowBlur=0;
 }
 function frame(){for(let i=0;i<3;i++)draw($('wave'+i),i);draw($('waveSingle'),3);requestAnimationFrame(frame);}
