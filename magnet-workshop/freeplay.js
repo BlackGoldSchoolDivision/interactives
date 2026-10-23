@@ -36,7 +36,7 @@ function layout(){
 }
 function reset(){
  found.clear();carry.replaceChildren();table.replaceChildren();
- magnet.classList.remove('attached');px=.52;py=.48;lastNonmag='';
+ magnet.classList.remove('attached');px=.52;py=.60;lastNonmag='';
  $('freeCount').textContent='0 / 6';$('freeStatus').textContent='Find all 6 magnetic objects!';
  ITEMS.forEach(item=>{
   const el=document.createElement('div');el.className='free-object';el.dataset.freeItem=item.id;
