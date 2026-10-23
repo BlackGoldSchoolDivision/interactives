@@ -1,0 +1,48 @@
+name: Capture Bend screen using installed Chrome
+on:
+  push:
+    paths:
+      - '.github/workflows/capture-bend-screen-quick.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Capture full real app screen
+        run: |
+          set -e
+          command -v google-chrome || command -v chromium || command -v chromium-browser
+          python -m http.server 8765 --bind 127.0.0.1 >/tmp/bend-web.log 2>&1 &
+          sleep 2
+          if command -v google-chrome >/dev/null; then CHROME=google-chrome; elif command -v chromium >/dev/null; then CHROME=chromium; else CHROME=chromium-browser; fi
+          timeout 45s "$CHROME" --headless=new --no-sandbox --disable-dev-shm-usage --disable-gpu --hide-scrollbars --window-size=1200,900 --force-device-scale-factor=1 --virtual-time-budget=6500 --screenshot=/tmp/bend-game-screen.png http://127.0.0.1:8765/bend-stretch-change/ || true
+          test -s /tmp/bend-game-screen.png
+      - name: Resize without cutting away the full app
+        run: |
+          python - <<'PY'
+          from PIL import Image, ImageStat
+          im=Image.open('/tmp/bend-game-screen.png').convert('RGB')
+          print('Screen size:', im.size)
+          assert im.width>=900 and im.height>=600
+          assert max(ImageStat.Stat(im).stddev)>20
+          width,height=600,450
+          scaled=im.copy()
+          scaled.thumbnail((width,height),Image.Resampling.LANCZOS)
+          output=Image.new('RGB',(width,height),(255,248,235))
+          output.paste(scaled,((width-scaled.width)//2,(height-scaled.height)//2))
+          path='interactive-learning-lab/images/bend-stretch-change-fullscreen-20261023.webp'
+          output.save(path,'WEBP',quality=88,method=6)
+          print('Saved:',path)
+          PY
+      - name: Publish full screen hub image
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add interactive-learning-lab/images/bend-stretch-change-fullscreen-20261023.webp
+          git commit -m 'Capture full-screen Bend Stretch Change image for the Lab'
+          git pull --rebase origin main
+          git push origin main
