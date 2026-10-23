@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#e9f7fb"><meta name="description" content="Grade 2 science: hear real synthesized sounds and see their measured waveforms while exploring pitch, volume, and duration.">
+<title>Vibration Station · Interactive Learning Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900;1000&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./style.css?v=2">
+</head><body><div class="shell">
+<header class="top">
+<a class="back" href="https://interactives.blackgold.ca/interactive-learning-lab/" aria-label="Back to Interactive Learning Lab">←</a>
+<div class="identity"><div class="kicker">SCIENCE · GRADE 2</div><h1><span class="dark">Vibration</span> <span class="orange">Station</span></h1></div>
+<div class="topwave" aria-hidden="true">〰 〰 〰</div>
+<button class="teacher" id="teacher">▤ &nbsp;Teacher notes</button>
+</header>
+<main class="work-area">
+ <section class="showcase" aria-label="Sound experiment display">
+  <div class="photo-panel" id="photoPanel">
+   <div class="string-photo" id="stringPhoto" role="img" aria-label="A homemade three-string rubber-band instrument on a wooden workshop bench">
+     <div class="plucking-flash" id="pluckingFlash" aria-hidden="true"></div>
+     <div class="string-hint">🎸 Choose a string, then pluck!</div>
+     <div class="string-tapzones" aria-label="Choose a string from the instrument">
+       <button class="str-tap red" data-string="0" aria-label="Play red string"><span class="sr">Red string</span></button>
+       <button class="str-tap yellow" data-string="1" aria-label="Play yellow string"><span class="sr">Yellow string</span></button>
+       <button class="str-tap blue" data-string="2" aria-label="Play blue string"><span class="sr">Blue string</span></button>
+     </div>
+   </div>
+   <div class="drum-scene" id="drumScene" hidden>
+      <div class="drum-backdrop"></div>
+      <div class="drum-shell"><div class="drum-head" id="drumHead"><div class="drum-vibration" id="drumRipple"></div></div><div class="drum-side"><i></i><i></i><i></i><i></i><i></i></div></div>
+      <div class="drum-hit-hint">🥁 Try a gentle tap, then a strong beat!</div>
+      <button class="drum-touch" id="drumTouch" aria-label="Tap the drum to make a sound">TAP THE DRUM</button>
+   </div>
+   <div class="hunt-scene" id="huntScene" hidden>
+      <div class="hunt-intro">LISTEN CLOSELY</div><div class="hunt-source" id="huntSource" aria-hidden="true">🔔</div>
+      <div class="hunt-sound-title" id="huntName">Bell</div><div class="hunt-note">Listen and watch what happens to the sound.</div>
+      <div class="hunt-options">
+       <button class="source-button" data-source="0">🔔 <span>Bell</span></button>
+       <button class="source-button" data-source="1">🐝 <span>Bee</span></button>
+       <button class="source-button" data-source="2">👏 <span>Clap</span></button>
+      </div>
+   </div>
+   <div class="wave-stack" id="stringWaveStack" aria-label="Live waveforms of the three rubber bands">
+     <div class="wave-card red"><span>Red string</span><canvas id="wave0" aria-label="Red string waveform"></canvas></div>
+     <div class="wave-card yellow"><span>Yellow string</span><canvas id="wave1" aria-label="Yellow string waveform"></canvas></div>
+     <div class="wave-card blue"><span>Blue string</span><canvas id="wave2" aria-label="Blue string waveform"></canvas></div>
+   </div>
+   <div class="single-wave" id="singleWave" hidden>
+      <div class="wave-title"><span id="waveTitle">Live sound wave</span><strong id="waveHint">SOUND MONITOR</strong></div>
+      <canvas id="waveSingle" aria-label="Live sound waveform"></canvas>
+   </div>
+  </div>
+  <div class="below-photo"><span class="small-swatch">👀 Look</span><span class="small-swatch">👂 Listen</span><span class="small-swatch">〰 See the wave</span><span class="sound-note">Waveform comes from the sound you hear</span></div>
+ </section>
+ <section class="control-card" aria-label="Experiment controls">
+   <div class="unit-badge"><b id="stepNum">1</b><span id="stepName">CHANGE THE TENSION</span></div>
+   <h2 id="prompt">What happens when you tighten the string?</h2>
+   <p id="instructions">Move the slider, pluck a string, and hear how the pitch changes.</p>
+   <div class="string-controls" id="stringControls">
+    <div class="string-picks"><button class="pick active" data-string="0">🔴 Red</button><button class="pick" data-string="1">🟡 Yellow</button><button class="pick" data-string="2">🔵 Blue</button></div>
+    <label class="control-label" for="tension">String tension <span id="tensionValue">Medium</span></label>
+    <div class="range-row"><span>LOOSE</span><input type="range" id="tension" min="0" max="100" value="50" step="5"><span>TIGHT</span></div>
+    <button class="play-btn" id="pluck"><span class="triangle">▶</span> PLUCK!</button>
+    <p class="guided-hint">Tightening this string makes it vibrate faster.</p>
+   </div>
+   <div class="drum-controls" id="drumControls" hidden>
+     <label class="control-label" for="force">How hard will you hit? <span id="forceValue">Medium</span></label>
+     <div class="range-row"><span>GENTLE</span><input type="range" min="0" max="100" value="50" id="force" step="5"><span>STRONG</span></div>
+     <button class="play-btn" id="hitDrum"><span class="triangle">▶</span> BEAT THE DRUM!</button>
+     <p class="guided-hint">A stronger strike makes a larger sound wave.</p>
+   </div>
+   <div class="hunt-controls" id="huntControls" hidden>
+    <div class="hunt-question">How long does this sound last?</div>
+    <div class="prediction-grid"><button class="answer" data-duration="short"><span class="answer-shape">〰</span>SHORT</button><button class="answer" data-duration="long"><span class="answer-shape">〰〰〰</span>LONG</button></div>
+    <button class="play-btn" id="playHunt"><span class="triangle">▶</span> PLAY SOUND!</button>
+    <p class="guided-hint">Choose another object on the left to explore.</p>
+   </div>
+   <div class="question-box" id="questionBox">
+    <h3 id="question">Which pitch do you hear?</h3>
+    <div class="prediction-grid" id="pitchChoices"><button class="answer" data-answer="low"><span class="answer-shape">∿</span>LOW PITCH</button><button class="answer" data-answer="high"><span class="answer-shape">∿∿∿</span>HIGH PITCH</button></div>
+    <div class="response" id="response" role="status" aria-live="polite">Choose a sound, listen, and make a prediction!</div>
+   </div>
+ </section>
+</main>
+<nav class="tab-nav" aria-label="Choose a sound investigation">
+<button class="tab active" data-mode="strings" aria-current="true"><span class="tab-num">1</span><span class="tab-icon">🎸</span><span><strong>String Sounds</strong><small>Explore pitch</small></span></button>
+<button class="tab" data-mode="drum" aria-current="false"><span class="tab-num">2</span><span class="tab-icon">🥁</span><span><strong>Drum Beats</strong><small>Explore volume</small></span></button>
+<button class="tab" data-mode="hunt" aria-current="false"><span class="tab-num">3</span><span class="tab-icon">🔔</span><span><strong>Sound Hunt</strong><small>Explore duration</small></span></button>
+</nav>
+<footer><span>🎧 Headphones optional · Start sound with PLUCK or PLAY</span><span>No sign-in · No microphone · No student data collected</span></footer>
+</div>
+<div id="teacherOverlay" class="modal-back" hidden>
+<div class="modal" role="dialog" aria-modal="true" aria-labelledby="teacherTitle">
+<button class="close" id="closeTeacher">Close ✕</button><p class="eyebrow">CLASSROOM TEACHER NOTES</p><h2 id="teacherTitle">Vibration Station</h2>
+<p><b>Curriculum:</b> Alberta Grade 2 Science, light and sound. The curriculum identifies sound as being produced by vibrations, and explores pitch (high/low), volume (loud/quiet) and duration (short/long).</p>
+<div class="note"><b>Three investigations:</b> Strings explore how vibration frequency relates to pitch; drum strikes change amplitude and perceived loudness; Sound Hunt contrasts sources and short/long durations.</div>
+<h3>Try these prompts</h3>
+<ul><li>What object is vibrating to make each sound?</li><li>How does tightening a string change its vibration and pitch?</li><li>What happens to the waveform when you hit the drum harder?</li><li>Which sounds end quickly? Which last longer?</li></ul>
+<p><b>Science accuracy:</b> Sound is synthesized in the browser. Oscilloscopes plot actual samples from the Web Audio processing graph, not pre-rendered waves. The string/duration models are simplified teaching models; real instruments also depend on length, mass, materials, resonances and tension. Turn the device volume down before use.</p>
+<p><b>Privacy and accessibility:</b> No recordings, microphone, login or analytics. Keyboard-accessible choices and visible text feedback work even when device audio is muted.</p>
+<button class="download" id="makeOwn">↓ Make it my own · Save a copy</button><p class="download-status" id="downloadStatus"></p>
+</div></div>
+<script src="./app.js?v=2" defer></script>
+</body></html>
