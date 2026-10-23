@@ -185,7 +185,7 @@ footer{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap
 <h3>Four investigations</h3>
 <ul><li><strong>Poles:</strong> Like poles repel; opposite poles attract. Use the Flip button to test a new pole orientation.</li>
 <li><strong>Distance:</strong> Magnetic force generally becomes weaker farther from a magnet. This uses an illustrative strength scale, not a calibrated force measurement.</li>
-<li><strong>Magnetic or Not:</strong> Paper clips, steel bolts and steel washers can be attracted. Wood, plastic and aluminum generally are not attracted to ordinary classroom magnets. Objects made with different alloys may behave differently.</li><li><strong>Free Play:</strong> Move the magnet with a mouse, finger or arrow keys. Steel items attach and travel with it; wood, plastic, rubber and aluminum stay behind. Real-world objects vary by composition. This interaction illustrates attraction, not calibrated magnetic field strength.</li></ul>
+<li><strong>Magnetic or Not:</strong> Paper clips, steel bolts and steel washers can be attracted. Wood, plastic and aluminum generally are not attracted to ordinary classroom magnets. Objects made with different alloys may behave differently.</li><li><strong>Free Play:</strong> Move the magnet with a mouse, finger or arrow keys. Steel items attach and travel with it; wood, plastic, paper, fabric and sponge stay behind. Real-world objects vary by composition. This interaction illustrates attraction, not calibrated magnetic field strength.</li></ul>
 <h3>Discuss with students</h3>
 <ul><li>Which pole combinations push? Which pull?</li><li>Does a magnet need to touch an object to exert a force?</li><li>When did your prediction match? What did you change after observing?</li><li>How could you test magnet strength fairly with a real magnet?</li></ul>
 <p><strong>Model note:</strong> Cart displacement is illustrative and visually exaggerated. Force depends on magnet shape and strength, materials, orientation, and distance. Avoid interpreting this animation as a calibrated physics simulation.</p>
@@ -415,7 +415,7 @@ $('download').onclick=async()=>{
   copy.querySelector('#lesson').hidden=false;
   copy.querySelector('#freeLab').hidden=true;
   copy.querySelectorAll('script[src*="freeplay.js"]').forEach(n=>n.remove());
-  const freeResponse=await fetch('./freeplay.js?v=20261023-1');
+  const freeResponse=await fetch('./freeplay.js?v=20261023-2');
   if(!freeResponse.ok)throw new Error('Missing free-play script');
   const freeInline=document.createElement('script');
   freeInline.textContent=(await freeResponse.text()).replace(/<\/script/gi,'<\\/script');
@@ -444,4 +444,4 @@ new ResizeObserver(()=>{
 }).observe($('stage'));
 loadRound();
 })();
-</script><script src="./freeplay.js?v=20261023-1"></script></body></html>
+</script><script src="./freeplay.js?v=20261023-2"></script></body></html>
