@@ -14,13 +14,15 @@ The private workbook URLs and full copied sheets are not published. Workbook
 keys, exact grade-tab names and evidence row numbers are in
 `../curriculum-alignment.json`. Draft status is retained at the source level.
 
+Ready, Set, Roll! added 23 October 2026 with a partial Grade 1 Science movement connection.
+
 ## What the tags mean
 
 Tags identify a curriculum connection or an explicit resource use level. They
 do not assert completion of an entire outcome. All referenced connections are
 marked partial, ready for a later activity-by-activity coverage audit.
 
-119 of the 152 entries have specific grade labels; 33 have a flexible or
+120 of the 153 entries have specific grade labels; 33 have a flexible or
 enrichment label. The separate Flexible & enrichment filter also includes
 the Grade 7 financial-decisions activity, whose budgeting context is not
 established by the requested mathematics workbook.

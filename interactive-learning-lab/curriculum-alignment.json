@@ -4112,6 +4112,32 @@
           "coverage": "partial"
         }
       ]
+    },
+    "ready-set-roll": {
+      "grades": [
+        1
+      ],
+      "basis": "curriculum",
+      "reviewed": "2026-10-23",
+      "rationale": "Grade 1 Science: compare how surfaces and ramp height affect rolling movement and speed. Spoken prompts support beginning readers. This is a partial connection to movement investigations; it does not cover every pathway, animal movement or influence on motion.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 1,
+          "sheet": "Grade 1",
+          "rows": [
+            29,
+            39,
+            40,
+            41,
+            43,
+            44,
+            48
+          ],
+          "topic": "Investigate rolling movement, speed, materials and surface texture",
+          "coverage": "partial"
+        }
+      ]
     }
   }
 }

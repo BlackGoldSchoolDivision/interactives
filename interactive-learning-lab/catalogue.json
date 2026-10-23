@@ -4542,6 +4542,38 @@
     "grade_note": "Grade 7 structures are the direct science fit. Grades 4–5 design and Grade 8 design testing are additional partial connections; the simulation is not a real structural engineering model."
   },
   {
+    "id": "ready-set-roll",
+    "path": "ready-set-roll",
+    "repo": "division",
+    "title": "Ready, Set, Roll!",
+    "category": "Science",
+    "group": "",
+    "description": "Predict, roll and compare two realistic toy cars. Six spoken investigations explore surfaces, speed and ramp heights, with replay and a free-play rolling lab.",
+    "types": [
+      "Simulations & models",
+      "Decision games"
+    ],
+    "tags": [
+      "Motion",
+      "Ramps",
+      "Surfaces",
+      "Fair comparisons",
+      "Spoken prompts"
+    ],
+    "url": "https://interactives.blackgold.ca/ready-set-roll/",
+    "links": [],
+    "favourite": false,
+    "credit": "Engaging Students · Black Gold School Division",
+    "image": "images/ready-set-roll-20261023.jpg?v=9f319b3a999f",
+    "captured": "2026-10-23",
+    "original_urls": [],
+    "grades": [
+      1
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Grade 1 Science: compare how surfaces and ramp height affect rolling movement and speed. Spoken prompts support beginning readers. This is a partial connection to movement investigations; it does not cover every pathway, animal movement or influence on motion."
+  },
+  {
     "id": "walker-plurals",
     "path": "walker-corner/plurals",
     "repo": "personal",

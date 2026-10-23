@@ -278,5 +278,20 @@
     "catalogue_embedded_data_and_csv": "consistent",
     "launch_links_order_and_screenshots": "preserved",
     "private_workbook_ids": "excluded from published files"
-  }
+  },
+  "scope": "Baseline browser checks from 2026-10-22, before the 2026-10-23 Ready, Set, Roll! addition. Baseline activity counts are historical.",
+  "catalogue_additions": [
+    {
+      "date": "2026-10-23",
+      "id": "ready-set-roll",
+      "grades": [
+        1
+      ],
+      "category": "Science",
+      "entry_count_after": 153,
+      "specific_grade_labels_after": 120,
+      "flexible_or_enrichment_labels_after": 33,
+      "checks": "Build verifies unique IDs, exact alignment ID match, valid grades, local screenshot paths and regenerated embedded catalogue/CSV."
+    }
+  ]
 }

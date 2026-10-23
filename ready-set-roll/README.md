@@ -1,0 +1,28 @@
+# Ready, Set, Roll!
+
+A Grade 1 Science rolling investigation for the Interactive Learning Lab. Children hear a question, tap a track or prediction button, and release two matching blue toy cars. Six guided comparisons cover distance, speed at matching stripes, stopping time, ramp height, identical setups and reaching a flag. Adult options contain a free-play setup, observations, CSV export and a complete downloadable HTML copy.
+
+## Running and editing
+
+Serve this directory with any static web server. Runtime sources are `index.html`, `style.css`, `physics.js`, `speech.js` and `app.js`; images and bundled spoken prompts are under `assets/`. Edit investigations in `physics.js`. No build or package dependencies are required for the hosted game.
+
+Rebuild the complete portable file with `node source/package.mjs`. It embeds the two WebP images, MP3 prompts, styles and scripts in `ready-set-roll.html`. The hosted game uses Nunito when available and falls back to local fonts; the portable copy uses local fonts.
+
+Run the engine checks with `node source/test-physics.cjs`. Regenerate spoken clips and cue timings with `python3 source/make-speech.py` using FFmpeg compiled with the Flite filter and libmp3lame. Prompts are locally synthesized, with no student text or voice sent to a service.
+
+## Model
+
+Fixed 1/240-second integration uses gravity, wheel inertia, effective rolling resistance and small speed-dependent drag. Wheels rotate with travelled distance. The constrained chassis follows wheel contact points and a smooth ramp toe. There are no prescribed winners, endpoint animations, jumps or collisions. Surface coefficients are illustrative comparisons, not measured properties of every real material. See the grown-up explanation in the game and the OpenStax rolling-motion reference.
+
+## Curriculum
+
+Grade 1 Science, partial connection: investigate rolling movement and speed, including the influence of materials, surfaces and wheels. Row references are recorded in the hub curriculum alignment file. This does not claim complete coverage of the broad direction, pathway and speed outcome.
+
+## Verification — 23 October 2026
+
+- 1,972 engine assertions passed: expected six comparison outcomes; smooth ramp joins; dissipative energy; reproducibility; higher-ramp effects; supported surfaces/heights remain on track; consistent results at 1/30/60/120 visual frames per second.
+- All six investigations, completion/restart, friendly wrong-prediction feedback, replay, pause, slow motion, larger view and free play exercised in the browser. CSV observations downloaded and inspected.
+- Bundled question and result clips played with no media error. Portable HTML opened and ran with both images and bundled audio embedded. The browser automation download event did not resolve for the HTML download, so the saved portable file itself was verified by opening it directly.
+- Required viewport sizes checked: 1024×540, 1366×650, 768×900, 390×667, 320×568 and 640×360. No horizontal overflow; choices and main controls at least 44 px; round and prediction preserved while resizing. Short screens scroll vertically. CSS 200% enlargement checked for horizontal reflow; native browser zoom was not claimed.
+
+Artwork provenance is in `assets/ARTWORK.md`.
