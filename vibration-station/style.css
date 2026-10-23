@@ -86,3 +86,50 @@
  .motion-caption{font-size:9px}
  .prediction-grid.pitch-answers .answer{font-size:10px;min-height:71px}
 }
+
+
+/* v4: Physical vibration now has its own prominent panel, NOT an overlay. */
+.movement-lab{display:flex;flex:0 0 auto;flex-direction:column;gap:5px;padding:8px 13px 10px;background:linear-gradient(110deg,#fef2d9 0%,#fffaf0 55%,#e5f2ff 100%);color:#174168;border-top:3px solid #e6b864;box-shadow:inset 0 2px 5px #ca89451d}
+.movement-lab[hidden]{display:none!important}
+.movement-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.movement-title{display:flex;align-items:center;gap:8px;min-width:0}
+.movement-title strong{color:#123d68;font-weight:1000;letter-spacing:.04em;font-size:clamp(12px,1.2vw,16px)}
+.number-marker{background:#f4a622;color:#453011;display:inline-grid;place-items:center;width:27px;height:27px;border-radius:50%;font-size:16px;font-weight:1000;flex:none;vertical-align:middle}
+.movement-mode{font-size:10px;letter-spacing:.02em;font-weight:1000;color:#8e552b;background:#ffedd1;border:1px solid #ecc58d;border-radius:99px;padding:4px 8px}
+.movement-frequency{font-size:clamp(11px,1vw,15px);color:#135787;font-weight:1000;border-radius:9px;background:#e2f1fb;padding:5px 10px}
+.movement-body{display:grid;grid-template-columns:minmax(0,2.3fr) minmax(145px,1fr);align-items:center;gap:13px}
+.movement-graphic{display:flex;align-items:center;gap:6px;min-width:0;background:#0a2445;border-radius:11px;padding:4px 8px;box-shadow:inset 0 0 0 1px #9ae1ff38}
+.movement-graphic canvas{width:100%;height:72px;display:block;flex:1;min-width:0}
+.end-label{font-size:9px;color:#b9cee7;font-weight:1000;white-space:nowrap;letter-spacing:.02em}
+.movement-caption{font-size:clamp(11px,1.05vw,15px);color:#315b7a;font-weight:1000;line-height:1.2;text-align:center}
+.sound-number{width:20px;height:20px;font-size:12px;background:#4dd5f1;color:#133f69;margin-right:6px}
+.string-picks .pick{display:flex;align-items:center;justify-content:center;gap:4px;flex-wrap:wrap}
+.string-picks .pick small{display:block;font-size:10px;font-weight:1000;opacity:.75;line-height:1.1}
+@media(min-width:801px) and (max-height:870px){
+ .movement-lab{padding:4px 10px 5px;gap:3px}
+ .movement-graphic canvas{height:48px}
+ .movement-title strong{font-size:12px}
+ .movement-mode{font-size:9px;padding:3px 6px}
+ .movement-frequency{font-size:11px;padding:3px 8px}
+ .movement-caption{font-size:11px}
+ .number-marker{width:22px;height:22px;font-size:12px}
+ .sound-number{width:18px;height:18px;font-size:11px}
+ .sound-lab .wave-card,.sound-lab .single-wave{height:55px}
+}
+@media(max-width:800px){
+ .movement-lab{padding:7px 9px}
+ .movement-body{grid-template-columns:1fr;gap:6px}
+ .movement-graphic canvas{height:64px}
+ .movement-caption{font-size:12px}
+ .movement-mode{font-size:9px}
+}
+@media(max-width:470px){
+ .movement-top{align-items:flex-start}
+ .movement-title{flex-wrap:wrap;gap:5px}
+ .movement-mode{font-size:8px}
+ .movement-frequency{font-size:11px;padding:3px 6px}
+ .movement-graphic{gap:4px;padding:3px 4px}
+ .movement-graphic canvas{height:58px}
+ .end-label{font-size:8px}
+ .movement-caption{font-size:11px}
+}
