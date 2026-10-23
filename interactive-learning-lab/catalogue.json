@@ -4693,7 +4693,7 @@
     "title": "Vibration Station",
     "category": "Science",
     "group": "",
-    "description": "Explore how vibrating strings make low, middle and high pitches, how a drum strike changes volume, and how sounds can be short or long. See slow-motion physical vibration separately from live sound waveforms drawn from actual browser-generated audio.",
+    "description": "Hear three distinct octaves (220, 440 and 880 Hz), explore physical string vibration in a separate slow-motion panel, and compare actual sound waves while investigating pitch, volume and duration.",
     "types": [
       "Simulations & models",
       "Decision games"
@@ -4708,13 +4708,15 @@
       "Real audio",
       "Waveform",
       "String vibration",
-      "Sound waves"
+      "Sound waves",
+      "440 Hz concert A",
+      "Slow-motion string vibrations"
     ],
     "url": "https://interactives.blackgold.ca/vibration-station/",
     "links": [],
     "favourite": false,
     "credit": "Engaging Students · Black Gold School Division",
-    "image": "images/vibration-station-20261023.webp?v=20261023-vibration3",
+    "image": "images/vibration-station-20261023.webp?v=20261023-440a",
     "captured": "2026-10-23",
     "original_urls": [],
     "grades": [
