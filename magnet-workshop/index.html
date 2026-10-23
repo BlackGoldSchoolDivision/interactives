@@ -93,6 +93,42 @@ footer{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap
 @media(max-width:610px){.app{padding:0 7px 17px;gap:8px}.top{padding:11px 10px;border-radius:0 0 18px 18px;min-height:70px}.brand{gap:7px}.back{width:37px;height:38px;font-size:24px}.brandmark{font-size:27px}h1{font-size:clamp(20px,5.3vw,28px)}.kicker{font-size:9px}.teacher-btn{font-size:11px;padding:10px 8px;border-radius:12px}.lesson{gap:8px}.exhibit,.side{border-radius:19px}.exhibit-header{padding:10px 12px 6px}.steps span{width:23px;height:23px;font-size:11px}.heading{padding:4px 12px 0}.heading h2{font-size:24px}.number{font-size:11px}.subtitle{padding:4px 12px 8px;font-size:12px}.stage{margin:0 6px;min-height:230px;border-radius:16px}.kit{top:49%}.mag .pole{font-size:clamp(10px,3.2vw,17px)}.cart-base{height:15px}.cart-base:before,.cart-base:after{width:11px;height:11px;top:9px}.stand{height:15px}.force-badge{top:18%;font-size:12px;padding:7px}.caption-stage{font-size:10px}.controls-scene{min-height:66px;padding:7px;gap:6px}.flip{font-size:12px;padding:7px;min-height:48px}.flip small{font-size:9px}.distance-control label{font-size:11px}.distance-control{min-width:105px}.range-labels{font-size:9px}.side{display:block;padding:13px}.side h3{font-size:25px;margin:4px 0}.side p{font-size:12px}.choices{grid-template-columns:1fr 1fr;gap:9px;margin:10px 0}.choice{min-height:82px;padding:9px;gap:7px;font-size:13px;flex-direction:column;text-align:center;justify-content:center;border-width:2px}.choice .art{font-size:28px}.test{min-height:56px;font-size:21px}.feedback{font-size:12px}.mode-nav{gap:5px}.mode{border-width:2px;border-radius:15px;padding:8px;min-height:95px;gap:5px;flex-direction:column;align-items:flex-start}.mode .thumb{font-size:28px;position:absolute;right:8px;top:10px}.mode .num{width:22px;height:22px;font-size:10px}.mode-title{font-size:15px}.mode-caption{font-size:10px;max-width:125px}.material{min-height:71px;font-size:11px}.material .emoji{font-size:25px}.object-lab{font-size:65px}}
 @media(max-height:650px) and (min-width:941px){.app{gap:7px}.top{min-height:71px;padding-top:8px;padding-bottom:8px}.stage{min-height:240px}.mode{min-height:78px}.side{padding:14px}.choice{min-height:69px}.test{min-height:56px}.controls-scene{min-height:66px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
+
+/* MAGNET MIX-UP — tactile free-play station */
+.mode-nav{grid-template-columns:repeat(4,minmax(0,1fr))}
+.free-lab{background:#fffdf8;border:2px solid #fff;border-radius:26px;padding:clamp(10px,1.5vw,21px);box-shadow:0 13px 35px #3742541b}
+.free-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin:2px 4px 12px}
+.free-head h2{font-size:clamp(26px,2.7vw,39px);letter-spacing:-.05em;margin:0;color:#153961}
+.free-head p{font-size:clamp(12px,1.2vw,15px);font-weight:800;color:#536b82;margin:1px 0 0}
+.free-counter{background:#fff1cf;border:2px solid #f3d890;border-radius:15px;padding:8px 14px;color:#644d17;font-weight:1000;font-size:clamp(13px,1.4vw,17px)}
+.free-counter b{font-size:clamp(22px,2vw,29px);color:#153961}
+.free-board{position:relative;isolation:isolate;min-height:clamp(400px,37vw,555px);overflow:hidden;border:4px solid #fff;border-radius:25px;background:linear-gradient(180deg,#a1c6dd 0%,#c6dee9 25%,#cad2ce 29%,#e6c59e 30%,#dbaf82 100%);box-shadow:inset 0 13px 24px #263e4b23,0 7px 25px #3a49562b;touch-action:none;cursor:crosshair;user-select:none;-webkit-user-select:none;overscroll-behavior:contain}
+.free-board:before{content:"";position:absolute;inset:0 0 70%;background:radial-gradient(ellipse at 33% 18%,#ffffff70,transparent 63%),repeating-radial-gradient(circle at 15px 10px,#506d8b20 0px 2px,transparent 3px 45px);pointer-events:none}
+.free-board:after{content:"";position:absolute;top:30%;left:0;right:0;height:70%;z-index:-1;background:repeating-linear-gradient(93deg,transparent 0 85px,#8b623b13 86px 88px,transparent 89px 160px),repeating-linear-gradient(0deg,transparent 0 79px,#ad7a4a17 80px 82px,transparent 83px 160px);pointer-events:none}
+.free-instruction{position:absolute;left:14px;top:13px;z-index:4;background:#fffdf1eb;border:1px solid #ffffffaa;color:#23486c;border-radius:99px;padding:8px 13px;font-size:clamp(11px,1.2vw,15px);font-weight:1000;box-shadow:0 4px 12px #21354a18;pointer-events:none}
+.free-object{position:absolute;z-index:2;transform:translate(-50%,-50%);width:clamp(60px,7vw,98px);height:clamp(70px,8vw,106px);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:18px;pointer-events:none;filter:drop-shadow(0 11px 6px #62402131)}
+.free-object .specimen{font-family:"Apple Color Emoji","Segoe UI Emoji",sans-serif;font-size:clamp(37px,5vw,67px);line-height:1.1;display:block;filter:drop-shadow(0 2px 1px #fff8)}
+.free-object .obj-label{font-size:clamp(10px,.85vw,13px);font-weight:1000;color:#314760;text-align:center;line-height:1.08;white-space:nowrap;background:#fffdf7d9;padding:5px 7px;border-radius:9px;margin-top:5px;box-shadow:0 3px 5px #3a352521}
+.free-magnet{position:absolute;z-index:8;left:50%;top:50%;width:clamp(132px,15vw,205px);height:117px;transform:translate(-50%,-32%);pointer-events:none;filter:drop-shadow(0 12px 7px #15172b4a)}
+.free-magnet-face{height:clamp(44px,5.5vw,67px);width:100%;position:relative;border-radius:10px;background:linear-gradient(90deg,#1b397f 50%,#f03935 50%);border:2px solid #284066;box-shadow:inset 0 4px 10px #fff4,inset 0 -6px 6px #0002,0 6px 4px #201c2252}
+.free-magnet-face:before{content:"";position:absolute;inset:0;background:url("./assets/bar-magnet-blue-red.webp") center/100% 100% no-repeat;opacity:.96}
+.free-pole{position:absolute;z-index:2;top:50%;transform:translate(-50%,-50%);color:#fff;font-size:clamp(22px,2.5vw,34px);font-weight:1000;text-shadow:0 2px 4px #09294b7d}
+.free-pole.s{left:25%}.free-pole.n{left:75%}
+.free-grip{position:absolute;top:clamp(44px,5.5vw,67px);left:50%;width:40%;height:25px;transform:translateX(-50%);border-radius:0 0 16px 16px;background:linear-gradient(#3e4c57,#182937);border:1px solid #27394b;box-shadow:0 5px 7px #19292d2c;opacity:.8}
+.free-magnet.attached .free-magnet-face{box-shadow:inset 0 4px 10px #fff4,inset 0 -6px 6px #0002,0 0 0 3px #f9db71,0 6px 13px #8d6825a3}
+.free-carry{position:absolute;left:0;top:0;width:100%;height:130px;pointer-events:none}
+.free-object.carried{z-index:12!important;transform:translate(-50%,0) scale(.55);filter:drop-shadow(0 4px 4px #1d232c77)}
+.free-object.carried .obj-label{display:none}
+.free-spark{position:absolute;z-index:6;font-size:30px;pointer-events:none;animation:free-spark .48s ease-out both}
+@keyframes free-spark{from{opacity:1;transform:translate(-50%,-50%) scale(.5)}to{opacity:0;transform:translate(-50%,-170%) scale(1.7)}}
+.free-bottom{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;padding:13px 5px 1px}
+.free-status{font-size:clamp(13px,1.35vw,17px);font-weight:1000;color:#224b6d;min-height:28px}
+.free-reset{background:#e9f3fb;border:2px solid #c4d8ea;border-bottom:4px solid #91b7d5;border-radius:13px;color:#174978;padding:9px 16px;font-size:14px;font-weight:1000;min-height:47px}
+.free-help{font-size:12px;color:#6d7d91;font-weight:800}
+.free-board:focus-visible{outline:4px solid #2686da;outline-offset:2px}
+@media(max-width:940px){.mode-nav{grid-template-columns:repeat(2,minmax(0,1fr))}.free-board{min-height:510px}.free-object{width:78px}.free-object .specimen{font-size:50px}}
+@media(max-width:610px){.mode-nav{gap:6px}.mode{flex-direction:row;min-height:76px;align-items:center;gap:7px}.mode-title{font-size:15px}.mode .thumb{font-size:22px;right:7px;top:7px}.mode .num{flex:none}.mode-caption{font-size:9px}.free-board{min-height:530px;border-radius:17px}.free-head{gap:6px}.free-head h2{font-size:25px}.free-counter{font-size:13px;padding:6px 9px}.free-instruction{left:9px;top:9px;font-size:11px;padding:6px 8px}.free-object{width:67px;height:75px}.free-object .specimen{font-size:39px}.free-object .obj-label{font-size:9px;padding:3px 5px}.free-magnet{height:110px;width:132px}.free-magnet-face{height:45px}.free-grip{top:44px;height:17px}.free-carry{height:95px}.free-bottom{padding:9px 1px}.free-reset{font-size:12px;min-height:41px;padding:6px 10px}}
+
 </style></head>
 <body><div class="app">
 <header class="top"><div class="brand">
@@ -127,10 +163,18 @@ footer{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap
 <div class="side-bottom"><button class="test" id="test" disabled>Choose an answer ↑</button><div class="feedback" id="feedback" role="status" aria-live="polite"></div></div>
 </aside>
 </main>
+<section class="free-lab" id="freeLab" hidden aria-label="Magnet Mix-Up free play">
+<div class="free-head"><div><h2>Magnet Mix-Up <span aria-hidden="true">✦</span></h2><p>Move your magnet around the table. What sticks? What stays?</p></div><div class="free-counter"><b id="freeCount">0 / 6</b> magnetic objects found</div></div>
+<div class="free-board" id="freeBoard" tabindex="0" aria-label="Free play magnet table. Move pointer, drag a finger, or use arrow keys to move the magnet and collect magnetic objects.">
+<span class="free-instruction">🧲 Move your magnet! <span id="touchHint">Hover or drag to explore</span></span>
+<div id="freeObjects"></div><div class="free-magnet" id="freeMagnet" aria-hidden="true"><div class="free-magnet-face"><span class="free-pole s">S</span><span class="free-pole n">N</span></div><div class="free-grip"></div><div class="free-carry" id="freeCarry"></div></div></div>
+<div class="free-bottom"><div class="free-status" id="freeStatus" role="status" aria-live="polite">Find all 6 magnetic objects!</div><div><span class="free-help">Mouse • Touch • Arrow keys &nbsp; </span><button class="free-reset" id="freeReset">↻ Scatter objects again</button></div></div>
+</section>
 <nav class="mode-nav" aria-label="Magnet Workshop experiments">
 <button data-mode="poles" class="mode active" aria-current="true"><span class="num">1</span><span><strong class="mode-title">Poles</strong><span class="mode-caption">Attract or repel?</span></span><span class="thumb" aria-hidden="true">🧲</span></button>
 <button data-mode="distance" class="mode" aria-current="false"><span class="num">2</span><span><strong class="mode-title">Distance</strong><span class="mode-caption">Closer or farther?</span></span><span class="thumb" aria-hidden="true">↔️</span></button>
 <button data-mode="objects" class="mode" aria-current="false"><span class="num">3</span><span><strong class="mode-title">Magnetic or not?</strong><span class="mode-caption">Test everyday objects</span></span><span class="thumb" aria-hidden="true">📎</span></button>
+<button data-mode="free" class="mode" aria-current="false"><span class="num">4</span><span><strong class="mode-title">Free Play</strong><span class="mode-caption">Sweep and collect objects!</span></span><span class="thumb" aria-hidden="true">✨</span></button>
 </nav>
 <footer><span>No sign-in · No student data sent</span><span>·</span><span>Look → predict → test → explain</span></footer>
 </div>
@@ -138,10 +182,10 @@ footer{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap
 <button id="close" class="close">Close ✕</button><p class="kicker">FOR EDUCATORS</p><h2 id="teacherTitle">Magnet Workshop · Teacher notes</h2>
 <p><strong>Grade 4 Science, Alberta:</strong> Non-contact forces of gravity and magnetism. Here students predict and observe attraction, repulsion, pole direction, changes in effect at different distances, and attraction to selected materials.</p>
 <div class="note"><strong>Suggested routine:</strong> Let a student predict, test without changing the setup, describe the observation, and revise their thinking. Repeat with real classroom magnets and small steel objects.</div>
-<h3>Three investigations</h3>
+<h3>Four investigations</h3>
 <ul><li><strong>Poles:</strong> Like poles repel; opposite poles attract. Use the Flip button to test a new pole orientation.</li>
 <li><strong>Distance:</strong> Magnetic force generally becomes weaker farther from a magnet. This uses an illustrative strength scale, not a calibrated force measurement.</li>
-<li><strong>Magnetic or Not:</strong> Paper clips, steel bolts and steel washers can be attracted. Wood, plastic and aluminum generally are not attracted to ordinary classroom magnets. Objects made with different alloys may behave differently.</li></ul>
+<li><strong>Magnetic or Not:</strong> Paper clips, steel bolts and steel washers can be attracted. Wood, plastic and aluminum generally are not attracted to ordinary classroom magnets. Objects made with different alloys may behave differently.</li><li><strong>Free Play:</strong> Move the magnet with a mouse, finger or arrow keys. Steel items attach and travel with it; wood, plastic, rubber and aluminum stay behind. Real-world objects vary by composition. This interaction illustrates attraction, not calibrated magnetic field strength.</li></ul>
 <h3>Discuss with students</h3>
 <ul><li>Which pole combinations push? Which pull?</li><li>Does a magnet need to touch an object to exert a force?</li><li>When did your prediction match? What did you change after observing?</li><li>How could you test magnet strength fairly with a real magnet?</li></ul>
 <p><strong>Model note:</strong> Cart displacement is illustrative and visually exaggerated. Force depends on magnet shape and strength, materials, orientation, and distance. Avoid interpreting this animation as a calibrated physics simulation.</p>
