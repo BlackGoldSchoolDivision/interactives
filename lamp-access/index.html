@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="A fixed-position communication board for trying Chromebook Face Control with LAMP reference layouts.">
+  <title>Communication Board · Face Control</title>
+  <link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+  <main id="app">
+    <header class="message-bar">
+      <button id="message" class="message" aria-label="Speak message"><span id="message-text" class="placeholder">Build a message</span></button>
+      <button id="speak" class="tool speak">Speak</button>
+      <button id="undo" class="tool" aria-label="Delete last word">⌫<span>Undo</span></button>
+    </header>
+    <nav class="navigation" aria-label="Board navigation">
+      <button id="home" class="nav-button">⌂ <span>Home</span></button>
+      <button id="back" class="nav-button">← <span>Back</span></button>
+      <div id="page-title">Home</div>
+      <button id="pages" class="nav-button">Pages</button>
+      <button id="fullscreen" class="nav-button" aria-label="Full screen">⛶</button>
+      <button id="settings" class="nav-button" aria-label="Settings and Face Control help">Settings</button>
+    </nav>
+    <section id="board-scroll" aria-label="Communication board workspace" tabindex="-1">
+      <div id="board" class="board" role="group" aria-label="Home communication board"></div>
+    </section>
+    <footer><span id="status" role="status">Select a button to begin.</span><span class="credit">Reference symbols © 2019 PRC-Saltillo · <button id="about">About this trial</button></span></footer>
+  </main>
+
+  <dialog id="settings-dialog" aria-labelledby="settings-title">
+    <div class="dialog-top"><h1 id="settings-title">Settings & access</h1><button class="close tool" data-close="settings-dialog">Done</button></div>
+    <section class="setting-section">
+      <h2>Speech</h2>
+      <label class="setting"><span>Speak each selected word</span><input id="speak-words" type="checkbox" checked></label>
+      <label class="setting"><span>Return home after a word</span><input id="return-home" type="checkbox" checked></label>
+      <label class="setting"><span>Voice</span><select id="voice"><option value="">Device default</option></select></label>
+      <label class="setting"><span>Speech speed</span><select id="rate"><option value="0.7">Slower</option><option value="0.9" selected>Normal</option><option value="1.1">Faster</option></select></label>
+      <button id="test-voice" class="tool">Test voice</button><p id="speech-note" class="note"></p>
+    </section>
+    <section class="setting-section">
+      <h2>Chromebook Face Control</h2>
+      <ol>
+        <li>Open Chromebook <strong>Settings → Accessibility → Cursor and touchpad → Face control</strong>.</li>
+        <li>Turn on head movement for the pointer. Assign a comfortable facial gesture to <strong>Left-click</strong>.</li>
+        <li>Move to a button and use the click gesture. Choose <strong>Full screen</strong> to make the grid larger.</li>
+      </ol>
+      <p>These are ordinary buttons, so ChromeOS Face Control and Automatic clicks can activate them. The website does not use your camera. Choose one click method at a time to avoid duplicate selections.</p>
+      <p>All pages keep the same 12 × 7 grid. A page button opens vocabulary; a word button adds speech. Some words use a second selection in the same position.</p>
+      <p>On a narrow screen, scroll the board sideways. Rows and columns stay in their original order.</p>
+      <a href="https://support.google.com/chromebook/answer/15824371?hl=en" target="_blank" rel="noopener">Google’s Face Control instructions ↗</a>
+    </section>
+    <section class="setting-section">
+      <h2>About this trial</h2>
+      <p>A browser communication board for testing access on a Chromebook. The included reference pages preserve the button positions and symbols in PRC-Saltillo’s published low-tech LAMP Words for Life boards. This is an independent school prototype, not the official LAMP Words for Life application or its complete vocabulary engine.</p>
+      <p>Compare the paths you plan to practise with the student’s own vocabulary file. Personalised files and newer versions may differ from this 2019 reference set.</p>
+      <p>Messages stay in this tab and are cleared when it closes. Only voice preferences are saved on this device. Speech uses the device’s browser voices; some voices may need a connection.</p>
+      <p class="note">© 2019 PRC-Saltillo. Non-commercial reprint rights for clinical or personal use granted with inclusion of copyright notice. Commercial use prohibited; may not be used for resale. Contact PRC-Saltillo for questions regarding permissible uses.</p>
+      <a href="https://aaclanguagelab.com/resources/lamp-words-for-life-manual-boards" target="_blank" rel="noopener">Original reference boards & notice ↗</a>
+    </section>
+  </dialog>
+
+  <dialog id="pages-dialog" aria-labelledby="pages-title">
+    <div class="dialog-top"><h1 id="pages-title">Find a page</h1><button class="close tool" data-close="pages-dialog">Done</button></div>
+    <label class="search-label" for="page-search">Page or word</label><input id="page-search" type="search" placeholder="Search music, water, animals…" autocomplete="off">
+    <p class="note">Open a reference page directly, or follow its buttons from Home.</p>
+    <div id="page-list" class="page-list"></div>
+  </dialog>
+  <noscript>This communication board needs JavaScript enabled.</noscript>
+  <script type="module" src="app.js?v=1"></script>
+</body>
+</html>
