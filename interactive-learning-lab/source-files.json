@@ -2386,6 +2386,20 @@
           "url": "https://interactives.blackgold.ca/renaissance-map/illustrated-scene.html?v=scene4"
         }
       ]
+    },
+    "bend-stretch-change": {
+      "kind": "html",
+      "title": "Bend, Stretch, Change!",
+      "credit": "Engaging Students · Black Gold School Division",
+      "category": "Science",
+      "versions": [
+        {
+          "label": "Bend, Stretch, Change!",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "bend-stretch-change/index.html",
+          "url": "https://interactives.blackgold.ca/bend-stretch-change/"
+        }
+      ]
     }
   },
   "files": {
