@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#102e55">
+<meta name="description" content="Grade 4 hands-on magnet experiments: predict attraction and repulsion, investigate force and distance, and identify magnetic materials.">
+<title>Magnet Workshop · Interactive Learning Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900;1000&display=swap" rel="stylesheet">
+<style>
+:root{font-family:Nunito,system-ui,-apple-system,sans-serif;color:#172c50;background:#f7f2e8;--navy:#10315b;--blue:#237ed0;--gold:#f8bb30;--gold-dark:#bd821b;--cream:#fbf8f1;--ink:#1a315a;--border:#e7e2db;font-synthesis:none}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 94% 0%,#fff2c1 0 13%,transparent 36%),radial-gradient(circle at 9% 80%,#d2edff 0 6%,transparent 36%),#f8f3e8;min-width:280px}button,input{font:inherit}button{cursor:pointer;touch-action:manipulation}button:disabled{cursor:not-allowed;opacity:.6}button:focus-visible,a:focus-visible,input:focus-visible{outline:4px solid #1b92fb;outline-offset:3px}[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.app{min-height:100dvh;max-width:1550px;margin:auto;display:flex;flex-direction:column;gap:12px;padding:0 clamp(9px,1.4vw,22px) 17px}
+.top{background:#102d54;color:white;display:flex;align-items:center;justify-content:space-between;gap:14px;border-radius:0 0 24px 24px;padding:13px clamp(13px,2vw,30px);box-shadow:0 5px 0 #071e3e21;min-height:94px;position:relative;isolation:isolate;overflow:hidden}
+.top:after{content:"";position:absolute;pointer-events:none;inset:0;z-index:-1;background:radial-gradient(ellipse at 79% -60%,#3869a14a,transparent 54%),repeating-linear-gradient(130deg,#ffffff06 0 2px,transparent 3px 110px)}
+.brand{display:flex;align-items:center;gap:16px;min-width:0}.back{width:46px;height:46px;border-radius:14px;background:#2692ed;color:white;box-shadow:0 5px 0 #11609f;border:1px solid #5bb9ff;display:grid;place-items:center;font-size:30px;text-decoration:none;flex:none}
+.brandmark{font-size:37px;filter:drop-shadow(0 4px 3px #0004);flex:none}
+.title-wrap{min-width:0}h1{font-size:clamp(27px,3vw,45px);line-height:1;letter-spacing:-.055em;color:#fff;margin:0;font-weight:1000}h1 span{color:#ffcc65}.kicker{font-size:11px;font-weight:1000;letter-spacing:.12em;color:#cfdeef;margin:4px 0 0;text-transform:uppercase}
+.teacher-btn{border:1px solid #d0dce8;background:#fffdf9;border-radius:15px;color:#13345f;padding:13px 16px;font-size:14px;font-weight:1000;box-shadow:0 5px 0 #8b99a76a;white-space:nowrap}
+.lesson{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(300px,.67fr);gap:14px;flex:1;min-height:0}
+.exhibit{background:#fffdf8;border:2px solid #fff;box-shadow:0 12px 35px #37425414;border-radius:27px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.exhibit-header{padding:13px 19px 9px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.steps{display:flex;gap:7px;align-items:center;flex-wrap:nowrap}.steps span{display:grid;place-items:center;width:31px;height:31px;background:#fff;border:2px solid #e3dfd7;color:#8998aa;border-radius:50%;font-size:13px;font-weight:1000}.steps .done{background:#d7f0e9;color:#167f75;border-color:#83c9b8}.steps .active{background:#ffcb55;border-color:#e4a223;color:#795017}
+.number{background:#ffe6ac;border-radius:10px;padding:6px 11px;color:#905f19;font-weight:1000;font-size:14px;white-space:nowrap}
+.heading{display:flex;gap:11px;align-items:center;flex-wrap:wrap;padding:1px 19px 0}
+.heading h2{font-size:clamp(25px,2.6vw,38px);letter-spacing:-.04em;line-height:1.1;margin:0}
+.subtitle{font-size:clamp(12px,1.1vw,15px);font-weight:800;color:#5c6e8b;padding:4px 19px 9px;line-height:1.25;margin:0}
+.stage{position:relative;isolation:isolate;flex:1;min-height:clamp(290px,31vw,480px);margin:0 13px 0;border-radius:25px;overflow:hidden;background:linear-gradient(180deg,#c0ceda 0%,#6e91ad 34%,#b0a8a0 59%,#d3a475 65%,#dcac7c 100%);border:3px solid #fff;box-shadow:inset 0 0 25px #233b4f22,0 8px 20px #3334221e}
+.stage:before{content:"";position:absolute;inset:0 0 36%;background:radial-gradient(ellipse at 40% 15%,#ffffff6d,transparent 80%),repeating-radial-gradient(circle at 16px 16px,#293e573d 0px 3px,transparent 4px 48px);background-size:100% 100%,54px 54px;opacity:.55;filter:blur(.8px)}
+.stage:after{content:"";position:absolute;top:65%;bottom:0;left:0;right:0;z-index:0;background:repeating-linear-gradient(90deg,#c38c59aa 0 1px,transparent 2px 90px),linear-gradient(#eec092,#d09d6e);border-top:8px solid #d1a36e;box-shadow:inset 0 6px 7px #9d693c25}
+.bench-shadow{position:absolute;top:67%;left:8%;width:84%;height:14%;border-radius:50%;background:#302b2633;filter:blur(19px);z-index:1}
+.kit{position:absolute;z-index:2;top:49%;width:34%;transition:transform 1.5s cubic-bezier(.23,.74,.25,1),right .6s ease}
+.kit.left{left:10%;transform:translateX(var(--slide,0px))}
+.kit.right{right:var(--right,9%);width:32%}
+.mag{width:100%;height:auto;aspect-ratio:3.15/1;position:relative;background:linear-gradient(90deg,#174a90 0%,#122d72 50%,#f3463e 50%,#cd2b30 100%);border-radius:12px;border:2px solid #113d6980;box-shadow:inset 0 7px 9px #ffffff26,inset 0 -7px 15px #120c1d3d,0 11px 9px #201e244b;overflow:hidden}
+.mag:after{content:"";position:absolute;inset:0;background:url("./assets/bar-magnet.webp") center / cover no-repeat;mix-blend-mode:normal}
+.mag.flipped{transform:scaleX(-1)}
+.mag .pole{position:absolute;z-index:2;top:48%;transform:translate(-50%,-50%);font-size:clamp(16px,2.9vw,36px);line-height:1;text-shadow:0 2px 4px #10112660;color:#fff;font-weight:1000;pointer-events:none}
+.mag .pole.s{left:25%}.mag .pole.n{left:75%}
+.cart-base{height:23px;margin:-4px 4% 0;background:linear-gradient(180deg,#e6c29a,#b58f5d);border:3px solid #9b7248;border-radius:6px;box-shadow:0 7px 0 #51382022;position:relative}
+.cart-base:before,.cart-base:after{content:"";position:absolute;top:13px;width:21px;height:21px;background:radial-gradient(circle at 48% 45%,#ccc 0 17%,#2c2b2e 18% 55%,#080e16 56% 100%);border-radius:50%;border:1px solid #283749}
+.cart-base:before{left:11%}.cart-base:after{right:11%}
+.stand{height:25px;margin:-3px 3% 0;background:linear-gradient(#252f42,#070c17);border-radius:5px;box-shadow:0 7px 3px #0004;border:1px solid #030911}
+.caption-stage{position:absolute;top:15px;left:16px;z-index:4;border:1px solid #fff9;background:#fffef2e9;color:#37526a;padding:7px 11px;border-radius:12px;font-size:12px;font-weight:1000;box-shadow:0 3px 12px #1827461b}
+.force-badge{position:absolute;z-index:4;top:27%;left:50%;transform:translateX(-50%);padding:9px 16px;border-radius:99px;background:#fefdf4;color:#1a4677;font-size:clamp(13px,1.5vw,19px);font-weight:1000;box-shadow:0 6px 20px #0002;min-width:max-content}
+.controls-scene{background:#fffcf6;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 15px;min-height:85px}
+.flip{background:#ecf3f9;border:2px solid #cadaeb;color:#244d76;border-radius:15px;padding:10px 14px;font-weight:1000;min-height:55px;box-shadow:0 3px 0 #b7cde0}
+.flip small{display:block;font-size:10px;color:#637994;font-weight:900}
+.distance-control{flex:1;min-width:100px;max-width:420px}
+.distance-control label{font-size:14px;font-weight:1000;display:block;margin-bottom:2px}
+.range-labels{display:flex;justify-content:space-between;color:#557090;font-size:10px;font-weight:900}
+.distance-control input{width:100%;margin:6px 0;accent-color:#2688e2;cursor:pointer}
+.side{background:#fffdfb;border:2px solid #fff;border-radius:27px;padding:clamp(14px,1.7vw,23px);box-shadow:0 12px 35px #37425414;display:flex;flex-direction:column;justify-content:space-between;gap:10px;min-width:0}
+.step-label{font-weight:1000;color:#2266b1;text-transform:uppercase;font-size:13px;letter-spacing:.065em}
+.side h3{font-size:clamp(25px,3vw,36px);line-height:1.1;letter-spacing:-.05em;margin:10px 0}
+.side p{font-size:14px;font-weight:700;color:#546985;line-height:1.3;margin:0}
+.choices{display:grid;gap:11px;margin:15px 0}
+.choice{display:flex;justify-content:flex-start;align-items:center;text-align:left;gap:15px;background:#ecf4fe;color:#194777;border:3px solid #b7d1f2;border-radius:18px;min-height:94px;padding:12px 14px;box-shadow:0 5px 0 #b5cbe4;font-size:clamp(16px,1.45vw,19px);font-weight:1000;line-height:1.12}
+.choice:nth-child(2){background:#ffefed;border-color:#f4b6b0;color:#86454b;box-shadow:0 5px 0 #ecbbb5}
+.choice .art{font-size:clamp(25px,3vw,39px);flex:none}
+.choice.selected{background:#d5edff;border-color:#288dde;box-shadow:0 0 0 4px #198ce92c,0 5px 0 #73ace0}
+.choice:nth-child(2).selected{background:#ffe3dc;border-color:#d85a54;box-shadow:0 0 0 4px #f65b492c,0 5px 0 #e8908d}
+.test{background:#ffca52;color:#112b4b;border:0;border-bottom:6px solid #cd9028;border-radius:19px;min-height:72px;font-size:clamp(20px,2vw,28px);font-weight:1000;letter-spacing:-.02em;width:100%;box-shadow:0 12px 24px #c78b2759}
+.test:active:not(:disabled){transform:translateY(3px);border-bottom-width:3px}.test.done{background:#2c8de0;color:white;border-bottom-color:#1c5eab}
+.feedback{color:#255d66;font-weight:900;min-height:25px;text-align:center;font-size:14px}
+.mode-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:0}
+.mode{padding:12px;border:3px solid white;border-radius:22px;min-height:112px;display:flex;align-items:center;gap:13px;text-align:left;background:#fefdfa;box-shadow:0 6px 23px #3e567d1b;color:#153459;font-weight:1000;position:relative;overflow:hidden}
+.mode.active{background:#153960;color:white;border-color:#ffd064;box-shadow:0 0 0 3px #f3c45273,inset 0 0 0 2px #fff2}
+.mode .num{background:#d7ecff;color:#245e92;border-radius:50%;width:32px;height:32px;display:grid;place-items:center;flex:none}
+.mode.active .num{background:#ffd366;color:#503e1b}
+.mode .thumb{font-size:42px;line-height:1;flex:none}
+.mode-title{font-size:clamp(18px,1.8vw,24px);line-height:1.1;display:block}
+.mode-caption{font-size:12px;line-height:1.3;font-weight:800;opacity:.74;display:block;margin-top:4px}
+footer{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;color:#607085;font-size:11px;font-weight:800}
+.dialog-back{position:fixed;inset:0;background:#081b34aa;z-index:20;display:none;place-items:center;padding:12px}
+.dialog-back.open{display:grid}
+.dialog{background:#fffdf8;border-radius:25px;width:min(710px,100%);max-height:90dvh;overflow:auto;padding:25px;box-shadow:0 23px 75px #09152875}
+.dialog .close{float:right;min-height:43px;border:0;border-radius:12px;padding:8px 14px;background:#e6eef5;color:#183d68;font-weight:1000}
+.dialog h2{font-size:29px;letter-spacing:-.03em;margin:5px 0 12px}
+.dialog h3{margin:19px 0 4px}.dialog p,.dialog li{color:#38536a;line-height:1.52}.dialog li{margin:6px 0}.dialog a{color:#165eb3}
+.note{background:#e9f4fd;padding:12px 15px;border-radius:12px}
+.materials{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:7px 0}
+.material{background:#fff;border:2px solid #d7dee5;border-radius:17px;padding:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:88px;font-size:13px;font-weight:1000;color:#35506a}
+.material .emoji{font-size:34px}
+.material.chosen{background:#e6f2ff;border-color:#2889d1;box-shadow:0 0 0 3px #2088d02b}
+.material:disabled{opacity:1}
+.object-lab{position:absolute;z-index:3;top:39%;right:17%;font-size:clamp(62px,8vw,117px);filter:drop-shadow(0 13px 5px #0003);transition:transform 1.4s ease}
+.object-lab.moving{transform:translateX(-65%) rotate(-12deg)}
+.object-name{position:absolute;z-index:4;right:12%;top:70%;background:#fffdf8db;color:#274364;border-radius:12px;padding:6px 12px;font-size:14px;font-weight:900}
+.mode-support{font-size:11px;color:#7b8b9b;font-weight:800}
+@media(max-width:940px){.lesson{grid-template-columns:1fr}.stage{min-height:320px}.side{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:12px;align-items:center}.side-intro{grid-column:1}.choices{grid-column:2;grid-row:1 / 3}.side-bottom{grid-column:1}.side h3{font-size:28px}.choice{min-height:70px}.controls-scene{padding:9px 15px}.mode{min-height:95px}}
+@media(max-width:610px){.app{padding:0 7px 17px;gap:8px}.top{padding:11px 10px;border-radius:0 0 18px 18px;min-height:70px}.brand{gap:7px}.back{width:37px;height:38px;font-size:24px}.brandmark{font-size:27px}h1{font-size:clamp(20px,5.3vw,28px)}.kicker{font-size:9px}.teacher-btn{font-size:11px;padding:10px 8px;border-radius:12px}.lesson{gap:8px}.exhibit,.side{border-radius:19px}.exhibit-header{padding:10px 12px 6px}.steps span{width:23px;height:23px;font-size:11px}.heading{padding:4px 12px 0}.heading h2{font-size:24px}.number{font-size:11px}.subtitle{padding:4px 12px 8px;font-size:12px}.stage{margin:0 6px;min-height:230px;border-radius:16px}.kit{top:49%}.mag .pole{font-size:clamp(10px,3.2vw,17px)}.cart-base{height:15px}.cart-base:before,.cart-base:after{width:11px;height:11px;top:9px}.stand{height:15px}.force-badge{top:18%;font-size:12px;padding:7px}.caption-stage{font-size:10px}.controls-scene{min-height:66px;padding:7px;gap:6px}.flip{font-size:12px;padding:7px;min-height:48px}.flip small{font-size:9px}.distance-control label{font-size:11px}.distance-control{min-width:105px}.range-labels{font-size:9px}.side{display:block;padding:13px}.side h3{font-size:25px;margin:4px 0}.side p{font-size:12px}.choices{grid-template-columns:1fr 1fr;gap:9px;margin:10px 0}.choice{min-height:82px;padding:9px;gap:7px;font-size:13px;flex-direction:column;text-align:center;justify-content:center;border-width:2px}.choice .art{font-size:28px}.test{min-height:56px;font-size:21px}.feedback{font-size:12px}.mode-nav{gap:5px}.mode{border-width:2px;border-radius:15px;padding:8px;min-height:95px;gap:5px;flex-direction:column;align-items:flex-start}.mode .thumb{font-size:28px;position:absolute;right:8px;top:10px}.mode .num{width:22px;height:22px;font-size:10px}.mode-title{font-size:15px}.mode-caption{font-size:10px;max-width:125px}.material{min-height:71px;font-size:11px}.material .emoji{font-size:25px}.object-lab{font-size:65px}}
+@media(max-height:650px) and (min-width:941px){.app{gap:7px}.top{min-height:71px;padding-top:8px;padding-bottom:8px}.stage{min-height:240px}.mode{min-height:78px}.side{padding:14px}.choice{min-height:69px}.test{min-height:56px}.controls-scene{min-height:66px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
+</style></head>
+<body><div class="app">
+<header class="top"><div class="brand">
+<a class="back" href="https://interactives.blackgold.ca/interactive-learning-lab/" aria-label="Back to Interactive Learning Lab">←</a>
+<span class="brandmark" aria-hidden="true">🧲</span>
+<div class="title-wrap"><h1>Magnet <span>Workshop</span></h1><p class="kicker">Grade 4 Science</p></div></div>
+<button id="teacher" class="teacher-btn">▤ &nbsp; Teacher notes</button></header>
+<main class="lesson">
+<section class="exhibit" aria-label="Magnet experiment">
+<div class="exhibit-header"><div class="steps" id="steps" aria-label="Activity progress"></div><span id="progressLabel" class="number">1 of 4</span></div>
+<div class="heading"><h2 id="experimentTitle">Same Poles</h2></div>
+<p id="subtitle" class="subtitle">These two magnets have the same pole facing. What happens when we let go?</p>
+<div class="stage" id="stage" aria-label="A photographed magnet on wheels faces a magnet on a small stand.">
+<div class="bench-shadow" aria-hidden="true"></div>
+<span id="stageCaption" class="caption-stage">N faces N · Like poles</span>
+<span id="forceBadge" class="force-badge" hidden></span>
+<div class="kit left" id="leftKit"><div class="mag" id="magLeft" aria-label="Magnet with south pole left and north pole right"><span class="pole s">S</span><span class="pole n">N</span></div><div class="cart-base"></div></div>
+<div class="kit right" id="rightKit"><div class="mag flipped" id="magRight" aria-label="Magnet with north pole left and south pole right"><span class="pole s">S</span><span class="pole n">N</span></div><div class="stand"></div></div>
+<div id="objectLab" class="object-lab" hidden aria-hidden="true">📎</div><span id="objectName" class="object-name" hidden>Paper clip</span>
+</div>
+<div class="controls-scene" id="sceneControls">
+<button id="flip" class="flip">↻ Flip magnet<small>Switch N and S</small></button>
+<div class="distance-control"><label for="distance">Move closer or farther apart</label>
+<input type="range" id="distance" min="5" max="100" step="1" value="54">
+<div class="range-labels"><span>Closer together</span><span>Farther apart</span></div></div>
+</div>
+</section>
+<aside class="side" aria-labelledby="question">
+<div class="side-intro"><div class="step-label" id="stepLabel">1 · PREDICT</div><h3 id="question">What will happen when we let go?</h3><p id="helpText">Choose what you think will happen.</p></div>
+<div class="choices" id="choices" role="group" aria-label="Make a prediction"><button id="choiceA" class="choice" data-answer="a" aria-pressed="false"><span class="art" id="choiceArtA" aria-hidden="true">🧲</span><span id="choiceTextA">Pull together</span></button><button id="choiceB" class="choice" data-answer="b" aria-pressed="false"><span class="art" id="choiceArtB" aria-hidden="true">↔️</span><span id="choiceTextB">Push apart</span></button></div>
+<div id="materials" class="materials" hidden aria-label="Choose an object to test"></div>
+<div class="side-bottom"><button class="test" id="test" disabled>Choose an answer ↑</button><div class="feedback" id="feedback" role="status" aria-live="polite"></div></div>
+</aside>
+</main>
+<nav class="mode-nav" aria-label="Magnet Workshop experiments">
+<button data-mode="poles" class="mode active" aria-current="true"><span class="num">1</span><span><strong class="mode-title">Poles</strong><span class="mode-caption">Attract or repel?</span></span><span class="thumb" aria-hidden="true">🧲</span></button>
+<button data-mode="distance" class="mode" aria-current="false"><span class="num">2</span><span><strong class="mode-title">Distance</strong><span class="mode-caption">Closer or farther?</span></span><span class="thumb" aria-hidden="true">↔️</span></button>
+<button data-mode="objects" class="mode" aria-current="false"><span class="num">3</span><span><strong class="mode-title">Magnetic or not?</strong><span class="mode-caption">Test everyday objects</span></span><span class="thumb" aria-hidden="true">📎</span></button>
+</nav>
+<footer><span>No sign-in · No student data sent</span><span>·</span><span>Look → predict → test → explain</span></footer>
+</div>
+<div class="dialog-back" id="backdrop"><div role="dialog" aria-modal="true" aria-labelledby="teacherTitle" class="dialog">
+<button id="close" class="close">Close ✕</button><p class="kicker">FOR EDUCATORS</p><h2 id="teacherTitle">Magnet Workshop · Teacher notes</h2>
+<p><strong>Grade 4 Science, Alberta:</strong> Non-contact forces of gravity and magnetism. Here students predict and observe attraction, repulsion, pole direction, changes in effect at different distances, and attraction to selected materials.</p>
+<div class="note"><strong>Suggested routine:</strong> Let a student predict, test without changing the setup, describe the observation, and revise their thinking. Repeat with real classroom magnets and small steel objects.</div>
+<h3>Three investigations</h3>
+<ul><li><strong>Poles:</strong> Like poles repel; opposite poles attract. Use the Flip button to test a new pole orientation.</li>
+<li><strong>Distance:</strong> Magnetic force generally becomes weaker farther from a magnet. This uses an illustrative strength scale, not a calibrated force measurement.</li>
+<li><strong>Magnetic or Not:</strong> Paper clips, steel bolts and steel washers can be attracted. Wood, plastic and aluminum generally are not attracted to ordinary classroom magnets. Objects made with different alloys may behave differently.</li></ul>
+<h3>Discuss with students</h3>
+<ul><li>Which pole combinations push? Which pull?</li><li>Does a magnet need to touch an object to exert a force?</li><li>When did your prediction match? What did you change after observing?</li><li>How could you test magnet strength fairly with a real magnet?</li></ul>
+<p><strong>Model note:</strong> Cart displacement is illustrative and visually exaggerated. Force depends on magnet shape and strength, materials, orientation, and distance. Avoid interpreting this animation as a calibrated physics simulation.</p>
+<p><strong>Safety:</strong> Supervise use of small magnets and metal objects. Keep magnets away from small children who could swallow them, and away from sensitive equipment or medical devices.</p>
+<p><strong>Source:</strong> <a href="https://www.alberta.ca/curriculum-science" rel="noopener" target="_blank">Alberta Grade 4 Science overview</a>. Photographic magnet: <a href="https://sciencestockphotos.com/free/physics/slides/bar_magnet.html" target="_blank" rel="noopener">ScienceStockPhotos.com</a>, CC BY 4.0, adapted to a horizontal cutout.</p>
+<button id="download" class="teacher-btn">↓ Make it my own · Download HTML</button><p id="downloadStatus" role="status" class="mode-support"></p>
+</div></div>
+<script>
+(()=>{
+'use strict';
+const $=id=>document.getElementById(id);
+const POLE_ROUNDS=[
+  {title:'Same Poles',sub:'These two magnets have the same pole facing. What will happen when we let go?',right:'N',dist:54},
+  {title:'Opposite Poles',sub:'Now the ends are different. What will happen when we let go?',right:'S',dist:54},
+  {title:'Same Poles Again',sub:'Try a different starting gap. Which way will the cart move?',right:'N',dist:78},
+  {title:'Your Poles Test',sub:'Flip the magnet and move it. Test your own prediction.',right:'S',dist:43}
+];
+const DISTANCE_ROUNDS=[
+  {title:'Farther Apart',sub:'The magnets are farther apart. How strong is their effect?',dist:91},
+  {title:'Closer Together',sub:'Now bring them closer. How strong is their effect?',dist:23},
+  {title:'Choose a Distance',sub:'Move the magnet to any distance. What do you predict?',dist:59}
+];
+const OBJECTS=[
+  {name:'Paper clip',emoji:'📎',mag:true,why:'Paper clips made of steel are usually attracted.'},
+  {name:'Wooden pencil',emoji:'✏️',mag:false,why:'Wood does not respond to an ordinary classroom magnet.'},
+  {name:'Steel bolt',emoji:'🔩',mag:true,why:'Many steel bolts contain iron and are attracted.'},
+  {name:'Plastic button',emoji:'🔘',mag:false,why:'An ordinary plastic button is not magnetic.'},
+  {name:'Steel washer',emoji:'⚙️',mag:true,why:'A steel washer can be pulled by a magnet.'},
+  {name:'Aluminum foil',emoji:'▱',mag:false,why:'Aluminum foil is not noticeably attracted to an ordinary classroom magnet.'}
+];
+const state={mode:'poles',round:0,right:'N',distance:54,chosen:null,tested:false,animating:false,objectIndex:0,finished:{poles:new Set(),distance:new Set(),objects:new Set()}};
+const modeNodes=[...document.querySelectorAll('[data-mode]')];
+let animationTimer=0;let previousFocus=null;
+function progressCount(){return state.mode==='poles'?POLE_ROUNDS.length:state.mode==='distance'?DISTANCE_ROUNDS.length:OBJECTS.length;}
+function getRound(){return state.mode==='poles'?POLE_ROUNDS[state.round]:state.mode==='distance'?DISTANCE_ROUNDS[state.round]:OBJECTS[state.round];}
+function endsMatch(){return state.right==='N';}
+function strength(){return Math.pow(23/(22+state.distance*.8),1.65);}
+function clearExperiment(){clearTimeout(animationTimer);state.chosen=null;state.tested=false;state.animating=false;$('leftKit').style.setProperty('--slide','0px');$('stage').classList.remove('tested');$('objectLab').classList.remove('moving');$('forceBadge').hidden=true;}
+function setMode(mode){if(!['poles','distance','objects'].includes(mode))return;state.mode=mode;state.round=0;loadRound();document.querySelector('.lesson').scrollIntoView({behavior:'smooth',block:'start'});}
+function loadRound(){
+ clearExperiment();
+ const r=getRound();
+ if(state.mode==='poles'){state.right=r.right;state.distance=r.dist;}
+ else if(state.mode==='distance'){state.right='N';state.distance=r.dist;}
+ else{state.right='S';state.distance=43;state.objectIndex=state.round;}
+ render();
+}
+function setAnswer(v){if(state.tested||state.animating)return;state.chosen=v;document.querySelectorAll('[data-answer]').forEach(b=>{b.classList.toggle('selected',b.dataset.answer===v);b.setAttribute('aria-pressed',String(b.dataset.answer===v));});$('test').disabled=false;$('test').textContent='▶  TEST IT!';$('feedback').textContent='Ready to investigate.';}
+function setDistance(value){if(state.animating)return;state.distance=Number(value);clearExperiment();render();}
+function setPole(pole){if(state.animating)return;state.right=pole;clearExperiment();render();}
+function animate(){
+ if(state.animating)return;
+ if(state.tested){next();return;}
+ if(!state.chosen)return;
+ state.animating=true;$('test').disabled=true;$('test').textContent='Watch closely…';
+ const isObjects=state.mode==='objects';
+ const repels=endsMatch();
+ const magnetic=isObjects&&OBJECTS[state.round].mag;
+ const correct=isObjects?(magnetic?'a':'b'):state.mode==='distance'?(strength()>=.40?'a':'b'):(repels?'b':'a');
+ $('stage').classList.add('tested');
+ if(isObjects){
+  if(magnetic)$('objectLab').classList.add('moving');
+ }else{
+  const stageWidth=$('stage').getBoundingClientRect().width;
+  const gap=Math.max(10,(24-state.distance*.155)*stageWidth/100);
+  const amount=repels?-(12+strength()*11)*stageWidth/100:Math.min(gap-8,(12+strength()*11)*stageWidth/100);
+  $('leftKit').style.setProperty('--slide',Math.round(amount)+'px');
+ }
+ animationTimer=setTimeout(()=>{
+   state.animating=false;state.tested=true;state.finished[state.mode].add(state.round);
+   let message,explain;
+   if(isObjects){message=magnetic?'The magnet pulls it!':'No pull this time';explain=OBJECTS[state.round].why;}
+   else if(state.mode==='distance'){message=strength()>=.40?'A stronger effect!':'A weaker effect';explain=strength()>=.40?'The magnetic force is stronger when the magnets are close.':'The magnetic force becomes weaker as the magnets move apart.';}
+   else{message=repels?'Push apart!':'Pull together!';explain=repels?'Like poles repel without touching.':'Opposite poles attract without touching.';}
+   $('forceBadge').textContent=message;$('forceBadge').hidden=false;
+   $('stepLabel').textContent='2 · OBSERVE';
+   $('question').textContent=message;
+   $('helpText').textContent=explain;
+   $('feedback').textContent=state.chosen===correct?'Your prediction matched!':'Good investigating! Predictions help us learn.';
+   $('choices').hidden=true;
+   $('materials').hidden=true;
+   $('test').classList.add('done');
+   $('test').textContent=state.round+1<progressCount()?'NEXT TEST →':'EXPLORE AGAIN ↻';
+   $('test').disabled=false;
+   renderSteps();
+ },1250);
+}
+function next(){
+ if(state.round+1<progressCount())state.round++;
+ else state.round=0;
+ loadRound();
+}
+function renderSteps(){
+ $('steps').innerHTML=Array.from({length:progressCount()},(_,i)=>'<span class="'+(state.finished[state.mode].has(i)?'done':i===state.round?'active':'')+'">'+(state.finished[state.mode].has(i)?'✓':i+1)+'</span>').join('');
+ $('progressLabel').textContent=(state.round+1)+' of '+progressCount();
+}
+function renderMaterials(){
+ const items=$('materials');
+ items.innerHTML=OBJECTS.map((o,i)=>'<button class="material '+(i===state.round?'chosen':'')+'" data-object="'+i+'" aria-pressed="'+(i===state.round)+'"><span class="emoji" aria-hidden="true">'+o.emoji+'</span><span>'+o.name+'</span></button>').join('');
+ items.querySelectorAll('[data-object]').forEach(b=>b.onclick=()=>{state.round=Number(b.dataset.object);loadRound();});
+}
+function render(){
+ const r=getRound(),objMode=state.mode==='objects',distMode=state.mode==='distance';
+ renderSteps();
+ modeNodes.forEach(b=>{const selected=b.dataset.mode===state.mode;b.classList.toggle('active',selected);b.setAttribute('aria-current',String(selected));});
+ $('experimentTitle').textContent=objMode?'Magnetic or Not?':r.title;
+ $('subtitle').textContent=objMode?'Choose a real-world object. Will the magnet pull it?':r.sub;
+ $('flip').hidden=objMode;
+ $('flip').disabled=state.animating;
+ $('distance').value=state.distance;
+ $('distance').disabled=state.animating||objMode;
+ $('sceneControls').hidden=objMode;
+ $('rightKit').hidden=objMode;
+ $('leftKit').style.left=objMode?'15%':'10%';
+ $('magRight').classList.toggle('flipped',state.right==='N');
+ $('magRight').setAttribute('aria-label','Bar magnet with '+state.right+' pole facing the movable magnet');
+ $('rightKit').style.setProperty('--right',(6+(100-state.distance)*.15).toFixed(1)+'%');
+ $('stageCaption').textContent=objMode?'Test an everyday object':distMode?'How strong is the push?':('N faces '+state.right+' · '+(endsMatch()?'Like poles':'Opposite poles'));
+ $('objectLab').hidden=!objMode;$('objectName').hidden=!objMode;
+ if(objMode){const o=OBJECTS[state.round];$('objectLab').textContent=o.emoji;$('objectName').textContent=o.name;}
+ $('stepLabel').textContent='1 · PREDICT';
+ $('question').textContent=objMode?'Will this object be attracted?':distMode?'How strong will the push be?':'What will happen when we let go?';
+ $('helpText').textContent=objMode?'Choose magnetic or not magnetic.':distMode?'Move the distance slider. Then make a prediction.':'Choose what you think will happen.';
+ $('choiceArtA').textContent=objMode?'🧲':distMode?'💪':'↔️';
+ $('choiceArtB').textContent=objMode?'✋':distMode?'🪶':'⬅️';
+ $('choiceTextA').textContent=objMode?'Magnetic':distMode?'Stronger force':'Pull together';
+ $('choiceTextB').textContent=objMode?'Not magnetic':distMode?'Weaker force':'Push apart';
+ // For poles, choice A is attraction and choice B is repulsion.
+ $('choices').hidden=false;
+ $('materials').hidden=!objMode;
+ if(objMode)renderMaterials();
+ document.querySelectorAll('[data-answer]').forEach(b=>{b.classList.remove('selected');b.setAttribute('aria-pressed','false');});
+ $('test').classList.remove('done');$('test').disabled=true;$('test').textContent='Choose an answer ↑';
+ $('feedback').textContent='';
+ $('forceBadge').hidden=true;
+ if(!objMode&&distMode) $('flip').disabled=true;
+}
+function toggleTeacher(open){
+ $('backdrop').classList.toggle('open',open);
+ if(open){previousFocus=document.activeElement;$('close').focus();}
+ else previousFocus?.focus();
+}
+$('choiceA').onclick=()=>setAnswer('a');$('choiceB').onclick=()=>setAnswer('b');$('test').onclick=animate;
+$('flip').onclick=()=>setPole(state.right==='N'?'S':'N');
+$('distance').oninput=v=>setDistance(v.target.value);
+modeNodes.forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
+$('teacher').onclick=()=>toggleTeacher(true);
+$('close').onclick=()=>toggleTeacher(false);
+$('backdrop').onclick=e=>{if(e.target===$('backdrop'))toggleTeacher(false);};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('backdrop').classList.contains('open'))toggleTeacher(false);});
+$('download').onclick=async()=>{
+ const button=$('download');button.disabled=true;$('downloadStatus').textContent='Preparing a portable HTML copy…';
+ try{
+  const copy=document.documentElement.cloneNode(true);
+  copy.querySelector('#backdrop').classList.remove('open');
+  const source=copy.querySelector('#stage');
+  if(source)source.classList.remove('tested');
+  const pic=await fetch('./assets/bar-magnet.webp');
+  if(pic.ok){
+    const blob=await pic.blob();
+    const data=await new Promise((resolve,reject)=>{const rd=new FileReader();rd.onload=()=>resolve(rd.result);rd.onerror=reject;rd.readAsDataURL(blob);});
+    const style=document.createElement('style');style.textContent='.mag:after{background-image:url("'+data+'")}';copy.querySelector('head').append(style);
+  }
+  const doc='<!doctype html>\n'+copy.outerHTML;
+  const url=URL.createObjectURL(new Blob([doc],{type:'text/html;charset=utf-8'}));
+  const link=document.createElement('a');link.href=url;link.download='magnet-workshop.html';link.click();setTimeout(()=>URL.revokeObjectURL(url),20000);
+  $('downloadStatus').textContent='Your HTML copy is ready. It opens in a browser.';
+ }catch(err){$('downloadStatus').textContent='Could not package the image; check your connection and retry.';}
+ button.disabled=false;
+};
+loadRound();
+})();
+</script></body></html>
