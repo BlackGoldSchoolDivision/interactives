@@ -2414,6 +2414,26 @@
           "url": "https://interactives.blackgold.ca/magnet-workshop/"
         }
       ]
+    },
+    "vibration-station": {
+      "kind": "html",
+      "title": "Vibration Station",
+      "credit": "Engaging Students · Black Gold School Division",
+      "category": "Science",
+      "versions": [
+        {
+          "label": "Vibration Station",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "vibration-station/index.html",
+          "url": "https://interactives.blackgold.ca/vibration-station/"
+        },
+        {
+          "label": "Audio engine",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "vibration-station/app.js",
+          "url": "https://github.com/BlackGoldSchoolDivision/interactives/blob/main/vibration-station/app.js"
+        }
+      ]
     }
   },
   "files": {
