@@ -129,6 +129,62 @@ footer{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap
 @media(max-width:940px){.mode-nav{grid-template-columns:repeat(2,minmax(0,1fr))}.free-board{min-height:510px}.free-object{width:78px}.free-object .specimen{font-size:50px}}
 @media(max-width:610px){.mode-nav{gap:6px}.mode{flex-direction:row;min-height:76px;align-items:center;gap:7px}.mode-title{font-size:15px}.mode .thumb{font-size:22px;right:7px;top:7px}.mode .num{flex:none}.mode-caption{font-size:9px}.free-board{min-height:530px;border-radius:17px}.free-head{gap:6px}.free-head h2{font-size:25px}.free-counter{font-size:13px;padding:6px 9px}.free-instruction{left:9px;top:9px;font-size:11px;padding:6px 8px}.free-object{width:67px;height:75px}.free-object .specimen{font-size:39px}.free-object .obj-label{font-size:9px;padding:3px 5px}.free-magnet{height:110px;width:132px}.free-magnet-face{height:45px}.free-grip{top:44px;height:17px}.free-carry{height:95px}.free-bottom{padding:9px 1px}.free-reset{font-size:12px;min-height:41px;padding:6px 10px}}
 
+
+/* Responsive Free Play: let the tabletop fill the space remaining after controls.
+   Only Free Play uses this; the three guided experiments remain untouched. */
+@media(min-width:701px){
+ .app.free-active{height:100dvh;min-height:0;overflow:visible;gap:clamp(5px,1vh,11px);padding-bottom:9px}
+ .app.free-active .top{flex:0 0 auto}
+ .app.free-active .free-lab{display:flex;flex-direction:column;flex:1 1 0;min-height:0;padding:clamp(7px,1vh,17px) clamp(8px,1.1vw,18px)}
+ .app.free-active .free-head{flex:0 0 auto;margin:0 4px 8px;gap:7px}
+ .app.free-active .free-board{flex:1 1 0;height:auto;min-height:260px}
+ .app.free-active .free-bottom{flex:0 0 auto;padding:7px 3px 0}
+ .app.free-active .mode-nav{flex:0 0 auto}
+ .app.free-active footer{flex:0 0 auto}
+}
+@media(min-width:701px) and (max-width:940px){
+ .app.free-active .mode-nav{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+ .app.free-active .mode{min-height:71px;padding:7px;gap:5px}
+ .app.free-active .mode-title{font-size:clamp(13px,1.7vw,17px)}
+ .app.free-active .mode-caption{font-size:10px}
+ .app.free-active .mode .num{width:24px;height:24px;font-size:11px}
+ .app.free-active .mode .thumb{font-size:22px;right:5px;top:5px}
+}
+@media(min-width:701px) and (max-height:800px){
+ .app.free-active .top{min-height:66px;padding-block:8px}
+ .app.free-active .brandmark{font-size:29px}
+ .app.free-active h1{font-size:clamp(24px,2.4vw,32px)}
+ .app.free-active .mode{min-height:73px;padding:8px;gap:7px}
+ .app.free-active .mode .thumb{font-size:26px}
+ .app.free-active .mode .num{height:27px;width:27px;font-size:12px}
+ .app.free-active .mode-title{font-size:clamp(15px,1.5vw,19px)}
+ .app.free-active .mode-caption{font-size:10px}
+ .app.free-active .free-head h2{font-size:clamp(23px,2.3vw,32px)}
+ .app.free-active .free-head p{font-size:12px}
+ .app.free-active .free-counter{padding:5px 10px}
+ .app.free-active .free-counter b{font-size:22px}
+ .app.free-active .free-bottom{padding-top:5px}
+ .app.free-active .free-status{font-size:13px;min-height:21px}
+ .app.free-active .free-reset{padding:6px 11px;min-height:38px;font-size:12px}
+ .app.free-active .free-object{width:clamp(56px,6.8vw,82px);height:clamp(65px,7.5vw,90px)}
+ .app.free-active .free-object .specimen{font-size:clamp(34px,4vw,49px)}
+ .app.free-active .free-object .obj-label{font-size:clamp(9px,.8vw,12px);margin-top:3px;padding:3px 5px}
+ .app.free-active .free-magnet{width:clamp(120px,13vw,170px)}
+ .app.free-active .free-magnet-face{height:clamp(42px,4.8vw,55px)}
+ .app.free-active .free-grip{top:clamp(42px,4.8vw,55px);height:20px}
+}
+@media(min-width:701px) and (max-height:670px){
+ .app.free-active{height:auto;min-height:670px}
+}
+@media(max-width:700px){
+ .app.free-active{height:auto;min-height:100dvh}
+ .app.free-active .free-lab{padding:11px}
+ .app.free-active .free-board{min-height:0;height:clamp(415px,calc(100dvh - 410px),530px)}
+ .app.free-active .free-head{margin-bottom:8px}
+ .app.free-active .free-bottom{gap:5px;padding-top:8px}
+ .app.free-active .mode-nav{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
 </style></head>
 <body><div class="app">
 <header class="top"><div class="brand">
@@ -285,6 +341,7 @@ function setMode(mode){
  if(!['poles','distance','objects','free'].includes(mode))return;
  if(mode==='free'){
   state.mode='free';clearExperiment();
+  document.querySelector('.app').classList.add('free-active');
   $('lesson').hidden=true;$('freeLab').hidden=false;
   modeNodes.forEach(b=>{const selected=b.dataset.mode===mode;b.classList.toggle('active',selected);b.setAttribute('aria-current',String(selected));});
   window.MagnetFreePlay?.enter();
@@ -292,6 +349,7 @@ function setMode(mode){
   return;
  }
  window.MagnetFreePlay?.exit();
+ document.querySelector('.app').classList.remove('free-active');
  $('freeLab').hidden=true;$('lesson').hidden=false;
  state.mode=mode;state.round=0;loadRound();
  document.querySelector('.lesson').scrollIntoView({behavior:'smooth',block:'start'});
