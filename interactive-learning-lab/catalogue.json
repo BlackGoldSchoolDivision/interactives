@@ -4652,5 +4652,38 @@
     ],
     "grade_basis": "curriculum",
     "grade_note": "Grade 1 Science: observable material properties and changes in shape under gentle forces. This focused, illustrative investigation does not cover the full materials learning outcomes."
+  },
+  {
+    "id": "magnet-workshop",
+    "path": "magnet-workshop",
+    "repo": "division",
+    "title": "Magnet Workshop",
+    "category": "Science",
+    "group": "",
+    "description": "Investigate magnetic pushes and pulls with realistic bar magnets. Predict attraction or repulsion, change the distance, and test which everyday objects are attracted.",
+    "types": [
+      "Simulations & models",
+      "Decision games"
+    ],
+    "tags": [
+      "Magnetism",
+      "Non-contact forces",
+      "Magnetic poles",
+      "Attract and repel",
+      "Force and distance",
+      "Material properties"
+    ],
+    "url": "https://interactives.blackgold.ca/magnet-workshop/",
+    "links": [],
+    "favourite": false,
+    "credit": "Engaging Students · Black Gold School Division",
+    "image": "images/magnet-workshop-full-20261023.webp?v=20261023b",
+    "captured": "2026-10-23",
+    "original_urls": [],
+    "grades": [
+      4
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Alberta Grade 4 Science: investigate magnetism as a non-contact force, the attraction and repulsion of poles, the effect of distance, and selected magnetic materials. This is an illustrative, partial coverage of non-contact forces."
   }
 ]
