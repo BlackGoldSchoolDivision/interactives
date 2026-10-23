@@ -1,14 +1,14 @@
 # Ready, Set, Roll!
 
-A Grade 1 Science rolling investigation for the Interactive Learning Lab. Children hear a question, tap a track or prediction button, and release two matching blue toy cars. Six guided comparisons cover distance, speed at matching stripes, stopping time, ramp height, identical setups and reaching a flag. The visible Mix & test mode provides independent surface and ramp-height controls for each track. Adult options contain observations, CSV export and a complete downloadable HTML copy.
+A Grade 1 Science rolling investigation for the Interactive Learning Lab. Children choose a track or prediction button and release two matching blue toy cars. Six guided comparisons cover distance, speed at matching stripes, stopping time, ramp height, identical setups and reaching a flag. The visible Mix & test mode provides independent surface and ramp-height controls for each track. Adult options contain observations, CSV export and a complete downloadable HTML copy.
 
 ## Running and editing
 
-Serve this directory with any static web server. Runtime sources are `index.html`, `style.css`, `physics.js`, `speech.js` and `app.js`; images and bundled spoken prompts are under `assets/`. Edit investigations in `physics.js`. No build or package dependencies are required for the hosted game.
+Serve this directory with any static web server. Runtime sources are `index.html`, `style.css`, `physics.js` and `app.js`; local images are under `assets/`. Edit investigations in `physics.js`. No build or package dependencies are required for the hosted game.
 
-Rebuild the complete portable file with `node source/package.mjs`. It embeds the two WebP images, MP3 prompts, styles and scripts in `ready-set-roll.html`. The hosted game uses Nunito when available and falls back to local fonts; the portable copy uses local fonts.
+Rebuild the complete portable file with `node source/package.mjs`. It embeds the two WebP images, styles and scripts in `ready-set-roll.html`. The hosted game uses Nunito when available and falls back to local fonts; the portable copy uses local fonts.
 
-Run the engine checks with `node source/test-physics.cjs`. Regenerate spoken clips and cue timings with `python3 source/make-speech.py` using FFmpeg compiled with the Flite filter and libmp3lame. Prompts are locally synthesized, with no student text or voice sent to a service.
+Run the engine checks with `node source/test-physics.cjs`. No audio resources, speech synthesis or microphone permissions are used.
 
 ## Model
 
