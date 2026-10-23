@@ -38,3 +38,21 @@ dst=Path("magnet-workshop/assets")
 dst.mkdir(parents=True,exist_ok=True)
 out.save(dst/"bar-magnet.webp","WEBP",quality=92,method=6)
 print("Created photographic magnet cutout",out.size,(dst/"bar-magnet.webp").stat().st_size)
+
+# Build left-to-right and right-to-left variants without mirroring letters.
+# Take clear, textured paint from the middle of each coloured half; the source
+# has embossed S/N near the outer ends that must not be reversed or duplicated.
+w,h=out.size
+blue=out.crop((int(w*.20),0,int(w*.44),h))
+red=out.crop((int(w*.56),0,int(w*.80),h))
+alpha=out.getchannel("A")
+def clean_magnet(left,right,filename):
+    clean=Image.new("RGBA",(w,h),(0,0,0,0))
+    seam=w//2
+    clean.paste(left.resize((seam,h),Image.Resampling.BICUBIC),(0,0))
+    clean.paste(right.resize((w-seam,h),Image.Resampling.BICUBIC),(seam,0))
+    clean.putalpha(alpha)
+    clean.save(dst/filename,"WEBP",quality=94,method=6)
+    print(filename,clean.size,(dst/filename).stat().st_size)
+clean_magnet(blue,red,"bar-magnet-blue-red.webp")
+clean_magnet(red,blue,"bar-magnet-red-blue.webp")
