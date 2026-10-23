@@ -33,24 +33,43 @@ const featuredOrder = ['vocabularyarcade','mackwoodmapping','numberbuilding','mo
 const writingOrder = ['writerspark','infospark','vocabularyarcade','rootwords','wordworks'];
 const thinkingOrder = ['thinking-dialogue','thinkingroutines','imagespark','venndiagram','hexthinker','asctriangle','frayermodel'];
 const scienceOrder = ['science-practice-lab','moonphases','dinodig','walker-bridge'];
-let chosen = 'Favourites', chosenGroup = 'All geography', chosenType = 'All types', query = '';
+let chosen = 'Favourites', chosenGroup = 'All geography', chosenType = 'All types', chosenGrade = 'all', query = '';
 const cardsNode = document.getElementById('cards');
 const filters = document.getElementById('filters');
 const geoFilters = document.getElementById('geo-filters');
 const search = document.getElementById('search');
 const typeSelect = document.getElementById('activity-type');
+const gradeSelect = document.getElementById('grade-level');
 const tilesNode = document.getElementById('subject-tiles');
 function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c])); }
 function labelCategory(c) { return c === 'Favourites' ? 'Featured' : c === 'Maths' ? 'Math' : c; }
 function inCategory(a,c) { return c === 'All activities' || (c === 'Favourites' ? a.favourite : c === 'Mr. Walker’s Corner' ? a.collection === 'walker-corner' : c === 'Words & writing' ? ['Reading & writing','Morphology'].includes(a.category) : a.category === c || (a.secondary_categories || []).includes(c)); }
 function countCategory(c) { return catalogue.filter(a => inCategory(a,c)).length; }
+function gradeLabel(a) {
+  const grades = a.grades || [];
+  if (!grades.length) return a.grade_basis === 'enrichment' ? 'Flexible · enrichment' : 'Flexible grades';
+  const runs = [];
+  let start = grades[0], end = start;
+  for (let i = 1; i <= grades.length; i++) {
+    if (i < grades.length && grades[i] === end + 1) { end = grades[i]; continue; }
+    runs.push(start === end ? String(start) : start + '–' + end);
+    start = end = grades[i];
+  }
+  const suffix = a.grade_basis === 'enrichment' ? ' · enrichment' : a.grade_basis === 'extension' ? ' · extension' : '';
+  return (grades.length === 1 ? 'Grade ' : 'Grades ') + runs.join(', ') + suffix;
+}
+function matchesGrade(a) {
+  return chosenGrade === 'all' || (chosenGrade === 'flexible' ? !(a.grades || []).length || a.grade_basis === 'enrichment' : (a.grades || []).includes(Number(chosenGrade)));
+}
 function matches(a) {
   const category = inCategory(a,chosen);
   const group = chosen !== 'Geography' || chosenGroup === 'All geography' || a.group === chosenGroup;
   const type = chosenType === 'All types' || a.types.includes(chosenType);
   const q = query.trim().toLocaleLowerCase();
-  const words = [a.title, a.description, a.category, ...(a.secondary_categories || []), a.group, a.original_title, a.status, a.credit, a.collection, ...a.tags, ...a.types, ...(a.links || []).map(l => l.label)].join(' ').toLocaleLowerCase();
-  return category && group && type && (!q || words.includes(q));
+  const gradeQuery = q.match(/^grades?\s*(\d{1,2})$/);
+  const words = [a.title, a.description, a.category, ...(a.secondary_categories || []), a.group, a.original_title, a.status, a.credit, a.collection, gradeLabel(a), ...(a.grades || []).map(g => 'Grade ' + g), ...a.tags, ...a.types, ...(a.links || []).map(l => l.label)].join(' ').toLocaleLowerCase();
+  const queryMatch = gradeQuery ? (a.grades || []).includes(Number(gradeQuery[1])) : !q || words.includes(q);
+  return category && group && type && matchesGrade(a) && queryMatch;
 }
 tilesNode.innerHTML = subjects.map(s => {
   const a = catalogue.find(a => a.id === s.id);
@@ -70,12 +89,13 @@ function renderFilters() {
   geoFilters.innerHTML = groupNames.map(g => `<button type="button" class="filter" data-group="${esc(g)}" aria-pressed="${chosenGroup === g}">${esc(g)}</button>`).join('');
   tilesNode.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(chosen === b.dataset.category || (b.dataset.category === 'Words & writing' && ['Reading & writing','Morphology'].includes(chosen)))));
   typeSelect.value = chosenType;
+  gradeSelect.value = chosenGrade;
   document.querySelectorAll('.quick-type').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.type === chosenType)));
 }
 function launchLabel(a) { return a.type === 'template' ? 'Open template' : a.type === 'printable' ? 'Open printable' : a.id === 'thinkingroutines' ? 'Open Grade 8' : a.id === 'thinking-dialogue' ? 'Open teacher guide' : 'Try it'; }
 function render() {
   renderFilters();
-  const featured = chosen === 'Favourites' && chosenType === 'All types' && !query.trim();
+  const featured = chosen === 'Favourites' && chosenType === 'All types' && chosenGrade === 'all' && !query.trim();
   const visible = catalogue.filter(matches);
   if (['Words & writing','Reading & writing'].includes(chosen)) visible.sort((a,b) => {
     const ai = writingOrder.indexOf(a.id), bi = writingOrder.indexOf(b.id);
@@ -97,12 +117,13 @@ function render() {
   });
   let title = chosen === 'Favourites' ? 'Pick an activity. Jump in.' : chosen === 'Geography' && chosenGroup !== 'All geography' ? chosenGroup + ' geography' : labelCategory(chosen);
   if (chosenType !== 'All types') title += ' · ' + chosenType;
+  if (chosenGrade !== 'all') title += ' · ' + (chosenGrade === 'flexible' ? 'Flexible & enrichment' : 'Grade ' + chosenGrade);
   document.getElementById('collection-title').textContent = title;
   document.getElementById('collection-description').textContent = descriptions[chosen];
   document.getElementById('count').textContent = visible.length + (visible.length === 1 ? ' activity' : ' activities');
   cardsNode.innerHTML = visible.map((a,i) => {
     const accent = a.category === 'Morphology' ? '#76508d' : a.category === 'Reading & writing' ? '#ad3f45' : a.category === 'Maths' ? '#845d09' : a.category === 'Geography' ? '#226aab' : '#00767b';
-    return `<article class="card" data-id="${esc(a.id)}" style="--accent:${accent}"><a class="shot" href="${esc(a.url)}" target="_blank" rel="noopener noreferrer" aria-label="Try ${esc(a.title)} (opens in a new tab)"><img src="${esc(a.image)}" alt="${a.type === 'template' ? 'Preview' : 'Screenshot'} of ${esc(a.title)}" loading="${i < 3 ? 'eager' : 'lazy'}" width="900" height="620"></a><div class="card-body"><div class="subject">${esc(labelCategory(a.category))}${a.category === 'Geography' && a.group ? ' · ' + esc(a.group) : ''}</div>${a.status ? `<span class="status-label">${esc(a.status)}</span>` : ''}<h3>${esc(a.title)}</h3><p class="description">${esc(a.description)}</p><p class="activity-types">${a.types.map(esc).join(' · ')}</p><div class="tags">${a.tags.map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>${a.status_note ? `<p class="status-note">${esc(a.status_note)}</p>` : ''}<a class="launch" aria-label="${esc(launchLabel(a))}: ${esc(a.title)} (opens in a new tab)" href="${esc(a.url)}" target="_blank" rel="noopener noreferrer"><span>${esc(launchLabel(a))}</span><span aria-hidden="true">→</span></a>${a.links.length ? `<div class="secondary">${a.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${esc(l.label)} <span aria-hidden="true">↗</span></a>`).join('')}</div>` : ''}${a.credit ? `<p class="credit">${esc(a.credit)}</p>` : ''}</div></article>`;
+    return `<article class="card" data-id="${esc(a.id)}" style="--accent:${accent}"><a class="shot" href="${esc(a.url)}" target="_blank" rel="noopener noreferrer" aria-label="Try ${esc(a.title)} (opens in a new tab)"><img src="${esc(a.image)}" alt="${a.type === 'template' ? 'Preview' : 'Screenshot'} of ${esc(a.title)}" loading="${i < 3 ? 'eager' : 'lazy'}" width="900" height="620"></a><div class="card-body"><div class="subject">${esc(labelCategory(a.category))}${a.category === 'Geography' && a.group ? ' · ' + esc(a.group) : ''}</div>${a.status ? `<span class="status-label">${esc(a.status)}</span>` : ''}<h3>${esc(a.title)}</h3><p class="description">${esc(a.description)}</p><p class="activity-types">${a.types.map(esc).join(' · ')}</p><div class="tags"><span class="tag grade-tag" title="${esc(a.grade_note || 'Grade fit can be adapted to your class.')}">${esc(gradeLabel(a))}</span>${a.tags.map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>${a.status_note ? `<p class="status-note">${esc(a.status_note)}</p>` : ''}<a class="launch" aria-label="${esc(launchLabel(a))}: ${esc(a.title)} (opens in a new tab)" href="${esc(a.url)}" target="_blank" rel="noopener noreferrer"><span>${esc(launchLabel(a))}</span><span aria-hidden="true">→</span></a>${a.links.length ? `<div class="secondary">${a.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${esc(l.label)} <span aria-hidden="true">↗</span></a>`).join('')}</div>` : ''}${a.credit ? `<p class="credit">${esc(a.credit)}</p>` : ''}</div></article>`;
   }).join('');
   cardsNode.querySelectorAll('article[data-id]').forEach(card => {
     const activity = catalogue.find(a => a.id === card.dataset.id);
@@ -130,6 +151,9 @@ function render() {
   document.querySelector('.clear').hidden = !query;
 }
 typeSelect.innerHTML = typeNames.map(t => `<option value="${esc(t)}">${esc(t)}${t === 'All types' ? '' : ' (' + catalogue.filter(a => a.types.includes(t)).length + ')'}</option>`).join('');
+const gradeNumbers = [...new Set(catalogue.flatMap(a => a.grades || []))].sort((a,b) => a-b);
+gradeSelect.innerHTML = '<option value="all">All grades</option>' + gradeNumbers.map(g => `<option value="${g}">Grade ${g}</option>`).join('') + '<option value="flexible">Flexible &amp; enrichment</option>';
+gradeSelect.addEventListener('change', () => { chosenGrade = gradeSelect.value; if (chosenGrade !== 'all' && chosen === 'Favourites') chosen = 'All activities'; render(); });
 function chooseType(t) { chosenType = t; if (chosen === 'Favourites') chosen = 'All activities'; render(); }
 function chooseCategory(c) { chosen = c; chosenGroup = 'All geography'; render(); }
 filters.addEventListener('click', e => { const b = e.target.closest('button[data-category]'); if (b) chooseCategory(b.dataset.category); });
@@ -139,12 +163,13 @@ typeSelect.addEventListener('change', () => chooseType(typeSelect.value));
 document.querySelectorAll('.quick-type').forEach(b => b.addEventListener('click', () => chooseType(chosenType === b.dataset.type ? 'All types' : b.dataset.type)));
 search.addEventListener('input', () => { query = search.value; if (query.trim() && chosen === 'Favourites') chosen = 'All activities'; render(); });
 document.querySelector('.clear').addEventListener('click', () => { query = ''; search.value = ''; render(); search.focus(); });
-function reset() { chosen = 'All activities'; chosenGroup = 'All geography'; chosenType = 'All types'; query = ''; search.value = ''; render(); }
+function reset() { chosen = 'All activities'; chosenGroup = 'All geography'; chosenType = 'All types'; chosenGrade = 'all'; query = ''; search.value = ''; render(); }
 document.getElementById('reset').addEventListener('click', reset);
 document.querySelectorAll('[data-browse-category]').forEach(b => b.addEventListener('click', () => { chosenType = 'All types'; query = ''; search.value = ''; chooseCategory(b.dataset.browseCategory); document.getElementById('activities').scrollIntoView({block:'start'}); document.getElementById('collection-title').setAttribute('tabindex','-1'); document.getElementById('collection-title').focus({preventScroll:true}); }));
 document.getElementById('focus-search').addEventListener('click', () => { search.scrollIntoView({block:'center'}); search.focus({preventScroll:true}); });
 // A failed screenshot stays clearly labelled; never substitute invented game imagery.
 document.addEventListener('error', e => { if (e.target instanceof HTMLImageElement) { e.target.hidden = true; const parent = e.target.parentElement; if (!parent.querySelector('.preview-unavailable')) { const label = document.createElement('span'); label.className = 'preview-unavailable'; label.textContent = 'Preview unavailable'; parent.appendChild(label); } } }, true);
 render();
+
 
 

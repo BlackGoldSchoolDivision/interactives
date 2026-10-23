@@ -14,3 +14,12 @@ main{position:relative;padding:4px 0 58px}.browse{scroll-margin-top:20px}.search
 .preview-unavailable{display:grid;place-items:center;padding:16px;font-size:.8125rem;text-align:center;color:#506077;background:#f1f4f5}.hero-preview .preview-unavailable{aspect-ratio:900/620}.shot .preview-unavailable{width:100%}
 .walker-callout{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin:19px 0 0;padding:15px 18px;background:#eef5ef;border:1px solid #d8e5db;border-radius:13px}.walker-callout>div{flex:1;min-width:220px}.walker-callout strong,.walker-callout>div>span{display:block}.walker-callout strong{font-size:1rem;font-weight:1000}.walker-callout>div>span{font-size:.8125rem;color:var(--muted);margin-top:3px}.walker-callout button{border:0;border-radius:50px;padding:10px 15px;background:var(--teal);color:#fff;font-size:.8125rem;font-weight:900}.walker-callout button:hover{background:var(--teal-dark)}.walker-callout>a{font-size:.8125rem;font-weight:900;text-underline-offset:3px;color:var(--teal-dark)}
 
+
+/* Grade connections stay visible outside the optional subject/type panel. */
+.grade-filter{display:flex;align-items:center;flex-wrap:wrap;gap:10px 14px;margin:14px 0 18px;padding:13px 16px;border:1px solid #d8dfea;border-radius:14px;background:#f0f4fc;color:#23344f}
+.grade-filter label{font-weight:900;font-size:15px}
+.grade-filter select{min-height:44px;max-width:100%;padding:8px 34px 8px 12px;border:1px solid #aebdd2;border-radius:9px;background:#fff;color:#23344f;font:800 15px 'Nunito',sans-serif;cursor:pointer}
+.grade-filter select:focus-visible{outline:3px solid #345ec2;outline-offset:3px}
+.grade-filter>span{font-size:13px;color:#405774}
+.tags .grade-tag{background:#e6edfd;color:#25467d;border:1px solid #cad7f1;font-weight:900;white-space:normal}
+@media(max-width:480px){.grade-filter{gap:8px;padding:12px}.grade-filter label{width:100%}.grade-filter select{width:100%;min-width:0}.grade-filter>span{font-size:12px}}

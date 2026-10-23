@@ -1,0 +1,4117 @@
+{
+  "schema_version": 1,
+  "reviewed": "2026-10-22",
+  "sources": {
+    "science16": {
+      "title": "Science 1-6 Curriculum NEW Alberta",
+      "status": "provided curriculum workbook"
+    },
+    "science79": {
+      "title": "Science 7–9 Curriculum — Alberta Draft (September 2026)",
+      "status": "draft"
+    },
+    "math16": {
+      "title": "Math 1-6 Curriculum New Alberta",
+      "status": "provided curriculum workbook"
+    },
+    "social16": {
+      "title": "Social Studies 1-6 Curriculum.",
+      "status": "provided curriculum workbook"
+    },
+    "social79": {
+      "title": "Social Studies 7-9 Curriculum",
+      "status": "provided curriculum workbook"
+    },
+    "elal16": {
+      "title": "ELAL 1-6 Curriculum New Alberta",
+      "status": "provided curriculum workbook"
+    },
+    "math79": {
+      "title": "Mathematics (7-9) Draft New Alberta",
+      "status": "draft"
+    }
+  },
+  "meaning": "Grades describe curriculum fit or an explicitly identified use level. Every referenced connection is partial; tags are not an outcome-completion audit. Flexible tools do not claim coverage.",
+  "activities": {
+    "science-practice-lab": {
+      "grades": [
+        6
+      ],
+      "basis": "curriculum",
+      "rationale": "Grade 6 science practice; individual units and questions need a separate outcome coverage audit.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            4,
+            45,
+            81,
+            106,
+            158,
+            206
+          ],
+          "topic": "Grade 6 science topics",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "sciencepat": {
+      "grades": [
+        6
+      ],
+      "basis": "curriculum",
+      "rationale": "Grade 6 science practice; individual units and questions need a separate outcome coverage audit.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            4,
+            45,
+            81,
+            106,
+            158,
+            206
+          ],
+          "topic": "Grade 6 science topics",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "moonphases": {
+      "grades": [
+        5,
+        7
+      ],
+      "basis": "curriculum",
+      "rationale": "The model and phase naming directly support lunar-cycle content; it does not teach the whole space outcome.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            182,
+            185,
+            186,
+            197
+          ],
+          "topic": "Cyclical changes in the Moon",
+          "coverage": "partial"
+        },
+        {
+          "source": "science79",
+          "grade": 7,
+          "sheet": "Grade 7",
+          "rows": [
+            210,
+            216,
+            222
+          ],
+          "topic": "Represent lunar phases",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "periodictable": {
+      "grades": [
+        8,
+        9
+      ],
+      "basis": "curriculum",
+      "rationale": "Element names, atomic numbers and periodic-table information support matter study. This is a reference, not a complete chemistry lesson.",
+      "alignments": [
+        {
+          "source": "science79",
+          "grade": 8,
+          "sheet": "Grade 8",
+          "rows": [
+            19,
+            20,
+            21,
+            22,
+            24,
+            29
+          ],
+          "topic": "Atoms and periodic-table organization",
+          "coverage": "partial"
+        },
+        {
+          "source": "science79",
+          "grade": 9,
+          "sheet": "Grade 9",
+          "rows": [
+            5,
+            12
+          ],
+          "topic": "Elements and the periodic table",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "spaceactivities": {
+      "grades": [
+        4
+      ],
+      "basis": "curriculum",
+      "rationale": "The built-in space reading and evidence tasks are designed around Grade 4 objects in space and daily life.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 4,
+          "sheet": "Grade 4",
+          "rows": [
+            152,
+            155,
+            187
+          ],
+          "topic": "Objects in space and observations",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "watercycle": {
+      "grades": [
+        3,
+        7
+      ],
+      "basis": "curriculum",
+      "rationale": "Labelling the cycle directly supports Grade 3 changes of state and provides a model for the Grade 7 water-cycle connection to life.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            39,
+            40,
+            46
+          ],
+          "topic": "Water-cycle processes and changes of state",
+          "coverage": "partial"
+        },
+        {
+          "source": "science79",
+          "grade": 7,
+          "sheet": "Grade 7",
+          "rows": [
+            188
+          ],
+          "topic": "Water cycle and life",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "borealforestreading": {
+      "grades": [
+        6
+      ],
+      "basis": "curriculum",
+      "rationale": "The supplied reading explores ecosystem components, energy and nutrients. Its science topic fit is Grade 6; comprehension use can be adapted separately.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            158,
+            160,
+            172,
+            179,
+            193,
+            202
+          ],
+          "topic": "Ecosystem components and energy flow",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            165
+          ],
+          "topic": "Comprehension strategies",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "ecosystemannotation": {
+      "grades": [
+        6
+      ],
+      "basis": "curriculum",
+      "rationale": "The supplied reading explores ecosystem components, energy and nutrients. Its science topic fit is Grade 6; comprehension use can be adapted separately.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            158,
+            160,
+            172,
+            179,
+            193,
+            202
+          ],
+          "topic": "Ecosystem components and energy flow",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            165
+          ],
+          "topic": "Comprehension strategies",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "bioticsorting": {
+      "grades": [
+        6,
+        7
+      ],
+      "basis": "curriculum",
+      "rationale": "Practises identifying biotic and abiotic components; does not model the full ecosystem relationships.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            160,
+            161,
+            162,
+            172
+          ],
+          "topic": "Biotic and abiotic ecosystem components",
+          "coverage": "partial"
+        },
+        {
+          "source": "science79",
+          "grade": 7,
+          "sheet": "Grade 7",
+          "rows": [
+            161,
+            165
+          ],
+          "topic": "Ecosystem components and abiotic factors",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "animaldiets": {
+      "grades": [
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "Herbivore, carnivore and omnivore classification is explicitly Grade 3 content.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            156,
+            157,
+            158,
+            160,
+            162
+          ],
+          "topic": "Classify animals by diet",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "statessort": {
+      "grades": [
+        3,
+        5
+      ],
+      "basis": "curriculum",
+      "rationale": "Everyday states support Grade 3 changes of state; the separate particle pictures support Grade 5 particle models.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            20,
+            22,
+            24
+          ],
+          "topic": "States of matter and changes",
+          "coverage": "partial"
+        },
+        {
+          "source": "science16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            4,
+            8,
+            9,
+            10,
+            16
+          ],
+          "topic": "Particle models of solids, liquids and gases",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "lightsort": {
+      "grades": [
+        2
+      ],
+      "basis": "curriculum",
+      "rationale": "The transparent/opaque comparison is a Grade 2 light-and-materials task; it does not cover Grade 9 wave behaviour.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            13,
+            71
+          ],
+          "topic": "Transparency and light through materials",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "energysort": {
+      "grades": [
+        5,
+        6
+      ],
+      "basis": "curriculum",
+      "rationale": "Renewable versus non-renewable classification supports part of both energy-resource outcomes; it does not assess energy-use tradeoffs.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            77,
+            81,
+            83,
+            84
+          ],
+          "topic": "Renewable and non-renewable energy resources",
+          "coverage": "partial"
+        },
+        {
+          "source": "science16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            81,
+            92
+          ],
+          "topic": "Energy resources and their use",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "weathersort": {
+      "grades": [
+        5
+      ],
+      "basis": "curriculum",
+      "rationale": "The activity distinguishes short-term weather from long-term climate, rather than modelling climate change.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            93,
+            95,
+            96,
+            104
+          ],
+          "topic": "Distinguish weather from climate",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "naturalprocessedsort": {
+      "grades": [
+        2,
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "Both grade tabs explicitly distinguish natural from processed materials.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            21,
+            22,
+            25,
+            34
+          ],
+          "topic": "Natural and processed materials",
+          "coverage": "partial"
+        },
+        {
+          "source": "science16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            7,
+            8,
+            12,
+            15
+          ],
+          "topic": "Processed materials and their natural origins",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "scienceinquiry": {
+      "grades": [
+        7,
+        8,
+        9
+      ],
+      "basis": "teacher-tool",
+      "rationale": "A teacher planning tool for Grades 7–9. Built-in topic/outcome banks must be checked against the supplied September 2026 draft; no draft outcome coverage is claimed here.",
+      "alignments": []
+    },
+    "plantgrower": {
+      "grades": [
+        1,
+        2
+      ],
+      "basis": "curriculum",
+      "rationale": "Care choices and observations support needs in Grade 1 and growth/development in Grade 2. Percentages are fictional game rules.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 1,
+          "sheet": "Grade 1",
+          "rows": [
+            100,
+            115,
+            117,
+            121,
+            126
+          ],
+          "topic": "Needs of plants and animals",
+          "coverage": "partial"
+        },
+        {
+          "source": "science16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            127,
+            143,
+            145,
+            147
+          ],
+          "topic": "Plant and animal growth",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "creaturecare": {
+      "grades": [
+        1,
+        2
+      ],
+      "basis": "curriculum",
+      "rationale": "Care choices and observations support needs in Grade 1 and growth/development in Grade 2. Percentages are fictional game rules.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 1,
+          "sheet": "Grade 1",
+          "rows": [
+            100,
+            115,
+            117,
+            121,
+            126
+          ],
+          "topic": "Needs of plants and animals",
+          "coverage": "partial"
+        },
+        {
+          "source": "science16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            127,
+            143,
+            145,
+            147
+          ],
+          "topic": "Plant and animal growth",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "dinodig": {
+      "grades": [
+        3,
+        8
+      ],
+      "basis": "curriculum",
+      "rationale": "Alberta fossil sites and evidence notes match Grade 3 fossil investigations and Grade 8 geological-history content.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            119,
+            121,
+            122,
+            132
+          ],
+          "topic": "Alberta fossils and excavation",
+          "coverage": "partial"
+        },
+        {
+          "source": "science79",
+          "grade": 8,
+          "sheet": "Grade 8",
+          "rows": [
+            108,
+            112,
+            113,
+            115,
+            125
+          ],
+          "topic": "Fossil evidence and Alberta geological history",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "lifecycles": {
+      "grades": [
+        2
+      ],
+      "basis": "curriculum",
+      "rationale": "Sequencing butterfly, frog and tree stages directly matches the Grade 2 life-cycle expectation.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            143,
+            147,
+            148
+          ],
+          "topic": "Represent and compare life cycles",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "seasonsexplorer": {
+      "grades": [
+        1
+      ],
+      "basis": "curriculum",
+      "rationale": "Sorting seasonal observations directly supports Grade 1 environmental and organism changes.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 1,
+          "sheet": "Grade 1",
+          "rows": [
+            54,
+            56,
+            57,
+            61,
+            64
+          ],
+          "topic": "Signs of seasonal change",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "foodchain": {
+      "grades": [
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "Builds simple local food chains. Older-grade food-web and energy-pyramid outcomes need more than this linear-chain activity.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            147,
+            148,
+            152,
+            154
+          ],
+          "topic": "Represent Canadian food chains",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "weatherdashboard": {
+      "grades": [
+        5
+      ],
+      "basis": "curriculum",
+      "rationale": "Entering weather observations supports the weather-data part of Grade 5 climate study; a single forecast does not establish climate.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            95,
+            97,
+            104,
+            105
+          ],
+          "topic": "Weather observations and data",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "ionicnomenclature": {
+      "grades": [
+        9,
+        11
+      ],
+      "basis": "extension",
+      "rationale": "Designed as Chemistry 20 (Grade 11). Binary ionic naming can extend Grade 9 draft work, while multivalent and polyatomic cases may go beyond it.",
+      "alignments": [
+        {
+          "source": "science79",
+          "grade": 9,
+          "sheet": "Grade 9",
+          "rows": [
+            10,
+            11,
+            12,
+            15,
+            26
+          ],
+          "topic": "Ionic compounds, formulas and naming",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "vidsscriptmaker": {
+      "grades": [
+        5,
+        6
+      ],
+      "basis": "curriculum",
+      "rationale": "The built-in script source concerns particle theory, supporting Grade 5 models and Grade 6 heating/cooling explanations.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            4,
+            6,
+            8,
+            9,
+            10
+          ],
+          "topic": "Particle model",
+          "coverage": "partial"
+        },
+        {
+          "source": "science16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            4,
+            6,
+            7,
+            8,
+            16
+          ],
+          "topic": "Particle behaviour and physical change",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "walker-bridge": {
+      "grades": [
+        4,
+        5,
+        7,
+        8
+      ],
+      "basis": "curriculum",
+      "rationale": "Grade 7 structures are the direct science fit. Grades 4–5 design and Grade 8 design testing are additional partial connections; the simulation is not a real structural engineering model.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 4,
+          "sheet": "Grade 4",
+          "rows": [
+            191,
+            197,
+            201
+          ],
+          "topic": "Design to meet needs",
+          "coverage": "partial"
+        },
+        {
+          "source": "science16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            207,
+            225,
+            228,
+            234,
+            235,
+            236
+          ],
+          "topic": "Design, compare and test artifacts",
+          "coverage": "partial"
+        },
+        {
+          "source": "science79",
+          "grade": 7,
+          "sheet": "Grade 7",
+          "rows": [
+            38,
+            40,
+            42,
+            52,
+            57
+          ],
+          "topic": "Structures, loads and comparative testing",
+          "coverage": "partial"
+        },
+        {
+          "source": "science79",
+          "grade": 8,
+          "sheet": "Grade 8",
+          "rows": [
+            251,
+            253,
+            260
+          ],
+          "topic": "Design criteria and testing",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "makechange": {
+      "grades": [
+        4,
+        5
+      ],
+      "basis": "curriculum",
+      "rationale": "The main challenge uses dollars/cents and subtraction of decimal money amounts.",
+      "alignments": [
+        {
+          "source": "math16",
+          "grade": 4,
+          "sheet": "Grade 4",
+          "rows": [
+            14,
+            26,
+            29,
+            38
+          ],
+          "topic": "Dollars, cents and money subtraction",
+          "coverage": "partial"
+        },
+        {
+          "source": "math16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            20,
+            28
+          ],
+          "topic": "Decimal addition/subtraction in money problems",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "moneysort": {
+      "grades": [
+        2,
+        3,
+        4
+      ],
+      "basis": "curriculum",
+      "rationale": "Use selected same-denomination or whole-dollar amounts for Grades 2–3; mixed cents and decimal totals are Grade 4 work.",
+      "alignments": [
+        {
+          "source": "math16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            19,
+            26
+          ],
+          "topic": "Coin and bill denominations",
+          "coverage": "partial"
+        },
+        {
+          "source": "math16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            12,
+            25
+          ],
+          "topic": "Represent collections as dollars",
+          "coverage": "partial"
+        },
+        {
+          "source": "math16",
+          "grade": 4,
+          "sheet": "Grade 4",
+          "rows": [
+            14,
+            26
+          ],
+          "topic": "Cents and decimal dollar amounts",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "base10": {
+      "grades": [
+        2,
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "Composing, decomposing and regrouping natural numbers match Grades 2–3; choose a number range appropriate to the grade.",
+      "alignments": [
+        {
+          "source": "math16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            3,
+            6,
+            14,
+            15
+          ],
+          "topic": "Quantity to 1000",
+          "coverage": "partial"
+        },
+        {
+          "source": "math16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            3,
+            8,
+            19,
+            21,
+            39
+          ],
+          "topic": "Place value and regrouping",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "numberbuilding": {
+      "grades": [
+        2,
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "Composing, decomposing and regrouping natural numbers match Grades 2–3; choose a number range appropriate to the grade.",
+      "alignments": [
+        {
+          "source": "math16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            3,
+            6,
+            14,
+            15
+          ],
+          "topic": "Quantity to 1000",
+          "coverage": "partial"
+        },
+        {
+          "source": "math16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            3,
+            8,
+            19,
+            21,
+            39
+          ],
+          "topic": "Place value and regrouping",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "numbersense6": {
+      "grades": [
+        6
+      ],
+      "basis": "curriculum",
+      "rationale": "The teacher collection is principally Grade 6. Sub-activities include review and extension; not all listed Grade 6 outcomes are covered.",
+      "alignments": [
+        {
+          "source": "math16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            3,
+            56,
+            83,
+            110,
+            146,
+            167,
+            222,
+            254,
+            280,
+            302,
+            322
+          ],
+          "topic": "Selected Grade 6 number, geometry, algebra and data topics",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "mathpracticefr": {
+      "grades": [
+        6
+      ],
+      "basis": "curriculum",
+      "rationale": "The teacher collection is principally Grade 6. Sub-activities include review and extension; not all listed Grade 6 outcomes are covered.",
+      "alignments": [
+        {
+          "source": "math16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            3,
+            56,
+            83,
+            110,
+            146,
+            167,
+            222,
+            254,
+            280,
+            302,
+            322
+          ],
+          "topic": "Selected Grade 6 number, geometry, algebra and data topics",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "math4taskcards": {
+      "grades": [
+        4
+      ],
+      "basis": "curriculum",
+      "rationale": "The built-in task-card set is Grade 4 arithmetic practice, not a full mathematics assessment.",
+      "alignments": [
+        {
+          "source": "math16",
+          "grade": 4,
+          "sheet": "Grade 4",
+          "rows": [
+            29,
+            58
+          ],
+          "topic": "Grade 4 computation",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "fractionexplorer": {
+      "grades": [
+        5,
+        6,
+        7
+      ],
+      "basis": "curriculum",
+      "rationale": "Use comparison and like-denominator work in Grade 5, unlike-denominator operations in Grade 6, and fraction multiplication/division in Grade 7.",
+      "alignments": [
+        {
+          "source": "math16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            57,
+            75
+          ],
+          "topic": "Improper fractions and like denominators",
+          "coverage": "partial"
+        },
+        {
+          "source": "math16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            96,
+            110,
+            127
+          ],
+          "topic": "Fractions, quotients and unlike denominators",
+          "coverage": "partial"
+        },
+        {
+          "source": "math79",
+          "grade": 7,
+          "sheet": "Grade 7",
+          "rows": [
+            72
+          ],
+          "topic": "Multiply and divide positive fractions",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "integerexplorer": {
+      "grades": [
+        6,
+        7
+      ],
+      "basis": "curriculum",
+      "rationale": "Grade 6 introduces signed values and addition/subtraction; all-four-operation practice extends to Grade 7.",
+      "alignments": [
+        {
+          "source": "math16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            3,
+            24,
+            32
+          ],
+          "topic": "Positive and negative numbers",
+          "coverage": "partial"
+        },
+        {
+          "source": "math79",
+          "grade": 7,
+          "sheet": "Grade 7",
+          "rows": [
+            4,
+            18
+          ],
+          "topic": "Operations with positive and negative numbers",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "rationalexplorer": {
+      "grades": [
+        8,
+        9
+      ],
+      "basis": "curriculum",
+      "rationale": "Fraction/decimal relationships and number-set classification fit rational-number and real-number work.",
+      "alignments": [
+        {
+          "source": "math79",
+          "grade": 8,
+          "sheet": "Grade 8",
+          "rows": [
+            4
+          ],
+          "topic": "Rational and irrational numbers",
+          "coverage": "partial"
+        },
+        {
+          "source": "math79",
+          "grade": 9,
+          "sheet": "Grade 9",
+          "rows": [
+            4,
+            16,
+            23
+          ],
+          "topic": "Subsets of the real numbers",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "orderingrational": {
+      "grades": [
+        7,
+        8
+      ],
+      "basis": "curriculum",
+      "rationale": "Ordering signed fractions and decimals connects to the Grade 7 positive/negative number line and Grade 8 rational values.",
+      "alignments": [
+        {
+          "source": "math79",
+          "grade": 7,
+          "sheet": "Grade 7",
+          "rows": [
+            4,
+            12,
+            14
+          ],
+          "topic": "Order positive and negative numbers",
+          "coverage": "partial"
+        },
+        {
+          "source": "math79",
+          "grade": 8,
+          "sheet": "Grade 8",
+          "rows": [
+            4,
+            17,
+            18
+          ],
+          "topic": "Rational values on the number line",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "irrationalnumbers": {
+      "grades": [
+        8,
+        9
+      ],
+      "basis": "curriculum",
+      "rationale": "Classifying rational/irrational numbers supports Grade 8 introductions and Grade 9 real-number subsets.",
+      "alignments": [
+        {
+          "source": "math79",
+          "grade": 8,
+          "sheet": "Grade 8",
+          "rows": [
+            4,
+            42
+          ],
+          "topic": "Irrational numbers and non-perfect square roots",
+          "coverage": "partial"
+        },
+        {
+          "source": "math79",
+          "grade": 9,
+          "sheet": "Grade 9",
+          "rows": [
+            4,
+            16,
+            23
+          ],
+          "topic": "Real-number subsets",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "numbersorter": {
+      "grades": [
+        8,
+        9
+      ],
+      "basis": "curriculum",
+      "rationale": "Classifying rational/irrational numbers supports Grade 8 introductions and Grade 9 real-number subsets.",
+      "alignments": [
+        {
+          "source": "math79",
+          "grade": 8,
+          "sheet": "Grade 8",
+          "rows": [
+            4,
+            42
+          ],
+          "topic": "Irrational numbers and non-perfect square roots",
+          "coverage": "partial"
+        },
+        {
+          "source": "math79",
+          "grade": 9,
+          "sheet": "Grade 9",
+          "rows": [
+            4,
+            16,
+            23
+          ],
+          "topic": "Real-number subsets",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "realnumberdrop": {
+      "grades": [
+        8,
+        9
+      ],
+      "basis": "curriculum",
+      "rationale": "Classifying rational/irrational numbers supports Grade 8 introductions and Grade 9 real-number subsets.",
+      "alignments": [
+        {
+          "source": "math79",
+          "grade": 8,
+          "sheet": "Grade 8",
+          "rows": [
+            4,
+            42
+          ],
+          "topic": "Irrational numbers and non-perfect square roots",
+          "coverage": "partial"
+        },
+        {
+          "source": "math79",
+          "grade": 9,
+          "sheet": "Grade 9",
+          "rows": [
+            4,
+            16,
+            23
+          ],
+          "topic": "Real-number subsets",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "squarescubes": {
+      "grades": [
+        7,
+        8
+      ],
+      "basis": "curriculum",
+      "rationale": "Perfect squares/cubes are direct Grade 7 content; square-root models support Grade 8 roots.",
+      "alignments": [
+        {
+          "source": "math79",
+          "grade": 7,
+          "sheet": "Grade 7",
+          "rows": [
+            45
+          ],
+          "topic": "Perfect squares and cubes",
+          "coverage": "partial"
+        },
+        {
+          "source": "math79",
+          "grade": 8,
+          "sheet": "Grade 8",
+          "rows": [
+            42
+          ],
+          "topic": "Square roots",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "exponentexplorer": {
+      "grades": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "basis": "curriculum",
+      "rationale": "Select the level: basic powers for Grade 6, squares/cubes for Grade 7, algebraic powers for Grade 8, and quadratic/exponent applications for Grade 9.",
+      "alignments": [
+        {
+          "source": "math16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            56
+          ],
+          "topic": "Exponentiation",
+          "coverage": "partial"
+        },
+        {
+          "source": "math79",
+          "grade": 7,
+          "sheet": "Grade 7",
+          "rows": [
+            45
+          ],
+          "topic": "Squares and cubes",
+          "coverage": "partial"
+        },
+        {
+          "source": "math79",
+          "grade": 8,
+          "sheet": "Grade 8",
+          "rows": [
+            87
+          ],
+          "topic": "Powers in algebraic terms",
+          "coverage": "partial"
+        },
+        {
+          "source": "math79",
+          "grade": 9,
+          "sheet": "Grade 9",
+          "rows": [
+            27,
+            76,
+            87
+          ],
+          "topic": "Exponent laws and simple quadratics",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "polynomials": {
+      "grades": [
+        8,
+        9
+      ],
+      "basis": "curriculum",
+      "rationale": "Grade 8 algebraic terms provide the entry point; polynomial operations are Grade 9 draft content.",
+      "alignments": [
+        {
+          "source": "math79",
+          "grade": 8,
+          "sheet": "Grade 8",
+          "rows": [
+            87
+          ],
+          "topic": "Single-variable algebraic terms",
+          "coverage": "partial"
+        },
+        {
+          "source": "math79",
+          "grade": 9,
+          "sheet": "Grade 9",
+          "rows": [
+            54,
+            57,
+            68
+          ],
+          "topic": "Polynomial operations",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "financialchoices": {
+      "grades": [
+        7
+      ],
+      "basis": "enrichment",
+      "rationale": "The activity explicitly targets Grade 7 financial decision making. The supplied Math 7–9 workbook does not establish a direct budgeting outcome; keep it as enrichment until the financial-literacy curriculum is reviewed.",
+      "alignments": []
+    },
+    "oceancounting": {
+      "grades": [
+        1
+      ],
+      "basis": "curriculum",
+      "rationale": "Counting to 20, comparing groups and picture addition/subtraction align directly with Grade 1.",
+      "alignments": [
+        {
+          "source": "math16",
+          "grade": 1,
+          "sheet": "Grade 1",
+          "rows": [
+            3,
+            11,
+            52
+          ],
+          "topic": "Quantity and addition/subtraction within 20",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "anglefinder": {
+      "grades": [
+        3,
+        4,
+        8
+      ],
+      "basis": "curriculum",
+      "rationale": "Compare angles in Grade 3, measure and name them in Grade 4, and use triangle-angle relationships in Grade 8.",
+      "alignments": [
+        {
+          "source": "math16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            196,
+            214,
+            216
+          ],
+          "topic": "Compare angles using referents",
+          "coverage": "partial"
+        },
+        {
+          "source": "math16",
+          "grade": 4,
+          "sheet": "Grade 4",
+          "rows": [
+            197,
+            200,
+            206,
+            208
+          ],
+          "topic": "Measure, name and estimate angles",
+          "coverage": "partial"
+        },
+        {
+          "source": "math79",
+          "grade": 8,
+          "sheet": "Grade 8",
+          "rows": [
+            182,
+            185,
+            194
+          ],
+          "topic": "Triangle angle relationships",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "forestmath": {
+      "grades": [
+        1,
+        2,
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "Choose range and trail: counting and stories within 20 in Grade 1, wider counting/patterns in Grade 2, and skip-counting sequences in Grade 3.",
+      "alignments": [
+        {
+          "source": "math16",
+          "grade": 1,
+          "sheet": "Grade 1",
+          "rows": [
+            22,
+            23,
+            52
+          ],
+          "topic": "Skip counting and number stories",
+          "coverage": "partial"
+        },
+        {
+          "source": "math16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            24,
+            25,
+            140
+          ],
+          "topic": "Counting and patterns",
+          "coverage": "partial"
+        },
+        {
+          "source": "math16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            219,
+            236,
+            237
+          ],
+          "topic": "Numerical and skip-counting sequences",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "spacemaths": {
+      "grades": [
+        1,
+        2,
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "Count and add in Grade 1, share/group collections in Grade 2, and connect equal groups to division in Grade 3.",
+      "alignments": [
+        {
+          "source": "math16",
+          "grade": 1,
+          "sheet": "Grade 1",
+          "rows": [
+            3,
+            52,
+            101
+          ],
+          "topic": "Counting, addition and equal groups",
+          "coverage": "partial"
+        },
+        {
+          "source": "math16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            28,
+            33
+          ],
+          "topic": "Sharing and grouping",
+          "coverage": "partial"
+        },
+        {
+          "source": "math16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            45
+          ],
+          "topic": "Multiplication and division",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "patterndetective": {
+      "grades": [
+        2,
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "Even/odd classification is explicit in Grade 2; identifying and repairing numerical sequences supports Grade 3.",
+      "alignments": [
+        {
+          "source": "math16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            28,
+            29,
+            31,
+            33
+          ],
+          "topic": "Even and odd quantities",
+          "coverage": "partial"
+        },
+        {
+          "source": "math16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            219,
+            228,
+            237
+          ],
+          "topic": "Numerical sequences and missing terms",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "walker-functions": {
+      "grades": [
+        6,
+        7,
+        8
+      ],
+      "basis": "curriculum",
+      "rationale": "Input/output tables and rule predictions support Grade 6 functions, Grade 7 function representations and Grade 8 linear equations. The app does not cover every graphing expectation.",
+      "alignments": [
+        {
+          "source": "math16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            302,
+            305,
+            310
+          ],
+          "topic": "Functions and input/output rules",
+          "coverage": "partial"
+        },
+        {
+          "source": "math79",
+          "grade": 7,
+          "sheet": "Grade 7",
+          "rows": [
+            253,
+            256
+          ],
+          "topic": "Function representations",
+          "coverage": "partial"
+        },
+        {
+          "source": "math79",
+          "grade": 8,
+          "sheet": "Grade 8",
+          "rows": [
+            232,
+            246
+          ],
+          "topic": "Linear functions and equations",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "vocabularyarcade": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "The teacher selects the vocabulary or word families. Adaptable across grades; no fixed outcome coverage is claimed by the tool itself.",
+      "alignments": []
+    },
+    "definitiondraw": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "The teacher selects the vocabulary or word families. Adaptable across grades; no fixed outcome coverage is claimed by the tool itself.",
+      "alignments": []
+    },
+    "customflashcards": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "The teacher selects the vocabulary or word families. Adaptable across grades; no fixed outcome coverage is claimed by the tool itself.",
+      "alignments": []
+    },
+    "vocabmatchbuilder": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "The teacher selects the vocabulary or word families. Adaptable across grades; no fixed outcome coverage is claimed by the tool itself.",
+      "alignments": []
+    },
+    "vocaborganizer": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "The teacher selects the vocabulary or word families. Adaptable across grades; no fixed outcome coverage is claimed by the tool itself.",
+      "alignments": []
+    },
+    "teachermorphologymaker": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "The teacher selects the vocabulary or word families. Adaptable across grades; no fixed outcome coverage is claimed by the tool itself.",
+      "alignments": []
+    },
+    "writerspark": {
+      "grades": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "basis": "curriculum",
+      "rationale": "Narrative planning, drafting, revising and sustained writing are the best fit. Younger learners can use selected prompts with teacher support.",
+      "alignments": [
+        {
+          "source": "elal16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            249,
+            267,
+            270
+          ],
+          "topic": "Writing and revision processes",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 4,
+          "sheet": "Grade 4",
+          "rows": [
+            214,
+            232,
+            253
+          ],
+          "topic": "Creative narrative expression",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            230,
+            246,
+            249
+          ],
+          "topic": "Multi-paragraph composition and revision",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            228,
+            244,
+            263
+          ],
+          "topic": "Voice, narrative and audience",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "infospark": {
+      "grades": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "basis": "curriculum",
+      "rationale": "The fact/evidence board and paragraph structures support informational writing; persuasive options are particularly relevant in Grades 5–6.",
+      "alignments": [
+        {
+          "source": "elal16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            249,
+            257,
+            307,
+            309
+          ],
+          "topic": "Research, source listing and paragraphs",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 4,
+          "sheet": "Grade 4",
+          "rows": [
+            219,
+            234,
+            268
+          ],
+          "topic": "Paragraphs and research sources",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            45,
+            246,
+            270
+          ],
+          "topic": "Persuasive texts and research",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            244,
+            255,
+            268
+          ],
+          "topic": "Information, opinion and research writing",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "rootwords": {
+      "grades": [
+        5,
+        6
+      ],
+      "basis": "curriculum",
+      "rationale": "Word origins support Grade 5 vocabulary; Greek and Latin roots are explicit Grade 6 content. Not all word-part knowledge is taught by this one game.",
+      "alignments": [
+        {
+          "source": "elal16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            134,
+            140
+          ],
+          "topic": "Word origins and morphemes",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            131,
+            137,
+            140
+          ],
+          "topic": "Greek and Latin roots",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "wordworks": {
+      "grades": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "basis": "curriculum",
+      "rationale": "Choose the level and words: prefixes/suffixes begin in Grade 3, with more complex meanings and derivation in later grades.",
+      "alignments": [
+        {
+          "source": "elal16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            129,
+            149,
+            150,
+            152
+          ],
+          "topic": "Prefixes, bases and suffixes",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 4,
+          "sheet": "Grade 4",
+          "rows": [
+            140,
+            145
+          ],
+          "topic": "Morphemes and meaning",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            140,
+            337
+          ],
+          "topic": "Word origins and affixes",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            134,
+            135,
+            322
+          ],
+          "topic": "Affixes and derivation",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "alphabetcards": {
+      "grades": [
+        1,
+        2
+      ],
+      "basis": "curriculum",
+      "rationale": "Alphabet and early high-frequency word options support beginning literacy; the custom word list can be adapted beyond these grades.",
+      "alignments": [
+        {
+          "source": "elal16",
+          "grade": 1,
+          "sheet": "Grade 1",
+          "rows": [
+            187,
+            233,
+            234
+          ],
+          "topic": "Letter/sound knowledge and high-frequency words",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            200,
+            201
+          ],
+          "topic": "High-frequency word practice",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "heartwords": {
+      "grades": [
+        1,
+        2,
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "Maps sounds and the unexpected spellings in high-frequency words; also useful for intervention at other ages.",
+      "alignments": [
+        {
+          "source": "elal16",
+          "grade": 1,
+          "sheet": "Grade 1",
+          "rows": [
+            187,
+            228,
+            233
+          ],
+          "topic": "Sounds and high-frequency words",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            165,
+            200,
+            201
+          ],
+          "topic": "Letter combinations and automatic word recognition",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            194,
+            196
+          ],
+          "topic": "Previously learned high-frequency words",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "soundstructurespell": {
+      "grades": [
+        1,
+        2
+      ],
+      "basis": "curriculum",
+      "rationale": "The fixed vowel-consonant-e lessons directly match early vowel and spelling-pattern content.",
+      "alignments": [
+        {
+          "source": "elal16",
+          "grade": 1,
+          "sheet": "Grade 1",
+          "rows": [
+            209,
+            213,
+            399
+          ],
+          "topic": "Long vowels and VCe spelling",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            180,
+            366
+          ],
+          "topic": "Long-vowel combinations and CVCe",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "sentencebuilding": {
+      "grades": [
+        1,
+        2,
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "The default simple sentence strips support sentence structure, capitals and punctuation. Entered sentences can be adjusted by the teacher.",
+      "alignments": [
+        {
+          "source": "elal16",
+          "grade": 1,
+          "sheet": "Grade 1",
+          "rows": [
+            23,
+            329,
+            330,
+            382,
+            385
+          ],
+          "topic": "Sentence construction and conventions",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            294,
+            358
+          ],
+          "topic": "Logical sentence order and complete thoughts",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            339,
+            349,
+            350
+          ],
+          "topic": "Subjects, predicates and sentence types",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "readingmaze": {
+      "grades": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "basis": "resource-level",
+      "rationale": "The supplied printable explicitly contains Grade 2–10 passage sets. Only Grades 2–6 have been cross-checked against the requested ELAL workbook; Grades 7–10 are the resource author’s labels.",
+      "alignments": [
+        {
+          "source": "elal16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            218,
+            233
+          ],
+          "topic": "Comprehension in text",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            181,
+            199
+          ],
+          "topic": "Fluency and meaning",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 4,
+          "sheet": "Grade 4",
+          "rows": [
+            151,
+            161
+          ],
+          "topic": "Fluency and comprehension",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            172
+          ],
+          "topic": "Comprehension strategies",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            165
+          ],
+          "topic": "Comprehension strategies",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "morphologyboard": {
+      "grades": [
+        5,
+        6
+      ],
+      "basis": "curriculum",
+      "rationale": "The supplied 52-word collection is labelled Grade 5 and includes bound roots, word origins and complex affixes that also support Grade 6.",
+      "alignments": [
+        {
+          "source": "elal16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            134,
+            140,
+            331,
+            337
+          ],
+          "topic": "Morphemes, origins and spelling",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            131,
+            137,
+            140,
+            322
+          ],
+          "topic": "Roots and derivation",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "morphologycards2": {
+      "grades": [
+        5,
+        6
+      ],
+      "basis": "curriculum",
+      "rationale": "The supplied 52-word collection is labelled Grade 5 and includes bound roots, word origins and complex affixes that also support Grade 6.",
+      "alignments": [
+        {
+          "source": "elal16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            134,
+            140,
+            331,
+            337
+          ],
+          "topic": "Morphemes, origins and spelling",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            131,
+            137,
+            140,
+            322
+          ],
+          "topic": "Roots and derivation",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "custommorphologygame": {
+      "grades": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "basis": "curriculum",
+      "rationale": "Select simple families for Grade 3 and more complex or bound-root families for Grades 4–6. Custom sets require teacher review.",
+      "alignments": [
+        {
+          "source": "elal16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            149,
+            150,
+            152
+          ],
+          "topic": "Build meaning with affixes",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 4,
+          "sheet": "Grade 4",
+          "rows": [
+            140,
+            145
+          ],
+          "topic": "Affixes and meanings",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            140,
+            337
+          ],
+          "topic": "Word families and morphemes",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            137,
+            322
+          ],
+          "topic": "Origins and derivation",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "morphemematchup": {
+      "grades": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "basis": "curriculum",
+      "rationale": "Select simple families for Grade 3 and more complex or bound-root families for Grades 4–6. Custom sets require teacher review.",
+      "alignments": [
+        {
+          "source": "elal16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            149,
+            150,
+            152
+          ],
+          "topic": "Build meaning with affixes",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 4,
+          "sheet": "Grade 4",
+          "rows": [
+            140,
+            145
+          ],
+          "topic": "Affixes and meanings",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            140,
+            337
+          ],
+          "topic": "Word families and morphemes",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            137,
+            322
+          ],
+          "topic": "Origins and derivation",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "walker-plurals": {
+      "grades": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "basis": "curriculum",
+      "rationale": "Regular s/es patterns fit Grades 1–2; irregular forms and complex plurals connect to Grades 3–4. Select the relevant pattern group.",
+      "alignments": [
+        {
+          "source": "elal16",
+          "grade": 1,
+          "sheet": "Grade 1",
+          "rows": [
+            123,
+            132,
+            400
+          ],
+          "topic": "Regular plurals",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            130
+          ],
+          "topic": "Singular/plural suffixes",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            357,
+            366,
+            387
+          ],
+          "topic": "Irregular and complex plurals",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 4,
+          "sheet": "Grade 4",
+          "rows": [
+            340
+          ],
+          "topic": "Complex plurals",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "cacaoquiz": {
+      "grades": [
+        4,
+        5,
+        6
+      ],
+      "basis": "curriculum",
+      "rationale": "The fixed informational passage and questions practise finding details and interpreting text. This is a reading task, not a complete ELAL outcome assessment.",
+      "alignments": [
+        {
+          "source": "elal16",
+          "grade": 4,
+          "sheet": "Grade 4",
+          "rows": [
+            161
+          ],
+          "topic": "Comprehension strategies",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            172
+          ],
+          "topic": "Information and comprehension",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            165
+          ],
+          "topic": "Interpret and respond to text",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "orderingsteps": {
+      "grades": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "basis": "curriculum",
+      "rationale": "The fixed cacao-processing sequence supports procedural reading and organizing information; explain unfamiliar process vocabulary as needed.",
+      "alignments": [
+        {
+          "source": "elal16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            52,
+            57,
+            238
+          ],
+          "topic": "Linear sequencing in nonfiction",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 4,
+          "sheet": "Grade 4",
+          "rows": [
+            46,
+            47
+          ],
+          "topic": "Procedural texts",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            235
+          ],
+          "topic": "Sequenced information",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            232
+          ],
+          "topic": "Organizational structures and sequence",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "geo-canadiangeochallenge1": {
+      "grades": [
+        2
+      ],
+      "basis": "curriculum",
+      "rationale": "Directional clues and relative location connect to Grade 2 mapping. Pirate grid references are an additional map-skill activity, not a complete Cartesian-plane lesson.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            10,
+            11,
+            12,
+            18,
+            19
+          ],
+          "topic": "Maps, compass directions and relative location",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "piratemapping": {
+      "grades": [
+        2
+      ],
+      "basis": "curriculum",
+      "rationale": "Directional clues and relative location connect to Grade 2 mapping. Pirate grid references are an additional map-skill activity, not a complete Cartesian-plane lesson.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            10,
+            11,
+            12,
+            18,
+            19
+          ],
+          "topic": "Maps, compass directions and relative location",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "geo-canadiangeographyfacts1": {
+      "grades": [
+        2
+      ],
+      "basis": "curriculum",
+      "rationale": "Locating Canada’s provinces, territories and major cities supports the mapping portion of Grade 2 physical-region study. Capital memorization and route challenges are extensions, not the whole region outcome.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            6,
+            10,
+            18,
+            19
+          ],
+          "topic": "Locate Canadian places on maps",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "geo-canadiangeographyquiz1": {
+      "grades": [
+        2
+      ],
+      "basis": "curriculum",
+      "rationale": "Locating Canada’s provinces, territories and major cities supports the mapping portion of Grade 2 physical-region study. Capital memorization and route challenges are extensions, not the whole region outcome.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            6,
+            10,
+            18,
+            19
+          ],
+          "topic": "Locate Canadian places on maps",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "geo-canadiangeographychallenge2": {
+      "grades": [
+        2
+      ],
+      "basis": "curriculum",
+      "rationale": "Locating Canada’s provinces, territories and major cities supports the mapping portion of Grade 2 physical-region study. Capital memorization and route challenges are extensions, not the whole region outcome.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            6,
+            10,
+            18,
+            19
+          ],
+          "topic": "Locate Canadian places on maps",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "geo-labelcanada": {
+      "grades": [
+        2
+      ],
+      "basis": "curriculum",
+      "rationale": "Locating Canada’s provinces, territories and major cities supports the mapping portion of Grade 2 physical-region study. Capital memorization and route challenges are extensions, not the whole region outcome.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            6,
+            10,
+            18,
+            19
+          ],
+          "topic": "Locate Canadian places on maps",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "geo-mixedupcanadapuzzle": {
+      "grades": [
+        2
+      ],
+      "basis": "curriculum",
+      "rationale": "Locating Canada’s provinces, territories and major cities supports the mapping portion of Grade 2 physical-region study. Capital memorization and route challenges are extensions, not the whole region outcome.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            6,
+            10,
+            18,
+            19
+          ],
+          "topic": "Locate Canadian places on maps",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "geo-canadageotrek": {
+      "grades": [
+        2
+      ],
+      "basis": "curriculum",
+      "rationale": "Locating Canada’s provinces, territories and major cities supports the mapping portion of Grade 2 physical-region study. Capital memorization and route challenges are extensions, not the whole region outcome.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            6,
+            10,
+            18,
+            19
+          ],
+          "topic": "Locate Canadian places on maps",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "canadamap": {
+      "grades": [
+        2
+      ],
+      "basis": "curriculum",
+      "rationale": "Locating Canada’s provinces, territories and major cities supports the mapping portion of Grade 2 physical-region study. Capital memorization and route challenges are extensions, not the whole region outcome.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            6,
+            10,
+            18,
+            19
+          ],
+          "topic": "Locate Canadian places on maps",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "canadageohub": {
+      "grades": [
+        2
+      ],
+      "basis": "curriculum",
+      "rationale": "Locating Canada’s provinces, territories and major cities supports the mapping portion of Grade 2 physical-region study. Capital memorization and route challenges are extensions, not the whole region outcome.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            6,
+            10,
+            18,
+            19
+          ],
+          "topic": "Locate Canadian places on maps",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "provincescolouring": {
+      "grades": [
+        2
+      ],
+      "basis": "curriculum",
+      "rationale": "Locating Canada’s provinces, territories and major cities supports the mapping portion of Grade 2 physical-region study. Capital memorization and route challenges are extensions, not the whole region outcome.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            6,
+            10,
+            18,
+            19
+          ],
+          "topic": "Locate Canadian places on maps",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "template-provinces": {
+      "grades": [
+        2
+      ],
+      "basis": "curriculum",
+      "rationale": "Locating Canada’s provinces, territories and major cities supports the mapping portion of Grade 2 physical-region study. Capital memorization and route challenges are extensions, not the whole region outcome.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            6,
+            10,
+            18,
+            19
+          ],
+          "topic": "Locate Canadian places on maps",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "geo-regionsofcanada": {
+      "grades": [
+        2
+      ],
+      "basis": "curriculum",
+      "rationale": "Canada’s physical regions are an explicit Grade 2 topic; use maps to compare regions, not only memorize names.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            4,
+            6,
+            7,
+            8,
+            16
+          ],
+          "topic": "Physical regions of Canada",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "geo-regionsofcanadaquiz": {
+      "grades": [
+        2
+      ],
+      "basis": "curriculum",
+      "rationale": "Canada’s physical regions are an explicit Grade 2 topic; use maps to compare regions, not only memorize names.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            4,
+            6,
+            7,
+            8,
+            16
+          ],
+          "topic": "Physical regions of Canada",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "template-regions-canada": {
+      "grades": [
+        2
+      ],
+      "basis": "curriculum",
+      "rationale": "Canada’s physical regions are an explicit Grade 2 topic; use maps to compare regions, not only memorize names.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            4,
+            6,
+            7,
+            8,
+            16
+          ],
+          "topic": "Physical regions of Canada",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "regionscolouring": {
+      "grades": [
+        2
+      ],
+      "basis": "curriculum",
+      "rationale": "Canada’s physical regions are an explicit Grade 2 topic; use maps to compare regions, not only memorize names.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            4,
+            6,
+            7,
+            8,
+            16
+          ],
+          "topic": "Physical regions of Canada",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "albertaregions": {
+      "grades": [
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "Alberta’s physical features and regions are explicit Grade 3 content. Subregions can extend the major-region comparison.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            4,
+            17,
+            18,
+            21,
+            23,
+            26
+          ],
+          "topic": "Alberta physical regions and features",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "geo-simpleregionsofalberta": {
+      "grades": [
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "Alberta’s physical features and regions are explicit Grade 3 content. Subregions can extend the major-region comparison.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            4,
+            17,
+            18,
+            21,
+            23,
+            26
+          ],
+          "topic": "Alberta physical regions and features",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "geo-albertaregionsgame": {
+      "grades": [
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "Alberta’s physical features and regions are explicit Grade 3 content. Subregions can extend the major-region comparison.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            4,
+            17,
+            18,
+            21,
+            23,
+            26
+          ],
+          "topic": "Alberta physical regions and features",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "geo-albertaregionscoloringpage": {
+      "grades": [
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "Alberta’s physical features and regions are explicit Grade 3 content. Subregions can extend the major-region comparison.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            4,
+            17,
+            18,
+            21,
+            23,
+            26
+          ],
+          "topic": "Alberta physical regions and features",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "template-alberta": {
+      "grades": [
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "Alberta’s physical features and regions are explicit Grade 3 content. Subregions can extend the major-region comparison.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            4,
+            17,
+            18,
+            21,
+            23,
+            26
+          ],
+          "topic": "Alberta physical regions and features",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "physicalboundaries": {
+      "grades": [
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "The fixed passage compares Alberta’s physical and political boundaries, directly supporting Grade 3.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            16,
+            21,
+            25
+          ],
+          "topic": "Political boundaries and physical features",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "geo-placenamesofalberta": {
+      "grades": [
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "The place-name stories and community languages support Alberta identity and historically significant places.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            27,
+            30,
+            35,
+            38,
+            42,
+            54,
+            55,
+            56
+          ],
+          "topic": "Alberta place names, languages and identity",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "placenamesgrade3": {
+      "grades": [
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "The place-name stories and community languages support Alberta identity and historically significant places.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            27,
+            30,
+            35,
+            38,
+            42,
+            54,
+            55,
+            56
+          ],
+          "topic": "Alberta place names, languages and identity",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "geo-numberedtreaties": {
+      "grades": [
+        3,
+        7
+      ],
+      "basis": "curriculum",
+      "rationale": "Grade 3 locates Alberta treaties; Grade 7 connects numbered treaties to post-Confederation state building. A treaty-area map alone does not teach the full treaty relationship.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            7,
+            8,
+            9,
+            13,
+            14
+          ],
+          "topic": "Alberta numbered treaties",
+          "coverage": "partial"
+        },
+        {
+          "source": "social79",
+          "grade": 7,
+          "sheet": "Grade 7",
+          "rows": [
+            18,
+            19
+          ],
+          "topic": "Numbered treaties and Canadian expansion",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "treatiesalberta": {
+      "grades": [
+        3,
+        7
+      ],
+      "basis": "curriculum",
+      "rationale": "Grade 3 locates Alberta treaties; Grade 7 connects numbered treaties to post-Confederation state building. A treaty-area map alone does not teach the full treaty relationship.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            7,
+            8,
+            9,
+            13,
+            14
+          ],
+          "topic": "Alberta numbered treaties",
+          "coverage": "partial"
+        },
+        {
+          "source": "social79",
+          "grade": 7,
+          "sheet": "Grade 7",
+          "rows": [
+            18,
+            19
+          ],
+          "topic": "Numbered treaties and Canadian expansion",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "geo-grade3numberedtreaties": {
+      "grades": [
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "The Grade 3 edition is scaffolded for researching and locating Alberta treaty areas.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            7,
+            8,
+            9,
+            13,
+            14
+          ],
+          "topic": "Alberta numbered treaties",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "geo-latitudelongitude": {
+      "grades": [
+        5
+      ],
+      "basis": "curriculum",
+      "rationale": "Latitude and longitude are explicitly named in Grade 5 descriptions of civilization locations; this activity practises the coordinate skill.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            27,
+            35
+          ],
+          "topic": "Describe and compare locations",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "geotrek": {
+      "grades": [],
+      "basis": "enrichment",
+      "rationale": "General world, continent or US location practice. The supplied workbooks do not assign these full country/state lists to a particular grade; teachers can pair the maps with grade-specific studies.",
+      "alignments": []
+    },
+    "mackwoodmapping": {
+      "grades": [],
+      "basis": "enrichment",
+      "rationale": "General world, continent or US location practice. The supplied workbooks do not assign these full country/state lists to a particular grade; teachers can pair the maps with grade-specific studies.",
+      "alignments": []
+    },
+    "mapmastersubregions": {
+      "grades": [],
+      "basis": "enrichment",
+      "rationale": "General world, continent or US location practice. The supplied workbooks do not assign these full country/state lists to a particular grade; teachers can pair the maps with grade-specific studies.",
+      "alignments": []
+    },
+    "worldgeography": {
+      "grades": [],
+      "basis": "enrichment",
+      "rationale": "General world, continent or US location practice. The supplied workbooks do not assign these full country/state lists to a particular grade; teachers can pair the maps with grade-specific studies.",
+      "alignments": []
+    },
+    "labeltheworld": {
+      "grades": [],
+      "basis": "enrichment",
+      "rationale": "General world, continent or US location practice. The supplied workbooks do not assign these full country/state lists to a particular grade; teachers can pair the maps with grade-specific studies.",
+      "alignments": []
+    },
+    "geo-continentsgame": {
+      "grades": [],
+      "basis": "enrichment",
+      "rationale": "General world, continent or US location practice. The supplied workbooks do not assign these full country/state lists to a particular grade; teachers can pair the maps with grade-specific studies.",
+      "alignments": []
+    },
+    "geo-usstates": {
+      "grades": [],
+      "basis": "enrichment",
+      "rationale": "General world, continent or US location practice. The supplied workbooks do not assign these full country/state lists to a particular grade; teachers can pair the maps with grade-specific studies.",
+      "alignments": []
+    },
+    "geo-geotrekusa": {
+      "grades": [],
+      "basis": "enrichment",
+      "rationale": "General world, continent or US location practice. The supplied workbooks do not assign these full country/state lists to a particular grade; teachers can pair the maps with grade-specific studies.",
+      "alignments": []
+    },
+    "renaissance-map": {
+      "grades": [],
+      "basis": "enrichment",
+      "rationale": "Historical enrichment about medieval/Renaissance Europe. These activities are useful with the existing classroom assignment, but the supplied new Grade 8 workbook focuses on ideologies and economic/political systems, not the Renaissance. No new-workbook grade match is claimed.",
+      "alignments": []
+    },
+    "renaissance-illustrated-map": {
+      "grades": [],
+      "basis": "enrichment",
+      "rationale": "Historical enrichment about medieval/Renaissance Europe. These activities are useful with the existing classroom assignment, but the supplied new Grade 8 workbook focuses on ideologies and economic/political systems, not the Renaissance. No new-workbook grade match is claimed.",
+      "alignments": []
+    },
+    "ancientcivilizations": {
+      "grades": [
+        5
+      ],
+      "basis": "curriculum",
+      "rationale": "Choose ancient civilization and trade-route content for Grade 5. Some additional regions/time periods are extensions beyond the named examples.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            4,
+            8,
+            22,
+            24,
+            25,
+            26,
+            35,
+            40,
+            47,
+            56
+          ],
+          "topic": "Ancient civilizations, geography and trade",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "worldexplorer": {
+      "grades": [
+        5
+      ],
+      "basis": "curriculum",
+      "rationale": "Choose ancient civilization and trade-route content for Grade 5. Some additional regions/time periods are extensions beyond the named examples.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            4,
+            8,
+            22,
+            24,
+            25,
+            26,
+            35,
+            40,
+            47,
+            56
+          ],
+          "topic": "Ancient civilizations, geography and trade",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "portroyalmap": {
+      "grades": [
+        4
+      ],
+      "basis": "curriculum",
+      "rationale": "Port-Royal is explicitly named in Grade 4 pre-Confederation settlement content.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 4,
+          "sheet": "Grade 4",
+          "rows": [
+            44,
+            46,
+            47,
+            48,
+            54
+          ],
+          "topic": "Port-Royal and French settlement",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "railways-and-immigration": {
+      "grades": [
+        7
+      ],
+      "basis": "curriculum",
+      "rationale": "The 1867–1914 railway, settlement and immigration investigation fits post-Confederation Grade 7.",
+      "alignments": [
+        {
+          "source": "social79",
+          "grade": 7,
+          "sheet": "Grade 7",
+          "rows": [
+            4,
+            17,
+            23,
+            24,
+            66,
+            122
+          ],
+          "topic": "State building, railway economy and immigration",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "furtrade": {
+      "grades": [
+        4
+      ],
+      "basis": "curriculum",
+      "rationale": "The games model parts of fur-trade exchange and travel. Historical relationships and impacts need classroom discussion beyond the game mechanics.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 4,
+          "sheet": "Grade 4",
+          "rows": [
+            77,
+            79,
+            80,
+            81,
+            82,
+            87,
+            88
+          ],
+          "topic": "Fur trade, roles and exchange",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "trading-post": {
+      "grades": [
+        4
+      ],
+      "basis": "curriculum",
+      "rationale": "The games model parts of fur-trade exchange and travel. Historical relationships and impacts need classroom discussion beyond the game mechanics.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 4,
+          "sheet": "Grade 4",
+          "rows": [
+            77,
+            79,
+            80,
+            81,
+            82,
+            87,
+            88
+          ],
+          "topic": "Fur trade, roles and exchange",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "culturalcontact": {
+      "grades": [
+        4
+      ],
+      "basis": "curriculum",
+      "rationale": "Pre-Confederation contact, colonization, trade and perspectives connect to Grade 4. Some branches discuss later impacts and need contextual teaching.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 4,
+          "sheet": "Grade 4",
+          "rows": [
+            5,
+            6,
+            44,
+            49,
+            77,
+            88
+          ],
+          "topic": "Colonial contact and trade relationships",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "wantsneeds": {
+      "grades": [
+        1
+      ],
+      "basis": "curriculum",
+      "rationale": "Distinguishing needs and wants supports the Grade 1 exchange-of-goods-and-services topic.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 1,
+          "sheet": "Grade 1",
+          "rows": [
+            33,
+            34,
+            36,
+            37,
+            42
+          ],
+          "topic": "Needs, wants, goods and services",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "traderesources": {
+      "grades": [
+        1,
+        2,
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "Use goods/resource distinctions in Grade 1, Canadian resources in Grade 2 and Alberta resource use in Grade 3.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 1,
+          "sheet": "Grade 1",
+          "rows": [
+            34,
+            36,
+            42,
+            44
+          ],
+          "topic": "Goods and natural resources",
+          "coverage": "partial"
+        },
+        {
+          "source": "social16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            9,
+            17
+          ],
+          "topic": "Canadian natural resources",
+          "coverage": "partial"
+        },
+        {
+          "source": "social16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            70,
+            72,
+            73,
+            84
+          ],
+          "topic": "Alberta natural resource use",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "natural-resources-depot": {
+      "grades": [
+        2,
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "Matching resources/products to industries supports Canada’s physical-region resources and Alberta resource use.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            9,
+            14,
+            17
+          ],
+          "topic": "Resources and Canadian regions",
+          "coverage": "partial"
+        },
+        {
+          "source": "social16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            70,
+            72,
+            73,
+            76,
+            84
+          ],
+          "topic": "Resources and industries in Alberta",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "governmentsort": {
+      "grades": [
+        2,
+        3,
+        6
+      ],
+      "basis": "curriculum",
+      "rationale": "The simplified leader/service sorts support introducing the three levels, comparing Alberta governments and revisiting roles in Grade 6 democracy.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            57,
+            60,
+            61,
+            62,
+            63,
+            64
+          ],
+          "topic": "Canadian government levels and leaders",
+          "coverage": "partial"
+        },
+        {
+          "source": "social16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            87,
+            89,
+            94,
+            96,
+            105
+          ],
+          "topic": "Municipal and provincial roles",
+          "coverage": "partial"
+        },
+        {
+          "source": "social16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            39,
+            45,
+            47
+          ],
+          "topic": "Canadian democratic government",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "governmentguide": {
+      "grades": [
+        2,
+        3,
+        6
+      ],
+      "basis": "curriculum",
+      "rationale": "The simplified leader/service sorts support introducing the three levels, comparing Alberta governments and revisiting roles in Grade 6 democracy.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            57,
+            60,
+            61,
+            62,
+            63,
+            64
+          ],
+          "topic": "Canadian government levels and leaders",
+          "coverage": "partial"
+        },
+        {
+          "source": "social16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            87,
+            89,
+            94,
+            96,
+            105
+          ],
+          "topic": "Municipal and provincial roles",
+          "coverage": "partial"
+        },
+        {
+          "source": "social16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            39,
+            45,
+            47
+          ],
+          "topic": "Canadian democratic government",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "governmentsystems": {
+      "grades": [
+        2,
+        6
+      ],
+      "basis": "curriculum",
+      "rationale": "The activity is labelled Grade 6 and explains democracy, the Crown and government roles; the level/leader sections also support Grade 2 introductions.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            57,
+            60,
+            63,
+            65
+          ],
+          "topic": "Levels, leaders and Crown",
+          "coverage": "partial"
+        },
+        {
+          "source": "social16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            4,
+            39,
+            45,
+            47
+          ],
+          "topic": "Democracy and Canadian government",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "dropdownquiz": {
+      "grades": [
+        6,
+        9
+      ],
+      "basis": "curriculum",
+      "rationale": "The source-based dropdown questions practise Charter freedom of expression and reading speaker positions, rather than the complete rights or law-making outcomes.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            65,
+            68
+          ],
+          "topic": "Charter rights and freedoms",
+          "coverage": "partial"
+        },
+        {
+          "source": "social79",
+          "grade": 9,
+          "sheet": "Grade 9",
+          "rows": [
+            120,
+            143,
+            153
+          ],
+          "topic": "Rights protection in Canada",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "albertamemory": {
+      "grades": [
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "Alberta symbols and general Alberta knowledge support selected identity, land and government content; the quiz is review, not a complete grade assessment.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            4,
+            30,
+            50,
+            98,
+            104
+          ],
+          "topic": "Alberta identity and symbols",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "albertamillionaire": {
+      "grades": [
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "Alberta symbols and general Alberta knowledge support selected identity, land and government content; the quiz is review, not a complete grade assessment.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            4,
+            30,
+            50,
+            98,
+            104
+          ],
+          "topic": "Alberta identity and symbols",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "socialstudies789": {
+      "grades": [
+        7,
+        8,
+        9
+      ],
+      "basis": "curriculum",
+      "rationale": "The hub contains separate sets for each grade: Canada since Confederation, ideologies/systems, and modern Canada. Tagging the collection does not establish coverage of every outcome.",
+      "alignments": [
+        {
+          "source": "social79",
+          "grade": 7,
+          "sheet": "Grade 7",
+          "rows": [
+            4,
+            66,
+            122
+          ],
+          "topic": "Post-Confederation Canada",
+          "coverage": "partial"
+        },
+        {
+          "source": "social79",
+          "grade": 8,
+          "sheet": "Grade 8",
+          "rows": [
+            4,
+            31,
+            65
+          ],
+          "topic": "Ideologies, economic and political systems",
+          "coverage": "partial"
+        },
+        {
+          "source": "social79",
+          "grade": 9,
+          "sheet": "Grade 9",
+          "rows": [
+            4,
+            40,
+            97,
+            120,
+            159
+          ],
+          "topic": "Modern Canada, economics and citizenship",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "territorial-evolution-canada": {
+      "grades": [
+        7
+      ],
+      "basis": "curriculum",
+      "rationale": "The 1867–2003 timeline directly supports post-Confederation boundary changes.",
+      "alignments": [
+        {
+          "source": "social79",
+          "grade": 7,
+          "sheet": "Grade 7",
+          "rows": [
+            10,
+            14,
+            17,
+            30
+          ],
+          "topic": "Canada’s changing post-Confederation boundaries",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "canada-through-time-expanded": {
+      "grades": [
+        4,
+        7
+      ],
+      "basis": "curriculum",
+      "rationale": "Earlier colonial maps support Grade 4; the Confederation and later timeline supports Grade 7. Early boundaries are generalized classroom reconstructions.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 4,
+          "sheet": "Grade 4",
+          "rows": [
+            3,
+            8,
+            13,
+            29,
+            33
+          ],
+          "topic": "Colonial boundaries and formation of Canada",
+          "coverage": "partial"
+        },
+        {
+          "source": "social79",
+          "grade": 7,
+          "sheet": "Grade 7",
+          "rows": [
+            6,
+            10,
+            14,
+            17
+          ],
+          "topic": "Confederation and western expansion",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "ideologyscanner": {
+      "grades": [
+        8
+      ],
+      "basis": "curriculum",
+      "rationale": "Individualism and collectivism are explicit in the new Grade 8 ideology study.",
+      "alignments": [
+        {
+          "source": "social79",
+          "grade": 8,
+          "sheet": "Grade 8",
+          "rows": [
+            4,
+            9,
+            10,
+            11,
+            12
+          ],
+          "topic": "Ideologies and underlying values",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "knowledgespark": {
+      "grades": [
+        4
+      ],
+      "basis": "curriculum",
+      "rationale": "The built-in reading topics explicitly reference changes in Canada’s political boundaries and the formation of Canada.",
+      "alignments": [
+        {
+          "source": "social16",
+          "grade": 4,
+          "sheet": "Grade 4",
+          "rows": [
+            3,
+            44
+          ],
+          "topic": "Political boundaries and historical formation",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "thinkingroutines": {
+      "grades": [
+        7,
+        8,
+        9
+      ],
+      "basis": "teacher-tool",
+      "rationale": "Teacher routine companions are provided for each grade. Actual coverage depends on the chosen outcome, lesson content and student task.",
+      "alignments": []
+    },
+    "thinking-dialogue": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Teacher-selected ideas, images, terms and questions determine the grade and subject. The comparison/discussion tool alone does not cover a curriculum outcome.",
+      "alignments": []
+    },
+    "hexthinker": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Teacher-selected ideas, images, terms and questions determine the grade and subject. The comparison/discussion tool alone does not cover a curriculum outcome.",
+      "alignments": []
+    },
+    "asctriangle": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Teacher-selected ideas, images, terms and questions determine the grade and subject. The comparison/discussion tool alone does not cover a curriculum outcome.",
+      "alignments": []
+    },
+    "imagespark": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Teacher-selected ideas, images, terms and questions determine the grade and subject. The comparison/discussion tool alone does not cover a curriculum outcome.",
+      "alignments": []
+    },
+    "venndiagram": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Teacher-selected ideas, images, terms and questions determine the grade and subject. The comparison/discussion tool alone does not cover a curriculum outcome.",
+      "alignments": []
+    },
+    "sortingcreator": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Teacher-created or community-building content; choose prompts appropriate to the class. No fixed curriculum coverage is claimed.",
+      "alignments": []
+    },
+    "twotruths": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Teacher-created or community-building content; choose prompts appropriate to the class. No fixed curriculum coverage is claimed.",
+      "alignments": []
+    },
+    "friendsquestions": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Teacher-created or community-building content; choose prompts appropriate to the class. No fixed curriculum coverage is claimed.",
+      "alignments": []
+    },
+    "docuclear": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Access, communication and routine support across grade levels. These tools are not subject-content coverage.",
+      "alignments": []
+    },
+    "aacboard": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Access, communication and routine support across grade levels. These tools are not subject-content coverage.",
+      "alignments": []
+    },
+    "yesnoboard": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Access, communication and routine support across grade levels. These tools are not subject-content coverage.",
+      "alignments": []
+    },
+    "visualschedule": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Access, communication and routine support across grade levels. These tools are not subject-content coverage.",
+      "alignments": []
+    },
+    "italianpractice": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Language proficiency and learner needs determine use. These are not direct matches to the requested English language arts workbook or an audited additional-language curriculum.",
+      "alignments": []
+    },
+    "spanishpractice": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Language proficiency and learner needs determine use. These are not direct matches to the requested English language arts workbook or an audited additional-language curriculum.",
+      "alignments": []
+    },
+    "frenchpractice": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Language proficiency and learner needs determine use. These are not direct matches to the requested English language arts workbook or an audited additional-language curriculum.",
+      "alignments": []
+    },
+    "englishlearning": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Language proficiency and learner needs determine use. These are not direct matches to the requested English language arts workbook or an audited additional-language curriculum.",
+      "alignments": []
+    },
+    "riverviewenglish": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Language proficiency and learner needs determine use. These are not direct matches to the requested English language arts workbook or an audited additional-language curriculum.",
+      "alignments": []
+    },
+    "beebot": {
+      "grades": [
+        1,
+        2,
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "Planning, testing and revising movement-command sequences connect to early computer science. The games do not teach all coding/design expectations.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 1,
+          "sheet": "Grade 1",
+          "rows": [
+            132,
+            140,
+            145
+          ],
+          "topic": "Instructions and sequences",
+          "coverage": "partial"
+        },
+        {
+          "source": "science16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            158,
+            176,
+            179,
+            180,
+            181,
+            182,
+            183
+          ],
+          "topic": "Design and test instructions",
+          "coverage": "partial"
+        },
+        {
+          "source": "science16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            182,
+            185,
+            201,
+            205
+          ],
+          "topic": "Computational thinking and instructions",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "codeandgo": {
+      "grades": [
+        1,
+        2,
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "Planning, testing and revising movement-command sequences connect to early computer science. The games do not teach all coding/design expectations.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 1,
+          "sheet": "Grade 1",
+          "rows": [
+            132,
+            140,
+            145
+          ],
+          "topic": "Instructions and sequences",
+          "coverage": "partial"
+        },
+        {
+          "source": "science16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            158,
+            176,
+            179,
+            180,
+            181,
+            182,
+            183
+          ],
+          "topic": "Design and test instructions",
+          "coverage": "partial"
+        },
+        {
+          "source": "science16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            182,
+            185,
+            201,
+            205
+          ],
+          "topic": "Computational thinking and instructions",
+          "coverage": "partial"
+        }
+      ]
+    },
+    "talebot": {
+      "grades": [
+        1,
+        2,
+        3
+      ],
+      "basis": "curriculum",
+      "rationale": "Planning, testing and revising movement-command sequences connect to early computer science. The games do not teach all coding/design expectations.",
+      "alignments": [
+        {
+          "source": "science16",
+          "grade": 1,
+          "sheet": "Grade 1",
+          "rows": [
+            132,
+            140,
+            145
+          ],
+          "topic": "Instructions and sequences",
+          "coverage": "partial"
+        },
+        {
+          "source": "science16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            158,
+            176,
+            179,
+            180,
+            181,
+            182,
+            183
+          ],
+          "topic": "Design and test instructions",
+          "coverage": "partial"
+        },
+        {
+          "source": "science16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            182,
+            185,
+            201,
+            205
+          ],
+          "topic": "Computational thinking and instructions",
+          "coverage": "partial"
+        }
+      ]
+    }
+  }
+}

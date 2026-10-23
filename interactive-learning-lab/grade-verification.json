@@ -1,0 +1,282 @@
+{
+  "functional": [
+    {
+      "test": "Grade 3 and Words & writing",
+      "cards": [
+        "writerspark",
+        "infospark",
+        "wordworks",
+        "heartwords",
+        "sentencebuilding",
+        "readingmaze",
+        "custommorphologygame",
+        "morphemematchup",
+        "walker-plurals"
+      ],
+      "count": "9 activities",
+      "title": "Words & writing · Grade 3"
+    },
+    {
+      "test": "Empty state reset",
+      "count": 152,
+      "grade": "all",
+      "type": "All types"
+    },
+    {
+      "test": "Grade option 1",
+      "count": 16,
+      "grade": "1"
+    },
+    {
+      "test": "Grade option 2",
+      "count": 41,
+      "grade": "2"
+    },
+    {
+      "test": "Grade option 3",
+      "count": 43,
+      "grade": "3"
+    },
+    {
+      "test": "Grade option 4",
+      "count": 21,
+      "grade": "4"
+    },
+    {
+      "test": "Grade option 5",
+      "count": 23,
+      "grade": "5"
+    },
+    {
+      "test": "Grade option 6",
+      "count": 28,
+      "grade": "6"
+    },
+    {
+      "test": "Grade option 7",
+      "count": 20,
+      "grade": "7"
+    },
+    {
+      "test": "Grade option 8",
+      "count": 18,
+      "grade": "8"
+    },
+    {
+      "test": "Grade option 9",
+      "count": 13,
+      "grade": "9"
+    },
+    {
+      "test": "Grade option 10",
+      "count": 1,
+      "grade": "10"
+    },
+    {
+      "test": "Grade option 11",
+      "count": 1,
+      "grade": "11"
+    },
+    {
+      "test": "Grade option flexible",
+      "count": 34,
+      "grade": "flexible"
+    },
+    {
+      "test": "Search by Grade 7",
+      "count": 20,
+      "query": "Grade 7"
+    },
+    {
+      "test": "Grade 1 search excludes Grades 10 and 11",
+      "count": 16,
+      "grade10Present": false,
+      "grade11Present": false
+    },
+    {
+      "test": "Grade 6 + Science + Sorting",
+      "cards": [
+        "science-practice-lab",
+        "bioticsorting",
+        "energysort"
+      ],
+      "grade": "6",
+      "title": "Science · Sorting · Grade 6",
+      "type": "Sorting"
+    },
+    {
+      "test": "Grade + subject + type + search",
+      "cards": [
+        "energysort"
+      ],
+      "count": "1 activity"
+    }
+  ],
+  "responsive": [
+    {
+      "size": "1024,540",
+      "bodyWidth": 1009,
+      "count": 9,
+      "grade": "3",
+      "gradeBadges": [
+        "Grades 3–6",
+        "Grades 3–6",
+        "Grades 3–6",
+        "Grades 1–3",
+        "Grades 1–3",
+        "Grades 2–10",
+        "Grades 3–6",
+        "Grades 3–6",
+        "Grades 1–4"
+      ],
+      "gradeControlHeight": 44,
+      "htmlWidth": 1009,
+      "title": "Words & writing · Grade 3",
+      "viewport": [
+        1009,
+        540
+      ]
+    },
+    {
+      "size": "1366,650",
+      "bodyWidth": 1351,
+      "count": 9,
+      "grade": "3",
+      "gradeBadges": [
+        "Grades 3–6",
+        "Grades 3–6",
+        "Grades 3–6",
+        "Grades 1–3",
+        "Grades 1–3",
+        "Grades 2–10",
+        "Grades 3–6",
+        "Grades 3–6",
+        "Grades 1–4"
+      ],
+      "gradeControlHeight": 44,
+      "htmlWidth": 1351,
+      "title": "Words & writing · Grade 3",
+      "viewport": [
+        1351,
+        650
+      ]
+    },
+    {
+      "size": "768,900",
+      "bodyWidth": 753,
+      "count": 9,
+      "grade": "3",
+      "gradeBadges": [
+        "Grades 3–6",
+        "Grades 3–6",
+        "Grades 3–6",
+        "Grades 1–3",
+        "Grades 1–3",
+        "Grades 2–10",
+        "Grades 3–6",
+        "Grades 3–6",
+        "Grades 1–4"
+      ],
+      "gradeControlHeight": 44,
+      "htmlWidth": 753,
+      "title": "Words & writing · Grade 3",
+      "viewport": [
+        753,
+        900
+      ]
+    },
+    {
+      "size": "390,667",
+      "bodyWidth": 375,
+      "count": 9,
+      "grade": "3",
+      "gradeBadges": [
+        "Grades 3–6",
+        "Grades 3–6",
+        "Grades 3–6",
+        "Grades 1–3",
+        "Grades 1–3",
+        "Grades 2–10",
+        "Grades 3–6",
+        "Grades 3–6",
+        "Grades 1–4"
+      ],
+      "gradeControlHeight": 44,
+      "htmlWidth": 375,
+      "title": "Words & writing · Grade 3",
+      "viewport": [
+        375,
+        667
+      ]
+    },
+    {
+      "size": "320,568",
+      "bodyWidth": 305,
+      "count": 9,
+      "grade": "3",
+      "gradeBadges": [
+        "Grades 3–6",
+        "Grades 3–6",
+        "Grades 3–6",
+        "Grades 1–3",
+        "Grades 1–3",
+        "Grades 2–10",
+        "Grades 3–6",
+        "Grades 3–6",
+        "Grades 1–4"
+      ],
+      "gradeControlHeight": 44,
+      "htmlWidth": 305,
+      "title": "Words & writing · Grade 3",
+      "viewport": [
+        305,
+        568
+      ]
+    },
+    {
+      "size": "640,360",
+      "bodyWidth": 625,
+      "count": 9,
+      "grade": "3",
+      "gradeBadges": [
+        "Grades 3–6",
+        "Grades 3–6",
+        "Grades 3–6",
+        "Grades 1–3",
+        "Grades 1–3",
+        "Grades 2–10",
+        "Grades 3–6",
+        "Grades 3–6",
+        "Grades 1–4"
+      ],
+      "gradeControlHeight": 44,
+      "htmlWidth": 625,
+      "title": "Words & writing · Grade 3",
+      "viewport": [
+        625,
+        360
+      ]
+    }
+  ],
+  "zoom": {
+    "attempted": "Browser Ctrl+plus",
+    "beforeWidth": 1348,
+    "afterWidth": 1348,
+    "nativeZoomAvailable": false
+  },
+  "limitations": [
+    "Native browser zoom shortcut did not change the viewport; six responsive iframe sizes and keyboard focus were verified.",
+    "Grades are curriculum connections, not a complete outcome-coverage audit."
+  ],
+  "reviewed": "2026-10-22",
+  "source_checks": {
+    "entries": 152,
+    "specific_grade_labels": 119,
+    "flexible_or_enrichment_labels": 33,
+    "workbooks": 7,
+    "connections": 215,
+    "catalogue_embedded_data_and_csv": "consistent",
+    "launch_links_order_and_screenshots": "preserved",
+    "private_workbook_ids": "excluded from published files"
+  }
+}

@@ -20,7 +20,10 @@
       "Flashcards",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/vocabularyarcade.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/vocabularyarcade.jpg",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "The teacher selects the vocabulary or word families. Adaptable across grades; no fixed outcome coverage is claimed by the tool itself."
   },
   {
     "id": "writerspark",
@@ -41,7 +44,15 @@
       "Writing",
       "Graphic organisers"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/writerspark.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/writerspark.jpg",
+    "grades": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Narrative planning, drafting, revising and sustained writing are the best fit. Younger learners can use selected prompts with teacher support."
   },
   {
     "id": "infospark",
@@ -64,7 +75,15 @@
     "links": [],
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/infospark.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The fact/evidence board and paragraph structures support informational writing; persuasive options are particularly relevant in Grades 5–6."
   },
   {
     "id": "rootwords",
@@ -84,7 +103,13 @@
       "Word work",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/rootwords-blue-20261022.jpg?v=a861667c656f"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/rootwords-blue-20261022.jpg?v=a861667c656f",
+    "grades": [
+      5,
+      6
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Word origins support Grade 5 vocabulary; Greek and Latin roots are explicit Grade 6 content. Not all word-part knowledge is taught by this one game."
   },
   {
     "id": "science-practice-lab",
@@ -96,7 +121,6 @@
     "description": "Practise Alberta Grade 6 science with original PAT-style questions, real illustrations, drag-and-drop diagrams, sorting and more. Matter and Energy units include learning and test modes; not official Vretta questions.",
     "favourite": false,
     "tags": [
-      "Grade 6",
       "Matter & Energy",
       "144 questions"
     ],
@@ -110,7 +134,12 @@
       "Matching"
     ],
     "image": "https://interactives.blackgold.ca/science-practice-lab/validation/question-image-thermometers.png",
-    "disable_make_own": true
+    "disable_make_own": true,
+    "grades": [
+      6
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Grade 6 science practice; individual units and questions need a separate outcome coverage audit."
   },
   {
     "id": "moonphases",
@@ -136,7 +165,13 @@
       "Simulations & models",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/moonphases.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/moonphases.jpg",
+    "grades": [
+      5,
+      7
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The model and phase naming directly support lunar-cycle content; it does not teach the whole space outcome."
   },
   {
     "id": "geotrek",
@@ -160,7 +195,10 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/geotrek.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/geotrek.jpg",
+    "grades": [],
+    "grade_basis": "enrichment",
+    "grade_note": "General world, continent or US location practice. The supplied workbooks do not assign these full country/state lists to a particular grade; teachers can pair the maps with grade-specific studies."
   },
   {
     "id": "mackwoodmapping",
@@ -185,7 +223,10 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/mackwoodmapping.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/mackwoodmapping.jpg",
+    "grades": [],
+    "grade_basis": "enrichment",
+    "grade_note": "General world, continent or US location practice. The supplied workbooks do not assign these full country/state lists to a particular grade; teachers can pair the maps with grade-specific studies."
   },
   {
     "id": "mapmastersubregions",
@@ -211,7 +252,10 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "images/mapmastersubregions-study-20261007.jpg"
+    "image": "images/mapmastersubregions-study-20261007.jpg",
+    "grades": [],
+    "grade_basis": "enrichment",
+    "grade_note": "General world, continent or US location practice. The supplied workbooks do not assign these full country/state lists to a particular grade; teachers can pair the maps with grade-specific studies."
   },
   {
     "id": "thinking-dialogue",
@@ -247,7 +291,10 @@
     ],
     "credit": "",
     "captured": "2026-10-05",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/thinking-dialogue.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/thinking-dialogue.jpg",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Teacher-selected ideas, images, terms and questions determine the grade and subject. The comparison/discussion tool alone does not cover a curriculum outcome."
   },
   {
     "id": "thinkingroutines",
@@ -257,7 +304,6 @@
     "description": "Choose a Social Studies outcome and lesson phase, then find a routine with a ready-to-use teacher process.",
     "favourite": true,
     "tags": [
-      "Grades 7–9",
       "Teacher tool"
     ],
     "url": "https://interactives.blackgold.ca/thinkingroutines8/",
@@ -281,7 +327,14 @@
       "Graphic organisers",
       "Writing"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/thinkingroutines.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/thinkingroutines.jpg",
+    "grades": [
+      7,
+      8,
+      9
+    ],
+    "grade_basis": "teacher-tool",
+    "grade_note": "Teacher routine companions are provided for each grade. Actual coverage depends on the chosen outcome, lesson content and student task."
   },
   {
     "id": "makechange",
@@ -302,7 +355,13 @@
       "Simulations & models",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/makechange.jpg?v=2da4cb821f8b"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/makechange.jpg?v=2da4cb821f8b",
+    "grades": [
+      4,
+      5
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The main challenge uses dollars/cents and subtraction of decimal money amounts."
   },
   {
     "id": "wordworks",
@@ -323,7 +382,15 @@
       "Word work",
       "Practice questions"
     ],
-    "image": "https://interactives.blackgold.ca/interactive-learning-lab/images/wordworks-quest-20261022.jpg?v=eacb74dad29b"
+    "image": "https://interactives.blackgold.ca/interactive-learning-lab/images/wordworks-quest-20261022.jpg?v=eacb74dad29b",
+    "grades": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Choose the level and words: prefixes/suffixes begin in Grade 3, with more complex meanings and derivation in later grades."
   },
   {
     "id": "alphabetcards",
@@ -347,7 +414,13 @@
       "Flashcards"
     ],
     "type": "printable",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/alphabetcards.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/alphabetcards.jpg",
+    "grades": [
+      1,
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Alphabet and early high-frequency word options support beginning literacy; the custom word list can be adapted beyond these grades."
   },
   {
     "id": "periodictable",
@@ -368,7 +441,13 @@
       "Simulations & models",
       "Reading & annotation"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/periodictable.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/periodictable.jpg",
+    "grades": [
+      8,
+      9
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Element names, atomic numbers and periodic-table information support matter study. This is a reference, not a complete chemistry lesson."
   },
   {
     "id": "spaceactivities",
@@ -378,7 +457,6 @@
     "description": "Read, move sticky notes, sort evidence, weigh choices, and build a mission plan across eight activities.",
     "favourite": false,
     "tags": [
-      "Grade 4",
       "Save & print"
     ],
     "url": "https://interactives.blackgold.ca/space-activities/",
@@ -389,7 +467,12 @@
       "Simulations & models",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/spaceactivities.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/spaceactivities.jpg",
+    "grades": [
+      4
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The built-in space reading and evidence tasks are designed around Grade 4 objects in space and daily life."
   },
   {
     "id": "watercycle",
@@ -409,7 +492,13 @@
       "Simulations & models",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/watercycle.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/watercycle.jpg",
+    "grades": [
+      3,
+      7
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Labelling the cycle directly supports Grade 3 changes of state and provides a model for the Grade 7 water-cycle connection to life."
   },
   {
     "id": "fractionexplorer",
@@ -419,7 +508,6 @@
     "description": "Build and compare fractions with large colour-coded models, choose <, = or >, find common denominators, and practise simplifying, operations and BEDMAS.",
     "favourite": false,
     "tags": [
-      "Grade 7",
       "Visual models"
     ],
     "url": "https://interactives.blackgold.ca/fractionexplorer/",
@@ -430,7 +518,14 @@
       "Simulations & models",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/fractionexplorer-20261010.webp"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/fractionexplorer-20261010.webp",
+    "grades": [
+      5,
+      6,
+      7
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Use comparison and like-denominator work in Grade 5, unlike-denominator operations in Grade 6, and fraction multiplication/division in Grade 7."
   },
   {
     "id": "hexthinker",
@@ -450,7 +545,10 @@
     "types": [
       "Graphic organisers"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/hexthinker.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/hexthinker.jpg",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Teacher-selected ideas, images, terms and questions determine the grade and subject. The comparison/discussion tool alone does not cover a curriculum outcome."
   },
   {
     "id": "asctriangle",
@@ -470,7 +568,10 @@
     "types": [
       "Graphic organisers"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/asctriangle.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/asctriangle.jpg",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Teacher-selected ideas, images, terms and questions determine the grade and subject. The comparison/discussion tool alone does not cover a curriculum outcome."
   },
   {
     "id": "geo-canadiangeochallenge1",
@@ -494,7 +595,12 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-canadiangeochallenge1.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-canadiangeochallenge1.jpg",
+    "grades": [
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Directional clues and relative location connect to Grade 2 mapping. Pirate grid references are an additional map-skill activity, not a complete Cartesian-plane lesson."
   },
   {
     "id": "piratemapping",
@@ -520,7 +626,12 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/piratemapping.jpg?v=2cbd44fde303"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/piratemapping.jpg?v=2cbd44fde303",
+    "grades": [
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Directional clues and relative location connect to Grade 2 mapping. Pirate grid references are an additional map-skill activity, not a complete Cartesian-plane lesson."
   },
   {
     "id": "geo-canadiangeographyfacts1",
@@ -544,7 +655,12 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-canadiangeographyfacts1.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-canadiangeographyfacts1.jpg",
+    "grades": [
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Locating Canada’s provinces, territories and major cities supports the mapping portion of Grade 2 physical-region study. Capital memorization and route challenges are extensions, not the whole region outcome."
   },
   {
     "id": "geo-canadiangeographyquiz1",
@@ -568,7 +684,12 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-canadiangeographyquiz1.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-canadiangeographyquiz1.jpg",
+    "grades": [
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Locating Canada’s provinces, territories and major cities supports the mapping portion of Grade 2 physical-region study. Capital memorization and route challenges are extensions, not the whole region outcome."
   },
   {
     "id": "albertaregions",
@@ -592,7 +713,12 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/albertaregions.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/albertaregions.jpg",
+    "grades": [
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Alberta’s physical features and regions are explicit Grade 3 content. Subregions can extend the major-region comparison."
   },
   {
     "id": "geo-simpleregionsofalberta",
@@ -616,7 +742,12 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-simpleregionsofalberta.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-simpleregionsofalberta.jpg",
+    "grades": [
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Alberta’s physical features and regions are explicit Grade 3 content. Subregions can extend the major-region comparison."
   },
   {
     "id": "geo-albertaregionsgame",
@@ -640,7 +771,12 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-albertaregionsgame.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-albertaregionsgame.jpg",
+    "grades": [
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Alberta’s physical features and regions are explicit Grade 3 content. Subregions can extend the major-region comparison."
   },
   {
     "id": "geo-regionsofcanada",
@@ -664,7 +800,12 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-regionsofcanada.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-regionsofcanada.jpg",
+    "grades": [
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Canada’s physical regions are an explicit Grade 2 topic; use maps to compare regions, not only memorize names."
   },
   {
     "id": "geo-regionsofcanadaquiz",
@@ -688,7 +829,12 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-regionsofcanadaquiz.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-regionsofcanadaquiz.jpg",
+    "grades": [
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Canada’s physical regions are an explicit Grade 2 topic; use maps to compare regions, not only memorize names."
   },
   {
     "id": "geo-placenamesofalberta",
@@ -712,7 +858,12 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-placenamesofalberta.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-placenamesofalberta.jpg",
+    "grades": [
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The place-name stories and community languages support Alberta identity and historically significant places."
   },
   {
     "id": "geo-canadiangeographychallenge2",
@@ -736,7 +887,12 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-canadiangeographychallenge2.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-canadiangeographychallenge2.jpg",
+    "grades": [
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Locating Canada’s provinces, territories and major cities supports the mapping portion of Grade 2 physical-region study. Capital memorization and route challenges are extensions, not the whole region outcome."
   },
   {
     "id": "geo-labelcanada",
@@ -760,7 +916,12 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-labelcanada.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-labelcanada.jpg",
+    "grades": [
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Locating Canada’s provinces, territories and major cities supports the mapping portion of Grade 2 physical-region study. Capital memorization and route challenges are extensions, not the whole region outcome."
   },
   {
     "id": "geo-mixedupcanadapuzzle",
@@ -784,7 +945,12 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-mixedupcanadapuzzle.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-mixedupcanadapuzzle.jpg",
+    "grades": [
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Locating Canada’s provinces, territories and major cities supports the mapping portion of Grade 2 physical-region study. Capital memorization and route challenges are extensions, not the whole region outcome."
   },
   {
     "id": "worldgeography",
@@ -808,7 +974,10 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/worldgeography.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/worldgeography.jpg",
+    "grades": [],
+    "grade_basis": "enrichment",
+    "grade_note": "General world, continent or US location practice. The supplied workbooks do not assign these full country/state lists to a particular grade; teachers can pair the maps with grade-specific studies."
   },
   {
     "id": "labeltheworld",
@@ -832,7 +1001,10 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/labeltheworld.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/labeltheworld.jpg",
+    "grades": [],
+    "grade_basis": "enrichment",
+    "grade_note": "General world, continent or US location practice. The supplied workbooks do not assign these full country/state lists to a particular grade; teachers can pair the maps with grade-specific studies."
   },
   {
     "id": "geo-canadageotrek",
@@ -856,7 +1028,12 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-canadageotrek.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-canadageotrek.jpg",
+    "grades": [
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Locating Canada’s provinces, territories and major cities supports the mapping portion of Grade 2 physical-region study. Capital memorization and route challenges are extensions, not the whole region outcome."
   },
   {
     "id": "geo-continentsgame",
@@ -880,7 +1057,10 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-continentsgame.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-continentsgame.jpg",
+    "grades": [],
+    "grade_basis": "enrichment",
+    "grade_note": "General world, continent or US location practice. The supplied workbooks do not assign these full country/state lists to a particular grade; teachers can pair the maps with grade-specific studies."
   },
   {
     "id": "geo-latitudelongitude",
@@ -906,7 +1086,12 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-latitudelongitude.jpg?v=20261005"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-latitudelongitude.jpg?v=20261005",
+    "grades": [
+      5
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Latitude and longitude are explicitly named in Grade 5 descriptions of civilization locations; this activity practises the coordinate skill."
   },
   {
     "id": "geo-usstates",
@@ -930,7 +1115,10 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-usstates.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-usstates.jpg",
+    "grades": [],
+    "grade_basis": "enrichment",
+    "grade_note": "General world, continent or US location practice. The supplied workbooks do not assign these full country/state lists to a particular grade; teachers can pair the maps with grade-specific studies."
   },
   {
     "id": "geo-geotrekusa",
@@ -954,7 +1142,10 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-geotrekusa.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-geotrekusa.jpg",
+    "grades": [],
+    "grade_basis": "enrichment",
+    "grade_note": "General world, continent or US location practice. The supplied workbooks do not assign these full country/state lists to a particular grade; teachers can pair the maps with grade-specific studies."
   },
   {
     "id": "geo-albertaregionscoloringpage",
@@ -979,7 +1170,12 @@
       "Drawing",
       "Printables"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-albertaregionscoloringpage.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-albertaregionscoloringpage.jpg",
+    "grades": [
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Alberta’s physical features and regions are explicit Grade 3 content. Subregions can extend the major-region comparison."
   },
   {
     "id": "template-alberta",
@@ -1002,7 +1198,12 @@
       "Maps & geography",
       "Printables"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/template-alberta.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/template-alberta.jpg",
+    "grades": [
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Alberta’s physical features and regions are explicit Grade 3 content. Subregions can extend the major-region comparison."
   },
   {
     "id": "template-provinces",
@@ -1025,7 +1226,12 @@
       "Maps & geography",
       "Printables"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/template-provinces.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/template-provinces.jpg",
+    "grades": [
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Locating Canada’s provinces, territories and major cities supports the mapping portion of Grade 2 physical-region study. Capital memorization and route challenges are extensions, not the whole region outcome."
   },
   {
     "id": "template-regions-canada",
@@ -1048,7 +1254,12 @@
       "Maps & geography",
       "Printables"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/template-regions-canada.jpg"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/template-regions-canada.jpg",
+    "grades": [
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Canada’s physical regions are an explicit Grade 2 topic; use maps to compare regions, not only memorize names."
   },
   {
     "id": "geo-numberedtreaties",
@@ -1075,7 +1286,13 @@
     "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-numberedtreaties.jpg",
     "secondary_categories": [
       "Social studies"
-    ]
+    ],
+    "grades": [
+      3,
+      7
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Grade 3 locates Alberta treaties; Grade 7 connects numbered treaties to post-Confederation state building. A treaty-area map alone does not teach the full treaty relationship."
   },
   {
     "id": "geo-grade3numberedtreaties",
@@ -1102,7 +1319,12 @@
     "image": "https://maltais239.github.io/interactives/learning-lab-images/geo-grade3numberedtreaties.jpg",
     "secondary_categories": [
       "Social studies"
-    ]
+    ],
+    "grades": [
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The Grade 3 edition is scaffolded for researching and locating Alberta treaty areas."
   },
   {
     "id": "canadamap",
@@ -1122,7 +1344,12 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/canadamap.jpg?v=20261005-repair1"
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/canadamap.jpg?v=20261005-repair1",
+    "grades": [
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Locating Canada’s provinces, territories and major cities supports the mapping portion of Grade 2 physical-region study. Capital memorization and route challenges are extensions, not the whole region outcome."
   },
   {
     "id": "heartwords",
@@ -1145,7 +1372,14 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/heartwords.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      1,
+      2,
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Maps sounds and the unexpected spellings in high-frequency words; also useful for intervention at other ages."
   },
   {
     "id": "soundstructurespell",
@@ -1169,7 +1403,13 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/soundstructurespell.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      1,
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The fixed vowel-consonant-e lessons directly match early vowel and spelling-pattern content."
   },
   {
     "id": "sentencebuilding",
@@ -1194,7 +1434,14 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/sentencebuilding.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      1,
+      2,
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The default simple sentence strips support sentence structure, capitals and punctuation. Entered sentences can be adjusted by the teacher."
   },
   {
     "id": "readingmaze",
@@ -1219,7 +1466,20 @@
     "favourite": false,
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/readingmaze.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "grade_basis": "resource-level",
+    "grade_note": "The supplied printable explicitly contains Grade 2–10 passage sets. Only Grades 2–6 have been cross-checked against the requested ELAL workbook; Grades 7–10 are the resource author’s labels."
   },
   {
     "id": "borealforestreading",
@@ -1241,7 +1501,12 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/borealforestreading.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      6
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The supplied reading explores ecosystem components, energy and nutrients. Its science topic fit is Grade 6; comprehension use can be adapted separately."
   },
   {
     "id": "ecosystemannotation",
@@ -1275,7 +1540,12 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/ecosystemannotation.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      6
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The supplied reading explores ecosystem components, energy and nutrients. Its science topic fit is Grade 6; comprehension use can be adapted separately."
   },
   {
     "id": "definitiondraw",
@@ -1297,7 +1567,10 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/definitiondraw.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "The teacher selects the vocabulary or word families. Adaptable across grades; no fixed outcome coverage is claimed by the tool itself."
   },
   {
     "id": "customflashcards",
@@ -1332,7 +1605,10 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/customflashcards.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "The teacher selects the vocabulary or word families. Adaptable across grades; no fixed outcome coverage is claimed by the tool itself."
   },
   {
     "id": "vocabmatchbuilder",
@@ -1355,7 +1631,10 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/vocabmatchbuilder.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "The teacher selects the vocabulary or word families. Adaptable across grades; no fixed outcome coverage is claimed by the tool itself."
   },
   {
     "id": "vocaborganizer",
@@ -1377,7 +1656,10 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/vocaborganizer.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "The teacher selects the vocabulary or word families. Adaptable across grades; no fixed outcome coverage is claimed by the tool itself."
   },
   {
     "id": "morphologyboard",
@@ -1402,7 +1684,13 @@
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/morphologyboard.jpg",
     "captured": "2026-10-04",
-    "type": "printable"
+    "type": "printable",
+    "grades": [
+      5,
+      6
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The supplied 52-word collection is labelled Grade 5 and includes bound roots, word origins and complex affixes that also support Grade 6."
   },
   {
     "id": "morphologycards2",
@@ -1428,7 +1716,13 @@
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/morphologycards2.jpg",
     "captured": "2026-10-04",
-    "type": "printable"
+    "type": "printable",
+    "grades": [
+      5,
+      6
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The supplied 52-word collection is labelled Grade 5 and includes bound roots, word origins and complex affixes that also support Grade 6."
   },
   {
     "id": "custommorphologygame",
@@ -1464,7 +1758,15 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/custommorphologygame.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Select simple families for Grade 3 and more complex or bound-root families for Grades 4–6. Custom sets require teacher review."
   },
   {
     "id": "morphemematchup",
@@ -1488,7 +1790,15 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/morphemematchup.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Select simple families for Grade 3 and more complex or bound-root families for Grades 4–6. Custom sets require teacher review."
   },
   {
     "id": "teachermorphologymaker",
@@ -1512,7 +1822,10 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/teachermorphologymaker.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "The teacher selects the vocabulary or word families. Adaptable across grades; no fixed outcome coverage is claimed by the tool itself."
   },
   {
     "id": "dropdownquiz",
@@ -1534,7 +1847,13 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/dropdownquiz.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      6,
+      9
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The source-based dropdown questions practise Charter freedom of expression and reading speaker positions, rather than the complete rights or law-making outcomes."
   },
   {
     "id": "cacaoquiz",
@@ -1557,7 +1876,14 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/cacaoquiz.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      4,
+      5,
+      6
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The fixed informational passage and questions practise finding details and interpreting text. This is a reading task, not a complete ELAL outcome assessment."
   },
   {
     "id": "orderingsteps",
@@ -1580,7 +1906,15 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/orderingsteps.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The fixed cacao-processing sequence supports procedural reading and organizing information; explain unfamiliar process vocabulary as needed."
   },
   {
     "id": "math4taskcards",
@@ -1594,7 +1928,6 @@
       "Practice questions"
     ],
     "tags": [
-      "Grade 4",
       "Task cards"
     ],
     "url": "https://maltais239.github.io/interactives/math4taskcards/",
@@ -1603,7 +1936,12 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/math4taskcards.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      4
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The built-in task-card set is Grade 4 arithmetic practice, not a full mathematics assessment."
   },
   {
     "id": "numberbuilding",
@@ -1627,7 +1965,13 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/numberbuilding-approved-20261010.webp",
-    "captured": "2026-10-10"
+    "captured": "2026-10-10",
+    "grades": [
+      2,
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Composing, decomposing and regrouping natural numbers match Grades 2–3; choose a number range appropriate to the grade."
   },
   {
     "id": "numbersense6",
@@ -1657,7 +2001,12 @@
     "credit": "Mrs. Publow & Mrs. Murley",
     "group": "",
     "image": "https://interactives.blackgold.ca/interactive-learning-lab/images/numbersense-studio-home-full-20261012.svg",
-    "captured": "2026-10-10"
+    "captured": "2026-10-10",
+    "grades": [
+      6
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The teacher collection is principally Grade 6. Sub-activities include review and extension; not all listed Grade 6 outcomes are covered."
   },
   {
     "id": "sciencepat",
@@ -1670,7 +2019,6 @@
       "Practice questions"
     ],
     "tags": [
-      "Grade 6 science",
       "Quiz practice"
     ],
     "variants": [],
@@ -1680,7 +2028,12 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/sciencepat.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      6
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Grade 6 science practice; individual units and questions need a separate outcome coverage audit."
   },
   {
     "id": "mathpracticefr",
@@ -1693,8 +2046,7 @@
       "Practice questions"
     ],
     "tags": [
-      "Français",
-      "Grade 6 maths"
+      "Français"
     ],
     "url": "https://maltais239.github.io/interactives/PATpracticemath6FR/",
     "links": [],
@@ -1702,7 +2054,12 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/mathpracticefr.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      6
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The teacher collection is principally Grade 6. Sub-activities include review and extension; not all listed Grade 6 outcomes are covered."
   },
   {
     "id": "bioticsorting",
@@ -1724,7 +2081,13 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/bioticsorting.jpg?v=bd31abb296ad",
-    "captured": "2026-10-07"
+    "captured": "2026-10-07",
+    "grades": [
+      6,
+      7
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Practises identifying biotic and abiotic components; does not model the full ecosystem relationships."
   },
   {
     "id": "animaldiets",
@@ -1747,7 +2110,12 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/animaldiets.jpg?v=12d5406b93b1",
-    "captured": "2026-10-07"
+    "captured": "2026-10-07",
+    "grades": [
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Herbivore, carnivore and omnivore classification is explicitly Grade 3 content."
   },
   {
     "id": "statessort",
@@ -1769,7 +2137,13 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/statessort.jpg?v=1150a0df736a",
-    "captured": "2026-10-07"
+    "captured": "2026-10-07",
+    "grades": [
+      3,
+      5
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Everyday states support Grade 3 changes of state; the separate particle pictures support Grade 5 particle models."
   },
   {
     "id": "lightsort",
@@ -1791,7 +2165,12 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/lightsort.jpg?v=ee0bb06526fe",
-    "captured": "2026-10-07"
+    "captured": "2026-10-07",
+    "grades": [
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The transparent/opaque comparison is a Grade 2 light-and-materials task; it does not cover Grade 9 wave behaviour."
   },
   {
     "id": "energysort",
@@ -1812,7 +2191,13 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/energysort.jpg?v=ddfddea0804b",
-    "captured": "2026-10-07"
+    "captured": "2026-10-07",
+    "grades": [
+      5,
+      6
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Renewable versus non-renewable classification supports part of both energy-resource outcomes; it does not assess energy-use tradeoffs."
   },
   {
     "id": "weathersort",
@@ -1834,7 +2219,12 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/weathersort.jpg?v=64c0c00ef448",
-    "captured": "2026-10-07"
+    "captured": "2026-10-07",
+    "grades": [
+      5
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The activity distinguishes short-term weather from long-term climate, rather than modelling climate change."
   },
   {
     "id": "naturalprocessedsort",
@@ -1856,7 +2246,13 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/naturalprocessedsort.jpg?v=f6d8353b65f9",
-    "captured": "2026-10-07"
+    "captured": "2026-10-07",
+    "grades": [
+      2,
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Both grade tabs explicitly distinguish natural from processed materials."
   },
   {
     "id": "renaissance-map",
@@ -1891,7 +2287,10 @@
       "Writing",
       "Printables"
     ],
-    "image": "../renaissance-map/preview.jpg?v=20261008-atlas9"
+    "image": "../renaissance-map/preview.jpg?v=20261008-atlas9",
+    "grades": [],
+    "grade_basis": "enrichment",
+    "grade_note": "Historical enrichment about medieval/Renaissance Europe. These activities are useful with the existing classroom assignment, but the supplied new Grade 8 workbook focuses on ideologies and economic/political systems, not the Renaissance. No new-workbook grade match is claimed."
   },
   {
     "id": "renaissance-illustrated-map",
@@ -1919,7 +2318,10 @@
       "Maps & geography",
       "Practice questions"
     ],
-    "image": "../renaissance-map/scene-explore-preview.jpg?v=scene4"
+    "image": "../renaissance-map/scene-explore-preview.jpg?v=scene4",
+    "grades": [],
+    "grade_basis": "enrichment",
+    "grade_note": "Historical enrichment about medieval/Renaissance Europe. These activities are useful with the existing classroom assignment, but the supplied new Grade 8 workbook focuses on ideologies and economic/political systems, not the Renaissance. No new-workbook grade match is claimed."
   },
   {
     "id": "railways-and-immigration",
@@ -1947,7 +2349,12 @@
     "favourite": false,
     "credit": "Original artwork and historical content: LearnAlberta",
     "image": "https://interactives.blackgold.ca/interactive-learning-lab/images/railways-and-immigration.jpg?v=20261007",
-    "captured": "2026-10-07"
+    "captured": "2026-10-07",
+    "grades": [
+      7
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The 1867–1914 railway, settlement and immigration investigation fits post-Confederation Grade 7."
   },
   {
     "id": "furtrade",
@@ -1980,7 +2387,12 @@
     "credit": "Classroom idea: Darren Maltais",
     "group": "",
     "image": "https://interactives.blackgold.ca/interactive-learning-lab/images/river-routes.jpg?v=20261009-final1",
-    "captured": "2026-10-08"
+    "captured": "2026-10-08",
+    "grades": [
+      4
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The games model parts of fur-trade exchange and travel. Historical relationships and impacts need classroom discussion beyond the game mechanics."
   },
   {
     "id": "trading-post",
@@ -2007,7 +2419,12 @@
     "favourite": false,
     "credit": "Inspired by a McCord Stewart Museum classroom activity",
     "group": "",
-    "image": "https://interactives.blackgold.ca/trading-post/assets/post.webp?v=20261009-post2"
+    "image": "https://interactives.blackgold.ca/trading-post/assets/post.webp?v=20261009-post2",
+    "grades": [
+      4
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The games model parts of fur-trade exchange and travel. Historical relationships and impacts need classroom discussion beyond the game mechanics."
   },
   {
     "id": "governmentsort",
@@ -2041,7 +2458,14 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/governmentsort.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      2,
+      3,
+      6
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The simplified leader/service sorts support introducing the three levels, comparing Alberta governments and revisiting roles in Grade 6 democracy."
   },
   {
     "id": "wantsneeds",
@@ -2063,7 +2487,12 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/wantsneeds.jpg?v=b424ae666f1c",
-    "captured": "2026-10-06"
+    "captured": "2026-10-06",
+    "grades": [
+      1
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Distinguishing needs and wants supports the Grade 1 exchange-of-goods-and-services topic."
   },
   {
     "id": "traderesources",
@@ -2098,7 +2527,14 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/traderesources.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      1,
+      2,
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Use goods/resource distinctions in Grade 1, Canadian resources in Grade 2 and Alberta resource use in Grade 3."
   },
   {
     "id": "natural-resources-depot",
@@ -2124,7 +2560,13 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/natural-resources-depot.jpg?v=3e7c3812a0b3",
-    "captured": "2026-10-05"
+    "captured": "2026-10-05",
+    "grades": [
+      2,
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Matching resources/products to industries supports Canada’s physical-region resources and Alberta resource use."
   },
   {
     "id": "sortingcreator",
@@ -2148,7 +2590,10 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/sortingcreator.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Teacher-created or community-building content; choose prompts appropriate to the class. No fixed curriculum coverage is claimed."
   },
   {
     "id": "integerexplorer",
@@ -2183,7 +2628,13 @@
     "credit": "",
     "group": "",
     "image": "https://interactives.blackgold.ca/interactive-learning-lab/images/integerexplorer-20261010.webp",
-    "captured": "2026-10-10"
+    "captured": "2026-10-10",
+    "grades": [
+      6,
+      7
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Grade 6 introduces signed values and addition/subtraction; all-four-operation practice extends to Grade 7."
   },
   {
     "id": "moneysort",
@@ -2207,7 +2658,14 @@
     "credit": "",
     "group": "",
     "image": "https://interactives.blackgold.ca/interactive-learning-lab/images/make-the-amount-20261012.svg",
-    "captured": "2026-10-12"
+    "captured": "2026-10-12",
+    "grades": [
+      2,
+      3,
+      4
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Use selected same-denomination or whole-dollar amounts for Grades 2–3; mixed cents and decimal totals are Grade 4 work."
   },
   {
     "id": "base10",
@@ -2229,7 +2687,13 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/base10.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      2,
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Composing, decomposing and regrouping natural numbers match Grades 2–3; choose a number range appropriate to the grade."
   },
   {
     "id": "rationalexplorer",
@@ -2251,7 +2715,13 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/rationalexplorer.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      8,
+      9
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Fraction/decimal relationships and number-set classification fit rational-number and real-number work."
   },
   {
     "id": "orderingrational",
@@ -2273,7 +2743,13 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/orderingrational.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      7,
+      8
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Ordering signed fractions and decimals connects to the Grade 7 positive/negative number line and Grade 8 rational values."
   },
   {
     "id": "irrationalnumbers",
@@ -2287,7 +2763,6 @@
       "Practice questions"
     ],
     "tags": [
-      "Grade 8",
       "Number line"
     ],
     "url": "https://interactives.blackgold.ca/irrationalnumbers/",
@@ -2296,7 +2771,13 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/irrationalnumbers.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      8,
+      9
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Classifying rational/irrational numbers supports Grade 8 introductions and Grade 9 real-number subsets."
   },
   {
     "id": "numbersorter",
@@ -2318,7 +2799,13 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/numbersorter.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      8,
+      9
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Classifying rational/irrational numbers supports Grade 8 introductions and Grade 9 real-number subsets."
   },
   {
     "id": "realnumberdrop",
@@ -2341,7 +2828,13 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/realnumberdrop.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      8,
+      9
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Classifying rational/irrational numbers supports Grade 8 introductions and Grade 9 real-number subsets."
   },
   {
     "id": "squarescubes",
@@ -2375,7 +2868,13 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/squarescubes.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      7,
+      8
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Perfect squares/cubes are direct Grade 7 content; square-root models support Grade 8 roots."
   },
   {
     "id": "exponentexplorer",
@@ -2419,7 +2918,15 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/exponentexplorer.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      6,
+      7,
+      8,
+      9
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Select the level: basic powers for Grade 6, squares/cubes for Grade 7, algebraic powers for Grade 8, and quadratic/exponent applications for Grade 9."
   },
   {
     "id": "polynomials",
@@ -2442,7 +2949,13 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/polynomials.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      8,
+      9
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Grade 8 algebraic terms provide the entry point; polynomial operations are Grade 9 draft content."
   },
   {
     "id": "financialchoices",
@@ -2456,7 +2969,6 @@
       "Decision games"
     ],
     "tags": [
-      "Grade 7",
       "Financial choices"
     ],
     "url": "https://interactives.blackgold.ca/grade7life/",
@@ -2465,7 +2977,12 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/financialchoices.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      7
+    ],
+    "grade_basis": "enrichment",
+    "grade_note": "The activity explicitly targets Grade 7 financial decision making. The supplied Math 7–9 workbook does not establish a direct budgeting outcome; keep it as enrichment until the financial-literacy curriculum is reviewed."
   },
   {
     "id": "oceancounting",
@@ -2479,7 +2996,6 @@
       "Simulations & models"
     ],
     "tags": [
-      "Grade 1",
       "Early numeracy",
       "Count to 20",
       "Compare groups",
@@ -2496,7 +3012,12 @@
     "credit": "",
     "group": "",
     "image": "https://interactives.blackgold.ca/interactive-learning-lab/images/ocean-counting-explorer-20261013.webp",
-    "captured": "2026-10-13"
+    "captured": "2026-10-13",
+    "grades": [
+      1
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Counting to 20, comparing groups and picture addition/subtraction align directly with Grade 1."
   },
   {
     "id": "anglefinder",
@@ -2519,7 +3040,14 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/anglefinder-estimate-real-20261010.webp",
-    "captured": "2026-10-10"
+    "captured": "2026-10-10",
+    "grades": [
+      3,
+      4,
+      8
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Compare angles in Grade 3, measure and name them in Grade 4, and use triangle-angle relationships in Grade 8."
   },
   {
     "id": "forestmath",
@@ -2550,7 +3078,14 @@
     "credit": "Original activities by Chantelle",
     "group": "",
     "image": "https://interactives.blackgold.ca/interactive-learning-lab/images/forest-math-adventure-20261019.webp",
-    "captured": "2026-10-19"
+    "captured": "2026-10-19",
+    "grades": [
+      1,
+      2,
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Choose range and trail: counting and stories within 20 in Grade 1, wider counting/patterns in Grade 2, and skip-counting sequences in Grade 3."
   },
   {
     "id": "patterndetective",
@@ -2565,7 +3100,6 @@
       "Sequencing"
     ],
     "tags": [
-      "Grade 3",
       "Patterns"
     ],
     "variants": [
@@ -2586,7 +3120,13 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/patterndetective.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      2,
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Even/odd classification is explicit in Grade 2; identifying and repairing numerical sequences supports Grade 3."
   },
   {
     "id": "spacemaths",
@@ -2619,7 +3159,14 @@
     "credit": "Original activities by Chantelle",
     "group": "",
     "image": "https://interactives.blackgold.ca/interactive-learning-lab/images/space-math-explorers-20261019.webp",
-    "captured": "2026-10-19"
+    "captured": "2026-10-19",
+    "grades": [
+      1,
+      2,
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Count and add in Grade 1, share/group collections in Grade 2, and connect equal groups to division in Grade 3."
   },
   {
     "id": "scienceinquiry",
@@ -2634,7 +3181,6 @@
       "Graphic organisers"
     ],
     "tags": [
-      "Grades 7–9",
       "Inquiry activities"
     ],
     "url": "https://interactives.blackgold.ca/science-inquiry-builder/",
@@ -2643,7 +3189,14 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/scienceinquiry.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      7,
+      8,
+      9
+    ],
+    "grade_basis": "teacher-tool",
+    "grade_note": "A teacher planning tool for Grades 7–9. Built-in topic/outcome banks must be checked against the supplied September 2026 draft; no draft outcome coverage is claimed here."
   },
   {
     "id": "plantgrower",
@@ -2666,7 +3219,13 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/plantgrower.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      1,
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Care choices and observations support needs in Grade 1 and growth/development in Grade 2. Percentages are fictional game rules."
   },
   {
     "id": "creaturecare",
@@ -2688,7 +3247,13 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/creaturecare.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      1,
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Care choices and observations support needs in Grade 1 and growth/development in Grade 2. Percentages are fictional game rules."
   },
   {
     "id": "dinodig",
@@ -2712,7 +3277,13 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/dinodig.jpg?v=20261005",
-    "captured": "2026-10-05"
+    "captured": "2026-10-05",
+    "grades": [
+      3,
+      8
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Alberta fossil sites and evidence notes match Grade 3 fossil investigations and Grade 8 geological-history content."
   },
   {
     "id": "lifecycles",
@@ -2733,7 +3304,12 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/lifecycles.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Sequencing butterfly, frog and tree stages directly matches the Grade 2 life-cycle expectation."
   },
   {
     "id": "seasonsexplorer",
@@ -2754,7 +3330,12 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/seasonsexplorer.jpg?v=4d3fe0ba17cf",
-    "captured": "2026-10-07"
+    "captured": "2026-10-07",
+    "grades": [
+      1
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Sorting seasonal observations directly supports Grade 1 environmental and organism changes."
   },
   {
     "id": "foodchain",
@@ -2777,7 +3358,12 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/foodchain.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Builds simple local food chains. Older-grade food-web and energy-pyramid outcomes need more than this linear-chain activity."
   },
   {
     "id": "weatherdashboard",
@@ -2800,7 +3386,12 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/weatherdashboard.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      5
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Entering weather observations supports the weather-data part of Grade 5 climate study; a single forecast does not establish climate."
   },
   {
     "id": "ionicnomenclature",
@@ -2822,7 +3413,13 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/ionicnomenclature.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      9,
+      11
+    ],
+    "grade_basis": "extension",
+    "grade_note": "Designed as Chemistry 20 (Grade 11). Binary ionic naming can extend Grade 9 draft work, while multivalent and polyatomic cases may go beyond it."
   },
   {
     "id": "physicalboundaries",
@@ -2844,7 +3441,12 @@
     "favourite": false,
     "credit": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/physicalboundaries.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The fixed passage compares Alberta’s physical and political boundaries, directly supporting Grade 3."
   },
   {
     "id": "ancientcivilizations",
@@ -2869,7 +3471,12 @@
     "captured": "2026-10-04",
     "secondary_categories": [
       "Social studies"
-    ]
+    ],
+    "grades": [
+      5
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Choose ancient civilization and trade-route content for Grade 5. Some additional regions/time periods are extensions beyond the named examples."
   },
   {
     "id": "portroyalmap",
@@ -2890,7 +3497,12 @@
     "favourite": false,
     "credit": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/portroyalmap.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      4
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Port-Royal is explicitly named in Grade 4 pre-Confederation settlement content."
   },
   {
     "id": "worldexplorer",
@@ -2915,7 +3527,12 @@
     "captured": "2026-10-04",
     "secondary_categories": [
       "Social studies"
-    ]
+    ],
+    "grades": [
+      5
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Choose ancient civilization and trade-route content for Grade 5. Some additional regions/time periods are extensions beyond the named examples."
   },
   {
     "id": "canadageohub",
@@ -2938,7 +3555,12 @@
     "favourite": false,
     "credit": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/canadageohub.jpg?v=20261005-repair1",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Locating Canada’s provinces, territories and major cities supports the mapping portion of Grade 2 physical-region study. Capital memorization and route challenges are extensions, not the whole region outcome."
   },
   {
     "id": "provincescolouring",
@@ -2961,7 +3583,12 @@
     "favourite": false,
     "credit": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/provincescolouring.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Locating Canada’s provinces, territories and major cities supports the mapping portion of Grade 2 physical-region study. Capital memorization and route challenges are extensions, not the whole region outcome."
   },
   {
     "id": "regionscolouring",
@@ -2984,7 +3611,12 @@
     "favourite": false,
     "credit": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/regionscolouring.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Canada’s physical regions are an explicit Grade 2 topic; use maps to compare regions, not only memorize names."
   },
   {
     "id": "treatiesalberta",
@@ -3009,7 +3641,13 @@
     "captured": "2026-10-07",
     "secondary_categories": [
       "Social studies"
-    ]
+    ],
+    "grades": [
+      3,
+      7
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Grade 3 locates Alberta treaties; Grade 7 connects numbered treaties to post-Confederation state building. A treaty-area map alone does not teach the full treaty relationship."
   },
   {
     "id": "placenamesgrade3",
@@ -3024,7 +3662,6 @@
       "Reading & annotation"
     ],
     "tags": [
-      "Grade 3",
       "Place names"
     ],
     "url": "https://maltais239.github.io/interactives/placenamesgrade3/",
@@ -3032,7 +3669,12 @@
     "favourite": false,
     "credit": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/placenamesgrade3.jpg?v=20261005-repair1",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The place-name stories and community languages support Alberta identity and historically significant places."
   },
   {
     "id": "socialstudies789",
@@ -3049,8 +3691,7 @@
       "Practice questions"
     ],
     "tags": [
-      "22 activities",
-      "Grades 7–9"
+      "22 activities"
     ],
     "url": "https://maltais239.github.io/interactives/social-studies-7-9/",
     "links": [],
@@ -3058,7 +3699,14 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/socialstudies789.jpg?v=e672333f3fa9",
-    "captured": "2026-10-06"
+    "captured": "2026-10-06",
+    "grades": [
+      7,
+      8,
+      9
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The hub contains separate sets for each grade: Canada since Confederation, ideologies/systems, and modern Canada. Tagging the collection does not establish coverage of every outcome."
   },
   {
     "id": "territorial-evolution-canada",
@@ -3085,7 +3733,12 @@
     "credit": "Boundary data: Natural Resources Canada",
     "group": "Canada",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/territorial-evolution-canada.jpg?v=a310613ad303",
-    "captured": "2026-10-06"
+    "captured": "2026-10-06",
+    "grades": [
+      7
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The 1867–2003 timeline directly supports post-Confederation boundary changes."
   },
   {
     "id": "canada-through-time-expanded",
@@ -3103,8 +3756,7 @@
     ],
     "tags": [
       "Before 1600–2003",
-      "Digital colonial maps",
-      "Grades 4 & 7"
+      "Digital colonial maps"
     ],
     "url": "https://interactives.blackgold.ca/canada-through-time-expanded/",
     "links": [],
@@ -3112,7 +3764,13 @@
     "credit": "Sources: Atlas of Canada / Natural Resources Canada and historical references",
     "group": "Canada",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/canada-through-time-expanded.jpg?v=a479515856f0",
-    "captured": "2026-10-07"
+    "captured": "2026-10-07",
+    "grades": [
+      4,
+      7
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Earlier colonial maps support Grade 4; the Confederation and later timeline supports Grade 7. Early boundaries are generalized classroom reconstructions."
   },
   {
     "id": "ideologyscanner",
@@ -3134,7 +3792,12 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/ideologyscanner.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      8
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Individualism and collectivism are explicit in the new Grade 8 ideology study."
   },
   {
     "id": "culturalcontact",
@@ -3157,7 +3820,12 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/culturalcontact.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      4
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Pre-Confederation contact, colonization, trade and perspectives connect to Grade 4. Some branches discuss later impacts and need contextual teaching."
   },
   {
     "id": "governmentguide",
@@ -3191,7 +3859,14 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/governmentguide.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      2,
+      3,
+      6
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The simplified leader/service sorts support introducing the three levels, comparing Alberta governments and revisiting roles in Grade 6 democracy."
   },
   {
     "id": "governmentsystems",
@@ -3228,7 +3903,13 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/governmentsystems.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      2,
+      6
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The activity is labelled Grade 6 and explains democracy, the Crown and government roles; the level/leader sections also support Grade 2 introductions."
   },
   {
     "id": "albertamemory",
@@ -3251,7 +3932,12 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/albertamemory.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Alberta symbols and general Alberta knowledge support selected identity, land and government content; the quiz is review, not a complete grade assessment."
   },
   {
     "id": "albertamillionaire",
@@ -3273,7 +3959,12 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/albertamillionaire.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Alberta symbols and general Alberta knowledge support selected identity, land and government content; the quiz is review, not a complete grade assessment."
   },
   {
     "id": "knowledgespark",
@@ -3296,7 +3987,12 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/knowledgespark.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      4
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The built-in reading topics explicitly reference changes in Canada’s political boundaries and the formation of Canada."
   },
   {
     "id": "imagespark",
@@ -3319,7 +4015,10 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/imagespark.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Teacher-selected ideas, images, terms and questions determine the grade and subject. The comparison/discussion tool alone does not cover a curriculum outcome."
   },
   {
     "id": "venndiagram",
@@ -3341,7 +4040,10 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/venndiagram.jpg?v=3f26bef51324",
-    "captured": "2026-10-05"
+    "captured": "2026-10-05",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Teacher-selected ideas, images, terms and questions determine the grade and subject. The comparison/discussion tool alone does not cover a curriculum outcome."
   },
   {
     "id": "twotruths",
@@ -3363,7 +4065,10 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/twotruths.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Teacher-created or community-building content; choose prompts appropriate to the class. No fixed curriculum coverage is claimed."
   },
   {
     "id": "friendsquestions",
@@ -3385,7 +4090,10 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/friendsquestions.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Teacher-created or community-building content; choose prompts appropriate to the class. No fixed curriculum coverage is claimed."
   },
   {
     "id": "vidsscriptmaker",
@@ -3409,7 +4117,13 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/vidsscriptmaker.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      5,
+      6
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The built-in script source concerns particle theory, supporting Grade 5 models and Grade 6 heating/cooling explanations."
   },
   {
     "id": "docuclear",
@@ -3432,7 +4146,10 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/docuclear.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Access, communication and routine support across grade levels. These tools are not subject-content coverage."
   },
   {
     "id": "aacboard",
@@ -3454,7 +4171,10 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/aacboard.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Access, communication and routine support across grade levels. These tools are not subject-content coverage."
   },
   {
     "id": "yesnoboard",
@@ -3475,7 +4195,10 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/yesnoboard.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Access, communication and routine support across grade levels. These tools are not subject-content coverage."
   },
   {
     "id": "visualschedule",
@@ -3498,7 +4221,10 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/visualschedule.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Access, communication and routine support across grade levels. These tools are not subject-content coverage."
   },
   {
     "id": "beebot",
@@ -3521,7 +4247,14 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/beebot.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      1,
+      2,
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Planning, testing and revising movement-command sequences connect to early computer science. The games do not teach all coding/design expectations."
   },
   {
     "id": "codeandgo",
@@ -3544,7 +4277,14 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/codeandgo.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      1,
+      2,
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Planning, testing and revising movement-command sequences connect to early computer science. The games do not teach all coding/design expectations."
   },
   {
     "id": "talebot",
@@ -3566,7 +4306,14 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/talebot.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [
+      1,
+      2,
+      3
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Planning, testing and revising movement-command sequences connect to early computer science. The games do not teach all coding/design expectations."
   },
   {
     "id": "italianpractice",
@@ -3589,7 +4336,10 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/italianpractice.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Language proficiency and learner needs determine use. These are not direct matches to the requested English language arts workbook or an audited additional-language curriculum."
   },
   {
     "id": "spanishpractice",
@@ -3613,7 +4363,10 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/spanishpractice.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Language proficiency and learner needs determine use. These are not direct matches to the requested English language arts workbook or an audited additional-language curriculum."
   },
   {
     "id": "frenchpractice",
@@ -3636,7 +4389,10 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/frenchpractice.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Language proficiency and learner needs determine use. These are not direct matches to the requested English language arts workbook or an audited additional-language curriculum."
   },
   {
     "id": "englishlearning",
@@ -3658,7 +4414,10 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/englishlearning.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Language proficiency and learner needs determine use. These are not direct matches to the requested English language arts workbook or an audited additional-language curriculum."
   },
   {
     "id": "riverviewenglish",
@@ -3681,7 +4440,10 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/riverviewenglish.jpg",
-    "captured": "2026-10-04"
+    "captured": "2026-10-04",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Language proficiency and learner needs determine use. These are not direct matches to the requested English language arts workbook or an audited additional-language curriculum."
   },
   {
     "id": "walker-functions",
@@ -3720,7 +4482,14 @@
     "captured": "2026-10-05",
     "original_urls": [
       "https://sites.google.com/gshare.blackgold.ca/creatingfunctions/home"
-    ]
+    ],
+    "grades": [
+      6,
+      7,
+      8
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Input/output tables and rule predictions support Grade 6 functions, Grade 7 function representations and Grade 8 linear equations. The app does not cover every graphing expectation."
   },
   {
     "id": "walker-bridge",
@@ -3762,7 +4531,15 @@
     "captured": "2026-10-08",
     "original_urls": [
       "https://sites.google.com/gshare.blackgold.ca/bridgetester/home"
-    ]
+    ],
+    "grades": [
+      4,
+      5,
+      7,
+      8
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Grade 7 structures are the direct science fit. Grades 4–5 design and Grade 8 design testing are additional partial connections; the simulation is not a real structural engineering model."
   },
   {
     "id": "walker-plurals",
@@ -3801,6 +4578,14 @@
     "captured": "2026-10-05",
     "original_urls": [
       "https://sites.google.com/gshare.blackgold.ca/plural-practice/home"
-    ]
+    ],
+    "grades": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Regular s/es patterns fit Grades 1–2; irregular forms and complex plurals connect to Grades 3–4. Select the relevant pattern group."
   }
 ]
