@@ -4693,7 +4693,7 @@
     "title": "Vibration Station",
     "category": "Science",
     "group": "",
-    "description": "Pluck a string to explore high and low pitch, change drum loudness and compare how long sounds last. Interactive waveforms are sampled from the actual browser-generated audio.",
+    "description": "Explore how vibrating strings make low, middle and high pitches, how a drum strike changes volume, and how sounds can be short or long. See slow-motion physical vibration separately from live sound waveforms drawn from actual browser-generated audio.",
     "types": [
       "Simulations & models",
       "Decision games"
@@ -4706,13 +4706,15 @@
       "Volume",
       "Duration",
       "Real audio",
-      "Waveform"
+      "Waveform",
+      "String vibration",
+      "Sound waves"
     ],
     "url": "https://interactives.blackgold.ca/vibration-station/",
     "links": [],
     "favourite": false,
     "credit": "Engaging Students · Black Gold School Division",
-    "image": "images/vibration-station-20261023.webp?v=20261023-final",
+    "image": "images/vibration-station-20261023.webp?v=20261023-vibration3",
     "captured": "2026-10-23",
     "original_urls": [],
     "grades": [
