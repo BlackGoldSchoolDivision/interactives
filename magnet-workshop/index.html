@@ -190,7 +190,13 @@ function clearExperiment(){
  object.style.removeProperty('--contact-y');
  void object.offsetWidth;
  object.style.removeProperty('transition');
- $('leftKit').style.setProperty('--slide','0px');
+ // Place the cart at its exact starting coordinates before any new test.
+ // Otherwise a quick flip can measure a cart still sliding back from repulsion.
+ const cart=$('leftKit');
+ cart.style.transition='none';
+ cart.style.setProperty('--slide','0px');
+ void cart.offsetWidth;
+ cart.style.removeProperty('transition');
  $('stage').classList.remove('tested');
  $('forceBadge').hidden=true;
 }
