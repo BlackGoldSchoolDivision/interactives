@@ -20,7 +20,7 @@ const board=$('freeBoard'),magnet=$('freeMagnet'),table=$('freeObjects'),carry=$
 let active=false,holding=false,px=.52,py=.48,lastNonmag='',found=new Set();
 function move(x,y,test=true){
   const w=board.clientWidth,h=board.clientHeight;if(!w||!h)return;
-  x=Math.max(59,Math.min(w-59,x));y=Math.max(64,Math.min(h-122,y));
+  x=Math.max(55,Math.min(w-55,x));y=Math.max(58,Math.min(h-36,y));
   px=x/w;py=y/h;magnet.style.left=x+'px';magnet.style.top=y+'px';
   if(test)detect();
 }
@@ -80,7 +80,7 @@ function fromPointer(e){
  if(!active)return;
  if(e.pointerType!=='mouse'&&!holding)return;
  const b=board.getBoundingClientRect();
- move(e.clientX-b.left,e.clientY-b.top-(e.pointerType==='touch'?37:0));
+ move(e.clientX-b.left,e.clientY-b.top-(e.pointerType==='touch'?22:0));
 }
 board.addEventListener('pointerdown',e=>{
  if(!active)return;
