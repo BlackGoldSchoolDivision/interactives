@@ -4147,6 +4147,15 @@
       "reviewed": "2026-10-23",
       "rationale": "Alberta Grade 4 Science: investigate magnetism as a non-contact force, the attraction and repulsion of poles, the effect of distance, and selected magnetic materials. This is an illustrative, partial coverage of non-contact forces.",
       "alignments": []
+    },
+    "vibration-station": {
+      "grades": [
+        2
+      ],
+      "basis": "curriculum",
+      "reviewed": "2026-10-23",
+      "rationale": "Alberta Grade 2 Science: sound is made by vibrating objects. Explore pitch (high/low), volume (loud/quiet), and duration (short/long), plus sources of sound. A focused partial coverage of the Light and Sound learning outcome.",
+      "alignments": []
     }
   }
 }
