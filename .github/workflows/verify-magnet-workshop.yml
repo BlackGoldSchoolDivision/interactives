@@ -4,6 +4,7 @@ on:
     paths:
       - '.github/workflows/verify-magnet-workshop.yml'
       - 'magnet-workshop/index.html'
+      - 'magnet-workshop/freeplay.js'
   workflow_dispatch:
 permissions:
   contents: write
@@ -100,6 +101,44 @@ jobs:
             await page.screenshot({path:'/tmp/magnet-workshop-phone.png',fullPage:true});
             await page.setViewportSize({width:320,height:700});
             assert(!await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+2),'Unexpected horizontal overflow at 320px');
+            // Free Play: mouse hover magnet collects steel, not wood, and objects
+            // remain visibly attached as the cursor moves.
+            await page.setViewportSize({width:1440,height:900});
+            await page.locator('[data-mode="free"]').click();
+            assert(await page.locator('#freeLab').isVisible(),'Free Play panel not shown');
+            const sweep=async id=>{
+              const b=await page.locator('[data-free-item="'+id+'"] .specimen').boundingBox();
+              if(!b)throw Error('Missing scatter object '+id);
+              await page.mouse.move(b.x+b.width/2,b.y+b.height/2);
+              await page.waitForTimeout(80);
+            };
+            await sweep('pencil');
+            assert.equal(await page.locator('#freeCount').innerText(),'0 / 6','Pencil should not stick');
+            await sweep('clip');
+            assert(await page.locator('#freeCarry [data-free-item="clip"]').count(),'Paperclip should attach');
+            const first=await page.locator('#freeCarry [data-free-item="clip"]').boundingBox();
+            const boardBox=await page.locator('#freeBoard').boundingBox();
+            await page.mouse.move(boardBox.x+boardBox.width*.52,boardBox.y+boardBox.height*.5);
+            const second=await page.locator('#freeCarry [data-free-item="clip"]').boundingBox();
+            assert(Math.abs(second.x-first.x)>20,'Collected paperclip did not move with the magnet');
+            for(const id of ['bolt','pin','washer','tack','key'])await sweep(id);
+            assert.equal(await page.locator('#freeCount').innerText(),'6 / 6','All six steel objects should be collected');
+            await page.screenshot({path:'/tmp/magnet-free-play.png',animations:'disabled'});
+            await page.locator('#freeReset').click();
+            assert.equal(await page.locator('#freeCount').innerText(),'0 / 6','Reset should scatter the pieces');
+            assert.equal(await page.locator('#freeObjects .free-object').count(),12);
+            await page.locator('[data-mode="poles"]').click();
+            assert(await page.locator('#lesson').isVisible(),'Original experiment should return');
+            assert(!(await page.locator('#freeLab').isVisible()),'Free panel should be hidden');
+            await page.setViewportSize({width:390,height:844});
+            await page.locator('[data-mode="free"]').click();
+            assert(!await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+2),'Horizontal overflow in Free Play at 390px');
+            const key=await page.locator('#freeBoard').focus();
+            await page.keyboard.press('ArrowRight');
+            assert((await page.locator('#freeMagnet').evaluate(el=>parseFloat(el.style.left)))>60,'Arrow keyboard control');
+            await page.screenshot({path:'/tmp/magnet-free-phone.png',fullPage:true});
+            await page.setViewportSize({width:320,height:700});
+            assert(!await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+2),'Horizontal overflow in Free Play at 320px');
             assert.equal(errors.length,0,'Browser JS errors: '+errors.join(', '));
             await browser.close();console.log('Magnet Workshop passed poles, flip, force-distance, magnetic-object and mobile smoke tests');
           })().catch(e=>{console.error(e);process.exit(1)});
@@ -125,12 +164,20 @@ jobs:
           dest=Path('interactive-learning-lab/images/magnet-workshop-full-20261023.webp')
           out.save(dest,'WEBP',quality=88,method=6)
           print(dest,dest.stat().st_size)
+          for source,name in [('/tmp/magnet-free-play.png','free-play-desktop'),('/tmp/magnet-free-phone.png','free-play-phone')]:
+              img=Image.open(source).convert('RGB')
+              img.thumbnail((1000,1600),Image.Resampling.LANCZOS)
+              out=Path('magnet-workshop/validation')/(name+'.webp')
+              out.parent.mkdir(parents=True,exist_ok=True)
+              img.save(out,'WEBP',quality=88)
+              print(out,out.stat().st_size)
+
           PY
       - name: Publish screenshot and mobile QA artifact
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add interactive-learning-lab/images/magnet-workshop-full-20261023.webp magnet-workshop/validation/contact-*.webp
+          git add interactive-learning-lab/images/magnet-workshop-full-20261023.webp magnet-workshop/validation/contact-*.webp magnet-workshop/validation/free-play-*.webp
           if ! git diff --cached --quiet; then
             git commit -m 'Capture verified Magnet Workshop gameplay screenshot'
             git pull --rebase origin main
