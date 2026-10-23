@@ -106,6 +106,31 @@ jobs:
             await page.setViewportSize({width:1440,height:900});
             await page.locator('[data-mode="free"]').click();
             assert(await page.locator('#freeLab').isVisible(),'Free Play panel not shown');
+
+            // Verify that Free Play fits standard Chromebook / display viewports
+            // with no forced document scrolling, while preserving reachability.
+            for(const [w,h] of [[1440,900],[1366,768],[1280,720],[1024,768],[800,768]]){
+              await page.setViewportSize({width:w,height:h});
+              await page.waitForTimeout(100);
+              const metrics=await page.evaluate(()=>{
+                const board=document.querySelector('#freeBoard').getBoundingClientRect();
+                const nav=document.querySelector('.mode-nav').getBoundingClientRect();
+                const footer=document.querySelector('footer').getBoundingClientRect();
+                return {scrollHeight:document.documentElement.scrollHeight,
+                  viewHeight:innerHeight,boardHeight:board.height,boardBottom:board.bottom,
+                  navTop:nav.top,footerBottom:footer.bottom};
+              });
+              assert(metrics.scrollHeight<=h+5,'Free Play requires scrolling at '+w+'x'+h+': '+JSON.stringify(metrics));
+              assert(metrics.boardHeight>=260,'Board too short at '+w+'x'+h+': '+JSON.stringify(metrics));
+              assert(metrics.navTop>=metrics.boardBottom-1,'Navigation overlapping tabletop at '+w+'x'+h+': '+JSON.stringify(metrics));
+              assert(metrics.footerBottom<=h+3,'Footer not on screen at '+w+'x'+h+': '+JSON.stringify(metrics));
+              if(w===1366)await page.screenshot({path:'/tmp/magnet-fit-1366x768.png',animations:'disabled'});
+              if(w===1280)await page.screenshot({path:'/tmp/magnet-fit-1280x720.png',animations:'disabled'});
+            }
+            // Put it back in the roomy layout for the main interaction tests.
+            await page.setViewportSize({width:1440,height:900});
+            await page.waitForTimeout(100);
+
             const sweep=async id=>{
               const b=await page.locator('[data-free-item="'+id+'"] .specimen').boundingBox();
               if(!b)throw Error('Missing scatter object '+id);
@@ -173,6 +198,12 @@ jobs:
           dest=Path('interactive-learning-lab/images/magnet-workshop-full-20261023.webp')
           out.save(dest,'WEBP',quality=88,method=6)
           print(dest,dest.stat().st_size)
+          for source,name in [('/tmp/magnet-fit-1366x768.png','free-play-fit-1366x768'),('/tmp/magnet-fit-1280x720.png','free-play-fit-1280x720')]:
+              img=Image.open(source).convert('RGB')
+              img.thumbnail((1100,850),Image.Resampling.LANCZOS)
+              out=Path('magnet-workshop/validation')/(name+'.webp')
+              img.save(out,'WEBP',quality=87)
+              print(out,out.stat().st_size)
           for source,name in [('/tmp/magnet-free-play.png','free-play-desktop'),('/tmp/magnet-free-phone.png','free-play-phone')]:
               img=Image.open(source).convert('RGB')
               img.thumbnail((1000,1600),Image.Resampling.LANCZOS)
@@ -186,7 +217,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add interactive-learning-lab/images/magnet-workshop-full-20261023.webp magnet-workshop/validation/contact-*.webp magnet-workshop/validation/free-play-*.webp
+          git add interactive-learning-lab/images/magnet-workshop-full-20261023.webp magnet-workshop/validation/contact-*.webp magnet-workshop/validation/free-play-*.webp magnet-workshop/validation/free-play-fit-*.webp
           if ! git diff --cached --quiet; then
             git commit -m 'Capture verified Magnet Workshop gameplay screenshot'
             git pull --rebase origin main
