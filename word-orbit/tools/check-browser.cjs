@@ -58,9 +58,9 @@ const dir=path.join(__dirname,'..','validation');fs.mkdirSync(dir,{recursive:tru
   const later=await page.locator('.bubble').first().getAttribute('data-part');assert.notEqual(first,later);assert.equal(await current(),'play');
   // A second family checks final-e spelling, meanings and preservation when
   // moving between bases. All interactions use the visible controls.
-  await page.locator('#newBase').click();await page.locator('.family-choice').filter({hasText:/^care\b/}).click();
+  await page.locator('#newBase').click();await page.locator('.family-choice[data-family=care]').click();
   await add('ing');assert.equal(await current(),'caring');assert((await page.locator('#meaning').innerText()).includes('Drop the final e'));
-  await page.locator('#newBase').click();await page.locator('.family-choice').filter({hasText:/^kind\b/}).click();
+  await page.locator('#newBase').click();await page.locator('.family-choice[data-family=kind]').click();
   const d=M.decks.find(x=>x.base==='kind');
   for(const target of d.words){
     const from=d.nodes.find(n=>d.edges.get(n.word).some(e=>e.to===target.word));
@@ -70,7 +70,7 @@ const dir=path.join(__dirname,'..','validation');fs.mkdirSync(dir,{recursive:tru
   }
   await page.locator('#familyDialog').waitFor({state:'visible'});assert.equal(await page.locator('#familyTitle').innerText(),'Word family complete!');
   for(const [width,height] of [[1366,650],[320,568]]){await page.setViewportSize({width,height});await page.screenshot({path:path.join(dir,'complete-'+width+'.png'),fullPage:true});const r=await page.locator('#familyDialog').boundingBox();assert(r.width<=width&&r.height<=height,'Completion dialog must fit');}
-  await page.locator('.family-choice').filter({hasText:/^play\b/}).click();assert.equal(await page.locator('#count').innerText(),'4 / 16');
+  await page.locator('.family-choice[data-family=play]').click();assert.equal(await page.locator('#count').innerText(),'4 / 16');
   // Download a complete copy, cut off every network request, and actually play.
   const promise=page.waitForEvent('download');await page.locator('#makeOwn').click();const download=await promise;const file=path.join(dir,'offline-test.html');await download.saveAs(file);
   const html=fs.readFileSync(file,'utf8');assert(html.includes('data:image/webp;base64,'));assert(!/<script[^>]+src=/.test(html));assert(!/<link[^>]+rel="stylesheet"/.test(html));
