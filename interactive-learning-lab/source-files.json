@@ -9871,12 +9871,16 @@
     ],
     "BlackGoldSchoolDivision/interactives/word-orbit": [
       {
+        "path": "word-orbit/CURRICULUM-REVIEW.md",
+        "bytes": 3990
+      },
+      {
         "path": "word-orbit/README.md",
-        "bytes": 2690
+        "bytes": 3280
       },
       {
         "path": "word-orbit/app.js",
-        "bytes": 15206
+        "bytes": 15408
       },
       {
         "path": "word-orbit/assets/space.webp",
@@ -9888,11 +9892,11 @@
       },
       {
         "path": "word-orbit/index.html",
-        "bytes": 7333
+        "bytes": 8169
       },
       {
         "path": "word-orbit/model.js",
-        "bytes": 3484
+        "bytes": 3788
       },
       {
         "path": "word-orbit/style.css",
@@ -9900,15 +9904,15 @@
       },
       {
         "path": "word-orbit/tools/check-browser.cjs",
-        "bytes": 8607
+        "bytes": 10722
       },
       {
         "path": "word-orbit/tools/check-model.cjs",
-        "bytes": 2629
+        "bytes": 3988
       },
       {
         "path": "word-orbit/words.js",
-        "bytes": 5175
+        "bytes": 16200
       }
     ]
   },

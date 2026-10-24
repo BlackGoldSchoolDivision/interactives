@@ -45,7 +45,10 @@
     const rotated=ordered.length?ordered.slice(wave%ordered.length).concat(ordered.slice(0,wave%ordered.length)):[];
     const chosen=rotated.slice(0,4).map(e=>({text:e.text,side:e.side}));
     // Do not let rotation hide every route to an undiscovered word.
-    for(let i=0;i<2;i++)chosen.push({text:decoys[(wave+i)%decoys.length],side:'suffix'});
+    // -ous, for example, is useful in dangerous. It must not turn into a
+    // decoy just because its valid edge falls outside the current wave.
+    const availableDecoys=decoys.filter(text=>!all.some(e=>e.side==='suffix'&&e.text===text));
+    for(let i=0;i<Math.min(2,availableDecoys.length);i++)chosen.push({text:availableDecoys[(wave+i)%availableDecoys.length],side:'suffix',decoy:true});
     return chosen.filter((p,i,a)=>a.findIndex(q=>affixKey(q)===affixKey(p))===i);
   }
   return {decks,create,deck,node,total,complete,reset,switchFamily,resume,attempt,candidates,hasNew,affixKey};

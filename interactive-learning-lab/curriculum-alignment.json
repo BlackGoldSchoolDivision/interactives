@@ -4168,14 +4168,112 @@
     },
     "word-orbit": {
       "grades": [
+        1,
         2,
         3,
-        4
+        4,
+        5,
+        6
       ],
-      "basis": "enrichment",
+      "basis": "curriculum",
       "reviewed": "2026-10-24",
-      "rationale": "Suggested for Grades 2–4 word-family exploration; Grade 1 learners can explore familiar words with adult support. Longer chains and abstract meanings require instruction. This focused game is not a complete audited curriculum match.",
-      "alignments": []
+      "rationale": "Focused, partial ELAL 1–6 practice: plural and tense endings, comparisons, meaningful prefixes, person-naming and adjective endings, and later derivations such as -ment, -ity, -ance, -ence, -en and -ize. The bank includes the spreadsheet’s pony–ponies and leaf–leaves examples. Choose familiar families with adult support for early readers; this is not complete coverage of every affix or outcome.",
+      "alignments": [
+        {
+          "source": "elal16",
+          "grade": 1,
+          "sheet": "Grade 1",
+          "rows": [
+            121,
+            123,
+            124,
+            130,
+            132,
+            133
+          ],
+          "topic": "Bases, plurals and past-action endings",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            123,
+            124,
+            126,
+            130,
+            131,
+            132
+          ],
+          "topic": "Word families, action endings and comparisons",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            147,
+            148,
+            149,
+            150,
+            151,
+            152,
+            156,
+            157,
+            158,
+            356,
+            364,
+            369
+          ],
+          "topic": "Meaningful affixes, person-naming endings and named plural spellings",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 4,
+          "sheet": "Grade 4",
+          "rows": [
+            140,
+            143,
+            145,
+            146,
+            147,
+            336,
+            341
+          ],
+          "topic": "Adjective-forming and common suffixes",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            138,
+            140,
+            145,
+            331,
+            337
+          ],
+          "topic": "Named affixes and derivational spelling",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            134,
+            135,
+            144,
+            322
+          ],
+          "topic": "Affix derivation and spelling",
+          "coverage": "partial"
+        }
+      ]
     }
   }
 }

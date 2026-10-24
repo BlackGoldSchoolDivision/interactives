@@ -22,7 +22,7 @@ for(let i=0;i<M.decks.length;i++){
       const candidates=M.candidates(s,wave);assert(candidates.length<=6);
       assert.equal(new Set(candidates.map(M.affixKey)).size,candidates.length);
       if(d.edges.get(n.word).length)assert(candidates.some(p=>d.edges.get(n.word).some(e=>M.affixKey(e)===M.affixKey(p))),'Every wave preserves a useful match');
-      for(const p of candidates)if(['tion','ous','ify'].includes(p.text))assert(!d.edges.get(n.word).some(e=>M.affixKey(e)===M.affixKey(p)),'A decoy cannot hide a supported word');
+      for(const p of candidates)if(p.decoy)assert(!d.edges.get(n.word).some(e=>M.affixKey(e)===M.affixKey(p)),'A decoy cannot hide a supported word');
     }
   }
   s=M.create();M.switchFamily(s,i);
@@ -32,4 +32,26 @@ for(let i=0;i<M.decks.length;i++){
   assert(M.complete(s));assert.equal(s.score,d.words.length*10);assert(!M.hasNew(d,d.base,s.found[i]));
   words+=d.words.length;
 }
-console.log('Passed: '+words+' reachable words, chained affixes, branch completion, score integrity, decoys, spelling changes, and fair incoming waves.');
+const examples=[
+  ['box',[part('es')],'boxes'],
+  ['pony',[part('es')],'ponies'],
+  ['leaf',[part('es')],'leaves'],
+  ['jump',[part('y'),part('er')],'jumpier'],
+  ['read',[part('able'),part('ity')],'readability'],
+  ['art',[part('ist')],'artist'],
+  ['act',[part('or')],'actor'],
+  ['agree',[part('dis','prefix'),part('ment')],'disagreement'],
+  ['hero',[part('super','prefix'),part('es')],'superheroes'],
+  ['music',[part('ian')],'musician'],
+  ['danger',[part('ous'),part('ly')],'dangerously'],
+  ['assist',[part('ant')],'assistant'],
+  ['depend',[part('ent'),part('in','prefix'),part('ly')],'independently'],
+  ['dark',[part('en'),part('ing')],'darkening'],
+  ['modern',[part('ize'),part('ation')],'modernization'],
+  ['flex',[part('ible'),part('ity')],'flexibility']
+];
+for(const [base,parts,expected] of examples){s=M.create();M.switchFamily(s,M.decks.findIndex(d=>d.base===base));for(const p of parts)assert(M.attempt(s,p).ok,base+' must accept '+p.text);assert.equal(s.current,expected);assert.equal(s.score,parts.length*10);}
+s=M.create();M.switchFamily(s,M.decks.findIndex(d=>d.base==='danger'));
+for(let wave=0;wave<20;wave++)assert(!M.candidates(s,wave).some(p=>p.text==='ous'&&p.decoy),'-ous must never be a decoy when dangerous can be made');
+assert(M.attempt(s,part('ous')).ok);assert.equal(s.score,10);
+console.log('Passed: '+words+' reachable words in '+M.decks.length+' families, curriculum examples, chained affixes, branch completion, score integrity, context-sensitive decoys, spelling changes, and fair incoming waves.');

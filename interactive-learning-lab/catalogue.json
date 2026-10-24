@@ -398,7 +398,7 @@
     "repo": "division",
     "title": "Word Orbit",
     "category": "Morphology",
-    "description": "Drag floating prefixes and suffixes onto a base word. Collect 75 words across six families, extend replay into replaying, and watch completed branches pop back to the base. Decoys cost points; new discoveries earn stars.",
+    "description": "Drag floating prefixes and suffixes onto a base word. Collect 213 words across 23 families, from pony → ponies to readable → readability. Grow word chains, learn spelling changes, and watch completed branches pop back to the base.",
     "types": [
       "Word work",
       "Builders",
@@ -422,12 +422,15 @@
     "captured": "2026-10-24",
     "original_urls": [],
     "grades": [
+      1,
       2,
       3,
-      4
+      4,
+      5,
+      6
     ],
-    "grade_basis": "enrichment",
-    "grade_note": "Suggested for Grades 2–4 word-family exploration; Grade 1 learners can explore familiar words with adult support. Longer chains and abstract meanings require instruction. This focused game is not a complete audited curriculum match."
+    "grade_basis": "curriculum",
+    "grade_note": "Focused, partial ELAL 1–6 practice: plural and tense endings, comparisons, meaningful prefixes, person-naming and adjective endings, and later derivations such as -ment, -ity, -ance, -ence, -en and -ize. The bank includes the spreadsheet’s pony–ponies and leaf–leaves examples. Choose familiar families with adult support for early readers; this is not complete coverage of every affix or outcome."
   },
   {
     "id": "alphabetcards",

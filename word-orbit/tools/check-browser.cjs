@@ -71,6 +71,19 @@ const dir=path.join(__dirname,'..','validation');fs.mkdirSync(dir,{recursive:tru
   await page.locator('#familyDialog').waitFor({state:'visible'});assert.equal(await page.locator('#familyTitle').innerText(),'Word family complete!');
   for(const [width,height] of [[1366,650],[320,568]]){await page.setViewportSize({width,height});await page.screenshot({path:path.join(dir,'complete-'+width+'.png'),fullPage:true});const r=await page.locator('#familyDialog').boundingBox();assert(r.width<=width&&r.height<=height,'Completion dialog must fit');}
   await page.locator('.family-choice[data-family=play]').click();assert.equal(await page.locator('#count').innerText(),'4 / 16');
+  // Curriculum examples: the two named spelling pairs, useful affixes across
+  // Grades 1–6, and long words must work through the same visible controls.
+  await page.setViewportSize({width:320,height:568});
+  async function choose(base){if(!await page.locator('#familyDialog').isVisible())await page.locator('#newBase').click();await page.locator('.family-choice[data-family="'+base+'"]').click();await ready();}
+  await choose('pony');await add('es');assert.equal(await current(),'ponies');assert((await page.locator('#meaning').innerText()).includes('y to i'));
+  await page.locator('#familyDialog').waitFor({state:'visible'});await choose('leaf');await add('es');assert.equal(await current(),'leaves');assert((await page.locator('#meaning').innerText()).includes('f to v'));
+  await choose('read');await add('able');await add('ity');assert.equal(await current(),'readability');assert((await page.locator('#meaning').innerText()).includes('-abil-'));
+  const longWord=await page.locator('#word').evaluate(el=>({word:el.scrollWidth,core:document.querySelector('#core').getBoundingClientRect().width}));assert(longWord.word<=longWord.core*.88,'Long new words must fit on phones');
+  await choose('flex');await add('ible');await add('ity');assert.equal(await current(),'flexibility');assert((await page.locator('#meaning').innerText()).includes('-ibil-'));
+  await choose('danger');const dangerScore=Number(await page.locator('#score').innerText());await add('ous');assert.equal(await current(),'dangerous');assert.equal(Number(await page.locator('#score').innerText()),dangerScore+10,'A valid -ous match must earn points');await add('ly');assert.equal(await current(),'dangerously');
+  await choose('dark');await add('en');await add('ing');assert.equal(await current(),'darkening');await page.waitForFunction(()=>document.querySelector('#word').textContent==='dark');
+  await choose('modern');await add('ize');await add('ing');assert.equal(await current(),'modernizing');
+  await page.screenshot({path:path.join(dir,'curriculum-phone.png'),fullPage:true});
   // Download a complete copy, cut off every network request, and actually play.
   const promise=page.waitForEvent('download');await page.locator('#makeOwn').click();const download=await promise;const file=path.join(dir,'offline-test.html');await download.saveAs(file);
   const html=fs.readFileSync(file,'utf8');assert(html.includes('data:image/webp;base64,'));assert(!/<script[^>]+src=/.test(html));assert(!/<link[^>]+rel="stylesheet"/.test(html));
@@ -78,5 +91,5 @@ const dir=path.join(__dirname,'..','validation');fs.mkdirSync(dir,{recursive:tru
   // Touch input must trigger one match, and dragging to empty space is harmless.
   const touch=await browser.newContext({viewport:{width:390,height:667},hasTouch:true});const phone=await touch.newPage();await phone.goto(origin+'/word-orbit/');await phone.locator('[data-part="prefix:re"]').tap();assert.equal(await phone.locator('#word').innerText(),'replay');assert.equal(await phone.locator('#score').innerText(),'10');
   assert.deepEqual(errors,[],'Runtime errors');fs.unlinkSync(file);await browser.close();
-  console.log('Passed actual dragging, touch and keyboard input, chained words, paused returns, score integrity, incoming waves, seven responsive sizes, final-e spelling, completed families and offline play.');
+  console.log('Passed actual dragging, touch and keyboard input, chained words, paused returns, score integrity, incoming waves, seven responsive sizes, curriculum spelling examples, valid -ous matches, long words on phones, completed families and offline play.');
 })().catch(e=>{console.error(e);process.exit(1);});
