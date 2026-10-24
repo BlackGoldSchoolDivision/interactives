@@ -1,0 +1,68 @@
+name: Verify Word Orbit and capture classroom preview
+on:
+  push:
+    paths:
+      - '.github/workflows/verify-word-orbit.yml'
+      - 'word-orbit/index.html'
+      - 'word-orbit/style.css'
+      - 'word-orbit/app.js'
+      - 'word-orbit/model.js'
+      - 'word-orbit/words.js'
+      - 'word-orbit/assets/**'
+      - 'word-orbit/tools/**'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: word-orbit-checks
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Install browser check requirements
+        run: |
+          npm install --no-save playwright-core@1.55.0
+          python -m pip install Pillow
+      - name: Check game logic
+        run: |
+          node --check word-orbit/app.js
+          node --check word-orbit/model.js
+          node --check word-orbit/words.js
+          node word-orbit/tools/check-model.cjs
+      - name: Check actual browser play
+        run: |
+          python -m http.server 8765 --bind 127.0.0.1 >/tmp/word-orbit-web.log 2>&1 &
+          sleep 2
+          node word-orbit/tools/check-browser.cjs
+      - name: Prepare screenshots
+        run: |
+          python - <<'PY'
+          from PIL import Image,ImageOps
+          from pathlib import Path
+          p=Path('word-orbit/validation')
+          for f in p.glob('*.png'):
+              im=Image.open(f).convert('RGB')
+              im.save(f.with_suffix('.webp'),'WEBP',quality=84,method=6)
+              f.unlink()
+          target=Path('interactive-learning-lab/images/word-orbit-20261024.webp')
+          target.parent.mkdir(parents=True,exist_ok=True)
+          im=Image.open(p/'desktop.webp').convert('RGB')
+          ImageOps.pad(im,(600,450),color='#101642').save(target,'WEBP',quality=85,method=6)
+          PY
+      - name: Save verified classroom screenshots
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add word-orbit/validation/*.webp interactive-learning-lab/images/word-orbit-20261024.webp
+          if ! git diff --cached --quiet; then
+            git commit -m "Capture verified Word Orbit classroom previews"
+            git pull --rebase origin main
+            git push
+          fi
