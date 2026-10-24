@@ -4156,6 +4156,26 @@
       "reviewed": "2026-10-23",
       "rationale": "Alberta Grade 2 Science: sound is made by vibrating objects. Explore pitch (high/low), volume (loud/quiet), and duration (short/long), plus sources of sound. A focused partial coverage of the Light and Sound learning outcome.",
       "alignments": []
+    },
+    "bend-stretch-change": {
+      "grades": [
+        1
+      ],
+      "basis": "curriculum",
+      "reviewed": "2026-10-23",
+      "rationale": "Grade 1 Science: observable material properties and changes in shape under gentle forces. This focused, illustrative investigation does not cover the full materials learning outcomes.",
+      "alignments": []
+    },
+    "word-orbit": {
+      "grades": [
+        2,
+        3,
+        4
+      ],
+      "basis": "enrichment",
+      "reviewed": "2026-10-24",
+      "rationale": "Suggested for Grades 2–4 word-family exploration; Grade 1 learners can explore familiar words with adult support. Longer chains and abstract meanings require instruction. This focused game is not a complete audited curriculum match.",
+      "alignments": []
     }
   }
 }

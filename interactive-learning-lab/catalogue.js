@@ -30,7 +30,7 @@ const subjects = [
   {label:'Thinking tools',category:'Thinking tools',id:'thinkingroutines',colour:'#9651ac',ink:'#fff'}
 ];
 const featuredOrder = ['vocabularyarcade','mackwoodmapping','numberbuilding','moonphases','writerspark','thinking-dialogue'];
-const writingOrder = ['writerspark','infospark','vocabularyarcade','rootwords','wordworks'];
+const writingOrder = ['writerspark','infospark','vocabularyarcade','rootwords','wordworks','word-orbit'];
 const thinkingOrder = ['thinking-dialogue','thinkingroutines','imagespark','venndiagram','hexthinker','asctriangle','frayermodel'];
 const scienceOrder = ['science-practice-lab','moonphases','dinodig','walker-bridge','bend-stretch-change','magnet-workshop','vibration-station'];
 let chosen = 'Favourites', chosenGroup = 'All geography', chosenType = 'All types', chosenGrade = 'all', query = '';
@@ -170,6 +170,3 @@ document.getElementById('focus-search').addEventListener('click', () => { search
 // A failed screenshot stays clearly labelled; never substitute invented game imagery.
 document.addEventListener('error', e => { if (e.target instanceof HTMLImageElement) { e.target.hidden = true; const parent = e.target.parentElement; if (!parent.querySelector('.preview-unavailable')) { const label = document.createElement('span'); label.className = 'preview-unavailable'; label.textContent = 'Preview unavailable'; parent.appendChild(label); } } }, true);
 render();
-
-
-
