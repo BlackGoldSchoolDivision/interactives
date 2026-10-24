@@ -6,6 +6,8 @@ on:
       - 'vibration-station/index.html'
       - 'vibration-station/style.css'
       - 'vibration-station/app.js'
+      - 'vibration-station/model.js'
+      - 'vibration-station/tools/check-science.cjs'
       - 'vibration-station/assets/string-box.webp'
   workflow_dispatch:
 permissions:
@@ -30,6 +32,8 @@ jobs:
       - name: Verify syntax
         run: |
           node --check vibration-station/app.js
+          node --check vibration-station/model.js
+          node vibration-station/tools/check-science.cjs
           test -s vibration-station/assets/string-box.webp
       - name: Run sound and layout tests
         run: |
@@ -42,10 +46,18 @@ jobs:
             const browser=await chromium.launch({headless:true,executablePath:'/usr/bin/google-chrome',args:['--no-sandbox','--autoplay-policy=no-user-gesture-required']});
             const page=await browser.newPage({viewport:{width:1440,height:900},deviceScaleFactor:1});
             const errors=[];page.on('pageerror',e=>errors.push(e.message));
+            await page.addInitScript(()=>{
+              window.__qaAnalysers=[];
+              const Original=window.AudioContext;
+              window.AudioContext=class extends Original{
+                createAnalyser(){const a=super.createAnalyser();window.__qaAnalysers.push(a);window.__qaSampleRate=this.sampleRate;return a;}
+              };
+            });
             await page.goto('http://127.0.0.1:8765/vibration-station/',{waitUntil:'networkidle'});
             assert.equal(await page.locator('h1').innerText(),'Vibration Station');
             const image=await page.request.get('http://127.0.0.1:8765/vibration-station/assets/string-box.webp');
             assert(image.ok(),'Photographic box instrument missing');
+            await page.locator('#signalDetails summary').click();
             await page.locator('#pluck').click();await page.waitForTimeout(180);
             assert((await page.locator('#response').innerText()).includes('vibrations each second'));
             // Actual recorded waveform pixels must leave the centre line.
@@ -56,8 +68,10 @@ jobs:
               return {count,w,h};
             });
             assert(realWave.count>20,'String waveform did not render sampled audio: '+JSON.stringify(realWave));
+            assert.equal(await page.locator('#wave0').getAttribute('data-window-ms'),'12');
+            await page.locator('#signalDetails summary').click();
 
-            // Three string pitches must really differ at the same tension,
+            // Identical strings must match at the same tension,
             // and their physical slow-motion diagram must be rendered separately.
             await page.locator('#tension').evaluate(el=>{el.value='50';el.dispatchEvent(new Event('input',{bubbles:true}));});
             const stringFrequencies=[];
@@ -65,10 +79,41 @@ jobs:
               await page.locator('#stringControls .pick[data-string="'+i+'"]').click();
               const hz=Number(await page.locator('#physicalString').getAttribute('data-vibration-hz'));
               stringFrequencies.push(hz);
-              await page.waitForTimeout(70);
+              await page.waitForTimeout(120);
+              const measured=await page.evaluate(i=>{
+                const a=window.__qaAnalysers[i],samples=new Float32Array(a.fftSize);a.getFloatTimeDomainData(samples);
+                const crossings=[];
+                for(let j=1;j<samples.length;j++)if(samples[j-1]<=0&&samples[j]>0)crossings.push(j-1-samples[j-1]/(samples[j]-samples[j-1]));
+                return (crossings.length-1)*window.__qaSampleRate/(crossings.at(-1)-crossings[0]);
+              },i);
+              assert(Math.abs(measured-hz)<hz*.01,'Sampled audio pitch does not match model: '+JSON.stringify({hz,measured}));
+              const slowed=Number(await page.locator('#physicalString').getAttribute('data-slowed-hz'));
+              assert(Math.abs(slowed-hz/220)<.001,'Replay must preserve the same slow-motion factor');
             }
-            assert(stringFrequencies[1]>stringFrequencies[0]*1.85,'Yellow pitch should be clearly higher than red: '+stringFrequencies);
-            assert(stringFrequencies[2]>stringFrequencies[1]*1.85,'Blue pitch should be clearly higher than yellow: '+stringFrequencies);
+            assert.deepEqual(stringFrequencies,[440,440,440],'Matching strings at the same tension must match');
+            // Tune only red. Other strings must keep their own 440 Hz settings.
+            await page.locator('#stringControls .pick[data-string="0"]').click();
+            await page.locator('#tension').evaluate(el=>{el.value='0';el.dispatchEvent(new Event('input',{bubbles:true}));});
+            await page.locator('#pluck').click();
+            assert.equal(await page.locator('#physicalString').getAttribute('data-vibration-hz'),'220');
+            await page.locator('#stringControls .pick[data-string="1"]').click();
+            assert.equal(await page.locator('#physicalString').getAttribute('data-vibration-hz'),'440');
+            assert.equal(await page.locator('#tension').inputValue(),'50');
+            await page.locator('#stringControls .pick[data-string="2"]').click();
+            assert.equal(await page.locator('#physicalString').getAttribute('data-vibration-hz'),'440');
+            await page.locator('#tension').evaluate(el=>{el.value='100';el.dispatchEvent(new Event('input',{bubbles:true}));});
+            await page.locator('#pluck').click();
+            assert.equal(await page.locator('#physicalString').getAttribute('data-vibration-hz'),'880');
+            await page.locator('#stringControls .pick[data-string="0"]').click();
+            assert.equal(await page.locator('#physicalString').getAttribute('data-vibration-hz'),'220','Red tuning must be preserved');
+            for(let i=0;i<3;i++){
+              await page.locator('#stringControls .pick[data-string="'+i+'"]').click();
+              await page.locator('#tension').evaluate(el=>{el.value='50';el.dispatchEvent(new Event('input',{bubbles:true}));});
+            }
+            await page.locator('#pluck').click();
+            assert.equal(await page.locator('#airParticles').getAttribute('data-sound-speed'),'343');
+            const air=await page.locator('#airParticles').evaluate(el=>({w:el.width,h:el.height,drawn:el.getContext('2d').getImageData(0,0,el.width,el.height).data.some((v,i)=>i%4===3&&v>0)}));
+            assert(air.w>0&&air.h>0&&air.drawn,'Longitudinal air model is missing');
             const physical=await page.locator('#physicalString').evaluate(el=>{
               const pixels=el.getContext('2d').getImageData(0,0,el.width,el.height).data;
               return {width:el.width,nonempty:pixels.some((a,i)=>i%4===3&&a>0)};
@@ -135,12 +180,17 @@ jobs:
             assert((await page.locator('#huntName').innerText())==='Bell');
             await page.screenshot({path:'/tmp/vibration-hunt.png',animations:'disabled'});
             await page.locator('[data-mode="strings"]').click();
-            for(const [w,h] of [[1440,900],[1366,768],[1280,720],[1024,768],[390,844],[320,700]]){
+            for(const [w,h] of [[1440,900],[1366,768],[1280,720],[1024,540],[1366,650],[768,900],[390,667],[320,568],[640,360]]){
               await page.setViewportSize({width:w,height:h});
               await page.waitForTimeout(100);
               const metrics=await page.evaluate(()=>({width:document.documentElement.scrollWidth,viewport:innerWidth,height:document.documentElement.scrollHeight,innerHeight}));
               assert(metrics.width<=w+2,'Unexpected horizontal scrolling '+w+'x'+h+': '+JSON.stringify(metrics));
-              if(w>=1024)assert(metrics.height<=h+10,'Desktop requires vertical scrolling '+w+'x'+h+': '+JSON.stringify(metrics));
+              // Short screens may scroll; controls must stay reachable and selections survive.
+              assert.equal(await page.locator('#physicalString').getAttribute('data-vibration-hz'),'766');
+              const shortControls=await page.locator('button,input[type=range]').evaluateAll(els=>els.filter(e=>e.getClientRects().length&&e.getBoundingClientRect().height<43.9).map(e=>e.id||e.textContent));
+              assert.deepEqual(shortControls,[],'Touch controls below 44px at '+w+'x'+h);
+              await page.locator('#pluck').scrollIntoViewIfNeeded();
+              assert(await page.locator('#pluck').isVisible(),'Pluck must remain reachable');
               if(w===390)await page.screenshot({path:'/tmp/vibration-phone.png',fullPage:true,animations:'disabled'});
             }
             // Verify that "Make it my own" exports a standalone HTML with
@@ -154,11 +204,19 @@ jobs:
             const offline=require('node:fs').readFileSync(dl,'utf8');
             assert(offline.includes('data:image/webp;base64,'),'Offline copy should embed artwork');
             assert(offline.includes('createAnalyser'),'Offline copy should embed the real waveform engine');
+            assert(offline.includes('particleDisplacement'),'Offline copy must embed the physical model');
+            assert(!offline.includes('src="./model.js'),'Offline copy must not fetch the model');
+            const offlinePage=await browser.newPage();
+            await offlinePage.route('**/*',route=>route.abort());
+            await offlinePage.setContent(offline,{waitUntil:'domcontentloaded'});
+            await offlinePage.locator('#stringControls .pick[data-string="1"]').click();
+            assert((await offlinePage.locator('#response').innerText()).includes('vibrations each second'),'Downloaded activity should work without network access');
+            await offlinePage.close();
             assert(!offline.includes('src="./app.js'),'Offline copy should not depend on external scripts');
             assert(offline.includes('<style>'),'Offline copy should embed its styles');
             await page.locator('#closeTeacher').click();
             assert.deepEqual(errors,[],'Runtime JavaScript errors');
-            await browser.close();console.log('Passed Grade 2 pitch, volume, duration, sampled waveform and responsive tests');
+            await browser.close();console.log('Passed science invariants, sampled audio pitch, slow motion, longitudinal air, offline copy, and responsive tests');
           })().catch(e=>{console.error(e);process.exit(1)});
           JS
       - name: Capture Lab thumbnail and validation screenshots
@@ -191,3 +249,4 @@ jobs:
           git commit -m 'Capture tested Vibration Station gameplay and Lab screenshot'
           git pull --rebase origin main
           git push origin main
+

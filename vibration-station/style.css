@@ -133,3 +133,34 @@
  .end-label{font-size:8px}
  .movement-caption{font-size:11px}
 }
+
+/* v5: distinguish physical vibration, longitudinal sound, and signal graphs. */
+.movement-title{flex-wrap:wrap}.movement-mode{white-space:normal}
+.movement-caption small{display:block;margin-top:5px;font-size:10px;line-height:1.35;color:#52738d;font-weight:800}
+.sound-lab-heading strong{white-space:normal;letter-spacing:.035em}
+#airParticles{width:100%;height:99px;display:block;background:#071d34;border:1px solid #8db5ce3b;border-radius:10px}
+.air-caption{display:flex;justify-content:space-between;gap:9px;flex-wrap:wrap;font-size:10px;padding:5px 3px 0;font-weight:800;color:#d4e7f1}
+.air-caption span:last-child{color:#a3bbc9}
+.signal-details{margin-top:7px;border-top:1px solid #79afd137;padding-top:5px}
+.signal-details summary{cursor:pointer;font-size:11px;font-weight:1000;padding:8px 4px;min-height:35px;color:#d1e5f0}
+.signal-details summary span{font-size:9px;font-weight:800;color:#b4ccd9;margin-left:7px}
+.signal-explanation{font-size:10px;line-height:1.4;color:#b4ccd9;margin:0 4px 7px}
+.signal-axis{display:flex;justify-content:space-between;gap:6px;padding:5px 3px 0;font-size:9px;color:#aec5d9;font-weight:900}
+.signal-axis span{text-align:right}.string-picks .pick{min-height:44px}
+.source-button{min-height:44px}.drum-head.hit{animation:none}
+.drum-vibration{inset:10%;border:0;background:radial-gradient(ellipse,#fff9e5bb,#b7a08144 67%,transparent 69%);opacity:0;transform:none}
+.drum-head.hit .drum-vibration{animation:membrane-strike .5s ease-out}
+@keyframes membrane-strike{0%{opacity:.9;transform:translateY(0)}15%{opacity:.85;transform:translateY(var(--strike-motion,4px))}35%{opacity:.65;transform:translateY(calc(-1 * var(--strike-motion,4px)))}60%{opacity:.4;transform:translateY(calc(.5 * var(--strike-motion,4px)))}100%{opacity:0;transform:translateY(0)}}
+@media(min-width:801px){.showcase .photo-panel{min-height:125px}.control-card{min-height:0}.showcase:has(.signal-details[open]){overflow:auto}}
+@media(min-width:801px) and (max-height:700px){
+ .shell{height:auto;min-height:100dvh}.work-area{align-items:stretch}.showcase .photo-panel{min-height:210px;flex-basis:210px}
+ .movement-lab{padding:6px 9px}.movement-graphic canvas{height:52px}.control-card{overflow:visible}
+ .top{min-height:67px}.tab{min-height:68px}.tab strong{font-size:18px}.tab small{font-size:11px}
+}
+@media(max-width:800px){#airParticles{height:104px}.signal-details summary{min-height:44px}.signal-details summary span{display:block;margin:3px 0 0 13px}.movement-mode{font-size:8px}.movement-caption small{font-size:10px}}
+@media(max-width:470px){.sound-lab-heading strong{font-size:10px}.sound-lab-heading>span{font-size:9px}.signal-axis{font-size:8px}.air-caption{font-size:9px}.movement-title strong{font-size:11px}}
+.range-row input{height:44px}.str-tap{min-height:44px}.signal-details summary{min-height:44px}
+.teacher,.close{min-height:44px}
+@media(min-width:801px) and (max-height:900px){.string-tapzones{display:none}}
+@media(max-width:800px){.back{width:44px;height:44px}}
+

@@ -1,23 +1,29 @@
 (()=>{
 'use strict';
-const $=id=>document.getElementById(id);
+const $=id=>document.getElementById(id),M=window.VibrationModel;
 const COLORS=['#ff6a65','#ffe34e','#39bafa','#83d9fd'];
-const STRINGS=[{name:'Red',hz:220,timbre:[1,.06,.03],decay:1.5},{name:'Yellow',hz:440,timbre:[1,.20,.10],decay:1.25},{name:'Blue',hz:880,timbre:[1,.37,.17],decay:1.05}];
-const SOUNDS=[{name:'Bell',icon:'🔔',length:'long',explain:'The bell keeps ringing after the strike.'},{name:'Bee',icon:'🐝',length:'long',explain:'A bee buzzes while its wings continue vibrating.'},{name:'Clap',icon:'👏',length:'short',explain:'A handclap stops quickly.'}];
-const S={mode:'strings',string:0,tension:50,force:50,source:0,pitch:null,duration:null};
-let actx,analysers=[],master,raf,huntMotionTimer;
-let motion={index:0,start:0,hz:220,duration:1700};
+const STRINGS=M.STRINGS;
+const SOUNDS=[{name:'Bell',icon:'🔔',length:'long',explain:'This model bell rings for a longer time.'},{name:'Bee',icon:'🐝',length:'long',explain:'In this example, the buzzing continues while the wings vibrate.'},{name:'Clap',icon:'👏',length:'short',explain:'This model handclap ends quickly.'}];
+const S={mode:'strings',string:0,tension:50,tensions:[50,50,50],force:50,source:0,pitch:null,duration:null};
+let actx,analysers=[],master,huntMotionTimer,voices=new Set();
+let motion={index:0,start:0,hz:440,duration:8000};
+function currentFrequency(){return M.frequency(S.string,S.tension);}
+function stopAudio(){
+ for(const voice of voices){try{voice.stop();}catch{}try{voice.disconnect();}catch{}}
+ voices.clear();
+}
 function startAudio(){
  try{
   if(!actx){
    const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)throw Error('WebAudio missing');
    actx=new Audio();master=actx.createGain();master.gain.value=.65;master.connect(actx.destination);
-   for(let i=0;i<4;i++){const a=actx.createAnalyser();a.fftSize=2048;a.smoothingTimeConstant=.07;a.connect(master);analysers.push(a);}
+   for(let i=0;i<4;i++){const a=actx.createAnalyser();a.fftSize=2048;a.smoothingTimeConstant=0;a.connect(master);analysers.push(a);}
   }
-  if(actx.state==='suspended')actx.resume();
-  return true;
+  if(actx.state==='suspended')actx.resume().catch(()=>{$('response').textContent='Tap PLAY again to enable sound.';});
+  stopAudio();return true;
  }catch(e){$('response').textContent='Sound is not available on this device or browser.';return false;}
 }
+function track(source){voices.add(source);source.onended=()=>{voices.delete(source);source.disconnect();};return source;}
 function envelope(channel,peak,time,fade){
  const g=actx.createGain();g.gain.setValueAtTime(.0001,time);g.gain.linearRampToValueAtTime(peak,time+.008);g.gain.exponentialRampToValueAtTime(.0001,time+fade);g.connect(analysers[channel]);return g;
 }
@@ -25,45 +31,50 @@ function noise(seconds){
  const b=actx.createBuffer(1,Math.round(actx.sampleRate*seconds),actx.sampleRate),a=b.getChannelData(0);
  for(let i=0;i<a.length;i++)a[i]=Math.random()*2-1;return b;
 }
-function currentFrequency(){return STRINGS[S.string].hz*Math.sqrt(.5+S.tension/100);}
 function refreshFrequency(){
  const hz=Math.round(currentFrequency());
- $('motionFrequency').textContent=STRINGS[S.string].name.toUpperCase()+' STRING · '+hz+' Hz'+(S.string===1&&S.tension===50?' · CONCERT A (A4)':'');
- $('motionCaption').textContent='Both ends stay fixed. The '+STRINGS[S.string].name.toLowerCase()+' band vibrates in the middle.';
+ $('motionFrequency').textContent=STRINGS[S.string].name.toUpperCase()+' STRING · '+hz+' Hz'+(S.tension===50?' · A4':'');
+ document.querySelectorAll('#stringControls .pick').forEach(b=>{
+  const i=Number(b.dataset.string),f=Math.round(M.frequency(i,S.tensions[i]));
+  b.querySelector('small').textContent=f+' Hz · '+(S.tensions[i]<50?'looser':S.tensions[i]>50?'tighter':'start');
+ });
+ $('motionCaption').textContent='Both ends stay fixed. The middle moves back and forth.';
+ $('physicalString').dataset.vibrationHz=String(hz);
+ $('physicalString').dataset.slowedHz=String(currentFrequency()/M.SLOWDOWN);
+ $('airParticles').dataset.frequencyHz=String(currentFrequency());
+ $('airParticles').dataset.soundSpeed=String(M.AIR_SPEED);
 }
 function selectString(index){
- S.string=index;
- document.querySelectorAll('[data-string]').forEach(b=>{const y=Number(b.dataset.string)===index;b.classList.toggle('active',y);b.setAttribute('aria-pressed',String(y));});
+ S.string=index;S.tension=S.tensions[index];motion.index=index;$('tension').value=String(S.tension);$('tensionValue').textContent=S.tension<50?'Looser':S.tension>50?'Tighter':'Starting tension';
+ document.querySelectorAll('[data-string]').forEach(b=>{const selected=Number(b.dataset.string)===index;b.classList.toggle('active',selected);b.setAttribute('aria-pressed',String(selected));});
  refreshFrequency();
 }
 function pluck(index=S.string){
  if(!startAudio())return;selectString(index);
-
- const t=actx.currentTime+.01,spec=STRINGS[index],f=currentFrequency();
- const env=envelope(index,.17,t,spec.decay);
- spec.timbre.forEach((volume,i)=>{
-   const osc=actx.createOscillator(),v=actx.createGain();
-   osc.type=i===0?'triangle':'sine';osc.frequency.value=f*(i+1);v.gain.value=volume;
-   osc.connect(v);v.connect(env);osc.start(t);osc.stop(t+spec.decay+.05);
- });
- motion={index,start:performance.now(),hz:f,duration:1700};
+ const t=actx.currentTime+.01,f=currentFrequency();
+ // A fundamental-only tone isolates frequency. The same waveform and decay
+ // are used for all strings, so timbre is not a second changing variable.
+ const osc=track(actx.createOscillator()),env=envelope(index,.23,t,1.8);
+ osc.type='sine';osc.frequency.value=f;osc.connect(env);osc.start(t);osc.stop(t+1.85);
+ motion={index,start:performance.now(),hz:f,duration:8000};
  $('physicalString').dataset.vibrationHz=String(Math.round(f));
+ $('physicalString').dataset.slowedHz=String(f/M.SLOWDOWN);
  $('pluckingFlash').classList.remove('active');void $('pluckingFlash').offsetWidth;$('pluckingFlash').classList.add('active');
- const pitch=f<300?'low':f<600?'middle':'high';
- $('physicalString').dataset.pitch=pitch;
- $('question').textContent='Is the pitch low, middle, or high?';
- $('response').textContent=STRINGS[index].name+' string: '+Math.round(f)+' vibrations each second — '+pitch+' pitch. '+(S.pitch?(S.pitch===pitch?'Your prediction matched!':'Change the tension and listen again.'):'Compare the strings.');
+ const pitch=f<440-.01?'lower':f>440+.01?'higher':'same';$('physicalString').dataset.pitch=pitch;
+ $('question').textContent='Compared with its starting pitch?';
+ $('response').textContent=STRINGS[index].name+' string: '+Math.round(f)+' vibrations each second — '+(pitch==='same'?'the same as':pitch+' than')+' its 440 Hz starting pitch. '+(S.pitch?(S.pitch===pitch?'Your prediction matched!':'Listen to an unchanged string, then compare.'):'Change only this string’s tension.');
 }
 function hitDrum(){
  if(!startAudio())return;
  const t=actx.currentTime+.01,force=.12+.88*S.force/100;
- const osc=actx.createOscillator(),env=envelope(3,.22*force,t,.48);
+ const osc=track(actx.createOscillator()),env=envelope(3,.22*force,t,.48);
  osc.type='sine';osc.frequency.setValueAtTime(180,t);osc.frequency.exponentialRampToValueAtTime(68,t+.38);
  osc.connect(env);osc.start(t);osc.stop(t+.5);
- const white=actx.createBufferSource(),filter=actx.createBiquadFilter(),n=envelope(3,.063*force,t,.30);
+ const white=track(actx.createBufferSource()),filter=actx.createBiquadFilter(),n=envelope(3,.063*force,t,.30);
  white.buffer=noise(.31);filter.type='lowpass';filter.frequency.value=750;white.connect(filter);filter.connect(n);white.start(t);white.stop(t+.31);
+ $('drumHead').style.setProperty('--strike-motion',(1+force*5).toFixed(1)+'px');
  $('drumHead').classList.remove('hit');void $('drumHead').offsetWidth;$('drumHead').classList.add('hit');
- $('response').textContent=S.force>=55?'Stronger beat: bigger sound-wave amplitude.':'Gentler beat: smaller sound-wave amplitude.';
+ $('response').textContent=(S.force>=55?'Stronger':'Gentler')+' beat: '+(S.force>=55?'larger':'smaller')+' signal amplitude. The model pitch pattern stays the same.';
  $('question').textContent='What changes when the drum is hit harder?';
 }
 function hunt(){
@@ -72,138 +83,139 @@ function hunt(){
  if(id===0){
   const env=envelope(3,.10,t,2.25);
   [[1,1],[2.01,.40],[2.7,.20],[4.05,.08]].forEach(([n,v])=>{
-    const o=actx.createOscillator(),g=actx.createGain();o.type='sine';o.frequency.value=440*n;g.gain.value=v;o.connect(g);g.connect(env);o.start(t);o.stop(t+2.3);
+   const o=track(actx.createOscillator()),g=actx.createGain();o.type='sine';o.frequency.value=440*n;g.gain.value=v;o.connect(g);g.connect(env);o.start(t);o.stop(t+2.3);
   });
  }else if(id===1){
-  const o=actx.createOscillator(),filter=actx.createBiquadFilter(),env=envelope(3,.09,t,2.0);
+  const o=track(actx.createOscillator()),filter=actx.createBiquadFilter(),env=envelope(3,.09,t,2.0);
   o.type='sawtooth';o.frequency.value=175;filter.type='lowpass';filter.frequency.value=850;o.connect(filter);filter.connect(env);o.start(t);o.stop(t+2.06);
  }else{
-  const white=actx.createBufferSource(),filter=actx.createBiquadFilter(),env=envelope(3,.16,t,.16);
+  const white=track(actx.createBufferSource()),filter=actx.createBiquadFilter(),env=envelope(3,.16,t,.16);
   white.buffer=noise(.2);filter.type='bandpass';filter.frequency.value=1900;white.connect(filter);filter.connect(env);white.start(t);white.stop(t+.2);
  }
  $('huntSource').classList.remove('vibrating');void $('huntSource').offsetWidth;$('huntSource').classList.add('vibrating');
  clearTimeout(huntMotionTimer);huntMotionTimer=setTimeout(()=>$('huntSource').classList.remove('vibrating'),id===2?220:2050);
- $('question').textContent='Was the sound short or long?';
+ $('question').textContent='Was this example short or long?';
  $('response').textContent=src.name+': '+src.explain+(S.duration?' '+(S.duration===src.length?'That was a good observation!':'Listen again to when the sound ends.'):'');
 }
 function render(){
- document.querySelectorAll('[data-mode]').forEach(b=>{const y=b.dataset.mode===S.mode;b.classList.toggle('active',y);b.setAttribute('aria-current',String(y));});
+ document.querySelectorAll('[data-mode]').forEach(b=>{const selected=b.dataset.mode===S.mode;b.classList.toggle('active',selected);if(selected)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
  const ss=S.mode==='strings',dd=S.mode==='drum',hh=S.mode==='hunt';
- $('stringPhoto').hidden=!ss;$('stringWaveStack').hidden=!ss;$('stringControls').hidden=!ss;$('movementLab').hidden=!ss;
- $('drumScene').hidden=!dd;$('drumControls').hidden=!dd;
- $('huntScene').hidden=!hh;$('huntControls').hidden=!hh;
- $('singleWave').hidden=ss;$('pitchChoices').hidden=!ss;
+ $('stringPhoto').hidden=!ss;$('stringWaveStack').hidden=!ss;$('stringControls').hidden=!ss;$('movementLab').hidden=!ss;$('airDemo').hidden=!ss;
+ $('drumScene').hidden=!dd;$('drumControls').hidden=!dd;$('huntScene').hidden=!hh;$('huntControls').hidden=!hh;
+ $('singleWave').hidden=ss;$('pitchChoices').hidden=!ss;$('signalDetails').open=!ss;
  const info={
- strings:['1','CHANGE THE TENSION','What happens when you tighten the string?','Move the slider, pluck a string, and hear how its pitch changes.','Which pitch do you hear?','Try a loose string, then tighten it and pluck again.'],
- drum:['2','CHANGE THE FORCE','What happens when you hit the drum harder?','Slide from a gentle tap to a strong beat. Listen and look at the wave.','What changes about the sound?','Try quiet and loud beats. Watch the waveform height.'],
- hunt:['3','LISTEN TO SOURCES','Which sounds last longer?','Choose a source. Listen and watch the actual sound wave.','Is the sound short or long?','Listen to a source, then compare the duration.']
+ strings:['1','CHANGE THE TENSION','What happens when you tighten the string?','All three start at the same pitch. Tune one string, then compare.','Compared with its starting pitch?','Try a loose string, then tighten it and pluck again.'],
+ drum:['2','CHANGE THE FORCE','What happens when you hit the drum harder?','Try a gentle tap, then a strong beat. Compare the signal height.','What changes about the sound?','Try quiet and loud beats. Watch the waveform height.'],
+ hunt:['3','LISTEN TO SOURCES','Which sounds last longer?','Choose a model sound. Listen to when it starts and ends.','Was this example short or long?','Compare the duration of these synthesized examples.']
  }[S.mode];
- $('stepNum').textContent=info[0];$('stepName').textContent=info[1];$('prompt').textContent=info[2];
- $('instructions').textContent=info[3];$('question').textContent=info[4];$('response').textContent=info[5];
- $('waveTitle').textContent=dd?'Drum sound wave':'Sound Hunt waveform';
- if(hh)renderSource();
+ $('stepNum').textContent=info[0];$('stepName').textContent=info[1];$('prompt').textContent=info[2];$('instructions').textContent=info[3];$('question').textContent=info[4];$('response').textContent=info[5];
+ $('waveTitle').textContent=dd?'Drum audio signal':'Sound Hunt audio signal';if(hh)renderSource();
 }
 function renderSource(){
- let src=SOUNDS[S.source];$('huntSource').textContent=src.icon;$('huntName').textContent=src.name;
- document.querySelectorAll('[data-source]').forEach(b=>b.classList.toggle('selected',Number(b.dataset.source)===S.source));
- document.querySelectorAll('[data-duration]').forEach(b=>{const y=b.dataset.duration===S.duration;b.classList.toggle('selected',y);b.setAttribute('aria-pressed',String(y));});
+ const src=SOUNDS[S.source];$('huntSource').textContent=src.icon;$('huntName').textContent=src.name;
+ document.querySelectorAll('[data-source]').forEach(b=>{const selected=Number(b.dataset.source)===S.source;b.classList.toggle('selected',selected);b.setAttribute('aria-pressed',String(selected));});
+ document.querySelectorAll('[data-duration]').forEach(b=>{const selected=b.dataset.duration===S.duration;b.classList.toggle('selected',selected);b.setAttribute('aria-pressed',String(selected));});
 }
-
-// Physical transverse string motion in SLOW MOTION with fixed endpoints.
-// Not the waveform of air pressure recorded by the sound analyzer.
-function drawPhysical(){
- const el=$('physicalString'),box=el.getBoundingClientRect();
- if(!box.width||!box.height)return;
+function canvasContext(el){
+ const box=el.getBoundingClientRect();if(!box.width||!box.height)return null;
  const d=Math.min(devicePixelRatio||1,2),w=Math.round(box.width*d),h=Math.round(box.height*d);
  if(el.width!==w||el.height!==h){el.width=w;el.height=h;}
- const c=el.getContext('2d'),elapsed=performance.now()-motion.start;
- const active=motion.start>0&&elapsed>=0&&elapsed<motion.duration;
- const amplitude=active?Math.pow(1-elapsed/motion.duration,1.9)*h*.3:0;
- // The real frequency (>100 Hz) cannot be portrayed directly at 60 fps.
- const slowRate=Math.min(5,1.4+motion.hz/145);
- const phase=elapsed/1000*2*Math.PI*slowRate;
- const left=w*.07,right=w*.93,y0=h*.53;
- c.clearRect(0,0,w,h);
- c.strokeStyle='#ffffff55';c.setLineDash([3*d,3*d]);c.lineWidth=1;
- c.beginPath();c.moveTo(left,y0);c.lineTo(right,y0);c.stroke();c.setLineDash([]);
- // Dashed positions trace the physical band above and below its resting line.
- // They are intentionally distinct from the audio waveform beneath.
- const travel=active?Math.max(amplitude,h*.16):h*.10;
- c.strokeStyle=COLORS[motion.index]+'77';c.lineWidth=1.2*d;c.setLineDash([4*d,5*d]);
- for(const direction of [-1,1]){
-  c.beginPath();
-  for(let i=0;i<=90;i++){
-   const t=i/90,x=left+(right-left)*t;
-   const yy=y0+direction*travel*Math.sin(Math.PI*t);
-   if(i===0)c.moveTo(x,yy);else c.lineTo(x,yy);
+ const c=el.getContext('2d');c.clearRect(0,0,w,h);return {c,w,h,d};
+}
+function drawPhysical(time,active){
+ const v=canvasContext($('physicalString'));if(!v)return;const {c,w,h,d}=v;
+ const index=active?motion.index:S.string,hz=active?motion.hz:currentFrequency();
+ const left=w*.045,right=w*.955,y0=h*.52,amplitude=h*.31;
+ c.strokeStyle='#ffffff55';c.setLineDash([3*d,3*d]);c.lineWidth=d;c.beginPath();c.moveTo(left,y0);c.lineTo(right,y0);c.stroke();
+ c.strokeStyle=COLORS[index]+'55';
+ for(const dir of [-1,1]){c.beginPath();for(let i=0;i<=100;i++){const p=i/100,x=left+(right-left)*p,y=y0+dir*amplitude*Math.sin(Math.PI*p);if(i)c.lineTo(x,y);else c.moveTo(x,y);}c.stroke();}c.setLineDash([]);
+ c.strokeStyle=COLORS[index];c.lineWidth=STRINGS[index].width*d;c.lineCap='round';c.beginPath();
+ for(let i=0;i<=100;i++){const p=i/100,x=left+(right-left)*p,y=y0+(active?M.stringDisplacement(p,time,hz,amplitude):0);if(i)c.lineTo(x,y);else c.moveTo(x,y);}c.stroke();
+ c.fillStyle='#f5f9fc';for(const x of [left,right]){c.beginPath();c.arc(x,y0,3*d,0,Math.PI*2);c.fill();}
+}
+function drawAir(time,active){
+ const v=canvasContext($('airParticles'));if(!v)return;const {c,w,h,d}=v;
+ const hz=active?motion.hz:currentFrequency(),left=28*d,right=w-14*d,span=2.4,scale=(right-left)/span;
+ const cols=77,rows=5,marked=24,offset=x=>active?M.particleDisplacement(x,time,hz):0;
+ // Source is schematic: one vibrating surface of the instrument body.
+ const sourceMove=offset(0)*scale;
+ c.fillStyle='#d3b383';c.fillRect(9*d+sourceMove,16*d,5*d,h-31*d);
+ c.strokeStyle='#8eafc6';c.lineWidth=d;c.beginPath();c.moveTo(12*d,h-10*d);c.lineTo(w-12*d,h-10*d);c.stroke();
+ c.beginPath();c.moveTo(w-18*d,h-14*d);c.lineTo(w-12*d,h-10*d);c.lineTo(w-18*d,h-6*d);c.stroke();
+ // Light density bands are calculated from the actual spacing in this model.
+ for(let i=0;i<cols-1;i++){
+  const x1=span*i/(cols-1),x2=span*(i+1)/(cols-1),a=left+(x1+offset(x1))*scale,b=left+(x2+offset(x2))*scale;
+  const compression=(x2-x1)/Math.max(.0001,x2+offset(x2)-x1-offset(x1));
+  c.fillStyle='rgba(69,207,241,'+Math.max(0,Math.min(.22,(compression-1)*.22))+')';c.fillRect(a,9*d,Math.max(0,b-a),h-28*d);
+ }
+ for(let row=0;row<rows;row++)for(let i=0;i<cols;i++){
+  const rest=span*i/(cols-1),x=left+(rest+offset(rest))*scale,y=(20+(row*(h/d-51)/(rows-1)))*d;
+  c.fillStyle='#9edced';c.beginPath();c.arc(x,y,1.4*d,0,Math.PI*2);c.fill();
+  if(row===2&&i===marked){
+   const rx=left+rest*scale;c.strokeStyle='#ffdd76';c.lineWidth=1.5*d;c.beginPath();c.moveTo(rx-11*d,y);c.lineTo(rx+11*d,y);c.stroke();
+   c.fillStyle='#ffdd76';c.beginPath();c.arc(x,y,3*d,0,Math.PI*2);c.fill();c.strokeStyle='#fff9d3';c.beginPath();c.arc(x,y,5.5*d,0,Math.PI*2);c.stroke();
   }
-  c.stroke();
  }
- c.setLineDash([]);
- c.strokeStyle=COLORS[motion.index];c.lineWidth=2.5*d;c.shadowColor=COLORS[motion.index];c.shadowBlur=6*d;
- c.beginPath();
- for(let i=0;i<=100;i++){
-  const t=i/100,x=left+(right-left)*t,y=y0+amplitude*Math.sin(Math.PI*t)*Math.sin(phase);
-  if(!i)c.moveTo(x,y);else c.lineTo(x,y);
- }
- c.stroke();c.shadowBlur=0;
- c.fillStyle='#f5f9fc';c.beginPath();c.arc(left,y0,2.5*d,0,Math.PI*2);c.arc(right,y0,2.5*d,0,Math.PI*2);c.fill();
+ $('airParticles').dataset.modelTime=time.toFixed(6);
 }
-function draw(canvas,index){
- if(canvas.closest('[hidden]'))return;
- const box=canvas.getBoundingClientRect();if(!box.width||!box.height)return;
- const d=Math.min(2,devicePixelRatio||1),w=Math.round(box.width*d),h=Math.round(box.height*d);
- if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;}
- const c=canvas.getContext('2d');c.clearRect(0,0,w,h);
- c.strokeStyle='#98c0db33';c.lineWidth=1;
- for(let n=1;n<5;n++){const yy=h*n/5;c.beginPath();c.moveTo(0,yy);c.lineTo(w,yy);c.stroke();}
- let samples=null;
+function drawSignal(canvas,index){
+ if(canvas.closest('[hidden]')||!$('signalDetails').open)return;
+ const v=canvasContext(canvas);if(!v)return;const {c,w,h,d}=v;
+ c.strokeStyle='#98c0db33';c.lineWidth=d;for(let n=1;n<5;n++){const y=h*n/5;c.beginPath();c.moveTo(0,y);c.lineTo(w,y);c.stroke();}
+ let samples=null,from=0,count=1,energy=0;
  if(analysers[index]){
-  const b=new Uint8Array(analysers[index].fftSize);
-  analysers[index].getByteTimeDomainData(b);
-  const energy=b.reduce((a,v)=>a+Math.abs(v-128),0)/b.length;
-  if(energy>1)samples=b;
+  const data=new Float32Array(analysers[index].fftSize);analysers[index].getFloatTimeDomainData(data);
+  count=Math.round(actx.sampleRate*.012);energy=Math.sqrt(data.reduce((sum,v)=>sum+v*v,0)/data.length);
+  if(energy>.0005){samples=data;for(let j=1;j<data.length-count;j++)if(data[j-1]<=0&&data[j]>0){from=j;break;}}
  }
- c.beginPath();c.lineCap='round';c.lineWidth=Math.max(2,w/180);c.strokeStyle=COLORS[index];
- c.shadowColor=COLORS[index];c.shadowBlur=7;
+ canvas.dataset.signalRms=energy.toFixed(6);canvas.dataset.windowMs='12';
+ c.beginPath();c.lineCap='round';c.lineWidth=2*d;c.strokeStyle=COLORS[index];
  if(!samples){c.moveTo(0,h/2);c.lineTo(w,h/2);}
- else for(let i=0;i<samples.length;i+=2){
-  const xx=i/(samples.length-1)*w,yy=Math.max(h*.04,Math.min(h*.96,(.5+(samples[i]-128)/128*1.3)*h));
-  if(i===0)c.moveTo(xx,yy);else c.lineTo(xx,yy);
- }
- c.stroke();c.shadowBlur=0;
+ else for(let i=0;i<count;i++){const x=i/(count-1)*w,y=h*(.5-samples[from+i]*1.5);if(i)c.lineTo(x,y);else c.moveTo(x,y);}
+ c.stroke();
 }
-function frame(){drawPhysical();for(let i=0;i<3;i++)draw($('wave'+i),i);draw($('waveSingle'),3);requestAnimationFrame(frame);}
+let lastFrame=0;
+function frame(now){
+ requestAnimationFrame(frame);if(now-lastFrame<30||document.hidden)return;lastFrame=now;
+ if(S.mode==='strings'){
+  const elapsed=now-motion.start,active=motion.start>0&&elapsed>=0&&elapsed<motion.duration;
+  const time=active?M.slowedTime(elapsed/1000):0;
+  drawPhysical(time,active);drawAir(time,active);
+  const label=active?'Replay: '+time.toFixed(3)+' s of vibration · audio plays at normal speed':motion.start?'Replay finished · pluck again':'Pluck to start the slow-motion replay';
+  if($('slowTime').textContent!==label)$('slowTime').textContent=label;
+ }
+ for(let i=0;i<3;i++)drawSignal($('wave'+i),i);drawSignal($('waveSingle'),3);
+}
 function closeNotes(){$('teacherOverlay').hidden=true;$('teacher').focus();}
-$('teacher').onclick=()=>{$('teacherOverlay').hidden=false;$('closeTeacher').focus();};
-$('closeTeacher').onclick=closeNotes;
+$('teacher').onclick=()=>{$('teacherOverlay').hidden=false;$('closeTeacher').focus();};$('closeTeacher').onclick=closeNotes;
 $('teacherOverlay').onclick=e=>{if(e.target===$('teacherOverlay'))closeNotes();};
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('teacherOverlay').hidden)closeNotes();});
-$('pluck').onclick=()=>pluck();
-document.querySelectorAll('[data-string]').forEach(b=>b.onclick=()=>pluck(Number(b.dataset.string)));
-$('tension').oninput=e=>{S.tension=Number(e.target.value);$('tensionValue').textContent=S.tension<=30?'Loose':S.tension>=70?'Tight':'Medium';refreshFrequency();};
-document.querySelectorAll('[data-answer]').forEach(b=>b.onclick=()=>{S.pitch=b.dataset.answer;document.querySelectorAll('[data-answer]').forEach(n=>n.classList.toggle('selected',n===b));$('response').textContent='Good prediction! Pluck the string to test it.';});
+$('pluck').onclick=()=>pluck();document.querySelectorAll('[data-string]').forEach(b=>b.onclick=()=>pluck(Number(b.dataset.string)));
+$('tension').oninput=e=>{
+ S.tension=Number(e.target.value);S.tensions[S.string]=S.tension;stopAudio();motion.start=0;
+ $('tensionValue').textContent=S.tension<50?'Looser':S.tension>50?'Tighter':'Starting tension';refreshFrequency();
+ $('response').textContent='New tension selected. Pluck the same string to compare its pitch.';
+};
+document.querySelectorAll('[data-answer]').forEach(b=>b.onclick=()=>{S.pitch=b.dataset.answer;document.querySelectorAll('[data-answer]').forEach(n=>{n.classList.toggle('selected',n===b);n.setAttribute('aria-pressed',String(n===b));});$('response').textContent='You predicted '+S.pitch+'. Pluck the string to test it.';});
 $('force').oninput=e=>{S.force=Number(e.target.value);$('forceValue').textContent=S.force<=30?'Gentle':S.force>=70?'Strong':'Medium';};
 $('hitDrum').onclick=hitDrum;$('drumTouch').onclick=hitDrum;$('playHunt').onclick=hunt;
 document.querySelectorAll('[data-source]').forEach(b=>b.onclick=()=>{S.source=Number(b.dataset.source);S.duration=null;renderSource();hunt();});
 document.querySelectorAll('[data-duration]').forEach(b=>b.onclick=()=>{S.duration=b.dataset.duration;renderSource();$('response').textContent='You predicted '+S.duration+'. Press PLAY SOUND to check.';});
-document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{S.mode=b.dataset.mode;S.pitch=null;S.duration=null;render();document.querySelector('.work-area').scrollIntoView({block:'start',behavior:'smooth'});});
+document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{stopAudio();motion.start=0;clearTimeout(huntMotionTimer);$('huntSource').classList.remove('vibrating');S.mode=b.dataset.mode;S.pitch=null;S.duration=null;render();document.querySelector('.work-area').scrollIntoView({block:'start',behavior:'smooth'});});
 $('makeOwn').onclick=async()=>{
  const button=$('makeOwn');button.disabled=true;$('downloadStatus').textContent='Preparing your offline copy…';
  try{
-  const [style,script,blob]=await Promise.all([
-    fetch('./style.css?v=4').then(r=>{if(!r.ok)throw Error('style');return r.text();}),
-    fetch('./app.js?v=4').then(r=>{if(!r.ok)throw Error('script');return r.text();}),
-    fetch('./assets/string-box.webp').then(r=>{if(!r.ok)throw Error('image');return r.blob();})
+  const [style,model,script,blob]=await Promise.all([
+   fetch('./style.css?v=5').then(r=>{if(!r.ok)throw Error('style');return r.text();}),
+   fetch('./model.js?v=5').then(r=>{if(!r.ok)throw Error('model');return r.text();}),
+   fetch('./app.js?v=5').then(r=>{if(!r.ok)throw Error('script');return r.text();}),
+   fetch('./assets/string-box.webp').then(r=>{if(!r.ok)throw Error('image');return r.blob();})
   ]);
   const image=await new Promise((ok,bad)=>{const f=new FileReader();f.onload=()=>ok(f.result);f.onerror=bad;f.readAsDataURL(blob);});
-  const copy=document.documentElement.cloneNode(true);
-  copy.querySelector('link[rel="stylesheet"]').remove();copy.querySelector('script[src]').remove();copy.querySelector('#teacherOverlay').hidden=true;
-  const node=document.createElement('style');
-  node.textContent=style.replace(/url\(['"]?\.\/assets\/string-box\.webp['"]?\)/g,'url("'+image+'")');copy.querySelector('head').append(node);
-  const sc=document.createElement('script');sc.textContent=script.replace(/<\/script/gi,'<\\/script');copy.querySelector('body').append(sc);
-  const out='<!doctype html>\n'+copy.outerHTML,u=URL.createObjectURL(new Blob([out],{type:'text/html;charset=utf-8'})),a=document.createElement('a');
-  a.href=u;a.download='vibration-station.html';a.click();setTimeout(()=>URL.revokeObjectURL(u),30000);
+  const copy=document.documentElement.cloneNode(true);copy.querySelectorAll('link[rel="stylesheet"],link[rel="preconnect"]').forEach(n=>n.remove());copy.querySelectorAll('script[src]').forEach(n=>n.remove());copy.querySelector('#teacherOverlay').hidden=true;copy.querySelector('#makeOwn').disabled=false;copy.querySelector('#downloadStatus').textContent='';
+  const node=document.createElement('style');node.textContent=style.replace(/url\(['"]?\.\/assets\/string-box\.webp['"]?\)/g,'url("'+image+'")');copy.querySelector('head').append(node);
+  for(const source of [model,script]){const sc=document.createElement('script');sc.textContent=source.replace(/<\/script/gi,'<\\/script');copy.querySelector('body').append(sc);}
+  const out='<!doctype html>\n'+copy.outerHTML,u=URL.createObjectURL(new Blob([out],{type:'text/html;charset=utf-8'})),a=document.createElement('a');a.href=u;a.download='vibration-station.html';a.click();setTimeout(()=>URL.revokeObjectURL(u),30000);
   $('downloadStatus').textContent='Offline HTML copy downloaded.';
  }catch(err){$('downloadStatus').textContent='Offline download unavailable. Check your connection.';}
  button.disabled=false;

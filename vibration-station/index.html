@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#e9f7fb"><meta name="description" content="Grade 2 science: hear real synthesized sounds and see their measured waveforms while exploring pitch, volume, and duration.">
+<meta name="theme-color" content="#e9f7fb"><meta name="description" content="Grade 2 science: explore string vibration, sound travelling through air, pitch, volume, and duration with clear teaching models.">
 <title>Vibration Station · Interactive Learning Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900;1000&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./style.css?v=4">
+<link rel="stylesheet" href="./style.css?v=5">
 </head><body><div class="shell">
 <header class="top">
 <a class="back" href="https://interactives.blackgold.ca/interactive-learning-lab/" aria-label="Back to Interactive Learning Lab">←</a>
@@ -18,7 +18,7 @@
   <div class="photo-panel" id="photoPanel">
    <div class="string-photo" id="stringPhoto" role="img" aria-label="A homemade three-string rubber-band instrument on a wooden workshop bench">
      <div class="plucking-flash" id="pluckingFlash" aria-hidden="true"></div>
-     <div class="string-hint">🎸 Choose a string, then pluck!</div>
+     <div class="string-hint">🎸 Matching strings · tune one at a time</div>
      <div class="string-tapzones" aria-label="Choose a string from the instrument">
        <button class="str-tap red" data-string="0" aria-label="Play red string"><span class="sr">Red string</span></button>
        <button class="str-tap yellow" data-string="1" aria-label="Play yellow string"><span class="sr">Yellow string</span></button>
@@ -43,16 +43,22 @@
   </div>
   <section class="movement-lab" id="movementLab" aria-label="Physical string vibration illustrated in slow motion">
     <div class="movement-top">
-      <div class="movement-title"><span class="number-marker">1</span><strong>THE STRING MOVES</strong><span class="movement-mode">SLOW MOTION · ACTUAL SPEED IS MUCH FASTER</span></div>
-      <div class="movement-frequency" id="motionFrequency">RED STRING · 220 Hz</div>
+      <div class="movement-title"><span class="number-marker">1</span><strong>THE STRING MOVES</strong><span class="movement-mode">220× SLOWER · SAME SCALE FOR EVERY STRING</span></div>
+      <div class="movement-frequency" id="motionFrequency">RED STRING · 440 Hz · A4</div>
     </div>
     <div class="movement-body">
       <div class="movement-graphic"><span class="end-label">FIXED END</span><canvas id="physicalString" aria-label="Slow-motion demonstration of the physical band vibrating between two fixed ends"></canvas><span class="end-label">FIXED END</span></div>
-      <div class="movement-caption" id="motionCaption">Pluck! The middle of the band moves back and forth.</div>
+      <div class="movement-caption"><span id="motionCaption">Pluck! Both ends stay fixed.</span><small id="slowTime">Slow-motion replay</small></div>
     </div>
   </section>
-  <div class="sound-lab" id="soundLab" aria-label="Sound waves traveling through the air">
-    <div class="sound-lab-heading"><strong><span class="number-marker sound-number">2</span> SOUND IN THE AIR</strong><span>Real audio waveform · air-pressure changes over time</span></div>
+  <div class="sound-lab" id="soundLab" aria-label="Sound in air and the generated audio signal">
+    <div id="airDemo">
+    <div class="sound-lab-heading"><strong><span class="number-marker sound-number">2</span> AIR MOVES BACK AND FORTH</strong><span>Sound travels outward →</span></div>
+    <canvas id="airParticles" aria-label="Slowed model: air particles move back and forth in place as compressions travel outward"></canvas>
+    <div class="air-caption"><span>Watch the ringed air particle.</span><span>Motion enlarged · not to scale</span></div>
+   </div>
+   <details id="signalDetails" class="signal-details"><summary>Sound monitor <span>Generated audio · same 12 ms time window</span></summary>
+   <p class="signal-explanation">This graph shows audio samples. It is not the shape of the string or a measurement of the air.</p>
    <div class="wave-stack" id="stringWaveStack" aria-label="Live waveforms of the three rubber bands">
      <div class="wave-card red"><span>Red string</span><canvas id="wave0" aria-label="Red string waveform"></canvas></div>
      <div class="wave-card yellow"><span>Yellow string</span><canvas id="wave1" aria-label="Yellow string waveform"></canvas></div>
@@ -62,25 +68,27 @@
       <div class="wave-title"><span id="waveTitle">Live sound wave</span><strong id="waveHint">SOUND MONITOR</strong></div>
       <canvas id="waveSingle" aria-label="Live sound waveform"></canvas>
    </div>
+   <div class="signal-axis">TIME → <span>0 to 12 milliseconds · amplitude shown vertically</span></div>
+   </details>
   </div>
-  <div class="below-photo"><span class="small-swatch">👀 Look</span><span class="small-swatch">👂 Listen</span><span class="small-swatch">〰 See the wave</span><span class="sound-note">String motion and sound waves are different</span></div>
+  <div class="below-photo"><span class="small-swatch">👀 Look</span><span class="small-swatch">👂 Listen</span><span class="small-swatch">〰 See the wave</span><span class="sound-note">String moves · air moves · sound travels</span></div>
  </section>
  <section class="control-card" aria-label="Experiment controls">
    <div class="unit-badge"><b id="stepNum">1</b><span id="stepName">CHANGE THE TENSION</span></div>
    <h2 id="prompt">What happens when you tighten the string?</h2>
    <p id="instructions">Move the slider, pluck a string, and hear how the pitch changes.</p>
    <div class="string-controls" id="stringControls">
-    <div class="string-picks"><button class="pick active" data-string="0">🔴 Red <small>220 Hz</small></button><button class="pick" data-string="1">🟡 Yellow <small>440 Hz · A4</small></button><button class="pick" data-string="2">🔵 Blue <small>880 Hz</small></button></div>
-    <label class="control-label" for="tension">String tension <span id="tensionValue">Medium</span></label>
+    <div class="string-picks"><button class="pick active" data-string="0">🔴 Red <small>440 Hz · start</small></button><button class="pick" data-string="1">🟡 Yellow <small>440 Hz · start</small></button><button class="pick" data-string="2">🔵 Blue <small>440 Hz · start</small></button></div>
+    <label class="control-label" for="tension">Selected string tension <span id="tensionValue">Starting tension</span></label>
     <div class="range-row"><span>LOOSE</span><input type="range" id="tension" min="0" max="100" value="50" step="5"><span>TIGHT</span></div>
     <button class="play-btn" id="pluck"><span class="triangle">▶</span> PLUCK!</button>
-    <p class="guided-hint">At medium tension: red 220 Hz, yellow 440 Hz (A4), blue 880 Hz. Change tension to explore!</p>
+    <p class="guided-hint">Matching strings start at 440 Hz. Same tension = same pitch. Tune one string to compare!</p>
    </div>
    <div class="drum-controls" id="drumControls" hidden>
      <label class="control-label" for="force">How hard will you hit? <span id="forceValue">Medium</span></label>
      <div class="range-row"><span>GENTLE</span><input type="range" min="0" max="100" value="50" id="force" step="5"><span>STRONG</span></div>
      <button class="play-btn" id="hitDrum"><span class="triangle">▶</span> BEAT THE DRUM!</button>
-     <p class="guided-hint">The drum skin vibrates; harder hits make bigger air-pressure changes.</p>
+     <p class="guided-hint">Keep the same drum. Change only the strength of the hit.</p>
    </div>
    <div class="hunt-controls" id="huntControls" hidden>
     <div class="hunt-question">How long does this sound last?</div>
@@ -89,8 +97,8 @@
     <p class="guided-hint">Choose another object on the left to explore.</p>
    </div>
    <div class="question-box" id="questionBox">
-    <h3 id="question">Which pitch do you hear?</h3>
-    <div class="prediction-grid pitch-answers" id="pitchChoices"><button class="answer" data-answer="low"><span class="answer-shape">∿</span>LOW</button><button class="answer" data-answer="middle"><span class="answer-shape">∿∿</span>MIDDLE</button><button class="answer" data-answer="high"><span class="answer-shape">∿∿∿</span>HIGH</button></div>
+    <h3 id="question">Compared with its starting pitch?</h3>
+    <div class="prediction-grid pitch-answers" id="pitchChoices"><button class="answer" data-answer="lower"><span class="answer-shape">∿</span>LOWER</button><button class="answer" data-answer="same"><span class="answer-shape">∿∿</span>SAME</button><button class="answer" data-answer="higher"><span class="answer-shape">∿∿∿</span>HIGHER</button></div>
     <div class="response" id="response" role="status" aria-live="polite">Choose a sound, listen, and make a prediction!</div>
    </div>
  </section>
@@ -109,10 +117,15 @@
 <div class="note"><b>Three investigations:</b> Strings explore how vibration frequency relates to pitch; drum strikes change amplitude and perceived loudness; Sound Hunt contrasts sources and short/long durations.</div>
 <h3>Try these prompts</h3>
 <ul><li>What object is vibrating to make each sound?</li><li>How does tightening a string change its vibration and pitch?</li><li>What happens to the waveform when you hit the drum harder?</li><li>Which sounds end quickly? Which last longer?</li></ul>
-<p><b>Different pictures, different science:</b> The physical rubber-band movement is shown in slow motion to make it visible. Sound in air is a series of pressure changes; its monitor plots actual audio samples, not the string's shape.</p>
-<p><b>Science accuracy:</b> Sound is synthesized in the browser. The upper string-motion drawing is a slow-motion illustration of the physical band's transverse vibration (fixed ends, moving middle), not a picture of sound travelling through air. The separate SOUND IN THE AIR monitor plots actual audio samples through the Web Audio graph, not decorative sine waves. The waveform returns to a flat line when the sound ends. The middle string is tuned to concert A (440 Hz) at medium tension. Red is A3 (220 Hz), blue is A5 (880 Hz); these octaves are synthesized teaching tones, not frequencies measured from the pictured bands. The string/duration models are simplified teaching models; real instruments also depend on length, mass, materials, resonances and tension. Turn the device volume down before use.</p>
+<p><b>Three different representations:</b> The string panel shows transverse displacement of an ideal string with fixed ends. The air panel shows a one-dimensional slice of longitudinal sound: particles oscillate around their own positions while compressions travel outward. The optional sound monitor graphs generated digital audio samples against time. It does not measure actual air pressure; no microphone is used.</p>
+<p><b>One slow-motion scale:</b> Both motion diagrams run 220 times slower than their model frequencies. A string tuned to 220, 440, or 880 Hz therefore appears as 1, 2, or 4 cycles per second. Matching strings at matching tensions have matching motion. The diagrams replay the first 0.036 seconds for eight seconds, while the audio plays at normal speed and fades sooner. The replay can continue after the audible note stops.</p>
+<p><b>Fair string comparisons:</b> The three ideal strings have the same length, material, thickness, and mass per unit length. They all begin at the same tension and pitch (440 Hz). Each string keeps its own tension setting, so tuning one does not change the others. They use the same sine-wave tone and audio envelope, so pitch is not confused with a different instrument sound. At the same tension all three sound alike. At the loosest slider setting any string is 220 Hz; at the starting setting it is 440 Hz; at the tightest it is 880 Hz. Frequency follows f = √(T/μ)/(2L); the tension slider changes only T in this ideal model. Lower/same/higher compares each string with its 440 Hz starting pitch. Colour identifies a string; it does not cause pitch.</p>
+<p><b>Limits of the model:</b> The instrument artwork is illustrative; its pictured bands were not measured. Real rubber bands can also change length, mass per unit length, and elasticity when stretched. Real plucked strings include harmonics; this model isolates their fundamental. An instrument's body or soundboard helps transfer string vibration to the air. The enlarged air-particle motion is schematic and not to scale. Sound speed is held at 343 m/s for all pitches in the same model air; higher frequency gives shorter wavelength, not faster sound.</p>
+<p><b>Volume and duration:</b> Drum strength changes signal amplitude while preserving the same model pitch pattern and decay. Device volume and hearing also affect perceived loudness. Bell, bee, and clap are synthesized examples, not recordings or rules that every such sound must be long or short. Muting the device does not change the model's vibration or signal. Start with low device volume.</p>
+<p><b>Science references:</b> <a href="https://openstax.org/books/college-physics-2e/pages/17-1-sound" target="_blank" rel="noopener">OpenStax: sound and longitudinal waves</a>; <a href="https://phys.unsw.edu.au/jw/strings.html" target="_blank" rel="noopener">UNSW: strings, standing waves, and harmonics</a>.</p>
 <p><b>Privacy and accessibility:</b> No recordings, microphone, login or analytics. Keyboard-accessible choices and visible text feedback work even when device audio is muted.</p>
 <button class="download" id="makeOwn">↓ Make it my own · Save a copy</button><p class="download-status" id="downloadStatus"></p>
 </div></div>
-<script src="./app.js?v=4" defer></script>
+<script src="./model.js?v=5" defer></script>
+<script src="./app.js?v=5" defer></script>
 </body></html>
