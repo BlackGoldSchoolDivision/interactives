@@ -513,6 +513,88 @@
     "grade_note": "Focused ELAL vocabulary practice: homophones, homographs, multiple meanings, spelling–meaning connections and evidence from context. The three difficulty bands are flexible suggestions, with adult support where needed."
   },
   {
+    "id": "literal-chaos",
+    "path": "literal-chaos",
+    "repo": "division",
+    "title": "Literal Chaos",
+    "category": "Reading & writing",
+    "description": "Decode 36 expressions through context, then build a two-panel comic with movable props, original captions and a figurative meaning. Three difficulty levels, five language focuses, read-aloud, printable practice and offline copies.",
+    "types": [
+      "Word work",
+      "Practice questions",
+      "Writing",
+      "Drawing",
+      "Printables"
+    ],
+    "tags": [
+      "Figurative language",
+      "Idioms",
+      "Similes",
+      "Metaphors",
+      "Hyperbole",
+      "Personification",
+      "Comics",
+      "Context clues"
+    ],
+    "url": "https://interactives.blackgold.ca/literal-chaos/",
+    "links": [],
+    "favourite": false,
+    "credit": "Engaging Students · Black Gold School Division",
+    "group": "",
+    "image": "images/literal-chaos-20261024.webp?v=1",
+    "captured": "2026-10-24",
+    "original_urls": [],
+    "grades": [
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "grade_basis": "flexible",
+    "grade_note": "Flexible figurative-language practice and original comic creation. Difficulty bands are suggestions; teachers can choose expressions and provide reading support. The open comic task invites explanations and several defensible interpretations."
+  },
+  {
+    "id": "word-worlds",
+    "path": "word-worlds",
+    "repo": "division",
+    "title": "Word Worlds",
+    "category": "Reading & writing",
+    "description": "Change the words and direct a living paper world. Compare two interpretations across three settings, explore 12 open challenges, and explain how language shapes mood. Responsive animation and sound, a student gallery, comparison PDFs and an offline copy.",
+    "types": [
+      "Builders",
+      "Word work",
+      "Writing",
+      "Printables"
+    ],
+    "tags": [
+      "Word choice",
+      "Mood",
+      "Setting",
+      "Personification",
+      "Creative writing",
+      "Inference",
+      "Sound",
+      "Open-ended"
+    ],
+    "url": "https://interactives.blackgold.ca/word-worlds/",
+    "links": [],
+    "favourite": false,
+    "credit": "Engaging Students · Black Gold School Division",
+    "group": "",
+    "image": "images/word-worlds-20261024.webp?v=1",
+    "captured": "2026-10-24",
+    "original_urls": [],
+    "grades": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "grade_basis": "flexible",
+    "grade_note": "Flexible creative-language tool for exploring word choice, setting, mood, personification and viewpoint. The scene offers one authored interpretation; students can challenge it and support different readings. The 12 prompts are open experiments, not graded outcomes."
+  },
+  {
     "id": "alphabetcards",
     "title": "Print & Play Cards",
     "category": "Reading & writing",

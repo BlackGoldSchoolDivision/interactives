@@ -2476,6 +2476,34 @@
           "url": "https://interactives.blackgold.ca/double-take/"
         }
       ]
+    },
+    "literal-chaos": {
+      "kind": "html",
+      "title": "Literal Chaos",
+      "credit": "Engaging Students · Black Gold School Division",
+      "category": "Reading & writing",
+      "versions": [
+        {
+          "label": "Literal Chaos",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "literal-chaos/index.html",
+          "url": "https://interactives.blackgold.ca/literal-chaos/"
+        }
+      ]
+    },
+    "word-worlds": {
+      "kind": "html",
+      "title": "Word Worlds",
+      "credit": "Engaging Students · Black Gold School Division",
+      "category": "Reading & writing",
+      "versions": [
+        {
+          "label": "Word Worlds",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "word-worlds/index.html",
+          "url": "https://interactives.blackgold.ca/word-worlds/"
+        }
+      ]
     }
   },
   "files": {
@@ -10174,10 +10202,238 @@
         "path": "double-take/vendor/print-fonts.js",
         "bytes": 69022
       }
+    ],
+    "BlackGoldSchoolDivision/interactives/literal-chaos": [
+      {
+        "path": "literal-chaos/README.md",
+        "bytes": 1504
+      },
+      {
+        "path": "literal-chaos/TEACHER-NOTES.md",
+        "bytes": 3116
+      },
+      {
+        "path": "literal-chaos/THIRD-PARTY.md",
+        "bytes": 892
+      },
+      {
+        "path": "literal-chaos/app.js",
+        "bytes": 14435
+      },
+      {
+        "path": "literal-chaos/assets/ARTWORK.md",
+        "bytes": 2932
+      },
+      {
+        "path": "literal-chaos/assets/Nunito-License.txt",
+        "bytes": 4393
+      },
+      {
+        "path": "literal-chaos/assets/beans.webp",
+        "bytes": 15938
+      },
+      {
+        "path": "literal-chaos/assets/body-bold.ttf",
+        "bytes": 106804
+      },
+      {
+        "path": "literal-chaos/assets/body.ttf",
+        "bytes": 106700
+      },
+      {
+        "path": "literal-chaos/assets/bowl.webp",
+        "bytes": 16296
+      },
+      {
+        "path": "literal-chaos/assets/butterfly.webp",
+        "bytes": 23194
+      },
+      {
+        "path": "literal-chaos/assets/cake.webp",
+        "bytes": 17564
+      },
+      {
+        "path": "literal-chaos/assets/clock.webp",
+        "bytes": 24362
+      },
+      {
+        "path": "literal-chaos/assets/cloud.webp",
+        "bytes": 15490
+      },
+      {
+        "path": "literal-chaos/assets/feather.webp",
+        "bytes": 16676
+      },
+      {
+        "path": "literal-chaos/assets/flame.webp",
+        "bytes": 13974
+      },
+      {
+        "path": "literal-chaos/assets/heart.webp",
+        "bytes": 12030
+      },
+      {
+        "path": "literal-chaos/assets/ice.webp",
+        "bytes": 20216
+      },
+      {
+        "path": "literal-chaos/assets/key.webp",
+        "bytes": 15886
+      },
+      {
+        "path": "literal-chaos/assets/moon.webp",
+        "bytes": 12554
+      },
+      {
+        "path": "literal-chaos/data.js",
+        "bytes": 18637
+      },
+      {
+        "path": "literal-chaos/index.html",
+        "bytes": 7056
+      },
+      {
+        "path": "literal-chaos/kit.js",
+        "bytes": 3781
+      },
+      {
+        "path": "literal-chaos/model.js",
+        "bytes": 1436
+      },
+      {
+        "path": "literal-chaos/scene.js",
+        "bytes": 4154
+      },
+      {
+        "path": "literal-chaos/style.css",
+        "bytes": 9443
+      },
+      {
+        "path": "literal-chaos/vendor/JSPDF-LICENSE.txt",
+        "bytes": 1142
+      },
+      {
+        "path": "literal-chaos/vendor/PRINT-FONT-LICENSE.txt",
+        "bytes": 3859
+      },
+      {
+        "path": "literal-chaos/vendor/jspdf.umd.min.js",
+        "bytes": 420165
+      },
+      {
+        "path": "literal-chaos/vendor/print-fonts.js",
+        "bytes": 69022
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/word-worlds": [
+      {
+        "path": "word-worlds/README.md",
+        "bytes": 1598
+      },
+      {
+        "path": "word-worlds/THIRD-PARTY.md",
+        "bytes": 892
+      },
+      {
+        "path": "word-worlds/app.js",
+        "bytes": 11223
+      },
+      {
+        "path": "word-worlds/assets/Nunito-License.txt",
+        "bytes": 4393
+      },
+      {
+        "path": "word-worlds/assets/boat.webp",
+        "bytes": 22020
+      },
+      {
+        "path": "word-worlds/assets/body-bold.ttf",
+        "bytes": 106804
+      },
+      {
+        "path": "word-worlds/assets/body.ttf",
+        "bytes": 106700
+      },
+      {
+        "path": "word-worlds/assets/bridge.webp",
+        "bytes": 26568
+      },
+      {
+        "path": "word-worlds/assets/cottage.webp",
+        "bytes": 42908
+      },
+      {
+        "path": "word-worlds/assets/cypress.webp",
+        "bytes": 44344
+      },
+      {
+        "path": "word-worlds/assets/shop.webp",
+        "bytes": 37472
+      },
+      {
+        "path": "word-worlds/assets/shrub.webp",
+        "bytes": 32254
+      },
+      {
+        "path": "word-worlds/assets/townhouse.webp",
+        "bytes": 25672
+      },
+      {
+        "path": "word-worlds/assets/tree.webp",
+        "bytes": 65308
+      },
+      {
+        "path": "word-worlds/index.html",
+        "bytes": 5534
+      },
+      {
+        "path": "word-worlds/kit.js",
+        "bytes": 3781
+      },
+      {
+        "path": "word-worlds/model.js",
+        "bytes": 4610
+      },
+      {
+        "path": "word-worlds/stage.js",
+        "bytes": 4767
+      },
+      {
+        "path": "word-worlds/style.css",
+        "bytes": 7464
+      },
+      {
+        "path": "word-worlds/tools/check-browser.cjs",
+        "bytes": 12306
+      },
+      {
+        "path": "word-worlds/tools/check-model.cjs",
+        "bytes": 2013
+      },
+      {
+        "path": "word-worlds/tools/check-pdfs.py",
+        "bytes": 1172
+      },
+      {
+        "path": "word-worlds/vendor/JSPDF-LICENSE.txt",
+        "bytes": 1142
+      },
+      {
+        "path": "word-worlds/vendor/PRINT-FONT-LICENSE.txt",
+        "bytes": 3859
+      },
+      {
+        "path": "word-worlds/vendor/jspdf.umd.min.js",
+        "bytes": 420165
+      },
+      {
+        "path": "word-worlds/vendor/print-fonts.js",
+        "bytes": 69022
+      }
     ]
   },
   "repository_heads": {
     "Maltais239/interactives": "6c72111326a5637e8f370e56c56244b7392b34f2",
-    "BlackGoldSchoolDivision/interactives": "c9226efc9a4e9f40b1e49ddacd803d5f3e0cdb73"
+    "BlackGoldSchoolDivision/interactives": "b2ac828debb1b3bff1db0be16d4897b4a3cd0bd4"
   }
 }
