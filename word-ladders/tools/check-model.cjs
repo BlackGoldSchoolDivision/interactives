@@ -1,7 +1,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const M=require('../model.js'),P=require('../pdf.js');
 const total=M.puzzles.length;
-for(const level of Object.keys(M.levels))assert.equal(M.puzzles.filter(p=>p.level===level).length,20);
+for(const level of Object.keys(M.levels))assert.equal(M.puzzles.filter(p=>p.level===level).length,level==='extreme'?5:20);
 assert.equal(new Set(M.puzzles.map(p=>p.id)).size,total,'Every ladder needs a unique ID');
 for(const p of M.puzzles){
   assert.equal(p.words.length,6);assert.equal(p.clues.length,6);assert.equal(new Set(p.words).size,6);
@@ -14,6 +14,7 @@ const p=M.puzzles[0];assert(!M.check(p,['HEAD'],'HEAD').ok);assert(!M.check(p,['
 let trail=['HEAD'];for(const w of ['HEAR','HEIR','HAIR','HAIL','TAIL']){const r=M.check(p,trail,w,'free');assert(r.ok,w);trail.push(w);}assert.equal(trail.at(-1),'TAIL');
 const r=M.route('HEAD','TAIL');assert(r&&r.length>1);for(let i=1;i<r.length;i++)assert.equal(M.changes(r[i-1],r[i]),1);
 assert.equal(M.hint(p,['HEAD'],'guided').next,'HEAL');assert.equal(M.hint(p,['HEAD'],'guided').position,4);
+const extreme=M.puzzles.find(p=>p.id==='clasp-braze');assert(M.check(extreme,['CLASP','CLAST','BLAST'],'blasé').ok,'Accented typing must work in Extreme');
 const out=path.join(__dirname,'..','validation');fs.mkdirSync(out,{recursive:true});
 const plan=P.pages(M.puzzles,true);assert.equal(plan.length,total*2);assert(plan.slice(0,total).every(p=>!p.key));assert(plan.slice(total).every(p=>p.key));
 fs.writeFileSync(path.join(out,'check-all.pdf'),Buffer.from(P.build(M.puzzles,{answerKey:true}).output('arraybuffer')));

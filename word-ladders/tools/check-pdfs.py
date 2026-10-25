@@ -35,6 +35,10 @@ with pdfplumber.open(V/'starter-a4.pdf') as doc:
     assert len(doc.pages)==1
     boxes(doc.pages[0],next(p for p in data if p['level']=='starter'),False)
     assert abs(doc.pages[0].width-595.28)<1 and abs(doc.pages[0].height-841.89)<1
+extreme=[p for p in data if p['level']=='extreme']
+with pdfplumber.open(V/'extreme-pack.pdf') as doc:
+    assert len(extreme)==5 and len(doc.pages)==10
+    for i,page in enumerate(doc.pages):boxes(page,extreme[i%5],i>=5)
 (V/'check-all.pdf').unlink()
 (V/'puzzles.json').unlink()
-print(f'Passed PDF checks: all {len(data)} worksheets and keys, blank student boxes after completed play, key-only separate pages, {len(expert)*2}-page Expert pack, Letter/A4 sizes, offline PDF and page bounds.')
+print(f'Passed PDF checks: all {len(data)} worksheets and keys, blank student boxes after completed play, key-only separate pages, {len(expert)*2}-page Expert pack, 10-page Extreme pack, Letter/A4 sizes, offline PDF and page bounds.')

@@ -9932,7 +9932,7 @@
     "BlackGoldSchoolDivision/interactives/word-ladders": [
       {
         "path": "word-ladders/README.md",
-        "bytes": 2952
+        "bytes": 3898
       },
       {
         "path": "word-ladders/THIRD-PARTY.md",
@@ -9940,7 +9940,7 @@
       },
       {
         "path": "word-ladders/app.js",
-        "bytes": 12490
+        "bytes": 12627
       },
       {
         "path": "word-ladders/assets/mountains.webp",
@@ -9948,7 +9948,7 @@
       },
       {
         "path": "word-ladders/data.js",
-        "bytes": 14463
+        "bytes": 16061
       },
       {
         "path": "word-ladders/examples/head-to-tail-with-key.pdf",
@@ -9956,7 +9956,7 @@
       },
       {
         "path": "word-ladders/index.html",
-        "bytes": 7051
+        "bytes": 7303
       },
       {
         "path": "word-ladders/lexicon.js",
@@ -9964,7 +9964,7 @@
       },
       {
         "path": "word-ladders/model.js",
-        "bytes": 2883
+        "bytes": 3178
       },
       {
         "path": "word-ladders/pdf.js",
@@ -9972,19 +9972,19 @@
       },
       {
         "path": "word-ladders/style.css",
-        "bytes": 12159
+        "bytes": 12303
       },
       {
         "path": "word-ladders/tools/check-browser.cjs",
-        "bytes": 6695
+        "bytes": 9183
       },
       {
         "path": "word-ladders/tools/check-model.cjs",
-        "bytes": 2288
+        "bytes": 2465
       },
       {
         "path": "word-ladders/tools/check-pdfs.py",
-        "bytes": 1979
+        "bytes": 2222
       },
       {
         "path": "word-ladders/vendor/FILTER-LICENSE.txt",

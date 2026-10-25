@@ -26,12 +26,26 @@ const root=path.join(__dirname,'..','validation');fs.mkdirSync(root,{recursive:t
  // A teacher's offline copy must retain both play and real PDF generation.
  const dw=page.waitForEvent('download');await page.locator('#makeOwn').click();const copy=await dw;const file=path.join(root,'offline.html');await copy.saveAs(file);const html=fs.readFileSync(file,'utf8');assert(!/<script[^>]+src=/.test(html));assert(html.includes('data:image/webp;base64,'));const offline=await browser.newPage({viewport:{width:390,height:667}});await offline.route('http**/*',r=>r.abort());await offline.goto('file://'+file);await offline.locator('#guess').fill('HEAL');await offline.locator('#addStep').click();assert.equal(await offline.locator('#ladder').getAttribute('data-current'),'HEAL');await offline.locator('#teacherPdf').click();const od=offline.waitForEvent('download');await offline.locator('#savePdf').click();await(await od).saveAs(path.join(root,'offline-student.pdf'));fs.unlinkSync(file);
  // Every expanded ladder must be reachable, and the PDF chooser must expose
- // the same 20 puzzles as the game at each level.
- for(const level of ['starter','explorer','expert']){
+ // the same puzzles as the game at each level.
+ for(const level of ['starter','explorer','expert','extreme']){
+  const count=level==='extreme'?5:20;
   await page.locator('[data-level='+level+']').click();const missions=new Set();
-  for(let i=0;i<20;i++){missions.add(await page.locator('#mission').innerText());await page.locator('#newLadder').click();}
-  assert.equal(missions.size,20,level+' must offer 20 distinct ladders');
-  await page.locator('#teacherPdf').click();assert.equal(await page.locator('#pdfPuzzle option').count(),20);await page.locator('#pdfDialog [data-close]').click();
+  for(let i=0;i<count;i++){missions.add(await page.locator('#mission').innerText());await page.locator('#newLadder').click();}
+  assert.equal(missions.size,count,level+' must offer '+count+' distinct ladders');
+  await page.locator('#teacherPdf').click();assert.equal(await page.locator('#pdfPuzzle option').count(),count);await page.locator('#pdfDialog [data-close]').click();
  }
- assert.deepEqual(errors,[]);await browser.close();console.log('Passed gameplay, all 60 selectable ladders, alternate routes, difficulty, live resizing, seven screen sizes, completed state, teacher controls, real PDF downloads, browser printing, and offline play/PDF download.');
+ // Complete all five Extreme trails, including accented input, then resize
+ // the six-letter trail with a live answer to check the four-level header.
+ for(const p of require('../data.js').filter(p=>p.level==='extreme')){
+  assert.equal(await page.locator('#mission').innerText(),p.words[0]+' → '+p.words[5]);await page.locator('#restartLadder').click();
+  for(const word of p.words.slice(1))await enter(word==='BLASE'?'BLASÉ':word);
+  assert.equal(await page.locator('#nextComplete').isVisible(),true);await page.locator('#newLadder').click();
+ }
+ for(let i=0;i<3;i++)await page.locator('#newLadder').click();await page.locator('#restartLadder').click();await enter('SENARY');await page.locator('#guess').fill('SENTRY');
+ for(const [width,height]of [[1024,540],[1366,650],[768,900],[390,667],[320,568],[640,360],[819,432]]){
+  await page.setViewportSize({width,height});const state=await page.evaluate(()=>({overflow:document.documentElement.scrollWidth>innerWidth+1,word:document.querySelector('#ladder').dataset.current,guess:document.querySelector('#guess').value,small:[...document.querySelectorAll('button,select,a.icon')].filter(b=>b.getClientRects().length&&b.getBoundingClientRect().height<43.5).map(b=>b.id||b.className)}));assert(!state.overflow,JSON.stringify({width,height,state}));assert.deepEqual(state.small,[]);assert.equal(state.word,'SENARY');assert.equal(state.guess,'SENTRY');await page.screenshot({path:path.join(root,'extreme-'+width+'x'+height+'.png'),fullPage:true});
+ }
+ await page.setViewportSize({width:1366,height:650});await page.locator('#teacherPdf').click();assert.equal(await page.locator('#pdfLevel').inputValue(),'extreme');await page.locator('#pdfScope').selectOption('pack');await page.locator('#includeKey').check();await page.locator('#paper').selectOption('letter');assert((await page.locator('#printCount').innerText()).includes('5 student pages + 5 separate'));assert.equal(await page.locator('#pdfScope option[value=pack]').innerText(),'All 5 ladders at this level');await download('extreme-pack.pdf');await page.locator('#pdfDialog [data-close]').click();
+ await page.locator('[data-level=explorer]').click();await page.locator('[data-level=extreme]').click();assert.equal(await page.locator('#ladder').getAttribute('data-current'),'SENARY');assert.equal(await page.locator('#guess').inputValue(),'SENTRY');
+ assert.deepEqual(errors,[]);await browser.close();console.log('Passed gameplay, all 65 selectable ladders, all five Extreme completions, accented input, alternate routes, difficulty, live resizing, seven screen sizes in Explorer and Extreme, completed state, teacher controls, real PDF downloads, browser printing, and offline play/PDF download.');
 })().catch(e=>{console.error(e);process.exit(1);});
