@@ -22,3 +22,11 @@ Sources: `SOURCES.md`. Font licence: `assets/Nunito-License.txt`. The interface,
 ## Checks and packaging
 
 Run `node --test tools/check-model.mjs` and `node --check app.mjs`. Run `python tools/package.py` to rebuild `offline.html` and the local `dist/` preview. Neither `dist/` nor `.openai/` is required on GitHub Pages. Changes must also be checked at the six responsive viewports in the repository’s `RESPONSIVE-DESIGN.md`.
+
+## Student investigation refinements
+
+Test actions capture immutable conditions, observations, and any prediction made before testing. Changing a selected liquid without pouring does not alter the last experiment. Kept records retain their original data and can be compared two or three at a time inside My trials. Existing records are preserved; older liquid stacks without recorded pour order are identified explicitly.
+
+Repeated identical-fluid pours form one band while preserving individual pour history. Water and ethanol blend when an incoming pour meets an exposed binary layer; an intervening oil layer can keep them apart. Other compatible layers blend during standing or stirring. Contact and mixing times are illustrative. A shared shallow-column calculation drives both the object drawing and its explanation. The drop uses spherical displacement; its drawn size is enlarged for visibility. The hull is a side cutaway with a dry interior until flooding. Guided hull tasks hold cargo fixed and seek the smallest outside volume among the permitted dimensions.
+
+On phones, liquid selection, pour volume and Pour stay available in a bottom bar. Experiment actions bring the vessel into view. Sliders and other controls retain keyboard focus after updates. The figure descriptions provide the current layers or result as text.

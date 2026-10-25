@@ -39,7 +39,7 @@ export function solidStep(body,dt,{mass,volume,rho,depth=.14,drag=.35}){
  if(body.z< -depth+half){body.z=-depth+half;body.v=0;}
  return {...body,fraction,buoyant:buoyancy(rho,volume*fraction),weight:weight(mass)};
 }
-export function entry(id,volume=80,salt=10){let f=fluid(id,salt);return {...f,volume,mass:volume*f.rho,ingredients:[{id,volume,mass:volume*f.rho}]};}
+export function entry(id,volume=80,salt=10){let f=fluid(id,salt);return {...f,volume,mass:volume*f.rho,ingredients:[{id,volume,mass:volume*f.rho,rho:f.rho,...(id==='salt'?{salt}: {})}]};}
 function blendColor(entries){const sum=entries.reduce((a,e)=>a+e.volume,0),out=[0,0,0];for(const e of entries){let h=e.color.replace('#','');out.forEach((_,i)=>out[i]+=parseInt(h.slice(i*2,i*2+2),16)*e.volume/sum);}return '#'+out.map(x=>Math.round(x).toString(16).padStart(2,'0')).join('');}
 export function mixEntries(entries){
  const ingredients=entries.flatMap(e=>e.ingredients||[{id:e.id,volume:e.volume,mass:e.mass}]);
@@ -49,7 +49,18 @@ export function mixEntries(entries){
  const rho=binary?ethanolDensity(alcoholMass/mass*100):mass/idealVolume;
  return {id:'mix',name:'Blended liquids',rho,volume:mass/rho,mass,ingredients,color:blendColor(entries),aqueous:true,approx:!binary};
 }
-export function layerOrder(entries){return [...entries].sort((a,b)=>b.rho-a.rho);}
+export function coalesceLayers(entries){
+ const out=[];
+ for(const e of entries){const match=e.id!=='mix'&&out.find(x=>x.id===e.id&&Math.abs(x.rho-e.rho)<1e-9);
+ if(match){match.volume+=e.volume;match.mass+=e.mass;match.ingredients.push(...e.ingredients);}else out.push({...e,ingredients:[...(e.ingredients||[])]});}
+ return out;
+}
+export function layerOrder(entries){return coalesceLayers(entries).sort((a,b)=>b.rho-a.rho);}
+export function layerTest(layers,sampleRho,volume=8){
+ const ordered=layerOrder(layers),total=ordered.reduce((s,e)=>s+e.volume,0),depth=.18*total/600;
+ const result=layerEquilibrium(ordered,sampleRho,volume,depth);
+ return result?{...result,depth,total,volume,shallow:result.state==='bottom'&&sampleRho<Math.max(...ordered.map(e=>e.rho))}:null;
+}
 export function blendLayers(entries,stir=false){
  let layers=layerOrder(entries);
  if(stir){let aq=layers.filter(e=>e.aqueous),oil=layers.filter(e=>!e.aqueous);return layerOrder([...oil,...(aq.length?[mixEntries(aq)]:[])]);}
@@ -80,4 +91,21 @@ export function boatModel(width,height,cargo,rho=0.9982){
  const wall=(a+b)/2,displacement=(clayMass+cargo)/rho;
  const draft=displacement/(width*length),capacity=Math.max(0,rho*width*length*height-clayMass);
  return {length,width,height,clayVolume,clayMass,wall,displacement,draft,capacity,freeboard:height-draft,flooded:draft>=height,mass:clayMass+cargo,weight:weight(clayMass+cargo)};
+}
+
+// A spherical drop uses the displaced spherical-cap volume near the surface.
+export function sphereFraction(z,volume){const r=Math.cbrt(3*volume/(4*Math.PI))/100,h=clamp(r-z,0,2*r);return h*h*(3*r-h)/(4*r*r*r);}
+export function sphereStep(body,dt,{mass,volume,rho,depth=.14,drag=.02}){
+ const r=Math.cbrt(3*volume/(4*Math.PI))/100,fraction=sphereFraction(body.z,volume),kg=mass/1000;
+ body.v=(body.v+(buoyancy(rho,volume*fraction)-weight(mass))/kg*dt)/(1+drag*(.02+.98*fraction)/kg*dt);
+ body.z+=body.v*dt;if(body.z< -depth+r){body.z=-depth+r;body.v=0;}return body;
+}
+export function hullBenchmark(cargo){let best=Infinity;for(let w=8;w<=16;w+=.5)for(let h=1.5;h<=4.5;h+=.25){const m=boatModel(w,h,cargo);if(!m.flooded)best=Math.min(best,w*12*h);}return best;}
+// Water and ethanol mix when the incoming pour contacts an exposed binary layer.
+// This is an illustrative contact rule, not a prediction of pouring or diffusion time.
+export function addPour(entries,pour){
+ const layers=layerOrder(entries),top=layers.at(-1);
+ const binary=e=>e.ingredients?.length&&e.ingredients.every(i=>['water','ethanol'].includes(i.id));
+ if(top&&top.id!==pour.id&&binary(top)&&binary(pour))return layerOrder([...layers.slice(0,-1),mixEntries([top,pour])]);
+ return layerOrder([...layers,pour]);
 }

@@ -14,3 +14,7 @@ Solid values are selected representative classroom samples, not universal materi
 Material artwork was newly generated for this project as a six-cell texture atlas. It is used as specimen surface texture in the numerical model display. Nunito is licensed under the SIL Open Font License; the full licence is included.
 
 The illustrated lab backdrop was generated independently for this project, using the approved original Float Lab mockup as its visual reference. All vessels, measurement marks, labels, liquids, oil drops and moving samples are rendered in code, independently of the background image. No third-party simulation imagery is included.
+
+The refined spherical-drop model uses the volume of the immersed spherical cap. Layer-object geometry and feedback share the same actual column depth. Guided hull benchmarks enumerate only the same dimensions available to students; they do not claim an optimum for real clay boats or account for omitted material strength and stability.
+
+The pouring-order task uses an illustrative exposed-layer contact rule for water–ethanol mixing. It distinguishes mixing before an oil barrier forms from layering water, oil, and then alcohol. It does not model turbulence, viscosity, or diffusion times.
