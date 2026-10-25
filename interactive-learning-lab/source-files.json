@@ -10036,7 +10036,7 @@
       },
       {
         "path": "double-take/app.js",
-        "bytes": 14409
+        "bytes": 14751
       },
       {
         "path": "double-take/assets/Nunito-License.txt",
@@ -10144,11 +10144,11 @@
       },
       {
         "path": "double-take/style.css",
-        "bytes": 16757
+        "bytes": 16982
       },
       {
         "path": "double-take/tools/check-browser.cjs",
-        "bytes": 10267
+        "bytes": 11397
       },
       {
         "path": "double-take/tools/check-model.cjs",
