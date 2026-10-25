@@ -1,0 +1,12 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),M=require('../model.js'),P=require('../pdf.js');
+assert.equal(M.questions.length,72);assert.equal(new Set(M.questions.map(q=>q.id)).size,72);assert.equal(M.scenes.length,18);
+for(const level of Object.keys(M.levels))for(const mode of Object.keys(M.modes)){
+ const pool=M.pool(level,mode);assert.equal(pool.length,12);const round=M.create(level,mode,123,true);assert.equal(round.ids.length,10);assert.equal(new Set(round.ids).size,10);assert.equal(round.ids[0],pool[0].id);assert.deepEqual(round,M.create(level,mode,123,true));
+ for(let i=0;i<10;i++){assert(M.choose(round,0));assert(M.check(round).correct);assert(!M.check(round).changed,'Checking again must not add points');M.next(round);}assert(round.finished);assert.equal(round.score,1000);assert.equal(round.firstTry,10);
+ for(const q of pool){assert(M.scenes.some(s=>s.id===q.scene));assert(q.options.every(o=>o.label&&o.meaning));assert.equal(new Set(q.options.map(o=>o.label)).size,2);assert(q.sentence.toLowerCase().includes(q.evidence.toLowerCase()),q.id+' evidence must be in the sentence');assert(q.why.length>25);assert.equal(q.mode==='sound'?q.sentence.split('___').length:1,2-(q.mode==='spelling'?1:0));if(mode==='spelling')assert(q.sentence.toLowerCase().includes(q.focus.toLowerCase()));
+  const state=M.create(level,mode,1);state.ids[0]=q.id;assert(M.check(state).empty);assert(M.choose(state,1));assert(!M.check(state).correct);assert.equal(state.score,0);assert(M.choose(state,0));assert(M.check(state).correct);assert.equal(state.score,50);assert.equal(state.firstTry,0);assert(!M.check(state).changed);assert.equal(state.score,50);for(const o of M.options(q,123))assert([0,1].includes(o.id));
+ }
+}
+const out=path.join(__dirname,'..','validation');fs.mkdirSync(out,{recursive:true});const all=P.pages(M.questions,true);assert.equal(all.filter(p=>!p.key).length,18);assert.equal(all.filter(p=>p.key).length,9);assert(all.slice(0,18).every(p=>!p.key));assert(all.slice(18).every(p=>p.key));
+fs.writeFileSync(path.join(out,'all-questions.pdf'),Buffer.from(P.build(M.questions,{answerKey:true}).output('arraybuffer')));fs.writeFileSync(path.join(out,'questions.json'),JSON.stringify(M.questions));
+console.log('Passed all 72 questions, six 12-question banks, 18 scene references, evidence, deterministic rounds, retry scoring, duplicate-submit protection and separate worksheet/key plans.');
