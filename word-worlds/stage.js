@@ -33,7 +33,7 @@ function draw(canvas,v,time=0,view=0){
  }else if(v.subject==='sunlight'){
   c.fillStyle='#fff3cc';for(let i=0;i<4;i++){c.globalAlpha=.045+Math.sin(t+i)*.015;c.beginPath();c.moveTo(930+i*12,30);c.lineTo(330+i*180+Math.sin(t*.3)*25,540);c.lineTo(430+i*180+Math.sin(t*.3)*25,540);c.closePath();c.fill();}c.globalAlpha=1;
  }else{
-  c.strokeStyle='#f7f1d8';c.lineWidth=2.2;c.globalAlpha=.8;for(let i=0;i<4;i++){const xx=(t*80+i*300)%1700-350,yy=100+i*63;c.beginPath();c.moveTo(xx,yy);c.bezierCurveTo(xx+105,yy-45,xx+230,yy+70,xx+400,yy+12);c.stroke();}c.globalAlpha=1;
+  c.strokeStyle='#f7f1d8';c.lineWidth=2.2;c.globalAlpha=.8;for(let i=0;i<2+Math.round(motion.speed*4);i++){const xx=(t*80+i*300)%1700-350,yy=100+i*63;c.beginPath();c.moveTo(xx,yy);c.bezierCurveTo(xx+105,yy-45,xx+230,yy+70,xx+400,yy+12);c.stroke();}c.globalAlpha=1;
  }
  const leaves=v.subject==='rain'?10:30;
  for(let i=0;i<leaves;i++){let x=(i*137+t*(v.verb==='raced'?190:80))%1300-50,y=115+(i*67)%370+Math.sin(t*(v.verb==='danced'?2.5:1)+i)*20;c.save();c.translate(x,y);c.rotate(t+i);c.fillStyle=v.mood==='icy'?'#f5f3e8':i%3?'#a5ad75':'#d1bb8f';c.beginPath();c.moveTo(-6,0);c.quadraticCurveTo(0,-7,9,0);c.quadraticCurveTo(0,7,-6,0);c.fill();c.restore();}
