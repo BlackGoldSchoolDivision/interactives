@@ -4357,6 +4357,78 @@
           "coverage": "partial"
         }
       ]
+    },
+    "double-take": {
+      "grades": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "basis": "curriculum",
+      "reviewed": "2026-10-24",
+      "rationale": "Focused ELAL vocabulary practice: homophones, homographs, multiple meanings, spelling–meaning connections and evidence from context. The three difficulty bands are flexible suggestions, with adult support where needed.",
+      "alignments": [
+        {
+          "source": "elal16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            107,
+            108,
+            112,
+            118,
+            119
+          ],
+          "topic": "Homophones, homographs and meanings across situations",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            131,
+            145
+          ],
+          "topic": "Word meanings in contexts and texts",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 4,
+          "sheet": "Grade 4",
+          "rows": [
+            327,
+            332
+          ],
+          "topic": "Homophone spelling and meaning",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            166
+          ],
+          "topic": "Contextual meanings of words and phrases",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            151,
+            157,
+            161
+          ],
+          "topic": "Context clues and precise vocabulary",
+          "coverage": "partial"
+        }
+      ]
     }
   }
 }

@@ -473,6 +473,46 @@
     "grade_note": "Focused ELAL 1–6 vocabulary and spelling practice through original meaning clues and single-letter word changes. The three grade bands are flexible suggestions; choose by learner needs. Letter changes and sound changes are discussed separately in teacher notes."
   },
   {
+    "id": "double-take",
+    "path": "double-take",
+    "repo": "division",
+    "title": "Double Take",
+    "category": "Reading & writing",
+    "description": "Collect word stickers across 72 context challenges. Choose sound-alike spellings or explore different meanings of the same written word. Three difficulty levels, read-aloud support, teacher PDFs and an offline copy.",
+    "types": [
+      "Word work",
+      "Practice questions",
+      "Printables"
+    ],
+    "tags": [
+      "Homophones",
+      "Homographs",
+      "Multiple meanings",
+      "Context clues",
+      "Vocabulary",
+      "Spelling",
+      "Teacher PDFs",
+      "Offline"
+    ],
+    "url": "https://interactives.blackgold.ca/double-take/",
+    "links": [],
+    "favourite": false,
+    "credit": "Engaging Students · Black Gold School Division",
+    "group": "",
+    "image": "images/double-take-20261024.webp?v=1",
+    "captured": "2026-10-24",
+    "original_urls": [],
+    "grades": [
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Focused ELAL vocabulary practice: homophones, homographs, multiple meanings, spelling–meaning connections and evidence from context. The three difficulty bands are flexible suggestions, with adult support where needed."
+  },
+  {
     "id": "alphabetcards",
     "title": "Print & Play Cards",
     "category": "Reading & writing",

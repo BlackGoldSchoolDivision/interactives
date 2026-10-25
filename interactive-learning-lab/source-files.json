@@ -2462,6 +2462,20 @@
           "url": "https://interactives.blackgold.ca/word-ladders/"
         }
       ]
+    },
+    "double-take": {
+      "kind": "html",
+      "title": "Double Take",
+      "credit": "Engaging Students · Black Gold School Division",
+      "category": "Reading & writing",
+      "versions": [
+        {
+          "label": "Double Take",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "double-take/index.html",
+          "url": "https://interactives.blackgold.ca/double-take/"
+        }
+      ]
     }
   },
   "files": {
@@ -10008,6 +10022,156 @@
       },
       {
         "path": "word-ladders/vendor/print-fonts.js",
+        "bytes": 69022
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/double-take": [
+      {
+        "path": "double-take/README.md",
+        "bytes": 3051
+      },
+      {
+        "path": "double-take/THIRD-PARTY.md",
+        "bytes": 931
+      },
+      {
+        "path": "double-take/app.js",
+        "bytes": 14409
+      },
+      {
+        "path": "double-take/assets/Nunito-License.txt",
+        "bytes": 4393
+      },
+      {
+        "path": "double-take/assets/beach.webp",
+        "bytes": 42372
+      },
+      {
+        "path": "double-take/assets/boat.webp",
+        "bytes": 34580
+      },
+      {
+        "path": "double-take/assets/body-bold.ttf",
+        "bytes": 106804
+      },
+      {
+        "path": "double-take/assets/body.ttf",
+        "bytes": 106700
+      },
+      {
+        "path": "double-take/assets/camp.webp",
+        "bytes": 43430
+      },
+      {
+        "path": "double-take/assets/castle.webp",
+        "bytes": 58146
+      },
+      {
+        "path": "double-take/assets/craft.webp",
+        "bytes": 49246
+      },
+      {
+        "path": "double-take/assets/desk.webp",
+        "bytes": 47728
+      },
+      {
+        "path": "double-take/assets/dog.webp",
+        "bytes": 46096
+      },
+      {
+        "path": "double-take/assets/forest.webp",
+        "bytes": 47088
+      },
+      {
+        "path": "double-take/assets/garden.webp",
+        "bytes": 61258
+      },
+      {
+        "path": "double-take/assets/kitchen.webp",
+        "bytes": 42006
+      },
+      {
+        "path": "double-take/assets/market.webp",
+        "bytes": 57570
+      },
+      {
+        "path": "double-take/assets/music.webp",
+        "bytes": 42608
+      },
+      {
+        "path": "double-take/assets/party.webp",
+        "bytes": 54694
+      },
+      {
+        "path": "double-take/assets/pond.webp",
+        "bytes": 64620
+      },
+      {
+        "path": "double-take/assets/sports.webp",
+        "bytes": 53680
+      },
+      {
+        "path": "double-take/assets/trail.webp",
+        "bytes": 50274
+      },
+      {
+        "path": "double-take/assets/train.webp",
+        "bytes": 47736
+      },
+      {
+        "path": "double-take/assets/winter.webp",
+        "bytes": 52258
+      },
+      {
+        "path": "double-take/data.js",
+        "bytes": 18927
+      },
+      {
+        "path": "double-take/examples/sticker-word-practice.pdf",
+        "bytes": 26730
+      },
+      {
+        "path": "double-take/index.html",
+        "bytes": 7385
+      },
+      {
+        "path": "double-take/model.js",
+        "bytes": 3437
+      },
+      {
+        "path": "double-take/pdf.js",
+        "bytes": 4130
+      },
+      {
+        "path": "double-take/style.css",
+        "bytes": 16757
+      },
+      {
+        "path": "double-take/tools/check-browser.cjs",
+        "bytes": 10267
+      },
+      {
+        "path": "double-take/tools/check-model.cjs",
+        "bytes": 2451
+      },
+      {
+        "path": "double-take/tools/check-pdfs.py",
+        "bytes": 1972
+      },
+      {
+        "path": "double-take/vendor/JSPDF-LICENSE.txt",
+        "bytes": 1142
+      },
+      {
+        "path": "double-take/vendor/PRINT-FONT-LICENSE.txt",
+        "bytes": 3859
+      },
+      {
+        "path": "double-take/vendor/jspdf.umd.min.js",
+        "bytes": 420165
+      },
+      {
+        "path": "double-take/vendor/print-fonts.js",
         "bytes": 69022
       }
     ]
