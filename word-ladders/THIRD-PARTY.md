@@ -1,0 +1,9 @@
+# Sources and licences
+
+- **Wordnik word list**: https://github.com/wordnik/wordlist, `wordlist-20210729.txt`. Copyright (c) 2020 Wordnik, MIT. Three- through six-letter alphabetic entries were retained, uppercased, de-duplicated and filtered. Full licence: `vendor/WORDNIK-LICENSE.txt`, also embedded in `lexicon.js`. The classroom bank is not an exhaustive dictionary and is not a vocabulary-frequency or grade-level list.
+- **Classroom exclusion filter**: Shutterstock and contributors, LDNOOBW English list, https://github.com/LDNOOBW/List-of-Dirty-Naughty-Obscene-and-Otherwise-Bad-Words, CC BY 4.0. Used to remove exact terms and simple inflections; the source list is not displayed. Full licence: `vendor/FILTER-LICENSE.txt`. Attribution and modification notice are embedded in the derived word-list script.
+- **jsPDF 4.2.1**: https://github.com/parallax/jsPDF/releases/tag/v4.2.1, MIT. Browser UMD build vendored locally; no runtime CDN request. Full licence: `vendor/JSPDF-LICENSE.txt` and the upstream bundle header. PDF generation uses direct text/shape APIs, not HTML import or file-reading APIs.
+- **Print fonts**: DejaVu Sans and DejaVu Sans Bold, obtained from the installed DejaVu font package. Subset to printable ASCII and renamed LadderPrint for this project. Copyright/licence notices: `vendor/PRINT-FONT-LICENSE.txt` and embedded in `vendor/print-fonts.js`. The subset font data is embedded in each PDF.
+- **Artwork**: original generated flat mountain background based on the user's approved visual direction. Prompt: preserve clean layered blue/teal mountains, winding river and warm sunset; remove all interface, letters, ledges and labels to create a calm background layer. Converted to WebP for fast classroom loading. Interface letters, platforms, controls and PDF layouts are live code, not baked into the image.
+
+The game, clues and PDF layout are original implementations. Third-party terms apply to their respective components.
