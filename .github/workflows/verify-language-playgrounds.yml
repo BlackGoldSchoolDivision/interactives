@@ -1,0 +1,65 @@
+name: Verify language playgrounds
+on:
+  push:
+    paths:
+      - '.github/workflows/verify-language-playgrounds.yml'
+      - 'word-worlds/**'
+      - 'literal-chaos/**'
+      - '!word-worlds/validation/**'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: language-playground-checks
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Install verification dependencies
+        run: |
+          npm install --no-save playwright-core@1.55.0
+          python -m pip install Pillow pdfplumber
+      - name: Check language and game models
+        run: |
+          node --check word-worlds/app.js
+          node --check word-worlds/stage.js
+          node --check literal-chaos/app.js
+          node --check literal-chaos/scene.js
+          node word-worlds/tools/check-model.cjs
+      - name: Verify the two games and actual PDF and offline downloads
+        run: |
+          python -m http.server 8765 --bind 127.0.0.1 >/tmp/language-playgrounds-web.log 2>&1 &
+          sleep 2
+          node word-worlds/tools/check-browser.cjs
+          python word-worlds/tools/check-pdfs.py
+      - name: Prepare verified previews
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image,ImageOps
+          p=Path('word-worlds/validation')
+          for file in p.glob('*.png'):
+              Image.open(file).convert('RGB').save(file.with_suffix('.webp'),'WEBP',quality=85,method=6)
+              file.unlink()
+          for game,color in [('word-worlds','#c6c1e5'),('literal-chaos','#87cce8')]:
+              target=Path('interactive-learning-lab/images')/(game+'-20261024.webp')
+              target.parent.mkdir(parents=True,exist_ok=True)
+              ImageOps.pad(Image.open(p/(game+'-desktop.webp')).convert('RGB'),(600,450),color=color).save(target,'WEBP',quality=85,method=6)
+          PY
+      - name: Save checked game previews and paper examples
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add word-worlds/validation/*.webp word-worlds/validation/*.pdf interactive-learning-lab/images/word-worlds-20261024.webp interactive-learning-lab/images/literal-chaos-20261024.webp
+          if ! git diff --cached --quiet; then
+            git commit -m "Capture verified language playgrounds and teacher PDFs"
+            git pull --rebase origin main
+            git push
+          fi
