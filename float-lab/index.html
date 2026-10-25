@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+ <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+ <meta name="description" content="An original Alberta Grade 5 investigation lab: compare density, layer liquids, suspend an oil drop, and build a floater.">
+ <title>Float Lab · Grade 5 Science</title>
+ <link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+ <header class="site-header">
+  <a class="brand" href="#compare" aria-label="Float Lab home"><strong>FLOAT LAB</strong><span>GRADE 5 · MATTER + ENERGY</span></a>
+  <nav class="utilities" aria-label="Teacher resources"><button data-dialog="outcomes">Outcomes</button><button data-dialog="teacher">Teacher notes</button></nav>
+ </header>
+ <nav class="modes" aria-label="Investigations">
+  <button data-mode="compare" aria-current="page">Compare</button><button data-mode="layers">Layer liquids</button><button data-mode="drop">Suspend a drop</button><button data-mode="boat">Build a floater</button>
+ </nav>
+ <main id="app"></main>
+ <p id="announcement" class="sr-only" aria-live="polite"></p>
+ <footer class="site-footer"><span>An original Black Gold investigation · Model temperature: 20°C</span><div><button id="motion">Pause motion</button><button data-dialog="trials" id="trials-count">My trials · 0</button><button data-dialog="print">Print / PDF</button><a href="offline.html" download="Float-Lab.html">Make it my own</a></div></footer>
+ <dialog id="dialog" aria-labelledby="dialog-title"><div class="dialog-head"><h2 id="dialog-title"></h2><button id="close-dialog" aria-label="Close dialog">Close ✕</button></div><div id="dialog-body"></div></dialog>
+ <script type="module" src="app.mjs?v=1"></script>
+</body>
+</html>

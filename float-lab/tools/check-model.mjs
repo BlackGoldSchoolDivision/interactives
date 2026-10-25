@@ -1,0 +1,17 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {G,FLUIDS,MATERIALS,ethanolDensity,saltDensity,fluid,entry,floatResult,solidStep,blendLayers,layerEquilibrium,boatModel,buoyancy,weight} from '../model.mjs';
+const close=(a,b,e=1e-6)=>assert.ok(Math.abs(a-b)<e,`${a} ≉ ${b}`);
+test('Equal volume samples compare by mass; a larger cork sample can still be less dense',()=>{assert.ok(MATERIALS[0].rho*100<MATERIALS[1].rho*100);assert.ok(.24*200<2.4*100);});
+test('An HDPE sample floats in water and sinks in ethanol',()=>{assert.equal(floatResult(95,100,fluid('water').rho).state,'float');assert.equal(floatResult(95,100,fluid('ethanol').rho).state,'sink');});
+test('A floating block displaces its own mass of water; forces balance',()=>{const f=floatResult(80,100,.9982);close(.9982*100*f.fraction,80);close(buoyancy(.9982,100*f.fraction),weight(80));});
+test('Dynamics settle at the Archimedes equilibrium, without snapping',()=>{const b={z:.065,v:0};for(let i=0;i<12000;i++)solidStep(b,1/480,{mass:80,volume:100,rho:.9982});const side=Math.cbrt(100)/100;close(b.z,side/2-(.8/.9982)*side,.0002);assert.ok(Math.abs(b.v)<.001);});
+test('A dense object cannot go below the tank floor',()=>{const b={z:.065,v:0};for(let i=0;i<12000;i++)solidStep(b,1/480,{mass:240,volume:100,rho:.9982});close(b.z,-.14+Math.cbrt(100)/200,.0001);});
+test('Neutral, fully immersed oil has zero net force; gravity is not removed',()=>{close(buoyancy(.969,2),weight(.969*2));assert.ok(weight(.969*2)>0);});
+test('Reference ethanol table has the right endpoints and density decreases monotonically',()=>{close(ethanolDensity(0),.9982);close(ethanolDensity(100),.78932);for(let p=0;p<100;p+=.1)assert.ok(ethanolDensity(p)>ethanolDensity(p+.1));assert.ok(Math.abs(ethanolDensity(19.7)-.969)<.00018);});
+test('Water–ethanol blending conserves mass and contracts volume',()=>{let a=entry('water',80),b=entry('ethanol',80),[m]=blendLayers([a,b],true);close(m.mass,a.mass+b.mass);assert.ok(m.volume<160);close(m.mass/m.volume,m.rho);});
+test('An oil barrier can preserve three layers; stirring preserves oil but blends compatible liquids',()=>{let entries=[entry('water'),entry('oil'),entry('ethanol')];assert.equal(blendLayers(entries,false).length,3);let mixed=blendLayers(entries,true);assert.equal(mixed.length,2);assert.ok(mixed.some(x=>x.id==='oil'));close(mixed.reduce((s,x)=>s+x.mass,0),entries.reduce((s,x)=>s+x.mass,0));});
+test('Adjacent miscible syrup and water do not remain permanently separate',()=>{assert.equal(blendLayers([entry('water'),entry('syrup')],false).length,1);});
+test('Layered equilibrium: object can settle at an interface, float on top or reach bottom',()=>{let l=[entry('water',200),entry('oil',200)];let eq=layerEquilibrium(l,.95,8,.18);assert.equal(eq.state,'inside');assert.ok(Math.abs(eq.z-.09)<.012);assert.equal(layerEquilibrium(l,.24).state,'surface');assert.equal(layerEquilibrium(l,2.4).state,'bottom');});
+test('Hull reshaping preserves clay volume and increases load capacity',()=>{let a=boatModel(8,1.5,100),b=boatModel(16,4.5,100);close(a.clayMass,b.clayMass);for(const m of [a,b])close(m.width*m.length*m.height-(m.width-2*m.wall)*(m.length-2*m.wall)*(m.height-m.wall),50);assert.ok(b.capacity>a.capacity);assert.ok(a.flooded);assert.ok(!b.flooded);close(b.displacement*.9982,b.mass);});
+test('Salt concentration increases the density of the model solution',()=>{close(saltDensity(10),1.0726);close(saltDensity(26),1.1993);assert.ok(saltDensity(0)<saltDensity(26));});
