@@ -12,3 +12,5 @@
 Solid values are selected representative classroom samples, not universal material constants: oak 0.80, concrete 2.40, cork 0.24, paraffin wax 0.90, HDPE 0.95, aluminium 2.70 g/cm³. The construction task uses a selected clay sample of 100 g / 50 cm³. Scientific response is calculated from mass, volume, fluid density and displaced volume rather than assigned win/lose animations.
 
 Material artwork was newly generated for this project as a six-cell texture atlas. It is used as specimen surface texture in the numerical model display. Nunito is licensed under the SIL Open Font License; the full licence is included.
+
+The illustrated lab backdrop was generated independently for this project, using the approved original Float Lab mockup as its visual reference. All vessels, measurement marks, labels, liquids, oil drops and moving samples are rendered in code, independently of the background image. No third-party simulation imagery is included.

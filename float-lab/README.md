@@ -1,6 +1,6 @@
 # Float Lab
 
-An original Alberta Grade 5 science investigation lab. Buildless HTML, CSS, JavaScript modules, and original generated material textures. Open `/float-lab/` on a static web server.
+An original Alberta Grade 5 science investigation lab. Buildless HTML, CSS, JavaScript modules, and original generated material textures. The illustrated workbench uses stationary glassware with animated liquid and solid contents. Open `/float-lab/` on a static web server.
 
 ## Investigations
 
