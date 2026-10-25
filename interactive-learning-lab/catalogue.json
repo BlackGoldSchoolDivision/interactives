@@ -433,6 +433,46 @@
     "grade_note": "Focused, partial ELAL 1–6 practice: plural and tense endings, comparisons, meaningful prefixes, person-naming and adjective endings, and later derivations such as -ment, -ity, -ance, -ence, -en and -ize. The bank includes the spreadsheet’s pony–ponies and leaf–leaves examples. Choose familiar families with adult support for early readers; this is not complete coverage of every affix or outcome."
   },
   {
+    "id": "word-ladders",
+    "path": "word-ladders",
+    "repo": "division",
+    "title": "Word Ladders",
+    "category": "Reading & writing",
+    "description": "Climb eighteen original six-word ladders in Starter, Explorer or Expert. Follow meaning clues or find your own route. Teachers can download one worksheet or a six-ladder PDF pack, with optional separate answer keys.",
+    "types": [
+      "Word work",
+      "Practice questions",
+      "Printables"
+    ],
+    "tags": [
+      "Word ladders",
+      "Spelling",
+      "Vocabulary",
+      "Clues",
+      "Teacher PDFs",
+      "Six-word ladders",
+      "Offline"
+    ],
+    "url": "https://interactives.blackgold.ca/word-ladders/",
+    "links": [],
+    "favourite": false,
+    "credit": "Engaging Students · Black Gold School Division",
+    "group": "",
+    "image": "images/word-ladders-20261024.webp?v=1",
+    "captured": "2026-10-24",
+    "original_urls": [],
+    "grades": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Focused ELAL 1–6 vocabulary and spelling practice through original meaning clues and single-letter word changes. The three grade bands are flexible suggestions; choose by learner needs. Letter changes and sound changes are discussed separately in teacher notes."
+  },
+  {
     "id": "alphabetcards",
     "title": "Print & Play Cards",
     "category": "Reading & writing",

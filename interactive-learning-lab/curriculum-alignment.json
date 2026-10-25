@@ -4274,6 +4274,89 @@
           "coverage": "partial"
         }
       ]
+    },
+    "word-ladders": {
+      "grades": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "basis": "curriculum",
+      "reviewed": "2026-10-24",
+      "rationale": "Focused ELAL 1–6 vocabulary and spelling practice through original meaning clues and single-letter word changes. The three grade bands are flexible suggestions; choose by learner needs. Letter changes and sound changes are discussed separately in teacher notes.",
+      "alignments": [
+        {
+          "source": "elal16",
+          "grade": 1,
+          "sheet": "Grade 1",
+          "rows": [
+            105,
+            113,
+            198
+          ],
+          "topic": "Word meanings and letters",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 2,
+          "sheet": "Grade 2",
+          "rows": [
+            112,
+            114,
+            120
+          ],
+          "topic": "Vocabulary and word meanings",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 3,
+          "sheet": "Grade 3",
+          "rows": [
+            364,
+            365
+          ],
+          "topic": "Word patterns and spelling strategies",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 4,
+          "sheet": "Grade 4",
+          "rows": [
+            333,
+            334
+          ],
+          "topic": "Spelling strategies and tools",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 5,
+          "sheet": "Grade 5",
+          "rows": [
+            335,
+            336
+          ],
+          "topic": "Patterns within words and unfamiliar spellings",
+          "coverage": "partial"
+        },
+        {
+          "source": "elal16",
+          "grade": 6,
+          "sheet": "Grade 6",
+          "rows": [
+            321,
+            327
+          ],
+          "topic": "Complex spelling patterns",
+          "coverage": "partial"
+        }
+      ]
     }
   }
 }

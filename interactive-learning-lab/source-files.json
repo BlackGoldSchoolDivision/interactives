@@ -2448,6 +2448,20 @@
           "url": "https://interactives.blackgold.ca/word-orbit/"
         }
       ]
+    },
+    "word-ladders": {
+      "kind": "html",
+      "title": "Word Ladders",
+      "credit": "Engaging Students · Black Gold School Division",
+      "category": "Reading & writing",
+      "versions": [
+        {
+          "label": "Word Ladders",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "word-ladders/index.html",
+          "url": "https://interactives.blackgold.ca/word-ladders/"
+        }
+      ]
     }
   },
   "files": {
@@ -9914,10 +9928,92 @@
         "path": "word-orbit/words.js",
         "bytes": 16200
       }
+    ],
+    "BlackGoldSchoolDivision/interactives/word-ladders": [
+      {
+        "path": "word-ladders/README.md",
+        "bytes": 2956
+      },
+      {
+        "path": "word-ladders/THIRD-PARTY.md",
+        "bytes": 1958
+      },
+      {
+        "path": "word-ladders/app.js",
+        "bytes": 12490
+      },
+      {
+        "path": "word-ladders/assets/mountains.webp",
+        "bytes": 95038
+      },
+      {
+        "path": "word-ladders/data.js",
+        "bytes": 4434
+      },
+      {
+        "path": "word-ladders/examples/head-to-tail-with-key.pdf",
+        "bytes": 23892
+      },
+      {
+        "path": "word-ladders/index.html",
+        "bytes": 7056
+      },
+      {
+        "path": "word-ladders/lexicon.js",
+        "bytes": 232490
+      },
+      {
+        "path": "word-ladders/model.js",
+        "bytes": 2883
+      },
+      {
+        "path": "word-ladders/pdf.js",
+        "bytes": 5090
+      },
+      {
+        "path": "word-ladders/style.css",
+        "bytes": 12159
+      },
+      {
+        "path": "word-ladders/tools/check-browser.cjs",
+        "bytes": 6038
+      },
+      {
+        "path": "word-ladders/tools/check-model.cjs",
+        "bytes": 1865
+      },
+      {
+        "path": "word-ladders/tools/check-pdfs.py",
+        "bytes": 1902
+      },
+      {
+        "path": "word-ladders/vendor/FILTER-LICENSE.txt",
+        "bytes": 18523
+      },
+      {
+        "path": "word-ladders/vendor/JSPDF-LICENSE.txt",
+        "bytes": 1142
+      },
+      {
+        "path": "word-ladders/vendor/PRINT-FONT-LICENSE.txt",
+        "bytes": 3859
+      },
+      {
+        "path": "word-ladders/vendor/WORDNIK-LICENSE.txt",
+        "bytes": 1064
+      },
+      {
+        "path": "word-ladders/vendor/jspdf.umd.min.js",
+        "bytes": 420165
+      },
+      {
+        "path": "word-ladders/vendor/print-fonts.js",
+        "bytes": 69022
+      }
     ]
   },
   "repository_heads": {
     "Maltais239/interactives": "6c72111326a5637e8f370e56c56244b7392b34f2",
-    "BlackGoldSchoolDivision/interactives": "4cc27cd437be981d9e922349850d90746e6309b6"
+    "BlackGoldSchoolDivision/interactives": "c9226efc9a4e9f40b1e49ddacd803d5f3e0cdb73"
   }
 }
