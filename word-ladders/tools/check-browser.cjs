@@ -18,12 +18,20 @@ const root=path.join(__dirname,'..','validation');fs.mkdirSync(root,{recursive:t
  await page.locator('#teacherPdf').click();assert.equal(await page.locator('#pdfLevel').inputValue(),'explorer');assert.equal(await page.locator('#includeKey').isChecked(),false);
  async function download(name){const wait=page.waitForEvent('download');await page.locator('#savePdf').click();const file=await wait;await file.saveAs(path.join(root,name));}
  await download('student.pdf');await page.locator('#includeKey').check();await download('worksheet-with-key.pdf');
- await page.locator('#pdfLevel').selectOption('expert');await page.locator('#pdfScope').selectOption('pack');assert((await page.locator('#printCount').innerText()).includes('6 student pages + 6 separate'));await download('expert-pack.pdf');
+ await page.locator('#pdfLevel').selectOption('expert');await page.locator('#pdfScope').selectOption('pack');assert((await page.locator('#printCount').innerText()).includes('20 student pages + 20 separate'));await download('expert-pack.pdf');
  await page.locator('#pdfLevel').selectOption('starter');await page.locator('#pdfScope').selectOption('one');await page.locator('#includeKey').uncheck();await page.locator('#paper').selectOption('a4');await download('starter-a4.pdf');
  await page.locator('#printWorksheet').click();assert.equal(await page.evaluate(()=>window.__printCalls),1);assert.equal(await page.locator('#printOutput .print-sheet').count(),1);assert.equal(await page.locator('#printOutput .paper-box').allTextContents().then(a=>a.filter(Boolean).length),3);
  await page.setViewportSize({width:390,height:667});await page.screenshot({path:path.join(root,'teacher-phone.png'),fullPage:true});assert((await page.locator('#pdfDialog').boundingBox()).height<=667);
  await page.locator('#pdfDialog [data-close]').click();await page.setViewportSize({width:1440,height:900});await page.locator('#restartLadder').click();await enter('HEAL');await enter('TEAL');await page.locator('#guess').fill('TELL');await page.screenshot({path:path.join(root,'desktop.png'),fullPage:true});
  // A teacher's offline copy must retain both play and real PDF generation.
  const dw=page.waitForEvent('download');await page.locator('#makeOwn').click();const copy=await dw;const file=path.join(root,'offline.html');await copy.saveAs(file);const html=fs.readFileSync(file,'utf8');assert(!/<script[^>]+src=/.test(html));assert(html.includes('data:image/webp;base64,'));const offline=await browser.newPage({viewport:{width:390,height:667}});await offline.route('http**/*',r=>r.abort());await offline.goto('file://'+file);await offline.locator('#guess').fill('HEAL');await offline.locator('#addStep').click();assert.equal(await offline.locator('#ladder').getAttribute('data-current'),'HEAL');await offline.locator('#teacherPdf').click();const od=offline.waitForEvent('download');await offline.locator('#savePdf').click();await(await od).saveAs(path.join(root,'offline-student.pdf'));fs.unlinkSync(file);
- assert.deepEqual(errors,[]);await browser.close();console.log('Passed gameplay, alternate routes, difficulty, live resizing, seven screen sizes, completed state, teacher controls, real PDF downloads, browser printing, and offline play/PDF download.');
+ // Every expanded ladder must be reachable, and the PDF chooser must expose
+ // the same 20 puzzles as the game at each level.
+ for(const level of ['starter','explorer','expert']){
+  await page.locator('[data-level='+level+']').click();const missions=new Set();
+  for(let i=0;i<20;i++){missions.add(await page.locator('#mission').innerText());await page.locator('#newLadder').click();}
+  assert.equal(missions.size,20,level+' must offer 20 distinct ladders');
+  await page.locator('#teacherPdf').click();assert.equal(await page.locator('#pdfPuzzle option').count(),20);await page.locator('#pdfDialog [data-close]').click();
+ }
+ assert.deepEqual(errors,[]);await browser.close();console.log('Passed gameplay, all 60 selectable ladders, alternate routes, difficulty, live resizing, seven screen sizes, completed state, teacher controls, real PDF downloads, browser printing, and offline play/PDF download.');
 })().catch(e=>{console.error(e);process.exit(1);});

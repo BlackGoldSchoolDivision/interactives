@@ -9932,7 +9932,7 @@
     "BlackGoldSchoolDivision/interactives/word-ladders": [
       {
         "path": "word-ladders/README.md",
-        "bytes": 2956
+        "bytes": 2952
       },
       {
         "path": "word-ladders/THIRD-PARTY.md",
@@ -9948,7 +9948,7 @@
       },
       {
         "path": "word-ladders/data.js",
-        "bytes": 4434
+        "bytes": 14463
       },
       {
         "path": "word-ladders/examples/head-to-tail-with-key.pdf",
@@ -9956,7 +9956,7 @@
       },
       {
         "path": "word-ladders/index.html",
-        "bytes": 7056
+        "bytes": 7051
       },
       {
         "path": "word-ladders/lexicon.js",
@@ -9976,15 +9976,15 @@
       },
       {
         "path": "word-ladders/tools/check-browser.cjs",
-        "bytes": 6038
+        "bytes": 6695
       },
       {
         "path": "word-ladders/tools/check-model.cjs",
-        "bytes": 1865
+        "bytes": 2288
       },
       {
         "path": "word-ladders/tools/check-pdfs.py",
-        "bytes": 1902
+        "bytes": 1979
       },
       {
         "path": "word-ladders/vendor/FILTER-LICENSE.txt",
