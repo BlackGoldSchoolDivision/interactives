@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated": "2026-10-24",
+  "generated": "2026-10-25",
   "activities": {
     "vocabularyarcade": {
       "kind": "html",
@@ -2502,6 +2502,21 @@
           "repo": "BlackGoldSchoolDivision/interactives",
           "path": "word-worlds/index.html",
           "url": "https://interactives.blackgold.ca/word-worlds/"
+        }
+      ]
+    },
+    "float-lab": {
+      "kind": "html",
+      "title": "Float Lab",
+      "credit": "Engaging Students · Black Gold School Division",
+      "category": "Science",
+      "source_commit": "614425a5f0f93c678a6165f5b89a7deb2b365350",
+      "versions": [
+        {
+          "label": "Float Lab · complete offline HTML",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "float-lab/offline.html",
+          "url": "https://interactives.blackgold.ca/float-lab/offline.html"
         }
       ]
     }
@@ -10429,6 +10444,64 @@
       {
         "path": "word-worlds/vendor/print-fonts.js",
         "bytes": 69022
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/float-lab": [
+      {
+        "path": "float-lab/index.html",
+        "bytes": 1726
+      },
+      {
+        "path": "float-lab/style.css",
+        "bytes": 26548
+      },
+      {
+        "path": "float-lab/app.mjs",
+        "bytes": 67934
+      },
+      {
+        "path": "float-lab/model.mjs",
+        "bytes": 7983
+      },
+      {
+        "path": "float-lab/offline.html",
+        "bytes": 591511
+      },
+      {
+        "path": "float-lab/README.md",
+        "bytes": 3853
+      },
+      {
+        "path": "float-lab/SOURCES.md",
+        "bytes": 3691
+      },
+      {
+        "path": "float-lab/tools/package.py",
+        "bytes": 1682
+      },
+      {
+        "path": "float-lab/tools/check-model.mjs",
+        "bytes": 6459
+      },
+      {
+        "path": "float-lab/assets/body.ttf",
+        "bytes": 106700
+      },
+      {
+        "path": "float-lab/assets/body-bold.ttf",
+        "bytes": 106804
+      },
+      {
+        "path": "float-lab/assets/Nunito-License.txt",
+        "bytes": 4394
+      },
+      {
+        "path": "float-lab/assets/material-atlas.webp",
+        "bytes": 77908
+      },
+      {
+        "path": "float-lab/assets/lab-backdrop.webp",
+        "bytes": 71010
       }
     ]
   },

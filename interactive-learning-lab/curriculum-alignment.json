@@ -4454,6 +4454,15 @@
       "reviewed": "2026-10-24",
       "rationale": "Flexible creative-language tool for exploring word choice, setting, mood, personification and viewpoint. The scene offers one authored interpretation; students can challenge it and support different readings. The 12 prompts are open experiments, not graded outcomes.",
       "alignments": []
+    },
+    "float-lab": {
+      "grades": [
+        5
+      ],
+      "basis": "curriculum",
+      "reviewed": "2026-10-25",
+      "rationale": "Alberta Grade 5 Science: compare the density of solids and liquids, relate buoyant force and weight to floating and sinking, conduct controlled experiments, and refine a floating design. Partial connections to Matter, Energy, Scientific Methods and Design; physical measuring and construction need hands-on practice.",
+      "alignments": []
     }
   }
 }

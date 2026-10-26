@@ -23,3 +23,5 @@ main{position:relative;padding:4px 0 58px}.browse{scroll-margin-top:20px}.search
 .grade-filter>span{font-size:13px;color:#405774}
 .tags .grade-tag{background:#e6edfd;color:#25467d;border:1px solid #cad7f1;font-weight:900;white-space:normal}
 @media(max-width:480px){.grade-filter{gap:8px;padding:12px}.grade-filter label{width:100%}.grade-filter select{width:100%;min-width:0}.grade-filter>span{font-size:12px}}
+
+.card .launch{min-height:44px}

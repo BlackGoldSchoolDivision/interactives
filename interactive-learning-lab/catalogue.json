@@ -142,6 +142,38 @@
     "grade_note": "Grade 6 science practice; individual units and questions need a separate outcome coverage audit."
   },
   {
+    "id": "float-lab",
+    "path": "float-lab",
+    "repo": "division",
+    "title": "Float Lab",
+    "category": "Science",
+    "group": "",
+    "description": "Compare density, layer seven liquids, suspend an oil drop, and design a floating hull. Make predictions, test ideas, and compare saved trials.",
+    "types": [
+      "Simulations & models",
+      "Decision games",
+      "Builders",
+      "Printables"
+    ],
+    "tags": [
+      "Density",
+      "Buoyancy",
+      "Liquid layers",
+      "Fair tests"
+    ],
+    "url": "https://interactives.blackgold.ca/float-lab/",
+    "links": [],
+    "favourite": false,
+    "credit": "Engaging Students · Black Gold School Division",
+    "image": "images/float-lab-20261025.png?v=01b97d6044a0",
+    "captured": "2026-10-25",
+    "grades": [
+      5
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Alberta Grade 5 Science: compare the density of solids and liquids, relate buoyant force and weight to floating and sinking, conduct controlled experiments, and refine a floating design. Partial connections to Matter, Energy, Scientific Methods and Design; physical measuring and construction need hands-on practice."
+  },
+  {
     "id": "moonphases",
     "title": "Moon Phase Lab",
     "category": "Science",
