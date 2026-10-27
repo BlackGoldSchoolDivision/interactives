@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alberta Life: Financial Futures</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles to supplement Tailwind */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0fdfa; /* Light teal background */
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .board-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        .tile {
+            aspect-ratio: 1 / 1;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            position: relative;
+            box-shadow: inset 0 -4px 0 rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        /* Snake path logic for visual flow (6x4 grid) */
+        .tile:nth-child(n+7):nth-child(-n+12) { transform: scaleX(-1); }
+        .tile:nth-child(n+7):nth-child(-n+12) > * { transform: scaleX(-1); }
+        
+        .tile:nth-child(n+19):nth-child(-n+24) { transform: scaleX(-1); }
+        .tile:nth-child(n+19):nth-child(-n+24) > * { transform: scaleX(-1); }
+
+        .tile-start { background-color: #4ade80; color: #14532d; }
+        .tile-payday { background-color: #fde047; color: #713f12; }
+        .tile-event { background-color: #e2e8f0; color: #1e293b; }
+        .tile-decision { background-color: #c084fc; color: #4c1d95; text-shadow: 0 1px 0 rgba(255,255,255,0.5);}
+        .tile-end { background-color: #f87171; color: #7f1d1d; }
+
+        .player-token {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            border: 2px solid white;
+            transition: all 0.5s ease;
+            z-index: 10;
+        }
+
+        .token-p0 { background-color: #ef4444; left: 5px; } /* Red */
+        .token-p1 { background-color: #3b82f6; left: 30px; } /* Blue */
+        .token-p2 { background-color: #10b981; left: 55px; } /* Green */
+        .token-p3 { background-color: #f59e0b; left: 80px; } /* Yellow */
+
+        /* Hide scrollbar for clean modal look */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="text-slate-800 h-screen flex flex-col overflow-hidden">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white p-4 shadow-md z-10 flex justify-between items-center">
+        <div>
+            <h1 class="text-2xl font-bold tracking-tight">Alberta Life: Financial Futures</h1>
+            <p class="text-sm text-slate-400">A classroom financial literacy simulator</p>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 relative overflow-hidden flex">
+        
+        <!-- SETUP VIEW -->
+        <div id="setup-view" class="absolute inset-0 bg-slate-50 z-50 flex items-center justify-center overflow-y-auto p-4">
+            <div class="bg-white p-8 rounded-2xl shadow-xl max-w-4xl w-full">
+                <h2 class="text-3xl font-bold mb-6 text-center text-slate-800">Welcome to Adulthood!</h2>
+                <p class="mb-8 text-center text-slate-600">Add up to 4 players. Choose your career path wisely. Post-secondary degrees offer higher salaries but you start with student loan debt. Apprenticeships let you earn while you learn (with UI support during school) and zero starting debt.</p>
+                
+                <div id="players-setup-container" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <!-- Player setup cards generated here -->
+                </div>
+
+                <div class="flex justify-center gap-4">
+                    <button id="btn-add-player" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-3 px-6 rounded-lg transition-colors shadow-sm">
+                        + Add Player
+                    </button>
+                    <button id="btn-start-game" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-8 rounded-lg transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed">
+                        Start Journey
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- GAME VIEW -->
+        <div id="game-view" class="flex-1 flex flex-col md:flex-row w-full hidden overflow-hidden">
+            
+            <!-- Left Side: Board & Actions -->
+            <div class="flex-1 p-4 md:p-8 flex flex-col items-center justify-center overflow-y-auto">
+                
+                <!-- Action Area (Current Turn) -->
+                <div class="bg-white p-6 rounded-xl shadow-md mb-8 w-full max-w-3xl text-center border-t-4 border-emerald-500">
+                    <h3 class="text-xl font-bold text-slate-700 mb-2">Current Turn: <span id="current-player-name" class="text-emerald-600">Player</span> <span id="current-player-emoji"></span></h3>
+                    <p class="text-slate-500 mb-4">Roll the dice to navigate your financial future.</p>
+                    <button id="btn-roll-dice" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-12 rounded-full text-xl shadow-lg transform transition active:scale-95">
+                        🎲 Roll Dice
+                    </button>
+                </div>
+
+                <!-- The Game Board -->
+                <div class="w-full max-w-4xl relative">
+                    <div id="board" class="board-grid">
+                        <!-- Tiles generated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Player Dashboards -->
+            <div class="w-full md:w-80 bg-slate-100 border-l border-slate-200 p-4 overflow-y-auto shadow-inner flex flex-col gap-4" id="player-dashboards">
+                <!-- Dashboards generated by JS -->
+            </div>
+        </div>
+
+        <!-- END GAME VIEW -->
+        <div id="end-view" class="absolute inset-0 bg-slate-900 z-[100] hidden flex-col items-center justify-center p-8 overflow-y-auto">
+            <h1 class="text-5xl font-bold text-white mb-4">Retirement Reached!</h1>
+            <p class="text-slate-300 mb-8 text-lg">Let's see how your financial choices played out.</p>
+            
+            <div id="end-summaries" class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-5xl mb-8">
+                <!-- Summaries generated here -->
+            </div>
+
+            <button id="btn-copy-reflections" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 px-8 rounded-xl shadow-lg transition-colors text-lg flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
+                Copy Reflections for Teacher
+            </button>
+        </div>
+
+    </main>
+
+    <!-- GENERIC MODAL OVERLAY -->
+    <div id="modal-overlay" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[200] hidden items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden transform transition-all">
+            <!-- Modal Header -->
+            <div id="modal-header" class="px-6 py-4 border-b border-slate-100 flex items-center gap-3">
+                <span id="modal-icon" class="text-3xl">🎲</span>
+                <h3 id="modal-title" class="text-2xl font-bold text-slate-800">Event Title</h3>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="p-6">
+                <p id="modal-desc" class="text-slate-600 mb-6 text-lg">Event description goes here.</p>
+                
+                <!-- Dynamic Content Area (Buttons for decisions, reflection inputs) -->
+                <div id="modal-dynamic-content" class="flex flex-col gap-4">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+            
+            <!-- Modal Footer (Default OK button) -->
+            <div id="modal-footer" class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end hidden">
+                <button id="btn-modal-ok" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-colors">
+                    Continue
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * ALBERTA LIFE: FINANCIAL FUTURES
+         * Game Logic and State Management
+         */
+
+        // --- CONSTANTS & DATA ---
+        const ALBERTA_LIVING_EXPENSES_ANNUAL = 28000; 
+        const ALBERTA_LIVING_EXPENSES_PER_PAY = ALBERTA_LIVING_EXPENSES_ANNUAL / 24; // 2 pays per month
+        const STUDENT_LOAN_INTEREST = 0.06; // 6% annual
+        const CREDIT_CARD_INTEREST = 0.1999; // 19.99% annual
+        
+        const CAREERS = [
+            { id: 'nurse', title: 'Registered Nurse', type: 'post-sec', salary: 78000, debt: 35000, emoji: '🧑🏽‍⚕️' },
+            { id: 'dev', title: 'Software Developer', type: 'post-sec', salary: 82000, debt: 40000, emoji: '🧑🏿‍💻' },
+            { id: 'teacher', title: 'High School Teacher', type: 'post-sec', salary: 65000, debt: 30000, emoji: '🧑🏻‍🏫' },
+            { id: 'electrician', title: 'Electrician', type: 'apprentice', salary: 55000, debt: 0, emoji: '🧑🏼‍🔧', note: '(Earns while training)' },
+            { id: 'welder', title: 'Welder', type: 'apprentice', salary: 60000, debt: 0, emoji: '🧑🏻‍🏭', note: '(Earns while training)' }
+        ];
+
+        const SUGGESTED_NAMES = ['Taylor', 'Jordan', 'Casey', 'Riley', 'Avery', 'Morgan', 'Quinn', 'Skyler'];
+
+        // Board layout (28 spaces = 1 Month)
+        const BOARD_SIZE = 28;
+        const TILE_TYPES = {
+            START: 'start',       // 1st Payday
+            PAYDAY: 'payday',     // 15th Payday
+            LOAN_DUE: 'loan',     // Hard stop 3rd week
+            EVENT: 'event',       
+            DECISION: 'decision', 
+            FILLER: 'filler',     // Just a normal day
+            END_MONTH: 'end'      // Month wrap up
+        };
+
+        const FILLER_MESSAGES = [
+            "Enjoying the beautiful Alberta day!",
+            "Excited for tomorrow's plans.",
+            "Just a quiet evening at home.",
+            "Taking a stroll in the river valley.",
+            "Having coffee with a friend."
+        ];
+
+        // 28-day month layout
+        const BOARD_LAYOUT = new Array(BOARD_SIZE).fill(TILE_TYPES.FILLER);
+        BOARD_LAYOUT[0] = TILE_TYPES.START;
+        BOARD_LAYOUT[14] = TILE_TYPES.PAYDAY;
+        BOARD_LAYOUT[20] = TILE_TYPES.LOAN_DUE;
+        BOARD_LAYOUT[27] = TILE_TYPES.END_MONTH;
+        
+        // Sprinkle events and decisions (Max 2 filler days per week)
+        const specialTiles = {
+            1: TILE_TYPES.EVENT, 3: TILE_TYPES.DECISION, 4: TILE_TYPES.EVENT, 6: TILE_TYPES.EVENT,
+            7: TILE_TYPES.DECISION, 8: TILE_TYPES.EVENT, 10: TILE_TYPES.EVENT, 11: TILE_TYPES.DECISION, 13: TILE_TYPES.EVENT,
+            15: TILE_TYPES.EVENT, 16: TILE_TYPES.DECISION, 18: TILE_TYPES.EVENT,
+            21: TILE_TYPES.EVENT, 22: TILE_TYPES.DECISION, 24: TILE_TYPES.EVENT, 25: TILE_TYPES.DECISION
+        };
+        for(let k in specialTiles) BOARD_LAYOUT[k] = specialTiles[k];
+
+        const EVENTS = [
+            { title: "Pothole Season!", desc: "You hit a massive pothole on the Anthony Henday. Need new suspension.", impact: -800 },
+            { title: "Carbon Tax Rebate", desc: "Your quarterly federal climate action incentive arrived.", impact: 250 },
+            { title: "Heritage Festival", desc: "You bought too many food tickets at the Heritage Festival.", impact: -75 },
+            { title: "Oilers 50/50", desc: "You won a small slice of the Oilers community 50/50 draw!", impact: 500 },
+            { title: "Hailstorm!", desc: "Summer hailstorm in Calgary dented your car. You have to pay the insurance deductible.", impact: -500 },
+            { title: "Tax Return", desc: "You filed your taxes on time and got a decent return this year.", impact: 1200 },
+            { title: "Emergency Vet", desc: "Your dog ate something strange in the off-leash park.", impact: -600 },
+            { title: "Sold on Kijiji", desc: "You cleaned out your closet and sold old snowboard gear.", impact: 150 },
+            { title: "Photo Radar", desc: "You got a photo radar ticket on the QE2 highway.", impact: -150 },
+            { title: "Lucky Day", desc: "Found a $20 bill in your old winter jacket!", impact: 20 },
+            { title: "Coffee Run", desc: "You generously bought coffee and Timbits for the office.", impact: -30 },
+            { title: "Whyte Ave Night", desc: "Friends visited and you went out for a fun (but expensive) night on Whyte Ave.", impact: -120 },
+            { title: "Performance Bonus", desc: "Your boss recognized your hard work with a small cash bonus.", impact: 250 },
+            { title: "Inflation Bites", desc: "Grocery prices went up again. You had to restock the pantry.", impact: -90 },
+            { title: "Side Hustle", desc: "You helped a neighbor build a fence and they paid you cash.", impact: 200 },
+            { title: "Gym Renewal", desc: "Your annual recreation center pass automatically renewed.", impact: -120 }
+        ];
+
+        const DECISIONS = [
+            {
+                title: "Transportation Needed",
+                desc: "Your old vehicle died. How will you get to work?",
+                options: [
+                    { text: "Finance a New Car ($20,000 at 19% on Credit)", cost: 0, creditDebt: 20000 },
+                    { text: "Buy a used 'beater' with Cash ($3,000)", cost: -3000, creditDebt: 0 },
+                    { text: "Buy a Transit Pass ($100/mo)", cost: -100, creditDebt: 0 }
+                ]
+            },
+            {
+                title: "Housing Situation",
+                desc: "Your lease is up. Where are you moving?",
+                options: [
+                    { text: "Rent a nice 1-bedroom alone (-$2,000 cash)", cost: -2000, creditDebt: 0 },
+                    { text: "Get 2 Roommates to save money (+$1,000 cash)", cost: 1000, creditDebt: 0 }
+                ]
+            },
+            {
+                title: "Furnishing the Apartment",
+                desc: "You need a new couch and bed.",
+                options: [
+                    { text: "Buy brand new on store credit ($3,000 to Credit Card)", cost: 0, creditDebt: 3000 },
+                    { text: "Scour Facebook Marketplace ($500 cash)", cost: -500, creditDebt: 0 }
+                ]
+            },
+            {
+                title: "Vacation Time",
+                desc: "Your friends are booking a trip to Banff.",
+                options: [
+                    { text: "Go all out! Put $1,500 on Credit Card", cost: 0, creditDebt: 1500 },
+                    { text: "Go, but stay in a hostel & budget (-$400 cash)", cost: -400, creditDebt: 0 },
+                    { text: "Skip it and staycation ($0)", cost: 0, creditDebt: 0 }
+                ]
+            },
+            {
+                title: "Unexpected Bonus!",
+                desc: "You received a $2,000 bonus at work. What do you do?",
+                options: [
+                    { text: "Treat yourself! Buy a new TV and clothes (-$2,000 cash)", cost: -2000, creditDebt: 0 },
+                    { text: "Pay down debt or save it (Keeps the $2,000 cash)", cost: 2000, creditDebt: 0 }
+                ]
+            },
+            {
+                title: "Phone Plan Renewal",
+                desc: "Your 2-year phone contract is up. What's the plan?",
+                options: [
+                    { text: "Get the newest phone on a payment plan ($0 now, add $1,200 to Credit Card)", cost: 0, creditDebt: 1200 },
+                    { text: "Keep your current phone and switch to a cheap BYOD plan ($0)", cost: 0, creditDebt: 0 }
+                ]
+            },
+            {
+                title: "Grocery Routine",
+                desc: "You have no food in the house for the week.",
+                options: [
+                    { text: "Order meal prep kits and DoorDash (-$250 cash)", cost: -250, creditDebt: 0 },
+                    { text: "Go to a discount supermarket and meal prep yourself (-$120 cash)", cost: -120, creditDebt: 0 }
+                ]
+            },
+            {
+                title: "Winter is Coming",
+                desc: "It's hitting -30°C and your old winter coat zipper broke.",
+                options: [
+                    { text: "Buy a premium brand-name parka (-$600 cash)", cost: -600, creditDebt: 0 },
+                    { text: "Put the premium parka on your credit card ($0 cash, add $600 to Credit Card)", cost: 0, creditDebt: 600 },
+                    { text: "Buy a basic functional coat on sale (-$150 cash)", cost: -150, creditDebt: 0 }
+                ]
+            },
+            {
+                title: "Friend's Milestone Birthday",
+                desc: "Your best friend is throwing a big party.",
+                options: [
+                    { text: "Go to the expensive group dinner and buy a pricey gift (-$200 cash)", cost: -200, creditDebt: 0 },
+                    { text: "Attend but eat beforehand, and make a thoughtful DIY gift (-$40 cash)", cost: -40, creditDebt: 0 }
+                ]
+            }
+        ];
+
+        // --- STATE ---
+        let gameState = {
+            players: [],
+            currentPlayerIndex: 0,
+            isGameActive: false,
+            activeDecision: null,
+            isMonthEndPhase: false,
+            monthEndPlayerIndex: 0
+        };
+
+        // --- DOM ELEMENTS ---
+        const dom = {
+            setupView: document.getElementById('setup-view'),
+            gameView: document.getElementById('game-view'),
+            endView: document.getElementById('end-view'),
+            playersSetupContainer: document.getElementById('players-setup-container'),
+            btnAddPlayer: document.getElementById('btn-add-player'),
+            btnStartGame: document.getElementById('btn-start-game'),
+            board: document.getElementById('board'),
+            dashboards: document.getElementById('player-dashboards'),
+            btnRollDice: document.getElementById('btn-roll-dice'),
+            currPlayerName: document.getElementById('current-player-name'),
+            currPlayerEmoji: document.getElementById('current-player-emoji'),
+            modalOverlay: document.getElementById('modal-overlay'),
+            modalTitle: document.getElementById('modal-title'),
+            modalDesc: document.getElementById('modal-desc'),
+            modalIcon: document.getElementById('modal-icon'),
+            modalContent: document.getElementById('modal-dynamic-content'),
+            modalFooter: document.getElementById('modal-footer'),
+            btnModalOk: document.getElementById('btn-modal-ok'),
+            endSummaries: document.getElementById('end-summaries'),
+            btnCopyReflections: document.getElementById('btn-copy-reflections')
+        };
+
+        // --- UTILS ---
+        const formatMoney = (amount) => {
+            return new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD', maximumFractionDigits: 0 }).format(amount);
+        };
+        const getRandomName = () => SUGGESTED_NAMES[Math.floor(Math.random() * SUGGESTED_NAMES.length)];
+        const delay = (ms) => new Promise(res => setTimeout(res, ms));
+
+        // --- INITIALIZATION ---
+        function init() {
+            addSetupPlayer(); 
+            
+            dom.btnAddPlayer.addEventListener('click', () => {
+                if (document.querySelectorAll('.player-setup-card').length < 4) {
+                    addSetupPlayer();
+                }
+            });
+
+            dom.btnStartGame.addEventListener('click', startGame);
+            dom.btnRollDice.addEventListener('click', rollDice);
+            dom.btnModalOk.addEventListener('click', closeModalAndNextTurn);
+            dom.btnCopyReflections.addEventListener('click', copyReflectionsToClipboard);
+        }
+
+        // --- SETUP LOGIC ---
+        function addSetupPlayer() {
+            const id = Date.now();
+            const count = document.querySelectorAll('.player-setup-card').length + 1;
+            
+            const card = document.createElement('div');
+            card.className = 'player-setup-card bg-slate-50 p-4 border border-slate-200 rounded-xl relative';
+            card.id = `setup-${id}`;
+            
+            let careerOptions = CAREERS.map((c, i) => `<option value="${i}">${c.emoji} ${c.title} - ${c.type === 'post-sec' ? 'Starts w/ Debt' : 'No Debt'}</option>`).join('');
+
+            card.innerHTML = `
+                <div class="flex justify-between items-center mb-3">
+                    <h4 class="font-bold text-slate-700">Player ${count}</h4>
+                    ${count > 1 ? `<button type="button" onclick="document.getElementById('setup-${id}').remove(); updateStartButton();" class="text-red-500 hover:text-red-700 text-sm font-bold">Remove</button>` : ''}
+                </div>
+                <div class="mb-3">
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Name</label>
+                    <input type="text" class="player-name w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-emerald-500 outline-none" value="${getRandomName()}" placeholder="Name">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Career Path</label>
+                    <select class="player-career w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-emerald-500 outline-none">
+                        ${careerOptions}
+                    </select>
+                </div>
+            `;
+            dom.playersSetupContainer.appendChild(card);
+            updateStartButton();
+        }
+
+        function updateStartButton() {
+            const count = document.querySelectorAll('.player-setup-card').length;
+            dom.btnStartGame.disabled = count === 0;
+            dom.btnAddPlayer.style.display = count >= 4 ? 'none' : 'block';
+        }
+
+        function startGame() {
+            const cards = document.querySelectorAll('.player-setup-card');
+            gameState.players = [];
+
+            cards.forEach((card, index) => {
+                const name = card.querySelector('.player-name').value || `Player ${index + 1}`;
+                const careerIndex = card.querySelector('.player-career').value;
+                const career = CAREERS[careerIndex];
+
+                gameState.players.push({
+                    id: index,
+                    name: name,
+                    career: career,
+                    bank: 5000,
+                    studentLoan: career.debt,
+                    creditCardDebt: 0,
+                    position: 0, 
+                    month: 1, 
+                    reflections: [],
+                    history: [],
+                    finishedMonth: false,
+                    finished: false
+                });
+            });
+
+            dom.setupView.classList.add('hidden');
+            dom.gameView.classList.remove('hidden');
+            
+            buildBoard();
+            
+            // Kick off Month 1 globally for everyone
+            startNewMonthPhase();
+        }
+
+        // --- BOARD & RENDERING ---
+        function buildBoard() {
+            dom.board.innerHTML = '';
+            dom.board.style.gridTemplateColumns = "repeat(7, 1fr)";
+
+            BOARD_LAYOUT.forEach((type, index) => {
+                const tile = document.createElement('div');
+                tile.className = `tile`;
+                tile.id = `tile-${index}`;
+                
+                let label = ""; let icon = "";
+                switch(type) {
+                    case TILE_TYPES.START: 
+                        label = "1st: Rent & Pay"; icon = "🏢"; 
+                        tile.classList.add('tile-start'); break;
+                    case TILE_TYPES.PAYDAY: 
+                        label = "15th: Mid-Month"; icon = "💰"; 
+                        tile.classList.add('tile-payday'); break;
+                    case TILE_TYPES.LOAN_DUE: 
+                        label = "LOAN DUE"; icon = "🏦"; 
+                        tile.style.backgroundColor = '#fca5a5'; 
+                        tile.style.color = '#7f1d1d'; break;
+                    case TILE_TYPES.EVENT: 
+                        label = "Event"; icon = "❓"; 
+                        tile.classList.add('tile-event'); break;
+                    case TILE_TYPES.DECISION: 
+                        label = "Decision"; icon = "🤔"; 
+                        tile.classList.add('tile-decision'); break;
+                    case TILE_TYPES.FILLER: 
+                        label = "Just a day"; icon = "☀️"; 
+                        tile.style.backgroundColor = '#fef08a'; 
+                        tile.style.color = '#854d0e'; break;
+                    case TILE_TYPES.END_MONTH: 
+                        label = "Month End"; icon = "📅"; 
+                        tile.classList.add('tile-end'); break;
+                }
+                
+                tile.innerHTML = `
+                    <span class="text-2xl mb-1">${icon}</span>
+                    <span class="leading-tight text-xs">${label}</span>
+                `;
+                dom.board.appendChild(tile);
+            });
+
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .tile:nth-child(n+8):nth-child(-n+14) { transform: scaleX(-1); }
+                .tile:nth-child(n+8):nth-child(-n+14) > * { transform: scaleX(-1); }
+                .tile:nth-child(n+22):nth-child(-n+28) { transform: scaleX(-1); }
+                .tile:nth-child(n+22):nth-child(-n+28) > * { transform: scaleX(-1); }
+            `;
+            document.head.appendChild(style);
+
+            gameState.players.forEach(p => {
+                const token = document.createElement('div');
+                token.className = `player-token token-p${p.id}`;
+                token.id = `token-p${p.id}`;
+                document.getElementById(`tile-0`).appendChild(token);
+            });
+        }
+
+        function updateDashboards() {
+            dom.dashboards.innerHTML = '<h2 class="text-xl font-bold text-slate-800 mb-2">Financial Profiles</h2>';
+            
+            gameState.players.forEach((p, index) => {
+                const isCurrent = index === gameState.currentPlayerIndex && !p.finishedMonth;
+                const netWorth = p.bank - p.studentLoan - p.creditCardDebt;
+                
+                const card = document.createElement('div');
+                card.className = `bg-white p-4 rounded-xl shadow-sm border-2 transition-all ${isCurrent ? 'border-emerald-500 scale-[1.02]' : 'border-transparent opacity-70'}`;
+                
+                card.innerHTML = `
+                    <div class="flex items-center justify-between mb-3 border-b pb-2">
+                        <div class="flex items-center gap-3">
+                            <div class="text-3xl">${p.career.emoji}</div>
+                            <div>
+                                <div class="font-bold text-slate-800">${p.name} ${p.finishedMonth ? '✅' : ''}</div>
+                                <div class="text-xs text-slate-500">${p.career.title}</div>
+                            </div>
+                        </div>
+                        <div class="text-xs font-bold bg-slate-200 px-2 py-1 rounded">M${p.month}</div>
+                    </div>
+                    <div class="space-y-1 text-sm">
+                        <div class="flex justify-between text-slate-600">
+                            <span>Income:</span> <span class="font-semibold text-slate-800">${formatMoney(p.career.salary)}/yr</span>
+                        </div>
+                        <div class="flex justify-between text-slate-600">
+                            <span>Cash:</span> <span class="font-semibold text-emerald-600">${formatMoney(p.bank)}</span>
+                        </div>
+                        ${p.studentLoan > 0 ? `
+                        <div class="flex justify-between text-slate-600">
+                            <span>Student Loan:</span> <span class="font-semibold text-red-500">-${formatMoney(p.studentLoan)}</span>
+                        </div>` : ''}
+                        ${p.creditCardDebt > 0 ? `
+                        <div class="flex justify-between text-slate-600">
+                            <span>CC Debt (20%):</span> <span class="font-semibold text-red-600">-${formatMoney(p.creditCardDebt)}</span>
+                        </div>` : ''}
+                        <div class="flex justify-between pt-2 mt-2 border-t font-bold">
+                            <span>Net Worth:</span> <span class="${netWorth >= 0 ? 'text-emerald-600' : 'text-red-500'}">${formatMoney(netWorth)}</span>
+                        </div>
+                    </div>
+                `;
+                dom.dashboards.appendChild(card);
+            });
+        }
+
+        function updateTurnUI() {
+            const p = gameState.players[gameState.currentPlayerIndex];
+            dom.currPlayerName.innerText = p.name;
+            dom.currPlayerEmoji.innerText = p.career.emoji;
+            dom.currPlayerName.className = `token-p${p.id}-text font-bold`;
+        }
+
+        // --- GAMEPLAY LOGIC ---
+
+        async function rollDice() {
+            dom.btnRollDice.disabled = true;
+            const p = gameState.players[gameState.currentPlayerIndex];
+            
+            let rolls = 0;
+            const diceFaces = ['⚀','⚁','⚂','⚃','⚄','⚅'];
+            const rollInterval = setInterval(() => {
+                dom.btnRollDice.innerText = `Rolling... ${diceFaces[Math.floor(Math.random()*6)]}`;
+                rolls++;
+                if(rolls > 10) clearInterval(rollInterval);
+            }, 50);
+
+            await delay(600);
+            clearInterval(rollInterval);
+            
+            const spaces = Math.floor(Math.random() * 6) + 1;
+            dom.btnRollDice.innerText = `Rolled a ${spaces}!`;
+            
+            await delay(800);
+            await movePlayer(p, spaces);
+        }
+
+        async function movePlayer(player, spaces) {
+            let startPos = player.position;
+            let targetPos = player.position + spaces;
+            let hardStopTriggered = false;
+
+            // Check for Hard Stops (15th Payday, Loan Due, Month End)
+            for (let i = startPos + 1; i <= targetPos; i++) {
+                if (i >= BOARD_SIZE) break;
+                if (BOARD_LAYOUT[i] === TILE_TYPES.PAYDAY || BOARD_LAYOUT[i] === TILE_TYPES.LOAN_DUE || BOARD_LAYOUT[i] === TILE_TYPES.END_MONTH) {
+                    targetPos = i; 
+                    hardStopTriggered = true;
+                    break;
+                }
+            }
+
+            if (targetPos >= BOARD_SIZE - 1) {
+                targetPos = BOARD_SIZE - 1;
+            }
+
+            for (let i = startPos + 1; i <= targetPos; i++) {
+                player.position = i;
+                const token = document.getElementById(`token-p${player.id}`);
+                const nextTile = document.getElementById(`tile-${i}`);
+                nextTile.appendChild(token);
+                await delay(250);
+            }
+
+            handleTileLanded(player, hardStopTriggered);
+        }
+
+        function handleTileLanded(player, hardStopTriggered) {
+            const tileType = BOARD_LAYOUT[player.position];
+            
+            switch(tileType) {
+                case TILE_TYPES.PAYDAY:
+                    processMidMonthPay(player);
+                    break;
+                case TILE_TYPES.LOAN_DUE:
+                    processLoanPayment(player);
+                    break;
+                case TILE_TYPES.EVENT:
+                    processRandomEvent(player);
+                    break;
+                case TILE_TYPES.DECISION:
+                    processDecision(player);
+                    break;
+                case TILE_TYPES.FILLER:
+                case TILE_TYPES.START: // In case they land perfectly on 0 during a loop, treat as filler.
+                    processFillerDay(player);
+                    break;
+                case TILE_TYPES.END_MONTH:
+                    processEndMonth(player);
+                    break;
+                default:
+                    nextTurn();
+            }
+        }
+
+        function processMidMonthPay(player) {
+            let income = player.career.salary / 24; 
+            let midMonthExpenses = 500; // e.g. gas, extra food
+            player.bank += income;
+            player.bank -= midMonthExpenses;
+            
+            let shortfall = 0;
+            if (player.bank < 0) {
+                shortfall = Math.abs(player.bank);
+                player.creditCardDebt += shortfall;
+                player.bank = 0;
+            }
+
+            player.history.push(`15th of Month: Earned income, paid mid-month expenses.`);
+
+            const summaryHtml = `
+                <div class="text-left space-y-2 bg-slate-50 p-4 rounded-lg mb-4">
+                    <p><strong>Mid-Month Pay:</strong> <span class="text-emerald-600">+${formatMoney(income)}</span></p>
+                    <p><strong>Expenses (Gas, Misc Groceries):</strong> <span class="text-red-500">-${formatMoney(midMonthExpenses)}</span></p>
+                    ${shortfall > 0 ? `<p class="text-red-600 font-bold mt-2">Shortfall added to Credit! (${formatMoney(shortfall)})</p>` : ''}
+                </div>
+                <button onclick="closeModalAndNextTurn()" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold">Continue</button>
+            `;
+            showModal("15th of the Month 💰", summaryHtml, "💵", [], true);
+            updateDashboards();
+        }
+
+        function processLoanPayment(player) {
+            let ccInterest = player.creditCardDebt * (CREDIT_CARD_INTEREST / 12);
+            player.creditCardDebt += ccInterest;
+            
+            let slInterest = player.studentLoan * (STUDENT_LOAN_INTEREST / 12);
+            player.studentLoan += slInterest;
+
+            let minCc = player.creditCardDebt > 0 ? Math.min(50, player.creditCardDebt) : 0;
+            let minSl = player.studentLoan > 0 ? Math.min(250, player.studentLoan) : 0;
+            let totalDue = minCc + minSl;
+
+            player.bank -= totalDue;
+            
+            if(player.bank < 0) {
+                player.creditCardDebt += Math.abs(player.bank);
+                player.bank = 0;
+            }
+
+            player.creditCardDebt -= minCc;
+            player.studentLoan -= minSl;
+
+            const summaryHtml = `
+                <div class="text-left space-y-2 bg-red-50 p-4 rounded-lg">
+                    <p class="font-bold text-red-700 border-b border-red-200 pb-2">Mandatory Stop: Bills are Due!</p>
+                    <p><strong>Student Loan Interest Added:</strong> <span class="text-red-500">+${formatMoney(slInterest)}</span></p>
+                    <p><strong>Credit Card Interest Added:</strong> <span class="text-red-500">+${formatMoney(ccInterest)}</span></p>
+                    <hr class="border-red-200">
+                    <p><strong>Min Payments Automatically Deducted:</strong> ${formatMoney(totalDue)}</p>
+                </div>
+            `;
+            showModal("Loan Payment Due", summaryHtml, "🏦", []);
+            updateDashboards();
+        }
+
+        function processRandomEvent(player) {
+            const event = EVENTS[Math.floor(Math.random() * EVENTS.length)];
+            
+            if (event.impact > 0) {
+                player.bank += event.impact;
+            } else {
+                player.bank += event.impact;
+                if (player.bank < 0) {
+                    player.creditCardDebt += Math.abs(player.bank);
+                    player.bank = 0;
+                }
+            }
+
+            player.history.push(`Event: ${event.title}`);
+            const color = event.impact > 0 ? 'text-emerald-600' : 'text-red-600';
+            const html = `
+                <p class="mb-4">${event.desc}</p>
+                <p class="text-2xl font-bold ${color}">${event.impact > 0 ? 'Received' : 'Paid'}: ${formatMoney(Math.abs(event.impact))}</p>
+            `;
+            showModal(event.title, html, "❓", []);
+            updateDashboards();
+        }
+
+        function processDecision(player) {
+            const decision = DECISIONS[Math.floor(Math.random() * DECISIONS.length)];
+            
+            let optionsHtml = decision.options.map((opt, i) => `
+                <button onclick="handleDecisionSelection(${i})" class="w-full text-left bg-slate-100 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-400 p-4 rounded-lg transition-colors mb-2">
+                    ${opt.text}
+                </button>
+            `).join('');
+
+            gameState.activeDecision = decision;
+
+            const contentHtml = `
+                <p class="text-sm text-red-600 font-bold mb-4 bg-red-50 p-2 rounded">⚠️ Pick carefully because you can't go back and change your mind!</p>
+                <p class="mb-6 font-medium text-slate-700">${decision.desc}</p>
+                <div id="decision-options" class="flex flex-col">
+                    ${optionsHtml}
+                </div>
+                <div id="reflection-area" class="hidden mt-4">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Why did you make this choice? (Reflection)</label>
+                    <textarea id="reflection-text" rows="3" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="I chose this because..."></textarea>
+                    <button onclick="submitDecisionAndReflection()" class="mt-4 w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                        Save Decision & Continue
+                    </button>
+                </div>
+            `;
+
+            showModal("Decision Time!", contentHtml, "🤔", [], true);
+        }
+
+        function processFillerDay(player) {
+            const msg = FILLER_MESSAGES[Math.floor(Math.random() * FILLER_MESSAGES.length)];
+            const html = `<p class="text-lg text-slate-600 text-center py-4">${msg}</p>`;
+            showModal("Just another day...", html, "☀️", []);
+        }
+
+        function processEndMonth(player) {
+            player.finishedMonth = true;
+            const html = `
+                <p class="mb-6 text-slate-600">You've reached the end of Month ${player.month}. Please wait while the other players finish their month.</p>
+                <button onclick="closeModalAndNextTurn()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg">
+                    Okay
+                </button>
+            `;
+            showModal(`End of Month ${player.month}`, html, "📅", [], true);
+            updateDashboards();
+        }
+
+        window.handleDecisionSelection = function(optionIndex) {
+            gameState.selectedOptionIndex = optionIndex;
+            document.getElementById('decision-options').classList.add('hidden');
+            document.getElementById('reflection-area').classList.remove('hidden');
+            document.getElementById('reflection-text').focus();
+        };
+
+        window.submitDecisionAndReflection = function() {
+            const text = document.getElementById('reflection-text').value.trim();
+            if (!text) {
+                document.getElementById('reflection-text').classList.add('border-red-500');
+                return;
+            }
+
+            const player = gameState.players[gameState.currentPlayerIndex];
+            const decision = gameState.activeDecision;
+            const option = decision.options[gameState.selectedOptionIndex];
+
+            player.bank += option.cost;
+            if (player.bank < 0) {
+                player.creditCardDebt += Math.abs(player.bank);
+                player.bank = 0;
+            }
+            player.creditCardDebt += option.creditDebt;
+
+            player.reflections.push({
+                scenario: decision.title,
+                choice: option.text,
+                reason: text
+            });
+
+            updateDashboards();
+            closeModalAndNextTurn();
+        };
+
+        // --- TURN & MONTH MANAGEMENT ---
+        function nextTurn() {
+            if (gameState.players.every(p => p.finished)) {
+                endGame();
+                return;
+            }
+
+            const activePlayers = gameState.players.filter(p => !p.finished);
+            
+            // If all active players have finished the month, move to Month End Phase
+            if (activePlayers.every(p => p.finishedMonth)) {
+                window.startMonthEndPhase();
+                return;
+            }
+
+            // Find the next player who hasn't finished the game or the month
+            do {
+                gameState.currentPlayerIndex = (gameState.currentPlayerIndex + 1) % gameState.players.length;
+            } while (gameState.players[gameState.currentPlayerIndex].finished || gameState.players[gameState.currentPlayerIndex].finishedMonth);
+
+            updateDashboards();
+            updateTurnUI();
+            
+            dom.btnRollDice.innerText = "🎲 Roll Dice";
+            dom.btnRollDice.disabled = false;
+        }
+
+        window.startMonthEndPhase = function() {
+            gameState.isMonthEndPhase = true;
+            gameState.monthEndPlayerIndex = 0;
+            window.processMonthEndPlayer();
+        };
+
+        window.processMonthEndPlayer = function() {
+            // Find next active player to do their reflection
+            while (gameState.monthEndPlayerIndex < gameState.players.length && gameState.players[gameState.monthEndPlayerIndex].finished) {
+                gameState.monthEndPlayerIndex++;
+            }
+
+            if (gameState.monthEndPlayerIndex >= gameState.players.length) {
+                // All players have done their month-end phase! 
+                // Advance everyone's month and start the next month.
+                let active = gameState.players.filter(p => !p.finished);
+                if (active.length === 0) { endGame(); return; }
+
+                active.forEach(p => p.month++);
+                
+                // Cap at 12 months
+                if (active.some(p => p.month > 12)) {
+                    active.forEach(p => { if (p.month > 12) p.finished = true; });
+                    if (gameState.players.every(p => p.finished)) {
+                        endGame(); return;
+                    }
+                }
+                
+                startNewMonthPhase();
+                return;
+            }
+
+            let p = gameState.players[gameState.monthEndPlayerIndex];
+            
+            // Show Debt Repayment Modal
+            let html = `
+                <div class="mb-4 text-slate-600 bg-slate-50 p-4 rounded-lg">
+                    <p class="mb-2">It's the end of Month ${p.month}. Review your debts before moving on.</p>
+                    <p>Cash in Bank: <strong class="text-emerald-600">${formatMoney(p.bank)}</strong></p>
+                    <p>Credit Card Debt (20%): <strong class="text-red-600">${formatMoney(p.creditCardDebt)}</strong></p>
+                    <p>Student Loan (6%): <strong class="text-red-500">${formatMoney(p.studentLoan)}</strong></p>
+                </div>
+                <div class="space-y-4 mb-4" id="debt-inputs">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Pay towards Credit Card:</label>
+                        <input type="number" id="pay-cc" class="w-full p-3 border border-slate-300 rounded focus:ring-2 focus:ring-emerald-500 outline-none" min="0" max="${p.bank}" value="0">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Pay towards Student Loan:</label>
+                        <input type="number" id="pay-loan" class="w-full p-3 border border-slate-300 rounded focus:ring-2 focus:ring-emerald-500 outline-none" min="0" max="${p.bank}" value="0">
+                    </div>
+                </div>
+                <button onclick="submitDebtPayment()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                    Make Payments & Continue
+                </button>
+            `;
+            showModal(`${p.name}'s Month End: Debts`, html, "💳", [], true);
+        };
+
+        window.submitDebtPayment = function() {
+            let p = gameState.players[gameState.monthEndPlayerIndex];
+            let payCc = parseFloat(document.getElementById('pay-cc').value) || 0;
+            let payLoan = parseFloat(document.getElementById('pay-loan').value) || 0;
+            
+            // Clear previous errors
+            const existingErr = document.getElementById('debt-error');
+            if (existingErr) existingErr.remove();
+
+            if (payCc < 0 || payLoan < 0) return;
+            if (payCc + payLoan > p.bank) {
+                let err = document.createElement('p');
+                err.id = 'debt-error';
+                err.className = 'text-red-600 font-bold text-sm mt-2';
+                err.innerText = "You cannot pay more than your current bank balance!";
+                document.getElementById('debt-inputs').appendChild(err);
+                return;
+            }
+
+            p.bank -= (payCc + payLoan);
+            p.creditCardDebt = Math.max(0, p.creditCardDebt - payCc);
+            p.studentLoan = Math.max(0, p.studentLoan - payLoan);
+            updateDashboards();
+
+            // Next step: Monthly Reflection
+            let refHtml = `
+                <div class="bg-blue-50 p-4 rounded-lg mb-4 text-blue-800">
+                    <p class="font-bold mb-1">Monthly Reflection & Goal Setting</p>
+                    <p class="text-sm">Reflect on your spending habits over the past month. How are you feeling financially? Set a budgeting goal for Month ${p.month + 1}.</p>
+                </div>
+                <textarea id="month-reflection-text" rows="4" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none mb-4" placeholder="I spent too much on... My goal next month is to..."></textarea>
+                
+                <div class="flex flex-col gap-3">
+                    <button onclick="submitMonthReflection()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                        Save Goals & Finish Month
+                    </button>
+                    <button onclick="retireEarlyMonthEnd()" class="w-full bg-slate-300 hover:bg-slate-400 text-slate-800 font-bold py-2 px-4 rounded-lg transition-colors">
+                        Stop Playing (Retire Character)
+                    </button>
+                </div>
+            `;
+            showModal(`${p.name}'s Reflection`, refHtml, "📝", [], true);
+        };
+
+        window.submitMonthReflection = function() {
+            let p = gameState.players[gameState.monthEndPlayerIndex];
+            let text = document.getElementById('month-reflection-text').value.trim();
+            
+            if (!text) {
+                document.getElementById('month-reflection-text').classList.add('border-red-500');
+                return;
+            }
+
+            p.reflections.push({
+                scenario: `End of Month ${p.month} Reflection`,
+                choice: "Monthly Review & Goals",
+                reason: text
+            });
+
+            gameState.monthEndPlayerIndex++;
+            window.processMonthEndPlayer();
+        };
+
+        window.retireEarlyMonthEnd = function() {
+             let p = gameState.players[gameState.monthEndPlayerIndex];
+             let text = document.getElementById('month-reflection-text')?.value.trim();
+             
+             // Save whatever they wrote before retiring!
+             p.reflections.push({
+                 scenario: `End of Month ${p.month} Reflection`,
+                 choice: "Retired Character",
+                 reason: text || "Chose to stop playing and retire character."
+             });
+             
+             p.finished = true;
+             gameState.monthEndPlayerIndex++;
+             window.processMonthEndPlayer();
+        };
+
+        window.startNewMonthPhase = function() {
+            let html = `
+                <p class="text-slate-600 mb-4">A new month begins! The 1st of the month means income arrives, but rent, utilities, and groceries are instantly due.</p>
+                <div class="space-y-3 mb-6 max-h-64 overflow-y-auto">
+            `;
+            
+            gameState.players.forEach(p => {
+                if(!p.finished) {
+                    p.position = 0;
+                    p.finishedMonth = false;
+                    
+                    let income = p.career.salary / 24; // 1st of month pay
+                    let rentAndUtils = 1500; // Major 1st of month expenses
+                    
+                    p.bank += income;
+                    p.bank -= rentAndUtils;
+                    
+                    let shortfall = 0;
+                    if (p.bank < 0) {
+                        shortfall = Math.abs(p.bank);
+                        p.creditCardDebt += shortfall;
+                        p.bank = 0;
+                    }
+                    
+                    html += `
+                        <div class="bg-slate-50 p-3 rounded-lg border-l-4 border-emerald-500">
+                            <p class="font-bold text-slate-800 mb-1">${p.name} (Month ${p.month})</p>
+                            <div class="text-sm text-slate-600 flex justify-between"><span>1st Payday:</span> <span class="text-emerald-600 font-semibold">+${formatMoney(income)}</span></div>
+                            <div class="text-sm text-slate-600 flex justify-between"><span>Rent/Utils/Food:</span> <span class="text-red-500 font-semibold">-${formatMoney(rentAndUtils)}</span></div>
+                            ${shortfall > 0 ? `<div class="text-sm text-red-600 font-bold mt-2">Cash empty! Added to Credit Card: ${formatMoney(shortfall)}</div>` : ''}
+                        </div>
+                    `;
+                }
+            });
+            
+            html += `
+                </div>
+                <button onclick="beginTurns()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 px-4 rounded-lg shadow-md transition-colors text-lg">
+                    Start Week 1
+                </button>
+            `;
+
+            // Visually reset tokens to Tile 0
+            gameState.players.forEach(p => {
+                if(!p.finished) {
+                    document.getElementById(`tile-0`).appendChild(document.getElementById(`token-p${p.id}`));
+                }
+            });
+            
+            updateDashboards();
+            showModal("1st of the Month!", html, "🏢", [], true);
+        };
+
+        window.beginTurns = function() {
+            dom.modalOverlay.classList.add('hidden');
+            dom.modalOverlay.classList.remove('flex');
+            gameState.isMonthEndPhase = false;
+            
+            // Set current player to the first active player for the new month
+            gameState.currentPlayerIndex = gameState.players.findIndex(p => !p.finished);
+            
+            updateDashboards();
+            updateTurnUI();
+            
+            dom.btnRollDice.innerText = "🎲 Roll Dice";
+            dom.btnRollDice.disabled = false;
+        };
+
+        // --- MODAL SYSTEM ---
+        function showModal(title, contentHtml, icon, buttons, hideDefaultFooter = false) {
+            dom.modalTitle.innerText = title;
+            dom.modalIcon.innerText = icon;
+            dom.modalDesc.style.display = 'none'; 
+            
+            dom.modalContent.innerHTML = contentHtml;
+            
+            if (hideDefaultFooter) {
+                dom.modalFooter.classList.add('hidden');
+            } else {
+                dom.modalFooter.classList.remove('hidden');
+            }
+
+            dom.modalOverlay.classList.remove('hidden');
+            dom.modalOverlay.classList.add('flex');
+        }
+
+        function closeModalAndNextTurn() {
+            dom.modalOverlay.classList.add('hidden');
+            dom.modalOverlay.classList.remove('flex');
+            nextTurn();
+        }
+
+        // --- END GAME ---
+        function endGame() {
+            // Ensure any open modals are closed so the user isn't trapped
+            dom.modalOverlay.classList.add('hidden');
+            dom.modalOverlay.classList.remove('flex');
+            
+            dom.gameView.classList.add('hidden');
+            dom.endView.classList.remove('hidden');
+            dom.endView.classList.add('flex');
+
+            dom.endSummaries.innerHTML = '';
+            
+            gameState.players.forEach(p => {
+                const netWorth = p.bank - p.studentLoan - p.creditCardDebt;
+                let refHtml = p.reflections.map(r => `
+                    <div class="mb-3 bg-white/10 p-3 rounded border-l-2 border-emerald-400">
+                        <p class="text-sm font-bold text-slate-200">${r.scenario}</p>
+                        <p class="text-sm text-emerald-300 mb-1">Choice: ${r.choice}</p>
+                        <p class="text-sm text-slate-300 italic">" ${r.reason} "</p>
+                    </div>
+                `).join('');
+
+                if (!refHtml) refHtml = "<p class='text-sm text-slate-400'>No decisions encountered.</p>";
+
+                const card = document.createElement('div');
+                card.className = 'bg-slate-800 border border-slate-700 p-6 rounded-xl shadow-lg';
+                card.innerHTML = `
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="text-4xl">${p.career.emoji}</span>
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">${p.name}</h3>
+                            <p class="text-slate-400">${p.career.title} (Months Played: ${Math.min(p.month, 12)})</p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="bg-slate-900 p-3 rounded-lg text-center">
+                            <p class="text-slate-400 text-xs uppercase tracking-wider mb-1">Final Net Worth</p>
+                            <p class="text-xl font-bold ${netWorth >= 0 ? 'text-emerald-400' : 'text-red-400'}">${formatMoney(netWorth)}</p>
+                        </div>
+                        <div class="bg-slate-900 p-3 rounded-lg text-center">
+                            <p class="text-slate-400 text-xs uppercase tracking-wider mb-1">Final Debt</p>
+                            <p class="text-xl font-bold text-red-400">${formatMoney(p.studentLoan + p.creditCardDebt)}</p>
+                        </div>
+                    </div>
+
+                    <h4 class="text-lg font-bold text-slate-200 border-b border-slate-700 pb-2 mb-3">Reflections & Goals</h4>
+                    <div class="max-h-64 overflow-y-auto pr-2">
+                        ${refHtml}
+                    </div>
+                `;
+                dom.endSummaries.appendChild(card);
+            });
+        }
+
+        function copyReflectionsToClipboard() {
+            let exportText = "--- ALBERTA LIFE: FINANCIAL FUTURES - STUDENT REFLECTIONS ---\n\n";
+            
+            gameState.players.forEach(p => {
+                const netWorth = p.bank - p.studentLoan - p.creditCardDebt;
+                exportText += `PLAYER: ${p.name} (${p.career.title}) - Played ${Math.min(p.month, 12)} Months\n`;
+                exportText += `Final Net Worth: ${formatMoney(netWorth)}\n`;
+                exportText += `Final Debt: ${formatMoney(p.studentLoan + p.creditCardDebt)}\n\n`;
+                
+                exportText += `DECISIONS & REFLECTIONS:\n`;
+                if (p.reflections.length === 0) {
+                    exportText += `- No major decisions encountered.\n`;
+                } else {
+                    p.reflections.forEach(r => {
+                        exportText += `Scenario: ${r.scenario}\n`;
+                        exportText += `Choice Made: ${r.choice}\n`;
+                        exportText += `Reflection/Reason: "${r.reason}"\n\n`;
+                    });
+                }
+                exportText += `------------------------------------------------------\n\n`;
+            });
+
+            const textArea = document.createElement("textarea");
+            textArea.value = exportText;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                const btn = document.getElementById('btn-copy-reflections');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = "✅ Copied to Clipboard!";
+                btn.classList.replace('bg-emerald-500', 'bg-blue-500');
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.replace('bg-blue-500', 'bg-emerald-500');
+                }, 3000);
+            } catch (err) {
+                console.error('Unable to copy', err);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        window.onload = init;
+
+    </script>
+</body>
+</html>
