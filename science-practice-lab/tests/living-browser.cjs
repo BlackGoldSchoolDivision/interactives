@@ -16,7 +16,7 @@ async function tour(page,size,capture=false){
   const dimensions=await page.evaluate(()=>({viewport:innerWidth,scroll:document.documentElement.scrollWidth}));
   assert(dimensions.scroll<=dimensions.viewport+2,'Horizontal overflow '+q.id+': '+JSON.stringify(dimensions));
   if(q.data.diagram){
-   const diagram=page.locator('.living-diagram,.living-chain,.living-photosynthesis-context');
+   const diagram=page.locator('.living-diagram,.living-chain,.living-photosynthesis-context,.practice-model');
    assert(await diagram.count()>0,'No visual rendered for '+q.id);
    if(capture&&['ecosystems-13','ecosystems-14','photosynthesis-13','relationships-13','relationships-14'].includes(q.id))
     await page.screenshot({path:path.join(folder,q.id+'-'+dimensions.viewport+'.png'),fullPage:true});

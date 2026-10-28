@@ -4,7 +4,7 @@ on:
     paths:
       - 'science-practice-lab/index.html'
       - 'science-practice-lab/*.js'
-      - 'science-practice-lab/style.css'
+      - 'science-practice-lab/*.css'
       - 'science-practice-lab/tests/**'
       - 'science-practice-lab/assets/**/*.png'
       - '.github/workflows/verify-science-practice-lab.yml'
@@ -38,6 +38,8 @@ jobs:
           from pathlib import Path
           for source in Path('science-practice-lab/assets').rglob('*.png'):
               target = source.with_suffix('.webp')
+              if target.exists() and target.stat().st_size > 0:
+                  continue
               image = Image.open(source).convert('RGB')
               image.thumbnail((1600, 1200))
               image.save(target, 'WEBP', quality=82, method=6)
@@ -46,31 +48,13 @@ jobs:
       - name: Exercise all questions and responsive layouts
         run: |
           python -m http.server 8765 --bind 127.0.0.1 >/tmp/science-lab-server.log 2>&1 &
-          node science-practice-lab/tests/browser.cjs
-          if [ -f science-practice-lab/tests/energy-browser.cjs ]; then
-            node science-practice-lab/tests/energy-browser.cjs
-          fi
-          if [ -f science-practice-lab/tests/earth-browser.cjs ]; then
-            node science-practice-lab/tests/earth-browser.cjs
-          fi
-          if [ -f science-practice-lab/tests/living-browser.cjs ]; then
-            node science-practice-lab/tests/living-browser.cjs
-          fi
-          if [ -f science-practice-lab/tests/space-browser.cjs ]; then
-            node science-practice-lab/tests/space-browser.cjs
-          fi
-          if [ -f science-practice-lab/tests/earth-showcase-browser.cjs ]; then
-            node science-practice-lab/tests/earth-showcase-browser.cjs
-          fi
-          if [ -f science-practice-lab/tests/matter-showcase-browser.cjs ]; then
-            node science-practice-lab/tests/matter-showcase-browser.cjs
-          fi
-          if [ -f science-practice-lab/tests/picture-card-browser.cjs ]; then
-            node science-practice-lab/tests/picture-card-browser.cjs
-          fi
-          if [ -f science-practice-lab/tests/flowchart-browser.cjs ]; then
-            node science-practice-lab/tests/flowchart-browser.cjs
-          fi
+          failed=0
+          for suite in browser.cjs energy-browser.cjs earth-browser.cjs living-browser.cjs space-browser.cjs earth-showcase-browser.cjs matter-showcase-browser.cjs picture-card-browser.cjs flowchart-browser.cjs experience-browser.cjs; do
+            if ! node "science-practice-lab/tests/$suite"; then
+              failed=1
+            fi
+          done
+          exit "$failed"
       - name: Build question review contact sheets
         if: always()
         run: |
@@ -100,6 +84,7 @@ jobs:
           path: science-practice-lab/validation/
           if-no-files-found: ignore
       - name: Publish optimized image bank only
+        if: github.ref == 'refs/heads/main'
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'

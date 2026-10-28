@@ -93,7 +93,7 @@ async function round(page,n,mode='learn',capture=false){
  const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
  assert((await page.goto(base,{waitUntil:'networkidle'})).ok());await page.waitForSelector('.goal-card [data-start="particles"]');
  await noOverflow(page,'home '+width+'x'+height);assert.equal(await page.locator('.goal-card').count(),3);
- const loaded=await page.locator('.hero-image').evaluate(img=>img.complete&&img.naturalWidth>0);assert(loaded,'Missing photographic banner');
+ const loaded=await page.locator('.start-panel-art > img').evaluate(img=>img.complete&&img.naturalWidth>0);assert(loaded,'Missing photographic banner');
  if(index===0)await page.screenshot({path:path.join(out,'home-desktop.png'),fullPage:true});
  if(width===390)await page.screenshot({path:path.join(out,'home-phone.png'),fullPage:true});
  // The start-menu route must remain visible after scrolling, and preserve an unanswered choice.
@@ -119,7 +119,7 @@ async function round(page,n,mode='learn',capture=false){
  // Wrong answer, explanation, retry, reload/resume, keyboard placement, review and hidden test feedback.
  const context=await browser.newContext({viewport:{width:1024,height:540}}),page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
  await page.goto(base,{waitUntil:'networkidle'});await page.locator('.goal-card [data-start="particles"]').click();let q=await question(page);
- const wrong=(q.answer+1)%q.data.options.length;await page.locator('[data-choice="'+wrong+'"]').click();await page.locator('#check-answer').click();assert.match(await page.locator('#feedback-area').innerText(),/Try again/);
+ const wrong=(q.answer+1)%q.data.options.length;await page.locator('[data-choice="'+wrong+'"]').click();await page.locator('#check-answer').click();assert.match(await page.locator('#feedback-area').innerText(),/Try another answer|Keep going/);
  await solve(page,q);await page.locator('#check-answer').click();assert.match(await page.locator('#feedback-area').innerText(),/That’s right/);
  await page.reload({waitUntil:'networkidle'});assert(await page.locator('#resume').isVisible());await page.locator('#resume').click();assert.equal((await question(page)).id,q.id);assert.match(await page.locator('#feedback-area').innerText(),/That’s right/);
  // Reflow under increased CSS zoom without losing a saved answer.

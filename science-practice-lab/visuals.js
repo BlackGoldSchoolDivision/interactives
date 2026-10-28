@@ -2,6 +2,12 @@
 (function(root){
 'use strict';
 const assets={
+'ecosystem-observations':{file:'living/ecosystem-observations.webp',cols:2,rows:2,ratio:'3/2',alts:[
+ 'Original illustration of a pond margin with reeds, a duck, frog, water strider, dragonfly, soil and water.',
+ 'Original illustration of mixed woodland with spruce and aspen, a chickadee, deer, mushrooms, fallen leaves and a log.',
+ 'Original illustration of open prairie with grasses, wildflowers, a ground squirrel and a bee on a flower.',
+ 'Original illustration of a dry, rocky landscape with sparse shrubs, cacti and a lizard.'
+]},
 'earth-climate-causes':{file:'earth/climate-causes-contexts.webp',cols:2,rows:2,ratio:'3/2',alts:[
  'Volcanic eruption inside a summit crater; gases and aerosols can enter the atmosphere.',
  'Educational diagram comparing long-term changes in Earth orbital geometry.',
@@ -58,7 +64,9 @@ function record(v,title=''){const data=[['Original',v.before],['Held',v.during],
 function board(cards){return'<div class="energy-board">'+cards.map(([letter,text])=>'<div class="evidence-card"><strong>'+letter+'</strong><p>'+esc(text)+'</p></div>').join('')+'</div>';}
 function flow(cards){return'<div class="energy-flow">'+cards.map(([letter,text],i)=>(i?'<span class="flow-arrow" aria-hidden="true">→</span>':'')+'<div class="flow-step"><strong>'+esc(letter)+'</strong><span>'+esc(text)+'</span></div>').join('')+'</div>';}
 function render(q){
-if(q.data.scenePair){const s=q.data.scenePair;return'<div class="scene-pair">'+s.panels.map((p,i)=>'<figure>'+scene(s.asset,p)+'<figcaption>'+esc(s.labels[i])+'</figcaption>'+(s.readings?'<div class="balance-reading">'+esc(s.readings[i])+'</div>':'')+'</figure>').join('')+'</div><p class="diagram-caption">Illustrated apparatus · use the stated readings; picture dimensions are not measurements.</p>';}
+const design=typeof module!=='undefined'?require('./practice-design.js'):root.ScienceLabDesign;
+const original=design?.visual(q);if(original)return original;
+if(q.data.scenePair){const s=q.data.scenePair;return'<div class="scene-pair">'+s.panels.map((p,i)=>'<figure>'+scene(s.asset,p)+'<figcaption>'+esc(s.labels[i])+'</figcaption>'+(s.readings?'<div class="balance-reading">'+esc(s.readings[i])+'</div>':'')+'</figure>').join('')+'</div><p class="diagram-caption">'+esc(s.caption||'Illustrated apparatus · use the stated readings; picture dimensions are not measurements.')+'</p>';}
 const kind=q.data.diagram;
 if(kind==='energy-force-scenes')return'<div class="scene-grid">'+[0,1,2,3].map(i=>'<figure>'+scene('force-actions',i)+'<figcaption>Illustration '+'ABCD'[i]+'</figcaption></figure>').join('')+'</div>';
 if(kind==='energy-sliding-box')return'<p class="model-heading">A hand pushes right; the box slides right →</p><svg class="force-model" viewBox="0 0 480 180" role="img" aria-label="A hand pushes a box to the right while it slides right on a table. Force arrow A points right; force arrow B points left. Both arrows act on the box."><path d="M25 150H455" stroke="#9eb7c2" stroke-width="4"/><rect x="175" y="65" width="130" height="80" rx="4" fill="#e1edf0" stroke="#7495a4"/>'+arrow(240,85,420)+arrow(240,120,60,'#b5682f')+'<g font-size="26" font-weight="700"><text x="390" y="70">A</text><text x="60" y="109">B</text></g></svg><p class="diagram-caption">Force model · arrows act on the box · not to scale.</p>';

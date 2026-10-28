@@ -95,7 +95,7 @@ const critical=new Set(["forces-02","forces-13","forces-14","forces-17","propert
  await page.goto(base+'?topic=energy',{waitUntil:'networkidle'});
  assert.equal((await page.evaluate(()=>ScienceLab.getState())).topic,'energy');assert.equal(await page.locator('.goal-card').count(),5);
  assert.equal(await page.locator('.unit-tab').count(),5);await noOverflow(page,'Energy home desktop');
- assert(await page.locator('.hero-image').evaluate(i=>i.complete&&i.naturalWidth>0));
+ assert(await page.locator('.start-panel-art > img').evaluate(i=>i.complete&&i.naturalWidth>0));
  await page.screenshot({path:path.join(out,'home-desktop.png'),fullPage:true});
  await page.evaluate(()=>document.body.style.zoom='125%');await noOverflow(page,'Energy 125 percent zoom');await page.evaluate(()=>document.body.style.zoom='');
  // Switching topics keeps each unit's draft answer, checked answers and round.

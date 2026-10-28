@@ -5,7 +5,7 @@ function shuffle(values,rng=Math.random){const out=values.slice();for(let i=out.
 function number(text){const value=String(text??'').trim().replace(',','.');return /^[-+]?(?:\d+\.?\d*|\.\d+)$/.test(value)?Number(value):NaN;}
 function complete(q,r){
  if(['single','hotspot'].includes(q.type))return Number.isInteger(r)&&r>=0&&r<q.data.options.length;
- if(q.type==='multi')return Array.isArray(r)&&r.length>0&&r.every(i=>Number.isInteger(i)&&i>=0&&i<q.data.options.length);
+ if(q.type==='multi')return Array.isArray(r)&&r.length===q.answer.length&&new Set(r).size===r.length&&r.every(i=>Number.isInteger(i)&&i>=0&&i<q.data.options.length);
  if(q.type==='numeric')return Number.isFinite(number(r));
  if(q.type==='dropdown')return Array.isArray(r)&&q.data.blanks.every((b,i)=>b.options.includes(r[i]));
  if(q.type==='order')return Array.isArray(r)&&r.length===q.data.items.length&&new Set(r).size===r.length&&q.data.items.every(x=>r.includes(x.id));

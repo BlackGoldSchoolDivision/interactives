@@ -2,6 +2,10 @@
 
 Independent Alberta Grade 6 PAT-style practice, hosted in the existing Interactives GitHub Pages site.
 
+## Practice experience redesign · 28 October 2026
+
+All 306 questions now use a shared responsive evidence/response workspace, clearer instructions, mixed answer positions, supportive retries, a numbered round navigator, skip/flag/overview controls and focused retry rounds. There are direct content improvements in 68 questions. Teachers can filter by goal, select a practice set, copy a student link, show optional teaching notes and print a packet with or without answers. Original question IDs, scored keys, curriculum references and device progress remain. See [redesign details and reference mapping](REDESIGN-2026-10-28.md).
+
 ## Scope
 
 | Unit | Grouped KUSP goals | Original questions | Individual curriculum statements |
@@ -15,15 +19,17 @@ Independent Alberta Grade 6 PAT-style practice, hosted in the existing Interacti
 
 Each goal contains 18 questions: two each of single choice (including image choices), multiple select, dropdowns, sorting, ordering, matching, diagram labels, evidence selection and numeric entry. Energy covers both forces and interactions, and selection, use and management of energy resources. See [Energy coverage](ENERGY-COVERAGE.md).
 
-## Teacher question browser (21 October 2026)
+## Teacher question browser (28 October 2026)
 
-Click **Browse questions** in the app header to enter a non-scoring review mode. Choose any of the five unit tabs, search by prompt or question ID, filter to a response format or illustrated questions, jump directly to any question, or open the scrollable question index. The main preview uses the same live visual and interaction renderer as student practice, including illustrated cards, matching, and drag-and-drop.
+Click **Browse questions** in the app header to preview and try any question. Use the five unit tabs, search by prompt or ID, and filter by learning goal, response type or visual content. Previous and Next work without submitting an answer.
 
-**No answers need to be submitted:** Previous and Next navigate directly, even with an empty response. No correct-answer key, hints, explanations, scoring, or answer feedback appears in this mode. Temporary preview interactions are not saved, do not count as seen, and do not replace an unfinished student practice round; exiting review restores the student's session. The browser is a convenience view, not a secured teacher-authentication system.
+Open the question index to select individual questions, or select all matching questions. **Copy practice link** creates a student set in Learn & retry or Test practice mode. **Print practice set** prints the selected questions, or the matching questions when none are selected. **Show teaching notes & print answers** explicitly reveals the answer and reasoning and includes a teacher key in the printed packet.
+
+Preview interactions do not count as seen or change student progress. Exiting the browser restores the saved student round. Teacher tools are available from the start menu on phones; the student question header keeps its return control compact.
 
 ## Student flow
 
-Select Matter, Energy, Earth Systems, Living Systems or Space, then a goal or mixed unit. Choose a nine-question format tour, 18 questions or all available questions; optionally practise one format. Learning mode offers hints, explanations, retries and shown answers. Test practice withholds feedback until completion.
+Select Matter, Energy, Earth Systems, Living Systems or Space, then a goal or mixed unit. Choose five-question quick practice, a nine-question format tour, 18 questions or all available questions; optionally practise one format. Learning mode offers hints, explanations, retries and shown answers. Test practice withholds feedback until completion.
 
 Each unit keeps its own device-local progress, settings and unfinished round when browser storage is available. Switching topics and returning to the start menu preserve answers. The original Matter storage key and question identities are retained. Clearing progress affects only the selected unit. No account is required.
 
@@ -31,7 +37,7 @@ Drag placements also work by selecting a card and activating a destination by to
 
 ## Visual question practice
 
-The **Choose a question format** picker now includes **Pictures & diagrams**. This selects illustrated questions across the same nine formats rather than treating pictures as a separate answer type. Currently at least 94 of the 270 questions qualify across Matter (38), Energy (45) and Earth Systems (11), plus new Living Systems scientific diagrams, including generated artwork, credited public-domain source images, coded scientific diagrams, and photo galleries. Fifty Matter/Energy questions contain original illustrated scenes. The selected goal, round length, learning/test mode, and device-local progress still apply. Visual rounds do not pad the requested length with unillustrated questions.
+The **Choose a question format** picker now includes **Pictures & diagrams**. This selects illustrated questions across the same nine formats rather than treating pictures as a separate answer type. Currently 144 questions qualify: Matter (38), Energy (51), Earth Systems (15), Living Systems (23) and Space (17). These use original illustrations, credited public-domain source images and precise coded scientific models. Fifty Matter/Energy questions contain original illustrated scenes. The selected goal, round length, learning/test mode, and device-local progress still apply. Visual rounds do not pad the requested length with unillustrated questions.
 
 ## Content and visual sources
 
@@ -45,11 +51,11 @@ Question performance does not certify conducting an investigation, researching a
 
 Run `node --test science-practice-lab/tests/*.test.cjs`.
 
-The GitHub verification workflow checks all answer keys, negative cases, curriculum references, format coverage, separate topic storage and scientific model consistency. Chromium then completes all 270 questions and exercises 1366×650, 1024×540, 768×900, 390×667, 320×568 and 640×360 layouts for both units.
+The GitHub verification workflow checks all answer keys, negative cases, curriculum references, format coverage, separate topic storage and scientific model consistency. Chromium then completes all 306 questions and exercises 1366×650, 1024×540, 768×900, 390×667, 320×568 and 640×360 layouts, along with the unit-specific mobile and visual checks.
 
 Browser checks cover image loading, keyboard placement, native dragging, resizing, the persistent start menu, topic switching, saved drafts, scoped progress reset, retry, restored rounds, deferred test feedback and teacher dialogs. Both units check 125% CSS zoom; Matter also checks migration of previously revised questions. Image questions additionally check 320-pixel reflow, image loading, crop coverage and saved-state preservation.
 
-Reports and screenshots are retained under `validation/`; Energy reports and selected desktop/phone visual checks are under `validation/energy/`. The workflow converts source PNGs to smaller WebPs.
+Reports and screenshots are retained under `validation/`; Energy reports and selected desktop/phone visual checks are under `validation/energy/`. The workflow creates missing WebPs while preserving existing verified optimized assets.
 
 ## Earth Systems
 
