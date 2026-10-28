@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Short Story Vocabulary a la Mr. Bradley</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        
+        /* Print specific styles */
+        @media print {
+            body { background-color: white; }
+            .no-print { display: none !important; }
+            .print-break-inside-avoid { break-inside: avoid; }
+            .print-page-break { page-break-before: always; }
+            input[type="text"], textarea {
+                border: none !important;
+                border-bottom: 1px solid #000 !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+                resize: none !important;
+                background-color: transparent !important;
+                padding: 0 !important;
+                margin-bottom: 4px !important;
+            }
+            .equation-box {
+                border: 1px solid #000 !important;
+            }
+        }
+
+        /* Custom scrollbar for textareas */
+        textarea::-webkit-scrollbar { width: 6px; }
+        textarea::-webkit-scrollbar-track { background: #f1f1f1; }
+        textarea::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        textarea::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Compress and Decompress functions for URL state
+        // Using basic base64 encoding of JSON strings for the URL shareability
+        const encodeData = (data) => {
+            try {
+                return btoa(encodeURIComponent(JSON.stringify(data)));
+            } catch (e) {
+                console.error("Failed to encode data", e);
+                return "";
+            }
+        };
+
+        const decodeData = (hash) => {
+            try {
+                return JSON.parse(decodeURIComponent(atob(hash)));
+            } catch (e) {
+                console.error("Failed to decode data", e);
+                return null;
+            }
+        };
+
+        // Pre-filled data from "The Landlady Vocab.pdf"
+        const initialTeacherData = {
+            t: "The Landlady",
+            s: [
+                { w: "boarding house", d: "a private home where guests pay to rent a room and get meals. The owner is the landlady." },
+                { w: "kippers", d: "smoked herring, a salty fish with a strong smell, often eaten for breakfast in Britain." },
+                { w: "cricketers", d: "players of cricket, a bat-and-ball sport popular in England. (Not the insect!)" }
+            ],
+            d: [
+                { w: "rapacious", p: "The rapacious seagulls snatched every french fry off our picnic table and kept screaming for more, even after the bag was empty." },
+                { w: "tantalizing", p: "The tantalizing smell of warm cinnamon buns drifted out of the bakery, but the shop was closed and we couldn't buy a single one." },
+                { w: "congenial", p: "Our new neighbours were so congenial that within a week they had learned all our names and invited us over for supper." }
+            ],
+            u: [
+                { w: "facades", pos: "fuh-SAHDZ noun", isD: false },
+                { w: "congenial", pos: "kun-JEE-nee-ul adjective", isD: true },
+                { w: "conjured", pos: "KON-jurd verb", isD: false },
+                { w: "rapacious", pos: "ruh-PAY-shus adjective", isD: true },
+                { w: "compulsion", pos: "kum-PUL-shun noun", isD: false },
+                { w: "dotty", pos: "DOT-ee adjective, informal", isD: false },
+                { w: "tantalizing", pos: "TAN-tuh-ly-zing adjective", isD: true },
+                { w: "emanate", pos: "EM-uh-nayt verb", isD: false }
+            ],
+            tr: [
+                {
+                    tw: "COMPULSION",
+                    r: "pel/puls means push, drive",
+                    ex: "repel as two magnets do\nexpel from a school",
+                    s: "Engineers redesigned the rocket's propulsion system so it could lift off using less fuel.",
+                    aw: "propulsion"
+                },
+                {
+                    tw: "EMANATE",
+                    r: "e-/ex- means out, out of",
+                    ex: "exit a sign over a door\nexport Canada exports wheat",
+                    s: "In the lab, we crushed spinach leaves in rubbing alcohol to extract their green colour.",
+                    aw: "extract"
+                }
+            ]
+        };
+
+        const TeacherMode = ({ setStudentData }) => {
+            const [data, setData] = useState(initialTeacherData);
+            const [link, setLink] = useState("");
+
+            const handleChange = (section, index, field, value) => {
+                const newData = { ...data };
+                if (Array.isArray(newData[section])) {
+                    newData[section][index][field] = value;
+                } else {
+                    newData[section] = value;
+                }
+                setData(newData);
+            };
+
+            const handleAddItem = (section, template) => {
+                const newData = { ...data };
+                newData[section].push(template);
+                setData(newData);
+            };
+
+            const handleRemoveItem = (section, index) => {
+                const newData = { ...data };
+                newData[section].splice(index, 1);
+                setData(newData);
+            };
+
+            const generateLink = () => {
+                const hash = encodeData(data);
+                // Make URL generation more robust for different environments
+                let baseUrl = window.location.href.split('?')[0];
+                if (baseUrl.startsWith('about:') || baseUrl.startsWith('blob:') || baseUrl.startsWith('data:')) {
+                    baseUrl = 'https://mrbradley-vocab-lab.web.app/index.html'; // Placeholder for iframe environments
+                }
+                const url = `${baseUrl}?d=${hash}`;
+                setLink(url);
+            };
+
+            const copyToClipboard = () => {
+                const textArea = document.createElement("textarea");
+                textArea.value = link;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    alert('Link copied to clipboard!');
+                } catch (err) {
+                    console.error('Failed to copy', err);
+                }
+                document.body.removeChild(textArea);
+            };
+
+            return (
+                <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-xl my-8">
+                    <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">Teacher Dashboard: Create Vocabulary Lab</h1>
+                    <p className="text-gray-600 mb-8 text-center">Fill in the fields below to customize the vocabulary lab for your short story. Generate a link to share with your students.</p>
+
+                    {/* General Settings */}
+                    <div className="mb-8 border-l-4 border-blue-500 pl-4">
+                        <h2 className="text-xl font-semibold text-gray-700 mb-4">General Settings</h2>
+                        <label className="block mb-2 font-medium text-gray-600">Short Story Title</label>
+                        <input type="text" className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-300 outline-none" 
+                            value={data.t} onChange={(e) => setData({...data, t: e.target.value})} placeholder="e.g., The Landlady" />
+                    </div>
+
+                    {/* Story Setting Words */}
+                    <div className="mb-8 border-l-4 border-indigo-500 pl-4">
+                        <h2 className="text-xl font-semibold text-gray-700 mb-2">Story Setting (Background Words)</h2>
+                        <p className="text-sm text-gray-500 mb-4">Words students just need to read to understand the context.</p>
+                        {data.s.map((item, idx) => (
+                            <div key={idx} className="flex gap-4 mb-4 items-start">
+                                <input type="text" className="w-1/3 p-2 border rounded" placeholder="Word" value={item.w} onChange={(e) => handleChange('s', idx, 'w', e.target.value)} />
+                                <input type="text" className="w-full p-2 border rounded" placeholder="Definition/Explanation" value={item.d} onChange={(e) => handleChange('s', idx, 'd', e.target.value)} />
+                                <button onClick={() => handleRemoveItem('s', idx)} className="text-red-500 hover:text-red-700 font-bold p-2">✕</button>
+                            </div>
+                        ))}
+                        <button onClick={() => handleAddItem('s', {w: '', d: ''})} className="text-indigo-600 hover:underline text-sm font-semibold">+ Add Setting Word</button>
+                    </div>
+
+                    {/* Stage 1: Discover */}
+                    <div className="mb-8 border-l-4 border-green-500 pl-4">
+                        <h2 className="text-xl font-semibold text-gray-700 mb-2">Stage 1: Discover</h2>
+                        <p className="text-sm text-gray-500 mb-4">Words students guess the meaning of using context clues.</p>
+                        {data.d.map((item, idx) => (
+                            <div key={idx} className="mb-4 bg-gray-50 p-4 rounded border">
+                                <div className="flex justify-between mb-2">
+                                    <input type="text" className="w-1/3 p-2 border rounded" placeholder="Target Word" value={item.w} onChange={(e) => handleChange('d', idx, 'w', e.target.value)} />
+                                    <button onClick={() => handleRemoveItem('d', idx)} className="text-red-500 hover:text-red-700 font-bold p-2">✕</button>
+                                </div>
+                                <textarea className="w-full p-2 border rounded" rows="2" placeholder="Sentence with context clues..." value={item.p} onChange={(e) => handleChange('d', idx, 'p', e.target.value)}></textarea>
+                            </div>
+                        ))}
+                        <button onClick={() => handleAddItem('d', {w: '', p: ''})} className="text-green-600 hover:underline text-sm font-semibold">+ Add Discover Word</button>
+                    </div>
+
+                    {/* Stage 2: Understand */}
+                    <div className="mb-8 border-l-4 border-yellow-500 pl-4">
+                        <h2 className="text-xl font-semibold text-gray-700 mb-2">Stage 2: Understand</h2>
+                        <p className="text-sm text-gray-500 mb-4">The main vocabulary list. Mark if they were 'Discover' words so students can check their guesses.</p>
+                        {data.u.map((item, idx) => (
+                            <div key={idx} className="flex gap-4 mb-4 items-center bg-gray-50 p-3 rounded border">
+                                <input type="text" className="w-1/4 p-2 border rounded" placeholder="Word" value={item.w} onChange={(e) => handleChange('u', idx, 'w', e.target.value)} />
+                                <input type="text" className="w-2/4 p-2 border rounded" placeholder="Pronunciation & Part of Speech" value={item.pos} onChange={(e) => handleChange('u', idx, 'pos', e.target.value)} />
+                                <label className="flex items-center w-1/4 text-sm text-gray-700">
+                                    <input type="checkbox" className="mr-2 h-4 w-4 text-yellow-600" checked={item.isD} onChange={(e) => handleChange('u', idx, 'isD', e.target.checked)} />
+                                    Discover Word?
+                                </label>
+                                <button onClick={() => handleRemoveItem('u', idx)} className="text-red-500 hover:text-red-700 font-bold p-2">✕</button>
+                            </div>
+                        ))}
+                        <button onClick={() => handleAddItem('u', {w: '', pos: '', isD: false})} className="text-yellow-600 hover:underline text-sm font-semibold">+ Add Understand Word</button>
+                    </div>
+
+                    {/* Stage 4: Transfer */}
+                    <div className="mb-8 border-l-4 border-purple-500 pl-4">
+                        <h2 className="text-xl font-semibold text-gray-700 mb-2">Stage 4: Transfer</h2>
+                        <p className="text-sm text-gray-500 mb-4">Focus on word parts. Provide a target word for the prefix+base+suffix equation.</p>
+                        {data.tr.map((item, idx) => (
+                            <div key={idx} className="mb-6 bg-gray-50 p-4 rounded border">
+                                <div className="flex justify-between mb-4">
+                                    <input type="text" className="w-1/2 p-2 border rounded" placeholder="Target Word (e.g. COMPULSION)" value={item.tw} onChange={(e) => handleChange('tr', idx, 'tw', e.target.value)} />
+                                    <button onClick={() => handleRemoveItem('tr', idx)} className="text-red-500 hover:text-red-700 font-bold p-2">✕</button>
+                                </div>
+                                <div className="space-y-3">
+                                    <input type="text" className="w-full p-2 border rounded" placeholder="Root meaning (e.g. pel/puls means push)" value={item.r} onChange={(e) => handleChange('tr', idx, 'r', e.target.value)} />
+                                    <textarea className="w-full p-2 border rounded" rows="2" placeholder="Examples (e.g. repel, expel...)" value={item.ex} onChange={(e) => handleChange('tr', idx, 'ex', e.target.value)}></textarea>
+                                    <textarea className="w-full p-2 border rounded" rows="2" placeholder="Apply Sentence" value={item.s} onChange={(e) => handleChange('tr', idx, 's', e.target.value)}></textarea>
+                                    <input type="text" className="w-1/2 p-2 border rounded" placeholder="Word to apply meaning to (e.g. propulsion)" value={item.aw} onChange={(e) => handleChange('tr', idx, 'aw', e.target.value)} />
+                                </div>
+                            </div>
+                        ))}
+                        <button onClick={() => handleAddItem('tr', {tw: '', r: '', ex: '', s: '', aw: ''})} className="text-purple-600 hover:underline text-sm font-semibold">+ Add Transfer Word Part</button>
+                    </div>
+
+                    {/* Generate Link */}
+                    <div className="mt-10 border-t pt-8 text-center">
+                        <button onClick={generateLink} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition duration-200">
+                            Generate Student Link
+                        </button>
+                        
+                        {link && (
+                            <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                                <p className="text-green-800 font-semibold mb-2">Success! Share this link with your students (or preview it directly):</p>
+                                <div className="flex gap-2 justify-center">
+                                    <input type="text" readOnly value={link} className="w-3/4 p-2 border rounded bg-white text-gray-600 text-sm" />
+                                    <button onClick={copyToClipboard} className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow">Copy Link</button>
+                                    <button onClick={() => setStudentData(data)} className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded shadow font-bold">Preview Student View</button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        const StudentMode = ({ data }) => {
+            const handlePrint = () => {
+                window.print();
+            };
+
+            return (
+                <div className="max-w-4xl mx-auto bg-white min-h-screen pb-20 sm:my-8 sm:shadow-xl sm:rounded-xl overflow-hidden print:shadow-none print:my-0">
+                    
+                    {/* Floating Print Button */}
+                    <div className="fixed top-4 right-4 no-print z-50">
+                        <button onClick={handlePrint} className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full shadow-lg font-bold flex items-center gap-2 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clipRule="evenodd" />
+                            </svg>
+                            Print / Save PDF
+                        </button>
+                        <button onClick={() => window.location.reload()} className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-full shadow-lg font-bold flex items-center gap-2 transition ml-2 mt-2">
+                            Back to Editor
+                        </button>
+                    </div>
+
+                    {/* Header Layout Match */}
+                    <div className="p-8">
+                        <div className="flex justify-between items-start mb-6">
+                            <div className="flex flex-col gap-3 w-1/2">
+                                <div className="flex items-end">
+                                    <span className="font-bold text-sm mr-2 tracking-widest">NAME</span>
+                                    <div className="border-b border-black flex-1 h-5"></div>
+                                </div>
+                                <div className="flex items-end">
+                                    <span className="font-bold text-sm mr-2 tracking-widest">CLASS</span>
+                                    <div className="border-b border-black flex-1 h-5"></div>
+                                </div>
+                            </div>
+                            <div className="text-right">
+                                <div className="font-bold text-lg tracking-wider">VOCABULARY LAB GRADE 7 ELA</div>
+                            </div>
+                        </div>
+                        
+                        <h1 className="text-5xl font-extrabold text-black tracking-tight">{data.t}</h1>
+                        <p className="text-lg text-black mt-1 mb-6">Word work for the short story.</p>
+                        
+                        {/* Process Table Match */}
+                        <table className="w-full border-collapse border-2 border-black text-sm mb-8">
+                            <thead>
+                                <tr>
+                                    <th className="border-2 border-black p-2 text-left w-1/4 font-bold">1. Discover</th>
+                                    <th className="border-2 border-black p-2 text-left w-1/4 font-bold">2. Understand</th>
+                                    <th className="border-2 border-black p-2 text-left w-1/4 font-bold">3. Apply</th>
+                                    <th className="border-2 border-black p-2 text-left w-1/4 font-bold">4. Transfer</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td className="border-2 border-black p-2 align-top text-gray-800">Guess meanings from clues.</td>
+                                    <td className="border-2 border-black p-2 align-top text-gray-800">Check meanings. Make them stick.</td>
+                                    <td className="border-2 border-black p-2 align-top text-gray-800">Write your own sentences.</td>
+                                    <td className="border-2 border-black p-2 align-top text-gray-800">Use word parts in any class.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        {/* Setting Words */}
+                        {data.s && data.s.length > 0 && (
+                            <div className="mb-8">
+                                <div className="bg-black text-white inline-block px-4 py-1 font-bold uppercase tracking-wider mb-4">Story Setting</div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+                                    <div className="space-y-4">
+                                        {data.s.map((item, idx) => (
+                                            <p key={idx} className="leading-relaxed"><span className="font-bold text-black">{item.w}:</span> {item.d}</p>
+                                        ))}
+                                    </div>
+                                    <div className="border-2 border-black p-6 flex items-center justify-center font-bold text-xl text-center">
+                                        Just read these. No writing needed.
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Stage 1: Discover */}
+                        <div className="mb-8 border-t-4 border-black pt-6 print-page-break">
+                            <div className="flex items-center mb-2">
+                                <span className="font-bold text-xl mr-3 uppercase tracking-widest">Stage 1</span>
+                                <h2 className="text-4xl font-extrabold uppercase">Discover</h2>
+                            </div>
+                            <p className="font-bold text-black mb-8 text-lg">Underline the words that hint at the meaning of the bold word. Then write what you think it means. A good guess is all you need.</p>
+                            
+                            <div className="space-y-8">
+                                {data.d.map((item, idx) => {
+                                    const regex = new RegExp(`\\b${item.w}\\b`, 'gi');
+                                    const parts = item.p.split(regex);
+                                    const renderedText = [];
+                                    for (let i = 0; i < parts.length; i++) {
+                                        renderedText.push(parts[i]);
+                                        if (i < parts.length - 1) {
+                                            renderedText.push(<strong key={i} className="font-extrabold">{item.w}</strong>);
+                                        }
+                                    }
+
+                                    return (
+                                        <div key={idx} className="flex gap-4 print-break-inside-avoid">
+                                            <div className="font-bold text-xl pt-0.5">{idx + 1}</div>
+                                            <div className="flex-1">
+                                                <p className="text-lg leading-relaxed text-black mb-3">{renderedText}</p>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-black italic text-lg">I think <span className="font-bold">{item.w}</span> means</span>
+                                                    <input type="text" className="flex-1 border-b border-black py-1 bg-transparent outline-none" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        {/* Stage 2: Understand */}
+                        <div className="mb-8 border-t-4 border-black pt-6 print-page-break">
+                            <div className="flex items-center mb-2">
+                                <span className="font-bold text-xl mr-3 uppercase tracking-widest">Stage 2 Before You Read</span>
+                                <h2 className="text-4xl font-extrabold uppercase">Understand</h2>
+                            </div>
+                            <ol className="list-decimal pl-6 font-bold text-black mb-8 text-lg space-y-1">
+                                <li>Check each word in a dictionary, your class notes or your teacher's list.</li>
+                                <li>Write the meaning in your own words.</li>
+                                <li>For the three Discover words, compare with your guess on page 1 and tick a box.</li>
+                            </ol>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {data.u.map((item, idx) => (
+                                    <div key={idx} className="border-2 border-black p-4 flex flex-col print-break-inside-avoid min-h-[160px]">
+                                        <div className="flex justify-between items-start mb-2">
+                                            <div>
+                                                <span className="text-xs font-bold block mb-1">NO. {String(idx + 1).padStart(2, '0')}</span>
+                                                <span className="text-2xl font-bold tracking-tight">{item.w}</span>
+                                                <span className="block text-sm text-gray-700">{item.pos}</span>
+                                            </div>
+                                            {item.isD && (
+                                                <div className="text-right">
+                                                    <span className="font-bold border-2 border-black px-2 py-0.5 text-xs uppercase bg-gray-100">Discover Word</span>
+                                                    <div className="mt-3 text-left text-sm font-bold">
+                                                        <label className="flex items-center gap-2 mb-1"><input type="checkbox" className="w-4 h-4 border-black"/> guess was close</label>
+                                                        <label className="flex items-center gap-2"><input type="checkbox" className="w-4 h-4 border-black"/> I fixed my guess</label>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div className="mt-auto pt-4">
+                                            <span className="text-xs font-bold uppercase block mb-2 text-gray-600">Meaning in my own words</span>
+                                            <div className="border-b border-black w-full h-4"></div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Make it stick */}
+                            <div className="mt-10 print-page-break">
+                                <h3 className="text-3xl font-extrabold mb-2">Make it stick</h3>
+                                <p className="mb-4 text-black text-lg font-medium">Pick the four words that are hardest for you. For each, make one memory connection: a synonym or antonym, a real-life connection, or a short phrase that shows the meaning.</p>
+                                
+                                <div className="border-2 border-black p-4 mb-6 text-sm font-bold bg-gray-50">
+                                    <span className="uppercase text-gray-600 mr-2">Example</span> 
+                                    <span className="text-black">ancient</span> &nbsp;&nbsp;
+                                    <span className="text-gray-600">antonym:</span> <span className="font-normal text-black">brand-new</span> &nbsp;&nbsp;
+                                    <span className="text-gray-600">phrase:</span> <span className="font-normal text-black">an ancient castle crumbling on a hill</span>
+                                </div>
+
+                                <div className="space-y-4">
+                                    {[1, 2, 3, 4].map(num => (
+                                        <div key={num} className="border-2 border-black flex">
+                                            <div className="border-r-2 border-black p-3 bg-gray-100 flex items-center">
+                                                <span className="font-bold mr-2 uppercase text-sm">Word</span>
+                                                <input type="text" className="bg-transparent border-b border-black w-32 outline-none font-bold text-lg" />
+                                            </div>
+                                            <div className="flex-1 p-3">
+                                                <input type="text" className="w-full bg-transparent border-none outline-none h-full" placeholder="Write your memory connection here..." />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Stage 3: Apply */}
+                        <div className="mb-8 border-t-4 border-black pt-6 print-page-break">
+                            <div className="flex items-center mb-2">
+                                <span className="font-bold text-xl mr-3 uppercase tracking-widest">Stage 3</span>
+                                <h2 className="text-4xl font-extrabold uppercase">Apply</h2>
+                            </div>
+                            <p className="font-bold text-black mb-6 text-lg">Choose four different words from the list. Write one original sentence for each. Add enough detail that a reader could figure out the word's meaning without a dictionary.</p>
+                            
+                            <div className="border-2 border-black grid grid-cols-1 md:grid-cols-2 text-base mb-8">
+                                <div className="p-4 border-b-2 md:border-b-0 md:border-r-2 border-black">
+                                    <div className="font-extrabold uppercase mb-2">Weak</div>
+                                    <div className="text-black">"My brother was furious."</div>
+                                    <div className="text-gray-600 text-sm mt-2 italic">Could mean almost anything.</div>
+                                </div>
+                                <div className="p-4 bg-gray-50">
+                                    <div className="font-extrabold uppercase mb-2">Strong</div>
+                                    <div className="text-black font-medium">"My brother was so furious that he slammed his door and refused to speak to anyone for an hour."</div>
+                                    <div className="text-gray-600 text-sm mt-2 italic">The slammed door and silence show "very angry."</div>
+                                </div>
+                            </div>
+
+                            <div className="space-y-6">
+                                {[1, 2, 3, 4].map(num => (
+                                    <div key={num} className="flex gap-4 print-break-inside-avoid">
+                                        <div className="font-bold text-xl pt-0.5">{num}</div>
+                                        <div className="flex-1">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <span className="font-bold text-sm uppercase tracking-wider text-gray-600">Word:</span>
+                                                <input type="text" className="w-48 border-b border-black py-1 bg-transparent outline-none font-bold text-lg" />
+                                            </div>
+                                            <textarea className="w-full border-b border-black py-2 bg-transparent outline-none text-black leading-relaxed" rows="2"></textarea>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Stage 4: Transfer */}
+                        {data.tr && data.tr.length > 0 && (
+                            <div className="mb-8 border-t-4 border-black pt-6 print-page-break">
+                                <div className="flex items-center mb-2">
+                                    <span className="font-bold text-xl mr-3 uppercase tracking-widest">Stage 4</span>
+                                    <h2 className="text-4xl font-extrabold uppercase">Transfer</h2>
+                                </div>
+                                <p className="font-bold text-black mb-8 text-lg">Word parts travel between classes. Spot one in Science or Social Studies and you have a clue to the meaning. A clue is not a guarantee, so always check the sentence too.</p>
+
+                                <div className="space-y-10">
+                                    {data.tr.map((item, idx) => (
+                                        <div key={idx} className="print-break-inside-avoid">
+                                            
+                                            <div className="font-bold text-2xl mb-6">
+                                                <span className="bg-black text-white px-3 py-1 mr-2">{item.r.split('means')[0].trim()}</span>
+                                                <span className="text-black italic">means {item.r.split('means')[1]?.trim() || ''}</span>
+                                            </div>
+
+                                            <div className="mb-6">
+                                                <span className="font-bold border-2 border-black px-2 py-1 mr-2 uppercase text-sm">1 Notice</span>
+                                                <span className="font-bold">Break it down</span>
+                                                <div className="mt-4 border-2 border-black p-6 flex flex-wrap items-center justify-center gap-4 bg-gray-50">
+                                                    <div className="flex flex-col items-center">
+                                                        <input type="text" className="w-24 border-b border-black text-center outline-none bg-transparent text-lg font-bold" placeholder="(Prefix)"/>
+                                                        <span className="text-xs uppercase mt-1 text-gray-600">Prefix</span>
+                                                    </div>
+                                                    <span className="text-2xl font-bold">+</span>
+                                                    <div className="flex flex-col items-center">
+                                                        <input type="text" className="w-32 border-b border-black text-center outline-none bg-transparent text-lg font-bold" placeholder="(Base)"/>
+                                                        <span className="text-xs uppercase mt-1 text-gray-600">Base</span>
+                                                    </div>
+                                                    <span className="text-2xl font-bold">+</span>
+                                                    <div className="flex flex-col items-center">
+                                                        <input type="text" className="w-24 border-b border-black text-center outline-none bg-transparent text-lg font-bold" placeholder="(Suffix)"/>
+                                                        <span className="text-xs uppercase mt-1 text-gray-600">Suffix</span>
+                                                    </div>
+                                                    <span className="text-2xl font-bold mx-2">=</span>
+                                                    <span className="uppercase text-2xl font-extrabold text-black tracking-widest">{item.tw}</span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div className="mb-6">
+                                                <span className="font-bold border-2 border-black px-2 py-1 mr-2 uppercase text-sm">2 Connect</span>
+                                                <span className="font-bold">What does the root idea add to each word?</span>
+                                                <div className="mt-3 pl-20 text-lg leading-relaxed">
+                                                    {item.ex.split('\n').map((line, i) => {
+                                                        const parts = line.split(' ');
+                                                        const firstWord = parts.shift();
+                                                        return (
+                                                            <div key={i}>
+                                                                <span className="font-extrabold text-black">{firstWord}</span> {parts.join(' ')}
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </div>
+
+                                            <div className="mb-6">
+                                                <span className="font-bold border-2 border-black px-2 py-1 mr-2 uppercase text-sm">3 Apply</span>
+                                                <div className="mt-3 pl-20">
+                                                    <p className="text-black text-lg mb-3">"{item.s}"</p>
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="font-medium text-lg">Use the word part and the sentence. <span className="font-bold uppercase">{item.aw}</span> means</span>
+                                                        <input type="text" className="flex-1 border-b border-black outline-none bg-transparent"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [studentData, setStudentData] = useState(null);
+
+            useEffect(() => {
+                // Check URL parameters for encoded student data
+                const urlParams = new URLSearchParams(window.location.search);
+                const dataHash = urlParams.get('d');
+                if (dataHash) {
+                    const parsedData = decodeData(dataHash);
+                    if (parsedData) {
+                        setStudentData(parsedData);
+                    }
+                }
+            }, []);
+
+            return (
+                <div className="min-h-screen">
+                    {studentData ? (
+                        <StudentMode data={studentData} />
+                    ) : (
+                        <TeacherMode setStudentData={setStudentData} />
+                    )}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
