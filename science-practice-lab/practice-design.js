@@ -10,7 +10,7 @@ function instruction(q){
  if(q.type==='match'||q.type==='label')return 'Drag a card to a destination, or select a card and then choose where it belongs.';
  if(q.type==='order')return 'Move the cards into order. Drag them, or use the up and down buttons.';
  if(q.type==='numeric')return 'Type a number. The unit is provided beside the answer box.';
- if(q.type==='hotspot')return 'Select the sentence that provides the strongest evidence for this question.';
+ if(q.type==='hotspot')return 'Read the source notes, then select the sentence that best answers the question.';
  return 'Choose the best answer. You can change it before checking.';
 }
 // Stable for a round, independently mixed for each question and control.

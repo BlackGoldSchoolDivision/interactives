@@ -93,7 +93,7 @@ async function round(page,n,mode='learn',capture=false){
  const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
  assert((await page.goto(base,{waitUntil:'networkidle'})).ok());await page.waitForSelector('.goal-card [data-start="particles"]');
  await noOverflow(page,'home '+width+'x'+height);assert.equal(await page.locator('.goal-card').count(),3);
- const loaded=await page.locator('.hero-image').evaluate(img=>img.complete&&img.naturalWidth>0);assert(loaded,'Missing photographic banner');
+ const loaded=await page.locator('.start-panel-art > img').evaluate(img=>img.complete&&img.naturalWidth>0);assert(loaded,'Missing photographic banner');
  if(index===0)await page.screenshot({path:path.join(out,'home-desktop.png'),fullPage:true});
  if(width===390)await page.screenshot({path:path.join(out,'home-phone.png'),fullPage:true});
  // The start-menu route must remain visible after scrolling, and preserve an unanswered choice.

@@ -48,32 +48,13 @@ jobs:
       - name: Exercise all questions and responsive layouts
         run: |
           python -m http.server 8765 --bind 127.0.0.1 >/tmp/science-lab-server.log 2>&1 &
-          node science-practice-lab/tests/browser.cjs
-          if [ -f science-practice-lab/tests/energy-browser.cjs ]; then
-            node science-practice-lab/tests/energy-browser.cjs
-          fi
-          if [ -f science-practice-lab/tests/earth-browser.cjs ]; then
-            node science-practice-lab/tests/earth-browser.cjs
-          fi
-          if [ -f science-practice-lab/tests/living-browser.cjs ]; then
-            node science-practice-lab/tests/living-browser.cjs
-          fi
-          if [ -f science-practice-lab/tests/space-browser.cjs ]; then
-            node science-practice-lab/tests/space-browser.cjs
-          fi
-          if [ -f science-practice-lab/tests/earth-showcase-browser.cjs ]; then
-            node science-practice-lab/tests/earth-showcase-browser.cjs
-          fi
-          if [ -f science-practice-lab/tests/matter-showcase-browser.cjs ]; then
-            node science-practice-lab/tests/matter-showcase-browser.cjs
-          fi
-          if [ -f science-practice-lab/tests/picture-card-browser.cjs ]; then
-            node science-practice-lab/tests/picture-card-browser.cjs
-          fi
-          if [ -f science-practice-lab/tests/flowchart-browser.cjs ]; then
-            node science-practice-lab/tests/flowchart-browser.cjs
-          fi
-          node science-practice-lab/tests/experience-browser.cjs
+          failed=0
+          for suite in browser.cjs energy-browser.cjs earth-browser.cjs living-browser.cjs space-browser.cjs earth-showcase-browser.cjs matter-showcase-browser.cjs picture-card-browser.cjs flowchart-browser.cjs experience-browser.cjs; do
+            if ! node "science-practice-lab/tests/$suite"; then
+              failed=1
+            fi
+          done
+          exit "$failed"
       - name: Build question review contact sheets
         if: always()
         run: |
