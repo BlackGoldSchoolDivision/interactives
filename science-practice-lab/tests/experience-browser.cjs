@@ -22,6 +22,7 @@ const base='http://127.0.0.1:8765/science-practice-lab/';
  // Untouched ordering cards are not scored as an accidental random answer.
  await page.goto(base+'?topic=matter&set=particles-09&mode=test');await page.locator('#start-assignment').click();await page.locator('#skip-question').click();
  assert.match(await page.locator('#round-dialog-content').innerText(),/0 of 1 questions have an answer/);await page.locator('#finish-now').click();assert.match(await page.locator('.result-review summary').innerText(),/Not answered/);
+ await page.goto(base+'?topic=matter&set=particles-01&mode=learn');await page.locator('#start-assignment').click();await page.locator('[data-choice="0"]').click();await page.locator('#round-overview').click();await page.locator('#finish-now').click();assert.match(await page.locator('.result-review summary').innerText(),/Correct/,'Early learning completion failed to check a saved answer');
  await page.locator('#teacher-review').click();await page.locator('#review-search').fill('particles-03');await page.locator('#review-apply').click();
  await page.evaluate(()=>{window.print=()=>{};});await page.locator('#review-key').check();await page.locator('#print-set').click();
  await page.locator('#print-packet').waitFor({state:'attached'});assert.match(await page.locator('#print-packet').textContent(),/Teacher answer key/);assert.match(await page.locator('#print-packet').textContent(),/particles-03/);
