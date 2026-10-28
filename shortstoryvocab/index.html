@@ -353,7 +353,7 @@
                                 <span className="font-bold text-xl mr-3 uppercase tracking-widest">Stage 1</span>
                                 <h2 className="text-4xl font-extrabold uppercase">Discover</h2>
                             </div>
-                            <p className="font-bold text-black mb-8 text-lg">Find the words that hint at the meaning of the bold word and write them in the clues box (or underline them if printed). Then write what you think it means. A good guess is all you need.</p>
+                            <p className="font-bold text-black mb-8 text-lg">Find the words that hint at the meaning of the bold word and write them on the Clue words line (or underline them if printed). Then write what you think it means. A good guess is all you need.</p>
                             
                             <div className="space-y-8">
                                 {data.d.map((item, idx) => {
@@ -372,13 +372,13 @@
                                             <div className="font-bold text-xl pt-0.5">{idx + 1}</div>
                                             <div className="flex-1">
                                                 <p className="text-lg leading-relaxed text-black mb-3">{renderedText}</p>
-                                                <div className="flex items-center gap-2 mb-2">
-                                                    <span className="text-black italic text-lg">Clue words:</span>
-                                                    <input type="text" className="flex-1 border-b border-black py-1 bg-transparent outline-none" />
+                                                <div className="flex items-start gap-2 mb-2">
+                                                    <span className="text-black italic text-lg whitespace-nowrap pt-1">Clue words:</span>
+                                                    <textarea rows="1" className="flex-1 border-b border-black py-1 bg-transparent outline-none resize-none overflow-hidden leading-tight" onInput={handleResize}></textarea>
                                                 </div>
-                                                <div className="flex items-center gap-2">
-                                                    <span className="text-black italic text-lg">I think <span className="font-bold">{item.w}</span> means</span>
-                                                    <input type="text" className="flex-1 border-b border-black py-1 bg-transparent outline-none" />
+                                                <div className="flex items-start gap-2">
+                                                    <span className="text-black italic text-lg whitespace-nowrap pt-1">I think <span className="font-bold">{item.w}</span> means</span>
+                                                    <textarea rows="1" className="flex-1 border-b border-black py-1 bg-transparent outline-none resize-none overflow-hidden leading-tight" onInput={handleResize}></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -418,9 +418,9 @@
                                                 </div>
                                             )}
                                         </div>
-                                        <div className="mt-auto pt-4">
+                                        <div className="mt-auto pt-4 flex flex-col flex-1">
                                             <span className="text-xs font-bold uppercase block mb-2 text-gray-600">Meaning in my own words</span>
-                                            <div className="border-b border-black w-full h-4"></div>
+                                            <textarea rows="1" className="w-full bg-transparent border-b border-black outline-none resize-none overflow-hidden flex-1 min-h-[30px]" onInput={handleResize}></textarea>
                                         </div>
                                     </div>
                                 ))}
@@ -445,8 +445,8 @@
                                                 <span className="font-bold mr-2 uppercase text-sm">Word</span>
                                                 <input type="text" className="bg-transparent border-b border-black w-32 outline-none font-bold text-lg" />
                                             </div>
-                                            <div className="flex-1 p-3">
-                                                <input type="text" className="w-full bg-transparent border-none outline-none h-full" placeholder="Write your memory connection here..." />
+                                            <div className="flex-1 p-3 flex">
+                                                <textarea rows="1" className="w-full bg-transparent border-none outline-none h-full resize-none overflow-hidden self-center" placeholder="Write your memory connection here..." onInput={handleResize}></textarea>
                                             </div>
                                         </div>
                                     ))}
@@ -552,9 +552,9 @@
                                                 <span className="font-bold border-2 border-black px-2 py-1 mr-2 uppercase text-sm">3 Apply</span>
                                                 <div className="mt-3 pl-20">
                                                     <p className="text-black text-lg mb-3">"{item.s}"</p>
-                                                    <div className="flex items-center gap-2">
-                                                        <span className="font-medium text-lg">Use the word part and the sentence. <span className="font-bold uppercase">{item.aw}</span> means</span>
-                                                        <input type="text" className="flex-1 border-b border-black outline-none bg-transparent"/>
+                                                    <div className="flex items-start gap-2">
+                                                        <span className="font-medium text-lg pt-1">Use the word part and the sentence. <span className="font-bold uppercase">{item.aw}</span> means</span>
+                                                        <textarea rows="1" className="flex-1 border-b border-black outline-none bg-transparent resize-none overflow-hidden" onInput={handleResize}></textarea>
                                                     </div>
                                                 </div>
                                             </div>
