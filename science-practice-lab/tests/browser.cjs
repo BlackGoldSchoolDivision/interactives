@@ -119,7 +119,7 @@ async function round(page,n,mode='learn',capture=false){
  // Wrong answer, explanation, retry, reload/resume, keyboard placement, review and hidden test feedback.
  const context=await browser.newContext({viewport:{width:1024,height:540}}),page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
  await page.goto(base,{waitUntil:'networkidle'});await page.locator('.goal-card [data-start="particles"]').click();let q=await question(page);
- const wrong=(q.answer+1)%q.data.options.length;await page.locator('[data-choice="'+wrong+'"]').click();await page.locator('#check-answer').click();assert.match(await page.locator('#feedback-area').innerText(),/Try again/);
+ const wrong=(q.answer+1)%q.data.options.length;await page.locator('[data-choice="'+wrong+'"]').click();await page.locator('#check-answer').click();assert.match(await page.locator('#feedback-area').innerText(),/Try another answer|Keep going/);
  await solve(page,q);await page.locator('#check-answer').click();assert.match(await page.locator('#feedback-area').innerText(),/That’s right/);
  await page.reload({waitUntil:'networkidle'});assert(await page.locator('#resume').isVisible());await page.locator('#resume').click();assert.equal((await question(page)).id,q.id);assert.match(await page.locator('#feedback-area').innerText(),/That’s right/);
  // Reflow under increased CSS zoom without losing a saved answer.

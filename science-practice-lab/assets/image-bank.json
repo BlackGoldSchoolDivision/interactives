@@ -403,7 +403,7 @@
         "rows": 2
       },
       "panels": [
-        "USGS Kīlauea eruption photo.",
+        "USGS K\u012blauea eruption photo.",
         "CC0 Milankovitch orbit diagram.",
         "Public domain car exhaust photo.",
         "US government archival smokestack photo."
@@ -414,6 +414,23 @@
       "approvedFor": "visual sorting card context only",
       "scientificNote": "These photographs do not show measured greenhouse-gas concentrations or demonstrate climatic effects in isolation. Orbital cycles occur over very long periods. The colour and artwork do not encode category correctness.",
       "attribution": "USGS; Sciencia58 (CC0); Jensbn (PD); Alfred T. Palmer/US OWI (PD). Precise photo file descriptions and crops at assets/source-notes/EARTH-CLIMATE-CAUSES-CREDITS.json."
+    },
+    {
+      "id": "ecosystem-observations",
+      "unit": "living",
+      "title": "Original ecosystem observation illustrations",
+      "source": "living/ecosystem-observations.png",
+      "web": "living/ecosystem-observations.webp",
+      "grid": {
+        "columns": 2,
+        "rows": 2
+      },
+      "panels": [
+        "Pond margin with reeds and organisms",
+        "Mixed woodland, fallen leaves and decomposers",
+        "Prairie grassland and a pollinating insect",
+        "Dry North American desert with sparse vegetation"
+      ]
     }
   ],
   "existingMatterBanner": {

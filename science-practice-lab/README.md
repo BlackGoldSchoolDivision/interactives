@@ -2,6 +2,10 @@
 
 Independent Alberta Grade 6 PAT-style practice, hosted in the existing Interactives GitHub Pages site.
 
+## Practice experience redesign · 28 October 2026
+
+All 306 questions now use a shared responsive evidence/response workspace, clearer instructions, mixed answer positions, supportive retries, a numbered round navigator, skip/flag/overview controls and focused retry rounds. There are direct content improvements in 68 questions. Teachers can filter by goal, select a practice set, copy a student link, show optional teaching notes and print a packet with or without answers. Original question IDs, scored keys, curriculum references and device progress remain. See [redesign details and reference mapping](REDESIGN-2026-10-28.md).
+
 ## Scope
 
 | Unit | Grouped KUSP goals | Original questions | Individual curriculum statements |

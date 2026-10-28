@@ -20,13 +20,13 @@ async function put(page,q,touch){
 }
 async function checkScreenshot(page,scenario,width){
  assert.equal(await page.locator('.earth-showcase.'+scenario.layout).count(),1,'Visual shell missing for '+scenario.id);
- assert.equal(await page.locator('.earth-showcase-banner').count(),1);
+ assert.equal(await page.locator('.q-meta .format-pill').count(),1);
  assert.equal(await page.locator('.earth-workspace').count(),1);
  assert.equal(await page.locator('.earth-showcase-zones [data-zone]').count(),scenario.zones);
  assert.equal(await page.locator('#feedback-area').innerText(),'','Answers leaked before submission');
  if(['earth-coast-lab','earth-forecast-lab'].includes(scenario.layout)){
-  assert.equal(await page.locator('.earth-work-evidence').count(),1);
-  assert((await page.locator('.earth-work-evidence svg').count())+(await page.locator('.earth-work-evidence .scene-art img').count())>0,'Missing visual evidence');
+  assert.equal(await page.locator('.evidence-pane').count(),1);
+  assert((await page.locator('.evidence-pane svg').count())+(await page.locator('.evidence-pane .scene-art img').count())>0,'Missing visual evidence');
  }
  const dims=await page.evaluate(()=>({screen:innerWidth,scroll:document.documentElement.scrollWidth,card:document.querySelector('.earth-showcase').getBoundingClientRect().width}));
  assert(dims.scroll<=dims.screen+2,'Horizontal overflow '+scenario.id+' '+width+JSON.stringify(dims));
@@ -64,8 +64,8 @@ async function checkScreenshot(page,scenario,width){
       assert.equal(await page.locator('.earth-storm-match .zone-illustration').count(),0,'Answer destination repeats clue imagery');
      }
      if(q.id==='evidence-14'){
-      assert.equal(await page.locator('.earth-work-evidence .scene-art').count(),3,'Expect three real forecasting pictures');
-      const imgs=await page.locator('.earth-work-evidence .scene-art img').evaluateAll(async els=>Promise.all(els.map(async img=>{try{await img.decode()}catch{}return img.naturalWidth>0})));
+      assert.equal(await page.locator('.evidence-pane .scene-art').count(),3,'Expect three real forecasting pictures');
+      const imgs=await page.locator('.evidence-pane .scene-art img').evaluateAll(async els=>Promise.all(els.map(async img=>{try{await img.decode()}catch{}return img.naturalWidth>0})));
       assert.deepEqual(imgs,[true,true,true],'Forecast equipment photos did not load');
      }
 

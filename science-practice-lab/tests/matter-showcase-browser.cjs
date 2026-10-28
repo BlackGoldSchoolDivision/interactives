@@ -36,7 +36,7 @@ async function solve(page,q,touch){
 async function preview(page,scenario,width){
  const card=page.locator('.question-card.matter-showcase.'+scenario.layout);
  assert.equal(await card.count(),1,scenario.id+' missing actual live showcase');
- assert.equal(await page.locator('.matter-showcase-banner').count(),1);
+ assert.equal(await page.locator('.q-meta .format-pill').count(),1);
  assert.equal(await page.locator('.matter-workspace').count(),1);
  assert.equal(await page.locator('#answer-area').count(),1);
  assert.equal(await page.locator('#feedback-area').innerText(),'','Early answer disclosure '+scenario.id);
@@ -48,13 +48,13 @@ async function preview(page,scenario,width){
   const decoded=await page.locator('.picture-bank img').evaluateAll(async imgs=>Promise.all(imgs.map(async im=>{try{await im.decode()}catch{}return im.naturalWidth>0&&im.naturalHeight>0})));
   assert.deepEqual(decoded,[true,true,true,true],'Missing phase change photo');
  }
- if(scenario.id==='particles-02')assert.equal(await page.locator('.matter-work-task .image-choice').count(),4);
- if(scenario.id==='temperature-02')assert.equal(await page.locator('.matter-work-task .thermo-svg').count(),4);
- if(scenario.id==='particles-13')assert((await page.locator('.matter-work-visual .phase-grid').count())===1);
- if(scenario.id==='temperature-13')assert((await page.locator('.matter-work-visual .thermo-svg').count())>=1);
+ if(scenario.id==='particles-02')assert.equal(await page.locator('.response-pane .image-choice').count(),4);
+ if(scenario.id==='temperature-02')assert.equal(await page.locator('.response-pane .thermo-svg').count(),4);
+ if(scenario.id==='particles-13')assert((await page.locator('.evidence-pane .phase-grid').count())===1);
+ if(scenario.id==='temperature-13')assert((await page.locator('.evidence-pane .thermo-svg').count())>=1);
  if(scenario.id==='expansion-02'){
-  assert.equal(await page.locator('.matter-work-task .volume-svg').count(),4);
-  assert.equal(await page.locator('.matter-work-visual .raster-strip-card').count(),2);
+  assert.equal(await page.locator('.response-pane .volume-svg').count(),4);
+  assert.equal(await page.locator('.evidence-pane .raster-strip-card').count(),2);
  }
  await page.screenshot({path:path.join(root,scenario.id+'-'+width+'.png'),fullPage:true,animations:'disabled'});
 }

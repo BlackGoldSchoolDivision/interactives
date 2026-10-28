@@ -10,5 +10,8 @@ const topics=[
 {id:'earth',name:'Earth Systems',data:earth,storageKey:'science-practice-lab-earth-v1',intro:'Investigate climate, evidence, extreme weather and effects on communities.',hero:null,heroFallback:null,heroAlt:'Earth systems and climate'},
 {id:'living',name:'Living Systems',data:living,storageKey:'science-practice-lab-living-v1',intro:'Investigate ecosystems, photosynthesis, biodiversity and relationships among plants and animals.',hero:null,heroFallback:null,heroAlt:'Living systems, biodiversity and plants'},
 {id:'space',name:'Space',data:space,storageKey:'science-practice-lab-space-v1',intro:'Explore solar-system models, celestial bodies, AlbertaSat and technologies for investigating space.',hero:null,heroFallback:null,heroAlt:'Space, orbits, planets and human exploration'}
-];root.ScienceLabTopics=topics;if(typeof module!=='undefined')module.exports=topics;
+];
+const design=typeof module!=='undefined'?require('./practice-design.js'):root.ScienceLabDesign;
+design.apply(topics);
+root.ScienceLabTopics=topics;if(typeof module!=='undefined')module.exports=topics;
 })(typeof globalThis!=='undefined'?globalThis:this);
