@@ -107,7 +107,7 @@
             ]
         };
 
-        const TeacherMode = ({ setStudentData }) => {
+        const TeacherMode = ({ onPreview }) => {
             const [data, setData] = useState(initialTeacherData);
             const [link, setLink] = useState("");
 
@@ -230,7 +230,7 @@
                                     <button onClick={() => handleRemoveItem('tr', idx)} className="text-red-500 hover:text-red-700 font-bold p-2">✕</button>
                                 </div>
                                 <div className="space-y-3">
-                                    <input type="text" className="w-full p-2 border rounded" placeholder="Root meaning (e.g. pel/puls means push)" value={item.r} onChange={(e) => handleChange('tr', idx, 'r', e.target.value)} />
+                                    <input type="text" className="w-full p-2 border rounded" placeholder="Base meaning (e.g. pel/puls means push)" value={item.r} onChange={(e) => handleChange('tr', idx, 'r', e.target.value)} />
                                     <textarea className="w-full p-2 border rounded" rows="2" placeholder="Examples (e.g. repel, expel...)" value={item.ex} onChange={(e) => handleChange('tr', idx, 'ex', e.target.value)}></textarea>
                                     <textarea className="w-full p-2 border rounded" rows="2" placeholder="Apply Sentence" value={item.s} onChange={(e) => handleChange('tr', idx, 's', e.target.value)}></textarea>
                                     <input type="text" className="w-1/2 p-2 border rounded" placeholder="Word to apply meaning to (e.g. propulsion)" value={item.aw} onChange={(e) => handleChange('tr', idx, 'aw', e.target.value)} />
@@ -252,7 +252,7 @@
                                 <div className="flex gap-2 justify-center">
                                     <input type="text" readOnly value={link} className="w-3/4 p-2 border rounded bg-white text-gray-600 text-sm" />
                                     <button onClick={copyToClipboard} className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow">Copy Link</button>
-                                    <button onClick={() => setStudentData(data)} className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded shadow font-bold">Preview Student View</button>
+                                    <button onClick={() => onPreview(data)} className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded shadow font-bold">Preview Student View</button>
                                 </div>
                             </div>
                         )}
@@ -261,9 +261,14 @@
             );
         };
 
-        const StudentMode = ({ data }) => {
+        const StudentMode = ({ data, isPreview, onBack }) => {
             const handlePrint = () => {
                 window.print();
+            };
+
+            const handleResize = (e) => {
+                e.target.style.height = 'auto';
+                e.target.style.height = (e.target.scrollHeight) + 'px';
             };
 
             return (
@@ -277,9 +282,11 @@
                             </svg>
                             Print / Save PDF
                         </button>
-                        <button onClick={() => window.location.reload()} className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-full shadow-lg font-bold flex items-center gap-2 transition ml-2 mt-2">
-                            Back to Editor
-                        </button>
+                        {isPreview && (
+                            <button onClick={onBack} className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-full shadow-lg font-bold flex items-center gap-2 transition ml-2 mt-2">
+                                Back to Editor
+                            </button>
+                        )}
                     </div>
 
                     {/* Header Layout Match */}
@@ -346,7 +353,7 @@
                                 <span className="font-bold text-xl mr-3 uppercase tracking-widest">Stage 1</span>
                                 <h2 className="text-4xl font-extrabold uppercase">Discover</h2>
                             </div>
-                            <p className="font-bold text-black mb-8 text-lg">Underline the words that hint at the meaning of the bold word. Then write what you think it means. A good guess is all you need.</p>
+                            <p className="font-bold text-black mb-8 text-lg">Find the words that hint at the meaning of the bold word and write them in the clues box (or underline them if printed). Then write what you think it means. A good guess is all you need.</p>
                             
                             <div className="space-y-8">
                                 {data.d.map((item, idx) => {
@@ -365,6 +372,10 @@
                                             <div className="font-bold text-xl pt-0.5">{idx + 1}</div>
                                             <div className="flex-1">
                                                 <p className="text-lg leading-relaxed text-black mb-3">{renderedText}</p>
+                                                <div className="flex items-center gap-2 mb-2">
+                                                    <span className="text-black italic text-lg">Clue words:</span>
+                                                    <input type="text" className="flex-1 border-b border-black py-1 bg-transparent outline-none" />
+                                                </div>
                                                 <div className="flex items-center gap-2">
                                                     <span className="text-black italic text-lg">I think <span className="font-bold">{item.w}</span> means</span>
                                                     <input type="text" className="flex-1 border-b border-black py-1 bg-transparent outline-none" />
@@ -473,7 +484,7 @@
                                                 <span className="font-bold text-sm uppercase tracking-wider text-gray-600">Word:</span>
                                                 <input type="text" className="w-48 border-b border-black py-1 bg-transparent outline-none font-bold text-lg" />
                                             </div>
-                                            <textarea className="w-full border-b border-black py-2 bg-transparent outline-none text-black leading-relaxed" rows="2"></textarea>
+                                            <textarea className="w-full border-b border-black py-2 bg-transparent outline-none text-black leading-relaxed resize-none overflow-hidden" rows="2" onInput={handleResize}></textarea>
                                         </div>
                                     </div>
                                 ))}
@@ -523,7 +534,7 @@
                                             
                                             <div className="mb-6">
                                                 <span className="font-bold border-2 border-black px-2 py-1 mr-2 uppercase text-sm">2 Connect</span>
-                                                <span className="font-bold">What does the root idea add to each word?</span>
+                                                <span className="font-bold">What does the base idea add to each word?</span>
                                                 <div className="mt-3 pl-20 text-lg leading-relaxed">
                                                     {item.ex.split('\n').map((line, i) => {
                                                         const parts = line.split(' ');
@@ -559,6 +570,7 @@
 
         const App = () => {
             const [studentData, setStudentData] = useState(null);
+            const [isPreview, setIsPreview] = useState(false);
 
             useEffect(() => {
                 // Check URL parameters for encoded student data
@@ -568,16 +580,27 @@
                     const parsedData = decodeData(dataHash);
                     if (parsedData) {
                         setStudentData(parsedData);
+                        setIsPreview(false);
                     }
                 }
             }, []);
 
+            const handlePreview = (data) => {
+                setStudentData(data);
+                setIsPreview(true);
+            };
+
+            const handleBack = () => {
+                setStudentData(null);
+                setIsPreview(false);
+            };
+
             return (
                 <div className="min-h-screen">
                     {studentData ? (
-                        <StudentMode data={studentData} />
+                        <StudentMode data={studentData} isPreview={isPreview} onBack={handleBack} />
                     ) : (
-                        <TeacherMode setStudentData={setStudentData} />
+                        <TeacherMode onPreview={handlePreview} />
                     )}
                 </div>
             );
