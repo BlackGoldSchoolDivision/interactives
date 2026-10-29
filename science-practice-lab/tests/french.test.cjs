@@ -25,3 +25,12 @@ test('French interface translations are stable across repeated rendering and plu
 test('Generated French content is current and English source changes require translation review',()=>{
  cp.execFileSync(process.execPath,[path.join(__dirname,'../fr/build.cjs'),'--check'],{stdio:'pipe'});
 });
+
+test('French asset descriptions are localized before compound placement labels are composed',()=>{
+ const vm=require('node:vm'),original=require('../visuals').assets,assets=JSON.parse(JSON.stringify(original));
+ const visuals={assets,scene:()=>''};
+ vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../fr/artwork.js'),'utf8'),{window:{ScienceLabVisuals:visuals,ScienceLabLocale:L}});
+ for(const [id,asset]of Object.entries(original))for(const [i,alt]of asset.alts.entries()){assert.equal(assets[id].alts[i],L.translate(alt));assert.notEqual(assets[id].alts[i],alt,id+' description '+i);}
+ const label='Place selected card in Terres humides. '+assets['ecosystem-observations'].alts[0];
+ assert(!/Original illustration|water strider|pond margin/.test(L.translate(label)));
+});

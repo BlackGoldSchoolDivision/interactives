@@ -51,7 +51,7 @@ jobs:
         run: |
           python -m http.server 8765 --bind 127.0.0.1 >/tmp/science-lab-server.log 2>&1 &
           failed=0
-          for suite in browser.cjs energy-browser.cjs earth-browser.cjs living-browser.cjs space-browser.cjs earth-showcase-browser.cjs matter-showcase-browser.cjs picture-card-browser.cjs flowchart-browser.cjs experience-browser.cjs french-browser.cjs; do
+          for suite in french-browser.cjs browser.cjs energy-browser.cjs earth-browser.cjs living-browser.cjs space-browser.cjs earth-showcase-browser.cjs matter-showcase-browser.cjs picture-card-browser.cjs flowchart-browser.cjs experience-browser.cjs; do
             if ! node "science-practice-lab/tests/$suite"; then
               failed=1
             fi
