@@ -18,7 +18,7 @@ async function nativeStart(page,item){
 async function nativeEnd(page,target){await target.hover();await target.hover();const rect=await target.boundingBox();await page.mouse.move(rect.x+rect.width/2,rect.y+rect.height/2,{steps:4});await page.mouse.up();assert.equal(await page.locator('.picture-drag-preview,.drag-source').count(),0,'Drag feedback was not cleaned up');}
 (async()=>{
  const browser=await chromium.launch({headless:true});
- for(const lang of ['en','fr'])for(const [topic,id]of [['matter','particles-12'],['energy','forces-07'],['energy','forces-11']]){
+ for(const lang of ['en','fr'])for(const [topic,id]of [['matter','particles-12'],['energy','forces-07'],['energy','forces-12']]){
   const context=await browser.newContext({viewport:{width:1366,height:650},deviceScaleFactor:lang==='fr'?2:1,reducedMotion:'reduce'}),page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
   await page.addInitScript(()=>{
    window.__dragTrace=[];window.__dragErrors=[];window.addEventListener('error',e=>window.__dragErrors.push(e.message));for(const type of ['mousedown','dragstart','dragend','drop'])document.addEventListener(type,e=>window.__dragTrace.push({type,target:e.target.closest('[data-piece]')?.dataset.piece||e.target.tagName}),true);
@@ -26,7 +26,7 @@ async function nativeEnd(page,target){await target.hover();await target.hover();
    CanvasRenderingContext2D.prototype.drawImage=function(image,...args){if(this.canvas.classList.contains('picture-drag-preview'))window.__drawCapture={args,naturalWidth:image.naturalWidth,naturalHeight:image.naturalHeight};return drawImage.call(this,image,...args);};
    DataTransfer.prototype.setDragImage=function(node,x,y){window.__dragCapture={tag:node.tagName,piece:node.dataset.dragPiece,width:node.width,height:node.height,x,y,image:node.toDataURL('image/png')};return setImage.call(this,node,x,y);};
   });
-  const q=banks[lang].find(t=>t.id===topic).data.questions.find(q=>q.id===id);
+  const q=banks[lang].find(t=>t.id===topic).data.questions.find(q=>q.id===id);assert(q.data.itemVisuals?.[q.data.items[0].id],id+' must be a picture-card test case');
   await page.goto(address(lang,topic,id));assert.equal(await page.evaluate(()=>typeof window.ScienceLabDragPreview?.create),'function','Drag preview module was not loaded');await page.locator('#start-assignment').click();await page.locator('.piece-picture img').evaluateAll(imgs=>Promise.all(imgs.map(img=>img.decode())));
   // Match the reported state: only Melting and Condensation remain in the bank.
   if(id==='particles-12'){await tapPlace(page,'b','freeze');await tapPlace(page,'c','evaporate');assert.equal(await page.locator('.bank .picture-piece').count(),2);}
