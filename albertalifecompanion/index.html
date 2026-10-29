@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alberta Life: Personal Ledger</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0fdfa; /* Light teal background */
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* Custom scrollbar for ledger */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="text-slate-800 h-screen flex flex-col overflow-hidden">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white shadow-md z-10 p-4 flex justify-between items-center shrink-0">
+        <div>
+            <h1 class="text-2xl font-bold tracking-tight text-emerald-400">Personal Ledger</h1>
+            <p class="text-xs text-slate-400 uppercase tracking-widest mt-1">Alberta Life Companion Tool</p>
+        </div>
+        <div class="hidden sm:block text-right">
+            <div class="text-sm font-semibold text-slate-300">Active Tracking Mode</div>
+            <div id="header-nw" class="text-lg font-bold text-emerald-400">NW: $0.00</div>
+        </div>
+    </header>
+
+    <!-- App Container -->
+    <main class="flex-1 relative overflow-hidden flex flex-col">
+        
+        <!-- INITIAL SETUP OVERLAY -->
+        <div id="setup-overlay" class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full fade-in border-t-4 border-emerald-500">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">Start Your Ledger</h2>
+                <p class="text-slate-500 mb-6 text-sm">Enter your starting balances from the main game based on your chosen career path.</p>
+                
+                <div class="space-y-4 mb-6">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Starting Cash ($)</label>
+                        <input type="number" id="setup-cash" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none font-semibold text-lg" value="5000" min="0">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Starting Student Loan ($)</label>
+                        <input type="number" id="setup-loan" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none font-semibold text-lg" value="0" min="0">
+                    </div>
+                </div>
+
+                <button onclick="startLedger()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-lg transition-transform active:scale-95 text-lg flex items-center justify-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /></svg>
+                    Begin Tracking
+                </button>
+            </div>
+        </div>
+
+        <!-- MAIN DASHBOARD & LEDGER (Hidden until setup completes) -->
+        <div id="main-app" class="hidden flex-1 overflow-hidden p-4 lg:p-6 flex flex-col lg:flex-row gap-6">
+            
+            <!-- Main Area (Left Column): Dashboard & Entry Form -->
+            <div class="w-full lg:w-2/3 flex flex-col gap-6 shrink-0 overflow-y-auto pb-4 pr-2">
+                
+                <!-- Financial Dashboard Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-white p-4 rounded-xl shadow-sm border-t-4 border-emerald-500 flex flex-col justify-center">
+                        <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Cash Balance</p>
+                        <p id="dash-cash" class="text-2xl font-bold text-slate-800">$0.00</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border-t-4 border-red-500 flex flex-col justify-center">
+                        <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Credit Card</p>
+                        <p id="dash-cc" class="text-2xl font-bold text-red-600">$0.00</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border-t-4 border-orange-500 flex flex-col justify-center">
+                        <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Student Loan</p>
+                        <p id="dash-loan" class="text-2xl font-bold text-orange-600">$0.00</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border-t-4 border-blue-500 flex flex-col justify-center">
+                        <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Net Worth</p>
+                        <p id="dash-nw" class="text-2xl font-bold text-blue-600">$0.00</p>
+                    </div>
+                </div>
+
+                <!-- Transaction Entry Form -->
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 flex-1 flex flex-col">
+                    <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-emerald-500"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                        Record Transaction
+                    </h3>
+                    
+                    <div id="form-error" class="hidden bg-red-50 text-red-700 p-3 rounded-lg text-sm font-semibold mb-4 border border-red-200">
+                        <!-- Error messages -->
+                    </div>
+
+                    <div class="space-y-5 flex-1">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-1">Transaction Type</label>
+                                <select id="tx-type" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none text-sm font-semibold bg-slate-50">
+                                    <option value="income">Earned Income (+ Cash)</option>
+                                    <option value="expense_cash">Paid with Cash (- Cash)</option>
+                                    <option value="expense_cc">Paid with Credit Card (+ CC Debt)</option>
+                                    <option value="pay_cc">Pay Credit Card Bill (- Cash, - CC Debt)</option>
+                                    <option value="pay_loan">Pay Student Loan (- Cash, - Loan)</option>
+                                    <option value="interest_cc">Credit Card Interest Added (+ CC Debt)</option>
+                                    <option value="interest_loan">Student Loan Interest Added (+ Loan)</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-1">Amount ($)</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500 font-bold">$</span>
+                                    <input type="number" id="tx-amount" class="w-full pl-8 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none font-semibold" placeholder="0.00" min="0.01" step="0.01">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1">Category</label>
+                            <select id="tx-category" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none text-sm bg-slate-50">
+                                <option value="Income">Income / Salary</option>
+                                <option value="Rent/Utilities">Rent & Utilities</option>
+                                <option value="Groceries">Groceries / Food</option>
+                                <option value="Transportation">Transportation</option>
+                                <option value="Entertainment">Entertainment / Leisure</option>
+                                <option value="Event/Emergency">Life Event / Emergency</option>
+                                <option value="Debt Repayment">Debt Repayment</option>
+                                <option value="Interest/Fees">Interest & Fees</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1">Description</label>
+                            <input type="text" id="tx-desc" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none text-sm" placeholder="e.g. Payday, Groceries at Superstore...">
+                        </div>
+                        
+                        <div class="pt-4">
+                            <button onclick="addTransaction()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl shadow-md transition-transform active:scale-95 text-lg flex items-center justify-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                                Add to Ledger
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Side Pane (Right Column): The Ledger Table -->
+            <div class="w-full lg:w-1/3 bg-white rounded-2xl shadow-lg border border-slate-100 flex flex-col h-full overflow-hidden shrink-0 relative">
+                <div class="bg-slate-900 p-4 flex justify-between items-center shadow-sm z-10 shrink-0">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-emerald-400"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>
+                        Ledger History
+                    </h3>
+                    <span id="tx-count" class="text-xs font-bold bg-slate-800 text-emerald-400 px-3 py-1 rounded-full border border-slate-700">0 Entries</span>
+                </div>
+                
+                <div class="flex-1 overflow-y-auto p-4 bg-slate-50 relative" id="ledger-body">
+                    <!-- Transactions populated here -->
+                </div>
+                
+                <!-- Empty State -->
+                <div id="ledger-empty" class="absolute inset-0 top-16 flex flex-col items-center justify-center text-slate-400 p-8 pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 mb-4 opacity-40"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                    <p class="font-bold text-slate-500 mb-1">No transactions yet</p>
+                    <p class="text-sm text-center">Add your first transaction in the main area to start tracking.</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        /**
+         * STATE MANAGEMENT
+         */
+        const state = {
+            cash: 0,
+            creditDebt: 0,
+            studentLoan: 0,
+            transactions: []
+        };
+
+        const formatMoney = (amount) => {
+            return new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD' }).format(amount);
+        };
+
+        // DOM Elements
+        const dom = {
+            setupOverlay: document.getElementById('setup-overlay'),
+            mainApp: document.getElementById('main-app'),
+            setupCash: document.getElementById('setup-cash'),
+            setupLoan: document.getElementById('setup-loan'),
+            dashCash: document.getElementById('dash-cash'),
+            dashCc: document.getElementById('dash-cc'),
+            dashLoan: document.getElementById('dash-loan'),
+            dashNw: document.getElementById('dash-nw'),
+            headerNw: document.getElementById('header-nw'),
+            formError: document.getElementById('form-error'),
+            txType: document.getElementById('tx-type'),
+            txAmount: document.getElementById('tx-amount'),
+            txCategory: document.getElementById('tx-category'),
+            txDesc: document.getElementById('tx-desc'),
+            ledgerBody: document.getElementById('ledger-body'),
+            ledgerEmpty: document.getElementById('ledger-empty'),
+            txCount: document.getElementById('tx-count')
+        };
+
+        /**
+         * SETUP & INITIALIZATION
+         */
+        function startLedger() {
+            const initialCash = parseFloat(dom.setupCash.value) || 0;
+            const initialLoan = parseFloat(dom.setupLoan.value) || 0;
+
+            state.cash = initialCash;
+            state.studentLoan = initialLoan;
+            state.creditDebt = 0;
+            state.transactions = [];
+
+            // Add starting balances to ledger logic without forcing user input
+            if (initialCash > 0) {
+                state.transactions.push(createTxObject('income', initialCash, 'Initial Setup', 'Starting Cash Balance'));
+            }
+            if (initialLoan > 0) {
+                state.transactions.push(createTxObject('interest_loan', initialLoan, 'Initial Setup', 'Starting Student Loan Debt'));
+            }
+
+            dom.setupOverlay.classList.add('hidden');
+            dom.mainApp.classList.remove('hidden');
+            
+            updateDashboard();
+            renderLedger();
+        }
+
+        /**
+         * TRANSACTION LOGIC
+         */
+        function createTxObject(type, amount, category, desc) {
+            return {
+                id: state.transactions.length + 1,
+                type: type,
+                amount: amount,
+                category: category,
+                desc: desc || 'Manual Entry',
+                date: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) // Simple timestamp
+            };
+        }
+
+        function addTransaction() {
+            // Reset error
+            dom.formError.classList.add('hidden');
+            dom.formError.innerText = '';
+
+            const type = dom.txType.value;
+            const amount = parseFloat(dom.txAmount.value);
+            const category = dom.txCategory.value;
+            const desc = dom.txDesc.value.trim();
+
+            if (isNaN(amount) || amount <= 0) {
+                showError("Please enter a valid amount greater than $0.");
+                return;
+            }
+
+            // Logic guards (Warnings but we allow negative cash to mimic real-world overdrafts/mistakes)
+            if ((type === 'expense_cash' || type === 'pay_cc' || type === 'pay_loan') && amount > state.cash) {
+                const proceed = confirm(`Warning: You only have ${formatMoney(state.cash)} in cash. This transaction will put your cash balance below zero. Are you sure? (In real life, this might result in NSF fees or be denied).`);
+                if (!proceed) return;
+            }
+            
+            if (type === 'pay_cc' && amount > state.creditDebt && state.creditDebt > 0) {
+                 const proceed = confirm(`Warning: You are paying more than your Credit Card balance (${formatMoney(state.creditDebt)}). Continue anyway?`);
+                 if (!proceed) return;
+            }
+
+            // Apply Transaction logic to state
+            switch (type) {
+                case 'income':
+                    state.cash += amount;
+                    break;
+                case 'expense_cash':
+                    state.cash -= amount;
+                    break;
+                case 'expense_cc':
+                    state.creditDebt += amount;
+                    break;
+                case 'pay_cc':
+                    state.cash -= amount;
+                    state.creditDebt = Math.max(0, state.creditDebt - amount); // Don't allow negative debt for simplicity
+                    break;
+                case 'pay_loan':
+                    state.cash -= amount;
+                    state.studentLoan = Math.max(0, state.studentLoan - amount);
+                    break;
+                case 'interest_cc':
+                    state.creditDebt += amount;
+                    break;
+                case 'interest_loan':
+                    state.studentLoan += amount;
+                    break;
+            }
+
+            // Save to history
+            state.transactions.unshift(createTxObject(type, amount, category, desc)); // Unshift to put newest at top
+
+            // Update UI
+            updateDashboard();
+            renderLedger();
+
+            // Clear inputs
+            dom.txAmount.value = '';
+            dom.txDesc.value = '';
+            dom.txAmount.focus();
+        }
+
+        function showError(msg) {
+            dom.formError.innerText = msg;
+            dom.formError.classList.remove('hidden');
+        }
+
+        /**
+         * UI UPDATES
+         */
+        function updateDashboard() {
+            const netWorth = state.cash - state.creditDebt - state.studentLoan;
+            
+            dom.dashCash.innerText = formatMoney(state.cash);
+            dom.dashCash.className = `text-2xl font-bold ${state.cash < 0 ? 'text-red-600' : 'text-slate-800'}`;
+
+            dom.dashCc.innerText = formatMoney(state.creditDebt);
+            dom.dashLoan.innerText = formatMoney(state.studentLoan);
+            
+            dom.dashNw.innerText = formatMoney(netWorth);
+            dom.dashNw.className = `text-2xl font-bold ${netWorth < 0 ? 'text-red-600' : 'text-blue-600'}`;
+            dom.headerNw.innerText = `NW: ${formatMoney(netWorth)}`;
+            dom.headerNw.className = `text-lg font-bold ${netWorth < 0 ? 'text-red-400' : 'text-emerald-400'}`;
+        }
+
+        function renderLedger() {
+            dom.ledgerBody.innerHTML = '';
+            dom.txCount.innerText = `${state.transactions.length} Entries`;
+
+            if (state.transactions.length === 0) {
+                dom.ledgerEmpty.classList.remove('hidden');
+            } else {
+                dom.ledgerEmpty.classList.add('hidden');
+                
+                state.transactions.forEach((tx, index) => {
+                    const row = document.createElement('div');
+                    row.className = 'bg-white p-4 mb-3 rounded-xl shadow-sm border border-slate-200 fade-in flex justify-between items-start';
+                    
+                    // Determine styling based on type
+                    let impactBadge = '';
+                    let amountColor = 'text-slate-800';
+                    let amountPrefix = '';
+
+                    switch(tx.type) {
+                        case 'income':
+                            impactBadge = '<span class="bg-emerald-100 text-emerald-800 text-[10px] uppercase font-bold px-2 py-1 rounded-md">Cash Up</span>';
+                            amountColor = 'text-emerald-600';
+                            amountPrefix = '+';
+                            break;
+                        case 'expense_cash':
+                            impactBadge = '<span class="bg-slate-100 text-slate-600 text-[10px] uppercase font-bold px-2 py-1 rounded-md border border-slate-200">Cash Down</span>';
+                            amountPrefix = '-';
+                            amountColor = 'text-red-600';
+                            break;
+                        case 'expense_cc':
+                            impactBadge = '<span class="bg-red-50 text-red-700 text-[10px] uppercase font-bold px-2 py-1 rounded-md border border-red-100">CC Debt Up</span>';
+                            amountColor = 'text-red-600';
+                            break;
+                        case 'pay_cc':
+                        case 'pay_loan':
+                            impactBadge = '<span class="bg-emerald-50 text-emerald-700 text-[10px] uppercase font-bold px-2 py-1 rounded-md border border-emerald-100">Debt Paid</span>';
+                            amountPrefix = '-';
+                            amountColor = 'text-emerald-600';
+                            break;
+                        case 'interest_cc':
+                        case 'interest_loan':
+                            impactBadge = '<span class="bg-orange-50 text-orange-700 text-[10px] uppercase font-bold px-2 py-1 rounded-md border border-orange-100">Debt Up (Fee)</span>';
+                            amountColor = 'text-orange-600';
+                            break;
+                    }
+
+                    row.innerHTML = `
+                        <div class="flex-1 pr-3">
+                            <p class="font-bold text-slate-800 text-sm leading-tight mb-1">${tx.desc}</p>
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="text-[10px] text-slate-500 font-medium">${tx.date}</span>
+                                <span class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">&bull; ${tx.category}</span>
+                            </div>
+                            <div>${impactBadge}</div>
+                        </div>
+                        <div class="text-right whitespace-nowrap">
+                            <p class="font-bold text-lg ${amountColor}">${amountPrefix}${formatMoney(tx.amount)}</p>
+                        </div>
+                    `;
+                    dom.ledgerBody.appendChild(row);
+                });
+            }
+        }
+
+        // Add Enter key support for quick entry
+        dom.txAmount.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') addTransaction();
+        });
+        dom.txDesc.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') addTransaction();
+        });
+
+    </script>
+</body>
+</html>
