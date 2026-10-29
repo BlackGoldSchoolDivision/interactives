@@ -4,7 +4,7 @@ const bank=typeof module!=='undefined'?require('./bank.js'):root.ScienceLabFrenc
 const ui=typeof module!=='undefined'?require('./strings.js'):root.ScienceLabFrenchStrings;
 const dictionary={...bank.strings,...ui};
 const french=new Set(Object.values(dictionary));
-const stages={solid:'solide',liquid:'liquide',gas:'gaz'},direction={left:'à gauche',right:'à droite'};
+const stages={solid:'solide',liquid:'liquide',gas:'gazeux'},direction={left:'à gauche',right:'à droite'};
 function translate(value){
  const original=String(value??''),s=original.trim();if(!s)return original;
  let out=dictionary[s];
@@ -17,9 +17,9 @@ function translate(value){
  [/^(.+) · curriculum & coverage$/,(m,a)=>a+' · programme et couverture'],
  [/^(\d+) questions · (\d+) goals$/,(m,a,b)=>a+' questions · '+b+' objectifs'],
  [/^(\d+) \/ (\d+) seen · (\d+) correct$/,(m,a,b,c)=>a+' / '+b+' vues · '+c+' réussies'],
- [/^(\d+) questions seen$/,(m,a)=>a+' questions vues'],
- [/^(\d+) correct · (\d+) seen$/,(m,a,b)=>a+' réussies · '+b+' vues'],
- [/^(\d+) of (\d+) answered correctly$/,(m,a,b)=>a+' sur '+b+' réussies'],
+ [/^(\d+) questions seen$/,(m,a)=>a+(a==='1'?' question vue':' questions vues')],
+ [/^(\d+) correct · (\d+) seen$/,(m,a,b)=>a+(a==='1'?' réussie · ':' réussies · ')+b+(b==='1'?' vue':' vues')],
+ [/^(\d+) of (\d+) answered correctly$/,(m,a,b)=>a+' sur '+b+(a==='1'?' réussie':' réussies')],
  [/^(\d+) questions · 9 formats$/,(m,a)=>a+' questions · 9 formats'],
  [/^(\d+) questions? ready to try$/,(m,a)=>a+(a==='1'?' question prête':' questions prêtes')],
  [/^Question (\d+) of (\d+) · (.+)$/,(m,a,b,c)=>'Question '+a+' sur '+b+' · '+translate(c)],
@@ -34,12 +34,12 @@ function translate(value){
  [/^Selected: (.+)\. Choose a destination\.$/,(m,a)=>'Fiche sélectionnée : '+a+'. Choisis une destination.'],
  [/^Place selected card in (.+)$/,(m,a)=>'Placer la fiche sélectionnée dans '+translate(a)],
  [/^(.+) placed in (.+)\.$/,(m,a,b)=>a+' placé dans '+b+'.'],
- [/^(\d+) of (\d+) parts correct\. Keep going\.$/,(m,a,b)=>a+' parties sur '+b+' sont correctes. Continue.'],
+ [/^(\d+) of (\d+) parts correct\. Keep going\.$/,(m,a,b)=>a+(a==='1'?' partie sur ':' parties sur ')+b+(a==='1'?' est correcte. Continue.':' sont correctes. Continue.')],
  [/^Question (\d+): (.+)$/,(m,a,b)=>'Question '+a+' : '+translate(b)],
- [/^(\d+) of (\d+) questions submitted$/,(m,a,b)=>a+' questions sur '+b+' soumises'],
- [/^(\d+) of (\d+) answers saved · (\d+) flagged$/,(m,a,b,c)=>a+' réponses sur '+b+' enregistrées · '+c+' à revoir'],
+ [/^(\d+) of (\d+) questions submitted$/,(m,a,b)=>a+(a==='1'?' question sur ':' questions sur ')+b+(a==='1'?' soumise':' soumises')],
+ [/^(\d+) of (\d+) answers saved · (\d+) flagged$/,(m,a,b,c)=>a+(a==='1'?' réponse sur ':' réponses sur ')+b+(a==='1'?' enregistrée · ':' enregistrées · ')+c+' à revoir'],
  [/^(.+) · round complete$/,(m,a)=>a+' · série terminée'],
- [/^(\d+) of (\d+) questions have an answer\. (\d+) flagged for another look\.$/,(m,a,b,c)=>a+' questions sur '+b+' ont une réponse. '+c+' à revoir.'],
+ [/^(\d+) of (\d+) questions have an answer\. (\d+) flagged for another look\.$/,(m,a,b,c)=>a+(a==='1'?' question sur ':' questions sur ')+b+(a==='1'?' a une réponse. ':' ont une réponse. ')+c+' à revoir.'],
  [/^You can return to any question\. Finishing now will include (\d+) unanswered questions? in your review\.$/,(m,a)=>'Tu peux revenir à toute question. Si tu termines maintenant, le bilan comprendra '+a+(a==='1'?' question sans réponse.':' questions sans réponse.')],
  [/^Add (.+) to practice set$/,(m,a)=>'Ajouter '+a+' à la sélection'],
  [/^TEACHER TOOLS · (.+)$/,(m,a)=>'OUTILS ENSEIGNANTS · '+a],
@@ -53,7 +53,7 @@ function translate(value){
  [/^Curriculum references: (.+)$/,(m,a)=>'Références au programme : '+a],
  [/^(\d+) original (.+) questions across (\d+) KUSP groups\. Each group has two questions in each of nine formats\. Progress below belongs to this device\.$/,(m,a,b,c)=>a+' questions originales sur le thème « '+b+' », réparties en '+c+' groupes du programme. Chaque groupe comprend deux questions dans chacun des neuf formats. La progression ci-dessous concerne cet appareil.'],
  [/^(.+) · curriculum statements$/,(m,a)=>a+' · énoncés du programme'],
- [/^(\d+) mapped questions · (\d+) seen · (.+)$/,(m,a,b,c)=>a+' questions associées · '+b+' vues · '+c],
+ [/^(\d+) mapped questions · (\d+) seen · (.+)$/,(m,a,b,c)=>a+(a==='1'?' question associée · ':' questions associées · ')+b+(b==='1'?' vue · ':' vues · ')+c],
  [/^Curriculum mapping follows the (.+) section of Science 1–6 Curriculum NEW Alberta supplied by Darren\. The app is independent of Alberta Education and Vretta\. “Correct” reports question performance, not mastery of an entire curriculum statement\.$/,(m,a)=>'Les références suivent l’onglet « 6e année » du classeur Science 1–6 Curriculum NEW Alberta fourni par Darren, pour le thème « '+a+' ». L’application est indépendante d’Alberta Education et de Vretta. Une réponse réussie ne démontre pas à elle seule la maitrise de tout un énoncé du programme.'],
  [/^Clear (.+) progress on this device$/,(m,a)=>'Effacer la progression : '+a],
  [/^Confirm clear (.+) progress$/,(m,a)=>'Confirmer l’effacement : '+a],

@@ -4,6 +4,7 @@ const TOPICS=window.ScienceLabTopics,C=window.ScienceLabCore,P=window.ScienceLab
 const L=window.ScienceLabLocale,TOPIC_STORAGE=L?.topicStorageKey||'science-practice-lab-topic';
 let topicId=initialTopic(),D=activeTopic().data;
 const FORMAT={single:'Choose one',multi:'Select several',dropdown:'Dropdowns',sort:'Drag & sort',order:'Put in order',match:'Match',label:'Label a diagram',hotspot:'Select text',numeric:'Enter a number'};
+if(L)for(const type of Object.keys(FORMAT))FORMAT[type]=L.translate(FORMAT[type]);
 const INSTRUCTIONS={single:'Choose one answer.',multi:'Select all the answers requested.',dropdown:'Choose an answer for each dropdown.',sort:'Drag each card, or tap a card and then a group.',order:'Drag the steps into order, or use the up and down buttons.',match:'Drag a card to its match, or tap a card and then its destination.',label:'Use the diagram to place each label. Drag, or tap a label and then a destination.',hotspot:'Select the sentence that best answers the question.',numeric:'Enter a number. The unit is already provided.'};
 let STORAGE=activeTopic().storageKey,byId=Object.fromEntries(D.questions.map(q=>[q.id,q]));
 let progress={},run=null,view='home',pendingStart=null,selected=null,dragged=null,settings={mode:'learn',count:'9',format:'all'},speechOn=false,resetArmed=false;
