@@ -218,15 +218,15 @@
     {
       "id": "box-push",
       "unit": "energy",
-      "title": "Natural hand pushing a wooden block",
-      "source": "energy/box-push.png",
-      "web": "energy/box-push.webp",
+      "title": "Hand pushing the rear of a wooden block",
+      "source": "energy/box-push-natural.png",
+      "web": "energy/box-push-natural.webp",
       "grid": {
         "columns": 1,
         "rows": 1
       },
       "panels": [
-        "A closed hand gently pushes the left face of a wooden block toward the right."
+        "A hand cups the left end of a wooden block and pushes it to the right across a table."
       ]
     },
     {
