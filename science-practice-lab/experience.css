@@ -247,3 +247,13 @@ main{padding-top:24px}
 /* Keep the student return route available without crowding a narrow screen. */
 .practice-active .masthead{position:sticky;top:0}
 @media(max-width:580px){.practice-active #teacher-review,.practice-active #teacher-open{display:none}.practice-active .header-actions{justify-content:space-between}.practice-active .header-actions #help-open{margin-left:auto}}
+
+/* Language controls share the header wrapping behavior at every screen size. */
+.language-switch{display:inline-flex;align-items:center;justify-content:center;min-height:44px;text-decoration:none;white-space:nowrap;color:var(--ink,#173e52);font-weight:700}
+:lang(fr-CA) .header-actions{flex-wrap:wrap}
+:lang(fr-CA) .wordmark{font-size:10px;letter-spacing:.1em}
+:lang(fr-CA) .brand{min-width:0}
+:lang(fr-CA) .unit-tab{overflow-wrap:anywhere}
+.french-orbital-model{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem;width:100%;padding:.5rem;background:#f5fafb;border-radius:12px}
+.french-orbital-model figure{margin:0;min-width:0;text-align:center}.french-orbital-model svg{width:100%;height:auto;max-height:150px}.french-orbital-model figcaption{display:grid;gap:.15rem;font-size:.85rem;line-height:1.35;overflow-wrap:anywhere}
+@media(max-width:500px){.french-orbital-model{grid-template-columns:1fr}.french-orbital-model figure{display:grid;grid-template-columns:minmax(80px,1fr) minmax(0,1.4fr);align-items:center;gap:.4rem;text-align:left}}

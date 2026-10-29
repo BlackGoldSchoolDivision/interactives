@@ -1,0 +1,383 @@
+{
+  "provenance": {
+    "workbook": "Science 1-6 Curriculum NEW Alberta",
+    "tab": "6e année",
+    "scope": "Matière, Énergie, Systèmes de la Terre, Systèmes vivants et Espace",
+    "statements": "Texte intégral du classeur fourni; références adaptées à la structure française."
+  },
+  "groups": {
+    "particles": {
+      "source": {
+        "row": 5,
+        "K": [
+          "Le modèle particulaire de la matière indique que le chauffage de la matière fait en sorte que les particules se déplacent plus rapidement.",
+          "Lorsque les particules se déplacent plus rapidement, les forces d’attraction entre elles s’affaiblissent et l’espace entre elles augmente.",
+          "Le modèle particulaire de la matière indique que le refroidissement de la matière fait en sorte que les particules se déplacent plus lentement.",
+          "Lorsque les particules ralentissent, les forces d’attraction entre elles augmentent et l’espace entre elles diminue.",
+          "Un changement de phase est un changement d’un état de la matière à un autre.",
+          "Lors d’un changement de phase, le volume de la matière peut changer, mais la masse reste constante."
+        ],
+        "U": [
+          "Les particules changent de vitesse et de distance les unes par rapport aux autres lorsqu’elles sont chauffées ou refroidies."
+        ],
+        "SP": [
+          "Discuter du lien entre le mouvement des particules et la température en degrés Celsius.",
+          "Expliquer les changements de phase de la matière lorsqu’elle est chauffée ou refroidie en utilisant le modèle particulaire de la matière.",
+          "Mener une expérience contrôlée pour prouver que la masse d’une substance est la même après un changement de phase."
+        ]
+      },
+      "outcome": "Résultat d’apprentissage : Les élèves étudient le comportement des particules de la matière lorsqu’elles sont chauffées ou refroidies et analysent les effets sur les solides, les liquides et les gaz."
+    },
+    "temperature": {
+      "source": {
+        "row": 18,
+        "K": [
+          "Un thermomètre à liquide utilise l’expansion ou la contraction de la matière pour mesurer la température en utilisant une échelle.",
+          "Les scientifiques utilisent l’échelle Celsius pour mesurer la température en degrés Celsius (°C).",
+          "L’échelle Celsius est basée sur les changements d’état de l’eau et définit 0 °C comme le point de fusion/congélation de l’eau et 100 °C comme le point d’ébullition de l’eau."
+        ],
+        "U": [
+          "La dilatation et la contraction de la matière peuvent servir de base à la conception d’instruments qui mesurent la température."
+        ],
+        "SP": [
+          "Décrire le fonctionnement d’un thermomètre à liquide.",
+          "Créer un instrument qui mesure la température en fonction de l’expansion et de la contraction d’un liquide.",
+          "Établir un lien entre le point de fusion/congélation et d’ébullition de l’eau et l’échelle Celsius.",
+          "Indiquer des pratiques de sécurité associées à la prise de température et à l’utilisation des instruments de mesure."
+        ]
+      },
+      "outcome": "Résultat d’apprentissage : Les élèves étudient le comportement des particules de la matière lorsqu’elles sont chauffées ou refroidies et analysent les effets sur les solides, les liquides et les gaz."
+    },
+    "expansion": {
+      "source": {
+        "row": 29,
+        "K": [
+          "La dilatation est la réponse typique des matériaux au chauffage.",
+          "La contraction est la réponse typique des matériaux au refroidissement.",
+          "L’eau a la propriété inhabituelle d’avoir un plus grand volume sous forme solide que sous forme liquide.",
+          "En raison de sa propriété inhabituelle, l’eau est moins dense sous forme solide que sous forme liquide.",
+          "La surface d’une étendue d’eau gèle lorsque la température de l’eau descend en dessous du point de congélation.",
+          "La surface gelée d’une grande étendue d’eau forme une couche de glace isolante qui protège la vie aquatique.",
+          "La réaction d’un matériau à un changement de température doit être prise en compte lors de la conception et la construction d’infrastructures, y compris les : trottoirs, ponts, routes."
+        ],
+        "U": [
+          "La plupart des matières se dilatent lorsqu’elles sont chauffées et se contractent lorsqu’elles sont refroidies."
+        ],
+        "SP": [
+          "Mener une étude pour démontrer que l’eau liquide est plus dense que l’eau solide.",
+          "Formuler une hypothèse quant à l’effet sur la vie aquatique si l’eau solide était plus dense que l’eau liquide.",
+          "Expliquer l’importance de l’expansion ou de la contraction dans la conception et la construction de structures."
+        ]
+      },
+      "outcome": "Résultat d’apprentissage : Les élèves étudient le comportement des particules de la matière lorsqu’elles sont chauffées ou refroidies et analysent les effets sur les solides, les liquides et les gaz."
+    },
+    "forces": {
+      "source": {
+        "row": 46,
+        "K": [
+          "Les forces à l’intérieur d’un objet sont des forces internes, y compris : la tension, la compression, le cisaillement, la torsion.",
+          "Les forces qui agissent sur un objet depuis l’extérieur de celui-ci sont des forces externes, y compris la force : appliquée, de friction, élastique ou de ressort.",
+          "Les forces externes provoquent des forces internes à l’intérieur d’un objet.",
+          "Une force appliquée est exercée sur un objet par une personne ou un autre objet.",
+          "Les forces de friction s’opposent au mouvement des objets lorsque ces objets entrent en contact avec d’autres objets ou surfaces.",
+          "La tension est une force exercée en tirant sur une corde ou une ficelle qui est reliée à un objet.",
+          "La force élastique ou de ressort est exercée sur tout objet qui est en contact avec un objet élastique ou un ressort comprimé ou étiré.",
+          "La compression est une force exercée sur un objet qui comprime, écrase ou compacte l’objet.",
+          "Le cisaillement est une force qui pousse des parties d’un objet dans des directions opposées, ce qui entraine une flexion ou une rupture.",
+          "La torsion est une force qui tord un objet."
+        ],
+        "U": [
+          "Les forces externes et internes peuvent changer la forme, la taille ou la position des objets qui interagissent."
+        ],
+        "SP": [
+          "Mener des études pour répondre à des questions sur les effets des forces externes et internes sur les objets lors d’une interaction.",
+          "Identifier les forces qui agissent sur un objet lors d’une interaction.",
+          "Utiliser les matériaux, les instruments et l’équipement en toute sécurité lors de l’expérimentation de forces durant des interactions."
+        ]
+      },
+      "outcome": "Résultat d’apprentissage : Les élèves analysent les forces et les associent aux interactions entre les objets."
+    },
+    "properties": {
+      "source": {
+        "row": 63,
+        "K": [
+          "La plasticité est une propriété qui conduit à des changements permanents de la forme d’un objet, p. ex. la flexion d’un trombone.",
+          "L’élasticité est une propriété qui permet de modifier temporairement la forme d’un objet, p. ex. l’étirement d’un élastique."
+        ],
+        "U": [
+          "Les changements de la forme d’un objet dépendent de ses propriétés."
+        ],
+        "SP": [
+          "Distinguer les changements temporaires des changements permanents.",
+          "Tester la plasticité et l’élasticité d’objets."
+        ]
+      },
+      "outcome": "Résultat d’apprentissage : Les élèves analysent les forces et les associent aux interactions entre les objets."
+    },
+    "reactions": {
+      "source": {
+        "row": 71,
+        "K": [
+          "Une force d’action est exercée sur un objet dans une direction particulière.",
+          "Une force de réaction agit dans la direction opposée à une force d’action.",
+          "Pour chaque force d’action, il existe une force de réaction égale et opposée (troisième loi de Newton)."
+        ],
+        "U": [
+          "Dans une interaction, un objet subit une force d’action tandis qu’un autre objet subit une force de réaction."
+        ],
+        "SP": [
+          "Démontrer et représenter une force d’action et sa force de réaction dans diverses interactions."
+        ]
+      },
+      "outcome": "Résultat d’apprentissage : Les élèves analysent les forces et les associent aux interactions entre les objets."
+    },
+    "choices": {
+      "source": {
+        "row": 82,
+        "K": [
+          "Les facteurs qui influencent la sélection des ressources énergétiques comprennent : la disponibilité et l’accessibilité, les effets sur la société, les effets sur l’économie, les effets sur l’environnement."
+        ],
+        "U": [
+          "Les avantages et les inconvénients de plusieurs facteurs influencent la sélection des ressources énergétiques."
+        ],
+        "SP": [
+          "Étudier les facteurs qui influencent la sélection des ressources énergétiques.",
+          "Examiner les facteurs qui influencent la sélection des principales ressources énergétiques utilisées en Alberta."
+        ]
+      },
+      "outcome": "Résultat d’apprentissage : Les élèves étudient les ressources énergétiques et expliquent les facteurs qui influencent leur utilisation."
+    },
+    "management": {
+      "source": {
+        "row": 89,
+        "K": [
+          "La gestion responsable des ressources énergétiques comprend : la perturbation minimale de la nature, la réhabilitation des régions d’extraction, les pratiques de gestion des déchets, le respect des droits concernant les terres et les ressources.",
+          "Certaines ressources énergétiques peuvent être utilisées sans être traitées, telles que : le bois, le vent, l’eau.",
+          "Certaines ressources énergétiques peuvent être utilisées après leur traitement, telles que : le vent, le Soleil, les combustibles fossiles, le nucléaire, l’eau, le biocarburant.",
+          "De nombreuses ressources énergétiques sont traitées pour produire de l’électricité.",
+          "Certaines ressources énergétiques peuvent être utilisées sans être traitées et après leur traitement, p. ex. le vent peut être utilisé sans être traité pour faire naviguer un bateau et après son traitement sous forme d’électricité.",
+          "Les ressources énergétiques peuvent être utilisées de différentes façons dans la vie quotidienne telles que : le chauffage et le refroidissement, l’éclairage, la cuisson, le transport."
+        ],
+        "U": [
+          "Les ressources énergétiques peuvent être gérées afin d’être utilisées dans la vie quotidienne."
+        ],
+        "SP": [
+          "Examiner la gestion des ressources énergétiques dans divers contextes.",
+          "Classer les ressources énergétiques selon qu’elles sont utilisées avec ou sans traitement.",
+          "Comparer l’utilisation d’une ressource énergétique avec ou sans traitement.",
+          "Discuter de façons dont les ressources énergétiques sont utilisées par les personnes ou les communautés dans la vie quotidienne.",
+          "Concevoir un appareil qui utilise une ressource énergétique, avec ou sans traitement, pour résoudre un problème."
+        ]
+      },
+      "outcome": "Résultat d’apprentissage : Les élèves étudient les ressources énergétiques et expliquent les facteurs qui influencent leur utilisation."
+    },
+    "climate": {
+      "source": {
+        "row": 107,
+        "K": [
+          "Les systèmes de la Terre interagissent avec le Soleil et entre eux pour influer sur le climat de diverses façons, y compris : les nuages qui réfléchissent la lumière du soleil dans l’espace, les gaz à effet de serre qui piègent la chaleur du soleil, la glace qui réfléchit la lumière du soleil.",
+          "Les humains dépendent du Soleil et des systèmes de la Terre pour avoir un climat habitable.",
+          "Les facteurs géographiques qui influencent le climat comprennent : la latitude, la proximité d’une grande étendue d’eau, l’altitude, l’environnement urbain ou rural.",
+          "Les changements du climat peuvent être causés par des processus naturels, y compris : les éruptions volcaniques, les météores, les changements dans l’énergie émise par le Soleil, les changements d’orbite.",
+          "Les changements du climat peuvent être causés par les activités humaines, y compris l’industrialisation et la pollution.",
+          "La libération de gaz à effet de serre dans l’atmosphère contribue au réchauffement de la Terre.",
+          "La production d’énergie propre a le potentiel de réduire la production nette de gaz à effet de serre.",
+          "Les actions individuelles qui peuvent contribuer à lutter contre les causes humaines des changements climatiques mondiaux comprennent : réduire sa consommation et ses déchets, faire un jardin ou acheter des produits locaux, utiliser des sources d’énergie propres, abordables et fiables de façon responsable."
+        ],
+        "U": [
+          "Les interactions complexes entre les humains, les systèmes de la Terre et le Soleil peuvent influencer le climat et les changements climatiques."
+        ],
+        "SP": [
+          "Décrire les effets possibles sur le climat dus aux interactions entre le Soleil et les systèmes de la Terre.",
+          "Établir un lien entre les effets de processus naturels et d’activités humaines sur les changements climatiques.",
+          "Indiquer les actions personnelles qui peuvent avoir un effet sur les changements climatiques mondiaux."
+        ]
+      },
+      "outcome": "Résultat d’apprentissage : Les élèves étudient le climat, les changements du climat et les effets des changements climatiques sur la Terre."
+    },
+    "impacts": {
+      "source": {
+        "row": 122,
+        "K": [
+          "Les changements climatiques peuvent avoir un effet sur : les conditions météorologiques et les phénomènes météorologiques extrêmes, les déplacements saisonniers, les ressources en eau, la fréquence des feux de forêt.",
+          "Les changements climatiques peuvent avoir un effet sur les pratiques agricoles, telles que sur : la sélection des cultures, la production des cultures, les périodes de récolte et les rendements, l’irrigation, la lutte antiparasitaire.",
+          "Les modes de vie traditionnels qui dépendent de la terre, y compris les pratiques de chasse et de cueillette des communautés des Premières Nations, des Métis et des Inuits, ont été influencés par les changements climatiques de diverses façons, y compris par : l’élévation du niveau de la mer dans les régions côtières, les changements des déplacements saisonniers, l’accès à la chasse, à la récolte et à la pêche.",
+          "Les théories sur les causes potentielles de la disparition des dinosaures comprennent les changements climatiques mondiaux, un évènement météorique catastrophique ou l’activité volcanique."
+        ],
+        "U": [
+          "Les changements climatiques peuvent avoir un effet sur la terre, les plantes, les humains et les autres animaux de nombreuses façons au fil du temps."
+        ],
+        "SP": [
+          "Décrire les effets possibles des changements climatiques sur la terre, les plantes, les humains et les autres animaux.",
+          "Discuter des pratiques agricoles influencées par les changements climatiques.",
+          "Faire des recherches sur la façon dont les changements climatiques influencent les modes de vie des communautés nordiques, des Inuits, ou côtières au Canada.",
+          "Discuter des effets des changements climatiques sur les modes de vie traditionnels qui dépendent de la terre.",
+          "Comparer les théories sur la disparition des dinosaures."
+        ]
+      },
+      "outcome": "Résultat d’apprentissage : Les élèves étudient le climat, les changements du climat et les effets des changements climatiques sur la Terre."
+    },
+    "evidence": {
+      "source": {
+        "row": 135,
+        "K": [
+          "Les changements climatiques peuvent être déterminés par l’observation et la mesure à long terme des conditions météorologiques, y compris la quantité de précipitations, la température, et le nombre de phénomènes météorologiques extrêmes.",
+          "Les changements climatiques peuvent être déterminés par l’observation et la mesure à long terme des conditions environnementales, telles que : les niveaux des mers et des océans, l’épaisseur et la durée de la glace de mer, les changements du pergélisol, le nombre de feux de forêt.",
+          "Les observations climatiques proviennent de nombreuses sources, telles que : l’information notée, des récits oraux, des couches de la surface, y compris la glace, de différentes périodes de la Terre.",
+          "Les phénomènes météorologiques extrêmes qui se produisent sur la Terre comprennent les : vagues de chaleur, ouragans, moussons.",
+          "Les phénomènes météorologiques extrêmes qui se produisent au Canada comprennent les : tornades, blizzards, pluies torrentielles, feux de forêt.",
+          "Les technologies utilisées pour prédire les phénomènes météorologiques extrêmes comprennent les radars, les satellites météorologiques et la modélisation informatique."
+        ],
+        "U": [
+          "Les changements du climat sont constatés à partir d’observations et de mesures effectuées à différents moments."
+        ],
+        "SP": [
+          "Comparer les observations et les mesures historiques liées à des conditions météorologiques et environnementales aux données actuelles.",
+          "Établir un lien entre des phénomènes météorologiques extrêmes et des endroits particuliers au Canada et sur la Terre.",
+          "Indiquer et discuter des technologies qui sont utilisées pour suivre et prédire les phénomènes météorologiques extrêmes."
+        ]
+      },
+      "outcome": "Résultat d’apprentissage : Les élèves étudient le climat, les changements du climat et les effets des changements climatiques sur la Terre."
+    },
+    "collaboration": {
+      "source": {
+        "row": 148,
+        "K": [
+          "Les connaissances traditionnelles et les technologies modernes fournissent toutes deux de l’information sur les changements climatiques à long terme.",
+          "Les Ainés et les Gardiens du savoir traditionnel locaux et les scientifiques peuvent collaborer et échanger de l’information sur le climat local et les changements climatiques."
+        ],
+        "U": [
+          "La collaboration contribue à une prise de conscience plus approfondie des effets des conditions météorologiques sur les personnes et les environnements."
+        ],
+        "SP": [
+          "Discuter des façons dont les scientifiques, les Ainés et les Gardiens du savoir traditionnel peuvent collaborer pour approfondir la prise de conscience des effets des conditions météorologiques sur les personnes et les environnements.",
+          "Proposer des idées sur les façons dont les Ainés, les Gardiens du savoir traditionnel locaux et les scientifiques peuvent collaborer pour favoriser la prise de conscience du climat local et des changements climatiques."
+        ]
+      },
+      "outcome": "Résultat d’apprentissage : Les élèves étudient le climat, les changements du climat et les effets des changements climatiques sur la Terre."
+    },
+    "ecosystems": {
+      "source": {
+        "row": 159,
+        "K": [
+          "Les écosystèmes sont des systèmes complexes d’éléments biotiques et abiotiques.",
+          "Les éléments biotiques d’un écosystème comprennent les plantes, les animaux et les microorganismes.",
+          "Les éléments abiotiques d’un écosystème comprennent : l’énergie du Soleil, l’eau, le sol, l’air, la température.",
+          "Tous les éléments d’un écosystème s’influencent mutuellement, directement ou indirectement, p. ex. : les animaux dépendent des plantes pour se nourrir, les plantes ont besoin d’eau pour pousser, l’énergie du Soleil a un effet sur la température, les décomposeurs aident à redonner les nutriments au sol.",
+          "Il existe de nombreux types d’écosystèmes, y compris les : déserts, régions arctiques, prairies, terres humides, forêts, milieux d’eau douce.",
+          "Les caractéristiques des écosystèmes comprennent : les régularités climatiques, la taille, la structure de la végétation, les populations animales, l’emplacement géographique.",
+          "Certains écosystèmes emmagasinent les gaz à effet de serre et les empêchent d’être libérés dans l’atmosphère, tels que les : terres humides, océans, forêts, prairies.",
+          "Les écosystèmes peuvent être examinés en utilisant des instruments numériques ou non numériques, tels que les appareils photos, les caméras vidéo et les appareils de grossissement.",
+          "Les caractéristiques des écosystèmes qui ont un effet sur la diversité des organismes comprennent : l’emplacement géographique, y compris les régularités climatiques, les reliefs et les sources d’eau, la taille, de très petite à très grande, la complexité, y compris le nombre et les types de plantes et d’animaux."
+        ],
+        "U": [
+          "Les éléments et les caractéristiques d’un écosystème ont un effet sur la diversité des organismes qui y vivent."
+        ],
+        "SP": [
+          "Représenter et lier les éléments biotiques et abiotiques d’un écosystème.",
+          "Localiser et examiner de façon responsable un écosystème local dans la nature en utilisant des matériaux et des instruments appropriés.",
+          "Établir un lien entre la conservation de divers écosystèmes et des actions possibles pour faire face aux changements climatiques.",
+          "Créer un modèle ou une simulation pour représenter un écosystème choisi et ses caractéristiques.",
+          "Comparer les caractéristiques de deux écosystèmes.",
+          "Examiner la diversité d’animaux et de plantes dans divers écosystèmes en ce qui a trait aux éléments abiotiques."
+        ]
+      },
+      "outcome": "Résultat d’apprentissage : Les élèves étudient les caractéristiques, les éléments et les interactions des écosystèmes."
+    },
+    "photosynthesis": {
+      "source": {
+        "row": 178,
+        "K": [
+          "La photosynthèse est un processus qui utilise la lumière, l’eau et le dioxyde de carbone pour produire de l’oxygène et de la nourriture sous forme de sucre (glucose).",
+          "Les plantes et les animaux utilisent la nourriture produite lors de la photosynthèse pour accomplir des processus biologiques vitaux.",
+          "Les plantes et les animaux utilisent l’oxygène qui est libéré lors de la photosynthèse pour respirer.",
+          "La chlorophylle des plantes capte la lumière nécessaire à la photosynthèse.",
+          "La libération d’oxygène et la présence d’amidon indiquent qu’une plante a fait de la photosynthèse.",
+          "Le sucre produit par les plantes grâce à la photosynthèse est souvent emmagasiné sous forme d’amidon."
+        ],
+        "U": [
+          "La photosynthèse est un processus qui soutient la croissance et la survie de nombreux écosystèmes."
+        ],
+        "SP": [
+          "Expliquer le processus de la photosynthèse et son importance dans un écosystème.",
+          "Concevoir et mener une expérience contrôlée pour démontrer l’importance de la lumière pour la photosynthèse.",
+          "Concevoir et mener une expérience contrôlée pour montrer qu’une plante libère de l’oxygène.",
+          "Concevoir et mener une expérience contrôlée pour montrer qu’une plante contient de l’amidon."
+        ]
+      },
+      "outcome": "Résultat d’apprentissage : Les élèves étudient les caractéristiques, les éléments et les interactions des écosystèmes."
+    },
+    "relationships": {
+      "source": {
+        "row": 192,
+        "K": [
+          "Les plantes jouent de nombreux rôles dans un écosystème, tels que : réaliser la photosynthèse, nettoyer et filtrer l’eau, réduire l’érosion du sol, fournir de la nourriture et un abri aux animaux.",
+          "Les humains, comme les autres animaux, dépendent des plantes pour produire l’oxygène qui est utilisé pour la respiration.",
+          "Les humains dépendent aussi des plantes de diverses autres façons, telles que pour : la nourriture, les vêtements, le papier, les matériaux de construction, les médicaments, le carburant.",
+          "Les animaux, y compris les humains, contribuent à fournir le dioxyde de carbone dont les plantes ont besoin pour survivre.",
+          "Certaines plantes sont considérées comme sacrées pour les Premières Nations et les Métis, telles que : la sauge, le foin d’odeur, le cèdre, le tabac.",
+          "L’offrande de tabac signifie : l’équilibre et l’harmonie, le fait de redonner à la terre, le respect de la plante, une relation durable."
+        ],
+        "U": [
+          "Il existe des relations importantes entre les plantes et les animaux au sein des écosystèmes."
+        ],
+        "SP": [
+          "Examiner les façons dont les plantes et les animaux dépendent les uns des autres pour satisfaire leurs besoins.",
+          "Discuter des plantes qui sont considérées comme sacrées pour les Premières Nations et les Métis."
+        ]
+      },
+      "outcome": "Résultat d’apprentissage : Les élèves étudient les caractéristiques, les éléments et les interactions des écosystèmes."
+    },
+    "planetary": {
+      "source": {
+        "row": 207,
+        "K": [
+          "L’exploration scientifique de l’espace a révélé que la Terre est une composante interreliée d’un groupe de planètes qui gravite autour du Soleil.",
+          "Le système solaire comprend : le Soleil (une étoile), les planètes et leurs lunes, les planètes naines, les astéroïdes, les comètes, les météoroïdes.",
+          "Les corps célestes sont des corps naturels situés au-delà de l’atmosphère de la Terre.",
+          "Les corps célestes ont des caractéristiques qui varient, y compris : les conditions de surface, p. ex. la température, la gravité et l’atmosphère, la composition, p. ex. gaz, glace ou anneaux visibles, la taille, la forme, p. ex. ronde ou irrégulière.",
+          "Certains corps célestes émettent de la lumière et d’autres la réfléchissent.",
+          "Une ceinture d’astéroïdes est une collection d’astéroïdes située dans le système solaire.",
+          "Pluton a été reclassée comme une planète naine à la suite de nouvelles informations."
+        ],
+        "U": [
+          "Le système solaire peut être modélisé pour représenter la taille du Soleil et des planètes et la distance qui les sépare.",
+          "L’information sur la Terre peut être acquise par l’exploration du système solaire."
+        ],
+        "SP": [
+          "Nommer et ordonner les planètes du système solaire et indiquer l’emplacement de la principale ceinture d’astéroïdes.",
+          "Classer les corps célestes du système solaire en planètes, lunes, planètes naines, astéroïdes, comètes, météoroïdes, ou le Soleil.",
+          "Représenter et décrire les caractéristiques de corps célestes de notre système solaire.",
+          "Examiner les corps célestes qui émettent ou réfléchissent la lumière.",
+          "Discuter de la reclassification de Pluton.",
+          "Interpréter des modèles physiques, imagés ou numériques du système solaire.",
+          "Étudier les ressources numériques ou non numériques qui contribuent à la compréhension du système solaire."
+        ]
+      },
+      "outcome": "Résultat d’apprentissage : Les élèves analysent et représentent les corps célestes du système solaire."
+    },
+    "exploration": {
+      "source": {
+        "row": 226,
+        "K": [
+          "Les technologies utilisées pour explorer le système solaire comprennent : les télescopes, les satellites, les sondes, les astromobiles, les vaisseaux spatiaux habités et les stations spatiales, la modélisation informatique.",
+          "Les satellites sont des objets dans l’espace qui gravitent autour d’un autre objet plus grand.",
+          "Une orbite est la trajectoire récurrente d’un objet autour d’un autre objet dans l’espace.",
+          "Les satellites naturels sont des corps célestes.",
+          "Les satellites artificiels sont fabriqués et mis en orbite par les humains.",
+          "Le premier satellite mis en orbite par l’Alberta (Ex-Alta 1) a été conçu par un groupe d’étudiants et de professeurs de l’Université de l’Alberta (AlbertaSat) et a été lancé avec succès depuis la Station spatiale internationale en 2017.",
+          "La Station spatiale internationale est une installation de recherche qui gravite autour de la Terre."
+        ],
+        "U": [
+          "La connaissance du système solaire continue de s’enrichir avec l’exploration spatiale, les découvertes et l’utilisation des technologies."
+        ],
+        "SP": [
+          "Indiquer et comparer les technologies utilisées pour recueillir des connaissances sur les planètes et les autres objets dans l’espace.",
+          "Comparer et mettre en contraste les satellites naturels et les satellites artificiels.",
+          "Discuter d’obstacles personnels, sociétaux, technologiques et environnementaux potentiels à la vie et au travail dans l’espace."
+        ]
+      },
+      "outcome": "Résultat d’apprentissage : Les élèves analysent et représentent les corps célestes du système solaire."
+    }
+  }
+}
