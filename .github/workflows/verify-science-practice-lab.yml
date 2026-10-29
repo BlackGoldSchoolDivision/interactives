@@ -47,11 +47,17 @@ jobs:
               image.save(target, 'WEBP', quality=82, method=6)
               print(f'Optimized {target}: {target.stat().st_size} bytes')
           PY
+      - name: Verify native picture drag previews
+        run: |
+          python -m http.server 8765 --bind 127.0.0.1 >/tmp/science-drag-server.log 2>&1 &
+          drag_server_pid=$!
+          trap 'kill "$drag_server_pid"' EXIT
+          node science-practice-lab/tests/drag-preview-browser.cjs
       - name: Exercise all questions and responsive layouts
         run: |
           python -m http.server 8765 --bind 127.0.0.1 >/tmp/science-lab-server.log 2>&1 &
           failed=0
-          for suite in drag-preview-browser.cjs french-browser.cjs browser.cjs energy-browser.cjs earth-browser.cjs living-browser.cjs space-browser.cjs earth-showcase-browser.cjs matter-showcase-browser.cjs picture-card-browser.cjs flowchart-browser.cjs experience-browser.cjs; do
+          for suite in french-browser.cjs browser.cjs energy-browser.cjs earth-browser.cjs living-browser.cjs space-browser.cjs earth-showcase-browser.cjs matter-showcase-browser.cjs picture-card-browser.cjs flowchart-browser.cjs experience-browser.cjs; do
             if ! node "science-practice-lab/tests/$suite"; then
               failed=1
             fi

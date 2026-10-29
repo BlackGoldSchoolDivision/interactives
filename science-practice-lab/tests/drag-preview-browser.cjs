@@ -9,8 +9,8 @@ async function overflow(page,label){const dims=await page.evaluate(()=>[document
 async function tapPlace(page,item,zone,touch=false){const p=page.locator('[data-piece="'+item+'"]'),z=page.locator('[data-zone="'+zone+'"] .zone-drop-action');if(touch){await p.tap();await z.tap();}else{await p.click();await z.click();}}
 async function nativeStart(page,item){
  await page.evaluate(()=>{window.__dragCapture=null;window.__drawCapture=null;});
- const source=page.locator('[data-piece="'+item+'"]');await source.hover();const start=await source.boundingBox();await page.mouse.down();await page.mouse.move(start.x+start.width/2+12,start.y+start.height/2,{steps:6});
- await page.waitForFunction(()=>window.__dragCapture,{timeout:5000});
+ const source=page.locator('[data-piece="'+item+'"]');await source.focus();await source.hover();await page.mouse.down();const start=await source.boundingBox();await page.mouse.move(start.x+start.width/2+12,start.y+start.height/2,{steps:6});
+ try{await page.waitForFunction(()=>window.__dragCapture,null,{timeout:5000});}catch(error){console.log('Drag start diagnostics',JSON.stringify(await page.evaluate(()=>({events:window.__dragTrace,helper:typeof window.ScienceLabDragPreview,previews:document.querySelectorAll('.picture-drag-preview').length,errors:window.__dragErrors}))));await page.screenshot({path:path.join(out,'drag-start-failure.png')});throw error;}
  const capture=await page.evaluate(()=>({drag:window.__dragCapture,draw:window.__drawCapture,active:document.querySelectorAll('.drag-source').length}));
  assert.equal(capture.drag.tag,'CANVAS');assert.equal(capture.drag.piece,item);assert.equal(capture.active,1);assert(capture.drag.width<=240);assert(capture.drag.height<=242);assert(capture.draw,'Missing single-photo crop');
  return capture;
@@ -21,12 +21,13 @@ async function nativeEnd(page,target){await target.hover();await target.hover();
  for(const lang of ['en','fr'])for(const [topic,id]of [['matter','particles-12'],['energy','forces-07'],['energy','forces-11']]){
   const context=await browser.newContext({viewport:{width:1366,height:650},deviceScaleFactor:lang==='fr'?2:1,reducedMotion:'reduce'}),page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
   await page.addInitScript(()=>{
+   window.__dragTrace=[];window.__dragErrors=[];window.addEventListener('error',e=>window.__dragErrors.push(e.message));for(const type of ['mousedown','dragstart','dragend','drop'])document.addEventListener(type,e=>window.__dragTrace.push({type,target:e.target.closest('[data-piece]')?.dataset.piece||e.target.tagName}),true);
    const setImage=DataTransfer.prototype.setDragImage,drawImage=CanvasRenderingContext2D.prototype.drawImage;
    CanvasRenderingContext2D.prototype.drawImage=function(image,...args){if(this.canvas.classList.contains('picture-drag-preview'))window.__drawCapture={args,naturalWidth:image.naturalWidth,naturalHeight:image.naturalHeight};return drawImage.call(this,image,...args);};
    DataTransfer.prototype.setDragImage=function(node,x,y){window.__dragCapture={tag:node.tagName,piece:node.dataset.dragPiece,width:node.width,height:node.height,x,y,image:node.toDataURL('image/png')};return setImage.call(this,node,x,y);};
   });
   const q=banks[lang].find(t=>t.id===topic).data.questions.find(q=>q.id===id);
-  await page.goto(address(lang,topic,id));await page.locator('#start-assignment').click();await page.locator('.piece-picture img').evaluateAll(imgs=>Promise.all(imgs.map(img=>img.decode())));
+  await page.goto(address(lang,topic,id));assert.equal(await page.evaluate(()=>typeof window.ScienceLabDragPreview?.create),'function','Drag preview module was not loaded');await page.locator('#start-assignment').click();await page.locator('.piece-picture img').evaluateAll(imgs=>Promise.all(imgs.map(img=>img.decode())));
   // Match the reported state: only Melting and Condensation remain in the bank.
   if(id==='particles-12'){await tapPlace(page,'b','freeze');await tapPlace(page,'c','evaporate');assert.equal(await page.locator('.bank .picture-piece').count(),2);}
   if(lang==='fr')await page.evaluate(()=>document.body.style.zoom='125%');
