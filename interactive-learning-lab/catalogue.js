@@ -92,7 +92,7 @@ function renderFilters() {
   gradeSelect.value = chosenGrade;
   document.querySelectorAll('.quick-type').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.type === chosenType)));
 }
-function launchLabel(a) { return a.type === 'template' ? 'Open template' : a.type === 'printable' ? 'Open printable' : a.id === 'thinkingroutines' ? 'Open Grade 8' : a.id === 'thinking-dialogue' ? 'Open teacher guide' : 'Try it'; }
+function launchLabel(a) { return a.launch_label || (a.type === 'template' ? 'Open template' : a.type === 'printable' ? 'Open printable' : a.id === 'thinkingroutines' ? 'Open Grade 8' : a.id === 'thinking-dialogue' ? 'Open teacher guide' : 'Try it'); }
 function render() {
   renderFilters();
   const featured = chosen === 'Favourites' && chosenType === 'All types' && chosenGrade === 'all' && !query.trim();

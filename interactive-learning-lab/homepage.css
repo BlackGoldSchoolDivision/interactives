@@ -25,3 +25,6 @@ main{position:relative;padding:4px 0 58px}.browse{scroll-margin-top:20px}.search
 @media(max-width:480px){.grade-filter{gap:8px;padding:12px}.grade-filter label{width:100%}.grade-filter select{width:100%;min-width:0}.grade-filter>span{font-size:12px}}
 
 .card .launch{min-height:44px}
+
+/* Keep the two science practice editions easy to find and tap. */
+.card[data-id="science-practice-lab"] .secondary{margin-top:8px}.card[data-id="science-practice-lab"] .secondary a{display:inline-flex;align-items:center;gap:12px;min-height:44px;padding:8px 17px;border:1px solid var(--teal);border-radius:50px;text-decoration:none;color:var(--teal-dark)}
