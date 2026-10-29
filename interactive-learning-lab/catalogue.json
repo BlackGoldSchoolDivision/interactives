@@ -118,14 +118,20 @@
     "title": "Vretta Type PAT Practice",
     "category": "Science",
     "group": "",
-    "description": "Practise Alberta Grade 6 science with original PAT-style questions, real illustrations, drag-and-drop diagrams, sorting and more. Matter and Energy units include learning and test modes; not official Vretta questions.",
+    "description": "Practise Alberta Grade 6 science in English or French across all five units, with original PAT-style questions, pictures, drag-and-drop, learning and test modes. Independent of Vretta.",
     "favourite": false,
     "tags": [
-      "Matter & Energy",
-      "144 questions"
+      "English & French",
+      "5 science units",
+      "306 questions"
     ],
     "url": "https://interactives.blackgold.ca/science-practice-lab/",
-    "links": [],
+    "links": [
+      {
+        "label": "Français",
+        "url": "https://interactives.blackgold.ca/science-practice-lab-fr/"
+      }
+    ],
     "credit": "",
     "captured": "2026-10-20",
     "types": [
@@ -139,7 +145,8 @@
       6
     ],
     "grade_basis": "curriculum",
-    "grade_note": "Grade 6 science practice; individual units and questions need a separate outcome coverage audit."
+    "grade_note": "Grade 6 science practice; individual units and questions need a separate outcome coverage audit.",
+    "launch_label": "English"
   },
   {
     "id": "float-lab",
