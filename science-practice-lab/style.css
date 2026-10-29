@@ -427,3 +427,7 @@ body.review-mode main{max-width:1320px;margin:0 auto}
 .review-no-answers{font-size:13px;font-weight:700;color:#375c65}
 body.review-mode .question-card{border-color:#bfd9df}
 @media(max-width:700px){.review-grid{grid-template-columns:1fr;max-height:270px}.review-jump strong{padding-bottom:0}.review-filters label{flex:1 1 100%}.review-filters label.review-visual-label{flex:1 1 100%;padding:2px 0}.review-filters .primary{flex:1}.review-heading #review-close{width:100%}}
+
+/* Move a card rather than selecting a range across neighbouring cards. */
+.piece[draggable="true"],.order-row[draggable="true"]{user-select:none;-webkit-user-select:none}
+.picture-piece.drag-source{opacity:.35}
