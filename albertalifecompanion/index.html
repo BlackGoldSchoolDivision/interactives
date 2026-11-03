@@ -210,10 +210,14 @@
                             <textarea id="tx-reflection" rows="2" class="w-full p-3 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-sm resize-y bg-white" placeholder="I chose to buy this because..."></textarea>
                         </div>
                         
-                        <div class="pt-2 pb-4">
+                        <div class="pt-2 pb-4 flex flex-col gap-2">
                             <button onclick="addTransaction()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl shadow-md transition-transform active:scale-95 text-lg flex items-center justify-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
                                 Add to Ledger
+                            </button>
+                            <button id="btn-undo" onclick="undoTransaction()" disabled class="w-full bg-white hover:bg-red-50 text-red-600 font-bold py-3 rounded-xl border-2 border-red-100 hover:border-red-200 transition-colors text-sm flex items-center justify-center gap-2 disabled:opacity-50 disabled:border-slate-100 disabled:text-slate-400 disabled:bg-slate-50 disabled:cursor-not-allowed">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" /></svg>
+                                Undo Last Entry
                             </button>
                         </div>
                     </div>
@@ -317,6 +321,7 @@
             txDesc: document.getElementById('tx-desc'),
             reflectionContainer: document.getElementById('reflection-container'),
             txReflection: document.getElementById('tx-reflection'),
+            btnUndo: document.getElementById('btn-undo'),
             ledgerBodyTable: document.getElementById('ledger-body-table'),
             ledgerEmpty: document.getElementById('ledger-empty'),
             journalContainer: document.getElementById('journal-container'),
@@ -347,6 +352,7 @@
             
             updateDashboard();
             renderUI();
+            checkUndoButton();
         }
 
         /**
@@ -422,6 +428,7 @@
 
             updateDashboard();
             renderUI();
+            checkUndoButton();
 
             // Reset inputs
             dom.txAmount.value = '';
@@ -433,6 +440,59 @@
         function showError(msg) {
             dom.formError.innerText = msg;
             dom.formError.classList.remove('hidden');
+        }
+
+        function recalculateBalances() {
+            // Start from 0 and rebuild based on transactions (including setup transactions)
+            state.cash = 0;
+            state.creditDebt = 0;
+            state.studentLoan = 0;
+
+            // Iterate from oldest (end of array) to newest (start of array)
+            for (let i = state.transactions.length - 1; i >= 0; i--) {
+                const tx = state.transactions[i];
+                switch (tx.type) {
+                    case 'income': state.cash += tx.amount; break;
+                    case 'expense_cash': state.cash -= tx.amount; break;
+                    case 'expense_cc': state.creditDebt += tx.amount; break;
+                    case 'pay_cc': 
+                        state.cash -= tx.amount; 
+                        state.creditDebt = Math.max(0, state.creditDebt - tx.amount); 
+                        break;
+                    case 'pay_loan': 
+                        state.cash -= tx.amount; 
+                        state.studentLoan = Math.max(0, state.studentLoan - tx.amount); 
+                        break;
+                    case 'interest_cc': state.creditDebt += tx.amount; break;
+                    case 'interest_loan': state.studentLoan += tx.amount; break;
+                }
+            }
+        }
+
+        function checkUndoButton() {
+            // Only allow undo if there are user entries (ignore initial setup entries)
+            const hasUserTransactions = state.transactions.some(tx => 
+                tx.desc !== 'Starting Cash Balance' && tx.desc !== 'Starting Student Loan Debt'
+            );
+            dom.btnUndo.disabled = !hasUserTransactions;
+        }
+
+        function undoTransaction() {
+            if (state.transactions.length === 0) return;
+            
+            const firstTx = state.transactions[0];
+            if (firstTx.desc === 'Starting Cash Balance' || firstTx.desc === 'Starting Student Loan Debt') {
+                return; // Prevent undoing initial setup
+            }
+
+            // Remove the most recent entry
+            state.transactions.shift();
+            
+            // Recalculate accurately to handle limits like min $0 debt
+            recalculateBalances();
+            updateDashboard();
+            renderUI();
+            checkUndoButton();
         }
 
         /**
