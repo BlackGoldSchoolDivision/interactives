@@ -15,7 +15,7 @@
             background-size: 20px 20px;
         }
 
-        /* Custom scrollbar for ledger */
+        /* Custom scrollbar for sleek UI */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
@@ -23,19 +23,51 @@
         
         .fade-in { animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .show-on-print { display: none; }
+        
+        /* Print Styles for Exporting to PDF */
+        @media print {
+            body, html { background: white !important; height: auto !important; overflow: visible !important; }
+            .no-print { display: none !important; }
+            .show-on-print { display: block !important; margin-bottom: 20px; }
+            .print-full-width { width: 100% !important; max-width: 100% !important; flex: none !important; display: block !important; }
+            #main-app { display: block !important; padding: 0 !important; overflow: visible !important; }
+            #main-app * { overflow: visible !important; }
+            
+            /* Remove shadows, add clean borders for print */
+            .shadow-sm, .shadow-md, .shadow-lg, .shadow-2xl { box-shadow: none !important; border: 1px solid #e2e8f0 !important; }
+            
+            /* Ensure Ledger and Journal print properly */
+            #right-panel { border-left: none !important; }
+            #ledger-container, #journal-container { max-height: none !important; overflow: visible !important; page-break-inside: auto; margin-bottom: 30px; }
+            
+            table { width: 100% !important; border-collapse: collapse !important; page-break-inside: auto; }
+            tr { page-break-inside: avoid; page-break-after: auto; }
+            th, td { border: 1px solid #cbd5e1 !important; padding: 4px !important; font-size: 10px !important; }
+            th { background-color: #f1f5f9 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            
+            .journal-card { page-break-inside: avoid; border: 1px solid #e2e8f0 !important; margin-bottom: 10px !important; }
+        }
     </style>
 </head>
 <body class="text-slate-800 h-screen flex flex-col overflow-hidden">
 
     <!-- Header -->
-    <header class="bg-slate-900 text-white shadow-md z-10 p-4 flex justify-between items-center shrink-0">
+    <header class="bg-slate-900 text-white shadow-md z-10 p-4 flex justify-between items-center shrink-0 no-print">
         <div>
             <h1 class="text-2xl font-bold tracking-tight text-emerald-400">Personal Ledger</h1>
             <p class="text-xs text-slate-400 uppercase tracking-widest mt-1">Alberta Life Companion Tool</p>
         </div>
-        <div class="hidden sm:block text-right">
-            <div class="text-sm font-semibold text-slate-300">Active Tracking Mode</div>
-            <div id="header-nw" class="text-lg font-bold text-emerald-400">NW: $0.00</div>
+        <div class="flex items-center gap-6">
+            <div class="hidden sm:block text-right">
+                <div class="text-sm font-semibold text-slate-300">Active Tracking Mode</div>
+                <div id="header-nw" class="text-lg font-bold text-emerald-400">NW: $0.00</div>
+            </div>
+            <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold text-sm shadow flex items-center gap-2 transition-colors border border-blue-500 hover:border-blue-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
+                Finish & Export PDF
+            </button>
         </div>
     </header>
 
@@ -43,12 +75,24 @@
     <main class="flex-1 relative overflow-hidden flex flex-col">
         
         <!-- INITIAL SETUP OVERLAY -->
-        <div id="setup-overlay" class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full fade-in border-t-4 border-emerald-500">
+        <div id="setup-overlay" class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 no-print">
+            <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full fade-in border-t-4 border-emerald-500 overflow-y-auto max-h-[90vh]">
                 <h2 class="text-2xl font-bold text-slate-800 mb-2">Start Your Ledger</h2>
-                <p class="text-slate-500 mb-6 text-sm">Enter your starting balances from the main game based on your chosen career path.</p>
+                <p class="text-slate-500 mb-6 text-sm">Enter your profile details and starting balances from the main game.</p>
                 
                 <div class="space-y-4 mb-6">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Name</label>
+                        <input type="text" id="setup-name" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none text-base" placeholder="Your Name">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Career</label>
+                        <input type="text" id="setup-career" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none text-base" placeholder="e.g. Registered Nurse">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Yearly Income ($)</label>
+                        <input type="number" id="setup-income" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none font-semibold text-lg" value="50000" min="0">
+                    </div>
                     <div>
                         <label class="block text-sm font-bold text-slate-700 mb-1">Starting Cash ($)</label>
                         <input type="number" id="setup-cash" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none font-semibold text-lg" value="5000" min="0">
@@ -66,12 +110,29 @@
             </div>
         </div>
 
-        <!-- MAIN DASHBOARD & LEDGER (Hidden until setup completes) -->
+        <!-- MAIN DASHBOARD (Hidden until setup completes) -->
         <div id="main-app" class="hidden flex-1 overflow-hidden p-4 lg:p-6 flex flex-col lg:flex-row gap-6">
             
-            <!-- Main Area (Left Column): Dashboard & Entry Form -->
-            <div class="w-full lg:w-2/3 flex flex-col gap-6 shrink-0 overflow-y-auto pb-4 pr-2">
+            <!-- LEFT PANEL (2/3): Dashboard & Entry Form -->
+            <div class="w-full lg:w-2/3 flex flex-col gap-6 min-h-0 overflow-y-auto pb-4 pr-2 print-full-width">
                 
+                <!-- Print Header (Only shows on PDF) -->
+                <div class="show-on-print text-center border-b-2 border-slate-800 pb-4 mb-6">
+                    <h1 class="text-3xl font-bold text-slate-900">Alberta Life: Student Financial Report</h1>
+                </div>
+
+                <!-- Player Profile Header -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h2 id="dash-name" class="text-2xl font-bold text-slate-800">Player Name</h2>
+                        <p id="dash-career" class="text-slate-500 font-medium text-sm md:text-base">Career</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Yearly Income</p>
+                        <p id="dash-income" class="text-lg md:text-xl font-bold text-emerald-600">$0.00/yr</p>
+                    </div>
+                </div>
+
                 <!-- Financial Dashboard Cards -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div class="bg-white p-4 rounded-xl shadow-sm border-t-4 border-emerald-500 flex flex-col justify-center">
@@ -79,11 +140,11 @@
                         <p id="dash-cash" class="text-2xl font-bold text-slate-800">$0.00</p>
                     </div>
                     <div class="bg-white p-4 rounded-xl shadow-sm border-t-4 border-red-500 flex flex-col justify-center">
-                        <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Credit Card</p>
+                        <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Credit Card (20%)</p>
                         <p id="dash-cc" class="text-2xl font-bold text-red-600">$0.00</p>
                     </div>
                     <div class="bg-white p-4 rounded-xl shadow-sm border-t-4 border-orange-500 flex flex-col justify-center">
-                        <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Student Loan</p>
+                        <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Student Loan (6%)</p>
                         <p id="dash-loan" class="text-2xl font-bold text-orange-600">$0.00</p>
                     </div>
                     <div class="bg-white p-4 rounded-xl shadow-sm border-t-4 border-blue-500 flex flex-col justify-center">
@@ -93,28 +154,26 @@
                 </div>
 
                 <!-- Transaction Entry Form -->
-                <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 flex-1 flex flex-col">
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 flex-1 flex flex-col no-print shrink-0 min-h-[450px]">
                     <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-emerald-500"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
                         Record Transaction
                     </h3>
                     
-                    <div id="form-error" class="hidden bg-red-50 text-red-700 p-3 rounded-lg text-sm font-semibold mb-4 border border-red-200">
-                        <!-- Error messages -->
-                    </div>
+                    <div id="form-error" class="hidden bg-red-50 text-red-700 p-3 rounded-lg text-sm font-semibold mb-4 border border-red-200"></div>
 
-                    <div class="space-y-5 flex-1">
+                    <div class="space-y-5">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div>
                                 <label class="block text-sm font-bold text-slate-700 mb-1">Transaction Type</label>
                                 <select id="tx-type" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none text-sm font-semibold bg-slate-50">
                                     <option value="income">Earned Income (+ Cash)</option>
                                     <option value="expense_cash">Paid with Cash (- Cash)</option>
-                                    <option value="expense_cc">Paid with Credit Card (+ CC Debt)</option>
-                                    <option value="pay_cc">Pay Credit Card Bill (- Cash, - CC Debt)</option>
-                                    <option value="pay_loan">Pay Student Loan (- Cash, - Loan)</option>
-                                    <option value="interest_cc">Credit Card Interest Added (+ CC Debt)</option>
-                                    <option value="interest_loan">Student Loan Interest Added (+ Loan)</option>
+                                    <option value="expense_cc">Put on Credit Card (+ CC Debt)</option>
+                                    <option value="pay_cc">Pay down Credit Card (- Cash, - CC)</option>
+                                    <option value="pay_loan">Pay down Student Loan (- Cash, - Loan)</option>
+                                    <option value="interest_cc">Add CC Interest (+ CC Debt)</option>
+                                    <option value="interest_loan">Add Loan Interest (+ Loan)</option>
                                 </select>
                             </div>
                             
@@ -130,23 +189,28 @@
                         <div>
                             <label class="block text-sm font-bold text-slate-700 mb-1">Category</label>
                             <select id="tx-category" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none text-sm bg-slate-50">
-                                <option value="Income">Income / Salary</option>
-                                <option value="Rent/Utilities">Rent & Utilities</option>
-                                <option value="Groceries">Groceries / Food</option>
+                                <option value="Paycheck">Paycheck / Salary</option>
+                                <option value="Rent/Utils/Food">Rent, Utilities, & Food</option>
                                 <option value="Transportation">Transportation</option>
-                                <option value="Entertainment">Entertainment / Leisure</option>
-                                <option value="Event/Emergency">Life Event / Emergency</option>
-                                <option value="Debt Repayment">Debt Repayment</option>
-                                <option value="Interest/Fees">Interest & Fees</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Unexpected Event">Unexpected Event</option>
+                                <option value="Debt Payment">Debt Payment</option>
+                                <option value="Other">Other</option>
                             </select>
                         </div>
 
                         <div>
                             <label class="block text-sm font-bold text-slate-700 mb-1">Description</label>
-                            <input type="text" id="tx-desc" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none text-sm" placeholder="e.g. Payday, Groceries at Superstore...">
+                            <input type="text" id="tx-desc" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none text-sm" placeholder="e.g. 15th Payday, Fix flat tire...">
+                        </div>
+
+                        <!-- HIDDEN BY DEFAULT: Reflection Area -->
+                        <div id="reflection-container" class="hidden fade-in bg-purple-50 p-4 rounded-lg border border-purple-100">
+                            <label class="block text-sm font-bold text-purple-800 mb-1">Reflection <span class="text-xs font-normal text-purple-600">(Why did you make this choice?)</span></label>
+                            <textarea id="tx-reflection" rows="2" class="w-full p-3 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-sm resize-y bg-white" placeholder="I chose to buy this because..."></textarea>
                         </div>
                         
-                        <div class="pt-4">
+                        <div class="pt-2 pb-4">
                             <button onclick="addTransaction()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl shadow-md transition-transform active:scale-95 text-lg flex items-center justify-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
                                 Add to Ledger
@@ -156,28 +220,57 @@
                 </div>
             </div>
 
-            <!-- Side Pane (Right Column): The Ledger Table -->
-            <div class="w-full lg:w-1/3 bg-white rounded-2xl shadow-lg border border-slate-100 flex flex-col h-full overflow-hidden shrink-0 relative">
-                <div class="bg-slate-900 p-4 flex justify-between items-center shadow-sm z-10 shrink-0">
-                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-emerald-400"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>
-                        Ledger History
-                    </h3>
-                    <span id="tx-count" class="text-xs font-bold bg-slate-800 text-emerald-400 px-3 py-1 rounded-full border border-slate-700">0 Entries</span>
-                </div>
+            <!-- RIGHT PANEL (1/3): Split into Ledger Table (Top) and Journal (Bottom) -->
+            <div id="right-panel" class="w-full lg:w-1/3 flex flex-col h-full border-l border-slate-200 pl-0 lg:pl-6 print-full-width">
                 
-                <div class="flex-1 overflow-y-auto p-4 bg-slate-50 relative" id="ledger-body">
-                    <!-- Transactions populated here -->
+                <!-- TOP HALF: Numbers-only Spreadsheet Ledger -->
+                <div class="flex-1 flex flex-col min-h-0 bg-white rounded-t-2xl border border-slate-200 shadow-sm overflow-hidden mb-4">
+                    <div class="bg-slate-800 p-3 flex justify-between items-center shrink-0">
+                        <h3 class="text-sm font-bold text-white uppercase tracking-wider">Spreadsheet Ledger</h3>
+                    </div>
+                    
+                    <div class="flex-1 overflow-y-auto overflow-x-auto bg-white p-2" id="ledger-container">
+                        <table class="w-full text-left border-collapse text-[10px] xl:text-xs whitespace-nowrap">
+                            <thead class="sticky top-0 bg-slate-100 shadow-sm z-10 text-slate-500 uppercase">
+                                <tr>
+                                    <th class="p-2 border-b border-slate-200 font-bold">#</th>
+                                    <th class="p-2 border-b border-slate-200 font-bold">Category</th>
+                                    <th class="p-2 border-b border-slate-200 font-bold text-right text-emerald-600 bg-emerald-50/50">Cash In</th>
+                                    <th class="p-2 border-b border-slate-200 font-bold text-right text-emerald-600 bg-emerald-50/50">Cash Out</th>
+                                    <th class="p-2 border-b border-slate-200 font-bold text-right text-red-600 bg-red-50/50">CC+</th>
+                                    <th class="p-2 border-b border-slate-200 font-bold text-right text-red-600 bg-red-50/50">CC-</th>
+                                    <th class="p-2 border-b border-slate-200 font-bold text-right text-orange-600 bg-orange-50/50">Loan+</th>
+                                    <th class="p-2 border-b border-slate-200 font-bold text-right text-orange-600 bg-orange-50/50">Loan-</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ledger-body-table" class="divide-y divide-slate-100 text-slate-700">
+                                <!-- Table rows populated here -->
+                            </tbody>
+                        </table>
+                        <div id="ledger-empty" class="text-center p-6 text-slate-400 text-sm italic">
+                            No ledger entries yet.
+                        </div>
+                    </div>
                 </div>
-                
-                <!-- Empty State -->
-                <div id="ledger-empty" class="absolute inset-0 top-16 flex flex-col items-center justify-center text-slate-400 p-8 pointer-events-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 mb-4 opacity-40"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
-                    <p class="font-bold text-slate-500 mb-1">No transactions yet</p>
-                    <p class="text-sm text-center">Add your first transaction in the main area to start tracking.</p>
-                </div>
-            </div>
 
+                <!-- BOTTOM HALF: Journal / Reflections -->
+                <div class="flex-1 flex flex-col min-h-0 bg-white rounded-b-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="bg-slate-100 p-3 flex justify-between items-center shrink-0 border-b border-slate-200">
+                        <h3 class="text-sm font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" /></svg>
+                            Journal & Reflections
+                        </h3>
+                    </div>
+
+                    <div class="flex-1 overflow-y-auto bg-slate-50 p-3 space-y-3" id="journal-container">
+                        <div id="journal-empty" class="text-center p-6 text-slate-400 text-sm italic h-full flex items-center justify-center">
+                            Your descriptions and reflections will appear here.
+                        </div>
+                        <!-- Cards populated here -->
+                    </div>
+                </div>
+
+            </div>
         </div>
     </main>
 
@@ -186,6 +279,9 @@
          * STATE MANAGEMENT
          */
         const state = {
+            name: '',
+            career: '',
+            income: 0,
             cash: 0,
             creditDebt: 0,
             studentLoan: 0,
@@ -193,6 +289,7 @@
         };
 
         const formatMoney = (amount) => {
+            if (amount === 0) return '-';
             return new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD' }).format(amount);
         };
 
@@ -200,8 +297,14 @@
         const dom = {
             setupOverlay: document.getElementById('setup-overlay'),
             mainApp: document.getElementById('main-app'),
+            setupName: document.getElementById('setup-name'),
+            setupCareer: document.getElementById('setup-career'),
+            setupIncome: document.getElementById('setup-income'),
             setupCash: document.getElementById('setup-cash'),
             setupLoan: document.getElementById('setup-loan'),
+            dashName: document.getElementById('dash-name'),
+            dashCareer: document.getElementById('dash-career'),
+            dashIncome: document.getElementById('dash-income'),
             dashCash: document.getElementById('dash-cash'),
             dashCc: document.getElementById('dash-cc'),
             dashLoan: document.getElementById('dash-loan'),
@@ -212,54 +315,69 @@
             txAmount: document.getElementById('tx-amount'),
             txCategory: document.getElementById('tx-category'),
             txDesc: document.getElementById('tx-desc'),
-            ledgerBody: document.getElementById('ledger-body'),
+            reflectionContainer: document.getElementById('reflection-container'),
+            txReflection: document.getElementById('tx-reflection'),
+            ledgerBodyTable: document.getElementById('ledger-body-table'),
             ledgerEmpty: document.getElementById('ledger-empty'),
-            txCount: document.getElementById('tx-count')
+            journalContainer: document.getElementById('journal-container'),
+            journalEmpty: document.getElementById('journal-empty'),
         };
 
         /**
          * SETUP & INITIALIZATION
          */
         function startLedger() {
-            const initialCash = parseFloat(dom.setupCash.value) || 0;
-            const initialLoan = parseFloat(dom.setupLoan.value) || 0;
-
-            state.cash = initialCash;
-            state.studentLoan = initialLoan;
+            state.name = dom.setupName.value.trim() || 'Player';
+            state.career = dom.setupCareer.value.trim() || 'Undecided';
+            state.income = parseFloat(dom.setupIncome.value) || 0;
+            state.cash = parseFloat(dom.setupCash.value) || 0;
+            state.studentLoan = parseFloat(dom.setupLoan.value) || 0;
             state.creditDebt = 0;
             state.transactions = [];
 
-            // Add starting balances to ledger logic without forcing user input
-            if (initialCash > 0) {
-                state.transactions.push(createTxObject('income', initialCash, 'Initial Setup', 'Starting Cash Balance'));
+            if (state.cash > 0) {
+                state.transactions.push(createTxObject('income', state.cash, 'Paycheck', 'Starting Cash Balance', ''));
             }
-            if (initialLoan > 0) {
-                state.transactions.push(createTxObject('interest_loan', initialLoan, 'Initial Setup', 'Starting Student Loan Debt'));
+            if (state.studentLoan > 0) {
+                state.transactions.push(createTxObject('interest_loan', state.studentLoan, 'Other', 'Starting Student Loan Debt', ''));
             }
 
             dom.setupOverlay.classList.add('hidden');
             dom.mainApp.classList.remove('hidden');
             
             updateDashboard();
-            renderLedger();
+            renderUI();
         }
 
         /**
          * TRANSACTION LOGIC
          */
-        function createTxObject(type, amount, category, desc) {
+        function createTxObject(type, amount, category, desc, reflection) {
+            // Determine column mapping based on transaction type
+            let cashIn = 0, cashOut = 0, ccAdd = 0, ccPay = 0, loanAdd = 0, loanPay = 0;
+
+            switch(type) {
+                case 'income': cashIn = amount; break;
+                case 'expense_cash': cashOut = amount; break;
+                case 'expense_cc': ccAdd = amount; break;
+                case 'pay_cc': cashOut = amount; ccPay = amount; break;
+                case 'pay_loan': cashOut = amount; loanPay = amount; break;
+                case 'interest_cc': ccAdd = amount; break;
+                case 'interest_loan': loanAdd = amount; break;
+            }
+
             return {
                 id: state.transactions.length + 1,
                 type: type,
                 amount: amount,
                 category: category,
                 desc: desc || 'Manual Entry',
-                date: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) // Simple timestamp
+                reflection: reflection || null,
+                cols: { cashIn, cashOut, ccAdd, ccPay, loanAdd, loanPay }
             };
         }
 
         function addTransaction() {
-            // Reset error
             dom.formError.classList.add('hidden');
             dom.formError.innerText = '';
 
@@ -267,60 +385,48 @@
             const amount = parseFloat(dom.txAmount.value);
             const category = dom.txCategory.value;
             const desc = dom.txDesc.value.trim();
+            const reflection = dom.txReflection.value.trim();
 
             if (isNaN(amount) || amount <= 0) {
                 showError("Please enter a valid amount greater than $0.");
                 return;
             }
 
-            // Logic guards (Warnings but we allow negative cash to mimic real-world overdrafts/mistakes)
+            // Warnings
             if ((type === 'expense_cash' || type === 'pay_cc' || type === 'pay_loan') && amount > state.cash) {
-                const proceed = confirm(`Warning: You only have ${formatMoney(state.cash)} in cash. This transaction will put your cash balance below zero. Are you sure? (In real life, this might result in NSF fees or be denied).`);
-                if (!proceed) return;
+                if (!confirm(`Warning: You only have ${formatMoney(state.cash)} in cash. Continue?`)) return;
             }
-            
             if (type === 'pay_cc' && amount > state.creditDebt && state.creditDebt > 0) {
-                 const proceed = confirm(`Warning: You are paying more than your Credit Card balance (${formatMoney(state.creditDebt)}). Continue anyway?`);
-                 if (!proceed) return;
+                 if (!confirm(`Warning: You are paying more than your CC balance. Continue?`)) return;
             }
 
-            // Apply Transaction logic to state
+            // Apply to state
             switch (type) {
-                case 'income':
-                    state.cash += amount;
+                case 'income': state.cash += amount; break;
+                case 'expense_cash': state.cash -= amount; break;
+                case 'expense_cc': state.creditDebt += amount; break;
+                case 'pay_cc': 
+                    state.cash -= amount; 
+                    state.creditDebt = Math.max(0, state.creditDebt - amount); 
                     break;
-                case 'expense_cash':
-                    state.cash -= amount;
+                case 'pay_loan': 
+                    state.cash -= amount; 
+                    state.studentLoan = Math.max(0, state.studentLoan - amount); 
                     break;
-                case 'expense_cc':
-                    state.creditDebt += amount;
-                    break;
-                case 'pay_cc':
-                    state.cash -= amount;
-                    state.creditDebt = Math.max(0, state.creditDebt - amount); // Don't allow negative debt for simplicity
-                    break;
-                case 'pay_loan':
-                    state.cash -= amount;
-                    state.studentLoan = Math.max(0, state.studentLoan - amount);
-                    break;
-                case 'interest_cc':
-                    state.creditDebt += amount;
-                    break;
-                case 'interest_loan':
-                    state.studentLoan += amount;
-                    break;
+                case 'interest_cc': state.creditDebt += amount; break;
+                case 'interest_loan': state.studentLoan += amount; break;
             }
 
-            // Save to history
-            state.transactions.unshift(createTxObject(type, amount, category, desc)); // Unshift to put newest at top
+            // We prepend so the newest is at the top of the arrays/tables
+            state.transactions.unshift(createTxObject(type, amount, category, desc, reflection));
 
-            // Update UI
             updateDashboard();
-            renderLedger();
+            renderUI();
 
-            // Clear inputs
+            // Reset inputs
             dom.txAmount.value = '';
             dom.txDesc.value = '';
+            dom.txReflection.value = '';
             dom.txAmount.focus();
         }
 
@@ -330,11 +436,15 @@
         }
 
         /**
-         * UI UPDATES
+         * UI RENDERERS
          */
         function updateDashboard() {
             const netWorth = state.cash - state.creditDebt - state.studentLoan;
             
+            dom.dashName.innerText = state.name;
+            dom.dashCareer.innerText = state.career;
+            dom.dashIncome.innerText = formatMoney(state.income) + '/yr';
+
             dom.dashCash.innerText = formatMoney(state.cash);
             dom.dashCash.className = `text-2xl font-bold ${state.cash < 0 ? 'text-red-600' : 'text-slate-800'}`;
 
@@ -347,77 +457,91 @@
             dom.headerNw.className = `text-lg font-bold ${netWorth < 0 ? 'text-red-400' : 'text-emerald-400'}`;
         }
 
-        function renderLedger() {
-            dom.ledgerBody.innerHTML = '';
-            dom.txCount.innerText = `${state.transactions.length} Entries`;
+        function renderUI() {
+            renderLedgerTable();
+            renderJournal();
+        }
 
+        function renderLedgerTable() {
+            dom.ledgerBodyTable.innerHTML = '';
+            
             if (state.transactions.length === 0) {
-                dom.ledgerEmpty.classList.remove('hidden');
+                dom.ledgerEmpty.style.display = 'block';
             } else {
-                dom.ledgerEmpty.classList.add('hidden');
+                dom.ledgerEmpty.style.display = 'none';
                 
-                state.transactions.forEach((tx, index) => {
-                    const row = document.createElement('div');
-                    row.className = 'bg-white p-4 mb-3 rounded-xl shadow-sm border border-slate-200 fade-in flex justify-between items-start';
+                state.transactions.forEach((tx) => {
+                    const row = document.createElement('tr');
+                    row.className = 'hover:bg-slate-50 transition-colors border-b border-slate-100';
                     
-                    // Determine styling based on type
-                    let impactBadge = '';
-                    let amountColor = 'text-slate-800';
-                    let amountPrefix = '';
-
-                    switch(tx.type) {
-                        case 'income':
-                            impactBadge = '<span class="bg-emerald-100 text-emerald-800 text-[10px] uppercase font-bold px-2 py-1 rounded-md">Cash Up</span>';
-                            amountColor = 'text-emerald-600';
-                            amountPrefix = '+';
-                            break;
-                        case 'expense_cash':
-                            impactBadge = '<span class="bg-slate-100 text-slate-600 text-[10px] uppercase font-bold px-2 py-1 rounded-md border border-slate-200">Cash Down</span>';
-                            amountPrefix = '-';
-                            amountColor = 'text-red-600';
-                            break;
-                        case 'expense_cc':
-                            impactBadge = '<span class="bg-red-50 text-red-700 text-[10px] uppercase font-bold px-2 py-1 rounded-md border border-red-100">CC Debt Up</span>';
-                            amountColor = 'text-red-600';
-                            break;
-                        case 'pay_cc':
-                        case 'pay_loan':
-                            impactBadge = '<span class="bg-emerald-50 text-emerald-700 text-[10px] uppercase font-bold px-2 py-1 rounded-md border border-emerald-100">Debt Paid</span>';
-                            amountPrefix = '-';
-                            amountColor = 'text-emerald-600';
-                            break;
-                        case 'interest_cc':
-                        case 'interest_loan':
-                            impactBadge = '<span class="bg-orange-50 text-orange-700 text-[10px] uppercase font-bold px-2 py-1 rounded-md border border-orange-100">Debt Up (Fee)</span>';
-                            amountColor = 'text-orange-600';
-                            break;
-                    }
+                    // Style helpers
+                    const fmt = (val, colorClass) => val > 0 ? `<span class="${colorClass} font-semibold">${formatMoney(val)}</span>` : '<span class="text-slate-300">-</span>';
 
                     row.innerHTML = `
-                        <div class="flex-1 pr-3">
-                            <p class="font-bold text-slate-800 text-sm leading-tight mb-1">${tx.desc}</p>
-                            <div class="flex items-center gap-2 mb-2">
-                                <span class="text-[10px] text-slate-500 font-medium">${tx.date}</span>
-                                <span class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">&bull; ${tx.category}</span>
-                            </div>
-                            <div>${impactBadge}</div>
-                        </div>
-                        <div class="text-right whitespace-nowrap">
-                            <p class="font-bold text-lg ${amountColor}">${amountPrefix}${formatMoney(tx.amount)}</p>
-                        </div>
+                        <td class="p-2 font-bold text-slate-400">#${tx.id}</td>
+                        <td class="p-2 font-medium truncate max-w-[100px]" title="${tx.category}">${tx.category}</td>
+                        <td class="p-2 text-right bg-emerald-50/30">${fmt(tx.cols.cashIn, 'text-emerald-600')}</td>
+                        <td class="p-2 text-right bg-emerald-50/30">${fmt(tx.cols.cashOut, 'text-red-600')}</td>
+                        <td class="p-2 text-right bg-red-50/30">${fmt(tx.cols.ccAdd, 'text-red-600')}</td>
+                        <td class="p-2 text-right bg-red-50/30">${fmt(tx.cols.ccPay, 'text-emerald-600')}</td>
+                        <td class="p-2 text-right bg-orange-50/30">${fmt(tx.cols.loanAdd, 'text-red-600')}</td>
+                        <td class="p-2 text-right bg-orange-50/30">${fmt(tx.cols.loanPay, 'text-emerald-600')}</td>
                     `;
-                    dom.ledgerBody.appendChild(row);
+                    dom.ledgerBodyTable.appendChild(row);
                 });
             }
         }
 
-        // Add Enter key support for quick entry
-        dom.txAmount.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') addTransaction();
+        function renderJournal() {
+            // Keep empty state element, clear rest
+            Array.from(dom.journalContainer.children).forEach(child => {
+                if(child.id !== 'journal-empty') child.remove();
+            });
+
+            if (state.transactions.length === 0) {
+                dom.journalEmpty.style.display = 'flex';
+            } else {
+                dom.journalEmpty.style.display = 'none';
+                
+                state.transactions.forEach((tx) => {
+                    const card = document.createElement('div');
+                    card.className = 'journal-card bg-white p-3 rounded-xl border border-slate-200 shadow-sm fade-in';
+                    
+                    let refHtml = '';
+                    if (tx.reflection) {
+                        refHtml = `
+                        <div class="mt-2 pt-2 border-t border-slate-100 bg-purple-50/50 -mx-3 -mb-3 p-3 rounded-b-xl">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-purple-700 block mb-1">Reflection</span>
+                            <p class="text-sm text-slate-700 italic">"${tx.reflection}"</p>
+                        </div>`;
+                    }
+
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded">#${tx.id}</span>
+                            <span class="text-xs font-semibold text-slate-500">${tx.category}</span>
+                        </div>
+                        <p class="text-sm font-bold text-slate-800 leading-snug">${tx.desc}</p>
+                        ${refHtml}
+                    `;
+                    dom.journalContainer.appendChild(card);
+                });
+            }
+        }
+
+        // Toggle Reflection box based on Transaction Type (only for spending choices)
+        dom.txType.addEventListener('change', function(e) {
+            const type = e.target.value;
+            if (type === 'expense_cash' || type === 'expense_cc') {
+                dom.reflectionContainer.classList.remove('hidden');
+            } else {
+                dom.reflectionContainer.classList.add('hidden');
+                dom.txReflection.value = ''; // clear when hidden
+            }
         });
-        dom.txDesc.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') addTransaction();
-        });
+
+        // Trigger change event to ensure proper initial state
+        dom.txType.dispatchEvent(new Event('change'));
 
     </script>
 </body>
