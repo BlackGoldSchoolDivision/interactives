@@ -11,6 +11,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900;1000&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="homepage.css?v=__STYLE_VERSION__">
 <link rel="stylesheet" href="make-own.css?v=__OWN_VERSION__">
+
+<style id="lab-countdown-style">
+.lab-countdown{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;width:fit-content;max-width:100%;margin-top:18px;padding:10px 14px;border:1px solid #c7dfdc;border-radius:14px;background:#fff;color:var(--ink,#091b3d)}
+.lab-countdown-label{display:flex;flex-direction:column;gap:1px}
+.lab-countdown-label strong{font-size:.8rem;font-weight:900;line-height:1.3}
+.lab-countdown-label small{font-size:.7rem;color:var(--muted,#506077);line-height:1.4}
+.lab-countdown-digits{display:flex;align-items:center;gap:12px}
+.lab-countdown-unit{display:flex;flex-direction:column;align-items:center;min-width:32px}
+.lab-countdown-unit b{font-size:1.35rem;line-height:1.1;font-weight:1000;font-variant-numeric:tabular-nums;color:var(--teal-dark,#006b6e)}
+.lab-countdown-unit small{font-size:.65rem;line-height:1.5;color:var(--muted,#506077)}
+.lab-countdown-done{font-size:.85rem;font-weight:900;color:var(--teal-dark,#006b6e)}
+@media(max-width:360px){.lab-countdown{gap:8px 12px;padding:10px}.lab-countdown-digits{gap:10px}}
+</style>
 </head>
 <body>
 <a href="#activities" class="skip">Skip to activities</a>
@@ -19,7 +32,16 @@
   <nav class="header-nav" aria-label="Main navigation"><a href="#browse">Explore</a><button type="button" data-browse-category="Teacher tools">For teachers</button><button class="search-link" type="button" id="focus-search" aria-label="Search activities"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg></button></nav>
 </div></header>
 <section class="hero" aria-labelledby="page-title"><div class="wrap hero-inner">
-  <div class="hero-copy"><h1 id="page-title"><span>Engaging Students</span><span>Interactives</span></h1><p>Play with words. Explore our world.<br class="desktop-break"> Make something amazing.</p><div class="hero-actions"><a class="button primary" href="#browse">Find an activity <span aria-hidden="true">→</span></a><button class="button outline" type="button" data-browse-category="Teacher tools">For teachers</button></div></div>
+  <div class="hero-copy"><h1 id="page-title"><span>Engaging Students</span><span>Interactives</span></h1><p>Play with words. Explore our world.<br class="desktop-break"> Make something amazing.</p><div class="hero-actions"><a class="button primary" href="#browse">Find an activity <span aria-hidden="true">→</span></a><button class="button outline" type="button" data-browse-category="Teacher tools">For teachers</button></div>
+    <aside class="lab-countdown" aria-label="Countdown to December 4, 2026, at 4:30 PM Edmonton time">
+      <div class="lab-countdown-label"><strong>Countdown to December 4</strong><small><time datetime="2026-12-04T16:30:00-07:00">4:30 p.m. · Edmonton time</time></small></div>
+      <div class="lab-countdown-digits" id="lab-countdown" role="timer" aria-live="off">
+        <span class="lab-countdown-unit"><b data-countdown-days>--</b><small>days</small></span>
+        <span class="lab-countdown-unit"><b data-countdown-hours>--</b><small>hours</small></span>
+        <span class="lab-countdown-unit"><b data-countdown-minutes>--</b><small>minutes</small></span>
+      </div>
+      <span class="lab-countdown-done" id="lab-countdown-done" hidden>December 4 is here!</span>
+    </aside></div>
   <div class="hero-gallery" aria-label="Try an activity">
     <a class="hero-preview preview-map" data-preview-id="mackwoodmapping" href="https://interactives.blackgold.ca/Mackwoodmapping/" target="_blank" rel="noopener noreferrer"><span class="preview-label">Explore the world <span aria-hidden="true">↗</span></span><img src="https://maltais239.github.io/interactives/learning-lab-images/mackwoodmapping.jpg" alt="Screenshot of the Mackwood Mapping country identification game" width="900" height="620" fetchpriority="high"></a>
     <a class="hero-preview preview-words" data-preview-id="wordworks" href="https://interactives.blackgold.ca/wordworks-lab/" target="_blank" rel="noopener noreferrer"><span class="preview-label">Build a word <span aria-hidden="true">↗</span></span><img src="https://interactives.blackgold.ca/interactive-learning-lab/images/wordworks-quest-20261022.jpg?v=eacb74dad29b" alt="Screenshot of Word Quest showing prefixes, base words and suffixes" width="900" height="620" fetchpriority="high"></a>
@@ -47,6 +69,31 @@
 <script src="catalogue.js?v=__SCRIPT_VERSION__"></script>
 <script src="copy-engine.js?v=__OWN_VERSION__"></script>
 <script src="make-own.js?v=__OWN_VERSION__" data-source-manifest="source-files.json?v=__OWN_VERSION__"></script>
+
+<script id="lab-countdown-script">
+(() => {
+  // Edmonton is on MST (UTC-07:00) on December 4, 2026.
+  const target = Date.parse('2026-12-04T16:30:00-07:00');
+  const clock = document.getElementById('lab-countdown');
+  const done = document.getElementById('lab-countdown-done');
+  if (!clock || !done) return;
+  const days = clock.querySelector('[data-countdown-days]');
+  const hours = clock.querySelector('[data-countdown-hours]');
+  const minutes = clock.querySelector('[data-countdown-minutes]');
+  function updateCountdown() {
+    const remaining = Math.max(0, Math.ceil((target - Date.now()) / 60000));
+    days.textContent = String(Math.floor(remaining / 1440));
+    hours.textContent = String(Math.floor((remaining % 1440) / 60)).padStart(2, '0');
+    minutes.textContent = String(remaining % 60).padStart(2, '0');
+    clock.hidden = remaining === 0;
+    done.hidden = remaining !== 0;
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+  document.addEventListener('visibilitychange', updateCountdown);
+  window.addEventListener('pageshow', updateCountdown);
+})();
+</script>
 </body>
 </html>
 
