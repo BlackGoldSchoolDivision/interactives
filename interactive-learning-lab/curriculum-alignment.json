@@ -4463,6 +4463,109 @@
       "reviewed": "2026-10-25",
       "rationale": "Alberta Grade 5 Science: compare the density of solids and liquids, relate buoyant force and weight to floating and sinking, conduct controlled experiments, and refine a floating design. Partial connections to Matter, Energy, Scientific Methods and Design; physical measuring and construction need hands-on practice.",
       "alignments": []
+    },
+    "revamp-plant": {
+      "grades": [
+        1,
+        2
+      ],
+      "basis": "curriculum",
+      "rationale": "Care choices support Grade 1 plant needs and Grade 2 growth observations. The simulated water and growth values are game rules."
+    },
+    "revamp-bear": {
+      "grades": [
+        1,
+        2
+      ],
+      "basis": "curriculum",
+      "rationale": "Care choices and the field journal support early study of animal needs and growth. The care rules are a model."
+    },
+    "revamp-offspring": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Use with early primary lessons on animal parents and offspring. Read the picture choices aloud as needed."
+    },
+    "revamp-earth": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Use during investigations of how Earth’s surface changes. The text examples can be discussed together or read independently."
+    },
+    "revamp-light": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Use to classify familiar sources of light. Adjust the vocabulary and discussion for your class."
+    },
+    "revamp-weight": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Use the balance to model comparisons and the sorting task to practise heavier and lighter. Object masses are examples."
+    },
+    "revamp-energy": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Students compare the costs and benefits of energy sources and defend a recommendation. Vocabulary may need support."
+    },
+    "revamp-cacao": {
+      "grades": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "basis": "curriculum",
+      "rationale": "The short informational reading and processing sequence support procedural reading and locating details. Explain unfamiliar process vocabulary as needed."
+    },
+    "revamp-schedule": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "A visual routine and access tool for use across grades."
+    },
+    "revamp-canada": {
+      "grades": [
+        2
+      ],
+      "basis": "curriculum",
+      "rationale": "Fitting provinces and territories together supports the mapping portion of Grade 2 physical-region study."
+    },
+    "revamp-pitch": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Use for pitch recognition and listening practice. The sequence starts with a small pitch set and adds notes as students progress."
+    },
+    "revamp-guitar": {
+      "grades": [],
+      "basis": "enrichment",
+      "rationale": "Best suited to learners who have started reading guitar fret diagrams or are exploring movable chord shapes."
+    },
+    "revamp-boreal": {
+      "grades": [
+        6
+      ],
+      "basis": "curriculum",
+      "rationale": "The reading uses a Grade 6 ecosystem topic to practise locating and explaining textual evidence."
+    },
+    "revamp-water": {
+      "grades": [
+        3,
+        7
+      ],
+      "basis": "curriculum",
+      "rationale": "Labelling the cycle supports Grade 3 changes of state and provides a model for the Grade 7 water-cycle connection to life."
+    },
+    "revamp-vocab": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "The words and examples are chosen by the teacher or student. The tool is adaptable across grades."
+    },
+    "revamp-wordwork": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "The teacher or student chooses the word. Written output and example sentences can be adapted across grades."
+    },
+    "revamp-flashcards": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Use the example deck or build your own. The grade fit depends on the words and ideas in the deck."
     }
   }
 }

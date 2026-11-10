@@ -140,7 +140,7 @@
   }
   async function project(version, activity, manifest, signal, progress = () => {}) {
     const root = version.path.split('/')[0];
-    const list = manifest.files[version.repo + '/' + root];
+    const list = manifest.files[version.repo + '/' + (version.project_key || root)];
     if (!list?.length) throw new Error('Project files are unavailable. Use the source-files link.');
     const selected = new Map(list.map(f => [f.path, f]));
     const contents = {};

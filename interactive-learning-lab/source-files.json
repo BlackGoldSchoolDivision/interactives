@@ -2519,6 +2519,261 @@
           "url": "https://interactives.blackgold.ca/float-lab/offline.html"
         }
       ]
+    },
+    "revamp-plant": {
+      "kind": "html",
+      "title": "Plant Grower",
+      "credit": "Darren Maltais · Engaging Students",
+      "category": "Science",
+      "versions": [
+        {
+          "label": "Plant Grower",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "learning-lab-revamps/plant.html",
+          "url": "https://interactives.blackgold.ca/learning-lab-revamps/plant.html",
+          "project_key": "learning-lab-revamps/plant"
+        }
+      ]
+    },
+    "revamp-bear": {
+      "kind": "html",
+      "title": "Bear Cub Care",
+      "credit": "Darren Maltais · Engaging Students",
+      "category": "Science",
+      "versions": [
+        {
+          "label": "Bear Cub Care",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "learning-lab-revamps/bear.html",
+          "url": "https://interactives.blackgold.ca/learning-lab-revamps/bear.html",
+          "project_key": "learning-lab-revamps/bear"
+        }
+      ]
+    },
+    "revamp-offspring": {
+      "kind": "html",
+      "title": "Parent & Offspring Match",
+      "credit": "Darren Maltais · Engaging Students",
+      "category": "Science",
+      "versions": [
+        {
+          "label": "Parent & Offspring Match",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "learning-lab-revamps/offspring.html",
+          "url": "https://interactives.blackgold.ca/learning-lab-revamps/offspring.html",
+          "project_key": "learning-lab-revamps/offspring"
+        }
+      ]
+    },
+    "revamp-earth": {
+      "kind": "html",
+      "title": "Earth Changes",
+      "credit": "Darren Maltais · Engaging Students",
+      "category": "Science",
+      "versions": [
+        {
+          "label": "Earth Changes",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "learning-lab-revamps/earth.html",
+          "url": "https://interactives.blackgold.ca/learning-lab-revamps/earth.html",
+          "project_key": "learning-lab-revamps/earth"
+        }
+      ]
+    },
+    "revamp-light": {
+      "kind": "html",
+      "title": "Light Sources",
+      "credit": "Darren Maltais · Engaging Students",
+      "category": "Science",
+      "versions": [
+        {
+          "label": "Light Sources",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "learning-lab-revamps/light.html",
+          "url": "https://interactives.blackgold.ca/learning-lab-revamps/light.html",
+          "project_key": "learning-lab-revamps/light"
+        }
+      ]
+    },
+    "revamp-weight": {
+      "kind": "html",
+      "title": "Weight Sorting",
+      "credit": "Darren Maltais · Engaging Students",
+      "category": "Science",
+      "versions": [
+        {
+          "label": "Weight Sorting",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "learning-lab-revamps/weight.html",
+          "url": "https://interactives.blackgold.ca/learning-lab-revamps/weight.html",
+          "project_key": "learning-lab-revamps/weight"
+        }
+      ]
+    },
+    "revamp-energy": {
+      "kind": "html",
+      "title": "Energy Pros & Cons",
+      "credit": "Darren Maltais · Engaging Students",
+      "category": "Science",
+      "versions": [
+        {
+          "label": "Energy Pros & Cons",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "learning-lab-revamps/energy.html",
+          "url": "https://interactives.blackgold.ca/learning-lab-revamps/energy.html",
+          "project_key": "learning-lab-revamps/energy"
+        }
+      ]
+    },
+    "revamp-cacao": {
+      "kind": "html",
+      "title": "Cacao to Chocolate",
+      "credit": "Darren Maltais · Engaging Students",
+      "category": "Reading & writing",
+      "versions": [
+        {
+          "label": "Cacao to Chocolate",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "learning-lab-revamps/cacao.html",
+          "url": "https://interactives.blackgold.ca/learning-lab-revamps/cacao.html",
+          "project_key": "learning-lab-revamps/cacao"
+        }
+      ]
+    },
+    "revamp-schedule": {
+      "kind": "html",
+      "title": "Visual Schedule",
+      "credit": "Darren Maltais · Engaging Students",
+      "category": "Accessibility",
+      "versions": [
+        {
+          "label": "Visual Schedule",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "learning-lab-revamps/schedule.html",
+          "url": "https://interactives.blackgold.ca/learning-lab-revamps/schedule.html",
+          "project_key": "learning-lab-revamps/schedule"
+        }
+      ]
+    },
+    "revamp-canada": {
+      "kind": "html",
+      "title": "Mixed-Up Canada Puzzle",
+      "credit": "Darren Maltais · Engaging Students",
+      "category": "Geography",
+      "versions": [
+        {
+          "label": "Mixed-Up Canada Puzzle",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "learning-lab-revamps/canada.html",
+          "url": "https://interactives.blackgold.ca/learning-lab-revamps/canada.html",
+          "project_key": "learning-lab-revamps/canada"
+        }
+      ]
+    },
+    "revamp-pitch": {
+      "kind": "html",
+      "title": "Chromatic Ascent",
+      "credit": "Darren Maltais · Engaging Students",
+      "category": "Music",
+      "versions": [
+        {
+          "label": "Chromatic Ascent",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "learning-lab-revamps/pitch.html",
+          "url": "https://interactives.blackgold.ca/learning-lab-revamps/pitch.html",
+          "project_key": "learning-lab-revamps/pitch"
+        }
+      ]
+    },
+    "revamp-guitar": {
+      "kind": "html",
+      "title": "CAGED Guitar",
+      "credit": "Darren Maltais · Engaging Students",
+      "category": "Music",
+      "versions": [
+        {
+          "label": "CAGED Guitar",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "learning-lab-revamps/guitar.html",
+          "url": "https://interactives.blackgold.ca/learning-lab-revamps/guitar.html",
+          "project_key": "learning-lab-revamps/guitar"
+        }
+      ]
+    },
+    "revamp-boreal": {
+      "kind": "html",
+      "title": "Boreal Forest Reader",
+      "credit": "Darren Maltais · Engaging Students",
+      "category": "Reading & writing",
+      "versions": [
+        {
+          "label": "Boreal Forest Reader",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "learning-lab-revamps/boreal.html",
+          "url": "https://interactives.blackgold.ca/learning-lab-revamps/boreal.html",
+          "project_key": "learning-lab-revamps/boreal"
+        }
+      ]
+    },
+    "revamp-water": {
+      "kind": "html",
+      "title": "Water Cycle Explorer",
+      "credit": "Darren Maltais · Engaging Students",
+      "category": "Science",
+      "versions": [
+        {
+          "label": "Water Cycle Explorer",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "learning-lab-revamps/water.html",
+          "url": "https://interactives.blackgold.ca/learning-lab-revamps/water.html",
+          "project_key": "learning-lab-revamps/water"
+        }
+      ]
+    },
+    "revamp-vocab": {
+      "kind": "html",
+      "title": "Vocabulary Graphic Organiser",
+      "credit": "Darren Maltais · Engaging Students",
+      "category": "Reading & writing",
+      "versions": [
+        {
+          "label": "Vocabulary Graphic Organiser",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "learning-lab-revamps/vocab.html",
+          "url": "https://interactives.blackgold.ca/learning-lab-revamps/vocab.html",
+          "project_key": "learning-lab-revamps/vocab"
+        }
+      ]
+    },
+    "revamp-wordwork": {
+      "kind": "html",
+      "title": "Word Work",
+      "credit": "Darren Maltais · Engaging Students",
+      "category": "Reading & writing",
+      "versions": [
+        {
+          "label": "Word Work",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "learning-lab-revamps/wordwork.html",
+          "url": "https://interactives.blackgold.ca/learning-lab-revamps/wordwork.html",
+          "project_key": "learning-lab-revamps/wordwork"
+        }
+      ]
+    },
+    "revamp-flashcards": {
+      "kind": "html",
+      "title": "Flashcards",
+      "credit": "Darren Maltais · Engaging Students",
+      "category": "Reading & writing",
+      "versions": [
+        {
+          "label": "Flashcards",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "learning-lab-revamps/flashcards.html",
+          "url": "https://interactives.blackgold.ca/learning-lab-revamps/flashcards.html",
+          "project_key": "learning-lab-revamps/flashcards"
+        }
+      ]
     }
   },
   "files": {
@@ -10502,6 +10757,716 @@
       {
         "path": "float-lab/assets/lab-backdrop.webp",
         "bytes": 71010
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/learning-lab-revamps/plant": [
+      {
+        "path": "learning-lab-revamps/art/plant-dead-flat.webp",
+        "bytes": 54252
+      },
+      {
+        "path": "learning-lab-revamps/art/plant-dry-seed-flat.webp",
+        "bytes": 54094
+      },
+      {
+        "path": "learning-lab-revamps/art/plant-flowers-flat.webp",
+        "bytes": 41090
+      },
+      {
+        "path": "learning-lab-revamps/art/plant-leaves-flat.webp",
+        "bytes": 40394
+      },
+      {
+        "path": "learning-lab-revamps/art/plant-seed-flat.webp",
+        "bytes": 35752
+      },
+      {
+        "path": "learning-lab-revamps/art/plant-sprout-flat.webp",
+        "bytes": 37242
+      },
+      {
+        "path": "learning-lab-revamps/art/plant-wilted-flat.webp",
+        "bytes": 53954
+      },
+      {
+        "path": "learning-lab-revamps/plant.html",
+        "bytes": 1114
+      },
+      {
+        "path": "learning-lab-revamps/play.js",
+        "bytes": 381
+      },
+      {
+        "path": "learning-lab-revamps/science.js",
+        "bytes": 31743
+      },
+      {
+        "path": "learning-lab-revamps/shared.js",
+        "bytes": 3057
+      },
+      {
+        "path": "learning-lab-revamps/studio.css",
+        "bytes": 19346
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/learning-lab-revamps/bear": [
+      {
+        "path": "learning-lab-revamps/art/bear-exploring-flat.webp",
+        "bytes": 57864
+      },
+      {
+        "path": "learning-lab-revamps/art/bear-flat.webp",
+        "bytes": 44760
+      },
+      {
+        "path": "learning-lab-revamps/art/bear-growing-flat.webp",
+        "bytes": 56300
+      },
+      {
+        "path": "learning-lab-revamps/art/bear-unhappy-flat.webp",
+        "bytes": 54476
+      },
+      {
+        "path": "learning-lab-revamps/art/bear-young-flat.webp",
+        "bytes": 56258
+      },
+      {
+        "path": "learning-lab-revamps/bear.html",
+        "bytes": 1076
+      },
+      {
+        "path": "learning-lab-revamps/play.js",
+        "bytes": 381
+      },
+      {
+        "path": "learning-lab-revamps/science.js",
+        "bytes": 31743
+      },
+      {
+        "path": "learning-lab-revamps/shared.js",
+        "bytes": 3057
+      },
+      {
+        "path": "learning-lab-revamps/studio.css",
+        "bytes": 19346
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/learning-lab-revamps/offspring": [
+      {
+        "path": "learning-lab-revamps/art/baby-0.webp",
+        "bytes": 13640
+      },
+      {
+        "path": "learning-lab-revamps/art/baby-1.webp",
+        "bytes": 12716
+      },
+      {
+        "path": "learning-lab-revamps/art/baby-2.webp",
+        "bytes": 13068
+      },
+      {
+        "path": "learning-lab-revamps/art/baby-3.webp",
+        "bytes": 10884
+      },
+      {
+        "path": "learning-lab-revamps/art/baby-4.webp",
+        "bytes": 14036
+      },
+      {
+        "path": "learning-lab-revamps/art/baby-5.webp",
+        "bytes": 13840
+      },
+      {
+        "path": "learning-lab-revamps/art/baby-6.webp",
+        "bytes": 13354
+      },
+      {
+        "path": "learning-lab-revamps/art/baby-7.webp",
+        "bytes": 12992
+      },
+      {
+        "path": "learning-lab-revamps/art/parent-0.webp",
+        "bytes": 16968
+      },
+      {
+        "path": "learning-lab-revamps/art/parent-1.webp",
+        "bytes": 16794
+      },
+      {
+        "path": "learning-lab-revamps/art/parent-2.webp",
+        "bytes": 35004
+      },
+      {
+        "path": "learning-lab-revamps/art/parent-3.webp",
+        "bytes": 17586
+      },
+      {
+        "path": "learning-lab-revamps/art/parent-4.webp",
+        "bytes": 19654
+      },
+      {
+        "path": "learning-lab-revamps/art/parent-5.webp",
+        "bytes": 14654
+      },
+      {
+        "path": "learning-lab-revamps/art/parent-6.webp",
+        "bytes": 18314
+      },
+      {
+        "path": "learning-lab-revamps/art/parent-7.webp",
+        "bytes": 17590
+      },
+      {
+        "path": "learning-lab-revamps/offspring.html",
+        "bytes": 1184
+      },
+      {
+        "path": "learning-lab-revamps/play.js",
+        "bytes": 381
+      },
+      {
+        "path": "learning-lab-revamps/science.js",
+        "bytes": 31743
+      },
+      {
+        "path": "learning-lab-revamps/shared.js",
+        "bytes": 3057
+      },
+      {
+        "path": "learning-lab-revamps/studio.css",
+        "bytes": 19346
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/learning-lab-revamps/earth": [
+      {
+        "path": "learning-lab-revamps/art/earth-coast.webp",
+        "bytes": 24616
+      },
+      {
+        "path": "learning-lab-revamps/art/earth-dryland.webp",
+        "bytes": 29584
+      },
+      {
+        "path": "learning-lab-revamps/art/earth-earthquake.webp",
+        "bytes": 27004
+      },
+      {
+        "path": "learning-lab-revamps/art/earth-flood.webp",
+        "bytes": 31034
+      },
+      {
+        "path": "learning-lab-revamps/art/earth-glacier.webp",
+        "bytes": 29812
+      },
+      {
+        "path": "learning-lab-revamps/art/earth-landslide.webp",
+        "bytes": 31280
+      },
+      {
+        "path": "learning-lab-revamps/art/earth-mountains.webp",
+        "bytes": 29390
+      },
+      {
+        "path": "learning-lab-revamps/art/earth-plates.webp",
+        "bytes": 21178
+      },
+      {
+        "path": "learning-lab-revamps/art/earth-river.webp",
+        "bytes": 27382
+      },
+      {
+        "path": "learning-lab-revamps/art/earth-soil.webp",
+        "bytes": 34320
+      },
+      {
+        "path": "learning-lab-revamps/art/earth-tornado.webp",
+        "bytes": 24368
+      },
+      {
+        "path": "learning-lab-revamps/art/earth-volcano.webp",
+        "bytes": 25372
+      },
+      {
+        "path": "learning-lab-revamps/art/earth-wildfire.webp",
+        "bytes": 29222
+      },
+      {
+        "path": "learning-lab-revamps/art/earth-wind.webp",
+        "bytes": 22774
+      },
+      {
+        "path": "learning-lab-revamps/earth.html",
+        "bytes": 1082
+      },
+      {
+        "path": "learning-lab-revamps/play.js",
+        "bytes": 381
+      },
+      {
+        "path": "learning-lab-revamps/science.js",
+        "bytes": 31743
+      },
+      {
+        "path": "learning-lab-revamps/shared.js",
+        "bytes": 3057
+      },
+      {
+        "path": "learning-lab-revamps/studio.css",
+        "bytes": 19346
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/learning-lab-revamps/light": [
+      {
+        "path": "learning-lab-revamps/art/light-bulb.webp",
+        "bytes": 11700
+      },
+      {
+        "path": "learning-lab-revamps/art/light-campfire.webp",
+        "bytes": 21638
+      },
+      {
+        "path": "learning-lab-revamps/art/light-candle.webp",
+        "bytes": 13430
+      },
+      {
+        "path": "learning-lab-revamps/art/light-firefly.webp",
+        "bytes": 11874
+      },
+      {
+        "path": "learning-lab-revamps/art/light-flashlight-off.webp",
+        "bytes": 12944
+      },
+      {
+        "path": "learning-lab-revamps/art/light-flashlight.webp",
+        "bytes": 15334
+      },
+      {
+        "path": "learning-lab-revamps/art/light-lava.webp",
+        "bytes": 22194
+      },
+      {
+        "path": "learning-lab-revamps/art/light-lightning.webp",
+        "bytes": 18686
+      },
+      {
+        "path": "learning-lab-revamps/art/light-screen.webp",
+        "bytes": 11088
+      },
+      {
+        "path": "learning-lab-revamps/art/light-star.webp",
+        "bytes": 8188
+      },
+      {
+        "path": "learning-lab-revamps/art/light-sun.webp",
+        "bytes": 14906
+      },
+      {
+        "path": "learning-lab-revamps/art/light-wildfire.webp",
+        "bytes": 19690
+      },
+      {
+        "path": "learning-lab-revamps/light.html",
+        "bytes": 1072
+      },
+      {
+        "path": "learning-lab-revamps/play.js",
+        "bytes": 381
+      },
+      {
+        "path": "learning-lab-revamps/science.js",
+        "bytes": 31743
+      },
+      {
+        "path": "learning-lab-revamps/shared.js",
+        "bytes": 3057
+      },
+      {
+        "path": "learning-lab-revamps/studio.css",
+        "bytes": 19346
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/learning-lab-revamps/weight": [
+      {
+        "path": "learning-lab-revamps/art/weight-left.webp",
+        "bytes": 40524
+      },
+      {
+        "path": "learning-lab-revamps/art/weight-right.webp",
+        "bytes": 39402
+      },
+      {
+        "path": "learning-lab-revamps/art/weight.webp",
+        "bytes": 38226
+      },
+      {
+        "path": "learning-lab-revamps/play.js",
+        "bytes": 381
+      },
+      {
+        "path": "learning-lab-revamps/science.js",
+        "bytes": 31743
+      },
+      {
+        "path": "learning-lab-revamps/shared.js",
+        "bytes": 3057
+      },
+      {
+        "path": "learning-lab-revamps/studio.css",
+        "bytes": 19346
+      },
+      {
+        "path": "learning-lab-revamps/weight.html",
+        "bytes": 1092
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/learning-lab-revamps/energy": [
+      {
+        "path": "learning-lab-revamps/art/energy.webp",
+        "bytes": 90950
+      },
+      {
+        "path": "learning-lab-revamps/energy.html",
+        "bytes": 1100
+      },
+      {
+        "path": "learning-lab-revamps/play.js",
+        "bytes": 381
+      },
+      {
+        "path": "learning-lab-revamps/science.js",
+        "bytes": 31743
+      },
+      {
+        "path": "learning-lab-revamps/shared.js",
+        "bytes": 3057
+      },
+      {
+        "path": "learning-lab-revamps/studio.css",
+        "bytes": 19346
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/learning-lab-revamps/cacao": [
+      {
+        "path": "learning-lab-revamps/art/cacao.webp",
+        "bytes": 80982
+      },
+      {
+        "path": "learning-lab-revamps/cacao.html",
+        "bytes": 1164
+      },
+      {
+        "path": "learning-lab-revamps/classroom.js",
+        "bytes": 31072
+      },
+      {
+        "path": "learning-lab-revamps/content.js",
+        "bytes": 4998
+      },
+      {
+        "path": "learning-lab-revamps/play.js",
+        "bytes": 381
+      },
+      {
+        "path": "learning-lab-revamps/shared.js",
+        "bytes": 3057
+      },
+      {
+        "path": "learning-lab-revamps/studio.css",
+        "bytes": 19346
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/learning-lab-revamps/schedule": [
+      {
+        "path": "learning-lab-revamps/art/classroom.webp",
+        "bytes": 62500
+      },
+      {
+        "path": "learning-lab-revamps/art/schedule-0.webp",
+        "bytes": 21806
+      },
+      {
+        "path": "learning-lab-revamps/art/schedule-1.webp",
+        "bytes": 19624
+      },
+      {
+        "path": "learning-lab-revamps/art/schedule-10.webp",
+        "bytes": 13760
+      },
+      {
+        "path": "learning-lab-revamps/art/schedule-11.webp",
+        "bytes": 22584
+      },
+      {
+        "path": "learning-lab-revamps/art/schedule-12.webp",
+        "bytes": 13270
+      },
+      {
+        "path": "learning-lab-revamps/art/schedule-13.webp",
+        "bytes": 16806
+      },
+      {
+        "path": "learning-lab-revamps/art/schedule-2.webp",
+        "bytes": 13260
+      },
+      {
+        "path": "learning-lab-revamps/art/schedule-3.webp",
+        "bytes": 13920
+      },
+      {
+        "path": "learning-lab-revamps/art/schedule-4.webp",
+        "bytes": 22858
+      },
+      {
+        "path": "learning-lab-revamps/art/schedule-5.webp",
+        "bytes": 15888
+      },
+      {
+        "path": "learning-lab-revamps/art/schedule-6.webp",
+        "bytes": 14764
+      },
+      {
+        "path": "learning-lab-revamps/art/schedule-7.webp",
+        "bytes": 9184
+      },
+      {
+        "path": "learning-lab-revamps/art/schedule-8.webp",
+        "bytes": 15734
+      },
+      {
+        "path": "learning-lab-revamps/art/schedule-9.webp",
+        "bytes": 21200
+      },
+      {
+        "path": "learning-lab-revamps/classroom.js",
+        "bytes": 31072
+      },
+      {
+        "path": "learning-lab-revamps/play.js",
+        "bytes": 381
+      },
+      {
+        "path": "learning-lab-revamps/schedule.html",
+        "bytes": 1116
+      },
+      {
+        "path": "learning-lab-revamps/shared.js",
+        "bytes": 3057
+      },
+      {
+        "path": "learning-lab-revamps/studio.css",
+        "bytes": 19346
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/learning-lab-revamps/canada": [
+      {
+        "path": "learning-lab-revamps/canada.html",
+        "bytes": 1144
+      },
+      {
+        "path": "learning-lab-revamps/classroom.js",
+        "bytes": 31072
+      },
+      {
+        "path": "learning-lab-revamps/legacy/CANADA-DATA-LICENSE.txt",
+        "bytes": 1079
+      },
+      {
+        "path": "learning-lab-revamps/legacy/D3-LICENSE.txt",
+        "bytes": 731
+      },
+      {
+        "path": "learning-lab-revamps/legacy/canada.geojson",
+        "bytes": 705286
+      },
+      {
+        "path": "learning-lab-revamps/legacy/d3.min.js",
+        "bytes": 280622
+      },
+      {
+        "path": "learning-lab-revamps/play.js",
+        "bytes": 381
+      },
+      {
+        "path": "learning-lab-revamps/shared.js",
+        "bytes": 3057
+      },
+      {
+        "path": "learning-lab-revamps/studio.css",
+        "bytes": 19346
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/learning-lab-revamps/pitch": [
+      {
+        "path": "learning-lab-revamps/art/mountain.webp",
+        "bytes": 107002
+      },
+      {
+        "path": "learning-lab-revamps/music.js",
+        "bytes": 8733
+      },
+      {
+        "path": "learning-lab-revamps/pitch.html",
+        "bytes": 1116
+      },
+      {
+        "path": "learning-lab-revamps/play.js",
+        "bytes": 381
+      },
+      {
+        "path": "learning-lab-revamps/shared.js",
+        "bytes": 3057
+      },
+      {
+        "path": "learning-lab-revamps/studio.css",
+        "bytes": 19346
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/learning-lab-revamps/guitar": [
+      {
+        "path": "learning-lab-revamps/art/guitar.webp",
+        "bytes": 77662
+      },
+      {
+        "path": "learning-lab-revamps/guitar.html",
+        "bytes": 1110
+      },
+      {
+        "path": "learning-lab-revamps/music.js",
+        "bytes": 8733
+      },
+      {
+        "path": "learning-lab-revamps/play.js",
+        "bytes": 381
+      },
+      {
+        "path": "learning-lab-revamps/shared.js",
+        "bytes": 3057
+      },
+      {
+        "path": "learning-lab-revamps/studio.css",
+        "bytes": 19346
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/learning-lab-revamps/boreal": [
+      {
+        "path": "learning-lab-revamps/art/boreal.webp",
+        "bytes": 157898
+      },
+      {
+        "path": "learning-lab-revamps/boreal.html",
+        "bytes": 1212
+      },
+      {
+        "path": "learning-lab-revamps/classroom.js",
+        "bytes": 31072
+      },
+      {
+        "path": "learning-lab-revamps/content.js",
+        "bytes": 4998
+      },
+      {
+        "path": "learning-lab-revamps/play.js",
+        "bytes": 381
+      },
+      {
+        "path": "learning-lab-revamps/shared.js",
+        "bytes": 3057
+      },
+      {
+        "path": "learning-lab-revamps/studio.css",
+        "bytes": 19346
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/learning-lab-revamps/water": [
+      {
+        "path": "learning-lab-revamps/art/water.webp",
+        "bytes": 296928
+      },
+      {
+        "path": "learning-lab-revamps/play.js",
+        "bytes": 381
+      },
+      {
+        "path": "learning-lab-revamps/science.js",
+        "bytes": 31743
+      },
+      {
+        "path": "learning-lab-revamps/shared.js",
+        "bytes": 3057
+      },
+      {
+        "path": "learning-lab-revamps/studio.css",
+        "bytes": 19346
+      },
+      {
+        "path": "learning-lab-revamps/water.html",
+        "bytes": 1096
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/learning-lab-revamps/vocab": [
+      {
+        "path": "learning-lab-revamps/classroom.js",
+        "bytes": 31072
+      },
+      {
+        "path": "learning-lab-revamps/play.js",
+        "bytes": 381
+      },
+      {
+        "path": "learning-lab-revamps/shared.js",
+        "bytes": 3057
+      },
+      {
+        "path": "learning-lab-revamps/studio.css",
+        "bytes": 19346
+      },
+      {
+        "path": "learning-lab-revamps/vocab.html",
+        "bytes": 1145
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/learning-lab-revamps/wordwork": [
+      {
+        "path": "learning-lab-revamps/classroom.js",
+        "bytes": 31072
+      },
+      {
+        "path": "learning-lab-revamps/play.js",
+        "bytes": 381
+      },
+      {
+        "path": "learning-lab-revamps/shared.js",
+        "bytes": 3057
+      },
+      {
+        "path": "learning-lab-revamps/studio.css",
+        "bytes": 19346
+      },
+      {
+        "path": "learning-lab-revamps/wordwork.html",
+        "bytes": 1113
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/learning-lab-revamps/flashcards": [
+      {
+        "path": "learning-lab-revamps/classroom.js",
+        "bytes": 31072
+      },
+      {
+        "path": "learning-lab-revamps/flashcards.html",
+        "bytes": 1124
+      },
+      {
+        "path": "learning-lab-revamps/play.js",
+        "bytes": 381
+      },
+      {
+        "path": "learning-lab-revamps/shared.js",
+        "bytes": 3057
+      },
+      {
+        "path": "learning-lab-revamps/studio.css",
+        "bytes": 19346
       }
     ]
   },

@@ -12,7 +12,7 @@ const codingStarters = new Map([
   ['piratemapping', 'Write a new three-stop compass trail and test the route on the island.'],
   ['mapmastersubregions', 'Set the Study view to the region your class is learning.']
 ]);
-const categories = ['Favourites', 'All activities', codingCategory, 'Mr. Walker’s Corner', 'Reading & writing', 'Morphology', 'Maths', 'Science', 'Geography', 'Social studies', 'Question practice', 'Thinking tools', 'Languages', 'Accessibility', 'Robotics', 'Teacher tools'];
+const categories = ['Favourites', 'All activities', codingCategory, 'Mr. Walker’s Corner', 'Reading & writing', 'Morphology', 'Maths', 'Science', 'Music', 'Geography', 'Social studies', 'Question practice', 'Thinking tools', 'Languages', 'Accessibility', 'Robotics', 'Teacher tools'];
 const typeNames = ['All types', 'Sorting', 'Flashcards', 'Practice questions', 'Sequencing', 'Matching', 'Word work', 'Writing', 'Reading & annotation', 'Simulations & models', 'Maps & geography', 'Graphic organisers', 'Decision games', 'Builders', 'Printables', 'Drawing', 'Communication', 'Coding & robotics'];
 const groupNames = ['All geography', 'Alberta', 'Canada', 'World', 'Map skills'];
 const descriptions = {
@@ -25,6 +25,7 @@ const descriptions = {
   'Morphology': 'Build words, investigate families and compare how affixes change meaning. Explore games and printable activities.',
   'Maths': 'Explore models and practise reasoning with numbers.',
   'Science': 'Observe, test ideas, and explain what you notice.',
+  'Music': 'Train your ear and explore notes and chord shapes.',
   'Geography': 'Alberta, Canada, the world, and the skills we use to map them.',
   'Social studies': 'Explore communities, history, government, and different perspectives.',
   'Question practice': 'Try dropdowns, multiple choice, ordered responses and task cards. Find numeric and model questions in Math.',

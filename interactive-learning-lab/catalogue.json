@@ -4965,5 +4965,520 @@
     ],
     "grade_basis": "curriculum",
     "grade_note": "Alberta Grade 2 Science: sound is made by vibrating objects. Explore pitch (high/low), volume (loud/quiet), and duration (short/long), plus sources of sound. A focused partial coverage of the Light and Sound learning outcome."
+  },
+  {
+    "id": "revamp-plant",
+    "title": "Plant Grower",
+    "category": "Science",
+    "group": "",
+    "description": "Grow a bean plant and compare how water, light and warmth affect it.",
+    "url": "https://interactives.blackgold.ca/learning-lab-revamps/plant.html",
+    "image": "https://interactives.blackgold.ca/learning-lab-revamps/covers/plant.webp",
+    "types": [
+      "Simulations & models",
+      "Decision games"
+    ],
+    "tags": [
+      "Plant needs",
+      "Growth journal"
+    ],
+    "links": [
+      {
+        "label": "Original activity",
+        "url": "https://maltais239.github.io/interactives/planttamagotchi/"
+      }
+    ],
+    "favourite": false,
+    "credit": "Darren Maltais · Engaging Students",
+    "status": "Revamped",
+    "grades": [
+      1,
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Care choices support Grade 1 plant needs and Grade 2 growth observations. The simulated water and growth values are game rules."
+  },
+  {
+    "id": "revamp-bear",
+    "title": "Bear Cub Care",
+    "category": "Science",
+    "group": "",
+    "description": "Care for a virtual cub and keep a field journal.",
+    "url": "https://interactives.blackgold.ca/learning-lab-revamps/bear.html",
+    "image": "https://interactives.blackgold.ca/learning-lab-revamps/covers/bear.webp",
+    "types": [
+      "Simulations & models",
+      "Decision games"
+    ],
+    "tags": [
+      "Animal needs",
+      "Growth stages"
+    ],
+    "links": [
+      {
+        "label": "Original activity",
+        "url": "https://maltais239.github.io/interactives/animaltamagotchi/"
+      }
+    ],
+    "favourite": false,
+    "credit": "Darren Maltais · Engaging Students",
+    "status": "Revamped",
+    "grades": [
+      1,
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Care choices and the field journal support early study of animal needs and growth. The care rules are a model."
+  },
+  {
+    "id": "revamp-offspring",
+    "title": "Parent & Offspring Match",
+    "category": "Science",
+    "group": "",
+    "description": "Use clues about body shape and features to match young animals to their parents.",
+    "url": "https://interactives.blackgold.ca/learning-lab-revamps/offspring.html",
+    "image": "https://interactives.blackgold.ca/learning-lab-revamps/covers/offspring.webp",
+    "types": [
+      "Matching"
+    ],
+    "tags": [
+      "Life cycles",
+      "Animal features"
+    ],
+    "links": [
+      {
+        "label": "Original activity",
+        "url": "https://maltais239.github.io/interactives/parentoffspringmatch/"
+      }
+    ],
+    "favourite": false,
+    "credit": "Darren Maltais · Engaging Students",
+    "status": "Revamped",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Use with early primary lessons on animal parents and offspring. Read the picture choices aloud as needed."
+  },
+  {
+    "id": "revamp-earth",
+    "title": "Earth Changes",
+    "category": "Science",
+    "group": "",
+    "description": "Compare fast events with changes that take many years.",
+    "url": "https://interactives.blackgold.ca/learning-lab-revamps/earth.html",
+    "image": "https://interactives.blackgold.ca/learning-lab-revamps/covers/earth.webp",
+    "types": [
+      "Sorting",
+      "Practice questions"
+    ],
+    "tags": [
+      "Fast and slow changes",
+      "Landforms"
+    ],
+    "links": [
+      {
+        "label": "Original activity",
+        "url": "https://maltais239.github.io/interactives/earthchanges/"
+      }
+    ],
+    "favourite": false,
+    "credit": "Darren Maltais · Engaging Students",
+    "status": "Revamped",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Use during investigations of how Earth’s surface changes. The text examples can be discussed together or read independently."
+  },
+  {
+    "id": "revamp-light",
+    "title": "Light Sources",
+    "category": "Science",
+    "group": "",
+    "description": "Compare natural and human-made sources of light.",
+    "url": "https://interactives.blackgold.ca/learning-lab-revamps/light.html",
+    "image": "https://interactives.blackgold.ca/learning-lab-revamps/covers/light.webp",
+    "types": [
+      "Sorting",
+      "Practice questions"
+    ],
+    "tags": [
+      "Light sources",
+      "Natural and human-made"
+    ],
+    "links": [
+      {
+        "label": "Original activity",
+        "url": "https://maltais239.github.io/interactives/lightsources2/"
+      }
+    ],
+    "favourite": false,
+    "credit": "Darren Maltais · Engaging Students",
+    "status": "Revamped",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Use to classify familiar sources of light. Adjust the vocabulary and discussion for your class."
+  },
+  {
+    "id": "revamp-weight",
+    "title": "Weight Sorting",
+    "category": "Science",
+    "group": "",
+    "description": "Predict which object is heavier and test it on a balance.",
+    "url": "https://interactives.blackgold.ca/learning-lab-revamps/weight.html",
+    "image": "https://interactives.blackgold.ca/learning-lab-revamps/covers/weight.webp",
+    "types": [
+      "Sorting",
+      "Simulations & models"
+    ],
+    "tags": [
+      "Mass",
+      "Compare and predict"
+    ],
+    "links": [
+      {
+        "label": "Original activity",
+        "url": "https://maltais239.github.io/interactives/mattersort1b/"
+      }
+    ],
+    "favourite": false,
+    "credit": "Darren Maltais · Engaging Students",
+    "status": "Revamped",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Use the balance to model comparisons and the sorting task to practise heavier and lighter. Object masses are examples."
+  },
+  {
+    "id": "revamp-energy",
+    "title": "Energy Pros & Cons",
+    "category": "Science",
+    "group": "",
+    "description": "Compare trade-offs when choosing how to power a town.",
+    "url": "https://interactives.blackgold.ca/learning-lab-revamps/energy.html",
+    "image": "https://interactives.blackgold.ca/learning-lab-revamps/covers/energy.webp",
+    "types": [
+      "Decision games",
+      "Sorting"
+    ],
+    "tags": [
+      "Energy sources",
+      "Trade-offs"
+    ],
+    "links": [
+      {
+        "label": "Original activity",
+        "url": "https://maltais239.github.io/interactives/energyproscons/"
+      }
+    ],
+    "favourite": false,
+    "credit": "Darren Maltais · Engaging Students",
+    "status": "Revamped",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Students compare the costs and benefits of energy sources and defend a recommendation. Vocabulary may need support."
+  },
+  {
+    "id": "revamp-cacao",
+    "title": "Cacao to Chocolate",
+    "category": "Reading & writing",
+    "group": "",
+    "description": "Read a short passage and put four chocolate-making stages in order.",
+    "url": "https://interactives.blackgold.ca/learning-lab-revamps/cacao.html",
+    "image": "https://interactives.blackgold.ca/learning-lab-revamps/covers/cacao.webp",
+    "types": [
+      "Sequencing",
+      "Reading & annotation",
+      "Practice questions"
+    ],
+    "tags": [
+      "Informational text",
+      "Put steps in order"
+    ],
+    "links": [
+      {
+        "label": "Original activity",
+        "url": "https://maltais239.github.io/interactives/orderingsteps/"
+      }
+    ],
+    "favourite": false,
+    "credit": "Darren Maltais · Engaging Students",
+    "status": "Revamped",
+    "grades": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The short informational reading and processing sequence support procedural reading and locating details. Explain unfamiliar process vocabulary as needed.",
+    "secondary_categories": [
+      "Question practice"
+    ]
+  },
+  {
+    "id": "revamp-schedule",
+    "title": "Visual Schedule",
+    "category": "Accessibility",
+    "group": "",
+    "description": "Build a visual plan and follow what comes now, next and later.",
+    "url": "https://interactives.blackgold.ca/learning-lab-revamps/schedule.html",
+    "image": "https://interactives.blackgold.ca/learning-lab-revamps/covers/schedule.webp",
+    "types": [
+      "Communication",
+      "Sequencing",
+      "Builders"
+    ],
+    "tags": [
+      "Visual routines",
+      "Now and next"
+    ],
+    "links": [
+      {
+        "label": "Original activity",
+        "url": "https://maltais239.github.io/interactives/visualschedule/"
+      }
+    ],
+    "favourite": false,
+    "credit": "Darren Maltais · Engaging Students",
+    "status": "Revamped",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "A visual routine and access tool for use across grades."
+  },
+  {
+    "id": "revamp-canada",
+    "title": "Mixed-Up Canada Puzzle",
+    "category": "Geography",
+    "group": "Canada",
+    "description": "Fit the provinces and territories onto the original map of Canada.",
+    "url": "https://interactives.blackgold.ca/learning-lab-revamps/canada.html",
+    "image": "https://interactives.blackgold.ca/learning-lab-revamps/covers/canada.webp",
+    "types": [
+      "Maps & geography",
+      "Practice questions"
+    ],
+    "tags": [
+      "Move & assemble",
+      "Provinces and territories"
+    ],
+    "links": [
+      {
+        "label": "Original activity",
+        "url": "https://maltais239.github.io/interactives/mixedupcanadapuzzle/"
+      }
+    ],
+    "favourite": false,
+    "credit": "Darren Maltais · Engaging Students",
+    "status": "Revamped",
+    "grades": [
+      2
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Fitting provinces and territories together supports the mapping portion of Grade 2 physical-region study."
+  },
+  {
+    "id": "revamp-pitch",
+    "title": "Chromatic Ascent",
+    "category": "Music",
+    "group": "",
+    "description": "Listen, identify pitches and unlock more notes along a mountain trail.",
+    "url": "https://interactives.blackgold.ca/learning-lab-revamps/pitch.html",
+    "image": "https://interactives.blackgold.ca/learning-lab-revamps/covers/pitch.webp",
+    "types": [
+      "Practice questions"
+    ],
+    "tags": [
+      "Ear training",
+      "Pitch recognition"
+    ],
+    "links": [
+      {
+        "label": "Original activity",
+        "url": "https://maltais239.github.io/interactives/pitchtrainer/"
+      }
+    ],
+    "favourite": false,
+    "credit": "Darren Maltais · Engaging Students",
+    "status": "Revamped",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Use for pitch recognition and listening practice. The sequence starts with a small pitch set and adds notes as students progress."
+  },
+  {
+    "id": "revamp-guitar",
+    "title": "CAGED Guitar",
+    "category": "Music",
+    "group": "",
+    "description": "Hear notes and explore connected chord shapes on an accurate fretboard.",
+    "url": "https://interactives.blackgold.ca/learning-lab-revamps/guitar.html",
+    "image": "https://interactives.blackgold.ca/learning-lab-revamps/covers/guitar.webp",
+    "types": [
+      "Simulations & models"
+    ],
+    "tags": [
+      "Guitar fretboard",
+      "Chord shapes"
+    ],
+    "links": [
+      {
+        "label": "Original activity",
+        "url": "https://maltais239.github.io/interactives/cagedguitar/"
+      }
+    ],
+    "favourite": false,
+    "credit": "Darren Maltais · Engaging Students",
+    "status": "Revamped",
+    "grades": [],
+    "grade_basis": "enrichment",
+    "grade_note": "Best suited to learners who have started reading guitar fret diagrams or are exploring movable chord shapes."
+  },
+  {
+    "id": "revamp-boreal",
+    "title": "Boreal Forest Reader",
+    "category": "Reading & writing",
+    "group": "",
+    "description": "Read, select evidence and explain where living things get their energy.",
+    "url": "https://interactives.blackgold.ca/learning-lab-revamps/boreal.html",
+    "image": "https://interactives.blackgold.ca/learning-lab-revamps/covers/boreal.webp",
+    "types": [
+      "Reading & annotation",
+      "Practice questions"
+    ],
+    "tags": [
+      "Highlight evidence",
+      "Alberta forests"
+    ],
+    "links": [
+      {
+        "label": "Original activity",
+        "url": "https://maltais239.github.io/interactives/readinginteractiveborealforest/"
+      }
+    ],
+    "favourite": false,
+    "credit": "Darren Maltais · Engaging Students",
+    "status": "Revamped",
+    "grades": [
+      6
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The reading uses a Grade 6 ecosystem topic to practise locating and explaining textual evidence."
+  },
+  {
+    "id": "revamp-water",
+    "title": "Water Cycle Explorer",
+    "category": "Science",
+    "group": "",
+    "description": "Explore the painting, then label six pathways.",
+    "url": "https://interactives.blackgold.ca/learning-lab-revamps/water.html",
+    "image": "https://interactives.blackgold.ca/learning-lab-revamps/covers/water.webp",
+    "types": [
+      "Simulations & models",
+      "Practice questions"
+    ],
+    "tags": [
+      "Explore & label",
+      "Water cycle"
+    ],
+    "links": [
+      {
+        "label": "Original activity",
+        "url": "https://maltais239.github.io/interactives/water-cycle-explorer/"
+      }
+    ],
+    "favourite": false,
+    "credit": "Darren Maltais · Engaging Students",
+    "status": "Revamped",
+    "grades": [
+      3,
+      7
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Labelling the cycle supports Grade 3 changes of state and provides a model for the Grade 7 water-cycle connection to life."
+  },
+  {
+    "id": "revamp-vocab",
+    "title": "Vocabulary Graphic Organiser",
+    "category": "Reading & writing",
+    "group": "",
+    "description": "Look up a word, compare meanings and write your own example.",
+    "url": "https://interactives.blackgold.ca/learning-lab-revamps/vocab.html",
+    "image": "https://interactives.blackgold.ca/learning-lab-revamps/covers/vocab.webp",
+    "types": [
+      "Graphic organisers",
+      "Word work"
+    ],
+    "tags": [
+      "Vocabulary connections",
+      "Dictionary"
+    ],
+    "links": [
+      {
+        "label": "Original activity",
+        "url": "https://maltais239.github.io/interactives/vocabgraphicorganizer/"
+      }
+    ],
+    "favourite": false,
+    "credit": "Darren Maltais · Engaging Students",
+    "status": "Revamped",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "The words and examples are chosen by the teacher or student. The tool is adaptable across grades."
+  },
+  {
+    "id": "revamp-wordwork",
+    "title": "Word Work",
+    "category": "Reading & writing",
+    "group": "",
+    "description": "Type directly into an illustrated word page and export the finished work.",
+    "url": "https://interactives.blackgold.ca/learning-lab-revamps/wordwork.html",
+    "image": "https://interactives.blackgold.ca/learning-lab-revamps/covers/wordwork.webp",
+    "types": [
+      "Word work",
+      "Writing",
+      "Graphic organisers"
+    ],
+    "tags": [
+      "Definition",
+      "Sentence writing",
+      "Synonyms"
+    ],
+    "links": [
+      {
+        "label": "Original activity",
+        "url": "https://maltais239.github.io/interactives/wordwork/"
+      }
+    ],
+    "favourite": false,
+    "credit": "Darren Maltais · Engaging Students",
+    "status": "Revamped",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "The teacher or student chooses the word. Written output and example sentences can be adapted across grades."
+  },
+  {
+    "id": "revamp-flashcards",
+    "title": "Flashcards",
+    "category": "Reading & writing",
+    "group": "",
+    "description": "Study the matter deck or build a deck from your own terms.",
+    "url": "https://interactives.blackgold.ca/learning-lab-revamps/flashcards.html",
+    "image": "https://interactives.blackgold.ca/learning-lab-revamps/covers/flashcards.webp",
+    "types": [
+      "Flashcards",
+      "Builders"
+    ],
+    "tags": [
+      "Custom word sets",
+      "Flip & practise"
+    ],
+    "links": [
+      {
+        "label": "Original activity",
+        "url": "https://maltais239.github.io/interactives/generateyourownflashcards/"
+      }
+    ],
+    "favourite": false,
+    "credit": "Darren Maltais · Engaging Students",
+    "status": "Revamped",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Use the example deck or build your own. The grade fit depends on the words and ideas in the deck."
   }
 ]
