@@ -2774,6 +2774,20 @@
           "project_key": "learning-lab-revamps/flashcards"
         }
       ]
+    },
+    "fretwork-classroom": {
+      "kind": "html",
+      "title": "Fretwork Classroom",
+      "credit": "Darren Maltais · Engaging Students",
+      "category": "Music",
+      "versions": [
+        {
+          "label": "Fretwork Classroom",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "fretwork-classroom/index.html",
+          "url": "https://interactives.blackgold.ca/fretwork-classroom/"
+        }
+      ]
     }
   },
   "files": {
@@ -11467,6 +11481,12 @@
       {
         "path": "learning-lab-revamps/studio.css",
         "bytes": 19346
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/fretwork-classroom": [
+      {
+        "path": "fretwork-classroom/index.html",
+        "bytes": 217263
       }
     ]
   },

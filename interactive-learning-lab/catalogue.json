@@ -5480,5 +5480,29 @@
     "grades": [],
     "grade_basis": "flexible",
     "grade_note": "Use the example deck or build your own. The grade fit depends on the words and ideas in the deck."
+  },
+  {
+    "id": "fretwork-classroom",
+    "title": "Fretwork Classroom",
+    "category": "Music",
+    "group": "",
+    "description": "Name notes on an interactive guitar fretboard, listen to chords, and practise rhythm, scales, and progressions at your own tempo.",
+    "url": "https://interactives.blackgold.ca/fretwork-classroom/",
+    "image": "https://interactives.blackgold.ca/fretwork-classroom/cover.webp",
+    "types": [
+      "Practice questions",
+      "Simulations & models"
+    ],
+    "tags": [
+      "Guitar fretboard",
+      "Rhythm & scales",
+      "Ear training"
+    ],
+    "links": [],
+    "favourite": false,
+    "credit": "Darren Maltais · Engaging Students",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Use with beginning through advancing guitar students. Start with notes in first position and choose practice stations as skills develop."
   }
 ]

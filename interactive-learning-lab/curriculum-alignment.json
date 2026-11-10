@@ -4566,6 +4566,11 @@
       "grades": [],
       "basis": "flexible",
       "rationale": "Use the example deck or build your own. The grade fit depends on the words and ideas in the deck."
+    },
+    "fretwork-classroom": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Use with beginning through advancing guitar students. Start with notes in first position and choose practice stations as skills develop."
     }
   }
 }
