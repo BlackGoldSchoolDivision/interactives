@@ -1,24 +1,11 @@
 'use strict';
 const catalogue = JSON.parse(document.getElementById('catalogue-data').textContent);
-const codingCategory = 'Get Started with Coding';
-const codingHash = '#get-started-with-coding';
-const codingStarters = new Map([
-  ['cacaoquiz', 'Replace the reading and write three questions with instant feedback.'],
-  ['vocabmatchbuilder', 'Enter six terms and definitions, then export a playable matching game.'],
-  ['sortingcreator', 'Give students two categories and six cards to sort.'],
-  ['customflashcards', 'Make a short review deck for a unit you teach.'],
-  ['orderingsteps', 'Swap in a process from your class, such as the steps in an experiment.'],
-  ['dropdownquiz', 'Turn a short passage into three dropdown questions.'],
-  ['venndiagram', 'Choose two traits and add examples for each part of the diagram.'],
-  ['visualschedule', 'Build a picture schedule for a classroom routine.']
-]);
-const categories = ['Favourites', 'All activities', codingCategory, 'Mr. Walker’s Corner', 'Reading & writing', 'Morphology', 'Maths', 'Science', 'Geography', 'Social studies', 'Question practice', 'Thinking tools', 'Languages', 'Accessibility', 'Robotics', 'Teacher tools'];
+const categories = ['Favourites', 'All activities', 'Mr. Walker’s Corner', 'Reading & writing', 'Morphology', 'Maths', 'Science', 'Geography', 'Social studies', 'Question practice', 'Thinking tools', 'Languages', 'Accessibility', 'Robotics', 'Teacher tools'];
 const typeNames = ['All types', 'Sorting', 'Flashcards', 'Practice questions', 'Sequencing', 'Matching', 'Word work', 'Writing', 'Reading & annotation', 'Simulations & models', 'Maps & geography', 'Graphic organisers', 'Decision games', 'Builders', 'Printables', 'Drawing', 'Communication', 'Coding & robotics'];
 const groupNames = ['All geography', 'Alberta', 'Canada', 'World', 'Map skills'];
 const descriptions = {
   'Favourites': 'Games, creative tools and hands-on learning.',
   'All activities': 'Browse the full collection, or choose a subject and activity type.',
-  [codingCategory]: 'Start with a working activity and adapt it for your class. Each example gives you a first change to try.',
   'Mr. Walker’s Corner': 'Three classroom editions inspired by Tyler Walker: investigate functions, test a bridge, and explore plural patterns.',
   'Words & writing': 'Play with words, investigate word parts, and bring your ideas to life.',
   'Reading & writing': 'Build words, develop ideas, and make meaning.',
@@ -40,15 +27,13 @@ const subjects = [
   {label:'Science',category:'Science',id:'moonphases',colour:'#007c80',ink:'#fff'},
   {label:'Geography',category:'Geography',id:'mackwoodmapping',colour:'#2674b8',ink:'#fff'},
   {label:'Social Studies',category:'Social studies',id:'geo-numberedtreaties',colour:'#d88732',ink:'#362008'},
-  {label:'Thinking tools',category:'Thinking tools',id:'thinkingroutines',colour:'#9651ac',ink:'#fff'},
-  {label:codingCategory,category:codingCategory,id:'cacaoquiz',colour:'#193b64',ink:'#fff'}
+  {label:'Thinking tools',category:'Thinking tools',id:'thinkingroutines',colour:'#9651ac',ink:'#fff'}
 ];
 const featuredOrder = ['vocabularyarcade','mackwoodmapping','numberbuilding','moonphases','writerspark','thinking-dialogue'];
 const writingOrder = ['writerspark','infospark','vocabularyarcade','rootwords','wordworks','word-orbit','word-ladders','double-take','literal-chaos','word-worlds'];
 const thinkingOrder = ['thinking-dialogue','thinkingroutines','imagespark','venndiagram','hexthinker','asctriangle','frayermodel'];
 const scienceOrder = ['science-practice-lab','moonphases','dinodig','walker-bridge','bend-stretch-change','magnet-workshop','float-lab','vibration-station'];
-let chosen = location.hash === codingHash ? codingCategory : 'Favourites';
-let chosenGroup = 'All geography', chosenType = 'All types', chosenGrade = 'all', query = '';
+let chosen = 'Favourites', chosenGroup = 'All geography', chosenType = 'All types', chosenGrade = 'all', query = '';
 const cardsNode = document.getElementById('cards');
 const filters = document.getElementById('filters');
 const geoFilters = document.getElementById('geo-filters');
@@ -56,15 +41,9 @@ const search = document.getElementById('search');
 const typeSelect = document.getElementById('activity-type');
 const gradeSelect = document.getElementById('grade-level');
 const tilesNode = document.getElementById('subject-tiles');
-const codingGuide = document.getElementById('get-started-with-coding');
-const collection = document.getElementById('activities');
-const collectionTitle = document.getElementById('collection-title');
 function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c])); }
 function labelCategory(c) { return c === 'Favourites' ? 'Featured' : c === 'Maths' ? 'Math' : c; }
-function inCategory(a,c) {
-  if (c === codingCategory) return codingStarters.has(a.id);
-  return c === 'All activities' || (c === 'Favourites' ? a.favourite : c === 'Mr. Walker’s Corner' ? a.collection === 'walker-corner' : c === 'Words & writing' ? ['Reading & writing','Morphology'].includes(a.category) : a.category === c || (a.secondary_categories || []).includes(c));
-}
+function inCategory(a,c) { return c === 'All activities' || (c === 'Favourites' ? a.favourite : c === 'Mr. Walker’s Corner' ? a.collection === 'walker-corner' : c === 'Words & writing' ? ['Reading & writing','Morphology'].includes(a.category) : a.category === c || (a.secondary_categories || []).includes(c)); }
 function countCategory(c) { return catalogue.filter(a => inCategory(a,c)).length; }
 function gradeLabel(a) {
   const grades = a.grades || [];
@@ -94,7 +73,7 @@ function matches(a) {
 }
 tilesNode.innerHTML = subjects.map(s => {
   const a = catalogue.find(a => a.id === s.id);
-  return `<button type="button" class="subject-tile${s.category === codingCategory ? ' coding-tile' : ''}" data-category="${esc(s.category)}" aria-pressed="false" style="--tile:${s.colour};--tile-ink:${s.ink}"><span class="tile-title">${esc(s.label)}</span><span class="tile-shot"><img src="${esc(a.image)}" alt="" width="900" height="620"></span><span class="tile-arrow" aria-hidden="true">→</span></button>`;
+  return `<button type="button" class="subject-tile" data-category="${esc(s.category)}" aria-pressed="false" style="--tile:${s.colour};--tile-ink:${s.ink}"><span class="tile-title">${esc(s.label)}</span><span class="tile-shot"><img src="${esc(a.image)}" alt="" width="900" height="620"></span><span class="tile-arrow" aria-hidden="true">→</span></button>`;
 }).join('');
 // All preview images and launch destinations come from the existing catalogue.
 document.querySelectorAll('[data-preview-id]').forEach(link => {
@@ -117,13 +96,7 @@ function launchLabel(a) { return a.launch_label || (a.type === 'template' ? 'Ope
 function render() {
   renderFilters();
   const featured = chosen === 'Favourites' && chosenType === 'All types' && chosenGrade === 'all' && !query.trim();
-  const coding = chosen === codingCategory;
   const visible = catalogue.filter(matches);
-  codingGuide.hidden = !coding;
-  if (coding) {
-    const order = [...codingStarters.keys()];
-    visible.sort((a,b) => order.indexOf(a.id) - order.indexOf(b.id));
-  }
   if (['Words & writing','Reading & writing'].includes(chosen)) visible.sort((a,b) => {
     const ai = writingOrder.indexOf(a.id), bi = writingOrder.indexOf(b.id);
     return (ai < 0 ? 100 : ai) - (bi < 0 ? 100 : bi);
@@ -145,13 +118,12 @@ function render() {
   let title = chosen === 'Favourites' ? 'Pick an activity. Jump in.' : chosen === 'Geography' && chosenGroup !== 'All geography' ? chosenGroup + ' geography' : labelCategory(chosen);
   if (chosenType !== 'All types') title += ' · ' + chosenType;
   if (chosenGrade !== 'all') title += ' · ' + (chosenGrade === 'flexible' ? 'Flexible & enrichment' : 'Grade ' + chosenGrade);
-  collectionTitle.textContent = title;
+  document.getElementById('collection-title').textContent = title;
   document.getElementById('collection-description').textContent = descriptions[chosen];
   document.getElementById('count').textContent = visible.length + (visible.length === 1 ? ' activity' : ' activities');
   cardsNode.innerHTML = visible.map((a,i) => {
-    const starterIdea = coding ? `<p class="coding-idea"><strong>Try this</strong> ${esc(codingStarters.get(a.id))}</p>` : '';
     const accent = a.category === 'Morphology' ? '#76508d' : a.category === 'Reading & writing' ? '#ad3f45' : a.category === 'Maths' ? '#845d09' : a.category === 'Geography' ? '#226aab' : '#00767b';
-    return `<article class="card" data-id="${esc(a.id)}" style="--accent:${accent}"><a class="shot" href="${esc(a.url)}" target="_blank" rel="noopener noreferrer" aria-label="Try ${esc(a.title)} (opens in a new tab)"><img src="${esc(a.image)}" alt="${a.type === 'template' ? 'Preview' : 'Screenshot'} of ${esc(a.title)}" loading="${i < 3 ? 'eager' : 'lazy'}" width="900" height="620"></a><div class="card-body"><div class="subject">${esc(labelCategory(a.category))}${a.category === 'Geography' && a.group ? ' · ' + esc(a.group) : ''}</div>${a.status ? `<span class="status-label">${esc(a.status)}</span>` : ''}<h3>${esc(a.title)}</h3><p class="description">${esc(a.description)}</p><p class="activity-types">${a.types.map(esc).join(' · ')}</p><div class="tags"><span class="tag grade-tag" title="${esc(a.grade_note || 'Grade fit can be adapted to your class.')}">${esc(gradeLabel(a))}</span>${a.tags.map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>${a.status_note ? `<p class="status-note">${esc(a.status_note)}</p>` : ''}${starterIdea}<a class="launch" aria-label="${esc(launchLabel(a))}: ${esc(a.title)} (opens in a new tab)" href="${esc(a.url)}" target="_blank" rel="noopener noreferrer"><span>${esc(launchLabel(a))}</span><span aria-hidden="true">→</span></a>${a.links.length ? `<div class="secondary">${a.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${esc(l.label)} <span aria-hidden="true">↗</span></a>`).join('')}</div>` : ''}${a.credit ? `<p class="credit">${esc(a.credit)}</p>` : ''}</div></article>`;
+    return `<article class="card" data-id="${esc(a.id)}" style="--accent:${accent}"><a class="shot" href="${esc(a.url)}" target="_blank" rel="noopener noreferrer" aria-label="Try ${esc(a.title)} (opens in a new tab)"><img src="${esc(a.image)}" alt="${a.type === 'template' ? 'Preview' : 'Screenshot'} of ${esc(a.title)}" loading="${i < 3 ? 'eager' : 'lazy'}" width="900" height="620"></a><div class="card-body"><div class="subject">${esc(labelCategory(a.category))}${a.category === 'Geography' && a.group ? ' · ' + esc(a.group) : ''}</div>${a.status ? `<span class="status-label">${esc(a.status)}</span>` : ''}<h3>${esc(a.title)}</h3><p class="description">${esc(a.description)}</p><p class="activity-types">${a.types.map(esc).join(' · ')}</p><div class="tags"><span class="tag grade-tag" title="${esc(a.grade_note || 'Grade fit can be adapted to your class.')}">${esc(gradeLabel(a))}</span>${a.tags.map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>${a.status_note ? `<p class="status-note">${esc(a.status_note)}</p>` : ''}<a class="launch" aria-label="${esc(launchLabel(a))}: ${esc(a.title)} (opens in a new tab)" href="${esc(a.url)}" target="_blank" rel="noopener noreferrer"><span>${esc(launchLabel(a))}</span><span aria-hidden="true">→</span></a>${a.links.length ? `<div class="secondary">${a.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${esc(l.label)} <span aria-hidden="true">↗</span></a>`).join('')}</div>` : ''}${a.credit ? `<p class="credit">${esc(a.credit)}</p>` : ''}</div></article>`;
   }).join('');
   cardsNode.querySelectorAll('article[data-id]').forEach(card => {
     const activity = catalogue.find(a => a.id === card.dataset.id);
@@ -183,49 +155,19 @@ const gradeNumbers = [...new Set(catalogue.flatMap(a => a.grades || []))].sort((
 gradeSelect.innerHTML = '<option value="all">All grades</option>' + gradeNumbers.map(g => `<option value="${g}">Grade ${g}</option>`).join('') + '<option value="flexible">Flexible &amp; enrichment</option>';
 gradeSelect.addEventListener('change', () => { chosenGrade = gradeSelect.value; if (chosenGrade !== 'all' && chosen === 'Favourites') chosen = 'All activities'; render(); });
 function chooseType(t) { chosenType = t; if (chosen === 'Favourites') chosen = 'All activities'; render(); }
-function chooseCategory(c) {
-  chosen = c;
-  chosenGroup = 'All geography';
-  if (c === codingCategory) {
-    chosenType = 'All types'; chosenGrade = 'all'; query = ''; search.value = '';
-    if (location.hash !== codingHash) history.pushState(history.state, '', codingHash);
-  } else if (location.hash === codingHash) {
-    history.replaceState(history.state, '', location.pathname + location.search);
-  }
-  render();
-}
-function showCollection() {
-  collection.scrollIntoView({block:'start'});
-  collectionTitle.setAttribute('tabindex','-1');
-  collectionTitle.focus({preventScroll:true});
-}
+function chooseCategory(c) { chosen = c; chosenGroup = 'All geography'; render(); }
 filters.addEventListener('click', e => { const b = e.target.closest('button[data-category]'); if (b) chooseCategory(b.dataset.category); });
-tilesNode.addEventListener('click', e => {
-  const b = e.target.closest('button[data-category]');
-  if (!b) return;
-  chooseCategory(b.dataset.category);
-  if (chosen === codingCategory) showCollection();
-  else collection.scrollIntoView({block:'start'});
-});
+tilesNode.addEventListener('click', e => { const b = e.target.closest('button[data-category]'); if (b) { chooseCategory(b.dataset.category); document.getElementById('activities').scrollIntoView({block:'start'}); } });
 geoFilters.addEventListener('click', e => { const b = e.target.closest('button[data-group]'); if (b) { chosenGroup = b.dataset.group; render(); } });
 typeSelect.addEventListener('change', () => chooseType(typeSelect.value));
 document.querySelectorAll('.quick-type').forEach(b => b.addEventListener('click', () => chooseType(chosenType === b.dataset.type ? 'All types' : b.dataset.type)));
 search.addEventListener('input', () => { query = search.value; if (query.trim() && chosen === 'Favourites') chosen = 'All activities'; render(); });
 document.querySelector('.clear').addEventListener('click', () => { query = ''; search.value = ''; render(); search.focus(); });
-function reset() { chosenType = 'All types'; chosenGrade = 'all'; query = ''; search.value = ''; chooseCategory('All activities'); }
+function reset() { chosen = 'All activities'; chosenGroup = 'All geography'; chosenType = 'All types'; chosenGrade = 'all'; query = ''; search.value = ''; render(); }
 document.getElementById('reset').addEventListener('click', reset);
-document.querySelectorAll('[data-browse-category]').forEach(b => b.addEventListener('click', () => { chosenType = 'All types'; query = ''; search.value = ''; chooseCategory(b.dataset.browseCategory); showCollection(); }));
+document.querySelectorAll('[data-browse-category]').forEach(b => b.addEventListener('click', () => { chosenType = 'All types'; query = ''; search.value = ''; chooseCategory(b.dataset.browseCategory); document.getElementById('activities').scrollIntoView({block:'start'}); document.getElementById('collection-title').setAttribute('tabindex','-1'); document.getElementById('collection-title').focus({preventScroll:true}); }));
 document.getElementById('focus-search').addEventListener('click', () => { search.scrollIntoView({block:'center'}); search.focus({preventScroll:true}); });
-window.addEventListener('hashchange', () => {
-  if (location.hash === codingHash) {
-    chooseCategory(codingCategory);
-    collection.scrollIntoView({block:'start'});
-  } else if (chosen === codingCategory && ['', '#browse'].includes(location.hash)) {
-    chooseCategory('Favourites');
-  }
-});
 // A failed screenshot stays clearly labelled; never substitute invented game imagery.
 document.addEventListener('error', e => { if (e.target instanceof HTMLImageElement) { e.target.hidden = true; const parent = e.target.parentElement; if (!parent.querySelector('.preview-unavailable')) { const label = document.createElement('span'); label.className = 'preview-unavailable'; label.textContent = 'Preview unavailable'; parent.appendChild(label); } } }, true);
 render();
-if (chosen === codingCategory) requestAnimationFrame(() => collection.scrollIntoView({block:'start',behavior:'instant'}));
 
