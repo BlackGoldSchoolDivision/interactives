@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Fraction Explorer</title>
+    
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts for a fun, friendly typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Custom playful background (Polka dots on a soft sunset gradient) */
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            background-color: #ffdeeb;
+            background-image: radial-gradient(#ffb6c1 3px, transparent 3px), radial-gradient(#ffb6c1 3px, transparent 3px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            min-height: 100vh;
+        }
+
+        /* Glassmorphism card effect */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0,0,0,0.05);
+            border: 4px solid white;
+        }
+
+        /* Input styling */
+        .fraction-input {
+            width: 80px;
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #4f46e5;
+            background: #f3f4f6;
+            border: 3px solid #e5e7eb;
+            border-radius: 1rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        
+        .fraction-input:focus {
+            border-color: #818cf8;
+            background: #fff;
+            box-shadow: 0 0 15px rgba(129, 140, 248, 0.4);
+        }
+
+        /* Hide number input arrows */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* Visual container styling */
+        .visual-box {
+            background: #f8fafc;
+            border: 2px dashed #cbd5e1;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 150px;
+            overflow-x: auto;
+        }
+
+        .visual-title {
+            font-weight: 800;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 flex items-center justify-center">
+
+    <div class="glass-card w-full max-w-4xl p-6 md:p-10 flex flex-col md:flex-row gap-8 items-start">
+        
+        <!-- LEFT SIDE: Inputs -->
+        <div class="w-full md:w-1/3 flex flex-col items-center shrink-0">
+            <h1 class="text-3xl md:text-4xl font-black text-indigo-600 mb-2 text-center tracking-tight">Fraction Explorer</h1>
+            <p class="text-gray-500 mb-8 text-center font-bold">Type numbers to see the magic!</p>
+            
+            <div class="flex flex-col items-center gap-2 bg-indigo-50 p-8 rounded-3xl w-full border-2 border-indigo-100 shadow-inner">
+                <input type="number" id="num-input" class="fraction-input" value="3" min="0" max="50">
+                <div class="w-24 h-2 bg-indigo-600 rounded-full my-2"></div>
+                <input type="number" id="den-input" class="fraction-input" value="4" min="1" max="50">
+            </div>
+
+            <div class="mt-6 text-center text-sm text-indigo-400 font-bold bg-white px-4 py-2 rounded-full shadow-sm border border-indigo-50">
+                Supports improper fractions too!
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE: Visuals -->
+        <div class="w-full md:w-2/3 flex flex-col gap-6">
+            
+            <!-- Fraction Bar -->
+            <div>
+                <div class="visual-title">Fraction Bar</div>
+                <div class="visual-box" id="bar-container">
+                    <!-- SVG injected here -->
+                </div>
+            </div>
+
+            <!-- Fraction Circle -->
+            <div>
+                <div class="visual-title">Fraction Circles</div>
+                <div class="visual-box flex-wrap gap-4" id="circle-container">
+                    <!-- SVG injected here -->
+                </div>
+            </div>
+
+            <!-- Number Line -->
+            <div>
+                <div class="visual-title">Number Line</div>
+                <div class="visual-box" id="line-container">
+                    <!-- SVG injected here -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const numInput = document.getElementById('num-input');
+        const denInput = document.getElementById('den-input');
+        const barContainer = document.getElementById('bar-container');
+        const circleContainer = document.getElementById('circle-container');
+        const lineContainer = document.getElementById('line-container');
+
+        // Event Listeners for instant updates
+        numInput.addEventListener('input', updateVisuals);
+        denInput.addEventListener('input', updateVisuals);
+
+        // SVG Helper for drawing pie slices
+        function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+            const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
+            return {
+                x: centerX + (radius * Math.cos(angleInRadians)),
+                y: centerY + (radius * Math.sin(angleInRadians))
+            };
+        }
+
+        function describeArc(x, y, radius, startAngle, endAngle) {
+            const start = polarToCartesian(x, y, radius, endAngle);
+            const end = polarToCartesian(x, y, radius, startAngle);
+            const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+            return [
+                "M", x, y,
+                "L", start.x, start.y,
+                "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y,
+                "Z"
+            ].join(" ");
+        }
+
+        // Main Update Function
+        function updateVisuals() {
+            let n = parseInt(numInput.value) || 0;
+            let d = parseInt(denInput.value) || 1;
+
+            // Enforce minimums to prevent breaking
+            if (n < 0) { n = 0; numInput.value = 0; }
+            if (d < 1) { d = 1; denInput.value = 1; }
+            
+            // Prevent browser lag from massive inputs
+            if (n > 100) n = 100; 
+            if (d > 50) d = 50;
+
+            renderBar(n, d);
+            renderCircles(n, d);
+            renderNumberLine(n, d);
+        }
+
+        // 1. Render Fraction Bar
+        function renderBar(n, d) {
+            // Colors: Bright Teal
+            const fillColor = '#2dd4bf'; // Tailwind teal-400
+            const emptyColor = '#ffffff';
+            const strokeColor = '#0f766e'; // Tailwind teal-700
+            
+            const boxWidth = 40;
+            const height = 40;
+            
+            // Calculate how many wholes we have
+            const wholes = Math.max(1, Math.ceil(n / d));
+            const totalBoxesToDraw = wholes * d;
+            
+            const totalWidth = totalBoxesToDraw * boxWidth;
+            
+            let svg = `<svg width="${totalWidth}" height="${height}" viewBox="0 0 ${totalWidth} ${height}" xmlns="http://www.w3.org/2000/svg">`;
+            
+            for(let i=0; i<totalBoxesToDraw; i++) {
+                let fill = i < n ? fillColor : emptyColor;
+                
+                // Add a thicker border between wholes
+                let isWholeBoundary = (i % d === 0 && i !== 0);
+                if (isWholeBoundary) {
+                    // Draw a gap or thick line? We'll just draw a thicker line
+                    svg += `<rect x="${i*boxWidth}" y="0" width="${boxWidth}" height="${height}" fill="${fill}" stroke="${strokeColor}" stroke-width="2"/>`;
+                    svg += `<line x1="${i*boxWidth}" y1="0" x2="${i*boxWidth}" y2="${height}" stroke="#000" stroke-width="4"/>`;
+                } else {
+                    svg += `<rect x="${i*boxWidth}" y="0" width="${boxWidth}" height="${height}" fill="${fill}" stroke="${strokeColor}" stroke-width="2"/>`;
+                }
+            }
+            
+            // Draw outer border for the very first and very last
+            svg += `<rect x="0" y="0" width="${totalWidth}" height="${height}" fill="none" stroke="${strokeColor}" stroke-width="4"/>`;
+
+            // Draw thick lines for every whole
+            for (let w = 1; w < wholes; w++) {
+                 svg += `<line x1="${w * d * boxWidth}" y1="0" x2="${w * d * boxWidth}" y2="${height}" stroke="${strokeColor}" stroke-width="5"/>`;
+            }
+
+            svg += `</svg>`;
+            barContainer.innerHTML = svg;
+        }
+
+        // 2. Render Fraction Circles
+        function renderCircles(n, d) {
+            // Colors: Vibrant Orange/Yellow
+            const fillColor = '#fbbf24'; // Tailwind amber-400
+            const strokeColor = '#b45309'; // Tailwind amber-700
+            
+            const radius = 50;
+            const size = 110; // slightly larger than 2*radius for stroke allowance
+            const center = size / 2;
+            
+            const wholes = Math.ceil(n / d) || 1; // At least draw 1 empty circle if n=0
+            let svgs = '';
+
+            let slicesShaded = n;
+
+            for (let w = 0; w < wholes; w++) {
+                let svg = `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">`;
+                
+                // Draw background circle
+                svg += `<circle cx="${center}" cy="${center}" r="${radius}" fill="#ffffff" stroke="${strokeColor}" stroke-width="3"/>`;
+
+                // Calculate slices for this specific circle
+                let slicesInThisCircle = Math.min(d, Math.max(0, slicesShaded));
+                slicesShaded -= d;
+
+                const anglePerSlice = 360 / d;
+
+                for (let i = 0; i < d; i++) {
+                    let startAngle = i * anglePerSlice;
+                    let endAngle = (i + 1) * anglePerSlice;
+                    
+                    // If d=1, special case (no lines, just full circle if shaded)
+                    if (d === 1) {
+                        if (slicesInThisCircle > 0) {
+                            svg += `<circle cx="${center}" cy="${center}" r="${radius}" fill="${fillColor}"/>`;
+                        }
+                    } else {
+                        // Draw filled slice
+                        if (i < slicesInThisCircle) {
+                            // If it's a full circle (e.g. 3/3), drawing arc sometimes glitches in SVG, so draw circle
+                            if (slicesInThisCircle === d) {
+                                svg += `<circle cx="${center}" cy="${center}" r="${radius}" fill="${fillColor}"/>`;
+                            } else {
+                                let path = describeArc(center, center, radius, startAngle, endAngle);
+                                svg += `<path d="${path}" fill="${fillColor}" stroke="${strokeColor}" stroke-width="2"/>`;
+                            }
+                        }
+                        
+                        // Draw slice dividing lines
+                        let lineCoords = polarToCartesian(center, center, radius, startAngle);
+                        svg += `<line x1="${center}" y1="${center}" x2="${lineCoords.x}" y2="${lineCoords.y}" stroke="${strokeColor}" stroke-width="2"/>`;
+                    }
+                }
+                
+                // Re-draw outer border to cover slice overlap
+                svg += `<circle cx="${center}" cy="${center}" r="${radius}" fill="none" stroke="${strokeColor}" stroke-width="3"/>`;
+
+                svg += `</svg>`;
+                svgs += svg;
+            }
+
+            circleContainer.innerHTML = svgs;
+        }
+
+        // 3. Render Number Line
+        function renderNumberLine(n, d) {
+            // Colors: Playful Pink/Purple
+            const strokeColor = '#6d28d9'; // Tailwind violet-700
+            const pointColor = '#ec4899'; // Tailwind pink-500
+            
+            const w = 600; // max width
+            const h = 100;
+            
+            // Figure out the max integer we need to display
+            const val = n / d;
+            let maxInt = Math.max(2, Math.ceil(val) + 1); // always show at least 0 to 2
+            
+            // To keep it looking nice, don't show more than 10 integers
+            if (maxInt > 10) maxInt = 10;
+            
+            let svg = `<svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">`;
+            
+            const padding = 40;
+            const lineY = 40;
+            const startX = padding;
+            const endX = w - padding;
+            const lineLength = endX - startX;
+            const pixelsPerUnit = lineLength / maxInt;
+
+            // Draw Main Line
+            svg += `<line x1="${startX}" y1="${lineY}" x2="${endX}" y2="${lineY}" stroke="${strokeColor}" stroke-width="4" stroke-linecap="round"/>`;
+            
+            // Draw Arrows
+            svg += `<polygon points="${startX},${lineY} ${startX+10},${lineY-6} ${startX+10},${lineY+6}" fill="${strokeColor}"/>`;
+            svg += `<polygon points="${endX},${lineY} ${endX-10},${lineY-6} ${endX-10},${lineY+6}" fill="${strokeColor}"/>`;
+
+            // Draw integer ticks and labels
+            for(let i=0; i<=maxInt; i++) {
+                let x = startX + (i * pixelsPerUnit);
+                svg += `<line x1="${x}" y1="${lineY-10}" x2="${x}" y2="${lineY+10}" stroke="${strokeColor}" stroke-width="4"/>`;
+                svg += `<text x="${x}" y="${lineY+30}" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="18" fill="${strokeColor}">${i}</text>`;
+                
+                // Draw fraction subticks if d is reasonable
+                if (d > 1 && d <= 12 && i < maxInt) {
+                    for(let j=1; j<d; j++) {
+                        let subX = x + (j/d)*pixelsPerUnit;
+                        svg += `<line x1="${subX}" y1="${lineY-5}" x2="${subX}" y2="${lineY+5}" stroke="#a78bfa" stroke-width="2"/>`; // Lighter purple
+                    }
+                }
+            }
+
+            // Plot the point
+            let px = startX + (val * pixelsPerUnit);
+            
+            // If the value is off the charts (capped at maxInt)
+            if (val <= maxInt) {
+                // Draw a bouncy pointer and circle
+                svg += `<circle cx="${px}" cy="${lineY}" r="8" fill="${pointColor}" stroke="#fff" stroke-width="3"/>`;
+                svg += `<path d="M ${px} ${lineY-25} L ${px-8} ${lineY-35} L ${px+8} ${lineY-35} Z" fill="${pointColor}"/>`;
+                
+                // Label above the pointer
+                svg += `<text x="${px}" y="${lineY-45}" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="16" fill="${pointColor}">${n}/${d}</text>`;
+            } else {
+                svg += `<text x="${w/2}" y="${lineY-20}" fill="${pointColor}" font-family="Nunito" font-weight="bold" text-anchor="middle">Number is too large to fit on this line!</text>`;
+            }
+
+            svg += `</svg>`;
+            lineContainer.innerHTML = svg;
+        }
+
+        // Initialize on load
+        window.onload = updateVisuals;
+
+    </script>
+</body>
+</html>
