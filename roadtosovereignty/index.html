@@ -1,0 +1,2001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Road to Sovereignty (1914–1918) | Grade 7 Alberta Social Studies</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tone.js for subtle synthesized sound effects (no external audio files) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <!-- Google Fonts: Merriweather (Archival Headers) & Inter (Crisp Legibility) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:ital,wght@0,700;0,900;1,400&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'Georgia', 'serif'],
+                    },
+                    colors: {
+                        parchment: '#f8f4ea',
+                        parchmentDark: '#ece4d0',
+                        ink: '#1e293b',
+                        brass: '#b45309',
+                        brassLight: '#f59e0b',
+                        poppy: '#be123c',
+                        olive: '#3f6212',
+                        slateNavy: '#0f172a'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Archival background texture & typography refinements */
+        body {
+            background-color: #f4efe3;
+            background-image: radial-gradient(#d6ccb2 0.75px, transparent 0.75px);
+            background-size: 22px 22px;
+            color: #1e293b;
+            overflow-x: hidden;
+        }
+
+        /* 3D Flip Card Utilities for Learning Module */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            min-height: 250px;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 1rem;
+        }
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+
+        /* Pulsing Map Pin Animation */
+        @keyframes pulseRing {
+            0% { transform: scale(0.85); opacity: 0.9; }
+            70% { transform: scale(1.7); opacity: 0; }
+            100% { transform: scale(1.7); opacity: 0; }
+        }
+        .map-pin-pulse {
+            transform-origin: center;
+            animation: pulseRing 2.2s infinite ease-out;
+        }
+
+        /* Poppy placement pop-in animation */
+        @keyframes poppyBloom {
+            0% { transform: scale(0) rotate(-30deg); opacity: 0; }
+            70% { transform: scale(1.2) rotate(8deg); opacity: 1; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        .poppy-bloom {
+            animation: poppyBloom 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        /* Game Button tactile styling */
+        .btn-tactile {
+            transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.15s ease;
+        }
+        .btn-tactile:active {
+            transform: translateY(2px);
+        }
+
+        /* Responsive Canvas Container */
+        #dispatchCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: 0.875rem;
+            touch-action: manipulation;
+        }
+
+        /* Smooth fade-in for tabs */
+        .fade-in {
+            animation: fadeIn 0.28s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans antialiased selection:bg-amber-200 selection:text-slate-900">
+
+    <!-- ==================== PERSISTENT TOP HEADER ==================== -->
+    <header class="sticky top-0 z-40 bg-slate-900 text-parchment shadow-lg border-b-4 border-amber-600">
+        <div class="max-w-6xl mx-auto px-4 py-3">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                <!-- Brand & Mission Title -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-700 to-rose-900 border-2 border-amber-400 flex items-center justify-center shadow-md shrink-0">
+                            <!-- Maple Leaf / Emblem SVG -->
+                            <svg class="w-6 h-6 text-amber-200" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M12 2L9.8 7.2L6.5 6.2L7.8 10.6L3.5 9.8L5.2 12.6L2.5 14.3L7.2 16.5L6.5 19.2L11.2 18.4V22H12.8V18.4L17.5 19.2L16.8 16.5L21.5 14.3L18.8 12.6L20.5 9.8L16.2 10.6L17.5 6.2L14.2 7.2L12 2Z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h1 class="font-serif text-lg sm:text-xl font-bold tracking-tight text-amber-50 leading-tight">
+                                Road to Sovereignty <span class="text-amber-400 font-sans font-semibold text-sm sm:text-base">(1914–1918)</span>
+                            </h1>
+                            <p class="text-xs text-slate-300">Grade 7 Alberta Social Studies &bull; Junior Historian Archive</p>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Sound Toggle -->
+                    <button id="soundToggleMobile" onclick="toggleSound()" class="md:hidden p-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 text-amber-300 text-xs font-semibold flex items-center gap-1" aria-label="Toggle Sound Effects">
+                        <span id="soundIconMobile">🔊</span>
+                    </button>
+                </div>
+
+                <!-- Persistent Sovereignty Meter -->
+                <div class="flex items-center gap-3 flex-1 md:max-w-md">
+                    <div class="w-full">
+                        <div class="flex items-center justify-between text-xs mb-1">
+                            <span class="font-semibold text-amber-300 uppercase tracking-wider">Sovereignty Meter</span>
+                            <span id="sovereigntyStageLabel" class="text-slate-200 font-medium">British Dominion (0%)</span>
+                        </div>
+                        <div class="w-full h-3 bg-slate-800 rounded-full overflow-hidden border border-slate-700 p-0.5">
+                            <div id="sovereigntyBar" class="h-full rounded-full bg-gradient-to-r from-amber-500 via-amber-400 to-rose-500 transition-all duration-700 ease-out" style="width: 4%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Desktop Sound Toggle -->
+                    <button id="soundToggleDesktop" onclick="toggleSound()" class="hidden md:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-amber-300 text-xs font-semibold shrink-0 btn-tactile" title="Toggle Sound Effects">
+                        <span id="soundIconDesktop">🔊</span>
+                        <span id="soundTextDesktop">Audio On</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main 4-Module Navigation -->
+            <nav class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-3 pt-2 border-t border-slate-700/80" aria-label="Main Modules">
+                <button onclick="switchModule('learn')" id="nav-learn" class="nav-btn flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all btn-tactile bg-amber-600 text-white shadow-md">
+                    <span>📜</span>
+                    <span>1. Briefing Room</span>
+                    <span id="badge-nav-learn" class="hidden text-xs bg-emerald-500 text-white rounded-full w-4 h-4 inline-flex items-center justify-center">✓</span>
+                </button>
+                <button onclick="switchModule('explore')" id="nav-explore" class="nav-btn flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all btn-tactile bg-slate-800 text-slate-200 hover:bg-slate-700">
+                    <span>🗺️</span>
+                    <span>2. Field Archive</span>
+                    <span id="badge-nav-explore" class="hidden text-xs bg-emerald-500 text-white rounded-full w-4 h-4 inline-flex items-center justify-center">✓</span>
+                </button>
+                <button onclick="switchModule('game')" id="nav-game" class="nav-btn flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all btn-tactile bg-slate-800 text-slate-200 hover:bg-slate-700">
+                    <span>📡</span>
+                    <span>3. Dispatch Game</span>
+                    <span id="badge-nav-game" class="hidden text-xs bg-emerald-500 text-white rounded-full w-4 h-4 inline-flex items-center justify-center">✓</span>
+                </button>
+                <button onclick="switchModule('assess')" id="nav-assess" class="nav-btn flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all btn-tactile bg-slate-800 text-slate-200 hover:bg-slate-700">
+                    <span>🏅</span>
+                    <span>4. Verification</span>
+                    <span id="badge-nav-assess" class="hidden text-xs bg-emerald-500 text-white rounded-full w-4 h-4 inline-flex items-center justify-center">✓</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ==================== MAIN CONTENT AREA ==================== -->
+    <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-6">
+
+        <!-- Guiding Question Banner -->
+        <div class="mb-6 bg-white/90 backdrop-blur-sm border-l-4 border-rose-700 rounded-xl p-4 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+                <span class="text-xs font-extrabold uppercase tracking-wider text-rose-700">Guiding Question &bull; Time and Place</span>
+                <p class="font-serif text-sm sm:text-base font-bold text-slate-800 mt-0.5">
+                    "How can defence of peace and security play a role in the development of a nation?"
+                </p>
+            </div>
+            <div class="text-xs bg-amber-100 text-amber-900 border border-amber-300 px-3 py-1.5 rounded-lg font-semibold shrink-0 self-start sm:self-center">
+                Outcome: Armed Forces &rarr; Sovereignty
+            </div>
+        </div>
+
+        <!-- ===================================================================== -->
+        <!-- MODULE 1: THE BRIEFING ROOM (LEARNING PIECE)                          -->
+        <!-- ===================================================================== -->
+        <section id="module-learn" class="module-section fade-in space-y-6">
+            <div class="bg-white rounded-2xl shadow-md border border-stone-200 overflow-hidden">
+                <div class="bg-gradient-to-r from-slate-800 to-slate-900 px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Module 1 &bull; Learning Briefing</span>
+                        <h2 class="font-serif text-xl sm:text-2xl font-bold text-white">From British Dominion to Distinct National Force</h2>
+                    </div>
+                    <span id="learnProgressPill" class="px-3 py-1 rounded-full bg-slate-700 text-amber-300 text-xs font-bold self-start sm:self-center">
+                        0 / 3 Briefings Completed
+                    </span>
+                </div>
+
+                <div class="p-5 sm:p-6 space-y-8">
+                    <!-- Briefing 1: Interactive Chain of Command -->
+                    <div class="bg-parchment rounded-2xl p-5 border border-stone-300">
+                        <div class="flex items-start justify-between gap-3 mb-3">
+                            <div>
+                                <span class="inline-block px-2.5 py-0.5 rounded-md bg-amber-200 text-amber-900 text-xs font-extrabold mb-1">BRIEFING 1 OF 3</span>
+                                <h3 class="font-serif text-lg font-bold text-slate-900">1914: Who Controlled Canada’s Foreign Affairs?</h3>
+                            </div>
+                            <span id="learnCheck1" class="hidden px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">✓ Completed</span>
+                        </div>
+                        <p class="text-sm sm:text-base text-slate-700 leading-relaxed mb-4">
+                            When the First World War began in August 1914, Canada was a self-governing Dominion—but <strong>Britain still controlled Canada’s foreign affairs</strong>. That meant Canada did not make its own separate decision to declare war. Toggle the timeline switch below to see what happened!
+                        </p>
+
+                        <!-- Interactive Foreign Affairs Toggle -->
+                        <div class="bg-white rounded-xl p-4 border border-stone-200 shadow-inner">
+                            <div class="flex flex-wrap items-center justify-center gap-3 mb-4">
+                                <button id="btnPeace1914" onclick="setChainState('peace')" class="px-4 py-2.5 rounded-xl font-bold text-sm btn-tactile bg-slate-800 text-white shadow">
+                                    July 1914: Pre-War Peace
+                                </button>
+                                <button id="btnWar1914" onclick="setChainState('war')" class="px-4 py-2.5 rounded-xl font-bold text-sm btn-tactile bg-rose-100 text-rose-800 hover:bg-rose-200 border border-rose-300">
+                                    August 4, 1914: Britain Declares War ⚡
+                                </button>
+                            </div>
+
+                            <!-- Visual Chain of Command Diagram -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-center text-center">
+                                <div id="chainBox1" class="p-4 rounded-xl border-2 border-slate-300 bg-slate-50 transition-all duration-300">
+                                    <div class="text-2xl mb-1">🇬🇧</div>
+                                    <div class="font-bold text-slate-900 text-sm">British Empire (London)</div>
+                                    <div id="chainText1" class="text-xs text-slate-600 mt-1">Holds legal authority over Empire foreign policy.</div>
+                                </div>
+                                <div class="flex flex-col items-center justify-center">
+                                    <span id="chainArrowLabel" class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Foreign Affairs Control</span>
+                                    <div id="chainArrow" class="text-2xl font-bold text-slate-400 md:rotate-0 rotate-90 transition-colors">&rarr;</div>
+                                </div>
+                                <div id="chainBox2" class="p-4 rounded-xl border-2 border-slate-300 bg-slate-50 transition-all duration-300">
+                                    <div class="text-2xl mb-1">🇨🇦</div>
+                                    <div class="font-bold text-slate-900 text-sm">Dominion of Canada (Ottawa)</div>
+                                    <div id="chainText2" class="text-xs text-slate-600 mt-1">Small regular army (~3,000 soldiers) & local militia.</div>
+                                </div>
+                            </div>
+
+                            <div id="chainTakeaway" class="hidden mt-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-sm text-rose-900 font-medium">
+                                <strong>Key Fact:</strong> The moment Britain declared war on Germany, Canada was automatically at war. However, Canada decided <em>how many</em> troops to send and began building its own national military identity!
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Briefing 2: Flip Cards for CEF & Canadian Corps -->
+                    <div class="bg-parchment rounded-2xl p-5 border border-stone-300">
+                        <div class="flex items-start justify-between gap-3 mb-3">
+                            <div>
+                                <span class="inline-block px-2.5 py-0.5 rounded-md bg-amber-200 text-amber-900 text-xs font-extrabold mb-1">BRIEFING 2 OF 3</span>
+                                <h3 class="font-serif text-lg font-bold text-slate-900">Fighting as Distinct Canadian Units</h3>
+                            </div>
+                            <span id="learnCheck2" class="hidden px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">✓ Completed</span>
+                        </div>
+                        <p class="text-sm sm:text-base text-slate-700 mb-4">
+                            Before 1914, Canadians who fought overseas were often folded into British units. During WWI, Canada formed distinct military forces. <strong>Tap both cards below</strong> to flip them and inspect their significance.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <!-- Flip Card 1: CEF -->
+                            <div class="perspective-1000">
+                                <div id="flip-cef" onclick="flipCard('cef')" class="flip-card cursor-pointer select-none" role="button" tabindex="0" aria-label="Flip Canadian Expeditionary Force card">
+                                    <div class="flip-card-inner">
+                                        <div class="flip-card-front bg-gradient-to-br from-slate-800 to-slate-900 text-white p-6 shadow-md border-2 border-amber-500/60 flex flex-col justify-between">
+                                            <div class="flex items-center justify-between">
+                                                <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Tap to Flip ↻</span>
+                                                <span class="text-2xl">🪖</span>
+                                            </div>
+                                            <div>
+                                                <h4 class="font-serif text-xl font-bold text-amber-50">Canadian Expeditionary Force (CEF)</h4>
+                                                <p class="text-xs text-slate-300 mt-1">Formed in 1914 &bull; Overseas Service</p>
+                                            </div>
+                                            <div class="text-xs text-amber-300 font-semibold">What made the CEF historic? &rarr;</div>
+                                        </div>
+                                        <div class="flip-card-back bg-white text-slate-800 p-6 shadow-md border-2 border-emerald-500 flex flex-col justify-between">
+                                            <div>
+                                                <div class="flex items-center justify-between mb-2">
+                                                    <span class="text-xs font-extrabold uppercase text-emerald-700">CEF Dossier</span>
+                                                    <span class="text-xs text-slate-400">Tap to flip back ↻</span>
+                                                </div>
+                                                <p class="text-sm leading-relaxed text-slate-700">
+                                                    Over <strong>600,000 Canadians</strong> enlisted in the CEF to serve overseas. Britain sent these Canadian forces to Europe where they served as <strong>distinct Canadian units for the first time</strong> rather than simply blending into British regiments.
+                                                </p>
+                                            </div>
+                                            <div class="mt-3 pt-2 border-t border-stone-200 text-xs font-bold text-amber-800">
+                                                Sovereignty Link: Built national pride and separate Canadian leadership.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Flip Card 2: Canadian Corps -->
+                            <div class="perspective-1000">
+                                <div id="flip-corps" onclick="flipCard('corps')" class="flip-card cursor-pointer select-none" role="button" tabindex="0" aria-label="Flip Canadian Corps card">
+                                    <div class="flip-card-inner">
+                                        <div class="flip-card-front bg-gradient-to-br from-rose-900 to-slate-900 text-white p-6 shadow-md border-2 border-amber-500/60 flex flex-col justify-between">
+                                            <div class="flex items-center justify-between">
+                                                <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Tap to Flip ↻</span>
+                                                <span class="text-2xl">🛡️</span>
+                                            </div>
+                                            <div>
+                                                <h4 class="font-serif text-xl font-bold text-amber-50">The Canadian Corps</h4>
+                                                <p class="text-xs text-slate-300 mt-1">Four Unified Divisions &bull; Western Front</p>
+                                            </div>
+                                            <div class="text-xs text-amber-300 font-semibold">How did it shape Canada's reputation? &rarr;</div>
+                                        </div>
+                                        <div class="flip-card-back bg-white text-slate-800 p-6 shadow-md border-2 border-emerald-500 flex flex-col justify-between">
+                                            <div>
+                                                <div class="flex items-center justify-between mb-2">
+                                                    <span class="text-xs font-extrabold uppercase text-emerald-700">Canadian Corps Dossier</span>
+                                                    <span class="text-xs text-slate-400">Tap to flip back ↻</span>
+                                                </div>
+                                                <p class="text-sm leading-relaxed text-slate-700">
+                                                    Formed in 1915, the <strong>Canadian Corps</strong> united Canada’s four divisions into one powerful fighting force—eventually led by a Canadian commander, Sir Arthur Currie. Their teamwork earned global respect.
+                                                </p>
+                                            </div>
+                                            <div class="mt-3 pt-2 border-t border-stone-200 text-xs font-bold text-amber-800">
+                                                Sovereignty Link: Proved Canada could organize, plan, and lead independently.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Briefing 3: Historian's Prediction Prompt -->
+                    <div class="bg-parchment rounded-2xl p-5 border border-stone-300">
+                        <div class="flex items-start justify-between gap-3 mb-3">
+                            <div>
+                                <span class="inline-block px-2.5 py-0.5 rounded-md bg-amber-200 text-amber-900 text-xs font-extrabold mb-1">BRIEFING 3 OF 3</span>
+                                <h3 class="font-serif text-lg font-bold text-slate-900">Historian’s Prediction</h3>
+                            </div>
+                            <span id="learnCheck3" class="hidden px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">✓ Completed</span>
+                        </div>
+                        <p class="text-sm sm:text-base text-slate-700 mb-4">
+                            Before you explore the Field Archive, make a prediction: <strong>When a young country develops its own distinct armed forces and achieves major accomplishments abroad, how does that affect its sovereignty (independence)?</strong>
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <button onclick="selectHypothesis(0, this)" class="hypo-btn text-left p-4 rounded-xl bg-white border-2 border-stone-200 hover:border-amber-500 transition-all text-sm">
+                                <div class="font-bold text-slate-900 mb-1">A. Stronger Global Voice</div>
+                                <div class="text-xs text-slate-600">Other nations begin seeing Canada as an independent country, not just a British colony.</div>
+                            </button>
+                            <button onclick="selectHypothesis(1, this)" class="hypo-btn text-left p-4 rounded-xl bg-white border-2 border-stone-200 hover:border-amber-500 transition-all text-sm">
+                                <div class="font-bold text-slate-900 mb-1">B. Shared National Identity</div>
+                                <div class="text-xs text-slate-600">Citizens from diverse communities unite around a shared sense of pride and sacrifice.</div>
+                            </button>
+                            <button onclick="selectHypothesis(2, this)" class="hypo-btn text-left p-4 rounded-xl bg-white border-2 border-stone-200 hover:border-amber-500 transition-all text-sm">
+                                <div class="font-bold text-slate-900 mb-1">C. Both A and B Together</div>
+                                <div class="text-xs text-slate-600">Developing armed forces builds both internal unity and international recognition of sovereignty.</div>
+                            </button>
+                        </div>
+                        <div id="hypoFeedback" class="hidden mt-4 p-3.5 rounded-xl bg-emerald-50 border border-emerald-300 text-sm text-emerald-900"></div>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button onclick="switchModule('explore')" class="px-6 py-3 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold shadow-md btn-tactile flex items-center gap-2">
+                            <span>Continue to Field Archive</span>
+                            <span>&rarr;</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- MODULE 2: FIELD ARCHIVE (EXPLORING PIECE)                             -->
+        <!-- ===================================================================== -->
+        <section id="module-explore" class="module-section hidden fade-in space-y-5">
+            <!-- Sub-navigation for the 3 Explore KUSP Themes -->
+            <div class="bg-white rounded-2xl p-3 shadow-sm border border-stone-200 flex flex-wrap gap-2 justify-between items-center">
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="switchExploreTab('map')" id="exp-tab-map" class="exp-tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm btn-tactile bg-slate-900 text-amber-300 shadow">
+                        🗺️ Battlefields (<span id="count-battles">0</span>/4)
+                    </button>
+                    <button onclick="switchExploreTab('voices')" id="exp-tab-voices" class="exp-tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm btn-tactile bg-stone-100 text-slate-700 hover:bg-stone-200">
+                        🤝 Diverse Voices (<span id="count-voices">0</span>/4)
+                    </button>
+                    <button onclick="switchExploreTab('memorials')" id="exp-tab-memorials" class="exp-tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm btn-tactile bg-stone-100 text-slate-700 hover:bg-stone-200">
+                        🌺 Remembrance (<span id="count-memorials">0</span>/4)
+                    </button>
+                </div>
+                <span class="text-xs font-semibold text-slate-500 px-2">Explore all 12 archive entries to boost Sovereignty!</span>
+            </div>
+
+            <!-- SUB-TAB A: INTERACTIVE BATTLEFIELD MAP -->
+            <div id="explore-map" class="explore-sub space-y-4">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                    <!-- Stylized Interactive SVG Map -->
+                    <div class="lg:col-span-7 bg-white rounded-2xl p-4 shadow-md border border-stone-200">
+                        <div class="flex items-center justify-between mb-3">
+                            <div>
+                                <h3 class="font-serif font-bold text-lg text-slate-900">Key WWI Theatres & Battlefields</h3>
+                                <p class="text-xs text-slate-500">Tap any glowing marker to open its Field Dossier.</p>
+                            </div>
+                            <span class="text-xs font-bold px-2.5 py-1 rounded-lg bg-amber-100 text-amber-900">1915–1917</span>
+                        </div>
+
+                        <div class="relative w-full rounded-xl overflow-hidden border-2 border-stone-300 bg-[#e6dec8]">
+                            <!-- Stylized Historical SVG Map -->
+                            <svg viewBox="0 0 600 400" class="w-full h-auto block select-none" role="img" aria-label="Interactive Map of Canadian WWI Battlefields">
+                                <!-- Sea background -->
+                                <rect width="600" height="400" fill="#cbd9e2"/>
+                                <!-- Subtle Map Grid -->
+                                <g stroke="#9fb6c4" stroke-width="0.6" stroke-dasharray="4 4" opacity="0.6">
+                                    <line x1="0" y1="100" x2="600" y2="100"/>
+                                    <line x1="0" y1="200" x2="600" y2="200"/>
+                                    <line x1="0" y1="300" x2="600" y2="300"/>
+                                    <line x1="150" y1="0" x2="150" y2="400"/>
+                                    <line x1="300" y1="0" x2="300" y2="400"/>
+                                    <line x1="450" y1="0" x2="450" y2="400"/>
+                                </g>
+
+                                <!-- Landmass: Britain (Top Left) -->
+                                <path d="M 0 0 L 145 0 L 160 45 L 125 90 L 60 110 L 0 95 Z" fill="#dfd5bc" stroke="#a69878" stroke-width="2"/>
+                                <text x="26" y="55" fill="#645a44" font-size="12" font-weight="700" font-family="Merriweather, serif">BRITAIN</text>
+
+                                <!-- Landmass: Western Front (Belgium & Northern France) -->
+                                <path d="M 190 400 L 175 260 L 210 175 L 270 110 L 340 60 L 420 45 L 420 400 Z" fill="#ebe2cc" stroke="#a69878" stroke-width="2"/>
+                                <text x="290" y="95" fill="#645a44" font-size="11" font-weight="700" letter-spacing="2">BELGIUM</text>
+                                <text x="225" y="340" fill="#645a44" font-size="12" font-weight="700" letter-spacing="2">NORTHERN FRANCE</text>
+
+                                <!-- Stylized Western Front Line -->
+                                <path d="M 330 65 Q 315 130 295 190 T 265 310" fill="none" stroke="#be123c" stroke-width="2.5" stroke-dasharray="6 5" opacity="0.65"/>
+                                <text x="338" y="165" fill="#9f1239" font-size="9" font-weight="700" transform="rotate(14, 338, 165)">WESTERN FRONT</text>
+
+                                <!-- English Channel Label -->
+                                <text x="85" y="165" fill="#47667a" font-size="10" font-style="italic" font-weight="600">English Channel</text>
+
+                                <!-- Inset Box: Gallipoli / Dardanelles (Mediterranean Theatre) -->
+                                <rect x="435" y="215" width="150" height="170" rx="10" fill="#d4e1e8" stroke="#645a44" stroke-width="2"/>
+                                <rect x="435" y="215" width="150" height="24" rx="8" fill="#1e293b"/>
+                                <text x="510" y="231" text-anchor="middle" fill="#fcd34d" font-size="9.5" font-weight="700">MEDITERRANEAN INSET</text>
+                                <!-- Gallipoli Peninsula Shape -->
+                                <path d="M 455 370 L 470 300 L 515 265 L 535 280 L 500 325 L 490 370 Z" fill="#e5d7b5" stroke="#a69878" stroke-width="1.5"/>
+                                <path d="M 520 370 L 545 315 L 578 290 L 578 370 Z" fill="#dfd0aa" stroke="#a69878" stroke-width="1.5"/>
+                                <text x="510" y="362" text-anchor="middle" fill="#47667a" font-size="8.5" font-style="italic">Dardanelles Strait</text>
+
+                                <!-- Compass Rose -->
+                                <g transform="translate(55, 345)" opacity="0.75">
+                                    <circle cx="0" cy="0" r="22" fill="#f8f4ea" stroke="#8c7d5b" stroke-width="1.5"/>
+                                    <path d="M 0 -18 L 4 -4 L 18 0 L 4 4 L 0 18 L -4 4 L -18 0 L -4 -4 Z" fill="#b45309"/>
+                                    <text x="0" y="-25" text-anchor="middle" font-size="10" font-weight="800" fill="#475569">N</text>
+                                </g>
+
+                                <!-- CLICKABLE PIN 1: YPRES -->
+                                <g class="cursor-pointer group" onclick="openBattle('ypres')" role="button" tabindex="0">
+                                    <circle cx="315" cy="128" r="14" fill="#be123c" class="map-pin-pulse" opacity="0.45"/>
+                                    <circle id="pin-ypres" cx="315" cy="128" r="10" fill="#be123c" stroke="#fff" stroke-width="2.5"/>
+                                    <text x="315" y="132" text-anchor="middle" fill="#fff" font-size="10" font-weight="800">1</text>
+                                    <rect x="330" y="114" width="95" height="22" rx="5" fill="#0f172a" opacity="0.9"/>
+                                    <text x="377" y="129" text-anchor="middle" fill="#fef3c7" font-size="10" font-weight="700">Ypres / Passchendaele</text>
+                                </g>
+
+                                <!-- CLICKABLE PIN 2: VIMY RIDGE -->
+                                <g class="cursor-pointer group" onclick="openBattle('vimy')" role="button" tabindex="0">
+                                    <circle cx="290" cy="198" r="14" fill="#b45309" class="map-pin-pulse" opacity="0.45"/>
+                                    <circle id="pin-vimy" cx="290" cy="198" r="10" fill="#b45309" stroke="#fff" stroke-width="2.5"/>
+                                    <text x="290" y="202" text-anchor="middle" fill="#fff" font-size="10" font-weight="800">2</text>
+                                    <rect x="190" y="185" width="84" height="22" rx="5" fill="#0f172a" opacity="0.9"/>
+                                    <text x="232" y="200" text-anchor="middle" fill="#fef3c7" font-size="10" font-weight="700">Vimy Ridge</text>
+                                </g>
+
+                                <!-- CLICKABLE PIN 3: BEAUMONT-HAMEL -->
+                                <g class="cursor-pointer group" onclick="openBattle('beaumont')" role="button" tabindex="0">
+                                    <circle cx="272" cy="268" r="14" fill="#be123c" class="map-pin-pulse" opacity="0.45"/>
+                                    <circle id="pin-beaumont" cx="272" cy="268" r="10" fill="#be123c" stroke="#fff" stroke-width="2.5"/>
+                                    <text x="272" y="272" text-anchor="middle" fill="#fff" font-size="10" font-weight="800">3</text>
+                                    <rect x="288" y="256" width="108" height="22" rx="5" fill="#0f172a" opacity="0.9"/>
+                                    <text x="342" y="271" text-anchor="middle" fill="#fef3c7" font-size="10" font-weight="700">Beaumont-Hamel</text>
+                                </g>
+
+                                <!-- CLICKABLE PIN 4: GALLIPOLI -->
+                                <g class="cursor-pointer group" onclick="openBattle('gallipoli')" role="button" tabindex="0">
+                                    <circle cx="508" cy="292" r="14" fill="#b45309" class="map-pin-pulse" opacity="0.45"/>
+                                    <circle id="pin-gallipoli" cx="508" cy="292" r="10" fill="#b45309" stroke="#fff" stroke-width="2.5"/>
+                                    <text x="508" y="296" text-anchor="middle" fill="#fff" font-size="10" font-weight="800">4</text>
+                                    <rect x="466" y="310" width="84" height="22" rx="5" fill="#0f172a" opacity="0.9"/>
+                                    <text x="508" y="325" text-anchor="middle" fill="#fef3c7" font-size="10" font-weight="700">Gallipoli</text>
+                                </g>
+                            </svg>
+                        </div>
+
+                        <!-- Quick-tap buttons below map for easy mobile access -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-3">
+                            <button onclick="openBattle('ypres')" class="px-2.5 py-2 rounded-lg text-xs font-bold bg-stone-100 hover:bg-amber-100 border border-stone-300 text-slate-800 btn-tactile">1. Ypres</button>
+                            <button onclick="openBattle('vimy')" class="px-2.5 py-2 rounded-lg text-xs font-bold bg-stone-100 hover:bg-amber-100 border border-stone-300 text-slate-800 btn-tactile">2. Vimy Ridge</button>
+                            <button onclick="openBattle('beaumont')" class="px-2.5 py-2 rounded-lg text-xs font-bold bg-stone-100 hover:bg-amber-100 border border-stone-300 text-slate-800 btn-tactile">3. Beaumont-Hamel</button>
+                            <button onclick="openBattle('gallipoli')" class="px-2.5 py-2 rounded-lg text-xs font-bold bg-stone-100 hover:bg-amber-100 border border-stone-300 text-slate-800 btn-tactile">4. Gallipoli</button>
+                        </div>
+                    </div>
+
+                    <!-- Field Dossier Panel -->
+                    <div class="lg:col-span-5 bg-white rounded-2xl p-5 shadow-md border border-stone-200 flex flex-col justify-between">
+                        <div id="battleDossierContent">
+                            <div class="text-center py-10 px-4">
+                                <div class="w-16 h-16 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center text-3xl mx-auto mb-3">📂</div>
+                                <h4 class="font-serif font-bold text-lg text-slate-900">Select a Battlefield Pin</h4>
+                                <p class="text-sm text-slate-600 mt-2">
+                                    Tap any of the 4 numbered pins on the map to examine Canada's military contributions and how they advanced national sovereignty.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUB-TAB B: VOICES OF SERVICE (DIVERSE COMMUNITIES) -->
+            <div id="explore-voices" class="explore-sub hidden space-y-4">
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-stone-200">
+                    <h3 class="font-serif text-xl font-bold text-slate-900">Voices of Service: Canada’s Diverse Communities</h3>
+                    <p class="text-sm text-slate-600 mt-1">
+                        Canada’s war effort was built by people from many backgrounds—many of whom overcame discrimination to serve with courage. Tap each profile card to inspect their contribution.
+                    </p>
+                </div>
+                <div id="voicesGrid" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+
+            <!-- SUB-TAB C: SPACES OF REMEMBRANCE (MEMORIALS & DAYS) -->
+            <div id="explore-memorials" class="explore-sub hidden space-y-4">
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-stone-200">
+                    <h3 class="font-serif text-xl font-bold text-slate-900">Spaces of Remembrance</h3>
+                    <p class="text-sm text-slate-600 mt-1">
+                        We honour the sacrifices and heroism of those who fought and died in the First World War through commemorative days and national memorials. Read each plaque and <strong>place a digital poppy</strong> to pay tribute.
+                    </p>
+                </div>
+                <div id="memorialsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- MODULE 3: CORPS DISPATCH RUNNER (GAMIFIED REINFORCEMENT)              -->
+        <!-- ===================================================================== -->
+        <section id="module-game" class="module-section hidden fade-in space-y-5">
+            <div class="bg-white rounded-2xl shadow-md border border-stone-200 overflow-hidden">
+                <!-- Game Header & HUD -->
+                <div class="bg-slate-900 text-white px-5 py-4 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Module 3 &bull; Tactical Signal Game</span>
+                        <h2 class="font-serif text-xl sm:text-2xl font-bold">Corps Dispatch Runner</h2>
+                        <p class="text-xs text-slate-300 mt-0.5">Route vital dispatches from HQ through all 4 WWI battlefields to the National Memorial!</p>
+                    </div>
+
+                    <!-- Live HUD Stats -->
+                    <div class="grid grid-cols-4 gap-2 sm:gap-3 text-center">
+                        <div class="bg-slate-800 border border-slate-700 rounded-xl px-3 py-2">
+                            <div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Score</div>
+                            <div id="hudScore" class="text-base sm:text-lg font-extrabold text-amber-400">0</div>
+                        </div>
+                        <div class="bg-slate-800 border border-slate-700 rounded-xl px-3 py-2">
+                            <div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Streak</div>
+                            <div id="hudStreak" class="text-base sm:text-lg font-extrabold text-emerald-400">x1</div>
+                        </div>
+                        <div class="bg-slate-800 border border-slate-700 rounded-xl px-3 py-2">
+                            <div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Signal</div>
+                            <div id="hudSignal" class="text-base sm:text-lg font-extrabold text-rose-400">100%</div>
+                        </div>
+                        <div class="bg-slate-800 border border-slate-700 rounded-xl px-3 py-2">
+                            <div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Leg</div>
+                            <div id="hudLeg" class="text-base sm:text-lg font-extrabold text-sky-300">0/6</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Game Play Area -->
+                <div class="p-4 sm:p-5 space-y-4">
+                    <!-- Responsive Canvas Wrapper -->
+                    <div class="relative w-full h-[290px] sm:h-[340px] bg-slate-900 rounded-2xl border-2 border-stone-300 shadow-inner overflow-hidden">
+                        <canvas id="dispatchCanvas"></canvas>
+
+                        <!-- Start / Victory Overlay inside Canvas Frame -->
+                        <div id="gameOverlay" class="absolute inset-0 bg-slate-900/85 backdrop-blur-xs flex flex-col items-center justify-center p-6 text-center text-white">
+                            <div class="text-4xl mb-2">📡</div>
+                            <h3 id="gameOverlayTitle" class="font-serif text-xl sm:text-2xl font-bold text-amber-300">Ready to Route the Dispatch?</h3>
+                            <p id="gameOverlayDesc" class="text-xs sm:text-sm text-slate-200 max-w-md mt-2 leading-relaxed">
+                                Obstacles like Passchendaele Mud and Severed Telegraph Lines block the route. Answer quick-fire WWI curriculum questions to clear each obstacle, build a Clear Signal streak, and earn all 4 Historian Badges!
+                            </p>
+                            <div class="flex flex-wrap justify-center gap-3 mt-5">
+                                <button onclick="startGame('standard')" class="px-5 py-3 rounded-xl bg-gradient-to-b from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-extrabold text-sm shadow-lg border-b-4 border-amber-800 btn-tactile">
+                                    ▶ Start Standard Mission
+                                </button>
+                                <button onclick="startGame('timed')" class="px-5 py-3 rounded-xl bg-gradient-to-b from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-extrabold text-sm shadow-lg border-b-4 border-rose-900 btn-tactile">
+                                    ⏱️ Rapid Dispatch (Timed)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Controls Row OUTSIDE Canvas -->
+                    <div class="flex flex-wrap items-center justify-between gap-3 bg-parchment p-3.5 rounded-xl border border-stone-300">
+                        <div class="flex items-center gap-2 text-xs sm:text-sm font-semibold text-slate-700">
+                            <span id="gameStatusIcon">🧭</span>
+                            <span id="gameStatusText">Press Start to begin routing dispatches across the Corps network.</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span id="timerBadge" class="hidden px-3 py-1.5 rounded-lg bg-rose-100 text-rose-800 border border-rose-300 font-extrabold text-xs">⏱️ 60s</span>
+                            <button onclick="resetGameToMenu()" class="px-3.5 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs btn-tactile">
+                                ↺ Restart
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Obstacle Question Card (Appears cleanly below canvas when signal hits an obstacle) -->
+                    <div id="gameQuestionBox" class="hidden bg-white rounded-2xl p-5 border-2 border-amber-500 shadow-lg fade-in">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                            <span id="obstacleTag" class="px-3 py-1 rounded-full bg-rose-100 text-rose-800 text-xs font-extrabold uppercase tracking-wider">
+                                ⚠️ OBSTACLE: PASSCHENDAELE MUD
+                            </span>
+                            <span id="qCategoryTag" class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-bold">
+                                Category: Battlefields
+                            </span>
+                        </div>
+                        <h4 id="gameQuestionText" class="font-serif text-base sm:text-lg font-bold text-slate-900 mb-4"></h4>
+                        <div id="gameOptionsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <!-- Options inserted dynamically -->
+                        </div>
+                        <div id="gameAnswerFeedback" class="hidden mt-4 p-3.5 rounded-xl text-sm font-medium"></div>
+                    </div>
+
+                    <!-- Unlockable Historian Badges -->
+                    <div class="pt-2">
+                        <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-500 mb-2.5">Unlockable Junior Historian Badges</h4>
+                        <div id="badgesGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- MODULE 4: THE CURATOR'S VERIFICATION (ASSESSMENT PIECE)               -->
+        <!-- ===================================================================== -->
+        <section id="module-assess" class="module-section hidden fade-in space-y-6">
+            <!-- Part 1: Artifact & Fact Matching -->
+            <div class="bg-white rounded-2xl shadow-md border border-stone-200 overflow-hidden">
+                <div class="bg-slate-900 text-white px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Module 4 &bull; Assessment Part 1</span>
+                        <h2 class="font-serif text-xl font-bold">Artifact &amp; Fact Matching</h2>
+                    </div>
+                    <span id="matchScorePill" class="px-3 py-1 rounded-full bg-slate-700 text-amber-300 text-xs font-bold self-start sm:self-center">
+                        0 / 6 Matched
+                    </span>
+                </div>
+                <div class="p-5 sm:p-6">
+                    <p class="text-sm text-slate-600 mb-4">
+                        <strong>How to match:</strong> Tap a <em>Historical Term</em> on the left, then tap its matching <em>Description</em> on the right.
+                    </p>
+                    <div id="matchFeedbackBanner" class="hidden mb-4 p-3 rounded-xl text-sm font-semibold"></div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div id="matchTermsCol" class="space-y-2.5"></div>
+                        <div id="matchDefsCol" class="space-y-2.5"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Part 2: Sovereignty Cause-and-Effect Scenarios -->
+            <div class="bg-white rounded-2xl shadow-md border border-stone-200 overflow-hidden">
+                <div class="bg-slate-900 text-white px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Module 4 &bull; Assessment Part 2</span>
+                        <h2 class="font-serif text-xl font-bold">Sovereignty Cause-and-Effect Check</h2>
+                    </div>
+                    <span id="quizScorePill" class="px-3 py-1 rounded-full bg-slate-700 text-amber-300 text-xs font-bold self-start sm:self-center">
+                        0 / 5 Correct
+                    </span>
+                </div>
+                <div id="assessQuizContainer" class="p-5 sm:p-6 space-y-6">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+
+            <!-- Junior Historian Summary & Export Card -->
+            <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-2xl p-6 shadow-lg border-2 border-amber-500">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-700 pb-4 mb-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Official Archive Record</span>
+                        <h3 class="font-serif text-xl sm:text-2xl font-bold text-white">Junior Historian Summary</h3>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label for="studentNameInput" class="text-xs text-slate-300 font-semibold">Your Name:</label>
+                        <input id="studentNameInput" type="text" placeholder="e.g., Alex M." class="px-3 py-2 rounded-lg bg-slate-800 border border-slate-600 text-white text-sm focus:outline-none focus:border-amber-400 w-40 sm:w-48">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+                    <div class="bg-slate-800/80 rounded-xl p-3 border border-slate-700">
+                        <div class="text-xs text-slate-400">Sovereignty Meter</div>
+                        <div id="repSovereignty" class="text-xl font-extrabold text-amber-400">0%</div>
+                    </div>
+                    <div class="bg-slate-800/80 rounded-xl p-3 border border-slate-700">
+                        <div class="text-xs text-slate-400">Archive Explored</div>
+                        <div id="repExplored" class="text-xl font-extrabold text-sky-300">0 / 12</div>
+                    </div>
+                    <div class="bg-slate-800/80 rounded-xl p-3 border border-slate-700">
+                        <div class="text-xs text-slate-400">Dispatch High Score</div>
+                        <div id="repGameScore" class="text-xl font-extrabold text-emerald-400">0</div>
+                    </div>
+                    <div class="bg-slate-800/80 rounded-xl p-3 border border-slate-700">
+                        <div class="text-xs text-slate-400">Verification Score</div>
+                        <div id="repAssessScore" class="text-xl font-extrabold text-rose-400">0 / 11</div>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                    <p class="text-xs text-slate-300">
+                        Copy your summary below to paste into Google Classroom, Brightspace, or your Social Studies journal.
+                    </p>
+                    <button onclick="copySummaryReport()" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-sm shadow btn-tactile flex items-center gap-2">
+                        <span>📋</span>
+                        <span>Copy Summary for Teacher</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-4 px-4 mt-8 border-t border-slate-800">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
+            <span>Aligned to Alberta Grade 7 Social Studies &bull; Time and Place (First World War)</span>
+            <span>Interactive Learning Archive &bull; Road to Sovereignty</span>
+        </div>
+    </footer>
+
+    <!-- Custom Toast Message Box (Replaces alert()) -->
+    <div id="toastBox" class="fixed bottom-5 right-5 z-50 hidden max-w-sm bg-slate-900 text-white border-l-4 border-amber-400 px-4 py-3 rounded-xl shadow-2xl text-sm font-semibold flex items-center gap-2.5">
+        <span id="toastIcon">✨</span>
+        <span id="toastMsg">Notification</span>
+    </div>
+
+    <!-- ==================== JAVASCRIPT APPLICATION LOGIC ==================== -->
+    <script>
+        /* =========================================================================
+           1. AUDIO ENGINE (TONE.JS SYNTHESIZED EFFECTS - SAFE FALLBACK)
+           ========================================================================= */
+        let soundEnabled = true;
+        let synth = null;
+
+        function initAudio() {
+            try {
+                if (typeof Tone !== 'undefined' && !synth) {
+                    synth = new Tone.PolySynth(Tone.Synth, {
+                        oscillator: { type: "triangle" },
+                        envelope: { attack: 0.01, decay: 0.15, sustain: 0.05, release: 0.2 }
+                    }).toDestination();
+                    synth.volume.value = -10;
+                }
+            } catch (e) {
+                // Audio context gracefully ignored if restricted
+            }
+        }
+
+        function playSfx(type) {
+            if (!soundEnabled) return;
+            try {
+                if (typeof Tone === 'undefined') return;
+                if (Tone.context.state !== 'running') {
+                    Tone.start();
+                }
+                initAudio();
+                if (!synth) return;
+
+                const now = Tone.now();
+                if (type === 'click') {
+                    synth.triggerAttackRelease("C5", "32n", now);
+                } else if (type === 'discover') {
+                    synth.triggerAttackRelease(["E5", "G5"], "16n", now);
+                } else if (type === 'success') {
+                    synth.triggerAttackRelease(["C5", "E5", "G5"], "16n", now);
+                    synth.triggerAttackRelease("C6", "8n", now + 0.12);
+                } else if (type === 'error') {
+                    synth.triggerAttackRelease(["C3", "B2"], "16n", now);
+                } else if (type === 'poppy') {
+                    synth.triggerAttackRelease(["D5", "F#5", "A5"], "8n", now);
+                } else if (type === 'victory') {
+                    synth.triggerAttackRelease("C5", "16n", now);
+                    synth.triggerAttackRelease("E5", "16n", now + 0.12);
+                    synth.triggerAttackRelease("G5", "16n", now + 0.24);
+                    synth.triggerAttackRelease(["C6", "E6"], "4n", now + 0.36);
+                }
+            } catch (err) {
+                // Silent fail for audio restrictions
+            }
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const icon = soundEnabled ? '🔊' : '🔇';
+            const text = soundEnabled ? 'Audio On' : 'Audio Off';
+            document.getElementById('soundIconMobile').textContent = icon;
+            document.getElementById('soundIconDesktop').textContent = icon;
+            document.getElementById('soundTextDesktop').textContent = text;
+            if (soundEnabled) playSfx('click');
+        }
+
+        /* =========================================================================
+           2. CUSTOM TOAST MESSAGE (NO alert() OR confirm())
+           ========================================================================= */
+        let toastTimeout = null;
+        function showToast(msg, icon = '✨') {
+            const box = document.getElementById('toastBox');
+            document.getElementById('toastMsg').textContent = msg;
+            document.getElementById('toastIcon').textContent = icon;
+            box.classList.remove('hidden');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                box.classList.add('hidden');
+            }, 3000);
+        }
+
+        /* =========================================================================
+           3. CURRICULUM DATA (ALIGNED TO ALBERTA GRADE 7 KUSPs)
+           ========================================================================= */
+        const BATTLES = {
+            ypres: {
+                id: 'ypres',
+                title: 'Ypres (Second Battle & Passchendaele)',
+                date: 'April 1915 & Oct–Nov 1917',
+                location: 'Flanders, Belgium',
+                unit: '1st Canadian Division & Canadian Corps',
+                summary: 'In the Second Battle of Ypres (1915), Canadian troops held the line during the first major chlorine gas attacks on the Western Front. Two years later at Passchendaele (1917), the Canadian Corps captured the muddy, shell-cratered ridge under extreme conditions.',
+                sovereignty: 'Earned Canadians an international reputation for determination and dependability as a distinct fighting force.'
+            },
+            vimy: {
+                id: 'vimy',
+                title: 'Battle of Vimy Ridge',
+                date: 'April 9–12, 1917',
+                location: 'Northern France',
+                unit: 'All Four Divisions of the Canadian Corps',
+                summary: 'For the first time in the war, all four divisions of the Canadian Corps fought together as a single unified force. Through careful planning, maps for every soldier, and the creeping barrage tactic, they captured the heavily fortified ridge.',
+                sovereignty: 'Widely remembered as a defining milestone of Canadian nationhood—proving Canada could plan and execute major operations independently.'
+            },
+            beaumont: {
+                id: 'beaumont',
+                title: 'Battle of Beaumont-Hamel',
+                date: 'July 1, 1916',
+                location: 'Somme Sector, France',
+                unit: 'Royal Newfoundland Regiment',
+                summary: 'On the opening day of the Battle of the Somme, the Royal Newfoundland Regiment advanced across open ground against heavy fire. Out of roughly 800 soldiers who went over the top, only 68 answered roll call the next morning.',
+                sovereignty: 'Honoured every July 1 as Memorial Day in Newfoundland and Labrador, deeply shaping regional and Canadian remembrance of sacrifice.'
+            },
+            gallipoli: {
+                id: 'gallipoli',
+                title: 'Gallipoli Campaign',
+                date: '1915–1916',
+                location: 'Gallipoli Peninsula (Dardanelles)',
+                unit: 'Royal Newfoundland Regiment & Allied Forces',
+                summary: 'The Royal Newfoundland Regiment was the only North American unit to fight in the gruelling Gallipoli Campaign in the Mediterranean, enduring harsh terrain, extreme weather, and difficult evacuations.',
+                sovereignty: 'Demonstrated that troops from across British North America served courageously in distant global theatres.'
+            }
+        };
+
+        const VOICES = [
+            {
+                id: 'no2',
+                title: 'Black Canadians — No. 2 Construction Battalion',
+                subtitle: 'Canada’s Largest All-Black Military Unit',
+                badge: '🪵 Forestry, Roads & Railways',
+                color: 'from-amber-800 to-stone-900',
+                body: 'When WWI began, many Black Canadians who tried to enlist were turned away due to racial discrimination. After persistent advocacy by community leaders, the No. 2 Construction Battalion was formed in 1916. Serving in France, they built vital roads, bridges, and railways and milled timber needed for trenches and front-line operations.',
+                impact: 'In 2022, Canada issued a formal apology and continues to honour their courage and service.'
+            },
+            {
+                id: 'indigenous',
+                title: 'Indigenous Soldiers',
+                subtitle: 'First Nations, Métis & Inuit Volunteers',
+                badge: '🦅 Scouts, Marksmen & Enlistees',
+                color: 'from-emerald-800 to-slate-900',
+                body: 'Thousands of First Nations, Métis, and Inuit people volunteered for the Canadian Expeditionary Force—even though many were not legally considered citizens at the time. Many earned military medals for bravery, excelling as scouts, reconnaissance specialists, and marksmen such as Corporal Francis Pegahmagabow.',
+                impact: 'Their legacy is specifically honoured every year on Indigenous Veterans Day (November 8).'
+            },
+            {
+                id: 'sikh',
+                title: 'Sikh Canadian Soldiers',
+                subtitle: 'Early South Asian Volunteers in the CEF',
+                badge: '🦁 Courage & Service',
+                color: 'from-sky-800 to-slate-900',
+                body: 'Despite facing unfair immigration laws and voting restrictions in Canada at the time, Sikh Canadian volunteers stepped forward to enlist in the CEF. Private Buckam Singh, one of the earliest Sikh soldiers to serve with Canadian forces, fought in France and was wounded twice in action.',
+                impact: 'Their service highlights the long history and dedication of Sikh Canadians in defending peace and security.'
+            },
+            {
+                id: 'r22r',
+                title: 'Francophone Soldiers — Royal 22e Régiment',
+                subtitle: 'The Renowned "Van Doos"',
+                badge: '⚜️ Distinct French-Speaking Unit',
+                color: 'from-indigo-800 to-slate-900',
+                body: 'Created as the 22nd (French Canadian) Battalion in 1914, the unit fought with extraordinary bravery at Courcelette, Vimy Ridge, and Passchendaele. Later renamed the Royal 22e Régiment (nicknamed the "Van Doos"), it became one of the most decorated regiments in Canadian history.',
+                impact: 'Ensured Francophone Canadians were represented as a proud, distinct pillar of Canada’s armed forces.'
+            }
+        ];
+
+        const MEMORIALS = [
+            {
+                id: 'remembrance',
+                title: 'Remembrance Day',
+                date: 'November 11',
+                type: 'Commemorative Day',
+                desc: 'Marks the signing of the Armistice on November 11, 1918, which ended the First World War. At 11:00 a.m., Canadians observe two minutes of silence and wear poppies to honour those who served and sacrificed.'
+            },
+            {
+                id: 'indigenous_day',
+                title: 'Indigenous Veterans Day',
+                date: 'November 8',
+                type: 'Commemorative Day',
+                desc: 'Established to recognize and honour the vital contributions and sacrifices of First Nations, Métis, and Inuit veterans who served Canada in the First World War and subsequent conflicts.'
+            },
+            {
+                id: 'cnwm',
+                title: 'Canadian National War Memorial',
+                date: 'Ottawa, Ontario',
+                type: 'National Monument',
+                desc: 'Originally built to commemorate Canada’s response to the First World War, its granite arch and bronze figures symbolize peace, freedom, and the courage of Canadian armed forces. It also hosts the Tomb of the Unknown Soldier.'
+            },
+            {
+                id: 'nnwm',
+                title: 'Newfoundland National War Memorial',
+                date: 'St. John’s, Newfoundland & Labrador',
+                type: 'National Monument',
+                desc: 'Honours the soldiers, sailors, and nurses of Newfoundland who served in the First World War—especially remembering the immense sacrifice at Gallipoli and Beaumont-Hamel.'
+            }
+        ];
+
+        const MATCH_PAIRS = [
+            { id: 'm1', term: 'Canadian Expeditionary Force (CEF)', def: 'Canada’s overseas military force that fought as distinct units for the first time.' },
+            { id: 'm2', term: 'Battle of Vimy Ridge', def: 'April 1917 battle where all four Canadian divisions fought together as one Corps.' },
+            { id: 'm3', term: 'No. 2 Construction Battalion', def: 'Canada’s largest all-Black military unit, building vital roads and railways.' },
+            { id: 'm4', term: 'Royal 22e Régiment', def: 'Renowned Francophone infantry unit (the "Van Doos") honoured for bravery.' },
+            { id: 'm5', term: 'Beaumont-Hamel', def: 'July 1, 1916 battle where the Royal Newfoundland Regiment suffered heavy losses.' },
+            { id: 'm6', term: 'Indigenous Veterans Day', def: 'Commemorative day on November 8 honouring First Nations, Métis, and Inuit veterans.' }
+        ];
+
+        const ASSESS_QUESTIONS = [
+            {
+                q: '1. At the start of the First World War in 1914, why did Canada automatically enter the war?',
+                options: [
+                    'Canada’s Parliament voted to start a war in Europe.',
+                    'Britain controlled Canada’s foreign affairs, so when Britain declared war, Canada was at war.',
+                    'The United States asked Canada to join.',
+                    'Canada already had its own independent foreign policy in 1914.'
+                ],
+                correct: 1,
+                explanation: 'In 1914, Britain still controlled Canada’s foreign affairs. When Britain declared war on August 4, 1914, Canada was automatically involved.'
+            },
+            {
+                q: '2. How did fighting together as the Canadian Corps at battles like Vimy Ridge advance Canada’s national sovereignty?',
+                options: [
+                    'It showed the world and Canadians that Canada could organize, lead, and succeed as an independent nation.',
+                    'It ended all ties between Canada and Europe immediately.',
+                    'It meant Canada no longer needed any military forces.',
+                    'It gave Britain greater control over Canadian towns.'
+                ],
+                correct: 0,
+                explanation: 'Accomplishments by distinct Canadian units built national unity at home and earned international respect, advancing Canada’s path to sovereignty.'
+            },
+            {
+                q: '3. Which statement best describes the contributions of diverse communities in Canada during WWI?',
+                options: [
+                    'Only one cultural group was allowed to help the war effort.',
+                    'Black Canadians, Indigenous soldiers, Sikh Canadians, and Francophone soldiers all made vital contributions.',
+                    'Diverse communities did not participate until after 1918.',
+                    'All soldiers spoke only one language and came from one province.'
+                ],
+                correct: 1,
+                explanation: 'Canada’s war effort included diverse communities—such as the No. 2 Construction Battalion, Indigenous volunteers, Sikh Canadian soldiers, and the Royal 22e Régiment.'
+            },
+            {
+                q: '4. Which pair correctly matches a WWI theatre with a key Canadian or Newfoundland contribution?',
+                options: [
+                    'Gallipoli — Only fought by naval ships with no ground troops',
+                    'Ypres (Second Battle & Passchendaele) — Held the line against gas attacks and captured muddy ridge terrain',
+                    'Vimy Ridge — Fought in the Mediterranean Sea',
+                    'Beaumont-Hamel — Marked the end of the war in November 1918'
+                ],
+                correct: 1,
+                explanation: 'At Ypres, Canadians withstood the first chlorine gas attacks (1915) and later captured Passchendaele (1917) despite extreme mud.'
+            },
+            {
+                q: '5. Why are memorials like the Canadian National War Memorial and days like Remembrance Day important to a nation?',
+                options: [
+                    'They exist only for tourists to take photos.',
+                    'They honour the sacrifices and heroism of armed forces and remind citizens of the cost of peace and security.',
+                    'They are required by foreign governments.',
+                    'They celebrate only one battle from 1914.'
+                ],
+                correct: 1,
+                explanation: 'Commemorative days and memorials preserve shared memory, honouring those who defended peace and security.'
+            }
+        ];
+
+        const GAME_QUESTIONS = [
+            {
+                category: 'sovereignty',
+                catLabel: 'Foreign Affairs & CEF',
+                obstacle: 'SEVERED TELEGRAPH LINE',
+                q: 'In 1914, which country controlled Canada’s foreign affairs when the First World War began?',
+                options: ['Britain', 'France', 'United States', 'Belgium'],
+                correct: 0,
+                fact: 'Britain controlled Canada’s foreign affairs in 1914, sending Canadian forces overseas.'
+            },
+            {
+                category: 'battlefields',
+                catLabel: 'Battlefields',
+                obstacle: 'PASSCHENDAELE MUD',
+                q: 'At which Belgian battlefield did Canadians hold the line against the first poison gas attacks (1915) and later capture Passchendaele (1917)?',
+                options: ['Gallipoli', 'Ypres', 'Beaumont-Hamel', 'Ottawa'],
+                correct: 1,
+                fact: 'Both the Second Battle of Ypres (1915) and Passchendaele (1917) took place in the Ypres sector.'
+            },
+            {
+                category: 'voices',
+                catLabel: 'Diverse Voices',
+                obstacle: 'BROKEN SUPPLY RAIL',
+                q: 'Which all-Black Canadian military unit built vital roads, bridges, and railways for the war effort?',
+                options: ['Royal 22e Régiment', 'No. 2 Construction Battalion', '1st Cavalry', 'Home Guard'],
+                correct: 1,
+                fact: 'The No. 2 Construction Battalion was Canada’s largest all-Black unit in WWI.'
+            },
+            {
+                category: 'battlefields',
+                catLabel: 'Battlefields',
+                obstacle: 'STORMY DARDANELLES',
+                q: 'Which regiment from British North America fought at both Gallipoli and Beaumont-Hamel?',
+                options: ['Royal Newfoundland Regiment', 'Royal 22e Régiment', 'No. 2 Construction Battalion', 'Pacific Corps'],
+                correct: 0,
+                fact: 'The Royal Newfoundland Regiment served courageously at Gallipoli and Beaumont-Hamel.'
+            },
+            {
+                category: 'voices',
+                catLabel: 'Diverse Voices',
+                obstacle: 'ENCRYPTED FRENCH DISPATCH',
+                q: 'Which famous Francophone unit (the "Van Doos") fought with distinction at Vimy Ridge and Passchendaele?',
+                options: ['No. 2 Construction Battalion', 'Royal 22e Régiment', 'British Guard', 'Northern Scouts'],
+                correct: 1,
+                fact: 'The Royal 22e Régiment is Canada’s celebrated French-speaking infantry regiment.'
+            },
+            {
+                category: 'battlefields',
+                catLabel: 'Battlefields',
+                obstacle: 'HEAVY FOG AT THE RIDGE',
+                q: 'In April 1917, all four divisions of the Canadian Corps fought together for the first time at which battle?',
+                options: ['Gallipoli', 'Vimy Ridge', 'Beaumont-Hamel', 'Dardanelles'],
+                correct: 1,
+                fact: 'Vimy Ridge (April 1917) united all four divisions of the Canadian Corps.'
+            },
+            {
+                category: 'remembrance',
+                catLabel: 'Remembrance',
+                obstacle: 'ARCHIVAL SEAL LOCKED',
+                q: 'Which commemorative day is observed on November 8 to honour First Nations, Métis, and Inuit veterans?',
+                options: ['Canada Day', 'Indigenous Veterans Day', 'Victoria Day', 'Armistice Eve'],
+                correct: 1,
+                fact: 'Indigenous Veterans Day is observed every November 8 across Canada.'
+            },
+            {
+                category: 'sovereignty',
+                catLabel: 'Sovereignty',
+                obstacle: 'FINAL HQ VERIFICATION',
+                q: 'How did developing distinct armed forces like the CEF and Canadian Corps affect Canada?',
+                options: ['It reduced Canada’s independence', 'It advanced Canada’s national sovereignty', 'It ended Canadian identity', 'It had no impact'],
+                correct: 1,
+                fact: 'Developing armed forces directly advanced Canada’s national sovereignty!'
+            }
+        ];
+
+        const BADGE_DEFS = [
+            { id: 'sovereignty', title: 'Architect of Sovereignty', desc: 'Mastered CEF & Foreign Affairs', icon: '🏛️' },
+            { id: 'battlefields', title: 'Frontline Cartographer', desc: 'Mastered WWI Battlefields', icon: '🗺️' },
+            { id: 'voices', title: 'Champion of Voices', desc: 'Mastered Diverse Communities', icon: '🤝' },
+            { id: 'remembrance', title: 'Keeper of Remembrance', desc: 'Mastered Memorials & Days', icon: '🌺' }
+        ];
+
+        /* =========================================================================
+           4. GLOBAL APPLICATION STATE & SOVEREIGNTY METER
+           ========================================================================= */
+        const state = {
+            learn: { chain: false, cef: false, corps: false, hypothesis: null },
+            explore: {
+                battles: new Set(),
+                voices: new Set(),
+                memorials: new Set()
+            },
+            game: {
+                highScore: 0,
+                completed: false,
+                badges: new Set()
+            },
+            assess: {
+                matchedIds: new Set(),
+                quizAnswered: {},
+                quizCorrectCount: 0
+            }
+        };
+
+        function updateSovereigntyMeter() {
+            // Total points = 3 (learn) + 12 (explore) + 4 (game/badges) + 6 (match) + 5 (quiz) = 30 pts
+            let pts = 0;
+            if (state.learn.chain) pts += 1;
+            if (state.learn.cef && state.learn.corps) pts += 1;
+            if (state.learn.hypothesis !== null) pts += 1;
+
+            pts += state.explore.battles.size;
+            pts += state.explore.voices.size;
+            pts += state.explore.memorials.size;
+
+            pts += state.game.badges.size;
+            pts += state.assess.matchedIds.size;
+            pts += state.assess.quizCorrectCount;
+
+            const pct = Math.min(100, Math.round((pts / 30) * 100));
+            const bar = document.getElementById('sovereigntyBar');
+            const label = document.getElementById('sovereigntyStageLabel');
+
+            bar.style.width = Math.max(4, pct) + '%';
+
+            let stage = 'British Dominion';
+            if (pct >= 85) stage = 'Emerging Sovereign Nation';
+            else if (pct >= 50) stage = 'Distinct National Force';
+            else if (pct >= 20) stage = 'Building Canadian Corps';
+
+            label.textContent = `${stage} (${pct}%)`;
+
+            // Update module completion checkmarks
+            const learnDone = state.learn.chain && state.learn.cef && state.learn.corps && state.learn.hypothesis !== null;
+            const exploreDone = (state.explore.battles.size + state.explore.voices.size + state.explore.memorials.size) === 12;
+            const gameDone = state.game.completed;
+            const assessDone = (state.assess.matchedIds.size === 6 && Object.keys(state.assess.quizAnswered).length === 5);
+
+            document.getElementById('badge-nav-learn').classList.toggle('hidden', !learnDone);
+            document.getElementById('badge-nav-explore').classList.toggle('hidden', !exploreDone);
+            document.getElementById('badge-nav-game').classList.toggle('hidden', !gameDone);
+            document.getElementById('badge-nav-assess').classList.toggle('hidden', !assessDone);
+
+            // Update Report Card metrics
+            document.getElementById('repSovereignty').textContent = `${pct}%`;
+            document.getElementById('repExplored').textContent = `${state.explore.battles.size + state.explore.voices.size + state.explore.memorials.size} / 12`;
+            document.getElementById('repGameScore').textContent = state.game.highScore;
+            document.getElementById('repAssessScore').textContent = `${state.assess.matchedIds.size + state.assess.quizCorrectCount} / 11`;
+        }
+
+        /* =========================================================================
+           5. NAVIGATION LOGIC
+           ========================================================================= */
+        function switchModule(modId) {
+            playSfx('click');
+            document.querySelectorAll('.module-section').forEach(sec => sec.classList.add('hidden'));
+            document.getElementById(`module-${modId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-amber-600', 'text-white', 'shadow-md');
+                btn.classList.add('bg-slate-800', 'text-slate-200', 'hover:bg-slate-700');
+            });
+            const activeBtn = document.getElementById(`nav-${modId}`);
+            activeBtn.classList.remove('bg-slate-800', 'text-slate-200', 'hover:bg-slate-700');
+            activeBtn.classList.add('bg-amber-600', 'text-white', 'shadow-md');
+
+            if (modId === 'game') {
+                setTimeout(resizeDispatchCanvas, 50);
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function switchExploreTab(tabId) {
+            playSfx('click');
+            document.querySelectorAll('.explore-sub').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`explore-${tabId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.exp-tab-btn').forEach(btn => {
+                btn.classList.remove('bg-slate-900', 'text-amber-300', 'shadow');
+                btn.classList.add('bg-stone-100', 'text-slate-700');
+            });
+            const active = document.getElementById(`exp-tab-${tabId}`);
+            active.classList.remove('bg-stone-100', 'text-slate-700');
+            active.classList.add('bg-slate-900', 'text-amber-300', 'shadow');
+        }
+
+        /* =========================================================================
+           6. MODULE 1: BRIEFING ROOM INTERACTIONS
+           ========================================================================= */
+        function updateLearnProgress() {
+            let done = 0;
+            if (state.learn.chain) {
+                done++;
+                document.getElementById('learnCheck1').classList.remove('hidden');
+            }
+            if (state.learn.cef && state.learn.corps) {
+                done++;
+                document.getElementById('learnCheck2').classList.remove('hidden');
+            }
+            if (state.learn.hypothesis !== null) {
+                done++;
+                document.getElementById('learnCheck3').classList.remove('hidden');
+            }
+            document.getElementById('learnProgressPill').textContent = `${done} / 3 Briefings Completed`;
+            updateSovereigntyMeter();
+        }
+
+        function setChainState(mode) {
+            playSfx(mode === 'war' ? 'discover' : 'click');
+            const btnPeace = document.getElementById('btnPeace1914');
+            const btnWar = document.getElementById('btnWar1914');
+            const box1 = document.getElementById('chainBox1');
+            const box2 = document.getElementById('chainBox2');
+            const t1 = document.getElementById('chainText1');
+            const t2 = document.getElementById('chainText2');
+            const arrow = document.getElementById('chainArrow');
+            const takeaway = document.getElementById('chainTakeaway');
+
+            if (mode === 'war') {
+                btnWar.className = 'px-4 py-2.5 rounded-xl font-bold text-sm btn-tactile bg-rose-700 text-white shadow';
+                btnPeace.className = 'px-4 py-2.5 rounded-xl font-bold text-sm btn-tactile bg-stone-100 text-slate-700 hover:bg-stone-200 border border-stone-300';
+                box1.className = 'p-4 rounded-xl border-2 border-rose-500 bg-rose-50 transition-all duration-300';
+                box2.className = 'p-4 rounded-xl border-2 border-amber-500 bg-amber-50 transition-all duration-300';
+                t1.textContent = 'Declares war on Germany (Aug 4, 1914). Calls on the Empire.';
+                t2.textContent = 'Automatically at war! Mobilizes the Canadian Expeditionary Force (CEF).';
+                arrow.classList.remove('text-slate-400');
+                arrow.classList.add('text-rose-600');
+                takeaway.classList.remove('hidden');
+
+                if (!state.learn.chain) {
+                    state.learn.chain = true;
+                    showToast('Briefing 1 Complete! Sovereignty Meter updated.', '📜');
+                    updateLearnProgress();
+                }
+            } else {
+                btnPeace.className = 'px-4 py-2.5 rounded-xl font-bold text-sm btn-tactile bg-slate-800 text-white shadow';
+                btnWar.className = 'px-4 py-2.5 rounded-xl font-bold text-sm btn-tactile bg-rose-100 text-rose-800 hover:bg-rose-200 border border-rose-300';
+                box1.className = 'p-4 rounded-xl border-2 border-slate-300 bg-slate-50 transition-all duration-300';
+                box2.className = 'p-4 rounded-xl border-2 border-slate-300 bg-slate-50 transition-all duration-300';
+                t1.textContent = 'Holds legal authority over Empire foreign policy.';
+                t2.textContent = 'Small regular army (~3,000 soldiers) & local militia.';
+                arrow.classList.remove('text-rose-600');
+                arrow.classList.add('text-slate-400');
+                takeaway.classList.add('hidden');
+            }
+        }
+
+        function flipCard(cardId) {
+            playSfx('click');
+            const el = document.getElementById(`flip-${cardId}`);
+            el.classList.toggle('flipped');
+            const wasBoth = state.learn.cef && state.learn.corps;
+            state.learn[cardId] = true;
+            if (!wasBoth && state.learn.cef && state.learn.corps) {
+                playSfx('discover');
+                showToast('Briefing 2 Complete! Both distinct forces inspected.', '🛡️');
+            }
+            updateLearnProgress();
+        }
+
+        function selectHypothesis(idx, btnEl) {
+            playSfx('discover');
+            document.querySelectorAll('.hypo-btn').forEach(b => {
+                b.classList.remove('border-emerald-600', 'bg-emerald-50');
+                b.classList.add('border-stone-200', 'bg-white');
+            });
+            btnEl.classList.remove('border-stone-200', 'bg-white');
+            btnEl.classList.add('border-emerald-600', 'bg-emerald-50');
+
+            const fb = document.getElementById('hypoFeedback');
+            const msgs = [
+                'Great prediction! Earning international respect abroad was a huge reason Canada gained its own signature on peace treaties after WWI.',
+                'Thoughtful prediction! Shared effort and sacrifice across diverse communities strengthened Canada’s national identity.',
+                'Spot on! Historians agree that developing Canada’s armed forces strengthened both national unity at home and international recognition of Canada’s sovereignty.'
+            ];
+            fb.innerHTML = `<strong>Historian’s Note:</strong> ${msgs[idx]}`;
+            fb.classList.remove('hidden');
+
+            if (state.learn.hypothesis === null) {
+                showToast('Prediction recorded! Ready for the Field Archive.', '🧭');
+            }
+            state.learn.hypothesis = idx;
+            updateLearnProgress();
+        }
+
+        /* =========================================================================
+           7. MODULE 2: FIELD ARCHIVE (MAP, VOICES, MEMORIALS)
+           ========================================================================= */
+        function openBattle(battleId) {
+            const b = BATTLES[battleId];
+            if (!b) return;
+            playSfx('discover');
+
+            const isNew = !state.explore.battles.has(battleId);
+            state.explore.battles.add(battleId);
+            document.getElementById('count-battles').textContent = state.explore.battles.size;
+
+            // Change pin color to emerald once visited
+            const pin = document.getElementById(`pin-${battleId}`);
+            if (pin) pin.setAttribute('fill', '#059669');
+
+            const panel = document.getElementById('battleDossierContent');
+            panel.innerHTML = `
+                <div class="fade-in space-y-4">
+                    <div class="flex items-start justify-between gap-2 border-b border-stone-200 pb-3">
+                        <div>
+                            <span class="inline-block px-2.5 py-0.5 rounded-md bg-rose-100 text-rose-800 text-xs font-extrabold uppercase">${b.date}</span>
+                            <h4 class="font-serif text-xl font-bold text-slate-900 mt-1">${b.title}</h4>
+                            <p class="text-xs font-semibold text-slate-500">📍 ${b.location} &bull; 🪖 ${b.unit}</p>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold shrink-0">✓ Explored</span>
+                    </div>
+                    <p class="text-sm text-slate-700 leading-relaxed">${b.summary}</p>
+                    <div class="p-3.5 rounded-xl bg-amber-50 border border-amber-300">
+                        <div class="text-xs font-extrabold uppercase tracking-wider text-amber-900 mb-1">🍁 Sovereignty Connection</div>
+                        <p class="text-sm text-amber-950 font-medium">${b.sovereignty}</p>
+                    </div>
+                </div>
+            `;
+
+            if (isNew) {
+                showToast(`Explored ${b.title}!`, '🗺️');
+                updateSovereigntyMeter();
+            }
+        }
+
+        function renderVoices() {
+            const grid = document.getElementById('voicesGrid');
+            grid.innerHTML = VOICES.map(v => {
+                const explored = state.explore.voices.has(v.id);
+                return `
+                    <div onclick="exploreVoice('${v.id}')" class="cursor-pointer bg-white rounded-2xl shadow-md border-2 ${explored ? 'border-emerald-500' : 'border-stone-200 hover:border-amber-500'} overflow-hidden transition-all flex flex-col justify-between btn-tactile">
+                        <div>
+                            <div class="bg-gradient-to-r ${v.color} p-4 text-white flex items-start justify-between gap-2">
+                                <div>
+                                    <span class="text-xs font-bold text-amber-300">${v.badge}</span>
+                                    <h4 class="font-serif text-lg font-bold leading-snug mt-0.5">${v.title}</h4>
+                                    <p class="text-xs text-slate-200">${v.subtitle}</p>
+                                </div>
+                                <span class="px-2.5 py-1 rounded-full text-xs font-bold shrink-0 ${explored ? 'bg-emerald-500 text-white' : 'bg-white/20 text-white'}">
+                                    ${explored ? '✓ Read' : 'Tap to Read'}
+                                </span>
+                            </div>
+                            <div class="p-4 space-y-3">
+                                <p class="text-sm text-slate-700 leading-relaxed">${v.body}</p>
+                                <div class="p-3 rounded-xl bg-parchment border border-stone-200 text-xs text-slate-800 font-semibold">
+                                    <strong>Legacy:</strong> ${v.impact}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function exploreVoice(id) {
+            const isNew = !state.explore.voices.has(id);
+            state.explore.voices.add(id);
+            document.getElementById('count-voices').textContent = state.explore.voices.size;
+            playSfx('discover');
+            renderVoices();
+            if (isNew) {
+                showToast('Community Voice recorded in your Archive!', '🤝');
+                updateSovereigntyMeter();
+            }
+        }
+
+        function renderMemorials() {
+            const grid = document.getElementById('memorialsGrid');
+            grid.innerHTML = MEMORIALS.map(m => {
+                const honoured = state.explore.memorials.has(m.id);
+                return `
+                    <div class="bg-white rounded-2xl shadow-md border-2 ${honoured ? 'border-rose-500' : 'border-stone-200'} p-5 flex flex-col justify-between gap-4">
+                        <div>
+                            <div class="flex items-start justify-between gap-2 mb-2">
+                                <div>
+                                    <span class="text-xs font-extrabold uppercase tracking-wider text-amber-700">${m.type} &bull; ${m.date}</span>
+                                    <h4 class="font-serif text-lg font-bold text-slate-900 mt-0.5">${m.title}</h4>
+                                </div>
+                                ${honoured ? `
+                                    <div class="poppy-bloom w-10 h-10 rounded-full bg-rose-50 border border-rose-200 flex items-center justify-center shrink-0" title="Poppy Placed">
+                                        <svg class="w-7 h-7" viewBox="0 0 36 36">
+                                            <circle cx="13" cy="14" r="8" fill="#be123c"/>
+                                            <circle cx="23" cy="14" r="8" fill="#e11d48"/>
+                                            <circle cx="14" cy="23" r="8" fill="#e11d48"/>
+                                            <circle cx="22" cy="23" r="8" fill="#be123c"/>
+                                            <circle cx="18" cy="18" r="4.5" fill="#0f172a"/>
+                                        </svg>
+                                    </div>
+                                ` : ''}
+                            </div>
+                            <p class="text-sm text-slate-700 leading-relaxed">${m.desc}</p>
+                        </div>
+
+                        <button onclick="placePoppy('${m.id}')" class="w-full py-2.5 px-4 rounded-xl font-bold text-sm btn-tactile flex items-center justify-center gap-2 ${honoured ? 'bg-rose-50 text-rose-800 border border-rose-300' : 'bg-rose-700 hover:bg-rose-800 text-white shadow'}">
+                            <span>🌺</span>
+                            <span>${honoured ? 'Poppy Placed in Remembrance ✓' : 'Place a Digital Poppy'}</span>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function placePoppy(id) {
+            const isNew = !state.explore.memorials.has(id);
+            state.explore.memorials.add(id);
+            document.getElementById('count-memorials').textContent = state.explore.memorials.size;
+            playSfx('poppy');
+            renderMemorials();
+            if (isNew) {
+                showToast('Poppy placed in remembrance.', '🌺');
+                updateSovereigntyMeter();
+            }
+        }
+
+        /* =========================================================================
+           8. MODULE 3: CORPS DISPATCH RUNNER (CANVAS GAME)
+           ========================================================================= */
+        const canvas = document.getElementById('dispatchCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Normalized network node coordinates (0.0 to 1.0) so it scales cleanly to any screen
+        const NODES = [
+            { name: 'HQ', x: 0.09, y: 0.52 },
+            { name: 'Ypres', x: 0.25, y: 0.24 },
+            { name: 'Gallipoli', x: 0.42, y: 0.74 },
+            { name: 'Beaumont-Hamel', x: 0.58, y: 0.30 },
+            { name: 'Vimy Ridge', x: 0.75, y: 0.66 },
+            { name: 'Memorial', x: 0.91, y: 0.44 }
+        ];
+
+        const game = {
+            active: false,
+            mode: 'standard',
+            score: 0,
+            streak: 0,
+            signal: 100,
+            currentLeg: 0,       // 0 to 5 (6 obstacles total)
+            t: 0,                // 0 to 1 progress along current leg
+            moving: false,
+            waitingForAnswer: false,
+            queue: [],
+            currentQ: null,
+            particles: [],
+            timeLeft: 75,
+            timerInterval: null
+        };
+
+        function resizeDispatchCanvas() {
+            const parent = canvas.parentElement;
+            if (!parent) return;
+            const rect = parent.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = Math.max(300, rect.width) * dpr;
+            canvas.height = Math.max(260, rect.height) * dpr;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            drawDispatchBoard();
+        }
+
+        window.addEventListener('resize', () => {
+            if (!document.getElementById('module-game').classList.contains('hidden')) {
+                resizeDispatchCanvas();
+            }
+        });
+
+        function renderBadges() {
+            const grid = document.getElementById('badgesGrid');
+            grid.innerHTML = BADGE_DEFS.map(b => {
+                const unlocked = state.game.badges.has(b.id);
+                return `
+                    <div class="p-3 rounded-xl border-2 text-center transition-all ${unlocked ? 'bg-amber-50 border-amber-500 shadow-sm' : 'bg-stone-100 border-stone-200 opacity-65'}">
+                        <div class="text-2xl mb-1">${unlocked ? b.icon : '🔒'}</div>
+                        <div class="text-xs font-extrabold text-slate-900">${b.title}</div>
+                        <div class="text-[11px] text-slate-600 mt-0.5">${b.desc}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateGameHUD() {
+            document.getElementById('hudScore').textContent = game.score;
+            document.getElementById('hudStreak').textContent = `x${Math.max(1, game.streak + 1)}`;
+            document.getElementById('hudSignal').textContent = `${game.signal}%`;
+            document.getElementById('hudLeg').textContent = `${Math.min(game.currentLeg, 6)}/6`;
+        }
+
+        function startGame(mode) {
+            playSfx('click');
+            clearInterval(game.timerInterval);
+
+            // Shuffle a 6-question run ensuring all 4 categories appear
+            const shuffled = [...GAME_QUESTIONS].sort(() => Math.random() - 0.5);
+            const selected = [];
+            ['sovereignty', 'battlefields', 'voices', 'remembrance'].forEach(cat => {
+                const found = shuffled.find(q => q.category === cat && !selected.includes(q));
+                if (found) selected.push(found);
+            });
+            for (const q of shuffled) {
+                if (selected.length >= 6) break;
+                if (!selected.includes(q)) selected.push(q);
+            }
+            game.queue = selected.sort(() => Math.random() - 0.5);
+
+            game.active = true;
+            game.mode = mode;
+            game.score = 0;
+            game.streak = 0;
+            game.signal = 100;
+            game.currentLeg = 0;
+            game.t = 0;
+            game.moving = true;
+            game.waitingForAnswer = false;
+            game.particles = [];
+            game.timeLeft = 75;
+
+            document.getElementById('gameOverlay').classList.add('hidden');
+            document.getElementById('gameQuestionBox').classList.add('hidden');
+            document.getElementById('gameStatusText').textContent = 'Signal launched from HQ! Routing toward Ypres...';
+
+            const timerBadge = document.getElementById('timerBadge');
+            if (mode === 'timed') {
+                timerBadge.classList.remove('hidden');
+                timerBadge.textContent = `⏱️ ${game.timeLeft}s`;
+                game.timerInterval = setInterval(() => {
+                    if (!game.active) return;
+                    game.timeLeft--;
+                    timerBadge.textContent = `⏱️ ${game.timeLeft}s`;
+                    if (game.timeLeft <= 0) {
+                        endGame(false, 'Time expired before the final dispatch reached the Memorial!');
+                    }
+                }, 1000);
+            } else {
+                timerBadge.classList.add('hidden');
+            }
+
+            updateGameHUD();
+            resizeDispatchCanvas();
+        }
+
+        function resetGameToMenu() {
+            clearInterval(game.timerInterval);
+            game.active = false;
+            game.moving = false;
+            game.waitingForAnswer = false;
+            document.getElementById('gameQuestionBox').classList.add('hidden');
+            document.getElementById('timerBadge').classList.add('hidden');
+            document.getElementById('gameOverlayTitle').textContent = 'Ready to Route the Dispatch?';
+            document.getElementById('gameOverlayDesc').textContent = 'Answer quick-fire WWI curriculum questions to clear each obstacle, build a Clear Signal streak, and earn all 4 Historian Badges!';
+            document.getElementById('gameOverlay').classList.remove('hidden');
+        }
+
+        function triggerObstacleQuestion() {
+            game.moving = false;
+            game.waitingForAnswer = true;
+            const q = game.queue[game.currentLeg];
+            game.currentQ = q;
+
+            document.getElementById('obstacleTag').textContent = `⚠️ OBSTACLE: ${q.obstacle}`;
+            document.getElementById('qCategoryTag').textContent = `Topic: ${q.catLabel}`;
+            document.getElementById('gameQuestionText').textContent = q.q;
+            document.getElementById('gameAnswerFeedback').classList.add('hidden');
+
+            const optGrid = document.getElementById('gameOptionsGrid');
+            optGrid.innerHTML = q.options.map((opt, idx) => `
+                <button onclick="submitGameAnswer(${idx})" class="game-opt-btn text-left p-3.5 rounded-xl bg-parchment hover:bg-amber-100 border-2 border-stone-300 hover:border-amber-500 font-semibold text-sm text-slate-800 btn-tactile">
+                    <span class="inline-block w-6 h-6 rounded-md bg-slate-800 text-amber-300 text-center text-xs leading-6 font-bold mr-2">${String.fromCharCode(65 + idx)}</span>
+                    ${opt}
+                </button>
+            `).join('');
+
+            document.getElementById('gameQuestionBox').classList.remove('hidden');
+            document.getElementById('gameStatusText').textContent = `Obstacle detected (${q.obstacle})! Answer below to clear the line.`;
+        }
+
+        function submitGameAnswer(idx) {
+            if (!game.waitingForAnswer) return;
+            const q = game.currentQ;
+            const fb = document.getElementById('gameAnswerFeedback');
+            const btns = document.querySelectorAll('.game-opt-btn');
+
+            if (idx === q.correct) {
+                playSfx('success');
+                game.waitingForAnswer = false;
+                btns.forEach(b => b.disabled = true);
+                btns[idx].classList.remove('bg-parchment', 'border-stone-300');
+                btns[idx].classList.add('bg-emerald-100', 'border-emerald-600', 'text-emerald-950');
+
+                game.streak++;
+                const points = 100 * game.streak;
+                game.score += points;
+                game.signal = Math.min(100, game.signal + 10);
+
+                // Unlock category badge
+                if (!state.game.badges.has(q.category)) {
+                    state.game.badges.add(q.category);
+                    renderBadges();
+                    updateSovereigntyMeter();
+                }
+
+                // Spawn celebratory signal particles at current node/midpoint
+                spawnSignalBurst();
+
+                fb.className = 'mt-4 p-3.5 rounded-xl text-sm font-semibold bg-emerald-50 border border-emerald-300 text-emerald-900';
+                fb.innerHTML = `✅ <strong>Clear Signal! (+${points} pts)</strong> ${q.fact}`;
+                fb.classList.remove('hidden');
+
+                updateGameHUD();
+
+                setTimeout(() => {
+                    document.getElementById('gameQuestionBox').classList.add('hidden');
+                    game.currentLeg++;
+                    game.t = 0;
+                    if (game.currentLeg >= 6) {
+                        endGame(true, 'All dispatches successfully routed across the Canadian Corps network to the National Memorial!');
+                    } else {
+                        game.moving = true;
+                        document.getElementById('gameStatusText').textContent = `Signal boosted! Advancing toward ${NODES[Math.min(game.currentLeg, NODES.length - 1)].name}...`;
+                    }
+                    updateGameHUD();
+                }, 1350);
+            } else {
+                playSfx('error');
+                game.streak = 0;
+                game.signal = Math.max(15, game.signal - 20);
+                btns[idx].disabled = true;
+                btns[idx].classList.add('bg-rose-100', 'border-rose-400', 'text-rose-900', 'opacity-70');
+                fb.className = 'mt-4 p-3.5 rounded-xl text-sm font-semibold bg-rose-50 border border-rose-300 text-rose-900';
+                fb.textContent = '⚠️ Signal interference! That wasn’t quite right—try another frequency to clear the obstacle.';
+                fb.classList.remove('hidden');
+                updateGameHUD();
+            }
+        }
+
+        function spawnSignalBurst() {
+            const w = canvas.width / (window.devicePixelRatio || 1);
+            const h = canvas.height / (window.devicePixelRatio || 1);
+            const legIdx = Math.min(game.currentLeg, NODES.length - 2);
+            const n1 = NODES[legIdx];
+            const n2 = NODES[legIdx + 1];
+            const px = (n1.x + (n2.x - n1.x) * 0.5) * w;
+            const py = (n1.y + (n2.y - n1.y) * 0.5) * h;
+
+            for (let i = 0; i < 20; i++) {
+                const angle = (Math.PI * 2 * i) / 20;
+                const speed = 1.5 + Math.random() * 2.5;
+                game.particles.push({
+                    x: px, y: py,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    life: 1.0,
+                    color: i % 2 === 0 ? '#fbbf24' : '#34d399'
+                });
+            }
+        }
+
+        function endGame(won, message) {
+            clearInterval(game.timerInterval);
+            game.active = false;
+            game.moving = false;
+            game.waitingForAnswer = false;
+            document.getElementById('gameQuestionBox').classList.add('hidden');
+
+            if (won) {
+                playSfx('victory');
+                state.game.completed = true;
+                if (game.score > state.game.highScore) {
+                    state.game.highScore = game.score;
+                }
+                updateSovereigntyMeter();
+                showToast(`Mission Complete! Final Score: ${game.score}`, '🏆');
+            } else {
+                playSfx('error');
+            }
+
+            document.getElementById('gameOverlayTitle').textContent = won ? `🏆 Dispatch Delivered! (${game.score} pts)` : '📡 Signal Timed Out';
+            document.getElementById('gameOverlayDesc').textContent = message;
+            document.getElementById('gameOverlay').classList.remove('hidden');
+            document.getElementById('gameStatusText').textContent = won ? 'Mission complete! Play again to beat your high score.' : 'Try again to deliver all 6 dispatches!';
+        }
+
+        function drawDispatchBoard() {
+            const dpr = window.devicePixelRatio || 1;
+            const w = canvas.width / dpr;
+            const h = canvas.height / dpr;
+
+            // Vintage tactical slate map background
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, w, h);
+
+            // Tactical Grid Lines
+            ctx.strokeStyle = 'rgba(148, 163, 184, 0.14)';
+            ctx.lineWidth = 1;
+            for (let gx = 0; gx < w; gx += 40) {
+                ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, h); ctx.stroke();
+            }
+            for (let gy = 0; gy < h; gy += 40) {
+                ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(w, gy); ctx.stroke();
+            }
+
+            // Draw connection lines between nodes
+            for (let i = 0; i < NODES.length - 1; i++) {
+                const a = NODES[i];
+                const b = NODES[i + 1];
+                const ax = a.x * w, ay = a.y * h;
+                const bx = b.x * w, by = b.y * h;
+
+                ctx.beginPath();
+                ctx.setLineDash([7, 6]);
+                ctx.lineWidth = i < game.currentLeg ? 3.5 : 2;
+                ctx.strokeStyle = i < game.currentLeg ? '#34d399' : (i === game.currentLeg && game.active ? '#f59e0b' : '#475569');
+                ctx.moveTo(ax, ay);
+                ctx.lineTo(bx, by);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+
+            // Draw nodes
+            NODES.forEach((n, idx) => {
+                const nx = n.x * w;
+                const ny = n.y * h;
+                const cleared = idx <= game.currentLeg && game.active;
+
+                // Outer glow
+                ctx.beginPath();
+                ctx.arc(nx, ny, 16, 0, Math.PI * 2);
+                ctx.fillStyle = cleared ? 'rgba(52, 211, 153, 0.22)' : 'rgba(245, 158, 11, 0.16)';
+                ctx.fill();
+
+                // Core node circle
+                ctx.beginPath();
+                ctx.arc(nx, ny, 10, 0, Math.PI * 2);
+                ctx.fillStyle = idx === 5 ? '#be123c' : (cleared ? '#10b981' : '#f59e0b');
+                ctx.fill();
+                ctx.lineWidth = 2.5;
+                ctx.strokeStyle = '#ffffff';
+                ctx.stroke();
+
+                // Node Label
+                ctx.font = 'bold 11px Inter, sans-serif';
+                ctx.fillStyle = '#f8fafc';
+                ctx.textAlign = 'center';
+                ctx.fillText(n.name, nx, ny + 26);
+            });
+
+            // Draw moving dispatch pulse
+            if (game.active && game.currentLeg < 6) {
+                const legIdx = Math.min(game.currentLeg, NODES.length - 2);
+                const a = NODES[legIdx];
+                const b = NODES[legIdx + 1];
+                const px = (a.x + (b.x - a.x) * game.t) * w;
+                const py = (a.y + (b.y - a.y) * game.t) * h;
+
+                // Signal halo
+                ctx.beginPath();
+                ctx.arc(px, py, 14, 0, Math.PI * 2);
+                ctx.fillStyle = game.waitingForAnswer ? 'rgba(244, 63, 94, 0.4)' : 'rgba(251, 191, 36, 0.35)';
+                ctx.fill();
+
+                // Dispatch core dot
+                ctx.beginPath();
+                ctx.arc(px, py, 7, 0, Math.PI * 2);
+                ctx.fillStyle = game.waitingForAnswer ? '#fb7185' : '#fef08a';
+                ctx.fill();
+            }
+
+            // Draw celebratory particles
+            for (let i = game.particles.length - 1; i >= 0; i--) {
+                const p = game.particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.life -= 0.03;
+                if (p.life <= 0) {
+                    game.particles.splice(i, 1);
+                    continue;
+                }
+                ctx.globalAlpha = p.life;
+                ctx.fillStyle = p.color;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 3.5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        function gameLoop() {
+            if (game.active && game.moving && !game.waitingForAnswer) {
+                game.t += 0.014;
+                if (game.t >= 0.5) {
+                    game.t = 0.5;
+                    triggerObstacleQuestion();
+                }
+            }
+            if (!document.getElementById('module-game').classList.contains('hidden')) {
+                drawDispatchBoard();
+            }
+            requestAnimationFrame(gameLoop);
+        }
+
+        /* =========================================================================
+           9. MODULE 4: ASSESSMENT (TAP-TO-MATCH & SOVEREIGNTY QUIZ)
+           ========================================================================= */
+        let selectedTermId = null;
+        let shuffledDefs = [];
+
+        function initMatchingBoard() {
+            shuffledDefs = [...MATCH_PAIRS].sort(() => Math.random() - 0.5);
+            renderMatchingBoard();
+        }
+
+        function renderMatchingBoard() {
+            const termsCol = document.getElementById('matchTermsCol');
+            const defsCol = document.getElementById('matchDefsCol');
+
+            termsCol.innerHTML = MATCH_PAIRS.map(item => {
+                const matched = state.assess.matchedIds.has(item.id);
+                const selected = selectedTermId === item.id;
+                return `
+                    <button onclick="selectMatchTerm('${item.id}')" ${matched ? 'disabled' : ''} class="w-full text-left p-3.5 rounded-xl border-2 text-sm font-bold transition-all btn-tactile ${
+                        matched ? 'bg-emerald-50 border-emerald-400 text-emerald-800 opacity-80'
+                        : selected ? 'bg-amber-100 border-amber-600 text-amber-950 shadow'
+                        : 'bg-parchment border-stone-300 hover:border-amber-500 text-slate-800'
+                    }">
+                        ${matched ? '✓ ' : ''}${item.term}
+                    </button>
+                `;
+            }).join('');
+
+            defsCol.innerHTML = shuffledDefs.map(item => {
+                const matched = state.assess.matchedIds.has(item.id);
+                return `
+                    <button onclick="selectMatchDef('${item.id}')" ${matched ? 'disabled' : ''} class="w-full text-left p-3.5 rounded-xl border-2 text-xs sm:text-sm font-medium transition-all btn-tactile ${
+                        matched ? 'bg-emerald-50 border-emerald-400 text-emerald-800 opacity-80'
+                        : 'bg-white border-stone-200 hover:border-amber-500 text-slate-700'
+                    }">
+                        ${matched ? '✓ ' : ''}${item.def}
+                    </button>
+                `;
+            }).join('');
+
+            document.getElementById('matchScorePill').textContent = `${state.assess.matchedIds.size} / ${MATCH_PAIRS.length} Matched`;
+        }
+
+        function selectMatchTerm(id) {
+            playSfx('click');
+            selectedTermId = id;
+            renderMatchingBoard();
+        }
+
+        function selectMatchDef(defId) {
+            const banner = document.getElementById('matchFeedbackBanner');
+            if (!selectedTermId) {
+                banner.className = 'mb-4 p-3 rounded-xl text-sm font-semibold bg-amber-50 border border-amber-300 text-amber-900';
+                banner.textContent = 'First tap a Historical Term on the left, then tap its matching description on the right!';
+                banner.classList.remove('hidden');
+                return;
+            }
+
+            if (selectedTermId === defId) {
+                playSfx('success');
+                state.assess.matchedIds.add(defId);
+                selectedTermId = null;
+                banner.className = 'mb-4 p-3 rounded-xl text-sm font-semibold bg-emerald-50 border border-emerald-300 text-emerald-900';
+                banner.textContent = '✅ Exact match! Archive entry verified.';
+                banner.classList.remove('hidden');
+                renderMatchingBoard();
+                updateSovereigntyMeter();
+            } else {
+                playSfx('error');
+                banner.className = 'mb-4 p-3 rounded-xl text-sm font-semibold bg-rose-50 border border-rose-300 text-rose-900';
+                banner.textContent = '❌ Not quite a match—check the Field Archive if you need a clue, and try again!';
+                banner.classList.remove('hidden');
+            }
+        }
+
+        function renderAssessQuiz() {
+            const container = document.getElementById('assessQuizContainer');
+            container.innerHTML = ASSESS_QUESTIONS.map((item, qIdx) => {
+                const answered = state.assess.quizAnswered[qIdx];
+                return `
+                    <div class="p-4 sm:p-5 rounded-2xl bg-parchment border border-stone-300 space-y-3">
+                        <h4 class="font-serif text-base font-bold text-slate-900">${item.q}</h4>
+                        <div class="grid grid-cols-1 gap-2">
+                            ${item.options.map((opt, oIdx) => {
+                                let cls = 'bg-white border-stone-200 hover:border-amber-500 text-slate-800';
+                                if (answered !== undefined) {
+                                    if (oIdx === item.correct) cls = 'bg-emerald-100 border-emerald-600 text-emerald-950 font-bold';
+                                    else if (oIdx === answered) cls = 'bg-rose-100 border-rose-500 text-rose-900';
+                                    else cls = 'bg-white/60 border-stone-200 text-slate-500';
+                                }
+                                return `
+                                    <button onclick="answerAssessQuiz(${qIdx}, ${oIdx})" ${answered !== undefined ? 'disabled' : ''} class="text-left p-3 rounded-xl border-2 text-sm transition-all btn-tactile ${cls}">
+                                        ${opt}
+                                    </button>
+                                `;
+                            }).join('')}
+                        </div>
+                        ${answered !== undefined ? `
+                            <div class="p-3 rounded-xl text-xs sm:text-sm font-medium ${answered === item.correct ? 'bg-emerald-50 border border-emerald-300 text-emerald-900' : 'bg-amber-50 border border-amber-300 text-amber-950'}">
+                                <strong>${answered === item.correct ? '✅ Correct!' : '💡 Review:'}</strong> ${item.explanation}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function answerAssessQuiz(qIdx, oIdx) {
+            if (state.assess.quizAnswered[qIdx] !== undefined) return;
+            state.assess.quizAnswered[qIdx] = oIdx;
+
+            const isRight = oIdx === ASSESS_QUESTIONS[qIdx].correct;
+            if (isRight) {
+                playSfx('success');
+                state.assess.quizCorrectCount++;
+            } else {
+                playSfx('error');
+            }
+
+            document.getElementById('quizScorePill').textContent = `${state.assess.quizCorrectCount} / ${ASSESS_QUESTIONS.length} Correct`;
+            renderAssessQuiz();
+            updateSovereigntyMeter();
+        }
+
+        function copySummaryReport() {
+            const name = document.getElementById('studentNameInput').value.trim() || 'Junior Historian';
+            const sov = document.getElementById('repSovereignty').textContent;
+            const exp = document.getElementById('repExplored').textContent;
+            const gScore = state.game.highScore;
+            const vScore = document.getElementById('repAssessScore').textContent;
+            const badges = [...state.game.badges].map(id => BADGE_DEFS.find(b => b.id === id)?.title).filter(Boolean).join(', ') || 'None yet';
+
+            const summaryText = [
+                `ROAD TO SOVEREIGNTY (1914–1918) — Grade 7 Alberta Social Studies`,
+                `Student: ${name}`,
+                `Sovereignty Meter: ${sov}`,
+                `Field Archive Explored: ${exp}`,
+                `Corps Dispatch Runner High Score: ${gScore} | Badges: ${badges}`,
+                `Curator's Verification Score: ${vScore}`
+            ].join('\n');
+
+            // Reliable iFrame-safe clipboard copy using document.execCommand('copy')
+            const ta = document.createElement('textarea');
+            ta.value = summaryText;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                document.execCommand('copy');
+                playSfx('success');
+                showToast('Summary copied! Paste it into your assignment.', '📋');
+            } catch (err) {
+                showToast('Could not auto-copy. Please screenshot your summary card!', '⚠️');
+            }
+            document.body.removeChild(ta);
+        }
+
+        /* =========================================================================
+           10. INITIALIZATION ON WINDOW LOAD
+           ========================================================================= */
+        window.onload = function () {
+            renderVoices();
+            renderMemorials();
+            renderBadges();
+            initMatchingBoard();
+            renderAssessQuiz();
+            updateSovereigntyMeter();
+            resizeDispatchCanvas();
+            requestAnimationFrame(gameLoop);
+        };
+    </script>
+</body>
+</html>
