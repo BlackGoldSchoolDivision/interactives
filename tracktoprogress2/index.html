@@ -804,10 +804,10 @@
       vancouver:   { id: 'vancouver',   label: 'VANCOUVER',  x: 164,  y: 415, line: 'Main Red Line',        type: 'finish', nextRed: [],              nextDetour: [] },
 
       // --- 1. EASTERN LOOP ("F" Orange — one-way westward to Sudbury) ---
+      // --- 1. EASTERN LOOP ("F" Orange — one-way westward, merges north of Sudbury toward Winnipeg) ---
       f_1:         { id: 'f_1',         label: '',           x: 998,  y: 398, line: 'Eastern Loop (F)',     type: 'track',    nextRed: [],          nextDetour: ['f_ore'] },
       f_ore:       { id: 'f_ore',       label: 'Ore',        x: 953,  y: 385, line: 'Eastern Loop (F)',     type: 'resource', resource: 'Ore',  nextRed: [], nextDetour: ['f_wood'] },
-      f_wood:      { id: 'f_wood',      label: 'Wood',       x: 907,  y: 390, line: 'Eastern Loop (F)',     type: 'resource', resource: 'Wood', nextRed: [], nextDetour: ['f_2'] },
-      f_2:         { id: 'f_2',         label: '',           x: 874,  y: 432, line: 'Eastern Loop (F)',     type: 'track',    nextRed: ['sudbury'], nextDetour: ['sudbury'] },
+      f_wood:      { id: 'f_wood',      label: 'Wood',       x: 907,  y: 390, line: 'Eastern Loop (F)',     type: 'resource', resource: 'Wood', nextRed: ['red_e3'], nextDetour: ['red_e3'] },
 
       // --- 2. CANADIAN SHIELD LOOP (Cyan — one-way westward to Shield West) ---
       cs_1:        { id: 'cs_1',        label: 'Labour',     x: 740,  y: 404, line: 'Canadian Shield Loop', type: 'resource', resource: 'Labour', nextRed: [], nextDetour: ['cs_2'] },
@@ -1324,13 +1324,13 @@
           if (path.length === 0 && node.line === 'Main Red Line') {
             nextIds = [...node.nextDetour];
           } else if (path.length > 0 && node.line === 'Main Red Line') {
-            // Stop at the Main Red Line junction when rejoining from a detour
-            nextIds = [];
+            // Coming off a detour onto the Main Red Line: continue moving forward toward Vancouver
+            nextIds = [...node.nextRed];
           } else {
             nextIds = [...new Set([...node.nextDetour, ...node.nextRed])];
           }
         } else {
-          // Main Red Line roll: strictly advance along the Main Red Line (at most maxSteps pins)
+          // Main Red Line roll: strictly advance forward along the Main Red Line (at most maxSteps pins)
           nextIds = [...node.nextRed];
         }
 
