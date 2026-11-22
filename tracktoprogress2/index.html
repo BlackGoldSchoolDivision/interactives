@@ -1,0 +1,2174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Track to Progress — 1880s Canadian Railway Game</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tone.js for synthesized railway & card sound effects -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+  <!-- Google Fonts: Victorian Display, Clean UI, and Ledger Typewriter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Courier+Prime:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --parchment-bg: #f4e8ce;
+      --parchment-dark: #e2cfa9;
+      --brass-gold: #b8860b;
+      --brass-light: #e5c158;
+      --ink-dark: #2c1e14;
+      --rail-red: #b91c1c;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #1e1610;
+      color: var(--ink-dark);
+      overflow-x: hidden;
+    }
+
+    .font-victorian {
+      font-family: 'Cinzel', Georgia, serif;
+    }
+
+    .font-ledger {
+      font-family: 'Courier Prime', monospace;
+    }
+
+    /* Parchment Texture */
+    .parchment-panel {
+      background: radial-gradient(circle at 50% 35%, #f9f0dc 0%, #ebd9b5 70%, #dcc395 100%);
+      border: 2px solid #8c6239;
+      box-shadow: inset 0 0 24px rgba(92, 58, 25, 0.22), 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    /* Brass Buttons */
+    .btn-brass {
+      background: linear-gradient(180deg, #e5c158 0%, #b8860b 55%, #8a6206 100%);
+      color: #1f140a;
+      border: 2px solid #5c3d04;
+      box-shadow: 0 3px 0 #4a3003, 0 5px 10px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.55);
+      transition: all 0.15s ease;
+    }
+    .btn-brass:hover:not(:disabled) {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+    .btn-brass:active:not(:disabled) {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #4a3003, 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    .btn-brass:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      filter: grayscale(0.5);
+    }
+
+    .btn-crimson {
+      background: linear-gradient(180deg, #dc2626 0%, #991b1b 60%, #7f1d1d 100%);
+      color: #fef2f2;
+      border: 2px solid #450a0a;
+      box-shadow: 0 3px 0 #450a0a, 0 5px 10px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+      transition: all 0.15s ease;
+    }
+    .btn-crimson:hover:not(:disabled) {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+    .btn-crimson:active:not(:disabled) {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #450a0a;
+    }
+    .btn-crimson:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .btn-emerald {
+      background: linear-gradient(180deg, #10b981 0%, #047857 65%, #065f46 100%);
+      color: #ecfdf5;
+      border: 2px solid #022c22;
+      box-shadow: 0 3px 0 #022c22, 0 4px 8px rgba(0, 0, 0, 0.3);
+      transition: all 0.15s ease;
+    }
+    .btn-emerald:hover:not(:disabled) {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+
+    /* Pulsing Reachable Map Node */
+    @keyframes nodePulse {
+      0%, 100% { r: 15; opacity: 0.9; stroke-width: 4; }
+      50% { r: 21; opacity: 0.4; stroke-width: 2; }
+    }
+    .reachable-ring {
+      animation: nodePulse 1.15s infinite ease-in-out;
+      cursor: pointer;
+    }
+
+    /* Dice Shake Animation */
+    @keyframes diceRoll {
+      0% { transform: rotate(0deg) scale(1); }
+      25% { transform: rotate(-18deg) scale(1.12); }
+      50% { transform: rotate(18deg) scale(1.15); }
+      75% { transform: rotate(-12deg) scale(1.08); }
+      100% { transform: rotate(0deg) scale(1); }
+    }
+    .dice-rolling {
+      animation: diceRoll 0.45s ease-in-out;
+    }
+
+    /* Resource Card Hover */
+    .resource-card {
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    .resource-card.selectable:hover {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 10px 18px rgba(185, 28, 28, 0.35);
+    }
+
+    /* Custom Scrollbar for Ledger */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #2b1f16;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #8c6239;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #b8860b;
+    }
+
+    /* Ledger Ruled Paper */
+    .ledger-paper {
+      background-color: #fbf5e6;
+      background-image: linear-gradient(to bottom, transparent 35px, #d6c5a3 36px);
+      background-size: 100% 36px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-[#1b140e] text-[#2c1e14] select-none">
+
+  <!-- ===================================================================== -->
+  <!-- SETUP / TITLE SCREEN OVERLAY                                          -->
+  <!-- ===================================================================== -->
+  <div id="setup-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-3 sm:p-6 overflow-y-auto">
+    <div class="parchment-panel rounded-2xl max-w-3xl w-full p-5 sm:p-8 my-auto relative">
+      <!-- Corner Brass Rivets -->
+      <div class="hidden sm:block absolute top-3 left-3 w-4 h-4 rounded-full bg-[#b8860b] border-2 border-[#5c3d04]"></div>
+      <div class="hidden sm:block absolute top-3 right-3 w-4 h-4 rounded-full bg-[#b8860b] border-2 border-[#5c3d04]"></div>
+      <div class="hidden sm:block absolute bottom-3 left-3 w-4 h-4 rounded-full bg-[#b8860b] border-2 border-[#5c3d04]"></div>
+      <div class="hidden sm:block absolute bottom-3 right-3 w-4 h-4 rounded-full bg-[#b8860b] border-2 border-[#5c3d04]"></div>
+
+      <div class="text-center mb-6">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2c1e14] text-[#e5c158] text-xs font-semibold tracking-widest uppercase mb-2">
+          <span>🚂 1880s Canadian Railway Simulation</span>
+        </div>
+        <h1 class="font-victorian text-3xl sm:text-5xl font-extrabold text-[#7f1d1d] tracking-wide drop-shadow-sm">
+          TRACK TO PROGRESS
+        </h1>
+        <p class="text-sm sm:text-base text-[#4a3423] mt-2 max-w-xl mx-auto">
+          Build your railway from <strong>Montreal to Vancouver</strong>. Victory goes not to the fastest builder, but to the company that reaches British Columbia with the <strong>least Bank Debt</strong> and the <strong>least Human Rights &amp; Environmental Harm</strong>.
+        </p>
+      </div>
+
+      <!-- Configuration Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <!-- Toggle 1: Solo vs Pass-and-Play -->
+        <div class="bg-[#efe1c2] border-2 border-[#a88253] rounded-xl p-4">
+          <h2 class="font-victorian text-sm font-bold uppercase tracking-wider text-[#5c3d04] mb-3 flex items-center gap-2">
+            <span>👥</span> Play Mode
+          </h2>
+          <div class="grid grid-cols-2 gap-2 mb-3">
+            <button id="btn-mode-solo" onclick="setSetupPlayerMode('solo')" class="py-2.5 px-3 rounded-lg font-semibold text-sm border-2 transition-all bg-[#7f1d1d] text-white border-[#450a0a] shadow">
+              Solo (1 Player)
+            </button>
+            <button id="btn-mode-multi" onclick="setSetupPlayerMode('multi')" class="py-2.5 px-3 rounded-lg font-semibold text-sm border-2 transition-all bg-[#f9f0dc] text-[#4a3423] border-[#a88253]">
+              Pass &amp; Play (2–4)
+            </button>
+          </div>
+
+          <!-- Player Count Selector (Hidden in Solo) -->
+          <div id="multi-player-options" class="hidden space-y-2.5 mt-3 pt-3 border-t border-[#c7aa7c]">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-[#4a3423] uppercase">Number of Companies:</span>
+              <div class="flex gap-1.5">
+                <button onclick="setPlayerCount(2)" id="pc-2" class="w-8 h-8 rounded-lg font-bold text-sm border-2 bg-[#b8860b] text-white border-[#5c3d04]">2</button>
+                <button onclick="setPlayerCount(3)" id="pc-3" class="w-8 h-8 rounded-lg font-bold text-sm border-2 bg-[#f9f0dc] text-[#4a3423] border-[#a88253]">3</button>
+                <button onclick="setPlayerCount(4)" id="pc-4" class="w-8 h-8 rounded-lg font-bold text-sm border-2 bg-[#f9f0dc] text-[#4a3423] border-[#a88253]">4</button>
+              </div>
+            </div>
+            <div id="player-name-inputs" class="space-y-1.5"></div>
+          </div>
+
+          <div id="solo-name-option" class="mt-3 pt-3 border-t border-[#c7aa7c]">
+            <label class="block text-xs font-semibold text-[#4a3423] uppercase mb-1">Railway Company Name:</label>
+            <input id="solo-company-name" type="text" value="Dominion Pacific Co." maxlength="24"
+              class="w-full px-3 py-1.5 rounded-lg bg-[#fbf5e6] border border-[#a88253] text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#b8860b]" />
+          </div>
+        </div>
+
+        <!-- Toggle 2: Auto-Ledger vs Manual Student Input -->
+        <div class="bg-[#efe1c2] border-2 border-[#a88253] rounded-xl p-4 flex flex-col justify-between">
+          <div>
+            <h2 class="font-victorian text-sm font-bold uppercase tracking-wider text-[#5c3d04] mb-3 flex items-center gap-2">
+              <span>📒</span> Company Ledger Mode
+            </h2>
+            <div class="grid grid-cols-2 gap-2 mb-3">
+              <button id="btn-ledger-auto" onclick="setSetupLedgerMode('auto')" class="py-2.5 px-3 rounded-lg font-semibold text-sm border-2 transition-all bg-[#065f46] text-white border-[#022c22] shadow">
+                Automatic Ledger
+              </button>
+              <button id="btn-ledger-manual" onclick="setSetupLedgerMode('manual')" class="py-2.5 px-3 rounded-lg font-semibold text-sm border-2 transition-all bg-[#f9f0dc] text-[#4a3423] border-[#a88253]">
+                Manual Student Entry
+              </button>
+            </div>
+            <p id="ledger-mode-desc" class="text-xs text-[#4a3423] leading-relaxed bg-[#f9f0dc] p-2.5 rounded-lg border border-[#d6c096]">
+              <strong>Automatic Ledger:</strong> Every turn, roll, distance, event, harm tally, and cash/debt balance is automatically recorded in your Company Ledger. You can switch modes anytime mid-game.
+            </p>
+          </div>
+          <div class="mt-3 pt-2.5 border-t border-[#c7aa7c] text-xs text-[#5c3d04] flex items-center justify-between">
+            <span>Starting Gear: <strong>$10M Cash</strong> + <strong>6 Unique Cards</strong></span>
+            <span>🎲 20 Progress • 20 Resource</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Rules Strip -->
+      <div class="bg-[#2c1e14] text-[#f3e5c8] rounded-xl p-3.5 mb-6 text-xs sm:text-sm grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div class="flex items-start gap-2">
+          <span class="text-lg">1️⃣</span>
+          <div><strong class="text-[#e5c158]">Main Red Line:</strong> Hold all 6 unique resources to roll &amp; move. Discard 1 card after moving.</div>
+        </div>
+        <div class="flex items-start gap-2">
+          <span class="text-lg">2️⃣</span>
+          <div><strong class="text-[#e5c158]">Rebuild Hand:</strong> Pay $2M to draw a Resource Card, OR turn onto a coloured Detour Loop for free resources.</div>
+        </div>
+        <div class="flex items-start gap-2">
+          <span class="text-lg">3️⃣</span>
+          <div><strong class="text-[#e5c158]">Progress Cards:</strong> Land on a Circle or X space to face a real 1880s railway dilemma.</div>
+        </div>
+      </div>
+
+      <div class="flex justify-center">
+        <button onclick="startGame()" class="btn-brass font-victorian text-lg sm:text-xl font-bold px-10 py-3.5 rounded-xl tracking-wider uppercase">
+          🚂 Depart from Montreal
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- TOP HEADER & COMPANY DASHBOARD                                        -->
+  <!-- ===================================================================== -->
+  <header class="bg-[#261a12] border-b-2 border-[#8c6239] text-[#f4e8ce] px-3 sm:px-5 py-2.5 shadow-lg z-20">
+    <div class="max-w-[1600px] mx-auto flex flex-wrap items-center justify-between gap-2">
+      <!-- Brand & Active Player -->
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl">🚂</span>
+          <div>
+            <h1 class="font-victorian text-base sm:text-xl font-bold text-[#e5c158] leading-tight tracking-wide">TRACK TO PROGRESS</h1>
+            <div class="flex items-center gap-2 text-xs text-[#d4bc94]">
+              <span id="hud-turn-badge" class="bg-[#3e2a1d] px-2 py-0.5 rounded border border-[#6e4c30]">Turn 1</span>
+              <span id="hud-line-badge" class="bg-[#7f1d1d] text-white px-2 py-0.5 rounded font-medium">Main Red Line</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Company Pill (Especially clear in Pass & Play) -->
+        <div id="hud-player-pill" class="hidden sm:flex items-center gap-2 bg-[#3a271b] border border-[#b8860b] px-3 py-1 rounded-full">
+          <span id="hud-player-dot" class="w-3.5 h-3.5 rounded-full border border-white"></span>
+          <span id="hud-player-name" class="text-sm font-bold text-white">Dominion Pacific Co.</span>
+        </div>
+      </div>
+
+      <!-- Live Company Gauges -->
+      <div class="flex flex-wrap items-center gap-1.5 sm:gap-2.5 text-xs sm:text-sm">
+        <div class="bg-[#1b120c] border border-[#6e4c30] rounded-lg px-2.5 py-1 flex items-center gap-1.5" title="Company Cash Purse">
+          <span>💰</span>
+          <span class="text-[#c9b086] hidden md:inline">Purse:</span>
+          <span id="stat-cash" class="font-bold text-emerald-400">$10M</span>
+        </div>
+        <div class="bg-[#1b120c] border border-[#6e4c30] rounded-lg px-2.5 py-1 flex items-center gap-1.5" title="Bank Debt (Lower is better)">
+          <span>🏦</span>
+          <span class="text-[#c9b086] hidden md:inline">Debt:</span>
+          <span id="stat-debt" class="font-bold text-amber-300">$0M</span>
+        </div>
+        <div class="bg-[#1b120c] border border-[#6e4c30] rounded-lg px-2.5 py-1 flex items-center gap-1.5" title="Human Rights Harm (Lower is better)">
+          <span>⚖️</span>
+          <span class="text-[#c9b086] hidden md:inline">HR Harm:</span>
+          <span id="stat-hr" class="font-bold text-rose-400">0</span>
+        </div>
+        <div class="bg-[#1b120c] border border-[#6e4c30] rounded-lg px-2.5 py-1 flex items-center gap-1.5" title="Environmental Harm (Lower is better)">
+          <span>🌲</span>
+          <span class="text-[#c9b086] hidden md:inline">Env Harm:</span>
+          <span id="stat-env" class="font-bold text-lime-400">0</span>
+        </div>
+        <div class="bg-[#1b120c] border border-[#6e4c30] rounded-lg px-2.5 py-1 flex items-center gap-1.5" title="Total Spaces Travelled">
+          <span>🛤️</span>
+          <span class="text-[#c9b086] hidden lg:inline">Dist:</span>
+          <span id="stat-dist" class="font-bold text-sky-300">0</span>
+        </div>
+      </div>
+
+      <!-- Quick Controls (Ledger Mode Toggle, Open Ledger, Sound, Rules) -->
+      <div class="flex items-center gap-1.5">
+        <button id="btn-toggle-ledger-mode" onclick="toggleLedgerModeInGame()" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold border border-[#8c6239] bg-[#3a271b] hover:bg-[#4e3525] text-[#f4e8ce] transition" title="Toggle between Auto-Ledger and Manual Student Entry">
+          📒 Auto
+        </button>
+        <button onclick="toggleLedgerDrawer()" class="btn-brass px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1">
+          <span>📖</span> <span class="hidden sm:inline">Ledger</span>
+          <span id="ledger-count-badge" class="bg-[#2c1e14] text-[#e5c158] px-1.5 rounded-full text-[10px]">0</span>
+        </button>
+        <button id="btn-sound" onclick="toggleSound()" class="p-1.5 rounded-lg border border-[#6e4c30] bg-[#3a271b] hover:bg-[#4e3525] text-sm" title="Toggle Sound Effects">
+          🔊
+        </button>
+        <button onclick="openRulesModal()" class="p-1.5 rounded-lg border border-[#6e4c30] bg-[#3a271b] hover:bg-[#4e3525] text-sm" title="How to Play">
+          ❓
+        </button>
+      </div>
+    </div>
+
+    <!-- Multiplayer Standings Ribbon (Shown in 2-4 Player Mode) -->
+    <div id="multiplayer-ribbon" class="hidden max-w-[1600px] mx-auto mt-2 pt-2 border-t border-[#4a3423] flex flex-wrap items-center gap-2 text-xs">
+    </div>
+  </header>
+
+  <!-- ===================================================================== -->
+  <!-- MAIN GAME WORKSPACE: MAP + CONTROLS                                   -->
+  <!-- ===================================================================== -->
+  <main class="flex-1 flex flex-col max-w-[1600px] w-full mx-auto p-2 sm:p-4 gap-3">
+
+    <!-- Status / Action Prompt Banner -->
+    <div id="status-banner" class="bg-[#2f2117] border-2 border-[#b8860b] text-[#f9f0dc] rounded-xl px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 shadow-md">
+      <div class="flex items-center gap-2.5">
+        <span id="status-icon" class="text-xl">🧭</span>
+        <p id="status-text" class="text-sm sm:text-base font-medium">
+          Welcome! You hold all 6 unique resources. Roll the die to advance along the Main Red Line!
+        </p>
+      </div>
+      <div id="status-sub-actions" class="flex items-center gap-2"></div>
+    </div>
+
+    <!-- Interactive Map Container -->
+    <div class="parchment-panel rounded-2xl p-2 sm:p-3 relative overflow-hidden">
+      <!-- Map SVG (ViewBox 1200 x 675 aligned to the GitHub map.png image) -->
+      <div class="w-full overflow-x-auto">
+        <svg id="game-map-svg" viewBox="0 0 1200 675" class="w-full h-auto min-w-[680px] rounded-xl block" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="softShadow" x="-25%" y="-25%" width="150%" height="150%">
+              <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#1a110a" flood-opacity="0.65"/>
+            </filter>
+          </defs>
+
+          <!-- Parchment fallback background while map.png loads -->
+          <rect x="0" y="0" width="1200" height="675" fill="#e8d4ab" rx="10"/>
+
+          <!-- User's Raw GitHub Map Artwork -->
+          <image
+            id="custom-map-image"
+            href="https://raw.githubusercontent.com/BlackGoldSchoolDivision/interactives/253d08ed2cdf6c1e5c29e9f1a49003da6c27eb14/map.png"
+            x="0"
+            y="0"
+            width="1200"
+            height="675"
+            preserveAspectRatio="none"
+          />
+
+          <!-- Interactive Overlay for Resource Deck (aligned over map's Resource Deck box) -->
+          <g id="map-resource-deck-btn" onclick="buyResourceCard()" class="cursor-pointer group">
+            <rect x="252" y="510" width="168" height="122" rx="10" fill="transparent" stroke="transparent" stroke-width="3" class="hover:stroke-[#facc15] transition-all"/>
+            <rect x="274" y="608" width="124" height="22" rx="11" fill="#2c1e14" fill-opacity="0.88" stroke="#e5c158" stroke-width="1.4" filter="url(#softShadow)"/>
+            <text id="svg-res-deck-count" x="336" y="623" text-anchor="middle" font-size="11" font-weight="700" fill="#fef3c7">20 Left • Pay $2M</text>
+          </g>
+
+          <!-- Interactive Overlay for Progress Deck (aligned over map's Progress Deck box) -->
+          <g id="map-progress-deck-box">
+            <rect x="708" y="608" width="124" height="22" rx="11" fill="#2c1e14" fill-opacity="0.88" stroke="#e5c158" stroke-width="1.4" filter="url(#softShadow)"/>
+            <text id="svg-prog-deck-count" x="770" y="623" text-anchor="middle" font-size="11" font-weight="700" fill="#fef3c7">20 Cards Left</text>
+          </g>
+
+          <!-- Dynamic Track Lines Layer (kept subtle so map.png artwork shines through) -->
+          <g id="svg-tracks-layer"></g>
+
+          <!-- Dynamic Nodes Layer (subtle hoverable markers aligned to map spaces) -->
+          <g id="svg-nodes-layer"></g>
+
+          <!-- Dynamic Reachable Highlights Layer (glowing yellow valid move targets) -->
+          <g id="svg-highlights-layer"></g>
+
+          <!-- Dynamic Locomotive Tokens Layer -->
+          <g id="svg-tokens-layer"></g>
+        </svg>
+      </div>
+
+      <!-- Compact Map Legend -->
+      <div class="mt-2 flex flex-wrap items-center justify-center gap-3 text-[11px] sm:text-xs text-[#4a3423] font-medium border-t border-[#c7aa7c] pt-2">
+        <span class="flex items-center gap-1"><span class="w-3.5 h-1.5 bg-[#dc2626] inline-block rounded"></span> Main Red Line (Needs 6 Unique Cards)</span>
+        <span class="flex items-center gap-1"><span class="w-3.5 h-1.5 bg-[#f59e0b] inline-block rounded"></span> Eastern "F"</span>
+        <span class="flex items-center gap-1"><span class="w-3.5 h-1.5 bg-[#06b6d4] inline-block rounded"></span> Shield Loop</span>
+        <span class="flex items-center gap-1"><span class="w-3.5 h-1.5 bg-[#a855f7] inline-block rounded"></span> Plains Loop</span>
+        <span class="flex items-center gap-1"><span class="w-3.5 h-1.5 bg-[#eab308] inline-block rounded"></span> Jasper Loop</span>
+        <span class="flex items-center gap-1"><span class="w-3.5 h-1.5 bg-[#22c55e] inline-block rounded"></span> Northern "J"</span>
+        <span class="flex items-center gap-1"><span class="font-bold text-[#991b1b]">⭕ / ✖</span> Draw Progress Card</span>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- BOTTOM PLAYER DOCK: RESOURCE HAND + DICE & ACTIONS                  -->
+    <!-- =================================================================== -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-3">
+      <!-- Resource Hand Tray (8 cols) -->
+      <div class="lg:col-span-8 parchment-panel rounded-2xl p-3 sm:p-4 flex flex-col justify-between">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+          <div class="flex items-center gap-2">
+            <h2 class="font-victorian text-sm sm:text-base font-bold text-[#3a2312]">Company Resource Hand</h2>
+            <span id="hand-ready-badge" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-700 text-white">
+              ✓ All 6 Unique Ready
+            </span>
+          </div>
+          <span id="hand-instruction" class="text-xs text-[#5c3d04] font-medium">
+            Hold 1 of each resource to roll on the Main Red Line.
+          </span>
+        </div>
+
+        <!-- 6 Resource Slots -->
+        <div id="resource-hand-grid" class="grid grid-cols-3 sm:grid-cols-6 gap-2">
+          <!-- Populated dynamically by JS -->
+        </div>
+      </div>
+
+      <!-- Action & Dice Panel (4 cols) -->
+      <div class="lg:col-span-4 parchment-panel rounded-2xl p-3 sm:p-4 flex flex-col justify-between gap-2.5">
+        <div class="flex items-center justify-between">
+          <h2 class="font-victorian text-sm sm:text-base font-bold text-[#3a2312]">Turn Controls</h2>
+          <div id="dice-display" class="w-12 h-12 rounded-xl bg-[#fbf5e6] border-2 border-[#5c3d04] shadow-inner flex items-center justify-center text-2xl font-bold text-[#7f1d1d]">
+            🎲
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-2">
+          <!-- Primary Roll Button -->
+          <button id="btn-roll-die" onclick="rollDie()" class="btn-crimson w-full py-2.5 px-4 rounded-xl font-victorian font-bold text-sm sm:text-base tracking-wide flex items-center justify-center gap-2">
+            <span>🎲</span> <span id="btn-roll-label">Roll Die (Main Red Line)</span>
+          </button>
+
+          <!-- Rebuild Hand Options -->
+          <div class="grid grid-cols-2 gap-2">
+            <button id="btn-buy-resource" onclick="buyResourceCard()" class="btn-brass py-2 px-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1" title="Option A: Pay $2M (or take a Bank Loan) to draw from Resource Deck">
+              <span>💰</span> Pay $2M Draw
+            </button>
+            <button id="btn-enter-detour" onclick="startDetourRoll()" class="btn-emerald py-2 px-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1" title="Option B: Roll onto a Detour Loop without needing all 6 cards">
+              <span>🔀</span> Detour Roll
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- PROGRESS CARD MODAL                                                   -->
+  <!-- ===================================================================== -->
+  <div id="progress-modal" class="hidden fixed inset-0 z-40 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 overflow-y-auto">
+    <div class="parchment-panel rounded-2xl max-w-lg w-full p-5 sm:p-6 relative animate-fade-in">
+      <div class="flex items-center justify-between border-b-2 border-[#a88253] pb-2.5 mb-3">
+        <span class="text-xs font-bold uppercase tracking-widest bg-[#7f1d1d] text-[#fef3c7] px-2.5 py-1 rounded">Progress Card</span>
+        <span id="prog-card-num" class="font-victorian text-xs font-bold text-[#5c3d04]">#1 / 20</span>
+      </div>
+      <h3 id="prog-card-title" class="font-victorian text-xl sm:text-2xl font-extrabold text-[#3a2312] mb-2">Card Title</h3>
+      <p id="prog-card-context" class="text-sm text-[#4a3423] leading-relaxed bg-[#f9f0dc] p-3.5 rounded-xl border border-[#d6c096] mb-4 italic">
+        Historical context goes here.
+      </p>
+      <div id="prog-card-choices" class="space-y-2.5">
+        <!-- Choices injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MANUAL LEDGER ENTRY MODAL (Shown when Manual Mode is active)          -->
+  <!-- ===================================================================== -->
+  <div id="manual-ledger-modal" class="hidden fixed inset-0 z-40 flex items-center justify-center bg-black/75 backdrop-blur-sm p-3 sm:p-4 overflow-y-auto">
+    <div class="parchment-panel rounded-2xl max-w-2xl w-full p-5 sm:p-6 my-auto">
+      <div class="flex items-center justify-between border-b-2 border-[#8c6239] pb-2.5 mb-3">
+        <div>
+          <h3 class="font-victorian text-lg sm:text-xl font-extrabold text-[#3a2312]">📒 Record Your Turn in the Ledger</h3>
+          <p id="manual-ledger-subtitle" class="text-xs text-[#5c3d04]">Student Manual Entry Mode — update your running totals before ending your turn.</p>
+        </div>
+        <button onclick="fillManualLedgerHints()" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-[#e8d5b0] border border-[#8c6239] hover:bg-[#dec392] text-[#3a2312]">
+          💡 Fill Hints
+        </button>
+      </div>
+
+      <!-- Turn Summary Recap Box (helps students calculate) -->
+      <div id="manual-turn-recap" class="bg-[#2c1e14] text-[#f4e8ce] rounded-xl p-3 mb-4 text-xs sm:text-sm space-y-1">
+      </div>
+
+      <form id="manual-ledger-form" onsubmit="submitManualLedger(event)" class="grid grid-cols-2 sm:grid-cols-4 gap-3 font-ledger text-sm">
+        <div>
+          <label class="block text-[11px] font-bold uppercase text-[#5c3d04] mb-1">Turn #</label>
+          <input id="ml-turn" type="number" required class="w-full px-2.5 py-1.5 rounded-lg bg-[#fbf5e6] border-2 border-[#a88253] focus:outline-none focus:border-[#7f1d1d]" />
+        </div>
+        <div class="col-span-2 sm:col-span-2">
+          <label class="block text-[11px] font-bold uppercase text-[#5c3d04] mb-1">Current Line</label>
+          <select id="ml-line" class="w-full px-2.5 py-1.5 rounded-lg bg-[#fbf5e6] border-2 border-[#a88253] focus:outline-none focus:border-[#7f1d1d]">
+            <option value="Main Red Line">Main Red Line</option>
+            <option value="Eastern Loop (F)">Eastern Loop (F)</option>
+            <option value="Canadian Shield Loop">Canadian Shield Loop</option>
+            <option value="Great Plains Loop">Great Plains Loop</option>
+            <option value="Jasper Loop">Jasper Loop</option>
+            <option value="Northern Loop (J)">Northern Loop (J)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold uppercase text-[#5c3d04] mb-1">Die Roll</label>
+          <input id="ml-roll" type="number" min="0" max="6" required class="w-full px-2.5 py-1.5 rounded-lg bg-[#fbf5e6] border-2 border-[#a88253] focus:outline-none focus:border-[#7f1d1d]" />
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-bold uppercase text-[#5c3d04] mb-1">Total Distance</label>
+          <input id="ml-dist" type="number" min="0" required class="w-full px-2.5 py-1.5 rounded-lg bg-[#fbf5e6] border-2 border-[#a88253] focus:outline-none focus:border-[#7f1d1d]" />
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold uppercase text-[#5c3d04] mb-1">Total HR Harm</label>
+          <input id="ml-hr" type="number" min="0" required class="w-full px-2.5 py-1.5 rounded-lg bg-[#fbf5e6] border-2 border-[#a88253] focus:outline-none focus:border-[#7f1d1d]" />
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold uppercase text-[#5c3d04] mb-1">Total Env Harm</label>
+          <input id="ml-env" type="number" min="0" required class="w-full px-2.5 py-1.5 rounded-lg bg-[#fbf5e6] border-2 border-[#a88253] focus:outline-none focus:border-[#7f1d1d]" />
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold uppercase text-[#5c3d04] mb-1">Cash Purse ($M)</label>
+          <input id="ml-cash" type="number" min="0" required class="w-full px-2.5 py-1.5 rounded-lg bg-[#fbf5e6] border-2 border-[#a88253] focus:outline-none focus:border-[#7f1d1d]" />
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-bold uppercase text-[#5c3d04] mb-1">Bank Debt ($M)</label>
+          <input id="ml-debt" type="number" min="0" required class="w-full px-2.5 py-1.5 rounded-lg bg-[#fbf5e6] border-2 border-[#a88253] focus:outline-none focus:border-[#7f1d1d]" />
+        </div>
+        <div class="col-span-2 sm:col-span-3">
+          <label class="block text-[11px] font-bold uppercase text-[#5c3d04] mb-1">Progress Event / Notes</label>
+          <input id="ml-event" type="text" placeholder="e.g., Unequal Wages (Paid equal wages)" class="w-full px-2.5 py-1.5 rounded-lg bg-[#fbf5e6] border-2 border-[#a88253] focus:outline-none focus:border-[#7f1d1d]" />
+        </div>
+
+        <div id="ml-error-msg" class="hidden col-span-2 sm:col-span-4 bg-rose-100 border border-rose-400 text-rose-900 rounded-lg p-2.5 text-xs font-sans"></div>
+
+        <div class="col-span-2 sm:col-span-4 flex justify-end gap-2 mt-2">
+          <button type="submit" class="btn-emerald px-5 py-2.5 rounded-xl font-sans font-bold text-sm">
+            ✓ Verify &amp; Record in Ledger
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- COMPANY LEDGER SIDE DRAWER                                            -->
+  <!-- ===================================================================== -->
+  <div id="ledger-drawer" class="hidden fixed inset-0 z-40 flex justify-end bg-black/60 backdrop-blur-xs">
+    <div class="bg-[#fbf5e6] w-full max-w-4xl h-full shadow-2xl border-l-4 border-[#6e4c30] flex flex-col">
+      <!-- Drawer Header -->
+      <div class="bg-[#2c1e14] text-[#f4e8ce] px-4 py-3 flex flex-wrap items-center justify-between gap-2 border-b-2 border-[#b8860b]">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">📖</span>
+          <div>
+            <h2 class="font-victorian text-lg font-bold text-[#e5c158]">Official Company Ledger</h2>
+            <p class="text-xs text-[#d4bc94]">1880s Railway Accounting &amp; Historical Impact Log</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="exportLedgerCSV()" class="btn-brass px-3 py-1.5 rounded-lg text-xs font-bold">⬇️ Export CSV</button>
+          <button onclick="copyLedgerText()" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#3e2a1d] border border-[#8c6239] hover:bg-[#523827]">📋 Copy</button>
+          <button onclick="toggleLedgerDrawer()" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#7f1d1d] hover:bg-[#991b1b] text-white">✕ Close</button>
+        </div>
+      </div>
+
+      <!-- Player Filter Tabs (in Multiplayer) -->
+      <div id="ledger-player-tabs" class="bg-[#efe1c2] px-4 py-2 border-b border-[#c7aa7c] flex flex-wrap gap-2 text-xs">
+      </div>
+
+      <!-- Ledger Table -->
+      <div class="flex-1 overflow-auto p-3 sm:p-4 ledger-paper">
+        <table class="w-full text-left border-collapse font-ledger text-xs sm:text-sm">
+          <thead>
+            <tr class="border-b-2 border-[#5c3d04] text-[#3a2312] bg-[#efe1c2]/90">
+              <th class="py-2 px-2">Turn</th>
+              <th class="py-2 px-2">Company</th>
+              <th class="py-2 px-2">Line</th>
+              <th class="py-2 px-2 text-center">Roll</th>
+              <th class="py-2 px-2 text-center">Dist</th>
+              <th class="py-2 px-2">Event / Resource</th>
+              <th class="py-2 px-2 text-center">HR Harm</th>
+              <th class="py-2 px-2 text-center">Env Harm</th>
+              <th class="py-2 px-2 text-right">Purse</th>
+              <th class="py-2 px-2 text-right">Debt</th>
+            </tr>
+          </thead>
+          <tbody id="ledger-table-body" class="divide-y divide-[#d6c5a3]">
+            <tr>
+              <td colspan="10" class="py-8 text-center text-[#7c5631] italic">No turns recorded yet. Depart from Montreal to begin!</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- PASS-AND-PLAY HANDOFF BANNER MODAL                                    -->
+  <!-- ===================================================================== -->
+  <div id="handoff-modal" class="hidden fixed inset-0 z-40 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+    <div class="parchment-panel rounded-2xl max-w-md w-full p-6 text-center">
+      <div class="text-4xl mb-2">🚂</div>
+      <p class="text-xs font-bold uppercase tracking-widest text-[#7f1d1d] mb-1">Pass the Controls</p>
+      <h3 id="handoff-player-name" class="font-victorian text-2xl font-extrabold text-[#2c1e14] mb-2">Company 2</h3>
+      <p id="handoff-details" class="text-sm text-[#4a3423] mb-5">It is your turn to lead your railway westward.</p>
+      <button onclick="confirmHandoff()" class="btn-brass w-full py-3 rounded-xl font-victorian font-bold text-base">
+        Take the Throttle
+      </button>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- ROYAL COMMISSION AUDIT (VICTORY / END-GAME MODAL)                     -->
+  <!-- ===================================================================== -->
+  <div id="audit-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4 overflow-y-auto">
+    <div class="parchment-panel rounded-2xl max-w-3xl w-full p-6 sm:p-8 my-auto">
+      <div class="text-center border-b-2 border-[#8c6239] pb-4 mb-5">
+        <span class="text-xs font-bold uppercase tracking-widest bg-[#2c1e14] text-[#e5c158] px-3 py-1 rounded-full">British Columbia Reached!</span>
+        <h2 class="font-victorian text-2xl sm:text-4xl font-extrabold text-[#7f1d1d] mt-2">Royal Commission Audit</h2>
+        <p class="text-sm text-[#4a3423] mt-1">
+          Evaluated on <strong>Bank Debt</strong> + <strong>Human Rights Harm</strong> + <strong>Environmental Harm</strong> (Lower Audit Score = Better Legacy).
+        </p>
+      </div>
+
+      <div id="audit-results-container" class="space-y-3 mb-6">
+        <!-- Populated dynamically -->
+      </div>
+
+      <div class="flex flex-wrap justify-center gap-3">
+        <button onclick="exportLedgerCSV()" class="btn-brass px-5 py-2.5 rounded-xl font-bold text-sm">⬇️ Download Full Ledger (CSV)</button>
+        <button onclick="location.reload()" class="btn-crimson px-5 py-2.5 rounded-xl font-victorian font-bold text-sm">🔄 Play Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- RULES / HOW TO PLAY MODAL                                             -->
+  <!-- ===================================================================== -->
+  <div id="rules-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 overflow-y-auto">
+    <div class="parchment-panel rounded-2xl max-w-2xl w-full p-5 sm:p-6 my-auto">
+      <div class="flex items-center justify-between border-b-2 border-[#8c6239] pb-2 mb-3">
+        <h3 class="font-victorian text-xl font-bold text-[#7f1d1d]">📜 Track to Progress — Field Manual</h3>
+        <button onclick="closeRulesModal()" class="px-2.5 py-1 rounded-lg bg-[#2c1e14] text-[#f4e8ce] text-xs font-bold">✕</button>
+      </div>
+      <div class="space-y-3 text-sm text-[#3a2312] leading-relaxed max-h-[65vh] overflow-y-auto pr-1">
+        <p><strong>🎯 Mission:</strong> Run an 1880s railway company from <strong>Montreal</strong> to <strong>Vancouver</strong>. To win, reach BC with the <strong>least Bank Debt</strong> and <strong>least Human Rights &amp; Environmental Harm</strong>.</p>
+        <p><strong>🎒 Starting Gear:</strong> $10 Million Cash Purse + 6 unique Resource Cards (Wood, Ore, Coal, Water, Engine, Labour).</p>
+        <p><strong>🎲 Turn Execution:</strong>
+          <br>1. On the <strong>Main Red Line</strong>, you must hold all 6 unique resources to roll 1 die (1–6) and advance.
+          <br>2. Click a glowing space on the map to move your locomotive there.
+          <br>3. After moving on the Main Red Line, <strong>discard 1 resource card</strong> from your hand.
+          <br>4. If you land on a <strong>Circle (⭕)</strong> or <strong>X (✖)</strong> space, draw a <strong>Progress Card</strong> and resolve its historical dilemma.
+        </p>
+        <p><strong>🔄 Rebuilding Your Hand:</strong>
+          <br>• <strong>Option A (Pay $2M):</strong> Pay $2M from your Cash Purse (or automatic Bank Loan if cash is empty) to draw the top card from the 20-card Resource Deck.
+          <br>• <strong>Option B (Detour Loop):</strong> At any detour junction (Montreal, Shield East, Winnipeg, Calgary, Edmonton), click <strong>Detour Roll</strong> to turn off the Red Line without needing all 6 cards! You collect every free resource icon you pass over or land on along the loop.
+        </p>
+        <p><strong>📒 Ledger Modes:</strong> Switch anytime between <strong>Automatic Ledger</strong> and <strong>Manual Student Entry</strong> using the button in the top bar.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- ===================================================================== -->
+  <!-- JAVASCRIPT GAME ENGINE                                                -->
+  <!-- ===================================================================== -->
+  <script>
+    // =========================================================================
+    // 1. AUDIO ENGINE (Tone.js Synthesized Sound Effects) & RESOURCES
+    // =========================================================================
+    let soundEnabled = true;
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      document.getElementById('btn-sound').textContent = soundEnabled ? '🔊' : '🔇';
+    }
+
+    function playSound(type) {
+      if (!soundEnabled || typeof Tone === 'undefined') return;
+      try {
+        if (Tone.context.state !== 'running') {
+          Tone.start();
+        }
+        const now = Tone.now();
+        if (type === 'dice') {
+          const synth = new Tone.MembraneSynth().toDestination();
+          synth.triggerAttackRelease('C2', '16n', now);
+          synth.triggerAttackRelease('E2', '16n', now + 0.08);
+          synth.triggerAttackRelease('G2', '16n', now + 0.16);
+        } else if (type === 'move') {
+          const synth = new Tone.Synth({ oscillator: { type: 'triangle' } }).toDestination();
+          synth.triggerAttackRelease('D4', '16n', now);
+          synth.triggerAttackRelease('F#4', '16n', now + 0.09);
+        } else if (type === 'coin') {
+          const synth = new Tone.MetalSynth({ frequency: 320, harmonicity: 5.1, modulationIndex: 16 }).toDestination();
+          synth.volume.value = -14;
+          synth.triggerAttackRelease('16n', now);
+        } else if (type === 'card') {
+          const synth = new Tone.NoiseSynth({ noise: { type: 'white' }, envelope: { attack: 0.005, decay: 0.08, sustain: 0 } }).toDestination();
+          synth.volume.value = -16;
+          synth.triggerAttackRelease('16n', now);
+        } else if (type === 'whistle') {
+          const synth = new Tone.PolySynth(Tone.Synth).toDestination();
+          synth.volume.value = -12;
+          synth.triggerAttackRelease(['D5', 'F#5', 'A5'], '8n', now);
+          synth.triggerAttackRelease(['D5', 'F#5', 'A5'], '4n', now + 0.22);
+        }
+      } catch (err) {
+        // Ignore audio context autoplay restrictions silently
+      }
+    }
+
+    // 20-Card Resource Deck distribution (4 Wood, 3 Ore, 3 Coal, 3 Water, 3 Engine, 4 Labour = 20)
+    const RESOURCE_TYPES = [
+      { id: 'Wood',   icon: '🪵', count: 4, color: 'bg-amber-100 border-amber-700 text-amber-950' },
+      { id: 'Ore',    icon: '⛏️', count: 3, color: 'bg-slate-200 border-slate-600 text-slate-900' },
+      { id: 'Coal',   icon: '🪨', count: 3, color: 'bg-zinc-300 border-zinc-700 text-zinc-950' },
+      { id: 'Water',  icon: '💧', count: 3, color: 'bg-sky-100 border-sky-600 text-sky-950' },
+      { id: 'Engine', icon: '⚙️', count: 3, color: 'bg-orange-100 border-orange-700 text-orange-950' },
+      { id: 'Labour', icon: '👷', count: 4, color: 'bg-rose-100 border-rose-700 text-rose-950' }
+    ];
+
+    const RESOURCE_MAP = {};
+    RESOURCE_TYPES.forEach(rt => { RESOURCE_MAP[rt.id] = rt; });
+
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function buildResourceDeck() {
+      const deck = [];
+      RESOURCE_TYPES.forEach(rt => {
+        for (let i = 0; i < rt.count; i++) deck.push(rt.id);
+      });
+      return shuffleArray(deck);
+    }
+
+    // =========================================================================
+    // 2. INTERACTIVE BOARD GRAPH (Calibrated to GitHub map.png on 1200x675)
+    // =========================================================================
+    // Types: 'start', 'x', 'circle', 'track', 'resource', 'finish'
+    const BOARD_NODES = {
+      // --- MAIN RED LINE (Montreal -> Vancouver) ---
+      montreal:    { id: 'montreal',    label: 'MONTREAL',   x: 1010, y: 458, line: 'Main Red Line',        type: 'start',  nextRed: ['ottawa'],      nextDetour: ['f_1'] },
+      ottawa:      { id: 'ottawa',      label: 'OTTAWA',     x: 974,  y: 471, line: 'Main Red Line',        type: 'circle', nextRed: ['red_e1'],      nextDetour: [] },
+      red_e1:      { id: 'red_e1',      label: '',           x: 953,  y: 503, line: 'Main Red Line',        type: 'track',  nextRed: ['toronto'],     nextDetour: [] },
+      toronto:     { id: 'toronto',     label: 'TORONTO',    x: 928,  y: 539, line: 'Main Red Line',        type: 'x',      nextRed: ['red_e2'],      nextDetour: [] },
+      red_e2:      { id: 'red_e2',      label: '',           x: 900,  y: 505, line: 'Main Red Line',        type: 'track',  nextRed: ['sudbury'],     nextDetour: [] },
+      sudbury:     { id: 'sudbury',     label: 'SUDBURY',    x: 877,  y: 475, line: 'Main Red Line',        type: 'track',  nextRed: ['red_e3'],      nextDetour: [] },
+      red_e3:      { id: 'red_e3',      label: '',           x: 865,  y: 425, line: 'Main Red Line',        type: 'track',  nextRed: ['red_e4'],      nextDetour: [] },
+      red_e4:      { id: 'red_e4',      label: '',           x: 810,  y: 408, line: 'Main Red Line',        type: 'track',  nextRed: ['shield_east'], nextDetour: [] },
+      shield_east: { id: 'shield_east', label: '',           x: 761,  y: 422, line: 'Main Red Line',        type: 'circle', nextRed: ['red_s1'],      nextDetour: ['cs_1'] },
+      red_s1:      { id: 'red_s1',      label: '',           x: 724,  y: 462, line: 'Main Red Line',        type: 'track',  nextRed: ['shield_west'], nextDetour: [] },
+      shield_west: { id: 'shield_west', label: '',           x: 665,  y: 439, line: 'Main Red Line',        type: 'track',  nextRed: ['winnipeg'],    nextDetour: [] },
+      winnipeg:    { id: 'winnipeg',    label: 'WINNIPEG',   x: 598,  y: 442, line: 'Main Red Line',        type: 'x',      nextRed: ['red_p1'],      nextDetour: ['gp_1'] },
+      red_p1:      { id: 'red_p1',      label: '',           x: 550,  y: 442, line: 'Main Red Line',        type: 'track',  nextRed: ['red_p2'],      nextDetour: [] },
+      red_p2:      { id: 'red_p2',      label: '',           x: 510,  y: 438, line: 'Main Red Line',        type: 'track',  nextRed: ['regina'],      nextDetour: [] },
+      regina:      { id: 'regina',      label: 'REGINA',     x: 473,  y: 435, line: 'Main Red Line',        type: 'circle', nextRed: ['red_p3'],      nextDetour: [] },
+      red_p3:      { id: 'red_p3',      label: '',           x: 434,  y: 440, line: 'Main Red Line',        type: 'track',  nextRed: ['red_p4'],      nextDetour: [] },
+      red_p4:      { id: 'red_p4',      label: '',           x: 396,  y: 442, line: 'Main Red Line',        type: 'circle', nextRed: ['calgary'],     nextDetour: [] },
+      calgary:     { id: 'calgary',     label: 'CALGARY',    x: 322,  y: 402, line: 'Main Red Line',        type: 'x',      nextRed: ['banff'],       nextDetour: ['edmonton'] },
+      banff:       { id: 'banff',       label: 'BANFF',      x: 288,  y: 381, line: 'Main Red Line',        type: 'circle', nextRed: ['red_m1'],      nextDetour: [] },
+      red_m1:      { id: 'red_m1',      label: '',           x: 245,  y: 396, line: 'Main Red Line',        type: 'track',  nextRed: ['red_m2'],      nextDetour: [] },
+      red_m2:      { id: 'red_m2',      label: '',           x: 204,  y: 406, line: 'Main Red Line',        type: 'track',  nextRed: ['vancouver'],   nextDetour: [] },
+      vancouver:   { id: 'vancouver',   label: 'VANCOUVER',  x: 164,  y: 415, line: 'Main Red Line',        type: 'finish', nextRed: [],              nextDetour: [] },
+
+      // --- 1. EASTERN LOOP ("F" Orange) ---
+      f_1:         { id: 'f_1',         label: '',           x: 998,  y: 398, line: 'Eastern Loop (F)',     type: 'track',    nextRed: [], nextDetour: ['f_ore'] },
+      f_ore:       { id: 'f_ore',       label: 'Ore',        x: 953,  y: 385, line: 'Eastern Loop (F)',     type: 'resource', resource: 'Ore',  nextRed: [], nextDetour: ['f_wood'] },
+      f_wood:      { id: 'f_wood',      label: 'Wood',       x: 907,  y: 390, line: 'Eastern Loop (F)',     type: 'resource', resource: 'Wood', nextRed: [], nextDetour: ['f_2'] },
+      f_2:         { id: 'f_2',         label: '',           x: 874,  y: 432, line: 'Eastern Loop (F)',     type: 'track',    nextRed: ['sudbury'], nextDetour: ['sudbury'] },
+
+      // --- 2. CANADIAN SHIELD LOOP (Cyan) ---
+      cs_1:        { id: 'cs_1',        label: 'Labour',     x: 740,  y: 404, line: 'Canadian Shield Loop', type: 'resource', resource: 'Labour', nextRed: [], nextDetour: ['cs_2'] },
+      cs_2:        { id: 'cs_2',        label: 'Labour',     x: 697,  y: 382, line: 'Canadian Shield Loop', type: 'resource', resource: 'Labour', nextRed: [], nextDetour: ['cs_3'] },
+      cs_3:        { id: 'cs_3',        label: 'Labour',     x: 673,  y: 393, line: 'Canadian Shield Loop', type: 'resource', resource: 'Labour', nextRed: ['shield_west'], nextDetour: ['shield_west'] },
+
+      // --- 3. GREAT PLAINS LOOP (Purple) ---
+      gp_1:        { id: 'gp_1',        label: '',           x: 583,  y: 388, line: 'Great Plains Loop',    type: 'track',    nextRed: [], nextDetour: ['gp_engine'] },
+      gp_engine:   { id: 'gp_engine',   label: 'Engine',     x: 563,  y: 346, line: 'Great Plains Loop',    type: 'resource', resource: 'Engine', nextRed: [], nextDetour: ['gp_coal'] },
+      gp_coal:     { id: 'gp_coal',     label: 'Coal',       x: 497,  y: 329, line: 'Great Plains Loop',    type: 'resource', resource: 'Coal',   nextRed: [], nextDetour: ['gp_ore'] },
+      gp_ore:      { id: 'gp_ore',      label: 'Ore',        x: 444,  y: 385, line: 'Great Plains Loop',    type: 'resource', resource: 'Ore',    nextRed: ['regina'], nextDetour: ['regina'] },
+
+      // --- 4. JASPER LOOP (Yellow) ---
+      edmonton:    { id: 'edmonton',    label: 'EDMONTON',   x: 342,  y: 336, line: 'Jasper Loop',          type: 'circle',   nextRed: [], nextDetour: ['j_engine', 'n_water'] },
+      j_engine:    { id: 'j_engine',    label: 'Engine',     x: 314,  y: 306, line: 'Jasper Loop',          type: 'resource', resource: 'Engine', nextRed: [], nextDetour: ['j_water'] },
+      j_water:     { id: 'j_water',     label: 'Water',      x: 272,  y: 292, line: 'Jasper Loop',          type: 'resource', resource: 'Water',  nextRed: [], nextDetour: ['jasper'] },
+      jasper:      { id: 'jasper',      label: 'JASPER',     x: 274,  y: 343, line: 'Jasper Loop',          type: 'resource', resource: 'Wood',   nextRed: ['banff'], nextDetour: ['banff'] },
+
+      // --- 5. NORTHERN LOOP ("J" Green) ---
+      n_water:     { id: 'n_water',     label: 'Water',      x: 390,  y: 273, line: 'Northern Loop (J)',    type: 'resource', resource: 'Water',  nextRed: [], nextDetour: ['n_ore'] },
+      n_ore:       { id: 'n_ore',       label: 'Ore',        x: 396,  y: 183, line: 'Northern Loop (J)',    type: 'resource', resource: 'Ore',    nextRed: [], nextDetour: ['yellowknife'] },
+      yellowknife: { id: 'yellowknife', label: 'YELLOWKNIFE',x: 368,  y: 133, line: 'Northern Loop (J)',    type: 'circle',   nextRed: [], nextDetour: ['n_coal'] },
+      n_coal:      { id: 'n_coal',      label: 'Coal',       x: 312,  y: 215, line: 'Northern Loop (J)',    type: 'resource', resource: 'Coal',   nextRed: [], nextDetour: ['n_1'] },
+      n_1:         { id: 'n_1',         label: '',           x: 310,  y: 265, line: 'Northern Loop (J)',    type: 'track',    nextRed: [], nextDetour: ['j_engine'] }
+    };
+
+    const LINE_COLORS = {
+      'Main Red Line':        '#dc2626',
+      'Eastern Loop (F)':     '#f59e0b',
+      'Canadian Shield Loop': '#06b6d4',
+      'Great Plains Loop':    '#a855f7',
+      'Jasper Loop':          '#eab308',
+      'Northern Loop (J)':    '#22c55e'
+    };
+
+    const PLAYER_PALETTES = [
+      { color: '#dc2626', bg: 'bg-red-700',     name: 'Dominion Pacific Co.' },
+      { color: '#2563eb', bg: 'bg-blue-700',    name: 'Grand Trunk Western' },
+      { color: '#059669', bg: 'bg-emerald-700', name: 'Hudson Bay Express' },
+      { color: '#9333ea', bg: 'bg-purple-700',  name: 'Klondike Ironworks' }
+    ];
+
+    // =========================================================================
+    // 3. SET OF 20 HISTORICAL PROGRESS CARDS (1880s Canadian Railway Dilemmas)
+    // =========================================================================
+    const PROGRESS_CARDS = [
+      {
+        id: 1,
+        title: 'Chinese Labourers & Unequal Wages',
+        context: 'Thousands of Chinese workers are hired to lay track through the most dangerous mountain passes, yet contractors pay them half the wages of white workers and charge them for supplies.',
+        choices: [
+          { label: 'Pay Equal Wages & Provide Safe Gear', detail: 'Pay $3M from Purse/Loan • 0 Harm', cash: -3, hr: 0, env: 0 },
+          { label: 'Keep Contractors’ Lower Wages', detail: 'Save Cash ($0M) • +2 Human Rights Harm', cash: 0, hr: 2, env: 0 }
+        ]
+      },
+      {
+        id: 2,
+        title: 'Nitroglycerin Blasting in the Fraser Canyon',
+        context: 'Your crew must carve ledges out of sheer granite cliffs. Unstable liquid nitroglycerin is cheap, while safer dynamite and trained blasting crews cost extra.',
+        choices: [
+          { label: 'Buy Safer Dynamite & Safety Harnesses', detail: 'Pay $2M • 0 Harm', cash: -2, hr: 0, env: 0 },
+          { label: 'Use Cheap Nitroglycerin to Rush Ahead', detail: '$0M • +2 Human Rights Harm • +1 Env Harm', cash: 0, hr: 2, env: 1 }
+        ]
+      },
+      {
+        id: 3,
+        title: 'Blackfoot Confederacy Territory Crossing',
+        context: 'The surveyed rail line enters traditional Blackfoot territory without formal consent. Chief Crowfoot requests respectful negotiation and fair compensation.',
+        choices: [
+          { label: 'Negotiate Respectfully & Compensate', detail: 'Pay $2M & Pause 1 Turn • 0 Harm', cash: -2, hr: 0, env: 0, skipTurn: true },
+          { label: 'Push Track Through Without Consent', detail: '$0M • +3 Human Rights Harm', cash: 0, hr: 3, env: 0 }
+        ]
+      },
+      {
+        id: 4,
+        title: 'Clear-Cutting Boreal Timber for Rail Ties',
+        context: 'Every kilometre of track requires over 1,500 wooden ties. Clear-cutting nearby hillsides is fast, while selective logging takes extra effort.',
+        choices: [
+          { label: 'Use Selective Logging & Replant', detail: 'Discard 1 Wood or Pay $2M • 0 Harm', cash: -2, hr: 0, env: 0 },
+          { label: 'Clear-Cut the Entire Valley', detail: 'Gain 1 Free Wood • +2 Environmental Harm', cash: 0, hr: 0, env: 2, gainRes: 'Wood' }
+        ]
+      },
+      {
+        id: 5,
+        title: 'Canadian Shield Muskeg Sinkhole',
+        context: 'A stretch of track sinks overnight into deep northern Ontario muskeg bog. Dumping massive amounts of gravel and timber will fill it quickly, damaging the wetland.',
+        choices: [
+          { label: 'Engineer a Raised Trestle Bridge', detail: 'Pay $3M • 0 Harm', cash: -3, hr: 0, env: 0 },
+          { label: 'Dump Endless Fill Into the Wetland', detail: 'Pay $1M • +2 Environmental Harm', cash: -1, hr: 0, env: 2 }
+        ]
+      },
+      {
+        id: 6,
+        title: 'Prairie Bison Migration Disruption',
+        context: 'Track embankments and railway hunters are severing the last bison herds on the Great Plains, threatening the food security of Plains First Nations and Métis communities.',
+        choices: [
+          { label: 'Ban Railway Hunting & Build Crossings', detail: 'Pay $2M • 0 Harm', cash: -2, hr: 0, env: 0 },
+          { label: 'Allow Crews to Hunt Bison for Cheap Rations', detail: 'Gain $1M • +2 HR Harm • +2 Env Harm', cash: 1, hr: 2, env: 2 }
+        ]
+      },
+      {
+        id: 7,
+        title: 'Scurvy Outbreak in Mountain Work Camps',
+        context: 'Isolated winter camps lack fresh vegetables and medical care. Workers are falling seriously ill with scurvy and frostbite.',
+        choices: [
+          { label: 'Ship Fresh Supplies & Camp Doctors', detail: 'Pay $2M • Draw 1 Free Resource Card', cash: -2, hr: 0, env: 0, freeDraw: true },
+          { label: 'Ignore Illness to Meet Deadlines', detail: '$0M • +2 Human Rights Harm', cash: 0, hr: 2, env: 0 }
+        ]
+      },
+      {
+        id: 8,
+        title: 'Steam Locomotive Spark Wildfires',
+        context: 'Dry summer winds carry hot cinders from your coal-burning engines into prairie grass and pine forests.',
+        choices: [
+          { label: 'Install Brass Spark Arrestors & Firebreaks', detail: 'Pay $2M • 0 Harm', cash: -2, hr: 0, env: 0 },
+          { label: 'Run Engines Unmodified at Full Speed', detail: '$0M • +2 Environmental Harm', cash: 0, hr: 0, env: 2 }
+        ]
+      },
+      {
+        id: 9,
+        title: '1885 North-West Resistance Supply Request',
+        context: 'Ottawa offers an emergency federal subsidy if your railway rushes troops westward during the North-West Resistance, intensifying conflict with Métis and First Nations.',
+        choices: [
+          { label: 'Decline Military Contract & Stay Civilian', detail: '$0M • 0 Harm', cash: 0, hr: 0, env: 0 },
+          { label: 'Accept Federal Subsidy for Troop Transport', detail: 'Gain $4M Cash • +2 Human Rights Harm', cash: 4, hr: 2, env: 0 }
+        ]
+      },
+      {
+        id: 10,
+        title: 'Fraser River Salmon Spawning Beds',
+        context: 'Blasting rock along the canyon walls drops boulders directly into the river, blocking salmon runs vital to Stó:lō and Nlaka’pamux communities.',
+        choices: [
+          { label: 'Haul Blasted Rock Away from the River', detail: 'Pay $3M • 0 Harm', cash: -3, hr: 0, env: 0 },
+          { label: 'Dump Debris Directly into the Canyon', detail: '$0M • +1 HR Harm • +2 Env Harm', cash: 0, hr: 1, env: 2 }
+        ]
+      },
+      {
+        id: 11,
+        title: 'Dominion Government Land Grant Audit',
+        context: 'Parliament reviews your books. Companies showing low harm and solid construction standards qualify for a federal progress bonus.',
+        choices: [
+          { label: 'Submit Transparent Inspection Report', detail: 'Gain $2M Cash & Draw 1 Free Resource', cash: 2, hr: 0, env: 0, freeDraw: true },
+          { label: 'Lobby for Unregulated Land Speculation', detail: 'Gain $4M Cash • +1 HR Harm • +1 Env Harm', cash: 4, hr: 1, env: 1 }
+        ]
+      },
+      {
+        id: 12,
+        title: 'Dangerous Winter Avalanche Pass',
+        context: 'Heavy snowpack threatens workers in Rogers Pass. Building timber snowsheds takes time and resources, while pressing on risks lives.',
+        choices: [
+          { label: 'Construct Protective Timber Snowsheds', detail: 'Discard 1 Wood • 0 Harm', cash: 0, hr: 0, env: 0, discardRes: 'Wood' },
+          { label: 'Pay $2M for Winter Safety Crews', detail: 'Pay $2M • 0 Harm', cash: -2, hr: 0, env: 0 },
+          { label: 'Force Crews Through the Avalanche Zone', detail: '$0M • +2 Human Rights Harm', cash: 0, hr: 2, env: 0 }
+        ]
+      },
+      {
+        id: 13,
+        title: 'Company Store Debt Trap',
+        context: 'Subcontractors want to pay labourers in company scrip redeemable only at overpriced camp stores, trapping workers in debt.',
+        choices: [
+          { label: 'Pay Fair Cash Wages Directly', detail: 'Pay $2M • 0 Harm', cash: -2, hr: 0, env: 0 },
+          { label: 'Allow High-Markup Company Stores', detail: 'Gain $2M Cash • +2 Human Rights Harm', cash: 2, hr: 2, env: 0 }
+        ]
+      },
+      {
+        id: 14,
+        title: 'Coal Mining Runoff in the Foothills',
+        context: 'New coal pits supplying your locomotives are leaching acidic runoff into mountain streams.',
+        choices: [
+          { label: 'Build Settling Ponds & Water Filters', detail: 'Pay $2M • 0 Harm', cash: -2, hr: 0, env: 0 },
+          { label: 'Extract Cheap Coal Without Safeguards', detail: 'Gain 1 Free Coal • +2 Environmental Harm', cash: 0, hr: 0, env: 2, gainRes: 'Coal' }
+        ]
+      },
+      {
+        id: 15,
+        title: 'Workers’ Strike Over 14-Hour Shifts',
+        context: 'Exhausted tracklayers strike along the line, demanding 10-hour shifts and safer camp housing.',
+        choices: [
+          { label: 'Meet Demands for Safer 10-Hour Shifts', detail: 'Pay $2M • Gain 1 Free Labour Card', cash: -2, hr: 0, env: 0, gainRes: 'Labour' },
+          { label: 'Break the Strike with Armed Guards', detail: '$0M • +3 Human Rights Harm', cash: 0, hr: 3, env: 0 }
+        ]
+      },
+      {
+        id: 16,
+        title: 'Banff Hot Springs & National Park Protection',
+        context: 'Railway surveyors discover natural hot springs in the Rockies. Conservationists urge protecting the surrounding wilderness.',
+        choices: [
+          { label: 'Support Protected Park Boundaries', detail: 'Pay $1M • Gain $2M Tourism Revenue (Net +$1M)', cash: 1, hr: 0, env: 0 },
+          { label: 'Open Unregulated Commercial Logging', detail: 'Gain $3M Cash • +2 Environmental Harm', cash: 3, hr: 0, env: 2 }
+        ]
+      },
+      {
+        id: 17,
+        title: 'Bridge Washout in Spring Melt',
+        context: 'Rapid mountain snowmelt washes out a temporary trestle. Rebuilding requires immediate materials or emergency funding.',
+        choices: [
+          { label: 'Rebuild with Stone & Steel Piers', detail: 'Pay $3M • 0 Harm', cash: -3, hr: 0, env: 0 },
+          { label: 'Use Spare Wood & Ore from Hand', detail: 'Discard 1 Wood & 1 Ore • 0 Harm', cash: 0, hr: 0, env: 0, discardMulti: ['Wood', 'Ore'] },
+          { label: 'Patch with Unsafe Scrap Timber', detail: '$0M • +1 HR Harm • +1 Env Harm', cash: 0, hr: 1, env: 1 }
+        ]
+      },
+      {
+        id: 18,
+        title: 'Displacement of Indigenous Reserve Lands',
+        context: 'A shortcut across fertile valley land would save millions, but it cuts directly through an established First Nations community.',
+        choices: [
+          { label: 'Reroute Around Community Lands', detail: 'Pay $2M • 0 Harm', cash: -2, hr: 0, env: 0 },
+          { label: 'Expropriate the Valley Shortcut', detail: 'Gain $2M Savings • +3 Human Rights Harm', cash: 2, hr: 3, env: 0 }
+        ]
+      },
+      {
+        id: 19,
+        title: 'Boiler Efficiency Innovation',
+        context: 'Canadian engineers design a cleaner, more efficient steam locomotive boiler that uses less coal and water.',
+        choices: [
+          { label: 'Invest in Modern Efficient Engines', detail: 'Pay $1M • Gain 1 Free Engine Card', cash: -1, hr: 0, env: 0, gainRes: 'Engine' },
+          { label: 'Stick with Smoky Older Boilers', detail: '$0M • +1 Environmental Harm', cash: 0, hr: 0, env: 1 }
+        ]
+      },
+      {
+        id: 20,
+        title: 'The Chinese Head Tax Debate (1885)',
+        context: 'As the railway nears completion in BC, politicians propose a discriminatory Head Tax on Chinese immigrants who helped build the line.',
+        choices: [
+          { label: 'Fund Fair Passage & Speak Against the Tax', detail: 'Pay $2M • 0 Harm', cash: -2, hr: 0, env: 0 },
+          { label: 'Abandon Displaced Workers Without Support', detail: '$0M • +2 Human Rights Harm', cash: 0, hr: 2, env: 0 }
+        ]
+      }
+    ];
+
+    // =========================================================================
+    // 4. GAME STATE & SETUP CONFIGURATION
+    // =========================================================================
+    const setupConfig = {
+      mode: 'solo',       // 'solo' | 'multi'
+      playerCount: 2,     // 2..4
+      ledgerMode: 'auto'  // 'auto' | 'manual'
+    };
+
+    const gameState = {
+      started: false,
+      phase: 'IDLE', // 'IDLE' | 'CHOOSE_MOVE' | 'DISCARD_CARD' | 'PROGRESS_CARD' | 'MANUAL_LEDGER' | 'GAME_OVER'
+      ledgerMode: 'auto',
+      players: [],
+      currentPlayerIndex: 0,
+      currentRoll: 0,
+      rollIsDetour: false,
+      reachablePaths: [],
+      pendingTurn: null,
+      resourceDeck: [],
+      resourceDiscard: [],
+      progressDeck: [],
+      progressDiscard: [],
+      ledger: [],
+      activeLedgerFilter: 'ALL'
+    };
+
+    // =========================================================================
+    // 5. SETUP SCREEN HANDLERS (Solo/Multiplayer & Auto/Manual Ledger)
+    // =========================================================================
+    function setSetupPlayerMode(mode) {
+      setupConfig.mode = mode;
+      const soloBtn = document.getElementById('btn-mode-solo');
+      const multiBtn = document.getElementById('btn-mode-multi');
+      const multiOpts = document.getElementById('multi-player-options');
+      const soloOpt = document.getElementById('solo-name-option');
+
+      if (mode === 'solo') {
+        soloBtn.className = 'py-2.5 px-3 rounded-lg font-semibold text-sm border-2 transition-all bg-[#7f1d1d] text-white border-[#450a0a] shadow';
+        multiBtn.className = 'py-2.5 px-3 rounded-lg font-semibold text-sm border-2 transition-all bg-[#f9f0dc] text-[#4a3423] border-[#a88253]';
+        multiOpts.classList.add('hidden');
+        soloOpt.classList.remove('hidden');
+      } else {
+        multiBtn.className = 'py-2.5 px-3 rounded-lg font-semibold text-sm border-2 transition-all bg-[#7f1d1d] text-white border-[#450a0a] shadow';
+        soloBtn.className = 'py-2.5 px-3 rounded-lg font-semibold text-sm border-2 transition-all bg-[#f9f0dc] text-[#4a3423] border-[#a88253]';
+        multiOpts.classList.remove('hidden');
+        soloOpt.classList.add('hidden');
+        renderPlayerNameInputs();
+      }
+    }
+
+    function setPlayerCount(count) {
+      setupConfig.playerCount = count;
+      [2, 3, 4].forEach(n => {
+        const btn = document.getElementById(`pc-${n}`);
+        if (n === count) {
+          btn.className = 'w-8 h-8 rounded-lg font-bold text-sm border-2 bg-[#b8860b] text-white border-[#5c3d04]';
+        } else {
+          btn.className = 'w-8 h-8 rounded-lg font-bold text-sm border-2 bg-[#f9f0dc] text-[#4a3423] border-[#a88253]';
+        }
+      });
+      renderPlayerNameInputs();
+    }
+
+    function renderPlayerNameInputs() {
+      const container = document.getElementById('player-name-inputs');
+      container.innerHTML = '';
+      for (let i = 0; i < setupConfig.playerCount; i++) {
+        const pal = PLAYER_PALETTES[i];
+        container.innerHTML += `
+          <div class="flex items-center gap-2">
+            <span class="w-3.5 h-3.5 rounded-full shrink-0 border border-black/30" style="background:${pal.color}"></span>
+            <input id="mp-name-${i}" type="text" value="${pal.name}" maxlength="24"
+              class="w-full px-2.5 py-1 rounded-lg bg-[#fbf5e6] border border-[#a88253] text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#b8860b]" />
+          </div>
+        `;
+      }
+    }
+
+    function setSetupLedgerMode(mode) {
+      setupConfig.ledgerMode = mode;
+      const autoBtn = document.getElementById('btn-ledger-auto');
+      const manualBtn = document.getElementById('btn-ledger-manual');
+      const desc = document.getElementById('ledger-mode-desc');
+
+      if (mode === 'auto') {
+        autoBtn.className = 'py-2.5 px-3 rounded-lg font-semibold text-sm border-2 transition-all bg-[#065f46] text-white border-[#022c22] shadow';
+        manualBtn.className = 'py-2.5 px-3 rounded-lg font-semibold text-sm border-2 transition-all bg-[#f9f0dc] text-[#4a3423] border-[#a88253]';
+        desc.innerHTML = '<strong>Automatic Ledger:</strong> Every turn, roll, distance, event, harm tally, and cash/debt balance is automatically recorded in your Company Ledger. You can switch modes anytime mid-game.';
+      } else {
+        manualBtn.className = 'py-2.5 px-3 rounded-lg font-semibold text-sm border-2 transition-all bg-[#065f46] text-white border-[#022c22] shadow';
+        autoBtn.className = 'py-2.5 px-3 rounded-lg font-semibold text-sm border-2 transition-all bg-[#f9f0dc] text-[#4a3423] border-[#a88253]';
+        desc.innerHTML = '<strong>Manual Student Entry:</strong> After each turn, students record their own Turn #, Line, Roll, Distance, Harm, Purse, and Debt into the Ledger with gentle math validation and hints.';
+      }
+    }
+
+    function startGame() {
+      const count = setupConfig.mode === 'solo' ? 1 : setupConfig.playerCount;
+      gameState.players = [];
+
+      for (let i = 0; i < count; i++) {
+        const pal = PLAYER_PALETTES[i];
+        let name = pal.name;
+        if (setupConfig.mode === 'solo') {
+          const val = document.getElementById('solo-company-name').value.trim();
+          if (val) name = val;
+        } else {
+          const el = document.getElementById(`mp-name-${i}`);
+          if (el && el.value.trim()) name = el.value.trim();
+        }
+
+        gameState.players.push({
+          id: i,
+          name: name,
+          color: pal.color,
+          nodeId: 'montreal',
+          cash: 10,
+          debt: 0,
+          hrHarm: 0,
+          envHarm: 0,
+          distance: 0,
+          turnCount: 0,
+          finished: false,
+          skipNextTurn: false,
+          hand: { Wood: 1, Ore: 1, Coal: 1, Water: 1, Engine: 1, Labour: 1 }
+        });
+      }
+
+      gameState.ledgerMode = setupConfig.ledgerMode;
+      gameState.resourceDeck = buildResourceDeck();
+      gameState.resourceDiscard = [];
+      gameState.progressDeck = shuffleArray(PROGRESS_CARDS);
+      gameState.progressDiscard = [];
+      gameState.ledger = [];
+      gameState.activeLedgerFilter = 'ALL';
+      gameState.currentPlayerIndex = 0;
+      gameState.phase = 'IDLE';
+      gameState.started = true;
+
+      document.getElementById('setup-screen').classList.add('hidden');
+      playSound('whistle');
+      renderStaticMap();
+      updateUI();
+      showToast('All aboard! Departing Montreal for Vancouver.', 'info');
+    }
+
+    // =========================================================================
+    // 6. MAP RENDERING (Transparent Interactive Overlay over GitHub map.png)
+    // =========================================================================
+    function renderStaticMap() {
+      const tracksLayer = document.getElementById('svg-tracks-layer');
+      const nodesLayer = document.getElementById('svg-nodes-layer');
+      tracksLayer.innerHTML = '';
+      nodesLayer.innerHTML = '';
+
+      // Render subtle, non-obstructive interactive space markers with tooltips
+      // so the original map.png tracks, labels, and icons remain 100% visible
+      Object.values(BOARD_NODES).forEach(node => {
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+
+        const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+        if (node.type === 'resource') {
+          title.textContent = `${node.line}: Free ${node.resource} Resource`;
+        } else if (node.type === 'circle' || node.type === 'x') {
+          title.textContent = `${node.label || node.line} — Draw a Progress Card`;
+        } else if (node.type === 'finish') {
+          title.textContent = 'VANCOUVER — Finish Line (Royal Commission Audit)';
+        } else if (node.type === 'start') {
+          title.textContent = 'MONTREAL — Starting Station';
+        } else {
+          title.textContent = node.label ? `${node.label} (${node.line})` : node.line;
+        }
+        g.appendChild(title);
+
+        // Subtle marker dot on plain track spaces so players can see exact step spacing
+        if (node.type === 'track') {
+          const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          dot.setAttribute('cx', node.x);
+          dot.setAttribute('cy', node.y);
+          dot.setAttribute('r', '4.5');
+          dot.setAttribute('fill', 'rgba(255, 250, 235, 0.72)');
+          dot.setAttribute('stroke', 'rgba(44, 30, 20, 0.75)');
+          dot.setAttribute('stroke-width', '1.5');
+          g.appendChild(dot);
+        } else {
+          // Invisible hover target over existing map symbols (X, Circle, Resource icons)
+          const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          ring.setAttribute('cx', node.x);
+          ring.setAttribute('cy', node.y);
+          ring.setAttribute('r', '13');
+          ring.setAttribute('fill', 'transparent');
+          g.appendChild(ring);
+        }
+
+        nodesLayer.appendChild(g);
+      });
+    }
+
+    function renderTokensAndHighlights() {
+      const hlLayer = document.getElementById('svg-highlights-layer');
+      const tokLayer = document.getElementById('svg-tokens-layer');
+      hlLayer.innerHTML = '';
+      tokLayer.innerHTML = '';
+
+      // 1. Render Reachable Destination Highlights
+      if (gameState.phase === 'CHOOSE_MOVE') {
+        gameState.reachablePaths.forEach((option, idx) => {
+          const node = BOARD_NODES[option.targetId];
+          const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+          g.style.cursor = 'pointer';
+          g.onclick = () => selectMoveDestination(idx);
+
+          const pulse = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          pulse.setAttribute('cx', node.x);
+          pulse.setAttribute('cy', node.y);
+          pulse.setAttribute('r', '16');
+          pulse.setAttribute('fill', 'rgba(250, 204, 21, 0.35)');
+          pulse.setAttribute('stroke', '#facc15');
+          pulse.setAttribute('stroke-width', '3.5');
+          pulse.setAttribute('class', 'reachable-ring');
+          g.appendChild(pulse);
+
+          // Clickable hitbox
+          const hit = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          hit.setAttribute('cx', node.x);
+          hit.setAttribute('cy', node.y);
+          hit.setAttribute('r', '22');
+          hit.setAttribute('fill', 'transparent');
+          g.appendChild(hit);
+
+          hlLayer.appendChild(g);
+        });
+      }
+
+      // 2. Render Player Locomotive Tokens (with slight offset if multiple players share a space)
+      const groups = {};
+      gameState.players.forEach(p => {
+        if (!groups[p.nodeId]) groups[p.nodeId] = [];
+        groups[p.nodeId].push(p);
+      });
+
+      Object.entries(groups).forEach(([nodeId, pList]) => {
+        const node = BOARD_NODES[nodeId];
+        pList.forEach((p, idx) => {
+          const offsetX = pList.length > 1 ? (idx - (pList.length - 1) / 2) * 16 : 0;
+          const offsetY = pList.length > 1 ? -14 - (idx % 2) * 8 : -16;
+          const isCurrent = p.id === gameState.currentPlayerIndex;
+
+          const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+          g.setAttribute('transform', `translate(${node.x + offsetX}, ${node.y + offsetY})`);
+
+          const badge = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          badge.setAttribute('cx', '0'); badge.setAttribute('cy', '0');
+          badge.setAttribute('r', isCurrent ? '14' : '11');
+          badge.setAttribute('fill', p.color);
+          badge.setAttribute('stroke', isCurrent ? '#fef08a' : '#ffffff');
+          badge.setAttribute('stroke-width', isCurrent ? '3' : '2');
+          badge.setAttribute('filter', 'url(#softShadow)');
+          g.appendChild(badge);
+
+          const emoji = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          emoji.setAttribute('x', '0'); emoji.setAttribute('y', '4.5');
+          emoji.setAttribute('text-anchor', 'middle');
+          emoji.setAttribute('font-size', isCurrent ? '13' : '10');
+          emoji.textContent = '🚂';
+          g.appendChild(emoji);
+
+          tokLayer.appendChild(g);
+        });
+      });
+    }
+
+    // =========================================================================
+    // 7. CORE GAMEPLAY MECHANICS
+    // =========================================================================
+    function getCurrentPlayer() {
+      return gameState.players[gameState.currentPlayerIndex];
+    }
+
+    function hasAllSixUnique(player) {
+      return RESOURCE_TYPES.every(rt => (player.hand[rt.id] || 0) >= 1);
+    }
+
+    function getTotalHandCount(player) {
+      return Object.values(player.hand).reduce((a, b) => a + b, 0);
+    }
+
+    function canEnterDetourFromCurrentNode(player) {
+      const node = BOARD_NODES[player.nodeId];
+      // Already on a detour loop, OR standing on a junction with nextDetour edges
+      return node.line !== 'Main Red Line' || (node.nextDetour && node.nextDetour.length > 0);
+    }
+
+    function drawFromResourceDeck() {
+      if (gameState.resourceDeck.length === 0) {
+        if (gameState.resourceDiscard.length === 0) {
+          gameState.resourceDeck = buildResourceDeck();
+        } else {
+          gameState.resourceDeck = shuffleArray(gameState.resourceDiscard);
+          gameState.resourceDiscard = [];
+          showToast('Resource Discard Pile reshuffled into a fresh deck!', 'info');
+        }
+      }
+      return gameState.resourceDeck.pop();
+    }
+
+    function drawFromProgressDeck() {
+      if (gameState.progressDeck.length === 0) {
+        gameState.progressDeck = shuffleArray(gameState.progressDiscard);
+        gameState.progressDiscard = [];
+      }
+      const card = gameState.progressDeck.pop();
+      gameState.progressDiscard.push(card);
+      return card;
+    }
+
+    function applyFinancialChange(player, delta) {
+      // Positive delta adds to cash purse. Negative delta spends cash first, then incurs Bank Debt.
+      if (delta >= 0) {
+        player.cash += delta;
+      } else {
+        const cost = Math.abs(delta);
+        if (player.cash >= cost) {
+          player.cash -= cost;
+        } else {
+          const shortfall = cost - player.cash;
+          player.cash = 0;
+          player.debt += shortfall;
+          showToast(`Bank Loan taken: +$${shortfall}M Bank Debt`, 'warn');
+        }
+      }
+    }
+
+    // --- Option A: Pay $2M to draw from Resource Deck ---
+    function buyResourceCard() {
+      if (!gameState.started || gameState.phase !== 'IDLE') return;
+      const p = getCurrentPlayer();
+      applyFinancialChange(p, -2);
+      const card = drawFromResourceDeck();
+      p.hand[card] = (p.hand[card] || 0) + 1;
+      playSound('coin');
+      showToast(`${p.name} paid $2M and drew ${RESOURCE_MAP[card].icon} ${card}!`, 'success');
+      updateUI();
+    }
+
+    // --- Roll Die on Main Red Line (or continue on Detour) ---
+    function rollDie() {
+      if (!gameState.started || gameState.phase !== 'IDLE') return;
+      const p = getCurrentPlayer();
+      const node = BOARD_NODES[p.nodeId];
+
+      if (node.line === 'Main Red Line') {
+        if (!hasAllSixUnique(p)) {
+          showToast('You need all 6 unique resources to roll on the Main Red Line! Pay $2M or take a Detour.', 'warn');
+          return;
+        }
+        executeRoll(false);
+      } else {
+        // Already on a detour loop -> free roll!
+        executeRoll(true);
+      }
+    }
+
+    // --- Option B: Turn onto a Detour Loop without needing all 6 cards ---
+    function startDetourRoll() {
+      if (!gameState.started || gameState.phase !== 'IDLE') return;
+      const p = getCurrentPlayer();
+      if (!canEnterDetourFromCurrentNode(p)) {
+        showToast('Move to a Detour Junction (Montreal, Shield East, Winnipeg, Calgary, or Edmonton) to enter a loop!', 'warn');
+        return;
+      }
+      executeRoll(true);
+    }
+
+    function executeRoll(isDetourRoll) {
+      const p = getCurrentPlayer();
+      playSound('dice');
+      const diceEl = document.getElementById('dice-display');
+      diceEl.classList.remove('dice-rolling');
+      void diceEl.offsetWidth;
+      diceEl.classList.add('dice-rolling');
+
+      const roll = Math.floor(Math.random() * 6) + 1;
+      gameState.currentRoll = roll;
+      gameState.rollIsDetour = isDetourRoll;
+
+      const diceFaces = ['', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+      diceEl.textContent = `${diceFaces[roll]} ${roll}`;
+
+      // Compute valid destinations up to `roll` steps
+      const paths = computeReachablePaths(p.nodeId, roll, isDetourRoll);
+      gameState.reachablePaths = paths;
+      gameState.phase = 'CHOOSE_MOVE';
+
+      // Prepare pending turn object for Ledger
+      gameState.pendingTurn = {
+        turnNumber: p.turnCount + 1,
+        playerId: p.id,
+        playerName: p.name,
+        roll: roll,
+        startNode: p.nodeId,
+        line: BOARD_NODES[p.nodeId].line,
+        distanceGained: 0,
+        events: []
+      };
+
+      updateUI();
+    }
+
+    // BFS/DFS to find reachable destinations up to `maxSteps`
+    function computeReachablePaths(startId, maxSteps, detourOnly) {
+      const resultsByTarget = new Map();
+
+      function dfs(currId, stepsLeft, path, collected) {
+        const node = BOARD_NODES[currId];
+        // Allow stopping at Vancouver early, or stopping at any reachable node 1..maxSteps (per "move up to 6 spaces")
+        if (path.length > 0) {
+          // Keep the path that collects the most resources if duplicate target
+          const existing = resultsByTarget.get(currId);
+          if (!existing || collected.length > existing.collectedResources.length) {
+            resultsByTarget.set(currId, {
+              targetId: currId,
+              path: [...path],
+              collectedResources: [...collected]
+            });
+          }
+        }
+        if (stepsLeft === 0 || node.type === 'finish') return;
+
+        let nextIds = [];
+        if (detourOnly) {
+          // If starting on Red Line junction, force first step onto detour!
+          if (path.length === 0 && node.line === 'Main Red Line') {
+            nextIds = [...node.nextDetour];
+          } else {
+            nextIds = [...new Set([...node.nextDetour, ...node.nextRed])];
+          }
+        } else {
+          // Main Red Line roll: can stay on Red Line OR turn onto detour if passing a junction
+          nextIds = [...new Set([...node.nextRed, ...node.nextDetour])];
+        }
+
+        nextIds.forEach(nid => {
+          if (path.includes(nid) || nid === startId) return; // Prevent infinite cycles in a single roll
+          const nextNode = BOARD_NODES[nid];
+          const nextCollected = [...collected];
+          if (nextNode.type === 'resource' && nextNode.resource) {
+            nextCollected.push(nextNode.resource);
+          }
+          dfs(nid, stepsLeft - 1, [...path, nid], nextCollected);
+        });
+      }
+
+      dfs(startId, maxSteps, [], []);
+      return Array.from(resultsByTarget.values());
+    }
+
+    // --- Player clicks a glowing destination node on the SVG map ---
+    function selectMoveDestination(optionIndex) {
+      if (gameState.phase !== 'CHOOSE_MOVE') return;
+      const option = gameState.reachablePaths[optionIndex];
+      if (!option) return;
+
+      const p = getCurrentPlayer();
+      const targetNode = BOARD_NODES[option.targetId];
+      const stepsMoved = option.path.length;
+      const wasMainRedLineMove = !gameState.rollIsDetour && BOARD_NODES[gameState.pendingTurn.startNode].line === 'Main Red Line';
+
+      playSound('move');
+
+      p.nodeId = targetNode.id;
+      p.distance += stepsMoved;
+      p.turnCount += 1;
+
+      gameState.pendingTurn.line = targetNode.line;
+      gameState.pendingTurn.distanceGained = stepsMoved;
+
+      // Award any free board resources collected along a detour loop
+      if (option.collectedResources.length > 0) {
+        option.collectedResources.forEach(res => {
+          p.hand[res] = (p.hand[res] || 0) + 1;
+        });
+        const listStr = option.collectedResources.map(r => `${RESOURCE_MAP[r].icon} ${r}`).join(', ');
+        gameState.pendingTurn.events.push(`Collected: ${option.collectedResources.join(', ')}`);
+        showToast(`Collected free detour resources: ${listStr}!`, 'success');
+      }
+
+      gameState.reachablePaths = [];
+
+      // Check if reached Vancouver!
+      if (targetNode.type === 'finish') {
+        p.finished = true;
+        gameState.pendingTurn.events.push('Reached Vancouver!');
+        playSound('whistle');
+        finalizeTurnStep();
+        return;
+      }
+
+      // If moved on Main Red Line, must discard 1 resource card before Progress Card
+      if (wasMainRedLineMove && getTotalHandCount(p) > 0) {
+        gameState.phase = 'DISCARD_CARD';
+        updateUI();
+        return;
+      }
+
+      // Otherwise proceed directly to Progress Card check
+      checkProgressSpace();
+    }
+
+    // --- Player clicks 1 Resource Card to Discard after a Main Red Line move ---
+    function discardResourceFromHand(resId) {
+      if (gameState.phase !== 'DISCARD_CARD') return;
+      const p = getCurrentPlayer();
+      if (!p.hand[resId] || p.hand[resId] <= 0) return;
+
+      p.hand[resId] -= 1;
+      gameState.resourceDiscard.push(resId);
+      gameState.pendingTurn.events.push(`Discarded ${resId}`);
+      playSound('card');
+
+      checkProgressSpace();
+    }
+
+    // --- Check if landed on Circle or X space ---
+    function checkProgressSpace() {
+      const p = getCurrentPlayer();
+      const node = BOARD_NODES[p.nodeId];
+
+      if (node.type === 'circle' || node.type === 'x') {
+        const card = drawFromProgressDeck();
+        gameState.phase = 'PROGRESS_CARD';
+        openProgressCardModal(card);
+        updateUI();
+      } else {
+        finalizeTurnStep();
+      }
+    }
+
+    // --- Show Progress Card Modal ---
+    function openProgressCardModal(card) {
+      playSound('card');
+      const p = getCurrentPlayer();
+      document.getElementById('prog-card-num').textContent = `Card #${card.id} of 20`;
+      document.getElementById('prog-card-title').textContent = card.title;
+      document.getElementById('prog-card-context').textContent = card.context;
+
+      const choicesEl = document.getElementById('prog-card-choices');
+      choicesEl.innerHTML = '';
+
+      card.choices.forEach((choice, idx) => {
+        // Check if player has required resource to discard
+        let canAffordRes = true;
+        let missingNote = '';
+        if (choice.discardRes && (p.hand[choice.discardRes] || 0) < 1) {
+          canAffordRes = false;
+          missingNote = ` (You don't have ${choice.discardRes})`;
+        }
+        if (choice.discardMulti) {
+          const missing = choice.discardMulti.filter(r => (p.hand[r] || 0) < 1);
+          if (missing.length > 0) {
+            canAffordRes = false;
+            missingNote = ` (Missing: ${missing.join(', ')})`;
+          }
+        }
+
+        const btn = document.createElement('button');
+        btn.disabled = !canAffordRes;
+        btn.className = `w-full text-left p-3.5 rounded-xl border-2 transition-all ${
+          canAffordRes
+            ? 'bg-[#fbf5e6] hover:bg-[#f3e2bc] border-[#8c6239] hover:border-[#7f1d1d] cursor-pointer shadow-sm'
+            : 'bg-stone-200 border-stone-400 opacity-55 cursor-not-allowed'
+        }`;
+        btn.innerHTML = `
+          <div class="font-bold text-sm text-[#2c1e14]">${choice.label}</div>
+          <div class="text-xs font-semibold mt-0.5 ${choice.hr > 0 || choice.env > 0 ? 'text-rose-800' : 'text-emerald-800'}">
+            ${choice.detail}${missingNote}
+          </div>
+        `;
+        btn.onclick = () => resolveProgressChoice(card, choice);
+        choicesEl.appendChild(btn);
+      });
+
+      document.getElementById('progress-modal').classList.remove('hidden');
+    }
+
+    function resolveProgressChoice(card, choice) {
+      const p = getCurrentPlayer();
+
+      if (choice.cash) applyFinancialChange(p, choice.cash);
+      if (choice.hr) p.hrHarm += choice.hr;
+      if (choice.env) p.envHarm += choice.env;
+
+      if (choice.discardRes && p.hand[choice.discardRes] > 0) {
+        p.hand[choice.discardRes] -= 1;
+        gameState.resourceDiscard.push(choice.discardRes);
+      }
+      if (choice.discardMulti) {
+        choice.discardMulti.forEach(r => {
+          if (p.hand[r] > 0) {
+            p.hand[r] -= 1;
+            gameState.resourceDiscard.push(r);
+          }
+        });
+      }
+      if (choice.gainRes) {
+        p.hand[choice.gainRes] = (p.hand[choice.gainRes] || 0) + 1;
+      }
+      if (choice.freeDraw) {
+        const drawn = drawFromResourceDeck();
+        p.hand[drawn] = (p.hand[drawn] || 0) + 1;
+        showToast(`Free Resource Card drawn: ${RESOURCE_MAP[drawn].icon} ${drawn}!`, 'success');
+      }
+      if (choice.skipTurn) {
+        p.skipNextTurn = true;
+        showToast(`${p.name} paused 1 turn for respectful land negotiations.`, 'info');
+      }
+
+      gameState.pendingTurn.events.push(`${card.title}`);
+      document.getElementById('progress-modal').classList.add('hidden');
+      playSound('coin');
+      finalizeTurnStep();
+    }
+
+    // =========================================================================
+    // 8. LEDGER LOGGING (AUTO MODE vs MANUAL STUDENT ENTRY MODE)
+    // =========================================================================
+    function finalizeTurnStep() {
+      const p = getCurrentPlayer();
+      const pt = gameState.pendingTurn;
+      const eventSummary = pt.events.length > 0 ? pt.events.join('; ') : 'Standard travel';
+
+      const expectedEntry = {
+        turn: pt.turnNumber,
+        playerId: p.id,
+        playerName: p.name,
+        playerColor: p.color,
+        line: pt.line,
+        roll: pt.roll,
+        distance: p.distance,
+        event: eventSummary,
+        hrHarm: p.hrHarm,
+        envHarm: p.envHarm,
+        cash: p.cash,
+        debt: p.debt
+      };
+
+      if (gameState.ledgerMode === 'auto') {
+        gameState.ledger.push(expectedEntry);
+        renderLedgerTable();
+        advanceToNextTurn();
+      } else {
+        // Open Manual Student Entry Modal
+        gameState.phase = 'MANUAL_LEDGER';
+        gameState.pendingTurn.expected = expectedEntry;
+        openManualLedgerModal(expectedEntry);
+        updateUI();
+      }
+    }
+
+    function openManualLedgerModal(exp) {
+      document.getElementById('manual-ledger-subtitle').textContent = `${exp.playerName} — Enter your updated totals from Turn ${exp.turn}.`;
+      document.getElementById('manual-turn-recap').innerHTML = `
+        <div><strong>Turn Recap:</strong> Rolled <strong>${exp.roll}</strong> • Moved onto <strong>${exp.line}</strong> • Event: <em>${exp.event}</em></div>
+        <div class="text-xs text-[#d4bc94]">Check your top dashboard gauges if you need to double-check your running totals!</div>
+      `;
+
+      // Clear previous inputs (pre-fill Event text as convenience, let student enter numbers)
+      document.getElementById('ml-turn').value = '';
+      document.getElementById('ml-line').value = exp.line;
+      document.getElementById('ml-roll').value = '';
+      document.getElementById('ml-dist').value = '';
+      document.getElementById('ml-hr').value = '';
+      document.getElementById('ml-env').value = '';
+      document.getElementById('ml-cash').value = '';
+      document.getElementById('ml-debt').value = '';
+      document.getElementById('ml-event').value = exp.event;
+      document.getElementById('ml-error-msg').classList.add('hidden');
+
+      document.getElementById('manual-ledger-modal').classList.remove('hidden');
+    }
+
+    function fillManualLedgerHints() {
+      const exp = gameState.pendingTurn?.expected;
+      if (!exp) return;
+      document.getElementById('ml-turn').value = exp.turn;
+      document.getElementById('ml-line').value = exp.line;
+      document.getElementById('ml-roll').value = exp.roll;
+      document.getElementById('ml-dist').value = exp.distance;
+      document.getElementById('ml-hr').value = exp.hrHarm;
+      document.getElementById('ml-env').value = exp.envHarm;
+      document.getElementById('ml-cash').value = exp.cash;
+      document.getElementById('ml-debt').value = exp.debt;
+      document.getElementById('ml-event').value = exp.event;
+      document.getElementById('ml-error-msg').classList.add('hidden');
+    }
+
+    function submitManualLedger(e) {
+      e.preventDefault();
+      const exp = gameState.pendingTurn.expected;
+
+      const uTurn = parseInt(document.getElementById('ml-turn').value, 10);
+      const uLine = document.getElementById('ml-line').value;
+      const uRoll = parseInt(document.getElementById('ml-roll').value, 10);
+      const uDist = parseInt(document.getElementById('ml-dist').value, 10);
+      const uHr   = parseInt(document.getElementById('ml-hr').value, 10);
+      const uEnv  = parseInt(document.getElementById('ml-env').value, 10);
+      const uCash = parseInt(document.getElementById('ml-cash').value, 10);
+      const uDebt = parseInt(document.getElementById('ml-debt').value, 10);
+      const uEvt  = document.getElementById('ml-event').value.trim() || exp.event;
+
+      const errors = [];
+      if (uTurn !== exp.turn) errors.push(`Turn # should be ${exp.turn}`);
+      if (uLine !== exp.line) errors.push(`Current Line should be "${exp.line}"`);
+      if (uRoll !== exp.roll) errors.push(`Die Roll was ${exp.roll}`);
+      if (uDist !== exp.distance) errors.push(`Total Distance should be ${exp.distance}`);
+      if (uHr !== exp.hrHarm) errors.push(`Total HR Harm should be ${exp.hrHarm}`);
+      if (uEnv !== exp.envHarm) errors.push(`Total Env Harm should be ${exp.envHarm}`);
+      if (uCash !== exp.cash) errors.push(`Cash Purse should be $${exp.cash}M`);
+      if (uDebt !== exp.debt) errors.push(`Bank Debt should be $${exp.debt}M`);
+
+      const errEl = document.getElementById('ml-error-msg');
+      if (errors.length > 0) {
+        errEl.innerHTML = `<strong>Double-check your math:</strong> ${errors.join(' • ')}`;
+        errEl.classList.remove('hidden');
+        return;
+      }
+
+      errEl.classList.add('hidden');
+      gameState.ledger.push({ ...exp, event: uEvt });
+      document.getElementById('manual-ledger-modal').classList.add('hidden');
+      renderLedgerTable();
+      showToast('Ledger entry verified and recorded!', 'success');
+      advanceToNextTurn();
+    }
+
+    function toggleLedgerModeInGame() {
+      gameState.ledgerMode = gameState.ledgerMode === 'auto' ? 'manual' : 'auto';
+      updateUI();
+      showToast(
+        gameState.ledgerMode === 'auto'
+          ? 'Switched to Automatic Ledger Mode'
+          : 'Switched to Manual Student Entry Mode',
+        'info'
+      );
+    }
+
+    // =========================================================================
+    // 9. TURN ROTATION & END-GAME ROYAL COMMISSION AUDIT
+    // =========================================================================
+    function advanceToNextTurn() {
+      // Check if ALL players have reached Vancouver
+      if (gameState.players.every(p => p.finished)) {
+        gameState.phase = 'GAME_OVER';
+        updateUI();
+        openAuditModal();
+        return;
+      }
+
+      // Find next unfinished player
+      const total = gameState.players.length;
+      let nextIdx = (gameState.currentPlayerIndex + 1) % total;
+      let safety = 0;
+      while (gameState.players[nextIdx].finished && safety < total) {
+        nextIdx = (nextIdx + 1) % total;
+        safety++;
+      }
+
+      gameState.currentPlayerIndex = nextIdx;
+      const nextPlayer = getCurrentPlayer();
+
+      // Handle "Lose 1 Turn" negotiation pause
+      if (nextPlayer.skipNextTurn) {
+        nextPlayer.skipNextTurn = false;
+        nextPlayer.turnCount += 1;
+        gameState.ledger.push({
+          turn: nextPlayer.turnCount,
+          playerId: nextPlayer.id,
+          playerName: nextPlayer.name,
+          playerColor: nextPlayer.color,
+          line: BOARD_NODES[nextPlayer.nodeId].line,
+          roll: 0,
+          distance: nextPlayer.distance,
+          event: 'Paused 1 turn (Land Negotiation)',
+          hrHarm: nextPlayer.hrHarm,
+          envHarm: nextPlayer.envHarm,
+          cash: nextPlayer.cash,
+          debt: nextPlayer.debt
+        });
+        renderLedgerTable();
+        showToast(`${nextPlayer.name} spent this turn in land negotiations.`, 'info');
+        if (total > 1) {
+          advanceToNextTurn();
+          return;
+        }
+      }
+
+      gameState.phase = 'IDLE';
+      updateUI();
+
+      // In Pass-and-Play (2–4 players), show handoff modal
+      if (total > 1) {
+        document.getElementById('handoff-player-name').textContent = nextPlayer.name;
+        document.getElementById('handoff-player-name').style.color = nextPlayer.color;
+        document.getElementById('handoff-details').textContent =
+          `Purse: $${nextPlayer.cash}M • Debt: $${nextPlayer.debt}M • HR Harm: ${nextPlayer.hrHarm} • Env Harm: ${nextPlayer.envHarm}`;
+        document.getElementById('handoff-modal').classList.remove('hidden');
+      }
+    }
+
+    function confirmHandoff() {
+      document.getElementById('handoff-modal').classList.add('hidden');
+      playSound('whistle');
+    }
+
+    function calculateAuditScore(p) {
+      // Lower is better: Bank Debt ($M) + (Human Rights Harm * 2) + (Environmental Harm * 2)
+      return p.debt + (p.hrHarm * 2) + (p.envHarm * 2);
+    }
+
+    function getLegacyTitle(score, debt, totalHarm) {
+      if (totalHarm === 0 && debt <= 6) return { title: 'Ethical Pioneer', badge: 'bg-emerald-700 text-white', desc: 'Remarkable leadership — you balanced financial discipline with deep respect for workers, Indigenous nations, and the land.' };
+      if (totalHarm <= 3 && debt <= 12) return { title: 'Conscientious Builder', badge: 'bg-teal-700 text-white', desc: 'You navigated tough 1880s pressures while keeping harm low and debt manageable.' };
+      if (totalHarm <= 4 && debt > 12) return { title: 'Debt-Ridden Visionary', badge: 'bg-amber-700 text-white', desc: 'You protected people and the environment, though the company took on heavy bank loans to do so.' };
+      if (totalHarm >= 8) return { title: 'Robber Baron', badge: 'bg-rose-800 text-white', desc: 'You reached BC quickly or cheaply, but at an immense cost to human rights and Canada’s ecosystems.' };
+      return { title: 'Pragmatic Industrialist', badge: 'bg-stone-700 text-white', desc: 'A mixed historical legacy reflecting the real-world tensions of 1880s railway expansion.' };
+    }
+
+    function openAuditModal() {
+      const ranked = [...gameState.players].sort((a, b) => calculateAuditScore(a) - calculateAuditScore(b));
+      const container = document.getElementById('audit-results-container');
+      container.innerHTML = '';
+
+      ranked.forEach((p, idx) => {
+        const score = calculateAuditScore(p);
+        const totalHarm = p.hrHarm + p.envHarm;
+        const legacy = getLegacyTitle(score, p.debt, totalHarm);
+        const medal = idx === 0 ? '🏆 ' : `#${idx + 1} `;
+
+        container.innerHTML += `
+          <div class="bg-[#fbf5e6] border-2 ${idx === 0 ? 'border-[#b8860b] shadow-md' : 'border-[#c7aa7c]'} rounded-xl p-4">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2">
+                <span class="w-4 h-4 rounded-full" style="background:${p.color}"></span>
+                <h3 class="font-victorian text-lg font-extrabold text-[#2c1e14]">${medal}${p.name}</h3>
+              </div>
+              <span class="text-xs font-bold px-2.5 py-1 rounded-full ${legacy.badge}">${legacy.title}</span>
+            </div>
+            <p class="text-xs text-[#4a3423] mb-3">${legacy.desc}</p>
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-xs">
+              <div class="bg-[#efe1c2] p-2 rounded-lg"><div class="text-[#5c3d04]">Bank Debt</div><div class="font-bold text-base text-amber-900">$${p.debt}M</div></div>
+              <div class="bg-[#efe1c2] p-2 rounded-lg"><div class="text-[#5c3d04]">HR Harm</div><div class="font-bold text-base text-rose-800">${p.hrHarm}</div></div>
+              <div class="bg-[#efe1c2] p-2 rounded-lg"><div class="text-[#5c3d04]">Env Harm</div><div class="font-bold text-base text-emerald-900">${p.envHarm}</div></div>
+              <div class="bg-[#efe1c2] p-2 rounded-lg"><div class="text-[#5c3d04]">Distance</div><div class="font-bold text-base text-sky-900">${p.distance}</div></div>
+              <div class="bg-[#2c1e14] text-[#e5c158] p-2 rounded-lg"><div class="text-[10px] uppercase">Audit Penalty</div><div class="font-bold text-base">${score} pts</div></div>
+            </div>
+          </div>
+        `;
+      });
+
+      document.getElementById('audit-modal').classList.remove('hidden');
+    }
+
+    // =========================================================================
+    // 10. UI & LEDGER RENDERING
+    // =========================================================================
+    function updateUI() {
+      if (!gameState.started) return;
+      const p = getCurrentPlayer();
+      const node = BOARD_NODES[p.nodeId];
+      const allSix = hasAllSixUnique(p);
+      const onDetour = node.line !== 'Main Red Line';
+
+      // Top HUD
+      document.getElementById('hud-turn-badge').textContent = `Turn ${p.turnCount + 1}`;
+      const lineBadge = document.getElementById('hud-line-badge');
+      lineBadge.textContent = node.line;
+      lineBadge.style.backgroundColor = LINE_COLORS[node.line] || '#7f1d1d';
+
+      document.getElementById('hud-player-name').textContent = p.name;
+      document.getElementById('hud-player-dot').style.backgroundColor = p.color;
+
+      document.getElementById('stat-cash').textContent = `$${p.cash}M`;
+      document.getElementById('stat-debt').textContent = `$${p.debt}M`;
+      document.getElementById('stat-hr').textContent = p.hrHarm;
+      document.getElementById('stat-env').textContent = p.envHarm;
+      document.getElementById('stat-dist').textContent = p.distance;
+
+      // Ledger Mode Button
+      document.getElementById('btn-toggle-ledger-mode').textContent =
+        gameState.ledgerMode === 'auto' ? '📒 Auto' : '✍️ Manual';
+      document.getElementById('ledger-count-badge').textContent = gameState.ledger.length;
+
+      // SVG Deck Counts
+      document.getElementById('svg-res-deck-count').textContent = `${gameState.resourceDeck.length} Left • Pay $2M`;
+      document.getElementById('svg-prog-deck-count').textContent = `${gameState.progressDeck.length} Cards Left`;
+
+      // Multiplayer Standings Ribbon
+      const ribbon = document.getElementById('multiplayer-ribbon');
+      if (gameState.players.length > 1) {
+        ribbon.classList.remove('hidden');
+        ribbon.innerHTML = gameState.players.map(pl => {
+          const active = pl.id === gameState.currentPlayerIndex;
+          return `
+            <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border ${active ? 'bg-[#3e2a1d] border-[#e5c158] text-white font-bold' : 'bg-[#1b120c] border-[#4a3423] text-[#c9b086]'}">
+              <span class="w-2.5 h-2.5 rounded-full" style="background:${pl.color}"></span>
+              <span>${pl.name}</span>
+              <span class="opacity-80">($${pl.debt}M debt • ${pl.hrHarm + pl.envHarm} harm${pl.finished ? ' • ★ BC' : ''})</span>
+            </div>
+          `;
+        }).join('');
+      } else {
+        ribbon.classList.add('hidden');
+      }
+
+      // Status Banner
+      const statusIcon = document.getElementById('status-icon');
+      const statusText = document.getElementById('status-text');
+      if (gameState.phase === 'IDLE') {
+        if (onDetour) {
+          statusIcon.textContent = '🔀';
+          statusText.innerHTML = `<strong>${p.name}</strong> is on the <strong>${node.line}</strong>! Roll the die for free to collect board resources and rejoin the Red Line.`;
+        } else if (allSix) {
+          statusIcon.textContent = '🚂';
+          statusText.innerHTML = `<strong>${p.name}</strong> holds all 6 unique resources! Roll the die to advance along the <strong>Main Red Line</strong>.`;
+        } else {
+          statusIcon.textContent = '⚠️';
+          statusText.innerHTML = `<strong>${p.name}</strong> is missing resources for the Main Red Line. <strong>Option A:</strong> Pay $2M to draw a card, or <strong>Option B:</strong> Take a Detour Loop!`;
+        }
+      } else if (gameState.phase === 'CHOOSE_MOVE') {
+        statusIcon.textContent = '✨';
+        statusText.innerHTML = `You rolled a <strong>${gameState.currentRoll}</strong>! Click any <strong>glowing yellow space</strong> on the map (up to ${gameState.currentRoll} spaces ahead) to move your train.`;
+      } else if (gameState.phase === 'DISCARD_CARD') {
+        statusIcon.textContent = '🃏';
+        statusText.innerHTML = `<strong>End of Red Line Move:</strong> Click any <strong>1 Resource Card</strong> in your hand below to discard it.`;
+      } else if (gameState.phase === 'PROGRESS_CARD') {
+        statusIcon.textContent = '📜';
+        statusText.innerHTML = `Resolve the <strong>Progress Card</strong> dilemma to continue.`;
+      } else if (gameState.phase === 'MANUAL_LEDGER') {
+        statusIcon.textContent = '✍️';
+        statusText.innerHTML = `Complete your <strong>Manual Ledger Entry</strong> to finish your turn.`;
+      }
+
+      // Resource Hand Grid
+      const readyBadge = document.getElementById('hand-ready-badge');
+      const handInstr = document.getElementById('hand-instruction');
+      if (gameState.phase === 'DISCARD_CARD') {
+        readyBadge.className = 'text-xs font-bold px-2.5 py-0.5 rounded-full bg-rose-700 text-white animate-pulse';
+        readyBadge.textContent = '👇 Click 1 Card to Discard';
+        handInstr.textContent = 'Tip: Discard a duplicate card if you have one!';
+      } else if (allSix) {
+        readyBadge.className = 'text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-700 text-white';
+        readyBadge.textContent = '✓ All 6 Unique Ready';
+        handInstr.textContent = 'Ready to roll on the Main Red Line!';
+      } else {
+        const missing = RESOURCE_TYPES.filter(r => !p.hand[r.id]).map(r => r.id);
+        readyBadge.className = 'text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-700 text-white';
+        readyBadge.textContent = `Missing: ${missing.length}`;
+        handInstr.textContent = `Need: ${missing.join(', ')}`;
+      }
+
+      const handGrid = document.getElementById('resource-hand-grid');
+      handGrid.innerHTML = RESOURCE_TYPES.map(rt => {
+        const qty = p.hand[rt.id] || 0;
+        const canDiscard = gameState.phase === 'DISCARD_CARD' && qty > 0;
+        return `
+          <button
+            onclick="${canDiscard ? `discardResourceFromHand('${rt.id}')` : ''}"
+            class="resource-card ${canDiscard ? 'selectable ring-2 ring-rose-600 cursor-pointer' : 'cursor-default'} ${qty > 0 ? rt.color : 'bg-stone-300/60 border-stone-400 text-stone-500 opacity-60'} border-2 rounded-xl p-2 flex flex-col items-center justify-center relative"
+          >
+            <span class="absolute top-1 right-1.5 text-[11px] font-extrabold px-1.5 rounded-full ${qty > 0 ? 'bg-[#2c1e14] text-[#e5c158]' : 'bg-stone-400 text-white'}">×${qty}</span>
+            <span class="text-2xl sm:text-3xl my-1">${rt.icon}</span>
+            <span class="text-xs font-bold">${rt.id}</span>
+          </button>
+        `;
+      }).join('');
+
+      // Turn Control Buttons
+      const rollBtn = document.getElementById('btn-roll-die');
+      const rollLbl = document.getElementById('btn-roll-label');
+      const buyBtn = document.getElementById('btn-buy-resource');
+      const detourBtn = document.getElementById('btn-enter-detour');
+
+      const idle = gameState.phase === 'IDLE';
+      rollBtn.disabled = !idle || (!onDetour && !allSix);
+      rollLbl.textContent = onDetour ? `Roll on ${node.line}` : 'Roll Die (Main Red Line)';
+      buyBtn.disabled = !idle;
+      detourBtn.disabled = !idle || !canEnterDetourFromCurrentNode(p);
+
+      renderTokensAndHighlights();
+    }
+
+    // --- Ledger Drawer Functions ---
+    function toggleLedgerDrawer() {
+      const drawer = document.getElementById('ledger-drawer');
+      drawer.classList.toggle('hidden');
+      if (!drawer.classList.contains('hidden')) {
+        renderLedgerTable();
+      }
+    }
+
+    function setLedgerFilter(filter) {
+      gameState.activeLedgerFilter = filter;
+      renderLedgerTable();
+    }
+
+    function renderLedgerTable() {
+      // Render filter tabs if multiplayer
+      const tabsEl = document.getElementById('ledger-player-tabs');
+      if (gameState.players.length > 1) {
+        tabsEl.classList.remove('hidden');
+        tabsEl.innerHTML = `
+          <button onclick="setLedgerFilter('ALL')" class="px-2.5 py-1 rounded-lg font-bold ${gameState.activeLedgerFilter === 'ALL' ? 'bg-[#2c1e14] text-[#e5c158]' : 'bg-[#fbf5e6] text-[#4a3423] border border-[#a88253]'}">All Companies</button>
+          ${gameState.players.map(p => `
+            <button onclick="setLedgerFilter(${p.id})" class="px-2.5 py-1 rounded-lg font-bold flex items-center gap-1.5 ${gameState.activeLedgerFilter === p.id ? 'bg-[#2c1e14] text-[#e5c158]' : 'bg-[#fbf5e6] text-[#4a3423] border border-[#a88253]'}">
+              <span class="w-2.5 h-2.5 rounded-full" style="background:${p.color}"></span> ${p.name}
+            </button>
+          `).join('')}
+        `;
+      } else {
+        tabsEl.classList.add('hidden');
+      }
+
+      const tbody = document.getElementById('ledger-table-body');
+      const rows = gameState.activeLedgerFilter === 'ALL'
+        ? gameState.ledger
+        : gameState.ledger.filter(r => r.playerId === gameState.activeLedgerFilter);
+
+      if (rows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="10" class="py-8 text-center text-[#7c5631] italic">No turns recorded yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = rows.map(r => `
+        <tr class="hover:bg-[#f3e5c8]/60">
+          <td class="py-2 px-2 font-bold">#${r.turn}</td>
+          <td class="py-2 px-2 font-sans text-xs font-semibold flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:${r.playerColor}"></span>${r.playerName}
+          </td>
+          <td class="py-2 px-2 text-xs">${r.line}</td>
+          <td class="py-2 px-2 text-center font-bold">${r.roll}</td>
+          <td class="py-2 px-2 text-center">${r.distance}</td>
+          <td class="py-2 px-2 font-sans text-xs">${r.event}</td>
+          <td class="py-2 px-2 text-center font-bold text-rose-800">${r.hrHarm}</td>
+          <td class="py-2 px-2 text-center font-bold text-emerald-900">${r.envHarm}</td>
+          <td class="py-2 px-2 text-right font-bold text-emerald-800">$${r.cash}M</td>
+          <td class="py-2 px-2 text-right font-bold text-amber-900">$${r.debt}M</td>
+        </tr>
+      `).join('');
+    }
+
+    function exportLedgerCSV() {
+      if (gameState.ledger.length === 0) {
+        showToast('No ledger entries to export yet!', 'warn');
+        return;
+      }
+      const headers = ['Turn', 'Company', 'Line', 'Die Roll', 'Total Distance', 'Event', 'Human Rights Harm', 'Environmental Harm', 'Cash Purse ($M)', 'Bank Debt ($M)'];
+      const csvRows = [
+        headers.join(','),
+        ...gameState.ledger.map(r => [
+          r.turn,
+          `"${r.playerName.replace(/"/g, '""')}"`,
+          `"${r.line}"`,
+          r.roll,
+          r.distance,
+          `"${r.event.replace(/"/g, '""')}"`,
+          r.hrHarm,
+          r.envHarm,
+          r.cash,
+          r.debt
+        ].join(','))
+      ];
+      const blob = new Blob([csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'track_to_progress_ledger.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Ledger exported as CSV!', 'success');
+    }
+
+    function copyLedgerText() {
+      if (gameState.ledger.length === 0) {
+        showToast('No ledger entries to copy yet!', 'warn');
+        return;
+      }
+      const lines = ['Turn\tCompany\tLine\tRoll\tDist\tEvent\tHR Harm\tEnv Harm\tPurse\tDebt'];
+      gameState.ledger.forEach(r => {
+        lines.push(`${r.turn}\t${r.playerName}\t${r.line}\t${r.roll}\t${r.distance}\t${r.event}\t${r.hrHarm}\t${r.envHarm}\t$${r.cash}M\t$${r.debt}M`);
+      });
+      const ta = document.createElement('textarea');
+      ta.value = lines.join('\n');
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showToast('Ledger copied to clipboard!', 'success');
+      } catch (e) {
+        showToast('Could not copy automatically. Try Export CSV!', 'warn');
+      }
+      document.body.removeChild(ta);
+    }
+
+    function openRulesModal() {
+      document.getElementById('rules-modal').classList.remove('hidden');
+    }
+    function closeRulesModal() {
+      document.getElementById('rules-modal').classList.add('hidden');
+    }
+
+    function showToast(msg, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const colors = {
+        info: 'bg-[#2c1e14] border-[#b8860b] text-[#f4e8ce]',
+        success: 'bg-emerald-900 border-emerald-400 text-emerald-50',
+        warn: 'bg-amber-900 border-amber-400 text-amber-50'
+      };
+      toast.className = `px-4 py-2.5 rounded-xl border-2 shadow-xl text-xs sm:text-sm font-semibold transition-all duration-300 ${colors[type] || colors.info}`;
+      toast.textContent = msg;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(8px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3200);
+    }
+
+    // Initialize setup defaults on load
+    window.onload = function() {
+      setSetupPlayerMode('solo');
+      setSetupLedgerMode('auto');
+      renderStaticMap();
+    };
+  </script>
+</body>
+</html>
