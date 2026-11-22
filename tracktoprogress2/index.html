@@ -97,6 +97,12 @@
       filter: brightness(1.08);
       transform: translateY(-1px);
     }
+    .btn-emerald:disabled,
+    .btn-dimmed {
+      opacity: 0.45;
+      cursor: not-allowed;
+      filter: grayscale(0.5);
+    }
 
     /* Pulsing Reachable Map Node */
     @keyframes nodePulse {
@@ -461,8 +467,8 @@
 
           <!-- Rebuild Hand Options -->
           <div class="grid grid-cols-2 gap-2">
-            <button id="btn-buy-resource" onclick="buyResourceCard()" class="btn-brass py-2 px-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1" title="Option A: Pay $2M (or take a Bank Loan) to draw from Resource Deck">
-              <span>💰</span> Pay $2M Draw
+            <button id="btn-buy-resource" onclick="buyResourceCard()" class="btn-brass py-2 px-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1" title="Option A: Pay $2M (or take a Bank Loan) to draw from Resource Deck — Ends your turn">
+              <span>💰</span> Pay $2M (End Turn)
             </button>
             <button id="btn-enter-detour" onclick="startDetourRoll()" class="btn-emerald py-2 px-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1" title="Option B: Roll onto a Detour Loop without needing all 6 cards">
               <span>🔀</span> Detour Roll
@@ -679,7 +685,7 @@
           <br>4. If you land on a <strong>Circle (⭕)</strong> or <strong>X (✖)</strong> space, draw a <strong>Progress Card</strong> and resolve its historical dilemma.
         </p>
         <p><strong>🔄 Rebuilding Your Hand:</strong>
-          <br>• <strong>Option A (Pay $2M):</strong> Pay $2M from your Cash Purse (or automatic Bank Loan if cash is empty) to draw the top card from the 20-card Resource Deck.
+          <br>• <strong>Option A (Pay $2M):</strong> Pay $2M from your Cash Purse (or automatic Bank Loan if cash is empty) to draw the top card from the 20-card Resource Deck. <em>This uses and ends your turn</em> so other companies can play a round.
           <br>• <strong>Option B (Detour Loop):</strong> At any detour junction (Montreal, Shield East, Winnipeg, Calgary, Edmonton), click <strong>Detour Roll</strong> to turn off the Red Line without needing all 6 cards! You collect every free resource icon you pass over or land on along the loop.
         </p>
         <p><strong>📒 Ledger Modes:</strong> Switch anytime between <strong>Automatic Ledger</strong> and <strong>Manual Student Entry</strong> using the button in the top bar.</p>
@@ -772,7 +778,6 @@
     // =========================================================================
     // 2. INTERACTIVE BOARD GRAPH (Calibrated to GitHub map.png on 1200x675)
     // =========================================================================
-    // Types: 'start', 'x', 'circle', 'track', 'resource', 'finish'
     const BOARD_NODES = {
       // --- MAIN RED LINE (Montreal -> Vancouver) ---
       montreal:    { id: 'montreal',    label: 'MONTREAL',   x: 1010, y: 458, line: 'Main Red Line',        type: 'start',  nextRed: ['ottawa'],      nextDetour: ['f_1'] },
@@ -798,30 +803,30 @@
       red_m2:      { id: 'red_m2',      label: '',           x: 204,  y: 406, line: 'Main Red Line',        type: 'track',  nextRed: ['vancouver'],   nextDetour: [] },
       vancouver:   { id: 'vancouver',   label: 'VANCOUVER',  x: 164,  y: 415, line: 'Main Red Line',        type: 'finish', nextRed: [],              nextDetour: [] },
 
-      // --- 1. EASTERN LOOP ("F" Orange) ---
-      f_1:         { id: 'f_1',         label: '',           x: 998,  y: 398, line: 'Eastern Loop (F)',     type: 'track',    nextRed: [], nextDetour: ['f_ore'] },
+      // --- 1. EASTERN LOOP ("F" Orange — one-way westward to Sudbury) ---
+      f_1:         { id: 'f_1',         label: '',           x: 998,  y: 398, line: 'Eastern Loop (F)',     type: 'track',    nextRed: [],          nextDetour: ['f_ore'] },
       f_ore:       { id: 'f_ore',       label: 'Ore',        x: 953,  y: 385, line: 'Eastern Loop (F)',     type: 'resource', resource: 'Ore',  nextRed: [], nextDetour: ['f_wood'] },
       f_wood:      { id: 'f_wood',      label: 'Wood',       x: 907,  y: 390, line: 'Eastern Loop (F)',     type: 'resource', resource: 'Wood', nextRed: [], nextDetour: ['f_2'] },
       f_2:         { id: 'f_2',         label: '',           x: 874,  y: 432, line: 'Eastern Loop (F)',     type: 'track',    nextRed: ['sudbury'], nextDetour: ['sudbury'] },
 
-      // --- 2. CANADIAN SHIELD LOOP (Cyan) ---
+      // --- 2. CANADIAN SHIELD LOOP (Cyan — one-way westward to Shield West) ---
       cs_1:        { id: 'cs_1',        label: 'Labour',     x: 740,  y: 404, line: 'Canadian Shield Loop', type: 'resource', resource: 'Labour', nextRed: [], nextDetour: ['cs_2'] },
       cs_2:        { id: 'cs_2',        label: 'Labour',     x: 697,  y: 382, line: 'Canadian Shield Loop', type: 'resource', resource: 'Labour', nextRed: [], nextDetour: ['cs_3'] },
       cs_3:        { id: 'cs_3',        label: 'Labour',     x: 673,  y: 393, line: 'Canadian Shield Loop', type: 'resource', resource: 'Labour', nextRed: ['shield_west'], nextDetour: ['shield_west'] },
 
-      // --- 3. GREAT PLAINS LOOP (Purple) ---
+      // --- 3. GREAT PLAINS LOOP (Purple — one-way westward to Regina) ---
       gp_1:        { id: 'gp_1',        label: '',           x: 583,  y: 388, line: 'Great Plains Loop',    type: 'track',    nextRed: [], nextDetour: ['gp_engine'] },
       gp_engine:   { id: 'gp_engine',   label: 'Engine',     x: 563,  y: 346, line: 'Great Plains Loop',    type: 'resource', resource: 'Engine', nextRed: [], nextDetour: ['gp_coal'] },
       gp_coal:     { id: 'gp_coal',     label: 'Coal',       x: 497,  y: 329, line: 'Great Plains Loop',    type: 'resource', resource: 'Coal',   nextRed: [], nextDetour: ['gp_ore'] },
       gp_ore:      { id: 'gp_ore',      label: 'Ore',        x: 444,  y: 385, line: 'Great Plains Loop',    type: 'resource', resource: 'Ore',    nextRed: ['regina'], nextDetour: ['regina'] },
 
-      // --- 4. JASPER LOOP (Yellow) ---
+      // --- 4. JASPER LOOP (Yellow — one-way westward to Banff) ---
       edmonton:    { id: 'edmonton',    label: 'EDMONTON',   x: 342,  y: 336, line: 'Jasper Loop',          type: 'circle',   nextRed: [], nextDetour: ['j_engine', 'n_water'] },
       j_engine:    { id: 'j_engine',    label: 'Engine',     x: 314,  y: 306, line: 'Jasper Loop',          type: 'resource', resource: 'Engine', nextRed: [], nextDetour: ['j_water'] },
       j_water:     { id: 'j_water',     label: 'Water',      x: 272,  y: 292, line: 'Jasper Loop',          type: 'resource', resource: 'Water',  nextRed: [], nextDetour: ['jasper'] },
       jasper:      { id: 'jasper',      label: 'JASPER',     x: 274,  y: 343, line: 'Jasper Loop',          type: 'resource', resource: 'Wood',   nextRed: ['banff'], nextDetour: ['banff'] },
 
-      // --- 5. NORTHERN LOOP ("J" Green) ---
+      // --- 5. NORTHERN LOOP ("J" Green — one-way loop around Yellowknife back to Jasper Loop) ---
       n_water:     { id: 'n_water',     label: 'Water',      x: 390,  y: 273, line: 'Northern Loop (J)',    type: 'resource', resource: 'Water',  nextRed: [], nextDetour: ['n_ore'] },
       n_ore:       { id: 'n_ore',       label: 'Ore',        x: 396,  y: 183, line: 'Northern Loop (J)',    type: 'resource', resource: 'Ore',    nextRed: [], nextDetour: ['yellowknife'] },
       yellowknife: { id: 'yellowknife', label: 'YELLOWKNIFE',x: 368,  y: 133, line: 'Northern Loop (J)',    type: 'circle',   nextRed: [], nextDetour: ['n_coal'] },
@@ -829,206 +834,185 @@
       n_1:         { id: 'n_1',         label: '',           x: 310,  y: 265, line: 'Northern Loop (J)',    type: 'track',    nextRed: [], nextDetour: ['j_engine'] }
     };
 
-    const LINE_COLORS = {
-      'Main Red Line':        '#dc2626',
-      'Eastern Loop (F)':     '#f59e0b',
-      'Canadian Shield Loop': '#06b6d4',
-      'Great Plains Loop':    '#a855f7',
-      'Jasper Loop':          '#eab308',
-      'Northern Loop (J)':    '#22c55e'
-    };
-
-    const PLAYER_PALETTES = [
-      { color: '#dc2626', bg: 'bg-red-700',     name: 'Dominion Pacific Co.' },
-      { color: '#2563eb', bg: 'bg-blue-700',    name: 'Grand Trunk Western' },
-      { color: '#059669', bg: 'bg-emerald-700', name: 'Hudson Bay Express' },
-      { color: '#9333ea', bg: 'bg-purple-700',  name: 'Klondike Ironworks' }
-    ];
-
     // =========================================================================
-    // 3. SET OF 20 HISTORICAL PROGRESS CARDS (1880s Canadian Railway Dilemmas)
+    // 3. 20 HISTORICALLY GROUNDED PROGRESS CARDS
     // =========================================================================
     const PROGRESS_CARDS = [
       {
         id: 1,
-        title: 'Chinese Labourers & Unequal Wages',
-        context: 'Thousands of Chinese workers are hired to lay track through the most dangerous mountain passes, yet contractors pay them half the wages of white workers and charge them for supplies.',
+        title: 'Chinese Navvies & Unequal Wages',
+        context: 'Thousands of Chinese labourers are hired for the most dangerous mountain sections at roughly half the wages paid to European workers.',
         choices: [
-          { label: 'Pay Equal Wages & Provide Safe Gear', detail: 'Pay $3M from Purse/Loan • 0 Harm', cash: -3, hr: 0, env: 0 },
-          { label: 'Keep Contractors’ Lower Wages', detail: 'Save Cash ($0M) • +2 Human Rights Harm', cash: 0, hr: 2, env: 0 }
+          { label: 'Pay equal wages & provide camp supplies (-$3M, 0 Harm)', cash: -3, hr: 0, env: 0, note: 'Paid equal wages' },
+          { label: 'Maintain unequal pay to save funds ($0, +3 HR Harm)', cash: 0, hr: 3, env: 0, note: 'Kept unequal wages' }
         ]
       },
       {
         id: 2,
-        title: 'Nitroglycerin Blasting in the Fraser Canyon',
-        context: 'Your crew must carve ledges out of sheer granite cliffs. Unstable liquid nitroglycerin is cheap, while safer dynamite and trained blasting crews cost extra.',
+        title: 'Nitroglycerin Blasting in the Canyons',
+        context: 'Your crew must blast sheer granite cliffs in the Fraser Canyon. Unstable nitroglycerin is cheap and fast, but deadly.',
         choices: [
-          { label: 'Buy Safer Dynamite & Safety Harnesses', detail: 'Pay $2M • 0 Harm', cash: -2, hr: 0, env: 0 },
-          { label: 'Use Cheap Nitroglycerin to Rush Ahead', detail: '$0M • +2 Human Rights Harm • +1 Env Harm', cash: 0, hr: 2, env: 1 }
+          { label: 'Hire safety engineers & slower dynamite (-$3M, 0 Harm)', cash: -3, hr: 0, env: 0, note: 'Invested in blasting safety' },
+          { label: 'Rush blasting with raw nitroglycerin ($0, +3 HR Harm, +1 Env Harm)', cash: 0, hr: 3, env: 1, note: 'Rushed canyon blasting' }
         ]
       },
       {
         id: 3,
-        title: 'Blackfoot Confederacy Territory Crossing',
-        context: 'The surveyed rail line enters traditional Blackfoot territory without formal consent. Chief Crowfoot requests respectful negotiation and fair compensation.',
+        title: 'Scurvy & Camp Medical Shortages',
+        context: 'Isolated work camps lack fresh produce and doctors. Dozens of workers are falling ill with scurvy and typhoid.',
         choices: [
-          { label: 'Negotiate Respectfully & Compensate', detail: 'Pay $2M & Pause 1 Turn • 0 Harm', cash: -2, hr: 0, env: 0, skipTurn: true },
-          { label: 'Push Track Through Without Consent', detail: '$0M • +3 Human Rights Harm', cash: 0, hr: 3, env: 0 }
+          { label: 'Ship fresh provisions & hire camp doctors (-$2M, 0 Harm)', cash: -2, hr: 0, env: 0, note: 'Funded camp healthcare' },
+          { label: 'Ignore medical requests to stay on budget ($0, +2 HR Harm)', cash: 0, hr: 2, env: 0, note: 'Neglected camp illness' }
         ]
       },
       {
         id: 4,
-        title: 'Clear-Cutting Boreal Timber for Rail Ties',
-        context: 'Every kilometre of track requires over 1,500 wooden ties. Clear-cutting nearby hillsides is fast, while selective logging takes extra effort.',
+        title: 'Indigenous Land & Treaty Encroachment',
+        context: 'Surveyors have routed the line directly across Blackfoot and Cree hunting grounds without formal consultation.',
         choices: [
-          { label: 'Use Selective Logging & Replant', detail: 'Discard 1 Wood or Pay $2M • 0 Harm', cash: -2, hr: 0, env: 0 },
-          { label: 'Clear-Cut the Entire Valley', detail: 'Gain 1 Free Wood • +2 Environmental Harm', cash: 0, hr: 0, env: 2, gainRes: 'Wood' }
+          { label: 'Negotiate compensation & respect boundaries (-$4M, 0 Harm)', cash: -4, hr: 0, env: 0, note: 'Negotiated Indigenous agreement' },
+          { label: 'Push track through without consent ($0, +3 HR Harm, +1 Env Harm)', cash: 0, hr: 3, env: 1, note: 'Encroached on Indigenous lands' }
         ]
       },
       {
         id: 5,
-        title: 'Canadian Shield Muskeg Sinkhole',
-        context: 'A stretch of track sinks overnight into deep northern Ontario muskeg bog. Dumping massive amounts of gravel and timber will fill it quickly, damaging the wetland.',
+        title: 'North-West Resistance (1885)',
+        context: 'Tensions over Métis land rights erupt in Saskatchewan. Ottawa offers a subsidy if your railway transports troops rapidly.',
         choices: [
-          { label: 'Engineer a Raised Trestle Bridge', detail: 'Pay $3M • 0 Harm', cash: -3, hr: 0, env: 0 },
-          { label: 'Dump Endless Fill Into the Wetland', detail: 'Pay $1M • +2 Environmental Harm', cash: -1, hr: 0, env: 2 }
+          { label: 'Decline military rush & support diplomatic pause (-$2M, 0 Harm)', cash: -2, hr: 0, env: 0, note: 'Declined military rush' },
+          { label: 'Accept $3M troop contract & rush track (+$3M, +2 HR Harm)', cash: 3, hr: 2, env: 0, note: 'Accepted troop transport contract' }
         ]
       },
       {
         id: 6,
-        title: 'Prairie Bison Migration Disruption',
-        context: 'Track embankments and railway hunters are severing the last bison herds on the Great Plains, threatening the food security of Plains First Nations and Métis communities.',
+        title: 'Prairie Bison Habitat Disruption',
+        context: 'Track embankments and railway hunters are severing the last remaining bison migration corridors on the Great Plains.',
         choices: [
-          { label: 'Ban Railway Hunting & Build Crossings', detail: 'Pay $2M • 0 Harm', cash: -2, hr: 0, env: 0 },
-          { label: 'Allow Crews to Hunt Bison for Cheap Rations', detail: 'Gain $1M • +2 HR Harm • +2 Env Harm', cash: 1, hr: 2, env: 2 }
+          { label: 'Ban crew hunting & build wildlife crossings (-$2M, 0 Harm)', cash: -2, hr: 0, env: 0, note: 'Protected prairie wildlife' },
+          { label: 'Allow crews to hunt bison for free rations (+$1M, +3 Env Harm)', cash: 1, hr: 0, env: 3, note: 'Allowed bison hunting' }
         ]
       },
       {
         id: 7,
-        title: 'Scurvy Outbreak in Mountain Work Camps',
-        context: 'Isolated winter camps lack fresh vegetables and medical care. Workers are falling seriously ill with scurvy and frostbite.',
+        title: 'Canadian Shield Muskeg Swamps',
+        context: 'Locomotives and track beds are sinking into bottomless northern Ontario peat bogs. Draining them destroys wetlands.',
         choices: [
-          { label: 'Ship Fresh Supplies & Camp Doctors', detail: 'Pay $2M • Draw 1 Free Resource Card', cash: -2, hr: 0, env: 0, freeDraw: true },
-          { label: 'Ignore Illness to Meet Deadlines', detail: '$0M • +2 Human Rights Harm', cash: 0, hr: 2, env: 0 }
+          { label: 'Build elevated timber trestles over muskeg (-$3M, 0 Harm)', cash: -3, hr: 0, env: 0, note: 'Built wetland trestles' },
+          { label: 'Dump blast rock & drain the wetlands (-$1M, +2 Env Harm)', cash: -1, hr: 0, env: 2, note: 'Drained Shield wetlands' }
         ]
       },
       {
         id: 8,
-        title: 'Steam Locomotive Spark Wildfires',
-        context: 'Dry summer winds carry hot cinders from your coal-burning engines into prairie grass and pine forests.',
+        title: 'Clear-Cutting Old-Growth Timber',
+        context: 'Your company needs tens of thousands of railway ties and bridge timbers across British Columbia.',
         choices: [
-          { label: 'Install Brass Spark Arrestors & Firebreaks', detail: 'Pay $2M • 0 Harm', cash: -2, hr: 0, env: 0 },
-          { label: 'Run Engines Unmodified at Full Speed', detail: '$0M • +2 Environmental Harm', cash: 0, hr: 0, env: 2 }
+          { label: 'Use selective logging & replanting crews (-$2M, 0 Harm)', cash: -2, hr: 0, env: 0, note: 'Selective forestry used' },
+          { label: 'Clear-cut entire mountain slopes ($0, +3 Env Harm)', cash: 0, hr: 0, env: 3, note: 'Clear-cut mountain forests' }
         ]
       },
       {
         id: 9,
-        title: '1885 North-West Resistance Supply Request',
-        context: 'Ottawa offers an emergency federal subsidy if your railway rushes troops westward during the North-West Resistance, intensifying conflict with Métis and First Nations.',
+        title: 'Locomotive Spark Wildfires',
+        context: 'Dry summer timber ignites easily from coal-burning smokestacks. Spark arrestors cost money to install.',
         choices: [
-          { label: 'Decline Military Contract & Stay Civilian', detail: '$0M • 0 Harm', cash: 0, hr: 0, env: 0 },
-          { label: 'Accept Federal Subsidy for Troop Transport', detail: 'Gain $4M Cash • +2 Human Rights Harm', cash: 4, hr: 2, env: 0 }
+          { label: 'Install brass spark arrestors & fire patrols (-$2M, 0 Harm)', cash: -2, hr: 0, env: 0, note: 'Installed spark arrestors' },
+          { label: 'Run engines unequipped through dry forests ($0, +2 Env Harm)', cash: 0, hr: 0, env: 2, note: 'Caused trackside wildfires' }
         ]
       },
       {
         id: 10,
         title: 'Fraser River Salmon Spawning Beds',
-        context: 'Blasting rock along the canyon walls drops boulders directly into the river, blocking salmon runs vital to Stó:lō and Nlaka’pamux communities.',
+        context: 'Rock slides from canyon blasting are choking the river and blocking vital salmon runs.',
         choices: [
-          { label: 'Haul Blasted Rock Away from the River', detail: 'Pay $3M • 0 Harm', cash: -3, hr: 0, env: 0 },
-          { label: 'Dump Debris Directly into the Canyon', detail: '$0M • +1 HR Harm • +2 Env Harm', cash: 0, hr: 1, env: 2 }
+          { label: 'Haul blast rock away from the riverbank (-$3M, 0 Harm)', cash: -3, hr: 0, env: 0, note: 'Protected salmon river' },
+          { label: 'Dump rubble straight into the Fraser River ($0, +3 Env Harm, +1 HR Harm)', cash: 0, hr: 1, env: 3, note: 'Blocked salmon spawning' }
         ]
       },
       {
         id: 11,
-        title: 'Dominion Government Land Grant Audit',
-        context: 'Parliament reviews your books. Companies showing low harm and solid construction standards qualify for a federal progress bonus.',
+        title: 'Parliamentary Loan Relief',
+        context: 'Prime Minister Macdonald’s government passes a relief bill to keep transcontinental construction solvent.',
         choices: [
-          { label: 'Submit Transparent Inspection Report', detail: 'Gain $2M Cash & Draw 1 Free Resource', cash: 2, hr: 0, env: 0, freeDraw: true },
-          { label: 'Lobby for Unregulated Land Speculation', detail: 'Gain $4M Cash • +1 HR Harm • +1 Env Harm', cash: 4, hr: 1, env: 1 }
+          { label: 'Accept $3M Federal Grant (+$3M Cash, 0 Harm)', cash: 3, hr: 0, env: 0, note: 'Received $3M Federal Grant' }
         ]
       },
       {
         id: 12,
-        title: 'Dangerous Winter Avalanche Pass',
-        context: 'Heavy snowpack threatens workers in Rogers Pass. Building timber snowsheds takes time and resources, while pressing on risks lives.',
+        title: 'Bond Market Panic in London',
+        context: 'British investors lose confidence after hearing reports of soaring construction costs in the Rocky Mountains.',
         choices: [
-          { label: 'Construct Protective Timber Snowsheds', detail: 'Discard 1 Wood • 0 Harm', cash: 0, hr: 0, env: 0, discardRes: 'Wood' },
-          { label: 'Pay $2M for Winter Safety Crews', detail: 'Pay $2M • 0 Harm', cash: -2, hr: 0, env: 0 },
-          { label: 'Force Crews Through the Avalanche Zone', detail: '$0M • +2 Human Rights Harm', cash: 0, hr: 2, env: 0 }
+          { label: 'Cover emergency interest payment (-$3M Cash, 0 Harm)', cash: -3, hr: 0, env: 0, note: 'Paid London bond interest' },
+          { label: 'Slash worker rations to appease bankers (-$1M, +2 HR Harm)', cash: -1, hr: 2, env: 0, note: 'Cut worker rations for bankers' }
         ]
       },
       {
         id: 13,
-        title: 'Company Store Debt Trap',
-        context: 'Subcontractors want to pay labourers in company scrip redeemable only at overpriced camp stores, trapping workers in debt.',
+        title: 'Kicking Horse Pass Avalanche',
+        context: 'A massive spring snowslide buries two miles of newly laid mountain track.',
         choices: [
-          { label: 'Pay Fair Cash Wages Directly', detail: 'Pay $2M • 0 Harm', cash: -2, hr: 0, env: 0 },
-          { label: 'Allow High-Markup Company Stores', detail: 'Gain $2M Cash • +2 Human Rights Harm', cash: 2, hr: 2, env: 0 }
+          { label: 'Construct reinforced snowsheds (-$3M, 0 Harm)', cash: -3, hr: 0, env: 0, note: 'Built mountain snowsheds' },
+          { label: 'Send crews in during storm warnings (-$1M, +2 HR Harm)', cash: -1, hr: 2, env: 0, note: 'Risked crews in avalanche zone' }
         ]
       },
       {
         id: 14,
-        title: 'Coal Mining Runoff in the Foothills',
-        context: 'New coal pits supplying your locomotives are leaching acidic runoff into mountain streams.',
+        title: 'Company Store Debt Trap',
+        context: 'Camp contractors are overcharging workers for boots, blankets, and flour, trapping them in debt.',
         choices: [
-          { label: 'Build Settling Ponds & Water Filters', detail: 'Pay $2M • 0 Harm', cash: -2, hr: 0, env: 0 },
-          { label: 'Extract Cheap Coal Without Safeguards', detail: 'Gain 1 Free Coal • +2 Environmental Harm', cash: 0, hr: 0, env: 2, gainRes: 'Coal' }
+          { label: 'Regulate fair prices at all camp stores (-$2M, 0 Harm)', cash: -2, hr: 0, env: 0, note: 'Enforced fair camp store prices' },
+          { label: 'Take a cut of contractor markups (+$2M, +2 HR Harm)', cash: 2, hr: 2, env: 0, note: 'Profited from camp store markups' }
         ]
       },
       {
         id: 15,
-        title: 'Workers’ Strike Over 14-Hour Shifts',
-        context: 'Exhausted tracklayers strike along the line, demanding 10-hour shifts and safer camp housing.',
+        title: 'Chinese Head Tax (1885)',
+        context: 'As construction nears completion, federal legislation imposes a discriminatory Head Tax on Chinese immigrants.',
         choices: [
-          { label: 'Meet Demands for Safer 10-Hour Shifts', detail: 'Pay $2M • Gain 1 Free Labour Card', cash: -2, hr: 0, env: 0, gainRes: 'Labour' },
-          { label: 'Break the Strike with Armed Guards', detail: '$0M • +3 Human Rights Harm', cash: 0, hr: 3, env: 0 }
+          { label: 'Fund return passage & support workers (-$3M, 0 Harm)', cash: -3, hr: 0, env: 0, note: 'Funded worker passage & aid' },
+          { label: 'Dismiss crews immediately with no aid ($0, +3 HR Harm)', cash: 0, hr: 3, env: 0, note: 'Abandoned dismissed crews' }
         ]
       },
       {
         id: 16,
-        title: 'Banff Hot Springs & National Park Protection',
-        context: 'Railway surveyors discover natural hot springs in the Rockies. Conservationists urge protecting the surrounding wilderness.',
+        title: 'Coal Mine Smoke & Tailings',
+        context: 'Expanding coal operations near the foothills are polluting local creeks with acidic runoff.',
         choices: [
-          { label: 'Support Protected Park Boundaries', detail: 'Pay $1M • Gain $2M Tourism Revenue (Net +$1M)', cash: 1, hr: 0, env: 0 },
-          { label: 'Open Unregulated Commercial Logging', detail: 'Gain $3M Cash • +2 Environmental Harm', cash: 3, hr: 0, env: 2 }
+          { label: 'Build settling ponds & filtration (-$2M, 0 Harm)', cash: -2, hr: 0, env: 0, note: 'Filtered coal runoff' },
+          { label: 'Ignore runoff to maximize coal output (+$1M, +2 Env Harm)', cash: 1, hr: 0, env: 2, note: 'Polluted foothill creeks' }
         ]
       },
       {
         id: 17,
-        title: 'Bridge Washout in Spring Melt',
-        context: 'Rapid mountain snowmelt washes out a temporary trestle. Rebuilding requires immediate materials or emergency funding.',
+        title: 'Surveyor Discovers Mountain Pass',
+        context: 'Major A.B. Rogers confirms a viable route through the Selkirk Mountains, saving weeks of engineering costs!',
         choices: [
-          { label: 'Rebuild with Stone & Steel Piers', detail: 'Pay $3M • 0 Harm', cash: -3, hr: 0, env: 0 },
-          { label: 'Use Spare Wood & Ore from Hand', detail: 'Discard 1 Wood & 1 Ore • 0 Harm', cash: 0, hr: 0, env: 0, discardMulti: ['Wood', 'Ore'] },
-          { label: 'Patch with Unsafe Scrap Timber', detail: '$0M • +1 HR Harm • +1 Env Harm', cash: 0, hr: 1, env: 1 }
+          { label: 'Adopt the pass & collect survey bonus (+$2M Cash, 0 Harm)', cash: 2, hr: 0, env: 0, note: 'Rogers Pass bonus (+$2M)' }
         ]
       },
       {
         id: 18,
-        title: 'Displacement of Indigenous Reserve Lands',
-        context: 'A shortcut across fertile valley land would save millions, but it cuts directly through an established First Nations community.',
+        title: 'Winter Frostbite on the Prairies',
+        context: 'Temperatures plunge to -40°C. Laying steel rails on frozen ground risks severe frostbite for track crews.',
         choices: [
-          { label: 'Reroute Around Community Lands', detail: 'Pay $2M • 0 Harm', cash: -2, hr: 0, env: 0 },
-          { label: 'Expropriate the Valley Shortcut', detail: 'Gain $2M Savings • +3 Human Rights Harm', cash: 2, hr: 3, env: 0 }
+          { label: 'Issue heavy winter gear & pause during blizzards (-$2M, 0 Harm)', cash: -2, hr: 0, env: 0, note: 'Provided winter safety gear' },
+          { label: 'Force 14-hour shifts through the freeze ($0, +2 HR Harm)', cash: 0, hr: 2, env: 0, note: 'Forced winter shifts' }
         ]
       },
       {
         id: 19,
-        title: 'Boiler Efficiency Innovation',
-        context: 'Canadian engineers design a cleaner, more efficient steam locomotive boiler that uses less coal and water.',
+        title: 'Telegraph Line Revenue',
+        context: 'Towns along your newly strung railway telegraph line pay fees to transmit urgent dispatches across the Dominion.',
         choices: [
-          { label: 'Invest in Modern Efficient Engines', detail: 'Pay $1M • Gain 1 Free Engine Card', cash: -1, hr: 0, env: 0, gainRes: 'Engine' },
-          { label: 'Stick with Smoky Older Boilers', detail: '$0M • +1 Environmental Harm', cash: 0, hr: 0, env: 1 }
+          { label: 'Collect telegraph revenue (+$2M Cash, 0 Harm)', cash: 2, hr: 0, env: 0, note: 'Telegraph revenue (+$2M)' }
         ]
       },
       {
         id: 20,
-        title: 'The Chinese Head Tax Debate (1885)',
-        context: 'As the railway nears completion in BC, politicians propose a discriminatory Head Tax on Chinese immigrants who helped build the line.',
+        title: 'Banff Hot Springs & National Park Debate',
+        context: 'Railway workers discover thermal hot springs in the Rockies. You can commercialize them or protect the wilderness.',
         choices: [
-          { label: 'Fund Fair Passage & Speak Against the Tax', detail: 'Pay $2M • 0 Harm', cash: -2, hr: 0, env: 0 },
-          { label: 'Abandon Displaced Workers Without Support', detail: '$0M • +2 Human Rights Harm', cash: 0, hr: 2, env: 0 }
+          { label: 'Support public park conservation (-$1M, -1 Env Harm)', cash: -1, hr: 0, env: -1, note: 'Supported Banff conservation' },
+          { label: 'Exploit springs for private resort profit (+$2M, +2 Env Harm)', cash: 2, hr: 0, env: 2, note: 'Commercialized hot springs' }
         ]
       }
     ];
@@ -1036,35 +1020,39 @@
     // =========================================================================
     // 4. GAME STATE & SETUP CONFIGURATION
     // =========================================================================
+    const PLAYER_COLORS = ['#dc2626', '#2563eb', '#059669', '#9333ea'];
+    const DEFAULT_COMPANY_NAMES = [
+      'Dominion Pacific Co.',
+      'Grand Trunk Western',
+      'Hudson Bay Express',
+      'Laurentian Ironworks'
+    ];
+
     const setupConfig = {
-      mode: 'solo',       // 'solo' | 'multi'
-      playerCount: 2,     // 2..4
+      playerMode: 'solo', // 'solo' | 'multi'
+      playerCount: 2,
       ledgerMode: 'auto'  // 'auto' | 'manual'
     };
 
     const gameState = {
       started: false,
-      phase: 'IDLE', // 'IDLE' | 'CHOOSE_MOVE' | 'DISCARD_CARD' | 'PROGRESS_CARD' | 'MANUAL_LEDGER' | 'GAME_OVER'
       ledgerMode: 'auto',
       players: [],
       currentPlayerIndex: 0,
+      phase: 'IDLE', // 'IDLE' | 'CHOOSE_MOVE' | 'DISCARD_CARD' | 'PROGRESS_CARD' | 'MANUAL_LEDGER' | 'GAME_OVER'
+      resourceDeck: [],
+      progressDeck: [],
       currentRoll: 0,
       rollIsDetour: false,
       reachablePaths: [],
       pendingTurn: null,
-      resourceDeck: [],
-      resourceDiscard: [],
-      progressDeck: [],
-      progressDiscard: [],
       ledger: [],
       activeLedgerFilter: 'ALL'
     };
 
-    // =========================================================================
-    // 5. SETUP SCREEN HANDLERS (Solo/Multiplayer & Auto/Manual Ledger)
-    // =========================================================================
+    // --- Setup Screen Handlers ---
     function setSetupPlayerMode(mode) {
-      setupConfig.mode = mode;
+      setupConfig.playerMode = mode;
       const soloBtn = document.getElementById('btn-mode-solo');
       const multiBtn = document.getElementById('btn-mode-multi');
       const multiOpts = document.getElementById('multi-player-options');
@@ -1101,14 +1089,14 @@
       const container = document.getElementById('player-name-inputs');
       container.innerHTML = '';
       for (let i = 0; i < setupConfig.playerCount; i++) {
-        const pal = PLAYER_PALETTES[i];
-        container.innerHTML += `
-          <div class="flex items-center gap-2">
-            <span class="w-3.5 h-3.5 rounded-full shrink-0 border border-black/30" style="background:${pal.color}"></span>
-            <input id="mp-name-${i}" type="text" value="${pal.name}" maxlength="24"
-              class="w-full px-2.5 py-1 rounded-lg bg-[#fbf5e6] border border-[#a88253] text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#b8860b]" />
-          </div>
+        const row = document.createElement('div');
+        row.className = 'flex items-center gap-2';
+        row.innerHTML = `
+          <span class="w-4 h-4 rounded-full shrink-0 border border-black/40" style="background:${PLAYER_COLORS[i]}"></span>
+          <input id="player-name-${i}" type="text" value="${DEFAULT_COMPANY_NAMES[i]}" maxlength="24"
+            class="w-full px-2.5 py-1 rounded-lg bg-[#fbf5e6] border border-[#a88253] text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#b8860b]" />
         `;
+        container.appendChild(row);
       }
     }
 
@@ -1125,29 +1113,34 @@
       } else {
         manualBtn.className = 'py-2.5 px-3 rounded-lg font-semibold text-sm border-2 transition-all bg-[#065f46] text-white border-[#022c22] shadow';
         autoBtn.className = 'py-2.5 px-3 rounded-lg font-semibold text-sm border-2 transition-all bg-[#f9f0dc] text-[#4a3423] border-[#a88253]';
-        desc.innerHTML = '<strong>Manual Student Entry:</strong> After each turn, students record their own Turn #, Line, Roll, Distance, Harm, Purse, and Debt into the Ledger with gentle math validation and hints.';
+        desc.innerHTML = '<strong>Manual Student Entry:</strong> At the end of each turn, students enter their Turn #, Line, Die Roll, Distance, Harm, and Cash/Debt totals into the Ledger with math-checking validation.';
       }
     }
 
     function startGame() {
-      const count = setupConfig.mode === 'solo' ? 1 : setupConfig.playerCount;
+      gameState.ledgerMode = setupConfig.ledgerMode;
+      gameState.resourceDeck = buildResourceDeck();
+      gameState.progressDeck = shuffleArray([...PROGRESS_CARDS]);
+      gameState.ledger = [];
       gameState.players = [];
+      gameState.currentPlayerIndex = 0;
+      gameState.phase = 'IDLE';
+      gameState.started = true;
 
+      const count = setupConfig.playerMode === 'solo' ? 1 : setupConfig.playerCount;
       for (let i = 0; i < count; i++) {
-        const pal = PLAYER_PALETTES[i];
-        let name = pal.name;
-        if (setupConfig.mode === 'solo') {
-          const val = document.getElementById('solo-company-name').value.trim();
-          if (val) name = val;
+        let name = DEFAULT_COMPANY_NAMES[i];
+        if (setupConfig.playerMode === 'solo') {
+          const input = document.getElementById('solo-company-name');
+          if (input && input.value.trim()) name = input.value.trim();
         } else {
-          const el = document.getElementById(`mp-name-${i}`);
-          if (el && el.value.trim()) name = el.value.trim();
+          const input = document.getElementById(`player-name-${i}`);
+          if (input && input.value.trim()) name = input.value.trim();
         }
-
         gameState.players.push({
           id: i,
-          name: name,
-          color: pal.color,
+          name,
+          color: PLAYER_COLORS[i],
           nodeId: 'montreal',
           cash: 10,
           debt: 0,
@@ -1156,226 +1149,108 @@
           distance: 0,
           turnCount: 0,
           finished: false,
-          skipNextTurn: false,
           hand: { Wood: 1, Ore: 1, Coal: 1, Water: 1, Engine: 1, Labour: 1 }
         });
       }
 
-      gameState.ledgerMode = setupConfig.ledgerMode;
-      gameState.resourceDeck = buildResourceDeck();
-      gameState.resourceDiscard = [];
-      gameState.progressDeck = shuffleArray(PROGRESS_CARDS);
-      gameState.progressDiscard = [];
-      gameState.ledger = [];
-      gameState.activeLedgerFilter = 'ALL';
-      gameState.currentPlayerIndex = 0;
-      gameState.phase = 'IDLE';
-      gameState.started = true;
-
       document.getElementById('setup-screen').classList.add('hidden');
       playSound('whistle');
-      renderStaticMap();
-      updateUI();
-      showToast('All aboard! Departing Montreal for Vancouver.', 'info');
+      updateHUD();
+      setStatus('🧭', `${getCurrentPlayer().name} departs from Montreal! You hold all 6 unique resources — roll the die to advance.`);
     }
 
     // =========================================================================
-    // 6. MAP RENDERING (Transparent Interactive Overlay over GitHub map.png)
-    // =========================================================================
-    function renderStaticMap() {
-      const tracksLayer = document.getElementById('svg-tracks-layer');
-      const nodesLayer = document.getElementById('svg-nodes-layer');
-      tracksLayer.innerHTML = '';
-      nodesLayer.innerHTML = '';
-
-      // Render subtle, non-obstructive interactive space markers with tooltips
-      // so the original map.png tracks, labels, and icons remain 100% visible
-      Object.values(BOARD_NODES).forEach(node => {
-        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-
-        const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
-        if (node.type === 'resource') {
-          title.textContent = `${node.line}: Free ${node.resource} Resource`;
-        } else if (node.type === 'circle' || node.type === 'x') {
-          title.textContent = `${node.label || node.line} — Draw a Progress Card`;
-        } else if (node.type === 'finish') {
-          title.textContent = 'VANCOUVER — Finish Line (Royal Commission Audit)';
-        } else if (node.type === 'start') {
-          title.textContent = 'MONTREAL — Starting Station';
-        } else {
-          title.textContent = node.label ? `${node.label} (${node.line})` : node.line;
-        }
-        g.appendChild(title);
-
-        // Subtle marker dot on plain track spaces so players can see exact step spacing
-        if (node.type === 'track') {
-          const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-          dot.setAttribute('cx', node.x);
-          dot.setAttribute('cy', node.y);
-          dot.setAttribute('r', '4.5');
-          dot.setAttribute('fill', 'rgba(255, 250, 235, 0.72)');
-          dot.setAttribute('stroke', 'rgba(44, 30, 20, 0.75)');
-          dot.setAttribute('stroke-width', '1.5');
-          g.appendChild(dot);
-        } else {
-          // Invisible hover target over existing map symbols (X, Circle, Resource icons)
-          const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-          ring.setAttribute('cx', node.x);
-          ring.setAttribute('cy', node.y);
-          ring.setAttribute('r', '13');
-          ring.setAttribute('fill', 'transparent');
-          g.appendChild(ring);
-        }
-
-        nodesLayer.appendChild(g);
-      });
-    }
-
-    function renderTokensAndHighlights() {
-      const hlLayer = document.getElementById('svg-highlights-layer');
-      const tokLayer = document.getElementById('svg-tokens-layer');
-      hlLayer.innerHTML = '';
-      tokLayer.innerHTML = '';
-
-      // 1. Render Reachable Destination Highlights
-      if (gameState.phase === 'CHOOSE_MOVE') {
-        gameState.reachablePaths.forEach((option, idx) => {
-          const node = BOARD_NODES[option.targetId];
-          const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-          g.style.cursor = 'pointer';
-          g.onclick = () => selectMoveDestination(idx);
-
-          const pulse = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-          pulse.setAttribute('cx', node.x);
-          pulse.setAttribute('cy', node.y);
-          pulse.setAttribute('r', '16');
-          pulse.setAttribute('fill', 'rgba(250, 204, 21, 0.35)');
-          pulse.setAttribute('stroke', '#facc15');
-          pulse.setAttribute('stroke-width', '3.5');
-          pulse.setAttribute('class', 'reachable-ring');
-          g.appendChild(pulse);
-
-          // Clickable hitbox
-          const hit = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-          hit.setAttribute('cx', node.x);
-          hit.setAttribute('cy', node.y);
-          hit.setAttribute('r', '22');
-          hit.setAttribute('fill', 'transparent');
-          g.appendChild(hit);
-
-          hlLayer.appendChild(g);
-        });
-      }
-
-      // 2. Render Player Locomotive Tokens (with slight offset if multiple players share a space)
-      const groups = {};
-      gameState.players.forEach(p => {
-        if (!groups[p.nodeId]) groups[p.nodeId] = [];
-        groups[p.nodeId].push(p);
-      });
-
-      Object.entries(groups).forEach(([nodeId, pList]) => {
-        const node = BOARD_NODES[nodeId];
-        pList.forEach((p, idx) => {
-          const offsetX = pList.length > 1 ? (idx - (pList.length - 1) / 2) * 16 : 0;
-          const offsetY = pList.length > 1 ? -14 - (idx % 2) * 8 : -16;
-          const isCurrent = p.id === gameState.currentPlayerIndex;
-
-          const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-          g.setAttribute('transform', `translate(${node.x + offsetX}, ${node.y + offsetY})`);
-
-          const badge = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-          badge.setAttribute('cx', '0'); badge.setAttribute('cy', '0');
-          badge.setAttribute('r', isCurrent ? '14' : '11');
-          badge.setAttribute('fill', p.color);
-          badge.setAttribute('stroke', isCurrent ? '#fef08a' : '#ffffff');
-          badge.setAttribute('stroke-width', isCurrent ? '3' : '2');
-          badge.setAttribute('filter', 'url(#softShadow)');
-          g.appendChild(badge);
-
-          const emoji = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-          emoji.setAttribute('x', '0'); emoji.setAttribute('y', '4.5');
-          emoji.setAttribute('text-anchor', 'middle');
-          emoji.setAttribute('font-size', isCurrent ? '13' : '10');
-          emoji.textContent = '🚂';
-          g.appendChild(emoji);
-
-          tokLayer.appendChild(g);
-        });
-      });
-    }
-
-    // =========================================================================
-    // 7. CORE GAMEPLAY MECHANICS
+    // 5. CORE HELPERS
     // =========================================================================
     function getCurrentPlayer() {
       return gameState.players[gameState.currentPlayerIndex];
     }
 
-    function hasAllSixUnique(player) {
+    function hasAllSixResources(player) {
       return RESOURCE_TYPES.every(rt => (player.hand[rt.id] || 0) >= 1);
-    }
-
-    function getTotalHandCount(player) {
-      return Object.values(player.hand).reduce((a, b) => a + b, 0);
     }
 
     function canEnterDetourFromCurrentNode(player) {
       const node = BOARD_NODES[player.nodeId];
-      // Already on a detour loop, OR standing on a junction with nextDetour edges
+      if (!node) return false;
       return node.line !== 'Main Red Line' || (node.nextDetour && node.nextDetour.length > 0);
+    }
+
+    function applyFinancialChange(player, delta) {
+      if (delta >= 0) {
+        player.cash += delta;
+      } else {
+        let cost = Math.abs(delta);
+        if (player.cash >= cost) {
+          player.cash -= cost;
+        } else {
+          const remainder = cost - player.cash;
+          player.cash = 0;
+          player.debt += remainder;
+          showToast(`${player.name} took a $${remainder}M Bank Loan!`, 'warn');
+        }
+      }
     }
 
     function drawFromResourceDeck() {
       if (gameState.resourceDeck.length === 0) {
-        if (gameState.resourceDiscard.length === 0) {
-          gameState.resourceDeck = buildResourceDeck();
-        } else {
-          gameState.resourceDeck = shuffleArray(gameState.resourceDiscard);
-          gameState.resourceDiscard = [];
-          showToast('Resource Discard Pile reshuffled into a fresh deck!', 'info');
-        }
+        gameState.resourceDeck = buildResourceDeck();
+        showToast('Resource Deck reshuffled (20 fresh cards)!', 'info');
       }
       return gameState.resourceDeck.pop();
     }
 
     function drawFromProgressDeck() {
       if (gameState.progressDeck.length === 0) {
-        gameState.progressDeck = shuffleArray(gameState.progressDiscard);
-        gameState.progressDiscard = [];
+        gameState.progressDeck = shuffleArray([...PROGRESS_CARDS]);
+        showToast('Progress Deck reshuffled!', 'info');
       }
-      const card = gameState.progressDeck.pop();
-      gameState.progressDiscard.push(card);
-      return card;
+      return gameState.progressDeck.pop();
     }
 
-    function applyFinancialChange(player, delta) {
-      // Positive delta adds to cash purse. Negative delta spends cash first, then incurs Bank Debt.
-      if (delta >= 0) {
-        player.cash += delta;
-      } else {
-        const cost = Math.abs(delta);
-        if (player.cash >= cost) {
-          player.cash -= cost;
-        } else {
-          const shortfall = cost - player.cash;
-          player.cash = 0;
-          player.debt += shortfall;
-          showToast(`Bank Loan taken: +$${shortfall}M Bank Debt`, 'warn');
-        }
-      }
+    function setStatus(icon, text) {
+      document.getElementById('status-icon').textContent = icon;
+      document.getElementById('status-text').textContent = text;
     }
 
-    // --- Option A: Pay $2M to draw from Resource Deck ---
+    function toggleLedgerModeInGame() {
+      gameState.ledgerMode = gameState.ledgerMode === 'auto' ? 'manual' : 'auto';
+      updateHUD();
+      showToast(
+        gameState.ledgerMode === 'auto'
+          ? 'Switched to Automatic Ledger Mode.'
+          : 'Switched to Manual Student Ledger Mode.',
+        'info'
+      );
+    }
+
+    // =========================================================================
+    // 6. TURN EXECUTION & MOVEMENT LOGIC
+    // =========================================================================
+
+    // --- Option A: Pay $2M to draw from Resource Deck (Ends Turn) ---
     function buyResourceCard() {
       if (!gameState.started || gameState.phase !== 'IDLE') return;
       const p = getCurrentPlayer();
       applyFinancialChange(p, -2);
       const card = drawFromResourceDeck();
       p.hand[card] = (p.hand[card] || 0) + 1;
+      p.turnCount += 1;
       playSound('coin');
-      showToast(`${p.name} paid $2M and drew ${RESOURCE_MAP[card].icon} ${card}!`, 'success');
-      updateUI();
+      showToast(`${p.name} paid $2M and drew ${RESOURCE_MAP[card].icon} ${card}! Turn complete.`, 'success');
+
+      gameState.pendingTurn = {
+        turnNumber: p.turnCount,
+        playerId: p.id,
+        playerName: p.name,
+        roll: 0,
+        startNode: p.nodeId,
+        line: BOARD_NODES[p.nodeId].line,
+        distanceGained: 0,
+        events: [`Paid $2M — Drew ${card}`]
+      };
+
+      finalizeTurnStep();
     }
 
     // --- Roll Die on Main Red Line (or continue on Detour) ---
@@ -1383,17 +1258,13 @@
       if (!gameState.started || gameState.phase !== 'IDLE') return;
       const p = getCurrentPlayer();
       const node = BOARD_NODES[p.nodeId];
+      const onDetour = node.line !== 'Main Red Line';
 
-      if (node.line === 'Main Red Line') {
-        if (!hasAllSixUnique(p)) {
-          showToast('You need all 6 unique resources to roll on the Main Red Line! Pay $2M or take a Detour.', 'warn');
-          return;
-        }
-        executeRoll(false);
-      } else {
-        // Already on a detour loop -> free roll!
-        executeRoll(true);
+      if (!onDetour && !hasAllSixResources(p)) {
+        showToast('You need all 6 unique resources to roll on the Main Red Line! Pay $2M or take a Detour Roll.', 'warn');
+        return;
       }
+      executeRoll(onDetour);
     }
 
     // --- Option B: Turn onto a Detour Loop without needing all 6 cards ---
@@ -1422,497 +1293,528 @@
       const diceFaces = ['', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
       diceEl.textContent = `${diceFaces[roll]} ${roll}`;
 
-      // Compute valid destinations up to `roll` steps
       const paths = computeReachablePaths(p.nodeId, roll, isDetourRoll);
+      if (paths.length === 0) {
+        showToast('No valid spaces reachable from here on that roll.', 'warn');
+        return;
+      }
       gameState.reachablePaths = paths;
       gameState.phase = 'CHOOSE_MOVE';
 
-      // Prepare pending turn object for Ledger
-      gameState.pendingTurn = {
-        turnNumber: p.turnCount + 1,
-        playerId: p.id,
-        playerName: p.name,
-        roll: roll,
-        startNode: p.nodeId,
-        line: BOARD_NODES[p.nodeId].line,
-        distanceGained: 0,
-        events: []
-      };
-
-      updateUI();
+      setStatus(
+        '📍',
+        `${p.name} rolled a ${roll}! Click any pulsing yellow space on the map (up to ${roll} spaces away) to move.`
+      );
+      updateHUD();
     }
 
-    // BFS/DFS to find reachable destinations up to `maxSteps`
+    // BFS to find shortest valid paths up to maxSteps
     function computeReachablePaths(startId, maxSteps, detourOnly) {
-      const resultsByTarget = new Map();
+      const bestByTarget = new Map();
+      const queue = [{ id: startId, path: [] }];
 
-      function dfs(currId, stepsLeft, path, collected) {
-        const node = BOARD_NODES[currId];
-        // Allow stopping at Vancouver early, or stopping at any reachable node 1..maxSteps (per "move up to 6 spaces")
-        if (path.length > 0) {
-          // Keep the path that collects the most resources if duplicate target
-          const existing = resultsByTarget.get(currId);
-          if (!existing || collected.length > existing.collectedResources.length) {
-            resultsByTarget.set(currId, {
-              targetId: currId,
-              path: [...path],
-              collectedResources: [...collected]
-            });
-          }
-        }
-        if (stepsLeft === 0 || node.type === 'finish') return;
+      while (queue.length > 0) {
+        const { id, path } = queue.shift();
+        if (path.length >= maxSteps) continue;
 
+        const node = BOARD_NODES[id];
         let nextIds = [];
         if (detourOnly) {
-          // If starting on Red Line junction, force first step onto detour!
+          // If starting on Red Line junction, step onto detour
           if (path.length === 0 && node.line === 'Main Red Line') {
             nextIds = [...node.nextDetour];
+          } else if (path.length > 0 && node.line === 'Main Red Line') {
+            // Stop at the Main Red Line junction when rejoining from a detour
+            nextIds = [];
           } else {
             nextIds = [...new Set([...node.nextDetour, ...node.nextRed])];
           }
         } else {
-          // Main Red Line roll: can stay on Red Line OR turn onto detour if passing a junction
-          nextIds = [...new Set([...node.nextRed, ...node.nextDetour])];
+          // Main Red Line roll: strictly advance along the Main Red Line (at most maxSteps pins)
+          nextIds = [...node.nextRed];
         }
 
-        nextIds.forEach(nid => {
-          if (path.includes(nid) || nid === startId) return; // Prevent infinite cycles in a single roll
-          const nextNode = BOARD_NODES[nid];
-          const nextCollected = [...collected];
-          if (nextNode.type === 'resource' && nextNode.resource) {
-            nextCollected.push(nextNode.resource);
+        for (const nid of nextIds) {
+          if (nid === startId || path.includes(nid)) continue;
+          const newPath = [...path, nid];
+          if (!bestByTarget.has(nid) || newPath.length < bestByTarget.get(nid).length) {
+            bestByTarget.set(nid, newPath);
+            queue.push({ id: nid, path: newPath });
           }
-          dfs(nid, stepsLeft - 1, [...path, nid], nextCollected);
-        });
+        }
       }
 
-      dfs(startId, maxSteps, [], []);
-      return Array.from(resultsByTarget.values());
+      return Array.from(bestByTarget.entries()).map(([targetId, path]) => ({
+        targetId,
+        path
+      }));
     }
 
-    // --- Player clicks a glowing destination node on the SVG map ---
-    function selectMoveDestination(optionIndex) {
+    function selectDestination(pathIndex) {
       if (gameState.phase !== 'CHOOSE_MOVE') return;
-      const option = gameState.reachablePaths[optionIndex];
-      if (!option) return;
+      const chosen = gameState.reachablePaths[pathIndex];
+      if (!chosen) return;
 
       const p = getCurrentPlayer();
-      const targetNode = BOARD_NODES[option.targetId];
-      const stepsMoved = option.path.length;
-      const wasMainRedLineMove = !gameState.rollIsDetour && BOARD_NODES[gameState.pendingTurn.startNode].line === 'Main Red Line';
+      const startNode = BOARD_NODES[p.nodeId];
+      const endNode = BOARD_NODES[chosen.targetId];
+      const steps = chosen.path.length;
 
+      p.nodeId = chosen.targetId;
+      p.distance += steps;
+      p.turnCount += 1;
       playSound('move');
 
-      p.nodeId = targetNode.id;
-      p.distance += stepsMoved;
-      p.turnCount += 1;
+      const events = [];
 
-      gameState.pendingTurn.line = targetNode.line;
-      gameState.pendingTurn.distanceGained = stepsMoved;
-
-      // Award any free board resources collected along a detour loop
-      if (option.collectedResources.length > 0) {
-        option.collectedResources.forEach(res => {
-          p.hand[res] = (p.hand[res] || 0) + 1;
-        });
-        const listStr = option.collectedResources.map(r => `${RESOURCE_MAP[r].icon} ${r}`).join(', ');
-        gameState.pendingTurn.events.push(`Collected: ${option.collectedResources.join(', ')}`);
-        showToast(`Collected free detour resources: ${listStr}!`, 'success');
-      }
+      // Collect any free board resources passed over or landed on along detour loops
+      chosen.path.forEach(nid => {
+        const n = BOARD_NODES[nid];
+        if (n.type === 'resource' && n.resource) {
+          p.hand[n.resource] = (p.hand[n.resource] || 0) + 1;
+          events.push(`Collected ${n.resource}`);
+          showToast(`Collected free ${RESOURCE_MAP[n.resource].icon} ${n.resource}!`, 'success');
+        }
+      });
 
       gameState.reachablePaths = [];
+      gameState.pendingTurn = {
+        turnNumber: p.turnCount,
+        playerId: p.id,
+        playerName: p.name,
+        roll: gameState.currentRoll,
+        startNode: startNode.id,
+        line: endNode.line,
+        distanceGained: steps,
+        events,
+        needsDiscard: !gameState.rollIsDetour && startNode.line === 'Main Red Line' && endNode.type !== 'finish',
+        needsProgressCard: endNode.type === 'circle' || endNode.type === 'x'
+      };
 
-      // Check if reached Vancouver!
-      if (targetNode.type === 'finish') {
+      // Check Vancouver Arrival
+      if (endNode.type === 'finish') {
         p.finished = true;
         gameState.pendingTurn.events.push('Reached Vancouver!');
         playSound('whistle');
+        showToast(`🎉 ${p.name} has reached Vancouver! Their train has cleared the station.`, 'success');
         finalizeTurnStep();
         return;
       }
 
-      // If moved on Main Red Line, must discard 1 resource card before Progress Card
-      if (wasMainRedLineMove && getTotalHandCount(p) > 0) {
+      // Next Step: Discard 1 Resource Card if moved on Main Red Line
+      if (gameState.pendingTurn.needsDiscard) {
         gameState.phase = 'DISCARD_CARD';
-        updateUI();
-        return;
-      }
-
-      // Otherwise proceed directly to Progress Card check
-      checkProgressSpace();
-    }
-
-    // --- Player clicks 1 Resource Card to Discard after a Main Red Line move ---
-    function discardResourceFromHand(resId) {
-      if (gameState.phase !== 'DISCARD_CARD') return;
-      const p = getCurrentPlayer();
-      if (!p.hand[resId] || p.hand[resId] <= 0) return;
-
-      p.hand[resId] -= 1;
-      gameState.resourceDiscard.push(resId);
-      gameState.pendingTurn.events.push(`Discarded ${resId}`);
-      playSound('card');
-
-      checkProgressSpace();
-    }
-
-    // --- Check if landed on Circle or X space ---
-    function checkProgressSpace() {
-      const p = getCurrentPlayer();
-      const node = BOARD_NODES[p.nodeId];
-
-      if (node.type === 'circle' || node.type === 'x') {
-        const card = drawFromProgressDeck();
-        gameState.phase = 'PROGRESS_CARD';
-        openProgressCardModal(card);
-        updateUI();
+        setStatus('🃏', `${p.name} moved ${steps} space(s). Click 1 Resource Card in your hand below to discard it.`);
+        updateHUD();
+      } else if (gameState.pendingTurn.needsProgressCard) {
+        triggerProgressCard();
       } else {
         finalizeTurnStep();
       }
     }
 
-    // --- Show Progress Card Modal ---
-    function openProgressCardModal(card) {
-      playSound('card');
+    function discardResourceCard(resourceId) {
+      if (gameState.phase !== 'DISCARD_CARD') return;
       const p = getCurrentPlayer();
-      document.getElementById('prog-card-num').textContent = `Card #${card.id} of 20`;
+      if (!p.hand[resourceId] || p.hand[resourceId] <= 0) return;
+
+      p.hand[resourceId] -= 1;
+      playSound('card');
+      gameState.pendingTurn.events.push(`Discarded ${resourceId}`);
+      gameState.pendingTurn.needsDiscard = false;
+
+      if (gameState.pendingTurn.needsProgressCard) {
+        triggerProgressCard();
+      } else {
+        finalizeTurnStep();
+      }
+    }
+
+    // --- Progress Cards ---
+    function triggerProgressCard() {
+      gameState.phase = 'PROGRESS_CARD';
+      const card = drawFromProgressDeck();
+      playSound('card');
+
+      document.getElementById('prog-card-num').textContent = `#${card.id} / 20`;
       document.getElementById('prog-card-title').textContent = card.title;
       document.getElementById('prog-card-context').textContent = card.context;
 
       const choicesEl = document.getElementById('prog-card-choices');
       choicesEl.innerHTML = '';
-
-      card.choices.forEach((choice, idx) => {
-        // Check if player has required resource to discard
-        let canAffordRes = true;
-        let missingNote = '';
-        if (choice.discardRes && (p.hand[choice.discardRes] || 0) < 1) {
-          canAffordRes = false;
-          missingNote = ` (You don't have ${choice.discardRes})`;
-        }
-        if (choice.discardMulti) {
-          const missing = choice.discardMulti.filter(r => (p.hand[r] || 0) < 1);
-          if (missing.length > 0) {
-            canAffordRes = false;
-            missingNote = ` (Missing: ${missing.join(', ')})`;
-          }
-        }
-
+      card.choices.forEach((ch, idx) => {
         const btn = document.createElement('button');
-        btn.disabled = !canAffordRes;
-        btn.className = `w-full text-left p-3.5 rounded-xl border-2 transition-all ${
-          canAffordRes
-            ? 'bg-[#fbf5e6] hover:bg-[#f3e2bc] border-[#8c6239] hover:border-[#7f1d1d] cursor-pointer shadow-sm'
-            : 'bg-stone-200 border-stone-400 opacity-55 cursor-not-allowed'
-        }`;
-        btn.innerHTML = `
-          <div class="font-bold text-sm text-[#2c1e14]">${choice.label}</div>
-          <div class="text-xs font-semibold mt-0.5 ${choice.hr > 0 || choice.env > 0 ? 'text-rose-800' : 'text-emerald-800'}">
-            ${choice.detail}${missingNote}
-          </div>
-        `;
-        btn.onclick = () => resolveProgressChoice(card, choice);
+        btn.className = 'w-full text-left p-3.5 rounded-xl border-2 border-[#8c6239] bg-[#fbf5e6] hover:bg-[#f3e1bc] hover:border-[#7f1d1d] transition font-medium text-sm text-[#2c1e14] shadow-sm';
+        btn.innerHTML = `<span class="font-bold text-[#7f1d1d] mr-1.5">${idx === 0 ? 'A)' : 'B)'}</span> ${ch.label}`;
+        btn.onclick = () => resolveProgressChoice(card, idx);
         choicesEl.appendChild(btn);
       });
 
       document.getElementById('progress-modal').classList.remove('hidden');
+      updateHUD();
     }
 
-    function resolveProgressChoice(card, choice) {
+    function resolveProgressChoice(card, choiceIndex) {
       const p = getCurrentPlayer();
+      const ch = card.choices[choiceIndex];
 
-      if (choice.cash) applyFinancialChange(p, choice.cash);
-      if (choice.hr) p.hrHarm += choice.hr;
-      if (choice.env) p.envHarm += choice.env;
+      if (ch.cash !== 0) {
+        applyFinancialChange(p, ch.cash);
+      }
+      p.hrHarm = Math.max(0, p.hrHarm + ch.hr);
+      p.envHarm = Math.max(0, p.envHarm + ch.env);
 
-      if (choice.discardRes && p.hand[choice.discardRes] > 0) {
-        p.hand[choice.discardRes] -= 1;
-        gameState.resourceDiscard.push(choice.discardRes);
-      }
-      if (choice.discardMulti) {
-        choice.discardMulti.forEach(r => {
-          if (p.hand[r] > 0) {
-            p.hand[r] -= 1;
-            gameState.resourceDiscard.push(r);
-          }
-        });
-      }
-      if (choice.gainRes) {
-        p.hand[choice.gainRes] = (p.hand[choice.gainRes] || 0) + 1;
-      }
-      if (choice.freeDraw) {
-        const drawn = drawFromResourceDeck();
-        p.hand[drawn] = (p.hand[drawn] || 0) + 1;
-        showToast(`Free Resource Card drawn: ${RESOURCE_MAP[drawn].icon} ${drawn}!`, 'success');
-      }
-      if (choice.skipTurn) {
-        p.skipNextTurn = true;
-        showToast(`${p.name} paused 1 turn for respectful land negotiations.`, 'info');
-      }
-
-      gameState.pendingTurn.events.push(`${card.title}`);
+      gameState.pendingTurn.events.push(`${card.title}: ${ch.note}`);
       document.getElementById('progress-modal').classList.add('hidden');
       playSound('coin');
       finalizeTurnStep();
     }
 
-    // =========================================================================
-    // 8. LEDGER LOGGING (AUTO MODE vs MANUAL STUDENT ENTRY MODE)
-    // =========================================================================
+    // --- Ledger Recording (Auto or Manual) & Turn Rotation ---
     function finalizeTurnStep() {
       const p = getCurrentPlayer();
       const pt = gameState.pendingTurn;
-      const eventSummary = pt.events.length > 0 ? pt.events.join('; ') : 'Standard travel';
+      const eventText = pt.events.length > 0 ? pt.events.join(' • ') : 'Standard advance';
 
-      const expectedEntry = {
-        turn: pt.turnNumber,
-        playerId: p.id,
-        playerName: p.name,
-        playerColor: p.color,
-        line: pt.line,
-        roll: pt.roll,
-        distance: p.distance,
-        event: eventSummary,
-        hrHarm: p.hrHarm,
-        envHarm: p.envHarm,
-        cash: p.cash,
-        debt: p.debt
-      };
-
-      if (gameState.ledgerMode === 'auto') {
-        gameState.ledger.push(expectedEntry);
-        renderLedgerTable();
-        advanceToNextTurn();
-      } else {
-        // Open Manual Student Entry Modal
+      if (gameState.ledgerMode === 'manual') {
         gameState.phase = 'MANUAL_LEDGER';
-        gameState.pendingTurn.expected = expectedEntry;
-        openManualLedgerModal(expectedEntry);
-        updateUI();
+        openManualLedgerModal(p, pt, eventText);
+        updateHUD();
+      } else {
+        recordLedgerRow(p, pt.turnNumber, pt.line, pt.roll, p.distance, eventText, p.hrHarm, p.envHarm, p.cash, p.debt);
+        advanceToNextPlayer();
       }
     }
 
-    function openManualLedgerModal(exp) {
-      document.getElementById('manual-ledger-subtitle').textContent = `${exp.playerName} — Enter your updated totals from Turn ${exp.turn}.`;
+    function openManualLedgerModal(p, pt, eventText) {
+      document.getElementById('manual-ledger-subtitle').textContent = `${p.name} — Record Turn #${pt.turnNumber} in your Company Ledger.`;
       document.getElementById('manual-turn-recap').innerHTML = `
-        <div><strong>Turn Recap:</strong> Rolled <strong>${exp.roll}</strong> • Moved onto <strong>${exp.line}</strong> • Event: <em>${exp.event}</em></div>
-        <div class="text-xs text-[#d4bc94]">Check your top dashboard gauges if you need to double-check your running totals!</div>
+        <div><strong>Turn Recap for ${p.name}:</strong> Turn #${pt.turnNumber} • Line: <span class="text-[#e5c158]">${pt.line}</span> • Die Roll: <strong>${pt.roll}</strong> (+${pt.distanceGained} spaces)</div>
+        <div><strong>Events:</strong> ${eventText}</div>
+        <div class="text-[#d4bc94] text-xs mt-1">Verify your running totals from the top dashboard and record them below.</div>
       `;
 
-      // Clear previous inputs (pre-fill Event text as convenience, let student enter numbers)
       document.getElementById('ml-turn').value = '';
-      document.getElementById('ml-line').value = exp.line;
+      document.getElementById('ml-line').value = pt.line;
       document.getElementById('ml-roll').value = '';
       document.getElementById('ml-dist').value = '';
       document.getElementById('ml-hr').value = '';
       document.getElementById('ml-env').value = '';
       document.getElementById('ml-cash').value = '';
       document.getElementById('ml-debt').value = '';
-      document.getElementById('ml-event').value = exp.event;
+      document.getElementById('ml-event').value = eventText;
       document.getElementById('ml-error-msg').classList.add('hidden');
 
       document.getElementById('manual-ledger-modal').classList.remove('hidden');
     }
 
     function fillManualLedgerHints() {
-      const exp = gameState.pendingTurn?.expected;
-      if (!exp) return;
-      document.getElementById('ml-turn').value = exp.turn;
-      document.getElementById('ml-line').value = exp.line;
-      document.getElementById('ml-roll').value = exp.roll;
-      document.getElementById('ml-dist').value = exp.distance;
-      document.getElementById('ml-hr').value = exp.hrHarm;
-      document.getElementById('ml-env').value = exp.envHarm;
-      document.getElementById('ml-cash').value = exp.cash;
-      document.getElementById('ml-debt').value = exp.debt;
-      document.getElementById('ml-event').value = exp.event;
+      const p = getCurrentPlayer();
+      const pt = gameState.pendingTurn;
+      document.getElementById('ml-turn').value = pt.turnNumber;
+      document.getElementById('ml-line').value = pt.line;
+      document.getElementById('ml-roll').value = pt.roll;
+      document.getElementById('ml-dist').value = p.distance;
+      document.getElementById('ml-hr').value = p.hrHarm;
+      document.getElementById('ml-env').value = p.envHarm;
+      document.getElementById('ml-cash').value = p.cash;
+      document.getElementById('ml-debt').value = p.debt;
       document.getElementById('ml-error-msg').classList.add('hidden');
     }
 
     function submitManualLedger(e) {
       e.preventDefault();
-      const exp = gameState.pendingTurn.expected;
+      const p = getCurrentPlayer();
+      const pt = gameState.pendingTurn;
 
-      const uTurn = parseInt(document.getElementById('ml-turn').value, 10);
-      const uLine = document.getElementById('ml-line').value;
-      const uRoll = parseInt(document.getElementById('ml-roll').value, 10);
-      const uDist = parseInt(document.getElementById('ml-dist').value, 10);
-      const uHr   = parseInt(document.getElementById('ml-hr').value, 10);
-      const uEnv  = parseInt(document.getElementById('ml-env').value, 10);
-      const uCash = parseInt(document.getElementById('ml-cash').value, 10);
-      const uDebt = parseInt(document.getElementById('ml-debt').value, 10);
-      const uEvt  = document.getElementById('ml-event').value.trim() || exp.event;
+      const vTurn = parseInt(document.getElementById('ml-turn').value, 10);
+      const vLine = document.getElementById('ml-line').value;
+      const vRoll = parseInt(document.getElementById('ml-roll').value, 10);
+      const vDist = parseInt(document.getElementById('ml-dist').value, 10);
+      const vHr   = parseInt(document.getElementById('ml-hr').value, 10);
+      const vEnv  = parseInt(document.getElementById('ml-env').value, 10);
+      const vCash = parseInt(document.getElementById('ml-cash').value, 10);
+      const vDebt = parseInt(document.getElementById('ml-debt').value, 10);
+      const vEvt  = document.getElementById('ml-event').value.trim() || 'Turn recorded';
 
       const errors = [];
-      if (uTurn !== exp.turn) errors.push(`Turn # should be ${exp.turn}`);
-      if (uLine !== exp.line) errors.push(`Current Line should be "${exp.line}"`);
-      if (uRoll !== exp.roll) errors.push(`Die Roll was ${exp.roll}`);
-      if (uDist !== exp.distance) errors.push(`Total Distance should be ${exp.distance}`);
-      if (uHr !== exp.hrHarm) errors.push(`Total HR Harm should be ${exp.hrHarm}`);
-      if (uEnv !== exp.envHarm) errors.push(`Total Env Harm should be ${exp.envHarm}`);
-      if (uCash !== exp.cash) errors.push(`Cash Purse should be $${exp.cash}M`);
-      if (uDebt !== exp.debt) errors.push(`Bank Debt should be $${exp.debt}M`);
+      if (vTurn !== pt.turnNumber) errors.push(`Turn # should be ${pt.turnNumber}`);
+      if (vRoll !== pt.roll) errors.push(`Die Roll should be ${pt.roll}`);
+      if (vDist !== p.distance) errors.push(`Total Distance should be ${p.distance}`);
+      if (vHr !== p.hrHarm) errors.push(`Total HR Harm should be ${p.hrHarm}`);
+      if (vEnv !== p.envHarm) errors.push(`Total Env Harm should be ${p.envHarm}`);
+      if (vCash !== p.cash) errors.push(`Cash Purse should be $${p.cash}M`);
+      if (vDebt !== p.debt) errors.push(`Bank Debt should be $${p.debt}M`);
 
       const errEl = document.getElementById('ml-error-msg');
       if (errors.length > 0) {
-        errEl.innerHTML = `<strong>Double-check your math:</strong> ${errors.join(' • ')}`;
+        errEl.textContent = 'Check your math: ' + errors.join(' • ');
         errEl.classList.remove('hidden');
         return;
       }
 
       errEl.classList.add('hidden');
-      gameState.ledger.push({ ...exp, event: uEvt });
       document.getElementById('manual-ledger-modal').classList.add('hidden');
-      renderLedgerTable();
-      showToast('Ledger entry verified and recorded!', 'success');
-      advanceToNextTurn();
+      recordLedgerRow(p, vTurn, vLine, vRoll, vDist, vEvt, vHr, vEnv, vCash, vDebt);
+      advanceToNextPlayer();
     }
 
-    function toggleLedgerModeInGame() {
-      gameState.ledgerMode = gameState.ledgerMode === 'auto' ? 'manual' : 'auto';
-      updateUI();
-      showToast(
-        gameState.ledgerMode === 'auto'
-          ? 'Switched to Automatic Ledger Mode'
-          : 'Switched to Manual Student Entry Mode',
-        'info'
-      );
+    function recordLedgerRow(player, turn, line, roll, distance, event, hrHarm, envHarm, cash, debt) {
+      gameState.ledger.push({
+        turn,
+        playerId: player.id,
+        playerName: player.name,
+        playerColor: player.color,
+        line,
+        roll,
+        distance,
+        event,
+        hrHarm,
+        envHarm,
+        cash,
+        debt
+      });
+      document.getElementById('ledger-count-badge').textContent = gameState.ledger.length;
     }
 
-    // =========================================================================
-    // 9. TURN ROTATION & END-GAME ROYAL COMMISSION AUDIT
-    // =========================================================================
-    function advanceToNextTurn() {
-      // Check if ALL players have reached Vancouver
-      if (gameState.players.every(p => p.finished)) {
-        gameState.phase = 'GAME_OVER';
-        updateUI();
-        openAuditModal();
+    function advanceToNextPlayer() {
+      gameState.pendingTurn = null;
+
+      // Check if all players have reached Vancouver
+      if (gameState.players.every(pl => pl.finished)) {
+        triggerRoyalCommissionAudit();
         return;
       }
 
-      // Find next unfinished player
+      // Move to next unfinished player
       const total = gameState.players.length;
-      let nextIdx = (gameState.currentPlayerIndex + 1) % total;
-      let safety = 0;
-      while (gameState.players[nextIdx].finished && safety < total) {
-        nextIdx = (nextIdx + 1) % total;
-        safety++;
-      }
+      if (total > 1) {
+        let nextIdx = (gameState.currentPlayerIndex + 1) % total;
+        let guard = 0;
+        while (gameState.players[nextIdx].finished && guard < total) {
+          nextIdx = (nextIdx + 1) % total;
+          guard++;
+        }
+        const changedPlayer = nextIdx !== gameState.currentPlayerIndex;
+        gameState.currentPlayerIndex = nextIdx;
+        gameState.phase = 'IDLE';
+        updateHUD();
 
-      gameState.currentPlayerIndex = nextIdx;
-      const nextPlayer = getCurrentPlayer();
-
-      // Handle "Lose 1 Turn" negotiation pause
-      if (nextPlayer.skipNextTurn) {
-        nextPlayer.skipNextTurn = false;
-        nextPlayer.turnCount += 1;
-        gameState.ledger.push({
-          turn: nextPlayer.turnCount,
-          playerId: nextPlayer.id,
-          playerName: nextPlayer.name,
-          playerColor: nextPlayer.color,
-          line: BOARD_NODES[nextPlayer.nodeId].line,
-          roll: 0,
-          distance: nextPlayer.distance,
-          event: 'Paused 1 turn (Land Negotiation)',
-          hrHarm: nextPlayer.hrHarm,
-          envHarm: nextPlayer.envHarm,
-          cash: nextPlayer.cash,
-          debt: nextPlayer.debt
-        });
-        renderLedgerTable();
-        showToast(`${nextPlayer.name} spent this turn in land negotiations.`, 'info');
-        if (total > 1) {
-          advanceToNextTurn();
+        if (changedPlayer) {
+          const nextP = getCurrentPlayer();
+          document.getElementById('handoff-player-name').textContent = nextP.name;
+          document.getElementById('handoff-details').textContent = `Currently at ${BOARD_NODES[nextP.nodeId].label || BOARD_NODES[nextP.nodeId].line} • Purse: $${nextP.cash}M • Debt: $${nextP.debt}M`;
+          document.getElementById('handoff-modal').classList.remove('hidden');
           return;
         }
+      } else {
+        gameState.phase = 'IDLE';
+        updateHUD();
       }
 
-      gameState.phase = 'IDLE';
-      updateUI();
-
-      // In Pass-and-Play (2–4 players), show handoff modal
-      if (total > 1) {
-        document.getElementById('handoff-player-name').textContent = nextPlayer.name;
-        document.getElementById('handoff-player-name').style.color = nextPlayer.color;
-        document.getElementById('handoff-details').textContent =
-          `Purse: $${nextPlayer.cash}M • Debt: $${nextPlayer.debt}M • HR Harm: ${nextPlayer.hrHarm} • Env Harm: ${nextPlayer.envHarm}`;
-        document.getElementById('handoff-modal').classList.remove('hidden');
-      }
+      promptIdleStatus();
     }
 
     function confirmHandoff() {
       document.getElementById('handoff-modal').classList.add('hidden');
+      promptIdleStatus();
+    }
+
+    function promptIdleStatus() {
+      const p = getCurrentPlayer();
+      const node = BOARD_NODES[p.nodeId];
+      const onDetour = node.line !== 'Main Red Line';
+      if (onDetour) {
+        setStatus('🔀', `${p.name} is on ${node.line}. Roll freely to gather resources and rejoin the Main Red Line!`);
+      } else if (hasAllSixResources(p)) {
+        setStatus('🎲', `${p.name} holds all 6 unique resources! Roll the die to advance along the Main Red Line.`);
+      } else {
+        setStatus('⚠️', `${p.name} is missing resource(s) for the Main Red Line. Pay $2M (ends turn) OR use Detour Roll at a junction!`);
+      }
+    }
+
+    // --- End Game: Royal Commission Audit ---
+    function triggerRoyalCommissionAudit() {
+      gameState.phase = 'GAME_OVER';
       playSound('whistle');
-    }
 
-    function calculateAuditScore(p) {
-      // Lower is better: Bank Debt ($M) + (Human Rights Harm * 2) + (Environmental Harm * 2)
-      return p.debt + (p.hrHarm * 2) + (p.envHarm * 2);
-    }
+      const ranked = [...gameState.players].map(p => {
+        // Audit Score: Bank Debt ($M) + (HR Harm * 2) + (Env Harm * 2) — Lower is better
+        const auditScore = p.debt + (p.hrHarm * 2) + (p.envHarm * 2);
+        return { ...p, auditScore };
+      }).sort((a, b) => a.auditScore - b.auditScore);
 
-    function getLegacyTitle(score, debt, totalHarm) {
-      if (totalHarm === 0 && debt <= 6) return { title: 'Ethical Pioneer', badge: 'bg-emerald-700 text-white', desc: 'Remarkable leadership — you balanced financial discipline with deep respect for workers, Indigenous nations, and the land.' };
-      if (totalHarm <= 3 && debt <= 12) return { title: 'Conscientious Builder', badge: 'bg-teal-700 text-white', desc: 'You navigated tough 1880s pressures while keeping harm low and debt manageable.' };
-      if (totalHarm <= 4 && debt > 12) return { title: 'Debt-Ridden Visionary', badge: 'bg-amber-700 text-white', desc: 'You protected people and the environment, though the company took on heavy bank loans to do so.' };
-      if (totalHarm >= 8) return { title: 'Robber Baron', badge: 'bg-rose-800 text-white', desc: 'You reached BC quickly or cheaply, but at an immense cost to human rights and Canada’s ecosystems.' };
-      return { title: 'Pragmatic Industrialist', badge: 'bg-stone-700 text-white', desc: 'A mixed historical legacy reflecting the real-world tensions of 1880s railway expansion.' };
-    }
-
-    function openAuditModal() {
-      const ranked = [...gameState.players].sort((a, b) => calculateAuditScore(a) - calculateAuditScore(b));
       const container = document.getElementById('audit-results-container');
-      container.innerHTML = '';
-
-      ranked.forEach((p, idx) => {
-        const score = calculateAuditScore(p);
-        const totalHarm = p.hrHarm + p.envHarm;
-        const legacy = getLegacyTitle(score, p.debt, totalHarm);
-        const medal = idx === 0 ? '🏆 ' : `#${idx + 1} `;
-
-        container.innerHTML += `
-          <div class="bg-[#fbf5e6] border-2 ${idx === 0 ? 'border-[#b8860b] shadow-md' : 'border-[#c7aa7c]'} rounded-xl p-4">
+      container.innerHTML = ranked.map((p, idx) => {
+        const medal = idx === 0 ? '🏆 Winner — Ethical Pioneer' : `#${idx + 1} Place`;
+        const grade = p.auditScore <= 6 ? 'A (Exemplary Stewardship)' : p.auditScore <= 14 ? 'B (Balanced Progress)' : p.auditScore <= 22 ? 'C (Costly Expansion)' : 'D (Severe Debt & Harm)';
+        return `
+          <div class="p-4 rounded-xl border-2 ${idx === 0 ? 'bg-amber-50 border-[#b8860b] shadow-md' : 'bg-[#fbf5e6] border-[#c7aa7c]'}">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
               <div class="flex items-center gap-2">
-                <span class="w-4 h-4 rounded-full" style="background:${p.color}"></span>
-                <h3 class="font-victorian text-lg font-extrabold text-[#2c1e14]">${medal}${p.name}</h3>
+                <span class="w-4 h-4 rounded-full border border-black/40" style="background:${p.color}"></span>
+                <h3 class="font-victorian text-lg font-bold text-[#2c1e14]">${p.name}</h3>
+                <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-[#2c1e14] text-[#e5c158]">${medal}</span>
               </div>
-              <span class="text-xs font-bold px-2.5 py-1 rounded-full ${legacy.badge}">${legacy.title}</span>
+              <div class="text-sm font-bold text-[#7f1d1d]">Audit Score: ${p.auditScore} <span class="text-xs font-normal text-[#5c3d04]">(${grade})</span></div>
             </div>
-            <p class="text-xs text-[#4a3423] mb-3">${legacy.desc}</p>
-            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-xs">
-              <div class="bg-[#efe1c2] p-2 rounded-lg"><div class="text-[#5c3d04]">Bank Debt</div><div class="font-bold text-base text-amber-900">$${p.debt}M</div></div>
-              <div class="bg-[#efe1c2] p-2 rounded-lg"><div class="text-[#5c3d04]">HR Harm</div><div class="font-bold text-base text-rose-800">${p.hrHarm}</div></div>
-              <div class="bg-[#efe1c2] p-2 rounded-lg"><div class="text-[#5c3d04]">Env Harm</div><div class="font-bold text-base text-emerald-900">${p.envHarm}</div></div>
-              <div class="bg-[#efe1c2] p-2 rounded-lg"><div class="text-[#5c3d04]">Distance</div><div class="font-bold text-base text-sky-900">${p.distance}</div></div>
-              <div class="bg-[#2c1e14] text-[#e5c158] p-2 rounded-lg"><div class="text-[10px] uppercase">Audit Penalty</div><div class="font-bold text-base">${score} pts</div></div>
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs font-ledger bg-[#efe1c2] p-2.5 rounded-lg">
+              <div><strong>Debt:</strong> $${p.debt}M</div>
+              <div><strong>HR Harm:</strong> ${p.hrHarm}</div>
+              <div><strong>Env Harm:</strong> ${p.envHarm}</div>
+              <div><strong>Cash Left:</strong> $${p.cash}M</div>
+              <div><strong>Distance:</strong> ${p.distance} sp</div>
             </div>
           </div>
         `;
-      });
+      }).join('');
 
       document.getElementById('audit-modal').classList.remove('hidden');
+      updateHUD();
     }
 
     // =========================================================================
-    // 10. UI & LEDGER RENDERING
+    // 7. SVG MAP RENDERING & HUD UPDATES
     // =========================================================================
-    function updateUI() {
-      if (!gameState.started) return;
+    function renderStaticMap() {
+      const tracksLayer = document.getElementById('svg-tracks-layer');
+      const nodesLayer = document.getElementById('svg-nodes-layer');
+      tracksLayer.innerHTML = '';
+      nodesLayer.innerHTML = '';
+
+      // Subtle hoverable node anchors aligned directly over the user's map.png
+      Object.values(BOARD_NODES).forEach(node => {
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('cx', node.x);
+        circle.setAttribute('cy', node.y);
+        circle.setAttribute('r', node.type === 'track' ? 8 : 12);
+        circle.setAttribute('fill', 'rgba(255, 255, 255, 0.01)');
+        circle.setAttribute('stroke', 'transparent');
+        circle.setAttribute('stroke-width', '2');
+
+        const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+        const label = node.label ? `${node.label} (${node.line})` : node.line;
+        const extra = node.resource ? ` — Free ${node.resource}` : (node.type === 'circle' || node.type === 'x' ? ' — Draw Progress Card' : '');
+        title.textContent = label + extra;
+
+        g.appendChild(title);
+        g.appendChild(circle);
+        nodesLayer.appendChild(g);
+      });
+    }
+
+    function renderTokensAndHighlights() {
+      const hlLayer = document.getElementById('svg-highlights-layer');
+      const tokLayer = document.getElementById('svg-tokens-layer');
+      hlLayer.innerHTML = '';
+      tokLayer.innerHTML = '';
+
+      // Render reachable destination highlights when choosing a move
+      if (gameState.phase === 'CHOOSE_MOVE') {
+        gameState.reachablePaths.forEach((rp, idx) => {
+          const n = BOARD_NODES[rp.targetId];
+          const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+          g.setAttribute('class', 'cursor-pointer');
+          g.onclick = () => selectDestination(idx);
+
+          const pulse = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          pulse.setAttribute('cx', n.x);
+          pulse.setAttribute('cy', n.y);
+          pulse.setAttribute('r', '16');
+          pulse.setAttribute('fill', 'rgba(250, 204, 21, 0.35)');
+          pulse.setAttribute('stroke', '#facc15');
+          pulse.setAttribute('stroke-width', '3.5');
+          pulse.setAttribute('class', 'reachable-ring');
+
+          const badge = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          badge.setAttribute('cx', n.x);
+          badge.setAttribute('cy', n.y);
+          badge.setAttribute('r', '9');
+          badge.setAttribute('fill', '#ca8a04');
+          badge.setAttribute('stroke', '#fef9c3');
+          badge.setAttribute('stroke-width', '1.8');
+
+          const stepTxt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          stepTxt.setAttribute('x', n.x);
+          stepTxt.setAttribute('y', n.y + 3.5);
+          stepTxt.setAttribute('text-anchor', 'middle');
+          stepTxt.setAttribute('font-size', '10');
+          stepTxt.setAttribute('font-weight', '800');
+          stepTxt.setAttribute('fill', '#ffffff');
+          stepTxt.textContent = rp.path.length;
+
+          g.appendChild(pulse);
+          g.appendChild(badge);
+          g.appendChild(stepTxt);
+          hlLayer.appendChild(g);
+        });
+      }
+
+      // Render locomotive tokens for active (unfinished) players only
+      tokLayer.setAttribute('pointer-events', 'none');
+      const occupiedCounts = {};
+      gameState.players.forEach((p, idx) => {
+        if (p.finished) return; // Remove finished trains from the board so other players can reach Vancouver
+        const n = BOARD_NODES[p.nodeId];
+        if (!n) return;
+        const countHere = occupiedCounts[p.nodeId] || 0;
+        occupiedCounts[p.nodeId] = countHere + 1;
+
+        // Slight offset if multiple players share the same space
+        const offsets = [[0, 0], [-14, -10], [14, -10], [0, 14]];
+        const [ox, oy] = offsets[countHere % offsets.length];
+        const tx = n.x + ox;
+        const ty = n.y + oy;
+        const isCurrent = idx === gameState.currentPlayerIndex;
+
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        g.setAttribute('filter', 'url(#softShadow)');
+
+        if (isCurrent) {
+          const halo = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          halo.setAttribute('cx', tx);
+          halo.setAttribute('cy', ty);
+          halo.setAttribute('r', '18');
+          halo.setAttribute('fill', 'none');
+          halo.setAttribute('stroke', '#fef08a');
+          halo.setAttribute('stroke-width', '3');
+          g.appendChild(halo);
+        }
+
+        const tokenBg = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        tokenBg.setAttribute('cx', tx);
+        tokenBg.setAttribute('cy', ty);
+        tokenBg.setAttribute('r', '13');
+        tokenBg.setAttribute('fill', p.color);
+        tokenBg.setAttribute('stroke', '#ffffff');
+        tokenBg.setAttribute('stroke-width', '2.5');
+
+        const emoji = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        emoji.setAttribute('x', tx);
+        emoji.setAttribute('y', ty + 4.5);
+        emoji.setAttribute('text-anchor', 'middle');
+        emoji.setAttribute('font-size', '13');
+        emoji.textContent = '🚂';
+
+        g.appendChild(tokenBg);
+        g.appendChild(emoji);
+        tokLayer.appendChild(g);
+      });
+    }
+
+    function updateHUD() {
+      if (!gameState.started || gameState.players.length === 0) return;
       const p = getCurrentPlayer();
       const node = BOARD_NODES[p.nodeId];
-      const allSix = hasAllSixUnique(p);
+      const allSix = hasAllSixResources(p);
       const onDetour = node.line !== 'Main Red Line';
 
-      // Top HUD
+      // Top Header Stats
       document.getElementById('hud-turn-badge').textContent = `Turn ${p.turnCount + 1}`;
-      const lineBadge = document.getElementById('hud-line-badge');
-      lineBadge.textContent = node.line;
-      lineBadge.style.backgroundColor = LINE_COLORS[node.line] || '#7f1d1d';
-
+      document.getElementById('hud-line-badge').textContent = node.line;
+      document.getElementById('hud-player-dot').style.background = p.color;
       document.getElementById('hud-player-name').textContent = p.name;
-      document.getElementById('hud-player-dot').style.backgroundColor = p.color;
 
       document.getElementById('stat-cash').textContent = `$${p.cash}M`;
       document.getElementById('stat-debt').textContent = `$${p.debt}M`;
@@ -1921,11 +1823,10 @@
       document.getElementById('stat-dist').textContent = p.distance;
 
       // Ledger Mode Button
-      document.getElementById('btn-toggle-ledger-mode').textContent =
-        gameState.ledgerMode === 'auto' ? '📒 Auto' : '✍️ Manual';
-      document.getElementById('ledger-count-badge').textContent = gameState.ledger.length;
+      const lmBtn = document.getElementById('btn-toggle-ledger-mode');
+      lmBtn.textContent = gameState.ledgerMode === 'auto' ? '📒 Auto' : '✏️ Manual';
 
-      // SVG Deck Counts
+      // SVG Deck Counters
       document.getElementById('svg-res-deck-count').textContent = `${gameState.resourceDeck.length} Left • Pay $2M`;
       document.getElementById('svg-prog-deck-count').textContent = `${gameState.progressDeck.length} Cards Left`;
 
@@ -1933,64 +1834,35 @@
       const ribbon = document.getElementById('multiplayer-ribbon');
       if (gameState.players.length > 1) {
         ribbon.classList.remove('hidden');
-        ribbon.innerHTML = gameState.players.map(pl => {
-          const active = pl.id === gameState.currentPlayerIndex;
-          return `
-            <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border ${active ? 'bg-[#3e2a1d] border-[#e5c158] text-white font-bold' : 'bg-[#1b120c] border-[#4a3423] text-[#c9b086]'}">
-              <span class="w-2.5 h-2.5 rounded-full" style="background:${pl.color}"></span>
-              <span>${pl.name}</span>
-              <span class="opacity-80">($${pl.debt}M debt • ${pl.hrHarm + pl.envHarm} harm${pl.finished ? ' • ★ BC' : ''})</span>
-            </div>
-          `;
-        }).join('');
+        ribbon.innerHTML = gameState.players.map((pl, idx) => `
+          <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border ${idx === gameState.currentPlayerIndex ? 'bg-[#4a3222] border-[#e5c158] text-white font-bold' : 'bg-[#1b120c] border-[#4a3423] text-[#c9b086]'}">
+            <span class="w-2.5 h-2.5 rounded-full" style="background:${pl.color}"></span>
+            <span>${pl.name}</span>
+            <span class="text-[11px] opacity-80">($${pl.cash}M / Debt $${pl.debt}M / Harm ${pl.hrHarm + pl.envHarm})${pl.finished ? ' 🏁' : ''}</span>
+          </div>
+        `).join('');
       } else {
         ribbon.classList.add('hidden');
       }
 
-      // Status Banner
-      const statusIcon = document.getElementById('status-icon');
-      const statusText = document.getElementById('status-text');
-      if (gameState.phase === 'IDLE') {
-        if (onDetour) {
-          statusIcon.textContent = '🔀';
-          statusText.innerHTML = `<strong>${p.name}</strong> is on the <strong>${node.line}</strong>! Roll the die for free to collect board resources and rejoin the Red Line.`;
-        } else if (allSix) {
-          statusIcon.textContent = '🚂';
-          statusText.innerHTML = `<strong>${p.name}</strong> holds all 6 unique resources! Roll the die to advance along the <strong>Main Red Line</strong>.`;
-        } else {
-          statusIcon.textContent = '⚠️';
-          statusText.innerHTML = `<strong>${p.name}</strong> is missing resources for the Main Red Line. <strong>Option A:</strong> Pay $2M to draw a card, or <strong>Option B:</strong> Take a Detour Loop!`;
-        }
-      } else if (gameState.phase === 'CHOOSE_MOVE') {
-        statusIcon.textContent = '✨';
-        statusText.innerHTML = `You rolled a <strong>${gameState.currentRoll}</strong>! Click any <strong>glowing yellow space</strong> on the map (up to ${gameState.currentRoll} spaces ahead) to move your train.`;
-      } else if (gameState.phase === 'DISCARD_CARD') {
-        statusIcon.textContent = '🃏';
-        statusText.innerHTML = `<strong>End of Red Line Move:</strong> Click any <strong>1 Resource Card</strong> in your hand below to discard it.`;
-      } else if (gameState.phase === 'PROGRESS_CARD') {
-        statusIcon.textContent = '📜';
-        statusText.innerHTML = `Resolve the <strong>Progress Card</strong> dilemma to continue.`;
-      } else if (gameState.phase === 'MANUAL_LEDGER') {
-        statusIcon.textContent = '✍️';
-        statusText.innerHTML = `Complete your <strong>Manual Ledger Entry</strong> to finish your turn.`;
-      }
-
-      // Resource Hand Grid
+      // Resource Hand Tray
       const readyBadge = document.getElementById('hand-ready-badge');
-      const handInstr = document.getElementById('hand-instruction');
-      if (gameState.phase === 'DISCARD_CARD') {
-        readyBadge.className = 'text-xs font-bold px-2.5 py-0.5 rounded-full bg-rose-700 text-white animate-pulse';
-        readyBadge.textContent = '👇 Click 1 Card to Discard';
-        handInstr.textContent = 'Tip: Discard a duplicate card if you have one!';
-      } else if (allSix) {
+      if (allSix) {
         readyBadge.className = 'text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-700 text-white';
         readyBadge.textContent = '✓ All 6 Unique Ready';
-        handInstr.textContent = 'Ready to roll on the Main Red Line!';
       } else {
-        const missing = RESOURCE_TYPES.filter(r => !p.hand[r.id]).map(r => r.id);
-        readyBadge.className = 'text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-700 text-white';
-        readyBadge.textContent = `Missing: ${missing.length}`;
-        handInstr.textContent = `Need: ${missing.join(', ')}`;
+        const missing = RESOURCE_TYPES.filter(rt => (p.hand[rt.id] || 0) === 0).length;
+        readyBadge.className = 'text-xs font-bold px-2.5 py-0.5 rounded-full bg-rose-700 text-white';
+        readyBadge.textContent = `✗ Missing ${missing} Resource${missing > 1 ? 's' : ''}`;
+      }
+
+      const handInst = document.getElementById('hand-instruction');
+      if (gameState.phase === 'DISCARD_CARD') {
+        handInst.textContent = '👇 Click 1 resource card below to discard it and finish your move!';
+        handInst.className = 'text-xs text-[#991b1b] font-bold animate-pulse';
+      } else {
+        handInst.textContent = 'Hold 1 of each resource to roll on the Main Red Line.';
+        handInst.className = 'text-xs text-[#5c3d04] font-medium';
       }
 
       const handGrid = document.getElementById('resource-hand-grid');
@@ -1999,12 +1871,12 @@
         const canDiscard = gameState.phase === 'DISCARD_CARD' && qty > 0;
         return `
           <button
-            onclick="${canDiscard ? `discardResourceFromHand('${rt.id}')` : ''}"
-            class="resource-card ${canDiscard ? 'selectable ring-2 ring-rose-600 cursor-pointer' : 'cursor-default'} ${qty > 0 ? rt.color : 'bg-stone-300/60 border-stone-400 text-stone-500 opacity-60'} border-2 rounded-xl p-2 flex flex-col items-center justify-center relative"
+            onclick="${canDiscard ? `discardResourceCard('${rt.id}')` : ''}"
+            class="resource-card rounded-xl border-2 p-2.5 flex flex-col items-center justify-center relative ${qty > 0 ? rt.color : 'bg-stone-200/60 border-dashed border-stone-400 text-stone-400 opacity-65'} ${canDiscard ? 'selectable ring-2 ring-[#dc2626] cursor-pointer' : 'cursor-default'}"
           >
-            <span class="absolute top-1 right-1.5 text-[11px] font-extrabold px-1.5 rounded-full ${qty > 0 ? 'bg-[#2c1e14] text-[#e5c158]' : 'bg-stone-400 text-white'}">×${qty}</span>
-            <span class="text-2xl sm:text-3xl my-1">${rt.icon}</span>
+            <span class="text-2xl mb-0.5">${rt.icon}</span>
             <span class="text-xs font-bold">${rt.id}</span>
+            <span class="absolute top-1 right-1.5 text-[11px] font-extrabold px-1.5 rounded-full ${qty > 0 ? 'bg-[#2c1e14] text-[#e5c158]' : 'bg-stone-400 text-white'}">×${qty}</span>
           </button>
         `;
       }).join('');
@@ -2016,10 +1888,15 @@
       const detourBtn = document.getElementById('btn-enter-detour');
 
       const idle = gameState.phase === 'IDLE';
+      const canDetour = canEnterDetourFromCurrentNode(p);
       rollBtn.disabled = !idle || (!onDetour && !allSix);
       rollLbl.textContent = onDetour ? `Roll on ${node.line}` : 'Roll Die (Main Red Line)';
       buyBtn.disabled = !idle;
-      detourBtn.disabled = !idle || !canEnterDetourFromCurrentNode(p);
+      detourBtn.disabled = !idle;
+      detourBtn.classList.toggle('btn-dimmed', idle && !canDetour);
+      detourBtn.innerHTML = onDetour
+        ? '<span>🔀</span> Roll Detour (Free)'
+        : (canDetour ? '<span>🔀</span> Enter Detour' : '<span>🔀</span> Detour (At Junction)');
 
       renderTokensAndHighlights();
     }
@@ -2039,7 +1916,6 @@
     }
 
     function renderLedgerTable() {
-      // Render filter tabs if multiplayer
       const tabsEl = document.getElementById('ledger-player-tabs');
       if (gameState.players.length > 1) {
         tabsEl.classList.remove('hidden');
