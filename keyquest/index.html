@@ -1,0 +1,3893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KeyQuest / ClaviQuête — Privacy-Safe Typing Tutor</title>
+  <style>
+    /* =========================================================================
+       1. DESIGN TOKENS & BASE STYLES (100% Offline, Zero External CDNs)
+       ========================================================================= */
+    :root {
+      --bg-page: #f2f4f8;
+      --bg-card: #ffffff;
+      --chassis-bg: #dfe3e8;
+      --chassis-border: #cfd5dd;
+      --key-bg: #ffffff;
+      --key-bevel: #c5cbd3;
+      --key-text: #3c4043;
+      --key-sub: #5f6368;
+      --key-altgr: #2563eb;
+
+      --accent-blue: #2b8ee5;
+      --accent-blue-dark: #1d74c6;
+      --accent-blue-soft: #e8f3fd;
+      --emerald: #10b981;
+      --emerald-soft: #ecfdf5;
+      --emerald-text: #047857;
+      --danger: #ef4444;
+      --danger-soft: #fef2f2;
+      --gold: #f59e0b;
+
+      --text-main: #2d3138;
+      --text-muted: #5f6672;
+      --text-light: #8a929e;
+      --border-light: #e4e7ec;
+
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      --font-mono: ui-monospace, 'SFMono-Regular', 'Cascadia Code', Consolas, monospace;
+
+      --shadow-card: 0 10px 30px rgba(15, 23, 42, 0.06), 0 2px 6px rgba(15, 23, 42, 0.04);
+      --shadow-popover: 0 16px 40px rgba(15, 23, 42, 0.14), 0 2px 8px rgba(15, 23, 42, 0.06);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: inherit;
+      transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    /* =========================================================================
+       2. COMPACT TOP NAVIGATION BAR
+       ========================================================================= */
+    .topbar {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-light);
+      padding: 8px 18px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .topbar-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, #2b8ee5, #1b6ec2);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      font-weight: 800;
+      box-shadow: 0 3px 8px rgba(43, 142, 229, 0.3);
+      flex-shrink: 0;
+    }
+
+    .brand-title {
+      font-size: 1.08rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+    }
+
+    .privacy-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: var(--emerald-soft);
+      color: var(--emerald-text);
+      border: 1px solid #a7f3d0;
+      font-size: 0.7rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .nav-center {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .module-picker-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 13px;
+      border-radius: 10px;
+      background: #ffffff;
+      border: 1px solid #d5dbe3;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-main);
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    }
+
+    .module-picker-btn:hover {
+      border-color: var(--accent-blue);
+      color: var(--accent-blue);
+    }
+
+    .module-picker-btn .mod-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-blue);
+    }
+
+    .segmented {
+      display: inline-flex;
+      background: #ebeff5;
+      padding: 3px;
+      border-radius: 10px;
+      border: 1px solid #e0e5ec;
+    }
+
+    .seg-btn {
+      padding: 5px 11px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      border-radius: 7px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .seg-btn.active {
+      background: #ffffff;
+      color: var(--accent-blue-dark);
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.1);
+    }
+
+    .seg-btn:hover:not(.active) {
+      color: var(--text-main);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sheet-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 10px;
+      background: #ffffff;
+      border: 1px solid #d5dbe3;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .sheet-btn:hover {
+      background: var(--accent-blue-soft);
+      border-color: var(--accent-blue);
+      color: var(--accent-blue-dark);
+    }
+
+    /* =========================================================================
+       3. MAIN WORKSPACE & UPPER PROMPT CARD
+       ========================================================================= */
+    .workspace {
+      width: 100%;
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 20px 16px 36px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .prompt-card {
+      width: 100%;
+      max-width: 880px;
+      background: var(--bg-card);
+      border-radius: 20px;
+      box-shadow: var(--shadow-card);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      padding: 22px 28px 26px;
+      position: relative;
+      overflow: hidden;
+      cursor: text;
+      transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .prompt-card.focused {
+      box-shadow: var(--shadow-card), 0 0 0 3px rgba(43, 142, 229, 0.16);
+    }
+
+    .prompt-card.error-shake {
+      border-color: #fca5a5;
+      background: #fffafa;
+      animation: cardShake 0.24s ease;
+    }
+
+    .prompt-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .finger-instruction {
+      flex: 1;
+      text-align: center;
+      font-size: 0.96rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      min-height: 22px;
+    }
+
+    .finger-instruction strong {
+      color: var(--text-main);
+      font-weight: 700;
+    }
+
+    .prompt-controls-left,
+    .prompt-controls-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 96px;
+    }
+
+    .prompt-controls-right {
+      justify-content: flex-end;
+    }
+
+    .streak-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: #fff7ed;
+      color: #c2410c;
+      border: 1px solid #fed7aa;
+    }
+
+    .streak-pill.hot {
+      background: #fef3c7;
+      border-color: #f59e0b;
+      color: #92400e;
+    }
+
+    .mini-restart-btn {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: #f1f5f9;
+    }
+
+    .mini-restart-btn:hover {
+      background: #e2e8f0;
+      color: var(--text-main);
+    }
+
+    /* Hidden real input for physical keyboard + Chromebook Dead Key IME composition */
+    #typingInput {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      width: 1px;
+      height: 1px;
+      top: 0;
+      left: 0;
+    }
+
+    /* Prompt Stage: Supports both Single-Key ("Type the [ J ] key") and Multi-Char Mode */
+    .prompt-stage {
+      min-height: 82px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+
+    .single-key-prompt {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      font-size: clamp(1.8rem, 3.8vw, 2.55rem);
+      font-weight: 700;
+      color: #444950;
+      letter-spacing: -0.02em;
+    }
+
+    .single-keycap-box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 62px;
+      height: 70px;
+      padding: 0 14px;
+      border: 2.5px solid #9aa2ad;
+      border-radius: 10px;
+      background: #ffffff;
+      color: #2d3138;
+      font-weight: 700;
+      box-shadow: 0 3px 0 #d5dbe3;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .single-keycap-box.pop {
+      animation: keycapPop 0.25s ease;
+    }
+
+    .single-sub-progress {
+      text-align: center;
+      margin-top: 8px;
+      font-size: 0.78rem;
+      color: var(--text-light);
+      font-weight: 600;
+    }
+
+    .text-prompt {
+      width: 100%;
+      font-family: var(--font-mono);
+      line-height: 1.7;
+      letter-spacing: 0.02em;
+      text-align: left;
+      word-break: break-word;
+    }
+
+    .text-prompt.tier-explorer {
+      font-size: clamp(1.55rem, 2.9vw, 2.1rem);
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .text-prompt.tier-navigator {
+      font-size: clamp(1.25rem, 2.1vw, 1.58rem);
+      font-weight: 600;
+    }
+
+    .text-prompt.tier-champion {
+      font-size: clamp(1.06rem, 1.55vw, 1.26rem);
+      font-weight: 500;
+    }
+
+    .ch {
+      display: inline;
+      border-radius: 5px;
+      padding: 1px 1px;
+      transition: color 0.1s ease, background-color 0.1s ease;
+    }
+
+    .ch.done {
+      color: var(--emerald);
+    }
+
+    .ch.current {
+      color: var(--accent-blue-dark);
+      background: var(--accent-blue-soft);
+      border: 2px solid var(--accent-blue);
+      border-radius: 6px;
+      padding: 1px 4px;
+      margin: 0 1px;
+      box-shadow: 0 2px 6px rgba(43, 142, 229, 0.2);
+    }
+
+    .ch.current.space-char {
+      display: inline-block;
+      min-width: 0.7em;
+      text-align: center;
+    }
+
+    .ch.pending {
+      color: #6b7280;
+    }
+
+    /* Focus overlay if user clicks away */
+    .focus-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(2px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: var(--accent-blue-dark);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease;
+      z-index: 5;
+    }
+
+    .prompt-card:not(.focused) .focus-overlay {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Slim Progress Bar along bottom edge of prompt card */
+    .prompt-progress-track {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 5px;
+      background: #edf0f4;
+    }
+
+    .prompt-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent-blue), var(--emerald));
+      transition: width 0.18s ease;
+    }
+
+    /* =========================================================================
+       4. SLEEK CHROMEBOOK KEYBOARD DECK + TRANSLUCENT HANDS OVERLAY
+       ========================================================================= */
+    .keyboard-deck {
+      width: 100%;
+      max-width: 880px;
+      background: var(--chassis-bg);
+      border-radius: 18px;
+      padding: 11px 14px 14px;
+      box-shadow:
+        inset 0 1px 2px rgba(255, 255, 255, 0.75),
+        inset 0 -2px 5px rgba(15, 23, 42, 0.07),
+        0 8px 24px rgba(15, 23, 42, 0.08);
+      border: 1px solid var(--chassis-border);
+      position: relative;
+      /* Extra bottom margin so the translucent wrists/forearms extend cleanly */
+      margin-bottom: 120px;
+    }
+
+    .keyboard-deck.hands-hidden {
+      margin-bottom: 16px;
+    }
+
+    .deck-status-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 4px 9px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #4f5661;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 15;
+    }
+
+    .deck-metrics {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .deck-metric-val {
+      color: #2d3138;
+      font-weight: 800;
+      margin-right: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .kb-settings-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      text-transform: none;
+      color: #444b55;
+      padding: 3px 8px;
+      border-radius: 7px;
+      text-decoration: underline;
+      text-decoration-color: rgba(68, 75, 85, 0.35);
+      text-underline-offset: 3px;
+    }
+
+    .kb-settings-btn:hover {
+      background: rgba(255, 255, 255, 0.55);
+      color: var(--accent-blue-dark);
+    }
+
+    /* Keyboard Settings Popover */
+    .settings-popover {
+      position: absolute;
+      top: 38px;
+      right: 12px;
+      width: 310px;
+      background: #ffffff;
+      border-radius: 14px;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-popover);
+      padding: 16px;
+      z-index: 60;
+      display: none;
+      flex-direction: column;
+      gap: 14px;
+      text-transform: none;
+      letter-spacing: normal;
+    }
+
+    .settings-popover.open {
+      display: flex;
+      animation: fadeDown 0.16s ease;
+    }
+
+    .pop-title {
+      font-size: 0.86rem;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .pop-section-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .layout-options {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .layout-radio {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 7px 9px;
+      border-radius: 9px;
+      border: 1.5px solid var(--border-light);
+      cursor: pointer;
+      font-size: 0.8rem;
+      line-height: 1.3;
+      transition: border-color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .layout-radio:hover {
+      background: #f8fafc;
+    }
+
+    .layout-radio.selected {
+      border-color: var(--accent-blue);
+      background: var(--accent-blue-soft);
+    }
+
+    .layout-radio input {
+      margin-top: 2px;
+      accent-color: var(--accent-blue);
+    }
+
+    .layout-radio small {
+      display: block;
+      font-size: 0.71rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-main);
+      padding-top: 4px;
+    }
+
+    .switch {
+      position: relative;
+      width: 40px;
+      height: 22px;
+      background: #cbd5e1;
+      border-radius: 999px;
+      transition: background-color 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .switch::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s ease;
+    }
+
+    .switch.on {
+      background: var(--accent-blue);
+    }
+
+    .switch.on::after {
+      transform: translateX(18px);
+    }
+
+    /* Keyboard Stage: holds key rows AND the translucent SVG hands overlay */
+    .kb-stage {
+      position: relative;
+      width: 100%;
+    }
+
+    .kb-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 100%;
+      user-select: none;
+    }
+
+    .kb-row {
+      display: flex;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .key {
+      flex: 1;
+      height: 50px;
+      background: var(--key-bg);
+      border: 1px solid #d1d6de;
+      border-bottom: 3px solid var(--key-bevel);
+      border-radius: 7px;
+      color: var(--key-text);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.92rem;
+      padding: 3px 5px;
+      box-shadow: 0 1px 1px rgba(15, 23, 42, 0.05);
+      transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease, transform 0.08s ease, box-shadow 0.12s ease;
+    }
+
+    .key:hover {
+      background: #f8fafc;
+    }
+
+    .key:active,
+    .key.pressed {
+      transform: translateY(1.5px);
+      border-bottom-width: 1.5px;
+    }
+
+    .key .k-sub {
+      position: absolute;
+      top: 4px;
+      left: 6px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--key-sub);
+      line-height: 1;
+    }
+
+    .key .k-main {
+      font-size: 0.96rem;
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    .key.has-sub .k-main {
+      margin-top: 12px;
+      font-size: 0.86rem;
+    }
+
+    .key .k-altgr {
+      position: absolute;
+      bottom: 4px;
+      right: 6px;
+      font-size: 0.66rem;
+      font-weight: 700;
+      color: var(--key-altgr);
+      line-height: 1;
+    }
+
+    .key .k-dead-badge {
+      position: absolute;
+      top: 4px;
+      right: 5px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent-blue);
+      opacity: 0.7;
+    }
+
+    /* Chromebook Modifier Key Alignments & Proportions */
+    .key.mod-key {
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: #4f5661;
+    }
+
+    .key.mod-left {
+      align-items: flex-start;
+      justify-content: flex-end;
+      padding: 6px 8px;
+    }
+
+    .key.mod-right {
+      align-items: flex-end;
+      justify-content: flex-end;
+      padding: 6px 8px;
+    }
+
+    .key.w-15 { flex: 1.5; }
+    .key.w-18 { flex: 1.85; }
+    .key.w-20 { flex: 2.0; }
+    .key.w-22 { flex: 2.25; }
+    .key.w-24 { flex: 2.45; }
+    .key.w-space { flex: 6.4; }
+    .key.w-ctrl { flex: 1.35; }
+    .key.w-alt { flex: 1.3; }
+
+    /* Tactile home row bumps on F and J */
+    .key.home-bump::after {
+      content: '';
+      position: absolute;
+      bottom: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 13px;
+      height: 2px;
+      border-radius: 2px;
+      background: currentColor;
+      opacity: 0.45;
+    }
+
+    /* Vibrant Cerulean Blue Active Target Key */
+    .key.target {
+      background: linear-gradient(180deg, #38bdf8 0%, #2d9cdb 100%) !important;
+      border-color: #1d86c4 !important;
+      border-bottom-color: #166ba0 !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 0 3px rgba(45, 156, 219, 0.30), 0 4px 12px rgba(45, 156, 219, 0.38);
+      z-index: 2;
+    }
+
+    .key.target .k-sub,
+    .key.target .k-altgr {
+      color: rgba(255, 255, 255, 0.9) !important;
+    }
+
+    .key.target-mod {
+      background: linear-gradient(180deg, #56c2f7 0%, #2d9cdb 100%) !important;
+      border-color: #2d9cdb !important;
+      border-bottom-color: #1d74c6 !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 0 3px rgba(45, 156, 219, 0.28);
+      animation: modPulse 1.1s infinite ease-in-out;
+    }
+
+    .key.mistake {
+      background: #fee2e2 !important;
+      border-color: var(--danger) !important;
+      border-bottom-color: #dc2626 !important;
+      color: #991b1b !important;
+    }
+
+    /* =========================================================================
+       5. REALISTIC TRANSLUCENT HANDS OVERLAY (UNIFIED ANATOMICAL SVG)
+       ========================================================================= */
+    .hands-overlay-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 156%;
+      pointer-events: none;
+      z-index: 10;
+      overflow: visible;
+      transition: opacity 0.25s ease;
+    }
+
+    .hands-overlay-svg.hidden {
+      opacity: 0;
+    }
+
+    /* =========================================================================
+       6. MODALS (MODULE PICKER, END-OF-MODULE SUMMARY, TRACKING SHEET PREVIEW)
+       ========================================================================= */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.48);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 90;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+      animation: fadeIn 0.16s ease;
+    }
+
+    .modal-panel {
+      background: #ffffff;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 780px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px 26px;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.2);
+      position: relative;
+    }
+
+    .modal-panel.narrow {
+      max-width: 500px;
+      text-align: center;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .modal-header h2 {
+      font-size: 1.28rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .modal-header p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .close-x-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #f1f5f9;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .close-x-btn:hover {
+      background: #e2e8f0;
+      color: var(--text-main);
+    }
+
+    /* Module Grid inside Module Picker Modal */
+    .goal-banner {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 12px;
+    }
+
+    .module-card {
+      background: #f8fafc;
+      border: 2px solid var(--border-light);
+      border-radius: 14px;
+      padding: 14px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .module-card:hover {
+      border-color: var(--accent-blue);
+      background: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+    }
+
+    .module-card.active-mod {
+      border-color: var(--accent-blue);
+      background: var(--accent-blue-soft);
+    }
+
+    .mod-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .mod-num-badge {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--accent-blue-dark);
+      background: #ffffff;
+      border: 1px solid #bfdbfe;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .mod-card-title {
+      font-size: 0.96rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .mod-card-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    .mod-card-keys {
+      margin-top: auto;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--accent-blue-dark);
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px dashed #cbd5e1;
+      border-radius: 7px;
+      padding: 4px 7px;
+      text-align: center;
+    }
+
+    /* End-of-Module Summary Modal */
+    .stars-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      font-size: 2.6rem;
+      margin-bottom: 6px;
+    }
+
+    .star-icon {
+      color: #e2e8f0;
+    }
+
+    .star-icon.earned {
+      color: var(--gold);
+      text-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+      animation: starPop 0.45s ease backwards;
+    }
+
+    .summary-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+    }
+
+    .summary-sub {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin: 4px 0 16px;
+    }
+
+    .record-box {
+      background: #f8fafc;
+      border: 2px dashed #93c5fd;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 18px;
+      text-align: left;
+    }
+
+    .record-box-title {
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent-blue-dark);
+      margin-bottom: 10px;
+    }
+
+    .record-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .record-cell {
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: 9px;
+      padding: 8px 6px;
+      text-align: center;
+    }
+
+    .record-cell .rl {
+      font-size: 0.66rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .record-cell .rv {
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-top: 2px;
+    }
+
+    .modal-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn-primary {
+      background: var(--accent-blue);
+      color: #ffffff;
+      padding: 10px 18px;
+      border-radius: 11px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(43, 142, 229, 0.28);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-blue-dark);
+    }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: var(--text-main);
+      border: 1px solid #d5dbe3;
+      padding: 10px 16px;
+      border-radius: 11px;
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    /* Tracking Sheet Preview Modal */
+    .sheet-preview-frame {
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 18px 20px;
+      background: #ffffff;
+      margin-bottom: 16px;
+    }
+
+    .ps-header {
+      border-bottom: 2px solid #1e293b;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+
+    .ps-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .ps-sub {
+      font-size: 0.8rem;
+      color: #475569;
+      margin-top: 2px;
+    }
+
+    .ps-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px 22px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #1e293b;
+    }
+
+    .ps-line {
+      display: inline-block;
+      border-bottom: 1.5px solid #334155;
+      min-width: 130px;
+      margin-left: 6px;
+    }
+
+    .ps-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+
+    .ps-table th,
+    .ps-table td {
+      border: 1px solid #475569;
+      padding: 7px 6px;
+      text-align: center;
+    }
+
+    .ps-table th {
+      background: #f1f5f9;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .ps-table td.left-col {
+      text-align: left;
+      font-weight: 700;
+      padding-left: 8px;
+    }
+
+    .ps-footer-note {
+      margin-top: 10px;
+      font-size: 0.72rem;
+      color: #475569;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    #confettiCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    .print-only-sheet {
+      display: none;
+    }
+
+    /* =========================================================================
+       7. PRINT STYLES (CRISP 1-PAGE CLASSROOM TRACKING SHEET)
+       ========================================================================= */
+    @media print {
+      body {
+        background: #ffffff !important;
+      }
+      .topbar, .workspace, .modal-backdrop, #confettiCanvas {
+        display: none !important;
+      }
+      .print-only-sheet {
+        display: block !important;
+        padding: 10px 14px;
+      }
+      .ps-table th {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .ps-table th, .ps-table td {
+        padding: 9px 8px;
+        font-size: 0.86rem;
+      }
+    }
+
+    /* =========================================================================
+       8. ANIMATIONS & RESPONSIVE ADJUSTMENTS
+       ========================================================================= */
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeDown { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes cardShake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+    @keyframes keycapPop {
+      0% { transform: scale(0.88); }
+      60% { transform: scale(1.06); }
+      100% { transform: scale(1); }
+    }
+    @keyframes modPulse {
+      0%, 100% { box-shadow: 0 0 0 2px rgba(43, 142, 229, 0.25); }
+      50% { box-shadow: 0 0 0 5px rgba(43, 142, 229, 0.42); }
+    }
+    @keyframes starPop {
+      0% { transform: scale(0.3) rotate(-18deg); opacity: 0; }
+      70% { transform: scale(1.16) rotate(5deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0); opacity: 1; }
+    }
+
+    @media (max-width: 780px) {
+      .key { height: 42px; font-size: 0.8rem; }
+      .key .k-main { font-size: 0.82rem; }
+      .key .k-sub { font-size: 0.58rem; top: 2px; left: 4px; }
+      .key .k-altgr { font-size: 0.56rem; bottom: 2px; right: 4px; }
+      .keyboard-deck { margin-bottom: 90px; }
+    }
+
+    @media (max-width: 560px) {
+      .topbar-inner { justify-content: center; }
+      .key { height: 34px; border-radius: 5px; }
+      .key .k-sub, .key .k-altgr { display: none; }
+      .keyboard-deck { padding: 8px; margin-bottom: 65px; }
+      .record-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- =========================================================================
+       COMPACT TOP NAVIGATION BAR
+       ========================================================================= -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group">
+        <div class="brand-logo" aria-hidden="true">⌨</div>
+        <span class="brand-title" id="appTitle">KeyQuest</span>
+        <span class="privacy-pill" id="privacyPill">🔒 Privacy-Safe • Offline</span>
+      </div>
+
+      <div class="nav-center">
+        <button class="module-picker-btn" id="openModulesBtn" type="button">
+          <span class="mod-dot"></span>
+          <span id="currentModuleBtnText">Module 1: Home Row Basics</span>
+          <span aria-hidden="true">▾</span>
+        </button>
+
+        <div class="segmented" role="group" aria-label="Skill Path">
+          <button class="seg-btn active" data-tier="explorer" type="button">Explorer</button>
+          <button class="seg-btn" data-tier="navigator" type="button">Navigator</button>
+          <button class="seg-btn" data-tier="champion" type="button">Champion</button>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <div class="segmented" role="group" aria-label="Language">
+          <button class="seg-btn active" id="langEnBtn" type="button">English</button>
+          <button class="seg-btn" id="langFrBtn" type="button">Français</button>
+        </div>
+
+        <button class="sheet-btn" id="openSheetBtn" type="button">
+          <span>📋</span>
+          <span id="sheetBtnLabel">Tracking Sheet</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       MAIN WORKSPACE
+       ========================================================================= -->
+  <main class="workspace">
+
+    <!-- UPPER PROMPT CARD -->
+    <section class="prompt-card focused" id="promptCard" aria-label="Typing Prompt">
+      <input
+        type="text"
+        id="typingInput"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="false"
+        aria-label="Typing input"
+      >
+
+      <div class="prompt-top-bar">
+        <div class="prompt-controls-left">
+          <span class="streak-pill" id="streakPill" title="Streak">🔥 <span id="statStreak">0</span></span>
+        </div>
+
+        <div class="finger-instruction" id="fingerInstruction">
+          Use your right index finger to:
+        </div>
+
+        <div class="prompt-controls-right">
+          <button class="mini-restart-btn" id="restartBtn" type="button">↺ Restart</button>
+        </div>
+      </div>
+
+      <div class="prompt-stage" id="promptStage"></div>
+      <div class="single-sub-progress" id="singleSubProgress" style="display:none;"></div>
+
+      <div class="focus-overlay" id="focusOverlay">
+        <span>👆</span>
+        <span id="focusPromptText">Click here to resume typing</span>
+      </div>
+
+      <div class="prompt-progress-track">
+        <div class="prompt-progress-fill" id="progressFill"></div>
+      </div>
+    </section>
+
+    <!-- SLEEK CHROMEBOOK KEYBOARD DECK + TRANSLUCENT HANDS OVERLAY -->
+    <section class="keyboard-deck" id="keyboardDeck" aria-label="Chromebook Keyboard Guide">
+      <!-- Top Status Strip -->
+      <div class="deck-status-strip">
+        <div class="deck-metrics">
+          <div><span class="deck-metric-val" id="statWpm">—</span><span id="lblWpm">WPM</span></div>
+          <div><span class="deck-metric-val" id="statAcc">—</span><span id="lblAcc">ACCURACY</span></div>
+        </div>
+
+        <button class="kb-settings-btn" id="kbSettingsBtn" type="button" aria-expanded="false">
+          <span aria-hidden="true">⚙</span>
+          <span id="kbSettingsLabel">Keyboard Settings</span>
+        </button>
+
+        <!-- Keyboard Settings Popover -->
+        <div class="settings-popover" id="settingsPopover" role="dialog" aria-label="Keyboard Settings">
+          <div class="pop-title">
+            <span id="popSettingsTitle">Keyboard Settings</span>
+            <button class="close-x-btn" id="closeSettingsBtn" type="button" style="width:26px;height:26px;font-size:0.9rem;">✕</button>
+          </div>
+
+          <div>
+            <div class="pop-section-label" id="popFrLayoutLabel">Chromebook French Keyboard Variant</div>
+            <div class="layout-options" id="frLayoutOptions">
+              <label class="layout-radio selected" data-fr-layout="ca">
+                <input type="radio" name="frLayout" value="ca" checked>
+                <div>
+                  <strong>Canadian French (CA - Chromebook)</strong>
+                  <small>Standard CA QWERTY (é on /, dead ` ^ ¸)</small>
+                </div>
+              </label>
+              <label class="layout-radio" data-fr-layout="csa">
+                <input type="radio" name="frLayout" value="csa">
+                <div>
+                  <strong>Canadian Multilingual (CSA - Bilingual)</strong>
+                  <small>Direct keys for é, è, à, ç, ù</small>
+                </div>
+              </label>
+              <label class="layout-radio" data-fr-layout="intl">
+                <input type="radio" name="frLayout" value="intl">
+                <div>
+                  <strong>US International (INTL - Chromebook)</strong>
+                  <small>US keys with dead-key accents (` ' ^ ")</small>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="toggle-row">
+            <span id="popHandsLabel">Show Hands Overlay</span>
+            <button class="switch on" id="toggleHandsBtn" type="button" role="switch" aria-checked="true"></button>
+          </div>
+
+          <div class="toggle-row">
+            <span id="popSoundLabel">Sound Effects</span>
+            <button class="switch" id="toggleSoundBtn" type="button" role="switch" aria-checked="false"></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Keyboard Rows + Realistic Translucent SVG Hands Overlay -->
+      <div class="kb-stage" id="kbStage">
+        <div class="kb-rows" id="keyboardRows"></div>
+
+        <!-- REALISTIC UNIFIED ANATOMICAL TRANSLUCENT HANDS OVERLAY -->
+        <svg
+          class="hands-overlay-svg"
+          id="handsOverlaySvg"
+          viewBox="0 0 852 428"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <defs>
+            <!-- Smooth alpha fade at the bottom of both wrists into the page background -->
+            <linearGradient id="wristMaskGrad" x1="0" y1="0" x2="0" y2="428" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
+              <stop offset="76%" stop-color="#ffffff" stop-opacity="1"/>
+              <stop offset="93%" stop-color="#ffffff" stop-opacity="0.35"/>
+              <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+            </linearGradient>
+            <mask id="wristFadeMask" maskUnits="userSpaceOnUse" x="0" y="0" width="852" height="428">
+              <rect x="0" y="0" width="852" height="428" fill="url(#wristMaskGrad)"/>
+            </mask>
+
+            <!-- Layered warm 3D skin-tone gradients for palms -->
+            <linearGradient id="palmGradL" x1="15%" y1="5%" x2="88%" y2="95%">
+              <stop offset="0%" stop-color="#d8b0a5"/>
+              <stop offset="35%" stop-color="#e5c1b6"/>
+              <stop offset="72%" stop-color="#d4a79b"/>
+              <stop offset="100%" stop-color="#c39589"/>
+            </linearGradient>
+            <linearGradient id="palmGradR" x1="85%" y1="5%" x2="12%" y2="95%">
+              <stop offset="0%" stop-color="#d8b0a5"/>
+              <stop offset="35%" stop-color="#e5c1b6"/>
+              <stop offset="72%" stop-color="#d4a79b"/>
+              <stop offset="100%" stop-color="#c39589"/>
+            </linearGradient>
+
+            <!-- Soft dorsal radial highlight on the back of each hand -->
+            <radialGradient id="dorsalGlowL" cx="48%" cy="38%" r="52%">
+              <stop offset="0%" stop-color="#f5dcd3" stop-opacity="0.48"/>
+              <stop offset="65%" stop-color="#e4bfb4" stop-opacity="0.12"/>
+              <stop offset="100%" stop-color="#b98b7f" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="dorsalGlowR" cx="52%" cy="38%" r="52%">
+              <stop offset="0%" stop-color="#f5dcd3" stop-opacity="0.48"/>
+              <stop offset="65%" stop-color="#e4bfb4" stop-opacity="0.12"/>
+              <stop offset="100%" stop-color="#b98b7f" stop-opacity="0"/>
+            </radialGradient>
+
+            <!-- Natural fingernail tint -->
+            <linearGradient id="nailTint" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#fbece7" stop-opacity="0.72"/>
+              <stop offset="65%" stop-color="#ebd0c8" stop-opacity="0.48"/>
+              <stop offset="100%" stop-color="#cf9f93" stop-opacity="0.22"/>
+            </linearGradient>
+
+            <!-- Dynamic cylindrical 3D finger skin gradients (oriented per frame in JS) -->
+            <linearGradient id="fGrad-lp" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#bc8e82"/><stop offset="42%" stop-color="#eccbc1"/><stop offset="72%" stop-color="#dfb8ad"/><stop offset="100%" stop-color="#b4857a"/></linearGradient>
+            <linearGradient id="fGrad-lr" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#bc8e82"/><stop offset="42%" stop-color="#eccbc1"/><stop offset="72%" stop-color="#dfb8ad"/><stop offset="100%" stop-color="#b4857a"/></linearGradient>
+            <linearGradient id="fGrad-lm" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#bc8e82"/><stop offset="42%" stop-color="#eccbc1"/><stop offset="72%" stop-color="#dfb8ad"/><stop offset="100%" stop-color="#b4857a"/></linearGradient>
+            <linearGradient id="fGrad-li" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#bc8e82"/><stop offset="42%" stop-color="#eccbc1"/><stop offset="72%" stop-color="#dfb8ad"/><stop offset="100%" stop-color="#b4857a"/></linearGradient>
+            <linearGradient id="fGrad-lth" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#bc8e82"/><stop offset="45%" stop-color="#ebcac0"/><stop offset="100%" stop-color="#b5867a"/></linearGradient>
+
+            <linearGradient id="fGrad-rth" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#b5867a"/><stop offset="55%" stop-color="#ebcac0"/><stop offset="100%" stop-color="#bc8e82"/></linearGradient>
+            <linearGradient id="fGrad-ri" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#b4857a"/><stop offset="28%" stop-color="#dfb8ad"/><stop offset="58%" stop-color="#eccbc1"/><stop offset="100%" stop-color="#bc8e82"/></linearGradient>
+            <linearGradient id="fGrad-rm" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#b4857a"/><stop offset="28%" stop-color="#dfb8ad"/><stop offset="58%" stop-color="#eccbc1"/><stop offset="100%" stop-color="#bc8e82"/></linearGradient>
+            <linearGradient id="fGrad-rr" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#b4857a"/><stop offset="28%" stop-color="#dfb8ad"/><stop offset="58%" stop-color="#eccbc1"/><stop offset="100%" stop-color="#bc8e82"/></linearGradient>
+            <linearGradient id="fGrad-rp" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#b4857a"/><stop offset="28%" stop-color="#dfb8ad"/><stop offset="58%" stop-color="#eccbc1"/><stop offset="100%" stop-color="#bc8e82"/></linearGradient>
+
+            <!-- Dynamic luminous cerulean-blue active finger glow gradients (tip -> knuckle) -->
+            <linearGradient id="gGrad-lp" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2d9cdb" stop-opacity="0.82"/><stop offset="42%" stop-color="#38bdf8" stop-opacity="0.52"/><stop offset="85%" stop-color="#7dd3fc" stop-opacity="0.14"/><stop offset="100%" stop-color="#7dd3fc" stop-opacity="0"/></linearGradient>
+            <linearGradient id="gGrad-lr" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2d9cdb" stop-opacity="0.82"/><stop offset="42%" stop-color="#38bdf8" stop-opacity="0.52"/><stop offset="85%" stop-color="#7dd3fc" stop-opacity="0.14"/><stop offset="100%" stop-color="#7dd3fc" stop-opacity="0"/></linearGradient>
+            <linearGradient id="gGrad-lm" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2d9cdb" stop-opacity="0.82"/><stop offset="42%" stop-color="#38bdf8" stop-opacity="0.52"/><stop offset="85%" stop-color="#7dd3fc" stop-opacity="0.14"/><stop offset="100%" stop-color="#7dd3fc" stop-opacity="0"/></linearGradient>
+            <linearGradient id="gGrad-li" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2d9cdb" stop-opacity="0.82"/><stop offset="42%" stop-color="#38bdf8" stop-opacity="0.52"/><stop offset="85%" stop-color="#7dd3fc" stop-opacity="0.14"/><stop offset="100%" stop-color="#7dd3fc" stop-opacity="0"/></linearGradient>
+            <linearGradient id="gGrad-lth" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2d9cdb" stop-opacity="0.82"/><stop offset="45%" stop-color="#38bdf8" stop-opacity="0.50"/><stop offset="100%" stop-color="#7dd3fc" stop-opacity="0"/></linearGradient>
+            <linearGradient id="gGrad-rth" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2d9cdb" stop-opacity="0.82"/><stop offset="45%" stop-color="#38bdf8" stop-opacity="0.50"/><stop offset="100%" stop-color="#7dd3fc" stop-opacity="0"/></linearGradient>
+            <linearGradient id="gGrad-ri" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2d9cdb" stop-opacity="0.82"/><stop offset="42%" stop-color="#38bdf8" stop-opacity="0.52"/><stop offset="85%" stop-color="#7dd3fc" stop-opacity="0.14"/><stop offset="100%" stop-color="#7dd3fc" stop-opacity="0"/></linearGradient>
+            <linearGradient id="gGrad-rm" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2d9cdb" stop-opacity="0.82"/><stop offset="42%" stop-color="#38bdf8" stop-opacity="0.52"/><stop offset="85%" stop-color="#7dd3fc" stop-opacity="0.14"/><stop offset="100%" stop-color="#7dd3fc" stop-opacity="0"/></linearGradient>
+            <linearGradient id="gGrad-rr" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2d9cdb" stop-opacity="0.82"/><stop offset="42%" stop-color="#38bdf8" stop-opacity="0.52"/><stop offset="85%" stop-color="#7dd3fc" stop-opacity="0.14"/><stop offset="100%" stop-color="#7dd3fc" stop-opacity="0"/></linearGradient>
+            <linearGradient id="gGrad-rp" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2d9cdb" stop-opacity="0.82"/><stop offset="42%" stop-color="#38bdf8" stop-opacity="0.52"/><stop offset="85%" stop-color="#7dd3fc" stop-opacity="0.14"/><stop offset="100%" stop-color="#7dd3fc" stop-opacity="0"/></linearGradient>
+
+            <!-- Soft drop shadow cast onto keyboard -->
+            <filter id="handShadow" x="-12%" y="-12%" width="124%" height="126%">
+              <feDropShadow dx="0" dy="7" stdDeviation="6.5" flood-color="#1e293b" flood-opacity="0.20"/>
+            </filter>
+
+            <!-- Soft luminous halo for active cerulean finger -->
+            <filter id="blueFingerBlur" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="5.5"/>
+            </filter>
+          </defs>
+
+          <!-- UNIFIED TRANSLUCENT HANDS LAYER (Single opacity group = ZERO overlap seams!) -->
+          <g mask="url(#wristFadeMask)" opacity="0.68" filter="url(#handShadow)">
+            <!-- LEFT HAND -->
+            <g id="leftHandGroup">
+              <!-- Fingers anchored deeply inside palm -->
+              <path id="fPath-lp" fill="url(#fGrad-lp)"/>
+              <path id="fPath-lr" fill="url(#fGrad-lr)"/>
+              <path id="fPath-lm" fill="url(#fGrad-lm)"/>
+              <path id="fPath-li" fill="url(#fGrad-li)"/>
+              <path id="fPath-lth" fill="url(#fGrad-lth)"/>
+
+              <!-- Cohesive Palm & Forearm blending seamlessly over knuckle roots -->
+              <path id="palmPath-L" fill="url(#palmGradL)"/>
+              <path id="palmHighlight-L" fill="url(#dorsalGlowL)"/>
+              <!-- Subtle anatomical shadow grooves between fingers -->
+              <path id="grooves-L" fill="none" stroke="#a6776c" stroke-width="2.2" stroke-linecap="round" opacity="0.34"/>
+
+              <!-- Oriented curved fingernails -->
+              <path id="fNail-lp" fill="url(#nailTint)"/>
+              <path id="fNail-lr" fill="url(#nailTint)"/>
+              <path id="fNail-lm" fill="url(#nailTint)"/>
+              <path id="fNail-li" fill="url(#nailTint)"/>
+              <path id="fNail-lth" fill="url(#nailTint)"/>
+            </g>
+
+            <!-- RIGHT HAND -->
+            <g id="rightHandGroup">
+              <!-- Fingers anchored deeply inside palm -->
+              <path id="fPath-rp" fill="url(#fGrad-rp)"/>
+              <path id="fPath-rr" fill="url(#fGrad-rr)"/>
+              <path id="fPath-rm" fill="url(#fGrad-rm)"/>
+              <path id="fPath-ri" fill="url(#fGrad-ri)"/>
+              <path id="fPath-rth" fill="url(#fGrad-rth)"/>
+
+              <!-- Cohesive Palm & Forearm blending seamlessly over knuckle roots -->
+              <path id="palmPath-R" fill="url(#palmGradR)"/>
+              <path id="palmHighlight-R" fill="url(#dorsalGlowR)"/>
+              <!-- Subtle anatomical shadow grooves between fingers -->
+              <path id="grooves-R" fill="none" stroke="#a6776c" stroke-width="2.2" stroke-linecap="round" opacity="0.34"/>
+
+              <!-- Oriented curved fingernails -->
+              <path id="fNail-rp" fill="url(#nailTint)"/>
+              <path id="fNail-rr" fill="url(#nailTint)"/>
+              <path id="fNail-rm" fill="url(#nailTint)"/>
+              <path id="fNail-ri" fill="url(#nailTint)"/>
+              <path id="fNail-rth" fill="url(#nailTint)"/>
+            </g>
+          </g>
+
+          <!-- LUMINOUS CERULEAN-BLUE ACTIVE FINGER GLOW OVERLAY -->
+          <g id="activeGlowLayer" mask="url(#wristFadeMask)">
+            <g id="glowWrap-lp" opacity="0"><path id="gHalo-lp" fill="url(#gGrad-lp)" filter="url(#blueFingerBlur)"/><path id="gCore-lp" fill="url(#gGrad-lp)"/></g>
+            <g id="glowWrap-lr" opacity="0"><path id="gHalo-lr" fill="url(#gGrad-lr)" filter="url(#blueFingerBlur)"/><path id="gCore-lr" fill="url(#gGrad-lr)"/></g>
+            <g id="glowWrap-lm" opacity="0"><path id="gHalo-lm" fill="url(#gGrad-lm)" filter="url(#blueFingerBlur)"/><path id="gCore-lm" fill="url(#gGrad-lm)"/></g>
+            <g id="glowWrap-li" opacity="0"><path id="gHalo-li" fill="url(#gGrad-li)" filter="url(#blueFingerBlur)"/><path id="gCore-li" fill="url(#gGrad-li)"/></g>
+            <g id="glowWrap-lth" opacity="0"><path id="gHalo-lth" fill="url(#gGrad-lth)" filter="url(#blueFingerBlur)"/><path id="gCore-lth" fill="url(#gGrad-lth)"/></g>
+            <g id="glowWrap-rth" opacity="0"><path id="gHalo-rth" fill="url(#gGrad-rth)" filter="url(#blueFingerBlur)"/><path id="gCore-rth" fill="url(#gGrad-rth)"/></g>
+            <g id="glowWrap-ri" opacity="0"><path id="gHalo-ri" fill="url(#gGrad-ri)" filter="url(#blueFingerBlur)"/><path id="gCore-ri" fill="url(#gGrad-ri)"/></g>
+            <g id="glowWrap-rm" opacity="0"><path id="gHalo-rm" fill="url(#gGrad-rm)" filter="url(#blueFingerBlur)"/><path id="gCore-rm" fill="url(#gGrad-rm)"/></g>
+            <g id="glowWrap-rr" opacity="0"><path id="gHalo-rr" fill="url(#gGrad-rr)" filter="url(#blueFingerBlur)"/><path id="gCore-rr" fill="url(#gGrad-rr)"/></g>
+            <g id="glowWrap-rp" opacity="0"><path id="gHalo-rp" fill="url(#gGrad-rp)" filter="url(#blueFingerBlur)"/><path id="gCore-rp" fill="url(#gGrad-rp)"/></g>
+          </g>
+        </svg>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================================
+       MODAL 1: OPEN-ACCESS MODULE PICKER
+       ========================================================================= -->
+  <div class="modal-backdrop" id="modulesModal" role="dialog" aria-modal="true" aria-labelledby="modModalTitle">
+    <div class="modal-panel">
+      <div class="modal-header">
+        <div>
+          <h2 id="modModalTitle">Choose Your Module</h2>
+          <p id="modModalSub">All 8 modules are open! Check your tracking sheet and jump right in.</p>
+        </div>
+        <button class="close-x-btn" id="closeModulesBtn" type="button">✕</button>
+      </div>
+      <div class="goal-banner" id="modGoalBanner">⭐ 3-Star Goal: 8+ WPM • 92%+ Accuracy</div>
+      <div class="module-grid" id="moduleGrid"></div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 2: END-OF-MODULE SUMMARY CARD
+       ========================================================================= -->
+  <div class="modal-backdrop" id="summaryModal" role="dialog" aria-modal="true" aria-labelledby="sumTitle">
+    <div class="modal-panel narrow">
+      <div class="stars-row" id="sumStars">
+        <span class="star-icon">★</span>
+        <span class="star-icon">★</span>
+        <span class="star-icon">★</span>
+      </div>
+      <h2 class="summary-title" id="sumTitle">Module Complete!</h2>
+      <p class="summary-sub" id="sumSub">Awesome focus and finger placement!</p>
+
+      <div class="record-box">
+        <div class="record-box-title" id="sumRecordTitle">📝 Record on Your Tracking Sheet</div>
+        <div class="record-grid">
+          <div class="record-cell">
+            <div class="rl" id="sumLblMod">Module #</div>
+            <div class="rv" id="sumValMod">1</div>
+          </div>
+          <div class="record-cell">
+            <div class="rl" id="sumLblPath">Skill Path</div>
+            <div class="rv" id="sumValPath">Explorer</div>
+          </div>
+          <div class="record-cell">
+            <div class="rl" id="sumLblWpm">Speed</div>
+            <div class="rv" id="sumValWpm">12 WPM</div>
+          </div>
+          <div class="record-cell">
+            <div class="rl" id="sumLblAcc">Accuracy</div>
+            <div class="rv" id="sumValAcc">98%</div>
+          </div>
+          <div class="record-cell">
+            <div class="rl" id="sumLblErr">Errors</div>
+            <div class="rv" id="sumValErr">1</div>
+          </div>
+          <div class="record-cell">
+            <div class="rl" id="sumLblStars">Stars</div>
+            <div class="rv" id="sumValStars">3 / 3 ★</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-secondary" id="sumRetryBtn" type="button">↺ Practice Again</button>
+        <button class="btn-primary" id="sumNextBtn" type="button">Next Module →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 3: PRINTABLE STUDENT TRACKING SHEET PREVIEW
+       ========================================================================= -->
+  <div class="modal-backdrop" id="sheetModal" role="dialog" aria-modal="true" aria-labelledby="sheetModalTitle">
+    <div class="modal-panel">
+      <div class="modal-header">
+        <div>
+          <h2 id="sheetModalTitle">Student Tracking Sheet</h2>
+          <p id="sheetModalSub">Print or save as PDF so students can log their progress safely offline.</p>
+        </div>
+        <button class="close-x-btn" id="closeSheetBtn" type="button">✕</button>
+      </div>
+
+      <div class="sheet-preview-frame" id="sheetPreviewContent"></div>
+
+      <div class="modal-actions">
+        <button class="btn-secondary" id="sheetCancelBtn" type="button">Close</button>
+        <button class="btn-primary" id="sheetPrintBtn" type="button">🖨 Print / Save as PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden Print-Only Copy for Clean 1-Page Printing -->
+  <section class="print-only-sheet" id="printOnlySheet" aria-hidden="true"></section>
+
+  <script>
+    /* =========================================================================
+       1. BILINGUAL UI TEXT, SKILL PATHS & 8 OPEN-ACCESS MODULES
+       ========================================================================= */
+    const UI = {
+      en: {
+        appTitle: 'KeyQuest',
+        privacy: '🔒 Privacy-Safe • Offline',
+        tiers: { explorer: 'Explorer', navigator: 'Navigator', champion: 'Champion' },
+        sheetBtn: 'Tracking Sheet',
+        restart: '↺ Restart',
+        focusPrompt: 'Click here to resume typing',
+        wpm: 'WPM',
+        accuracy: 'ACCURACY',
+        kbSettings: 'Keyboard Settings',
+        popFrLayout: 'Chromebook French Keyboard Variant',
+        popHands: 'Show Hands Overlay',
+        popSound: 'Sound Effects',
+        modPrefix: 'Module',
+        modModalTitle: 'Choose Your Module',
+        modModalSub: 'All 8 modules are unlocked! Check your paper tracking sheet and pick where you left off.',
+        goalFmt: (wpm, acc) => `⭐ 3-Star Goal: ${wpm}+ WPM • ${acc}%+ Accuracy`,
+        typeThe: 'Type the',
+        keyWord: 'key',
+        stepCounter: (cur, tot) => `Key ${cur} of ${tot}`,
+        useFingerTo: (finger) => `Howdy! Use your <strong>${finger}</strong> to:`,
+        useShiftTo: (shiftSide, finger, ch) => `Hold <strong>${shiftSide} Shift</strong> and press <strong>${ch}</strong> with your <strong>${finger}</strong>:`,
+        deadKeyStep: (deadSym, deadFinger, baseChar) => `Step 1: Press <strong>${deadSym}</strong> (${deadFinger}), then press <strong>${baseChar}</strong>:`,
+        altGrStep: (finger, ch) => `Hold <strong>Alt Gr</strong> and press with your <strong>${finger}</strong> for <strong>${ch}</strong>:`,
+        leftSide: 'Left',
+        rightSide: 'Right',
+        fingers: {
+          lp: 'left pinky finger', lr: 'left ring finger', lm: 'left middle finger', li: 'left index finger',
+          lth: 'left thumb', rth: 'right thumb',
+          ri: 'right index finger', rm: 'right middle finger', rr: 'right ring finger', rp: 'right pinky finger'
+        },
+        spaceName: 'Space',
+        sumTitle: 'Module Complete!',
+        sumSub3: 'Outstanding! You earned all 3 stars!',
+        sumSub2: 'Great work! Practice again anytime to reach 3 stars.',
+        sumSub1: 'Nice finish! Keep focusing on smooth accuracy.',
+        sumRecordTitle: '📝 Record on Your Tracking Sheet',
+        lblMod: 'Module #',
+        lblPath: 'Skill Path',
+        lblSpeed: 'Speed',
+        lblAcc: 'Accuracy',
+        lblErr: 'Errors',
+        lblStars: 'Stars',
+        practiceAgain: '↺ Practice Again',
+        nextModule: 'Next Module →',
+        sheetModalTitle: 'Student Tracking Sheet',
+        sheetModalSub: 'Print or save as PDF so students can record their scores safely offline.',
+        close: 'Close',
+        printPdf: '🖨 Print / Save as PDF',
+        print: {
+          title: 'KeyQuest — Student Typing Tracking Sheet',
+          sub: 'No logins or accounts! Write your score after each module so you know where to start next time.',
+          name: 'Student Name:',
+          date: 'Date Started:',
+          lang: 'Language (circle):  EN  /  FR',
+          path: 'Skill Path (circle):  Explorer  /  Navigator  /  Champion',
+          colMod: 'Module',
+          colDate: 'Date',
+          colWpm: 'WPM',
+          colAcc: 'Accuracy %',
+          colStars: 'Stars (1–3)',
+          colNext: 'Ready for Next',
+          footerL: '3-Star Goals — Explorer: 8 WPM / 92%  |  Navigator: 18 WPM / 95%  |  Champion: 28 WPM / 96%',
+          footerR: '100% Privacy-Safe & Offline'
+        }
+      },
+      fr: {
+        appTitle: 'ClaviQuête',
+        privacy: '🔒 Privé • Hors ligne',
+        tiers: { explorer: 'Explorateur', navigator: 'Navigateur', champion: 'Champion' },
+        sheetBtn: 'Fiche de suivi',
+        restart: '↺ Recommencer',
+        focusPrompt: 'Clique ici pour continuer à taper',
+        wpm: 'MPM',
+        accuracy: 'PRÉCISION',
+        kbSettings: 'Paramètres du clavier',
+        popFrLayout: 'Variante de clavier français Chromebook',
+        popHands: 'Afficher les mains',
+        popSound: 'Effets sonores',
+        modPrefix: 'Module',
+        modModalTitle: 'Choisis ton module',
+        modModalSub: 'Les 8 modules sont ouverts! Regarde ta fiche de suivi pour reprendre où tu étais rendu.',
+        goalFmt: (wpm, acc) => `⭐ Objectif 3 étoiles : ${wpm}+ MPM • ${acc} %+ Précision`,
+        typeThe: 'Taper la touche',
+        keyWord: '',
+        stepCounter: (cur, tot) => `Touche ${cur} sur ${tot}`,
+        useFingerTo: (finger) => `Salut ! Utilise ton <strong>${finger}</strong> pour :`,
+        useShiftTo: (shiftSide, finger, ch) => `Maintiens <strong>Maj (${shiftSide})</strong> et appuie sur <strong>${ch}</strong> avec ton <strong>${finger}</strong> :`,
+        deadKeyStep: (deadSym, deadFinger, baseChar) => `Étape 1 : Appuie sur <strong>${deadSym}</strong> (${deadFinger}), puis appuie sur <strong>${baseChar}</strong> :`,
+        altGrStep: (finger, ch) => `Maintiens <strong>Alt Gr</strong> et appuie avec ton <strong>${finger}</strong> pour <strong>${ch}</strong> :`,
+        leftSide: 'gauche',
+        rightSide: 'droite',
+        fingers: {
+          lp: 'auriculaire gauche', lr: 'annulaire gauche', lm: 'majeur gauche', li: 'index gauche',
+          lth: 'pouce gauche', rth: 'pouce droit',
+          ri: 'index droit', rm: 'majeur droit', rr: 'annulaire droit', rp: 'auriculaire droit'
+        },
+        spaceName: 'Espace',
+        sumTitle: 'Module terminé!',
+        sumSub3: 'Bravo! Tu as obtenu les 3 étoiles!',
+        sumSub2: 'Super travail! Essaie encore pour atteindre 3 étoiles.',
+        sumSub1: 'Bien joué! Continue de pratiquer ta précision.',
+        sumRecordTitle: '📝 Note ces résultats sur ta fiche de suivi',
+        lblMod: 'Module n°',
+        lblPath: 'Parcours',
+        lblSpeed: 'Vitesse',
+        lblAcc: 'Précision',
+        lblErr: 'Erreurs',
+        lblStars: 'Étoiles',
+        practiceAgain: '↺ Recommencer',
+        nextModule: 'Module suivant →',
+        sheetModalTitle: 'Fiche de suivi de l’élève',
+        sheetModalSub: 'Imprime ou enregistre en PDF pour suivre tes progrès sans aucun compte.',
+        close: 'Fermer',
+        printPdf: '🖨 Imprimer / Enregistrer en PDF',
+        print: {
+          title: 'ClaviQuête — Fiche de suivi de frappe',
+          sub: 'Aucun compte requis! Note ton résultat après chaque module pour savoir où reprendre la prochaine fois.',
+          name: 'Nom de l’élève :',
+          date: 'Date de début :',
+          lang: 'Langue (encercle) :  EN  /  FR',
+          path: 'Parcours (encercle) :  Explorateur  /  Navigateur  /  Champion',
+          colMod: 'Module',
+          colDate: 'Date',
+          colWpm: 'MPM',
+          colAcc: 'Précision %',
+          colStars: 'Étoiles (1–3)',
+          colNext: 'Prêt pour la suite',
+          footerL: 'Objectifs 3★ — Explorateur : 8 MPM / 92 %  |  Navigateur : 18 MPM / 95 %  |  Champion : 28 MPM / 96 %',
+          footerR: '100 % Privé et hors ligne'
+        }
+      }
+    };
+
+    const TIERS = {
+      explorer: { goalWpm: 8, goalAcc: 92, cssClass: 'tier-explorer' },
+      navigator: { goalWpm: 18, goalAcc: 95, cssClass: 'tier-navigator' },
+      champion: { goalWpm: 28, goalAcc: 96, cssClass: 'tier-champion' }
+    };
+
+    const MODULES = [
+      {
+        id: 1,
+        singleKeyIntro: true, // Explorer starts with "Type the [ J ] key" big keycap prompts!
+        en: {
+          title: 'Home Row Basics',
+          desc: 'Find the bumps on F and J, then glide across the home row.',
+          keys: 'a s d f j k l ;',
+          drills: {
+            explorer: 'jjffjfjfdkslas;fj',
+            navigator: 'ff jj dd kk ss ll aa ;; fj dk sl a; asdf jkl; fjdk sla;',
+            champion: 'asdf jkl; fjdk sla; asdfg hjkl; a sad lad had a flask; all lads ask a glad lass;'
+          }
+        },
+        fr: {
+          title: 'Rangée de base',
+          desc: 'Trouve les repères sur F et J, puis pratique la rangée de base.',
+          keys: 'a s d f j k l ;',
+          drills: {
+            explorer: 'jjffjfjfdkslas;fj',
+            navigator: 'ff jj dd kk ss ll aa ;; fj dk sl a; asdf jkl; fjdk sla;',
+            champion: 'asdf jkl; fjdk sla; asdfg hjkl; la salle a un gala; sasha a la salsa;'
+          }
+        }
+      },
+      {
+        id: 2,
+        en: {
+          title: 'Home Row Words',
+          desc: 'Type real words using only your home row keys.',
+          keys: 'a s d f g h j k l',
+          drills: {
+            explorer: 'dad sad lad fall hall glad ask half',
+            navigator: 'dad had a salad; a glad lad asks for a half glass; a flash falls as all halls dash',
+            champion: 'a glad lad had a half salad; dad shall ask sasha for a glass flask; a small flash falls across the dark hall'
+          }
+        },
+        fr: {
+          title: 'Mots de la rangée de base',
+          desc: 'Tape des mots simples avec les touches de la rangée de base.',
+          keys: 'a s d f g h j k l',
+          drills: {
+            explorer: 'las sas gala salle dalle salsa falaise',
+            navigator: 'la salle a un gala; sasha a la dalle; la salsa va; adala a un sac plat',
+            champion: 'la grande salle a un gala; sasha danse la salsa; la falaise a un passage plat; dada a la dalle'
+          }
+        }
+      },
+      {
+        id: 3,
+        en: {
+          title: 'Top Row Reach',
+          desc: 'Reach smoothly up to the top letter row and return home.',
+          keys: 'q w e r t y u i o p',
+          drills: {
+            explorer: 'red top pie pet toy you our wet row',
+            navigator: 'two red kites fly up over the quiet tree tops; we write our pretty story',
+            champion: 'quiet puppies play out in the bright yellow yard while you pour cool water; every Tuesday we write poetry together'
+          }
+        },
+        fr: {
+          title: 'Rangée du haut',
+          desc: 'Monte tes doigts vers la rangée du haut puis reviens à la base.',
+          keys: 'q w e r t y u i o p',
+          drills: {
+            explorer: 'roi pot rue oui jeu pur eau toi peu',
+            navigator: 'le petit tigre joue sur le tapis vert; tu portes ton pull rouge au parc',
+            champion: 'tu peux jouer au jeu de piste pour trouver le petit tresor; quatre toupies tournent vite sur le grand tapis propre'
+          }
+        }
+      },
+      {
+        id: 4,
+        en: {
+          title: 'Bottom Row Reach',
+          desc: 'Dip down cleanly to the bottom row letters.',
+          keys: 'z x c v b n m',
+          drills: {
+            explorer: 'van cab box zoo mix man bun cub',
+            navigator: 'max can mix six big boxes; brave zebras zoom by the cozy cabin',
+            champion: 'seven brave zebras zoom past the cozy wooden cabin; max and ben can fix seven bikes and mix six boxes before noon'
+          }
+        },
+        fr: {
+          title: 'Rangée du bas',
+          desc: 'Descends tes doigts avec précision vers la rangée du bas.',
+          keys: 'z x c v b n m',
+          drills: {
+            explorer: 'bac vin nom zoo bus bon nid mur',
+            navigator: 'un bon banc blanc; six beaux oiseaux volent; max calme son chien brun',
+            champion: 'mon voisin bruno va au zoo en bus blanc avec six amis; nous voyons un beau bison calme et un renard malin'
+          }
+        }
+      },
+      {
+        id: 5,
+        en: {
+          title: 'Capitals & Shift',
+          desc: 'Use the opposite-hand Shift key for crisp capital letters.',
+          keys: 'Shift + A–Z',
+          drills: {
+            explorer: 'Sam Mia Ben Max Leo Amy',
+            navigator: 'Liam and Chloe visited Ottawa in July. On Monday, Max reads a book about Mars.',
+            champion: 'Every Friday, Maya and Noah walk past Maple Park in Alberta. Last April, Aunt Clara drove from Calgary to Jasper.'
+          }
+        },
+        fr: {
+          title: 'Accents Français',
+          desc: 'Pratique les accents du clavier français Chromebook (é, è, ê, à, ç, ô, ù).',
+          keys: 'é è ê à ç ô ù',
+          drills: {
+            explorer: 'été vélo café père mère fête déjà ça',
+            navigator: 'Léa a mangé une pêche à la fête! Où est le garçon? Il est déjà prêt à jouer.',
+            champion: 'À côté de l’école, Zoé écrit une lettre très drôle à sa grand-mère. Quelle belle journée d’été près de la fenêtre!'
+          }
+        }
+      },
+      {
+        id: 6,
+        en: {
+          title: 'Punctuation & Sentences',
+          desc: 'Practice periods, commas, apostrophes, and question marks.',
+          keys: ". , ? ! '",
+          drills: {
+            explorer: "Hi! It's fun, right? Yes, I can type!",
+            navigator: "Don't forget your hat, scarf, and mittens! Where is Sam's backpack? It's right here.",
+            champion: "Wait, didn't you hear the owl? \"Whoo, whoo!\" it called from the tall pine tree. We'll bring snacks, water, and a flashlight!"
+          }
+        },
+        fr: {
+          title: 'Ponctuation et phrases',
+          desc: 'Pratique les majuscules, virgules, points et points d’interrogation.',
+          keys: '. , ? ! Maj',
+          drills: {
+            explorer: 'Salut! Tu vas bien? Oui, merci beaucoup!',
+            navigator: 'N’oublie pas ton manteau, ta tuque et tes mitaines! Où est le sac de Léo? Il est juste ici.',
+            champion: 'Attends, as-tu entendu le hibou? Il chante dans le grand sapin vert! Demain matin, nous irons explorer le sentier ensemble.'
+          }
+        }
+      },
+      {
+        id: 7,
+        en: {
+          title: 'Numbers & Everyday Symbols',
+          desc: 'Reach to the top number row and common symbols.',
+          keys: '1 2 3 4 5 6 7 8 9 0',
+          drills: {
+            explorer: '12 34 56 78 90 100 25 50',
+            navigator: 'Room 104 has 24 desks, 8 computers, and 3 big bookshelves. Class starts at 9:00!',
+            champion: 'Order #482: 15 pencils ($3.50), 20 notebooks (100% recycled), and 6 erasers. Meet at Gate 7 before 12:30!'
+          }
+        },
+        fr: {
+          title: 'Chiffres et symboles',
+          desc: 'Atteins la rangée des chiffres et les symboles de tous les jours.',
+          keys: '1 2 3 4 5 6 7 8 9 0',
+          drills: {
+            explorer: '12 34 56 78 90 100 25 50',
+            navigator: 'La classe 104 compte 24 pupitres, 8 ordinateurs et 3 grandes bibliothèques. Le cours commence à 9 h 00!',
+            champion: 'Commande #482 : 15 crayons (3,50 $), 20 cahiers (100 % recyclés) et 6 gommes. Rendez-vous porte 7 avant 12 h 30!'
+          }
+        }
+      },
+      {
+        id: 8,
+        en: {
+          title: 'Story & Fluency Passages',
+          desc: 'Put everything together in a fun kid-friendly story!',
+          keys: 'Full Passage',
+          drills: {
+            explorer: 'Pip the frog sat on a log. He saw a red bug fly by. Jump, Pip, jump!',
+            navigator: 'Our class planted 12 sunflowers by the school fence. Every morning, we check the soil and watch them grow toward the warm sun.',
+            champion: 'At 9:30, Robot 42 rolled into the library with a stack of 15 adventure books. "Ready for reading time?" it beeped happily. Everyone smiled and opened page 1!'
+          }
+        },
+        fr: {
+          title: 'Histoires et fluidité',
+          desc: 'Mets toutes tes habiletés en pratique dans une mini-histoire!',
+          keys: 'Texte complet',
+          drills: {
+            explorer: 'Léo le chat aime le lait. Il joue avec une balle rouge. Bravo, Léo!',
+            navigator: 'Notre classe a planté 12 tournesols près du jardin. Chaque matin, nous arrosons les fleurs et nous les regardons pousser au soleil.',
+            champion: 'À 9 h 30, le robot 42 entre dans la bibliothèque avec 15 livres d’aventures. Prêts pour la lecture? Tout le monde sourit et ouvre la page 1!'
+          }
+        }
+      }
+    ];
+
+    /* =========================================================================
+       2. CHROMEBOOK KEYBOARD LAYOUT DEFINITIONS (US EN + 3 FR VARIANTS)
+       ========================================================================= */
+    const LAYOUTS = {
+      en: [
+        [
+          { id: '`', main: '`', sub: '~', f: 'lp' },
+          { id: '1', main: '1', sub: '!', f: 'lp' },
+          { id: '2', main: '2', sub: '@', f: 'lr' },
+          { id: '3', main: '3', sub: '#', f: 'lm' },
+          { id: '4', main: '4', sub: '$', f: 'li' },
+          { id: '5', main: '5', sub: '%', f: 'li' },
+          { id: '6', main: '6', sub: '^', f: 'ri' },
+          { id: '7', main: '7', sub: '&', f: 'ri' },
+          { id: '8', main: '8', sub: '*', f: 'rm' },
+          { id: '9', main: '9', sub: '(', f: 'rr' },
+          { id: '0', main: '0', sub: ')', f: 'rp' },
+          { id: '-', main: '-', sub: '_', f: 'rp' },
+          { id: '=', main: '=', sub: '+', f: 'rp' },
+          { id: 'Backspace', main: 'backspace', f: 'rp', w: 'w-20 mod-key mod-right' }
+        ],
+        [
+          { id: 'Tab', main: 'tab', f: 'lp', w: 'w-15 mod-key mod-left' },
+          { id: 'q', main: 'Q', f: 'lp' },
+          { id: 'w', main: 'W', f: 'lr' },
+          { id: 'e', main: 'E', f: 'lm' },
+          { id: 'r', main: 'R', f: 'li' },
+          { id: 't', main: 'T', f: 'li' },
+          { id: 'y', main: 'Y', f: 'ri' },
+          { id: 'u', main: 'U', f: 'ri' },
+          { id: 'i', main: 'I', f: 'rm' },
+          { id: 'o', main: 'O', f: 'rr' },
+          { id: 'p', main: 'P', f: 'rp' },
+          { id: '[', main: '[', sub: '{', f: 'rp' },
+          { id: ']', main: ']', sub: '}', f: 'rp' },
+          { id: '\\', main: '\\', sub: '|', f: 'rp', w: 'w-15' }
+        ],
+        [
+          { id: 'Search', main: '🔍', f: 'lp', w: 'w-18 mod-key mod-left' },
+          { id: 'a', main: 'A', f: 'lp' },
+          { id: 's', main: 'S', f: 'lr' },
+          { id: 'd', main: 'D', f: 'lm' },
+          { id: 'f', main: 'F', f: 'li', bump: true },
+          { id: 'g', main: 'G', f: 'li' },
+          { id: 'h', main: 'H', f: 'ri' },
+          { id: 'j', main: 'J', f: 'ri', bump: true },
+          { id: 'k', main: 'K', f: 'rm' },
+          { id: 'l', main: 'L', f: 'rr' },
+          { id: ';', main: ';', sub: ':', f: 'rp' },
+          { id: "'", main: "'", sub: '"', f: 'rp' },
+          { id: 'Enter', main: 'enter', f: 'rp', w: 'w-22 mod-key mod-right' }
+        ],
+        [
+          { id: 'ShiftLeft', main: 'shift', f: 'lp', w: 'w-24 mod-key mod-left' },
+          { id: 'z', main: 'Z', f: 'lp' },
+          { id: 'x', main: 'X', f: 'lr' },
+          { id: 'c', main: 'C', f: 'lm' },
+          { id: 'v', main: 'V', f: 'li' },
+          { id: 'b', main: 'B', f: 'li' },
+          { id: 'n', main: 'N', f: 'ri' },
+          { id: 'm', main: 'M', f: 'ri' },
+          { id: ',', main: ',', sub: '<', f: 'rm' },
+          { id: '.', main: '.', sub: '>', f: 'rr' },
+          { id: '/', main: '/', sub: '?', f: 'rp' },
+          { id: 'ShiftRight', main: 'shift', f: 'rp', w: 'w-24 mod-key mod-right' }
+        ],
+        [
+          { id: 'CtrlLeft', main: 'ctrl', f: 'lp', w: 'w-ctrl mod-key mod-left' },
+          { id: 'AltLeft', main: 'alt', f: 'lth', w: 'w-alt mod-key mod-left' },
+          { id: ' ', main: '', f: 'rth', w: 'w-space' },
+          { id: 'AltRight', main: 'alt', f: 'rth', w: 'w-alt mod-key mod-right' },
+          { id: 'CtrlRight', main: 'ctrl', f: 'rp', w: 'w-ctrl mod-key mod-right' }
+        ]
+      ],
+
+      // Chromebook Canadian French (CA) — Default for Français
+      'fr-ca': [
+        [
+          { id: '#', main: '#', sub: '|', altgr: '\\', f: 'lp' },
+          { id: '1', main: '1', sub: '!', f: 'lp' },
+          { id: '2', main: '2', sub: '"', altgr: '@', f: 'lr' },
+          { id: '3', main: '3', sub: '/', f: 'lm' },
+          { id: '4', main: '4', sub: '$', f: 'li' },
+          { id: '5', main: '5', sub: '%', f: 'li' },
+          { id: '6', main: '6', sub: '?', f: 'ri' },
+          { id: '7', main: '7', sub: '&', f: 'ri' },
+          { id: '8', main: '8', sub: '*', f: 'rm' },
+          { id: '9', main: '9', sub: '(', f: 'rr' },
+          { id: '0', main: '0', sub: ')', f: 'rp' },
+          { id: '-', main: '-', sub: '_', f: 'rp' },
+          { id: '=', main: '=', sub: '+', f: 'rp' },
+          { id: 'Backspace', main: 'backspace', f: 'rp', w: 'w-20 mod-key mod-right' }
+        ],
+        [
+          { id: 'Tab', main: 'tab', f: 'lp', w: 'w-15 mod-key mod-left' },
+          { id: 'q', main: 'Q', f: 'lp' },
+          { id: 'w', main: 'W', f: 'lr' },
+          { id: 'e', main: 'E', f: 'lm' },
+          { id: 'r', main: 'R', f: 'li' },
+          { id: 't', main: 'T', f: 'li' },
+          { id: 'y', main: 'Y', f: 'ri' },
+          { id: 'u', main: 'U', f: 'ri' },
+          { id: 'i', main: 'I', f: 'rm' },
+          { id: 'o', main: 'O', f: 'rr' },
+          { id: 'p', main: 'P', f: 'rp' },
+          { id: '^', main: '^', sub: '^', altgr: '[', dead: true, f: 'rp' },
+          { id: '¸', main: '¸', sub: '¨', altgr: ']', dead: true, f: 'rp' },
+          { id: '<', main: '<', sub: '>', altgr: '}', f: 'rp', w: 'w-15' }
+        ],
+        [
+          { id: 'Search', main: '🔍', f: 'lp', w: 'w-18 mod-key mod-left' },
+          { id: 'a', main: 'A', f: 'lp' },
+          { id: 's', main: 'S', f: 'lr' },
+          { id: 'd', main: 'D', f: 'lm' },
+          { id: 'f', main: 'F', f: 'li', bump: true },
+          { id: 'g', main: 'G', f: 'li' },
+          { id: 'h', main: 'H', f: 'ri' },
+          { id: 'j', main: 'J', f: 'ri', bump: true },
+          { id: 'k', main: 'K', f: 'rm' },
+          { id: 'l', main: 'L', f: 'rr' },
+          { id: ';', main: ';', sub: ':', altgr: '~', f: 'rp' },
+          { id: '`', main: '`', sub: '`', altgr: '{', dead: true, f: 'rp' },
+          { id: 'Enter', main: 'enter', f: 'rp', w: 'w-22 mod-key mod-right' }
+        ],
+        [
+          { id: 'ShiftLeft', main: 'shift', f: 'lp', w: 'w-24 mod-key mod-left' },
+          { id: 'z', main: 'Z', f: 'lp' },
+          { id: 'x', main: 'X', f: 'lr' },
+          { id: 'c', main: 'C', f: 'lm' },
+          { id: 'v', main: 'V', f: 'li' },
+          { id: 'b', main: 'B', f: 'li' },
+          { id: 'n', main: 'N', f: 'ri' },
+          { id: 'm', main: 'M', f: 'ri' },
+          { id: ',', main: ',', sub: "'", f: 'rm' },
+          { id: '.', main: '.', sub: '.', f: 'rr' },
+          { id: 'é', main: 'é', sub: 'É', altgr: '´', f: 'rp' },
+          { id: 'ShiftRight', main: 'shift', f: 'rp', w: 'w-24 mod-key mod-right' }
+        ],
+        [
+          { id: 'CtrlLeft', main: 'ctrl', f: 'lp', w: 'w-ctrl mod-key mod-left' },
+          { id: 'AltLeft', main: 'alt', f: 'lth', w: 'w-alt mod-key mod-left' },
+          { id: ' ', main: '', f: 'rth', w: 'w-space' },
+          { id: 'AltGr', main: 'alt gr', f: 'rth', w: 'w-alt mod-key mod-right' },
+          { id: 'CtrlRight', main: 'ctrl', f: 'rp', w: 'w-ctrl mod-key mod-right' }
+        ]
+      ],
+
+      // Chromebook Canadian Multilingual (CSA - Bilingual)
+      'fr-csa': [
+        [
+          { id: '/', main: '/', sub: '\\', altgr: '|', f: 'lp' },
+          { id: '1', main: '1', sub: '!', f: 'lp' },
+          { id: '2', main: '2', sub: '@', f: 'lr' },
+          { id: '3', main: '3', sub: '#', f: 'lm' },
+          { id: '4', main: '4', sub: '$', f: 'li' },
+          { id: '5', main: '5', sub: '%', f: 'li' },
+          { id: '6', main: '6', sub: '?', f: 'ri' },
+          { id: '7', main: '7', sub: '&', f: 'ri' },
+          { id: '8', main: '8', sub: '*', f: 'rm' },
+          { id: '9', main: '9', sub: '(', f: 'rr' },
+          { id: '0', main: '0', sub: ')', f: 'rp' },
+          { id: '-', main: '-', sub: '_', f: 'rp' },
+          { id: '=', main: '=', sub: '+', f: 'rp' },
+          { id: 'Backspace', main: 'backspace', f: 'rp', w: 'w-20 mod-key mod-right' }
+        ],
+        [
+          { id: 'Tab', main: 'tab', f: 'lp', w: 'w-15 mod-key mod-left' },
+          { id: 'q', main: 'Q', f: 'lp' },
+          { id: 'w', main: 'W', f: 'lr' },
+          { id: 'e', main: 'E', f: 'lm' },
+          { id: 'r', main: 'R', f: 'li' },
+          { id: 't', main: 'T', f: 'li' },
+          { id: 'y', main: 'Y', f: 'ri' },
+          { id: 'u', main: 'U', f: 'ri' },
+          { id: 'i', main: 'I', f: 'rm' },
+          { id: 'o', main: 'O', f: 'rr' },
+          { id: 'p', main: 'P', f: 'rp' },
+          { id: '^', main: '^', sub: '¨', altgr: '[', dead: true, f: 'rp' },
+          { id: 'ç', main: 'ç', sub: 'Ç', altgr: ']', f: 'rp' },
+          { id: 'ù', main: 'ù', sub: 'Ù', altgr: '«', f: 'rp', w: 'w-15' }
+        ],
+        [
+          { id: 'Search', main: '🔍', f: 'lp', w: 'w-18 mod-key mod-left' },
+          { id: 'a', main: 'A', f: 'lp' },
+          { id: 's', main: 'S', f: 'lr' },
+          { id: 'd', main: 'D', f: 'lm' },
+          { id: 'f', main: 'F', f: 'li', bump: true },
+          { id: 'g', main: 'G', f: 'li' },
+          { id: 'h', main: 'H', f: 'ri' },
+          { id: 'j', main: 'J', f: 'ri', bump: true },
+          { id: 'k', main: 'K', f: 'rm' },
+          { id: 'l', main: 'L', f: 'rr' },
+          { id: ';', main: ';', sub: ':', f: 'rp' },
+          { id: 'è', main: 'è', sub: 'È', altgr: 'à', f: 'rp' },
+          { id: 'Enter', main: 'enter', f: 'rp', w: 'w-22 mod-key mod-right' }
+        ],
+        [
+          { id: 'ShiftLeft', main: 'shift', f: 'lp', w: 'w-24 mod-key mod-left' },
+          { id: 'z', main: 'Z', f: 'lp' },
+          { id: 'x', main: 'X', f: 'lr' },
+          { id: 'c', main: 'C', f: 'lm' },
+          { id: 'v', main: 'V', f: 'li' },
+          { id: 'b', main: 'B', f: 'li' },
+          { id: 'n', main: 'N', f: 'ri' },
+          { id: 'm', main: 'M', f: 'ri' },
+          { id: ',', main: ',', sub: "'", f: 'rm' },
+          { id: '.', main: '.', sub: '"', f: 'rr' },
+          { id: 'é', main: 'é', sub: 'É', f: 'rp' },
+          { id: 'ShiftRight', main: 'shift', f: 'rp', w: 'w-24 mod-key mod-right' }
+        ],
+        [
+          { id: 'CtrlLeft', main: 'ctrl', f: 'lp', w: 'w-ctrl mod-key mod-left' },
+          { id: 'AltLeft', main: 'alt', f: 'lth', w: 'w-alt mod-key mod-left' },
+          { id: ' ', main: '', f: 'rth', w: 'w-space' },
+          { id: 'AltGr', main: 'alt gr', f: 'rth', w: 'w-alt mod-key mod-right' },
+          { id: 'CtrlRight', main: 'ctrl', f: 'rp', w: 'w-ctrl mod-key mod-right' }
+        ]
+      ],
+
+      // Chromebook US International (INTL)
+      'fr-intl': [
+        [
+          { id: '`', main: '`', sub: '~', dead: true, f: 'lp' },
+          { id: '1', main: '1', sub: '!', f: 'lp' },
+          { id: '2', main: '2', sub: '@', f: 'lr' },
+          { id: '3', main: '3', sub: '#', f: 'lm' },
+          { id: '4', main: '4', sub: '$', f: 'li' },
+          { id: '5', main: '5', sub: '%', f: 'li' },
+          { id: '6', main: '6', sub: '^', dead: true, f: 'ri' },
+          { id: '7', main: '7', sub: '&', f: 'ri' },
+          { id: '8', main: '8', sub: '*', f: 'rm' },
+          { id: '9', main: '9', sub: '(', f: 'rr' },
+          { id: '0', main: '0', sub: ')', f: 'rp' },
+          { id: '-', main: '-', sub: '_', f: 'rp' },
+          { id: '=', main: '=', sub: '+', f: 'rp' },
+          { id: 'Backspace', main: 'backspace', f: 'rp', w: 'w-20 mod-key mod-right' }
+        ],
+        [
+          { id: 'Tab', main: 'tab', f: 'lp', w: 'w-15 mod-key mod-left' },
+          { id: 'q', main: 'Q', f: 'lp' },
+          { id: 'w', main: 'W', f: 'lr' },
+          { id: 'e', main: 'E', altgr: 'é', f: 'lm' },
+          { id: 'r', main: 'R', f: 'li' },
+          { id: 't', main: 'T', f: 'li' },
+          { id: 'y', main: 'Y', f: 'ri' },
+          { id: 'u', main: 'U', altgr: 'ú', f: 'ri' },
+          { id: 'i', main: 'I', f: 'rm' },
+          { id: 'o', main: 'O', f: 'rr' },
+          { id: 'p', main: 'P', f: 'rp' },
+          { id: '[', main: '[', sub: '{', f: 'rp' },
+          { id: ']', main: ']', sub: '}', f: 'rp' },
+          { id: '\\', main: '\\', sub: '|', f: 'rp', w: 'w-15' }
+        ],
+        [
+          { id: 'Search', main: '🔍', f: 'lp', w: 'w-18 mod-key mod-left' },
+          { id: 'a', main: 'A', f: 'lp' },
+          { id: 's', main: 'S', f: 'lr' },
+          { id: 'd', main: 'D', f: 'lm' },
+          { id: 'f', main: 'F', f: 'li', bump: true },
+          { id: 'g', main: 'G', f: 'li' },
+          { id: 'h', main: 'H', f: 'ri' },
+          { id: 'j', main: 'J', f: 'ri', bump: true },
+          { id: 'k', main: 'K', f: 'rm' },
+          { id: 'l', main: 'L', f: 'rr' },
+          { id: ';', main: ';', sub: ':', f: 'rp' },
+          { id: "'", main: "'", sub: '"', dead: true, f: 'rp' },
+          { id: 'Enter', main: 'enter', f: 'rp', w: 'w-22 mod-key mod-right' }
+        ],
+        [
+          { id: 'ShiftLeft', main: 'shift', f: 'lp', w: 'w-24 mod-key mod-left' },
+          { id: 'z', main: 'Z', f: 'lp' },
+          { id: 'x', main: 'X', f: 'lr' },
+          { id: 'c', main: 'C', altgr: 'ç', f: 'lm' },
+          { id: 'v', main: 'V', f: 'li' },
+          { id: 'b', main: 'B', f: 'li' },
+          { id: 'n', main: 'N', f: 'ri' },
+          { id: 'm', main: 'M', f: 'ri' },
+          { id: ',', main: ',', sub: '<', f: 'rm' },
+          { id: '.', main: '.', sub: '>', f: 'rr' },
+          { id: '/', main: '/', sub: '?', f: 'rp' },
+          { id: 'ShiftRight', main: 'shift', f: 'rp', w: 'w-24 mod-key mod-right' }
+        ],
+        [
+          { id: 'CtrlLeft', main: 'ctrl', f: 'lp', w: 'w-ctrl mod-key mod-left' },
+          { id: 'AltLeft', main: 'alt', f: 'lth', w: 'w-alt mod-key mod-left' },
+          { id: ' ', main: '', f: 'rth', w: 'w-space' },
+          { id: 'AltGr', main: 'alt gr', f: 'rth', w: 'w-alt mod-key mod-right' },
+          { id: 'CtrlRight', main: 'ctrl', f: 'rp', w: 'w-ctrl mod-key mod-right' }
+        ]
+      ]
+    };
+
+    const LEFT_FINGERS = new Set(['lp', 'lr', 'lm', 'li', 'lth']);
+
+    /* =========================================================================
+       3. IN-MEMORY STATE (Zero Cookies, Zero localStorage/sessionStorage)
+       ========================================================================= */
+    const state = {
+      lang: 'en',            // 'en' | 'fr'
+      frVariant: 'ca',       // 'ca' | 'csa' | 'intl'
+      tier: 'explorer',      // 'explorer' | 'navigator' | 'champion'
+      moduleId: 1,           // 1..8
+      showHands: true,
+      soundEnabled: false,   // Muted by default for classrooms
+      text: '',
+      index: 0,
+      totalTyped: 0,
+      correctTyped: 0,
+      errors: 0,
+      streak: 0,
+      startTime: null,
+      timerId: null,
+      isComposing: false,
+      completed: false
+    };
+
+    /* =========================================================================
+       4. WEB AUDIO API GENTLE SOUND EFFECTS (Zero External Files)
+       ========================================================================= */
+    let audioCtx = null;
+
+    function playSound(kind) {
+      if (!state.soundEnabled) return;
+      try {
+        if (!audioCtx) {
+          const Ctx = window.AudioContext || window.webkitAudioContext;
+          if (!Ctx) return;
+          audioCtx = new Ctx();
+        }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const now = audioCtx.currentTime;
+
+        if (kind === 'click') {
+          const osc = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(560, now);
+          osc.frequency.exponentialRampToValueAtTime(300, now + 0.04);
+          g.gain.setValueAtTime(0.05, now);
+          g.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
+          osc.connect(g); g.connect(audioCtx.destination);
+          osc.start(now); osc.stop(now + 0.05);
+        } else if (kind === 'error') {
+          const osc = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(175, now);
+          osc.frequency.linearRampToValueAtTime(120, now + 0.1);
+          g.gain.setValueAtTime(0.08, now);
+          g.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
+          osc.connect(g); g.connect(audioCtx.destination);
+          osc.start(now); osc.stop(now + 0.12);
+        } else if (kind === 'win') {
+          [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
+            const osc = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            osc.type = 'sine';
+            const t = now + i * 0.09;
+            osc.frequency.setValueAtTime(freq, t);
+            g.gain.setValueAtTime(0.08, t);
+            g.gain.exponentialRampToValueAtTime(0.001, t + 0.34);
+            osc.connect(g); g.connect(audioCtx.destination);
+            osc.start(t); osc.stop(t + 0.35);
+          });
+        }
+      } catch (e) {
+        // Ignore audio restrictions silently
+      }
+    }
+
+    /* =========================================================================
+       5. DOM REFERENCES
+       ========================================================================= */
+    const dom = {
+      appTitle: document.getElementById('appTitle'),
+      privacyPill: document.getElementById('privacyPill'),
+      openModulesBtn: document.getElementById('openModulesBtn'),
+      currentModuleBtnText: document.getElementById('currentModuleBtnText'),
+      tierBtns: document.querySelectorAll('[data-tier]'),
+      langEnBtn: document.getElementById('langEnBtn'),
+      langFrBtn: document.getElementById('langFrBtn'),
+      openSheetBtn: document.getElementById('openSheetBtn'),
+      sheetBtnLabel: document.getElementById('sheetBtnLabel'),
+
+      promptCard: document.getElementById('promptCard'),
+      typingInput: document.getElementById('typingInput'),
+      streakPill: document.getElementById('streakPill'),
+      statStreak: document.getElementById('statStreak'),
+      fingerInstruction: document.getElementById('fingerInstruction'),
+      restartBtn: document.getElementById('restartBtn'),
+      promptStage: document.getElementById('promptStage'),
+      singleSubProgress: document.getElementById('singleSubProgress'),
+      focusPromptText: document.getElementById('focusPromptText'),
+      progressFill: document.getElementById('progressFill'),
+
+      keyboardDeck: document.getElementById('keyboardDeck'),
+      statWpm: document.getElementById('statWpm'),
+      statAcc: document.getElementById('statAcc'),
+      lblWpm: document.getElementById('lblWpm'),
+      lblAcc: document.getElementById('lblAcc'),
+      kbSettingsBtn: document.getElementById('kbSettingsBtn'),
+      kbSettingsLabel: document.getElementById('kbSettingsLabel'),
+      settingsPopover: document.getElementById('settingsPopover'),
+      closeSettingsBtn: document.getElementById('closeSettingsBtn'),
+      popSettingsTitle: document.getElementById('popSettingsTitle'),
+      popFrLayoutLabel: document.getElementById('popFrLayoutLabel'),
+      popHandsLabel: document.getElementById('popHandsLabel'),
+      popSoundLabel: document.getElementById('popSoundLabel'),
+      frLayoutRadios: document.querySelectorAll('input[name="frLayout"]'),
+      frLayoutLabels: document.querySelectorAll('.layout-radio'),
+      toggleHandsBtn: document.getElementById('toggleHandsBtn'),
+      toggleSoundBtn: document.getElementById('toggleSoundBtn'),
+      kbStage: document.getElementById('kbStage'),
+      keyboardRows: document.getElementById('keyboardRows'),
+      handsOverlaySvg: document.getElementById('handsOverlaySvg'),
+
+      modulesModal: document.getElementById('modulesModal'),
+      modModalTitle: document.getElementById('modModalTitle'),
+      modModalSub: document.getElementById('modModalSub'),
+      modGoalBanner: document.getElementById('modGoalBanner'),
+      moduleGrid: document.getElementById('moduleGrid'),
+      closeModulesBtn: document.getElementById('closeModulesBtn'),
+
+      summaryModal: document.getElementById('summaryModal'),
+      sumStars: document.getElementById('sumStars'),
+      sumTitle: document.getElementById('sumTitle'),
+      sumSub: document.getElementById('sumSub'),
+      sumRecordTitle: document.getElementById('sumRecordTitle'),
+      sumLblMod: document.getElementById('sumLblMod'),
+      sumLblPath: document.getElementById('sumLblPath'),
+      sumLblWpm: document.getElementById('sumLblWpm'),
+      sumLblAcc: document.getElementById('sumLblAcc'),
+      sumLblErr: document.getElementById('sumLblErr'),
+      sumLblStars: document.getElementById('sumLblStars'),
+      sumValMod: document.getElementById('sumValMod'),
+      sumValPath: document.getElementById('sumValPath'),
+      sumValWpm: document.getElementById('sumValWpm'),
+      sumValAcc: document.getElementById('sumValAcc'),
+      sumValErr: document.getElementById('sumValErr'),
+      sumValStars: document.getElementById('sumValStars'),
+      sumRetryBtn: document.getElementById('sumRetryBtn'),
+      sumNextBtn: document.getElementById('sumNextBtn'),
+
+      sheetModal: document.getElementById('sheetModal'),
+      sheetModalTitle: document.getElementById('sheetModalTitle'),
+      sheetModalSub: document.getElementById('sheetModalSub'),
+      closeSheetBtn: document.getElementById('closeSheetBtn'),
+      sheetCancelBtn: document.getElementById('sheetCancelBtn'),
+      sheetPrintBtn: document.getElementById('sheetPrintBtn'),
+      sheetPreviewContent: document.getElementById('sheetPreviewContent'),
+      printOnlySheet: document.getElementById('printOnlySheet'),
+      confettiCanvas: document.getElementById('confettiCanvas')
+    };
+
+    /* =========================================================================
+       6. ACTIVE LAYOUT & TARGET KEY / FINGER RESOLUTION ENGINE
+       ========================================================================= */
+    function getActiveLayoutKey() {
+      return state.lang === 'en' ? 'en' : `fr-${state.frVariant}`;
+    }
+
+    function getActiveLayout() {
+      return LAYOUTS[getActiveLayoutKey()];
+    }
+
+    /**
+     * Resolves a target character into:
+     * - primaryKey: key ID to highlight in cerulean blue
+     * - modKeys: modifier key IDs (ShiftLeft, ShiftRight, AltGr) to pulse
+     * - activeFingers: array of { finger, keyId } for SVG hand reach & glow
+     * - instructionHtml: friendly step-by-step guidance line
+     */
+    function resolveTargetChar(ch) {
+      const t = UI[state.lang];
+      const flat = getActiveLayout().flat();
+
+      if (ch === ' ') {
+        return {
+          primaryKey: ' ',
+          modKeys: [],
+          activeFingers: [{ finger: 'rth', keyId: ' ' }],
+          instructionHtml: t.useFingerTo(t.fingers.rth)
+        };
+      }
+
+      // Normalize curly apostrophe for lookup
+      const lookupChar = ch === '’' ? "'" : ch;
+
+      // French variant dead-key & accent mapping
+      if (state.lang === 'fr') {
+        const v = state.frVariant;
+
+        if (v === 'ca') {
+          const caMap = {
+            'é': { pk: 'é', f: 'rp' },
+            'É': { pk: 'é', f: 'rp', mod: 'ShiftLeft', modF: 'lp' },
+            'è': { pk: '`', f: 'rp', dead: '`', base: 'e' },
+            'È': { pk: '`', f: 'rp', dead: '`', base: 'E' },
+            'à': { pk: '`', f: 'rp', dead: '`', base: 'a' },
+            'À': { pk: '`', f: 'rp', dead: '`', base: 'A' },
+            'ù': { pk: '`', f: 'rp', dead: '`', base: 'u' },
+            'ê': { pk: '^', f: 'rp', dead: '^', base: 'e' },
+            'â': { pk: '^', f: 'rp', dead: '^', base: 'a' },
+            'î': { pk: '^', f: 'rp', dead: '^', base: 'i' },
+            'ô': { pk: '^', f: 'rp', dead: '^', base: 'o' },
+            'û': { pk: '^', f: 'rp', dead: '^', base: 'u' },
+            'ç': { pk: '¸', f: 'rp', dead: '¸', base: 'c' },
+            'Ç': { pk: '¸', f: 'rp', dead: '¸', base: 'C' },
+            'ë': { pk: '¸', f: 'rp', dead: 'Shift+¨', base: 'e', mod: 'ShiftLeft', modF: 'lp' }
+          };
+          if (caMap[lookupChar]) {
+            const m = caMap[lookupChar];
+            const mods = m.mod ? [m.mod] : [];
+            const fingers = [{ finger: m.f, keyId: m.pk }];
+            if (m.mod) fingers.push({ finger: m.modF, keyId: m.mod });
+            let html = t.useFingerTo(t.fingers[m.f]);
+            if (m.dead) html = t.deadKeyStep(m.dead, t.fingers[m.f], m.base);
+            else if (m.mod) html = t.useShiftTo(t.leftSide, t.fingers[m.f], lookupChar);
+            return { primaryKey: m.pk, modKeys: mods, activeFingers: fingers, instructionHtml: html };
+          }
+        } else if (v === 'csa') {
+          const csaMap = {
+            'é': { pk: 'é', f: 'rp' },
+            'É': { pk: 'é', f: 'rp', mod: 'ShiftLeft', modF: 'lp' },
+            'è': { pk: 'è', f: 'rp' },
+            'È': { pk: 'è', f: 'rp', mod: 'ShiftLeft', modF: 'lp' },
+            'ç': { pk: 'ç', f: 'rp' },
+            'Ç': { pk: 'ç', f: 'rp', mod: 'ShiftLeft', modF: 'lp' },
+            'ù': { pk: 'ù', f: 'rp' },
+            'à': { pk: 'è', f: 'rp', mod: 'AltGr', modF: 'rth', altgr: true },
+            'À': { pk: 'è', f: 'rp', mod: 'AltGr', modF: 'rth', altgr: true },
+            'ê': { pk: '^', f: 'rp', dead: '^', base: 'e' },
+            'â': { pk: '^', f: 'rp', dead: '^', base: 'a' },
+            'î': { pk: '^', f: 'rp', dead: '^', base: 'i' },
+            'ô': { pk: '^', f: 'rp', dead: '^', base: 'o' },
+            'ë': { pk: '^', f: 'rp', dead: 'Shift+¨', base: 'e', mod: 'ShiftLeft', modF: 'lp' }
+          };
+          if (csaMap[lookupChar]) {
+            const m = csaMap[lookupChar];
+            const mods = m.mod ? [m.mod] : [];
+            const fingers = [{ finger: m.f, keyId: m.pk }];
+            if (m.mod) fingers.push({ finger: m.modF, keyId: m.mod });
+            let html = t.useFingerTo(t.fingers[m.f]);
+            if (m.dead) html = t.deadKeyStep(m.dead, t.fingers[m.f], m.base);
+            else if (m.altgr) html = t.altGrStep(t.fingers[m.f], lookupChar);
+            else if (m.mod) html = t.useShiftTo(t.leftSide, t.fingers[m.f], lookupChar);
+            return { primaryKey: m.pk, modKeys: mods, activeFingers: fingers, instructionHtml: html };
+          }
+        } else if (v === 'intl') {
+          const intlMap = {
+            'é': { pk: "'", f: 'rp', dead: "'", base: 'e' },
+            'É': { pk: "'", f: 'rp', dead: "'", base: 'E' },
+            'è': { pk: '`', f: 'lp', dead: '`', base: 'e' },
+            'à': { pk: '`', f: 'lp', dead: '`', base: 'a' },
+            'À': { pk: '`', f: 'lp', dead: '`', base: 'A' },
+            'ù': { pk: '`', f: 'lp', dead: '`', base: 'u' },
+            'ê': { pk: '6', f: 'ri', dead: 'Shift+^', base: 'e', mod: 'ShiftLeft', modF: 'lp' },
+            'â': { pk: '6', f: 'ri', dead: 'Shift+^', base: 'a', mod: 'ShiftLeft', modF: 'lp' },
+            'ô': { pk: '6', f: 'ri', dead: 'Shift+^', base: 'o', mod: 'ShiftLeft', modF: 'lp' },
+            'î': { pk: '6', f: 'ri', dead: 'Shift+^', base: 'i', mod: 'ShiftLeft', modF: 'lp' },
+            'ç': { pk: 'c', f: 'lm', mod: 'AltGr', modF: 'rth', altgr: true },
+            'ë': { pk: "'", f: 'rp', dead: '"', base: 'e', mod: 'ShiftLeft', modF: 'lp' }
+          };
+          if (intlMap[lookupChar]) {
+            const m = intlMap[lookupChar];
+            const mods = m.mod ? [m.mod] : [];
+            const fingers = [{ finger: m.f, keyId: m.pk }];
+            if (m.mod) fingers.push({ finger: m.modF, keyId: m.mod });
+            let html = m.altgr
+              ? t.altGrStep(t.fingers[m.f], lookupChar)
+              : t.deadKeyStep(m.dead, t.fingers[m.f], m.base);
+            return { primaryKey: m.pk, modKeys: mods, activeFingers: fingers, instructionHtml: html };
+          }
+        }
+      }
+
+      // Direct unshifted key
+      const lower = lookupChar.toLowerCase();
+      const isUpper = lookupChar !== lower && lookupChar === lookupChar.toUpperCase();
+
+      const directKey = flat.find(k => k.id === lookupChar || (!isUpper && k.main && k.main.toLowerCase() === lookupChar && k.id.length === 1));
+      if (directKey && !isUpper) {
+        return {
+          primaryKey: directKey.id,
+          modKeys: [],
+          activeFingers: [{ finger: directKey.f, keyId: directKey.id }],
+          instructionHtml: t.useFingerTo(t.fingers[directKey.f])
+        };
+      }
+
+      // Shifted uppercase letter
+      if (isUpper) {
+        const baseKey = flat.find(k => k.id === lower);
+        if (baseKey) {
+          const rightShift = LEFT_FINGERS.has(baseKey.f);
+          const modId = rightShift ? 'ShiftRight' : 'ShiftLeft';
+          const modF = rightShift ? 'rp' : 'lp';
+          const side = rightShift ? t.rightSide : t.leftSide;
+          return {
+            primaryKey: baseKey.id,
+            modKeys: [modId],
+            activeFingers: [
+              { finger: baseKey.f, keyId: baseKey.id },
+              { finger: modF, keyId: modId }
+            ],
+            instructionHtml: t.useShiftTo(side, t.fingers[baseKey.f], lookupChar)
+          };
+        }
+      }
+
+      // Shifted symbol (k.sub)
+      const subKey = flat.find(k => k.sub === lookupChar);
+      if (subKey) {
+        const rightShift = LEFT_FINGERS.has(subKey.f);
+        const modId = rightShift ? 'ShiftRight' : 'ShiftLeft';
+        const modF = rightShift ? 'rp' : 'lp';
+        const side = rightShift ? t.rightSide : t.leftSide;
+        return {
+          primaryKey: subKey.id,
+          modKeys: [modId],
+          activeFingers: [
+            { finger: subKey.f, keyId: subKey.id },
+            { finger: modF, keyId: modId }
+          ],
+          instructionHtml: t.useShiftTo(side, t.fingers[subKey.f], lookupChar)
+        };
+      }
+
+      // AltGr symbol
+      const altKey = flat.find(k => k.altgr === lookupChar);
+      if (altKey) {
+        return {
+          primaryKey: altKey.id,
+          modKeys: ['AltGr'],
+          activeFingers: [
+            { finger: altKey.f, keyId: altKey.id },
+            { finger: 'rth', keyId: 'AltGr' }
+          ],
+          instructionHtml: t.altGrStep(t.fingers[altKey.f], lookupChar)
+        };
+      }
+
+      return {
+        primaryKey: null,
+        modKeys: [],
+        activeFingers: [],
+        instructionHtml: t.useFingerTo(t.fingers.ri)
+      };
+    }
+
+    /* =========================================================================
+       7. RENDERING FUNCTIONS (UI, KEYBOARD, SVG HANDS ANIMATION, PROMPT, SHEET)
+       ========================================================================= */
+    function isSingleKeyMode() {
+      const mod = MODULES.find(m => m.id === state.moduleId);
+      return Boolean(mod && mod.singleKeyIntro && state.tier === 'explorer');
+    }
+
+    function renderAllUI() {
+      const t = UI[state.lang];
+      const tierCfg = TIERS[state.tier];
+      const mod = MODULES.find(m => m.id === state.moduleId) || MODULES[0];
+
+      document.documentElement.lang = state.lang;
+      dom.appTitle.textContent = t.appTitle;
+      dom.privacyPill.textContent = t.privacy;
+      dom.currentModuleBtnText.textContent = `${t.modPrefix} ${mod.id}: ${mod[state.lang].title}`;
+      dom.sheetBtnLabel.textContent = t.sheetBtn;
+
+      dom.langEnBtn.classList.toggle('active', state.lang === 'en');
+      dom.langFrBtn.classList.toggle('active', state.lang === 'fr');
+
+      dom.tierBtns.forEach(b => {
+        b.textContent = t.tiers[b.dataset.tier];
+        b.classList.toggle('active', b.dataset.tier === state.tier);
+      });
+
+      dom.restartBtn.textContent = t.restart;
+      dom.focusPromptText.textContent = t.focusPrompt;
+      dom.lblWpm.textContent = t.wpm;
+      dom.lblAcc.textContent = t.accuracy;
+      dom.kbSettingsLabel.textContent = t.kbSettings;
+      dom.popSettingsTitle.textContent = t.kbSettings;
+      dom.popFrLayoutLabel.textContent = t.popFrLayout;
+      dom.popHandsLabel.textContent = t.popHands;
+      dom.popSoundLabel.textContent = t.popSound;
+
+      // Settings toggles
+      dom.toggleHandsBtn.classList.toggle('on', state.showHands);
+      dom.toggleHandsBtn.setAttribute('aria-checked', String(state.showHands));
+      dom.handsOverlaySvg.classList.toggle('hidden', !state.showHands);
+      dom.keyboardDeck.classList.toggle('hands-hidden', !state.showHands);
+
+      dom.toggleSoundBtn.classList.toggle('on', state.soundEnabled);
+      dom.toggleSoundBtn.setAttribute('aria-checked', String(state.soundEnabled));
+
+      // French variant radios
+      dom.frLayoutLabels.forEach(lbl => {
+        const isSel = lbl.dataset.frLayout === state.frVariant;
+        lbl.classList.toggle('selected', isSel);
+        lbl.querySelector('input').checked = isSel;
+      });
+
+      // Modals text
+      dom.modModalTitle.textContent = t.modModalTitle;
+      dom.modModalSub.textContent = t.modModalSub;
+      dom.modGoalBanner.textContent = t.goalFmt(tierCfg.goalWpm, tierCfg.goalAcc);
+
+      dom.sumRecordTitle.textContent = t.sumRecordTitle;
+      dom.sumLblMod.textContent = t.lblMod;
+      dom.sumLblPath.textContent = t.lblPath;
+      dom.sumLblWpm.textContent = t.lblSpeed;
+      dom.sumLblAcc.textContent = t.lblAcc;
+      dom.sumLblErr.textContent = t.lblErr;
+      dom.sumLblStars.textContent = t.lblStars;
+      dom.sumRetryBtn.textContent = t.practiceAgain;
+      dom.sumNextBtn.textContent = t.nextModule;
+
+      dom.sheetModalTitle.textContent = t.sheetModalTitle;
+      dom.sheetModalSub.textContent = t.sheetModalSub;
+      dom.sheetCancelBtn.textContent = t.close;
+      dom.sheetPrintBtn.textContent = t.printPdf;
+
+      renderModuleGrid();
+      renderKeyboard();
+      renderTrackingSheet();
+    }
+
+    function renderModuleGrid() {
+      const t = UI[state.lang];
+      dom.moduleGrid.innerHTML = '';
+
+      MODULES.forEach(mod => {
+        const info = mod[state.lang];
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'module-card' + (mod.id === state.moduleId ? ' active-mod' : '');
+        card.innerHTML = `
+          <div class="mod-card-top">
+            <span class="mod-num-badge">${t.modPrefix} ${mod.id}</span>
+          </div>
+          <div class="mod-card-title">${info.title}</div>
+          <div class="mod-card-desc">${info.desc}</div>
+          <div class="mod-card-keys">${info.keys}</div>
+        `;
+        card.addEventListener('click', () => {
+          state.moduleId = mod.id;
+          closeModal(dom.modulesModal);
+          renderAllUI();
+          loadModule();
+        });
+        dom.moduleGrid.appendChild(card);
+      });
+    }
+
+    function renderKeyboard() {
+      const layout = getActiveLayout();
+      dom.keyboardRows.innerHTML = '';
+
+      layout.forEach(row => {
+        const rowEl = document.createElement('div');
+        rowEl.className = 'kb-row';
+
+        row.forEach(k => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.tabIndex = -1;
+          btn.dataset.keyId = k.id;
+          btn.className = 'key'
+            + (k.w ? ` ${k.w}` : '')
+            + (k.sub ? ' has-sub' : '')
+            + (k.bump ? ' home-bump' : '');
+
+          let inner = '';
+          if (k.sub) inner += `<span class="k-sub">${k.sub}</span>`;
+          if (k.dead) inner += `<span class="k-dead-badge" title="Dead key"></span>`;
+          inner += `<span class="k-main">${k.main}</span>`;
+          if (k.altgr) inner += `<span class="k-altgr">${k.altgr}</span>`;
+          btn.innerHTML = inner;
+
+          // Accessible click/tap support on virtual keys
+          btn.addEventListener('pointerdown', e => {
+            e.preventDefault();
+            focusTypingInput();
+            if (k.id.length === 1) {
+              const target = state.text[state.index];
+              if (target && target.toLowerCase() === k.id.toLowerCase()) {
+                handleTypedChar(target);
+              } else {
+                handleTypedChar(k.id);
+              }
+            }
+          });
+
+          rowEl.appendChild(btn);
+        });
+
+        dom.keyboardRows.appendChild(rowEl);
+      });
+
+      requestAnimationFrame(() => {
+        measureKeyboardAnchors();
+        updateGuidesAndHands();
+      });
+    }
+
+    function renderPrompt() {
+      const t = UI[state.lang];
+      const tierCfg = TIERS[state.tier];
+      dom.promptStage.innerHTML = '';
+
+      if (isSingleKeyMode()) {
+        const curChar = state.text[state.index] || '';
+        const displayChar = curChar === ' ' ? t.spaceName : curChar.toUpperCase();
+        dom.promptStage.innerHTML = `
+          <div class="single-key-prompt">
+            <span>${t.typeThe}</span>
+            <span class="single-keycap-box pop">${displayChar}</span>
+            ${t.keyWord ? `<span>${t.keyWord}</span>` : ''}
+          </div>
+        `;
+        dom.singleSubProgress.style.display = 'block';
+        dom.singleSubProgress.textContent = t.stepCounter(Math.min(state.index + 1, state.text.length), state.text.length);
+      } else {
+        dom.singleSubProgress.style.display = 'none';
+        const wrap = document.createElement('div');
+        wrap.className = `text-prompt ${tierCfg.cssClass}`;
+        const frag = document.createDocumentFragment();
+        for (let i = 0; i < state.text.length; i++) {
+          const sp = document.createElement('span');
+          const ch = state.text[i];
+          sp.className = 'ch pending';
+          if (ch === ' ') {
+            sp.classList.add('space-char');
+            sp.textContent = ' ';
+          } else {
+            sp.textContent = ch;
+          }
+          frag.appendChild(sp);
+        }
+        wrap.appendChild(frag);
+        dom.promptStage.appendChild(wrap);
+        updateTextHighlight();
+      }
+
+      updateProgressBar();
+    }
+
+    function updateTextHighlight() {
+      const wrap = dom.promptStage.querySelector('.text-prompt');
+      if (!wrap) return;
+      const spans = wrap.children;
+      for (let i = 0; i < spans.length; i++) {
+        const sp = spans[i];
+        sp.classList.remove('done', 'current', 'pending');
+        if (i < state.index) {
+          sp.classList.add('done');
+          if (state.text[i] === ' ') sp.textContent = ' ';
+        } else if (i === state.index) {
+          sp.classList.add('current');
+          if (state.text[i] === ' ') sp.textContent = '␣';
+        } else {
+          sp.classList.add('pending');
+          if (state.text[i] === ' ') sp.textContent = ' ';
+        }
+      }
+    }
+
+    function updateProgressBar() {
+      const pct = state.text.length ? Math.round((state.index / state.text.length) * 100) : 0;
+      dom.progressFill.style.width = `${pct}%`;
+    }
+
+    /* =========================================================================
+       7B. UNIFIED ANATOMICAL SVG HAND RIG & SMOOTH ANIMATION ENGINE
+       ========================================================================= */
+    const FINGER_IDS = ['lp', 'lr', 'lm', 'li', 'lth', 'rth', 'ri', 'rm', 'rr', 'rp'];
+    const LEFT_FINGER_LIST = ['lp', 'lr', 'lm', 'li', 'lth'];
+    const RIGHT_FINGER_LIST = ['rth', 'ri', 'rm', 'rr', 'rp'];
+
+    // Anatomical width & knuckle depth specs per finger (in SVG 852x428 coordinates)
+    const FINGER_SPECS = {
+      lp:  { wBase: 19.5, wMid: 16.5, wTip: 13.5, knuckleDy: 78, knuckleDx: -5, nailLen: 14, nailW: 9.5 },
+      lr:  { wBase: 20.5, wMid: 17.5, wTip: 14.2, knuckleDy: 88, knuckleDx: -2, nailLen: 15, nailW: 10.2 },
+      lm:  { wBase: 21.5, wMid: 18.2, wTip: 14.8, knuckleDy: 93, knuckleDx: 0,  nailLen: 15.5, nailW: 10.8 },
+      li:  { wBase: 21.5, wMid: 18.2, wTip: 14.6, knuckleDy: 86, knuckleDx: 3,  nailLen: 15, nailW: 10.5 },
+      lth: { wBase: 24.5, wMid: 20.5, wTip: 16.0, knuckleDy: 0,  knuckleDx: 0,  nailLen: 15, nailW: 11.5, isThumb: true, side: -1 },
+      rth: { wBase: 24.5, wMid: 20.5, wTip: 16.0, knuckleDy: 0,  knuckleDx: 0,  nailLen: 15, nailW: 11.5, isThumb: true, side: 1 },
+      ri:  { wBase: 21.5, wMid: 18.2, wTip: 14.6, knuckleDy: 86, knuckleDx: -3, nailLen: 15, nailW: 10.5 },
+      rm:  { wBase: 21.5, wMid: 18.2, wTip: 14.8, knuckleDy: 93, knuckleDx: 0,  nailLen: 15.5, nailW: 10.8 },
+      rr:  { wBase: 20.5, wMid: 17.5, wTip: 14.2, knuckleDy: 88, knuckleDx: 2,  nailLen: 15, nailW: 10.2 },
+      rp:  { wBase: 19.5, wMid: 16.5, wTip: 13.5, knuckleDy: 78, knuckleDx: 5,  nailLen: 14, nailW: 9.5 }
+    };
+
+    const handRig = {
+      ready: false,
+      rafId: null,
+      palmL: { x: 0, y: 0, tx: 0, ty: 0 },
+      palmR: { x: 0, y: 0, tx: 0, ty: 0 },
+      fingers: {}
+    };
+
+    FINGER_IDS.forEach(id => {
+      handRig.fingers[id] = {
+        restX: 0, restY: 0,
+        knuckleX: 0, knuckleY: 0,
+        tipX: 0, tipY: 0,
+        targetX: 0, targetY: 0,
+        glow: 0, targetGlow: 0
+      };
+    });
+
+    function getKeySvgCenter(keyId) {
+      const svgRect = dom.handsOverlaySvg.getBoundingClientRect();
+      if (!svgRect.width || !svgRect.height) return null;
+      const keyEl = dom.keyboardRows.querySelector(`[data-key-id="${CSS.escape(keyId)}"]`);
+      if (!keyEl) return null;
+      const kr = keyEl.getBoundingClientRect();
+      return {
+        x: ((kr.left + kr.width / 2 - svgRect.left) / svgRect.width) * 852,
+        y: ((kr.top + kr.height / 2 - svgRect.top) / svgRect.height) * 428,
+        w: (kr.width / svgRect.width) * 852,
+        h: (kr.height / svgRect.height) * 428
+      };
+    }
+
+    function measureKeyboardAnchors() {
+      const homeKeys = {
+        lp: 'a', lr: 's', lm: 'd', li: 'f',
+        ri: 'j', rm: 'k', rr: 'l', rp: ';'
+      };
+
+      const space = getKeySvgCenter(' ');
+      if (!space) return;
+
+      Object.entries(homeKeys).forEach(([fid, kid]) => {
+        const c = getKeySvgCenter(kid);
+        if (!c) return;
+        const f = handRig.fingers[fid];
+        const spec = FINGER_SPECS[fid];
+        f.restX = c.x;
+        f.restY = c.y - 2;
+        f.knuckleX = c.x + spec.knuckleDx;
+        f.knuckleY = c.y + spec.knuckleDy;
+        if (!handRig.ready) {
+          f.tipX = f.targetX = f.restX;
+          f.tipY = f.targetY = f.restY;
+        }
+      });
+
+      // Anchor thumbs deep inside each hand's thenar eminence, arching naturally over Spacebar
+      const li = handRig.fingers.li;
+      const ri = handRig.fingers.ri;
+
+      const lth = handRig.fingers.lth;
+      lth.restX = space.x - space.w * 0.21;
+      lth.restY = space.y + 4;
+      lth.knuckleX = li.knuckleX - 18;
+      lth.knuckleY = li.knuckleY + 76;
+      if (!handRig.ready) {
+        lth.tipX = lth.targetX = lth.restX;
+        lth.tipY = lth.targetY = lth.restY;
+      }
+
+      const rth = handRig.fingers.rth;
+      rth.restX = space.x + space.w * 0.21;
+      rth.restY = space.y + 4;
+      rth.knuckleX = ri.knuckleX + 18;
+      rth.knuckleY = ri.knuckleY + 76;
+      if (!handRig.ready) {
+        rth.tipX = rth.targetX = rth.restX;
+        rth.tipY = rth.targetY = rth.restY;
+      }
+
+      handRig.ready = true;
+      renderHandFrame();
+    }
+
+    /**
+     * Builds a seamless anatomical Bezier finger silhouette anchored deep inside the palm.
+     * Returns { bodyPath, nailPath, gradPts } so 3D shading and fingernail orient automatically.
+     */
+    function buildAnatomicalFinger(bx, by, tx, ty, spec) {
+      const dx = tx - bx;
+      const dy = ty - by;
+      const dist = Math.max(26, Math.hypot(dx, dy));
+      const ux = dx / dist;
+      const uy = dy / dist;
+      // Perpendicular normal
+      const nx = -uy;
+      const ny = ux;
+
+      // Anchor root 22px deep into the palm silhouette so there is NEVER a knuckle gap
+      const rootX = bx - ux * 22;
+      const rootY = by - uy * 22;
+
+      const wRoot = spec.wBase + 3.5;
+      const wBase = spec.wBase;
+      const wMid = spec.wMid;
+      const wTip = spec.wTip;
+
+      // Key anatomical stations along the finger
+      const pMidX = bx + ux * (dist * 0.52);
+      const pMidY = by + uy * (dist * 0.52);
+      const tipCapBack = Math.min(wTip * 0.95, dist * 0.3);
+      const pShX = tx - ux * tipCapBack;
+      const pShY = ty - uy * tipCapBack;
+      const tipApexX = tx + ux * (wTip * 0.35);
+      const tipApexY = ty + uy * (wTip * 0.35);
+
+      const rLx = rootX + nx * wRoot, rLy = rootY + ny * wRoot;
+      const bLx = bx + nx * wBase,    bLy = by + ny * wBase;
+      const mLx = pMidX + nx * wMid,  mLy = pMidY + ny * wMid;
+      const sLx = pShX + nx * wTip,   sLy = pShY + ny * wTip;
+
+      const sRx = pShX - nx * wTip,   sRy = pShY - ny * wTip;
+      const mRx = pMidX - nx * wMid,  mRy = pMidY - ny * wMid;
+      const bRx = bx - nx * wBase,    bRy = by - ny * wBase;
+      const rRx = rootX - nx * wRoot, rRy = rootY - ny * wRoot;
+
+      // Smooth rounded fingertip dome
+      const c1Lx = sLx + ux * (tipCapBack * 0.95);
+      const c1Ly = sLy + uy * (tipCapBack * 0.95);
+      const c2Lx = tipApexX + nx * (wTip * 0.58);
+      const c2Ly = tipApexY + ny * (wTip * 0.58);
+
+      const c1Rx = tipApexX - nx * (wTip * 0.58);
+      const c1Ry = tipApexY - ny * (wTip * 0.58);
+      const c2Rx = sRx + ux * (tipCapBack * 0.95);
+      const c2Ry = sRy + uy * (tipCapBack * 0.95);
+
+      const bodyPath =
+        `M ${rLx.toFixed(1)},${rLy.toFixed(1)} ` +
+        `C ${bLx.toFixed(1)},${bLy.toFixed(1)} ${mLx.toFixed(1)},${mLy.toFixed(1)} ${sLx.toFixed(1)},${sLy.toFixed(1)} ` +
+        `C ${c1Lx.toFixed(1)},${c1Ly.toFixed(1)} ${c2Lx.toFixed(1)},${c2Ly.toFixed(1)} ${tipApexX.toFixed(1)},${tipApexY.toFixed(1)} ` +
+        `C ${c1Rx.toFixed(1)},${c1Ry.toFixed(1)} ${c2Rx.toFixed(1)},${c2Ry.toFixed(1)} ${sRx.toFixed(1)},${sRy.toFixed(1)} ` +
+        `C ${mRx.toFixed(1)},${mRy.toFixed(1)} ${bRx.toFixed(1)},${bRy.toFixed(1)} ${rRx.toFixed(1)},${rRy.toFixed(1)} Z`;
+
+      // Oriented realistic curved fingernail near the fingertip
+      const nTopX = tipApexX - ux * 3.5;
+      const nTopY = tipApexY - uy * 3.5;
+      const nBotX = nTopX - ux * spec.nailLen;
+      const nBotY = nTopY - uy * spec.nailLen;
+      const nw = spec.nailW;
+      const nwBot = spec.nailW * 0.84;
+
+      const nTLx = nTopX - ux * 4 + nx * nw,     nTLy = nTopY - uy * 4 + ny * nw;
+      const nTRx = nTopX - ux * 4 - nx * nw,     nTRy = nTopY - uy * 4 - ny * nw;
+      const nBLx = nBotX + nx * nwBot,           nBLy = nBotY + ny * nwBot;
+      const nBRx = nBotX - nx * nwBot,           nBRy = nBotY - ny * nwBot;
+
+      const nailPath =
+        `M ${nBLx.toFixed(1)},${nBLy.toFixed(1)} ` +
+        `L ${nTLx.toFixed(1)},${nTLy.toFixed(1)} ` +
+        `Q ${nTopX.toFixed(1)},${nTopY.toFixed(1)} ${nTRx.toFixed(1)},${nTRy.toFixed(1)} ` +
+        `L ${nBRx.toFixed(1)},${nBRy.toFixed(1)} ` +
+        `Q ${(nBotX - ux * 2.5).toFixed(1)},${(nBotY - uy * 2.5).toFixed(1)} ${nBLx.toFixed(1)},${nBLy.toFixed(1)} Z`;
+
+      return {
+        bodyPath,
+        nailPath,
+        cylX1: pMidX - nx * wBase, cylY1: pMidY - ny * wBase,
+        cylX2: pMidX + nx * wBase, cylY2: pMidY + ny * wBase,
+        glowX1: tipApexX, glowY1: tipApexY,
+        glowX2: bx,       glowY2: by
+      };
+    }
+
+    /**
+     * Builds an anatomically curved thumb arching naturally inward over the Spacebar.
+     */
+    function buildAnatomicalThumb(bx, by, tx, ty, spec) {
+      const side = spec.side; // -1 for left thumb, +1 for right thumb
+      const dx = tx - bx;
+      const dy = ty - by;
+      const dist = Math.max(30, Math.hypot(dx, dy));
+      const ux = dx / dist;
+      const uy = dy / dist;
+      const nx = -uy;
+      const ny = ux;
+
+      // Subtle inward organic bend along the thumb shaft
+      const bend = -side * 12;
+      const midX = (bx + tx) * 0.5 + nx * bend;
+      const midY = (by + ty) * 0.5 + ny * bend;
+
+      const rootX = bx - ux * 24;
+      const rootY = by - uy * 24;
+      const tipApexX = tx + ux * 6;
+      const tipApexY = ty + uy * 6;
+
+      const wRoot = spec.wBase + 6;
+      const wMid = spec.wMid;
+      const wTip = spec.wTip;
+
+      const pShX = tx - ux * 14;
+      const pShY = ty - uy * 14;
+
+      const rLx = rootX + nx * wRoot, rLy = rootY + ny * wRoot;
+      const mLx = midX + nx * wMid,   mLy = midY + ny * wMid;
+      const sLx = pShX + nx * wTip,   sLy = pShY + ny * wTip;
+
+      const sRx = pShX - nx * wTip,   sRy = pShY - ny * wTip;
+      const mRx = midX - nx * wMid,   mRy = midY - ny * wMid;
+      const rRx = rootX - nx * wRoot, rRy = rootY - ny * wRoot;
+
+      const bodyPath =
+        `M ${rLx.toFixed(1)},${rLy.toFixed(1)} ` +
+        `Q ${mLx.toFixed(1)},${mLy.toFixed(1)} ${sLx.toFixed(1)},${sLy.toFixed(1)} ` +
+        `C ${(sLx + ux * 13).toFixed(1)},${(sLy + uy * 13).toFixed(1)} ${(tipApexX + nx * 9).toFixed(1)},${(tipApexY + ny * 9).toFixed(1)} ${tipApexX.toFixed(1)},${tipApexY.toFixed(1)} ` +
+        `C ${(tipApexX - nx * 9).toFixed(1)},${(tipApexY - ny * 9).toFixed(1)} ${(sRx + ux * 13).toFixed(1)},${(sRy + uy * 13).toFixed(1)} ${sRx.toFixed(1)},${sRy.toFixed(1)} ` +
+        `Q ${mRx.toFixed(1)},${mRy.toFixed(1)} ${rRx.toFixed(1)},${rRy.toFixed(1)} Z`;
+
+      // Subtle angled thumbnail on the outer edge of the thumb tip
+      const nTopX = tipApexX - ux * 4;
+      const nTopY = tipApexY - uy * 4;
+      const nBotX = nTopX - ux * spec.nailLen;
+      const nBotY = nTopY - uy * spec.nailLen;
+      const nw = spec.nailW * 0.85;
+      const nailPath =
+        `M ${(nBotX + nx * nw * 0.7).toFixed(1)},${(nBotY + ny * nw * 0.7).toFixed(1)} ` +
+        `L ${(nTopX - ux * 3 + nx * nw).toFixed(1)},${(nTopY - uy * 3 + ny * nw).toFixed(1)} ` +
+        `Q ${nTopX.toFixed(1)},${nTopY.toFixed(1)} ${(nTopX - ux * 3 - nx * nw).toFixed(1)},${(nTopY - uy * 3 - ny * nw).toFixed(1)} ` +
+        `L ${(nBotX - nx * nw * 0.7).toFixed(1)},${(nBotY - ny * nw * 0.7).toFixed(1)} Z`;
+
+      return {
+        bodyPath,
+        nailPath,
+        cylX1: midX - nx * wMid, cylY1: midY - ny * wMid,
+        cylX2: midX + nx * wMid, cylY2: midY + ny * wMid,
+        glowX1: tipApexX, glowY1: tipApexY,
+        glowX2: bx,       glowY2: by
+      };
+    }
+
+    /**
+     * Dynamically constructs the unified Palm + Forearm silhouette directly from
+     * the 4 current knuckle coordinates so the fingers and palm are 100% seamless.
+     */
+    function buildPalmAndGrooves(isLeft, k0, k1, k2, k3, palmOffset) {
+      const s = isLeft ? 1 : -1; // +1 for left hand (k0=pinky left -> k3=index right)
+      // Outer knuckle edge (pinky side) & inner knuckle edge (index side)
+      const outX = k0.x - s * 20;
+      const outY = k0.y - 4;
+      const inX  = k3.x + s * 20.5;
+      const inY  = k3.y - 3;
+
+      // Forearm/wrist base at bottom of SVG (fades out cleanly via #wristFadeMask)
+      const wristOutX = k0.x - s * 36 + palmOffset.x * 0.25;
+      const wristInX  = k3.x - s * 22 + palmOffset.x * 0.25;
+      const wristY    = 432;
+
+      // Outer palm curve (hypothenar heel of hand)
+      const heelOutX = k0.x - s * 28;
+      const heelOutY = k0.y + 88;
+
+      // Inner thumb-web & thenar contour
+      const webX   = k3.x + s * 28;
+      const webY   = k3.y + 58;
+      const thenarX = k3.x + s * 14;
+      const thenarY = k3.y + 132;
+
+      const palmPath =
+        `M ${outX.toFixed(1)},${outY.toFixed(1)} ` +
+        `C ${k0.x.toFixed(1)},${(k0.y - 11).toFixed(1)} ${k1.x.toFixed(1)},${(k1.y - 12).toFixed(1)} ${((k1.x + k2.x) * 0.5).toFixed(1)},${((k1.y + k2.y) * 0.5 - 10).toFixed(1)} ` +
+        `C ${k2.x.toFixed(1)},${(k2.y - 12).toFixed(1)} ${k3.x.toFixed(1)},${(k3.y - 10).toFixed(1)} ${inX.toFixed(1)},${inY.toFixed(1)} ` +
+        `C ${(inX + s * 10).toFixed(1)},${(inY + 26).toFixed(1)} ${webX.toFixed(1)},${webY.toFixed(1)} ${thenarX.toFixed(1)},${thenarY.toFixed(1)} ` +
+        `C ${(thenarX - s * 18).toFixed(1)},${(thenarY + 34).toFixed(1)} ${(wristInX + s * 10).toFixed(1)},${(wristY - 46).toFixed(1)} ${wristInX.toFixed(1)},${wristY} ` +
+        `L ${wristOutX.toFixed(1)},${wristY} ` +
+        `C ${(wristOutX + s * 6).toFixed(1)},${(wristY - 62).toFixed(1)} ${heelOutX.toFixed(1)},${(heelOutY + 38).toFixed(1)} ${heelOutX.toFixed(1)},${heelOutY.toFixed(1)} ` +
+        `C ${(heelOutX + s * 2).toFixed(1)},${(heelOutY - 38).toFixed(1)} ${(outX - s * 4).toFixed(1)},${(outY + 26).toFixed(1)} ${outX.toFixed(1)},${outY.toFixed(1)} Z`;
+
+      // Subtle inter-knuckle shadow grooves for realistic 3D depth between fingers
+      const g1x = (k0.x + k1.x) * 0.5, g1y = (k0.y + k1.y) * 0.5;
+      const g2x = (k1.x + k2.x) * 0.5, g2y = (k1.y + k2.y) * 0.5;
+      const g3x = (k2.x + k3.x) * 0.5, g3y = (k2.y + k3.y) * 0.5;
+
+      const grooves =
+        `M ${g1x.toFixed(1)},${(g1y - 12).toFixed(1)} L ${(g1x - s * 2).toFixed(1)},${(g1y + 18).toFixed(1)} ` +
+        `M ${g2x.toFixed(1)},${(g2y - 13).toFixed(1)} L ${g2x.toFixed(1)},${(g2y + 20).toFixed(1)} ` +
+        `M ${g3x.toFixed(1)},${(g3y - 12).toFixed(1)} L ${(g3x + s * 2).toFixed(1)},${(g3y + 18).toFixed(1)}`;
+
+      return { palmPath, grooves };
+    }
+
+    function renderHandFrame() {
+      if (!handRig.ready) return;
+
+      // Update every finger path, 3D gradient orientation, fingernail, and cerulean glow
+      FINGER_IDS.forEach(fid => {
+        const f = handRig.fingers[fid];
+        const spec = FINGER_SPECS[fid];
+        const isLeft = LEFT_FINGER_LIST.includes(fid);
+        const palm = isLeft ? handRig.palmL : handRig.palmR;
+
+        const bx = f.knuckleX + palm.x;
+        const by = f.knuckleY + palm.y;
+
+        const geom = spec.isThumb
+          ? buildAnatomicalThumb(bx, by, f.tipX, f.tipY, spec)
+          : buildAnatomicalFinger(bx, by, f.tipX, f.tipY, spec);
+
+        const bodyEl = document.getElementById(`fPath-${fid}`);
+        const nailEl = document.getElementById(`fNail-${fid}`);
+        const fGrad  = document.getElementById(`fGrad-${fid}`);
+        const gGrad  = document.getElementById(`gGrad-${fid}`);
+        const gWrap  = document.getElementById(`glowWrap-${fid}`);
+        const gHalo  = document.getElementById(`gHalo-${fid}`);
+        const gCore  = document.getElementById(`gCore-${fid}`);
+
+        if (bodyEl) bodyEl.setAttribute('d', geom.bodyPath);
+        if (nailEl) nailEl.setAttribute('d', geom.nailPath);
+
+        if (fGrad) {
+          fGrad.setAttribute('x1', geom.cylX1.toFixed(1));
+          fGrad.setAttribute('y1', geom.cylY1.toFixed(1));
+          fGrad.setAttribute('x2', geom.cylX2.toFixed(1));
+          fGrad.setAttribute('y2', geom.cylY2.toFixed(1));
+        }
+
+        if (gWrap) {
+          gWrap.setAttribute('opacity', f.glow.toFixed(3));
+          if (f.glow > 0.01) {
+            if (gHalo) gHalo.setAttribute('d', geom.bodyPath);
+            if (gCore) gCore.setAttribute('d', geom.bodyPath);
+            if (gGrad) {
+              gGrad.setAttribute('x1', geom.glowX1.toFixed(1));
+              gGrad.setAttribute('y1', geom.glowY1.toFixed(1));
+              gGrad.setAttribute('x2', geom.glowX2.toFixed(1));
+              gGrad.setAttribute('y2', geom.glowY2.toFixed(1));
+            }
+          }
+        }
+      });
+
+      // Update unified Left Palm & Forearm
+      const pL = handRig.palmL;
+      const kL = ['lp', 'lr', 'lm', 'li'].map(id => ({
+        x: handRig.fingers[id].knuckleX + pL.x,
+        y: handRig.fingers[id].knuckleY + pL.y
+      }));
+      const leftPalm = buildPalmAndGrooves(true, kL[0], kL[1], kL[2], kL[3], pL);
+      document.getElementById('palmPath-L').setAttribute('d', leftPalm.palmPath);
+      document.getElementById('palmHighlight-L').setAttribute('d', leftPalm.palmPath);
+      document.getElementById('grooves-L').setAttribute('d', leftPalm.grooves);
+
+      // Update unified Right Palm & Forearm
+      const pR = handRig.palmR;
+      const kR = ['rp', 'rr', 'rm', 'ri'].map(id => ({
+        x: handRig.fingers[id].knuckleX + pR.x,
+        y: handRig.fingers[id].knuckleY + pR.y
+      }));
+      const rightPalm = buildPalmAndGrooves(false, kR[0], kR[1], kR[2], kR[3], pR);
+      document.getElementById('palmPath-R').setAttribute('d', rightPalm.palmPath);
+      document.getElementById('palmHighlight-R').setAttribute('d', rightPalm.palmPath);
+      document.getElementById('grooves-R').setAttribute('d', rightPalm.grooves);
+    }
+
+    function startHandAnimation() {
+      if (handRig.rafId) return;
+      function step() {
+        const ease = 0.24;
+        let moving = false;
+
+        // Smoothly ease palm follow-through
+        ['palmL', 'palmR'].forEach(pk => {
+          const p = handRig[pk];
+          const dx = p.tx - p.x;
+          const dy = p.ty - p.y;
+          if (Math.abs(dx) > 0.15 || Math.abs(dy) > 0.15) {
+            p.x += dx * ease;
+            p.y += dy * ease;
+            moving = true;
+          } else {
+            p.x = p.tx;
+            p.y = p.ty;
+          }
+        });
+
+        // Smoothly ease fingertips & active cerulean glow
+        FINGER_IDS.forEach(fid => {
+          const f = handRig.fingers[fid];
+          const dx = f.targetX - f.tipX;
+          const dy = f.targetY - f.tipY;
+          const dg = f.targetGlow - f.glow;
+          if (Math.abs(dx) > 0.15 || Math.abs(dy) > 0.15 || Math.abs(dg) > 0.01) {
+            f.tipX += dx * ease;
+            f.tipY += dy * ease;
+            f.glow += dg * 0.28;
+            moving = true;
+          } else {
+            f.tipX = f.targetX;
+            f.tipY = f.targetY;
+            f.glow = f.targetGlow;
+          }
+        });
+
+        renderHandFrame();
+
+        if (moving) {
+          handRig.rafId = requestAnimationFrame(step);
+        } else {
+          handRig.rafId = null;
+        }
+      }
+      handRig.rafId = requestAnimationFrame(step);
+    }
+
+    /**
+     * Highlights the active key(s) on the Chromebook keyboard and sets smooth
+     * anatomical reach + palm follow-through targets for the unified SVG hands.
+     */
+    function updateGuidesAndHands() {
+      // Reset keys
+      dom.keyboardRows.querySelectorAll('.key.target, .key.target-mod').forEach(el => {
+        el.classList.remove('target', 'target-mod');
+      });
+
+      // Reset all fingers to home-row resting targets
+      handRig.palmL.tx = 0; handRig.palmL.ty = 0;
+      handRig.palmR.tx = 0; handRig.palmR.ty = 0;
+      FINGER_IDS.forEach(fid => {
+        const f = handRig.fingers[fid];
+        f.targetX = f.restX;
+        f.targetY = f.restY;
+        f.targetGlow = 0;
+      });
+
+      if (state.completed || state.index >= state.text.length) {
+        dom.fingerInstruction.innerHTML = `<strong>${UI[state.lang].sumTitle}</strong>`;
+        if (handRig.ready) startHandAnimation();
+        return;
+      }
+
+      const targetChar = state.text[state.index];
+      const resolved = resolveTargetChar(targetChar);
+      dom.fingerInstruction.innerHTML = resolved.instructionHtml;
+
+      // Highlight primary key & modifiers
+      if (resolved.primaryKey) {
+        const pkEl = dom.keyboardRows.querySelector(`[data-key-id="${CSS.escape(resolved.primaryKey)}"]`);
+        if (pkEl) pkEl.classList.add('target');
+      }
+
+      resolved.modKeys.forEach(mk => {
+        const mkEl = dom.keyboardRows.querySelector(`[data-key-id="${CSS.escape(mk)}"]`);
+        if (mkEl) mkEl.classList.add('target-mod');
+      });
+
+      if (!handRig.ready) measureKeyboardAnchors();
+      if (!handRig.ready) return;
+
+      // Apply reach targets + natural 20% palm follow-through + subtle adjacent finger sympathy
+      const activeSet = new Set();
+      let leftReach = { dx: 0, dy: 0 };
+      let rightReach = { dx: 0, dy: 0 };
+
+      resolved.activeFingers.forEach(({ finger, keyId }) => {
+        const f = handRig.fingers[finger];
+        if (!f) return;
+        activeSet.add(finger);
+        f.targetGlow = 1;
+
+        const keyCenter = keyId ? getKeySvgCenter(keyId) : null;
+        if (keyCenter) {
+          // For Spacebar, aim thumb at its natural left/right side rather than dead center
+          let tx = keyCenter.x;
+          let ty = keyCenter.y;
+          if (keyId === ' ') {
+            tx = finger === 'lth' ? keyCenter.x - keyCenter.w * 0.16 : keyCenter.x + keyCenter.w * 0.16;
+            ty = keyCenter.y + 2;
+          }
+          f.targetX = tx;
+          f.targetY = ty;
+
+          const rdx = tx - f.restX;
+          const rdy = ty - f.restY;
+          if (LEFT_FINGER_LIST.includes(finger)) {
+            leftReach.dx += rdx;
+            leftReach.dy += rdy;
+          } else {
+            rightReach.dx += rdx;
+            rightReach.dy += rdy;
+          }
+        }
+      });
+
+      // Natural palm follow-through (~20% of reach vector, clamped for organic comfort)
+      handRig.palmL.tx = Math.max(-24, Math.min(24, leftReach.dx * 0.20));
+      handRig.palmL.ty = Math.max(-26, Math.min(20, leftReach.dy * 0.20));
+      handRig.palmR.tx = Math.max(-24, Math.min(24, rightReach.dx * 0.20));
+      handRig.palmR.ty = Math.max(-26, Math.min(20, rightReach.dy * 0.20));
+
+      // Subtle sympathetic shift on resting fingers of a reaching hand
+      LEFT_FINGER_LIST.forEach(fid => {
+        if (!activeSet.has(fid)) {
+          handRig.fingers[fid].targetX = handRig.fingers[fid].restX + handRig.palmL.tx * 0.45;
+          handRig.fingers[fid].targetY = handRig.fingers[fid].restY + handRig.palmL.ty * 0.45;
+        }
+      });
+      RIGHT_FINGER_LIST.forEach(fid => {
+        if (!activeSet.has(fid)) {
+          handRig.fingers[fid].targetX = handRig.fingers[fid].restX + handRig.palmR.tx * 0.45;
+          handRig.fingers[fid].targetY = handRig.fingers[fid].restY + handRig.palmR.ty * 0.45;
+        }
+      });
+
+      startHandAnimation();
+    }
+
+    function renderTrackingSheet() {
+      const p = UI[state.lang].print;
+      const t = UI[state.lang];
+      const rows = MODULES.map(m => `
+        <tr>
+          <td class="left-col">${t.modPrefix} ${m.id}: ${m[state.lang].title}</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>☆ ☆ ☆</td>
+          <td>☐</td>
+        </tr>
+      `).join('');
+
+      const html = `
+        <div class="ps-header">
+          <div class="ps-title">${p.title}</div>
+          <div class="ps-sub">${p.sub}</div>
+        </div>
+        <div class="ps-meta">
+          <div>${p.name}<span class="ps-line"></span></div>
+          <div>${p.date}<span class="ps-line" style="min-width:100px"></span></div>
+        </div>
+        <div class="ps-meta" style="margin-top:-4px">
+          <div>${p.lang}</div>
+          <div>${p.path}</div>
+        </div>
+        <table class="ps-table">
+          <thead>
+            <tr>
+              <th style="width:34%">${p.colMod}</th>
+              <th style="width:14%">${p.colDate}</th>
+              <th style="width:12%">${p.colWpm}</th>
+              <th style="width:14%">${p.colAcc}</th>
+              <th style="width:14%">${p.colStars}</th>
+              <th style="width:12%">${p.colNext}</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+        <div class="ps-footer-note">
+          <span>${p.footerL}</span>
+          <span>${p.footerR}</span>
+        </div>
+      `;
+
+      dom.sheetPreviewContent.innerHTML = html;
+      dom.printOnlySheet.innerHTML = html;
+    }
+
+    /* =========================================================================
+       8. TYPING ENGINE, LIVE METRICS & MODULE COMPLETION
+       ========================================================================= */
+    function loadModule() {
+      clearInterval(state.timerId);
+      state.timerId = null;
+
+      const mod = MODULES.find(m => m.id === state.moduleId) || MODULES[0];
+      state.text = mod[state.lang].drills[state.tier];
+      state.index = 0;
+      state.totalTyped = 0;
+      state.correctTyped = 0;
+      state.errors = 0;
+      state.streak = 0;
+      state.startTime = null;
+      state.completed = false;
+      dom.typingInput.value = '';
+
+      dom.statWpm.textContent = '—';
+      dom.statAcc.textContent = '—';
+      dom.statStreak.textContent = '0';
+      dom.streakPill.classList.remove('hot');
+
+      closeModal(dom.summaryModal);
+      renderPrompt();
+      updateGuidesAndHands();
+      focusTypingInput();
+    }
+
+    function computeStats() {
+      const acc = state.totalTyped === 0
+        ? 100
+        : Math.max(0, Math.round((state.correctTyped / state.totalTyped) * 100));
+
+      let wpm = 0;
+      if (state.startTime) {
+        const mins = (Date.now() - state.startTime) / 60000;
+        if (mins > 0.012) {
+          wpm = Math.round((state.correctTyped / 5) / mins);
+        }
+      }
+      return { wpm, acc };
+    }
+
+    function updateMetricsUI() {
+      if (state.totalTyped === 0) {
+        dom.statWpm.textContent = '—';
+        dom.statAcc.textContent = '—';
+      } else {
+        const { wpm, acc } = computeStats();
+        dom.statWpm.textContent = String(wpm);
+        dom.statAcc.textContent = `${acc}%`;
+      }
+      dom.statStreak.textContent = String(state.streak);
+    }
+
+    function charsMatch(typed, expected) {
+      if (typed === expected) return true;
+      if ((typed === "'" || typed === '’') && (expected === "'" || expected === '’')) return true;
+      if ((typed === '"' || typed === '«' || typed === '»') && (expected === '"' || expected === '«' || expected === '»')) return true;
+      return false;
+    }
+
+    function flashMistakeKey(ch) {
+      const lower = ch.toLowerCase();
+      const keyEl = dom.keyboardRows.querySelector(`[data-key-id="${CSS.escape(lower)}"]`)
+        || dom.keyboardRows.querySelector(`[data-key-id="${CSS.escape(ch)}"]`);
+      if (keyEl) {
+        keyEl.classList.add('mistake');
+        setTimeout(() => keyEl.classList.remove('mistake'), 260);
+      }
+    }
+
+    function handleTypedChar(ch) {
+      if (state.completed || isAnyModalOpen()) return;
+      if (!ch) return;
+
+      if (!state.startTime) {
+        state.startTime = Date.now();
+        state.timerId = setInterval(updateMetricsUI, 500);
+      }
+
+      const expected = state.text[state.index];
+      state.totalTyped++;
+
+      if (charsMatch(ch, expected)) {
+        state.correctTyped++;
+        state.streak++;
+        state.index++;
+        playSound('click');
+
+        if (state.streak >= 10) dom.streakPill.classList.add('hot');
+
+        if (isSingleKeyMode()) {
+          renderPrompt();
+        } else {
+          updateTextHighlight();
+          updateProgressBar();
+        }
+
+        updateMetricsUI();
+
+        if (state.index >= state.text.length) {
+          finishModule();
+        } else {
+          updateGuidesAndHands();
+        }
+      } else {
+        state.errors++;
+        state.streak = 0;
+        dom.streakPill.classList.remove('hot');
+        playSound('error');
+        flashMistakeKey(ch);
+        updateMetricsUI();
+
+        dom.promptCard.classList.remove('error-shake');
+        void dom.promptCard.offsetWidth;
+        dom.promptCard.classList.add('error-shake');
+        setTimeout(() => dom.promptCard.classList.remove('error-shake'), 250);
+      }
+    }
+
+    function finishModule() {
+      state.completed = true;
+      clearInterval(state.timerId);
+      state.timerId = null;
+
+      const { wpm, acc } = computeStats();
+      const tierCfg = TIERS[state.tier];
+      const t = UI[state.lang];
+
+      let stars = 1;
+      if (acc >= tierCfg.goalAcc && wpm >= tierCfg.goalWpm) {
+        stars = 3;
+      } else if (acc >= tierCfg.goalAcc - 4 && wpm >= Math.round(tierCfg.goalWpm * 0.6)) {
+        stars = 2;
+      }
+
+      playSound('win');
+      if (stars >= 2) launchConfetti();
+      updateGuidesAndHands();
+
+      dom.sumTitle.textContent = t.sumTitle;
+      dom.sumSub.textContent = stars === 3 ? t.sumSub3 : (stars === 2 ? t.sumSub2 : t.sumSub1);
+
+      dom.sumStars.querySelectorAll('.star-icon').forEach((el, idx) => {
+        el.classList.remove('earned');
+        if (idx < stars) {
+          el.style.animationDelay = `${idx * 0.12}s`;
+          el.classList.add('earned');
+        }
+      });
+
+      dom.sumValMod.textContent = String(state.moduleId);
+      dom.sumValPath.textContent = t.tiers[state.tier];
+      dom.sumValWpm.textContent = `${wpm} ${t.wpm}`;
+      dom.sumValAcc.textContent = `${acc}%`;
+      dom.sumValErr.textContent = String(state.errors);
+      dom.sumValStars.textContent = `${stars} / 3 ★`;
+
+      dom.sumNextBtn.style.display = state.moduleId < MODULES.length ? 'inline-flex' : 'none';
+      openModal(dom.summaryModal);
+    }
+
+    /* =========================================================================
+       9. CONFETTI CELEBRATION (Pure Canvas)
+       ========================================================================= */
+    function launchConfetti() {
+      const c = dom.confettiCanvas;
+      const ctx = c.getContext('2d');
+      if (!ctx) return;
+
+      c.width = window.innerWidth;
+      c.height = window.innerHeight;
+
+      const colors = ['#2b8ee5', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6'];
+      const parts = Array.from({ length: 80 }, () => ({
+        x: Math.random() * c.width,
+        y: -20 - Math.random() * 120,
+        w: 7 + Math.random() * 5,
+        h: 4 + Math.random() * 4,
+        col: colors[Math.floor(Math.random() * colors.length)],
+        vx: (Math.random() - 0.5) * 4,
+        vy: 3 + Math.random() * 3.5,
+        rot: Math.random() * 360,
+        vr: (Math.random() - 0.5) * 9
+      }));
+
+      let frames = 0;
+      function tick() {
+        ctx.clearRect(0, 0, c.width, c.height);
+        let alive = false;
+        parts.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.055;
+          p.rot += p.vr;
+          if (p.y < c.height + 20) alive = true;
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot * Math.PI / 180);
+          ctx.fillStyle = p.col;
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.restore();
+        });
+        frames++;
+        if (alive && frames < 150) requestAnimationFrame(tick);
+        else ctx.clearRect(0, 0, c.width, c.height);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    /* =========================================================================
+       10. INPUT HANDLING & MODAL HELPERS (Seamless Chromebook IME + Dead Keys)
+       ========================================================================= */
+    function isAnyModalOpen() {
+      return dom.modulesModal.classList.contains('open')
+        || dom.summaryModal.classList.contains('open')
+        || dom.sheetModal.classList.contains('open');
+    }
+
+    function openModal(el) {
+      el.classList.add('open');
+    }
+
+    function closeModal(el) {
+      el.classList.remove('open');
+      if (!isAnyModalOpen()) focusTypingInput();
+    }
+
+    function focusTypingInput() {
+      if (!isAnyModalOpen()) {
+        dom.typingInput.focus({ preventScroll: true });
+      }
+    }
+
+    dom.typingInput.addEventListener('focus', () => dom.promptCard.classList.add('focused'));
+    dom.typingInput.addEventListener('blur', () => dom.promptCard.classList.remove('focused'));
+    dom.promptCard.addEventListener('click', focusTypingInput);
+
+    // Dead-key composition handling for Chromebook Canadian French accents
+    dom.typingInput.addEventListener('compositionstart', () => {
+      state.isComposing = true;
+    });
+
+    dom.typingInput.addEventListener('compositionend', e => {
+      state.isComposing = false;
+      const val = e.data || dom.typingInput.value;
+      dom.typingInput.value = '';
+      if (val) {
+        for (const ch of val) handleTypedChar(ch);
+      }
+    });
+
+    dom.typingInput.addEventListener('input', () => {
+      if (state.isComposing) return;
+      const val = dom.typingInput.value;
+      dom.typingInput.value = '';
+      if (val) {
+        for (const ch of val) handleTypedChar(ch);
+      }
+    });
+
+    // Prevent Spacebar / Backspace scrolling or navigation outside inputs
+    document.addEventListener('keydown', e => {
+      if (isAnyModalOpen()) {
+        if (e.key === 'Escape') {
+          closeModal(dom.modulesModal);
+          closeModal(dom.summaryModal);
+          closeModal(dom.sheetModal);
+        }
+        return;
+      }
+
+      if (e.key === ' ' && document.activeElement !== dom.typingInput) {
+        e.preventDefault();
+      }
+      if (e.key === 'Backspace' && document.activeElement !== dom.typingInput) {
+        e.preventDefault();
+      }
+
+      if (!e.ctrlKey && !e.metaKey && !e.altKey && document.activeElement !== dom.typingInput) {
+        if (e.key.length === 1 || e.key === 'Dead') {
+          focusTypingInput();
+        }
+      }
+    });
+
+    /* =========================================================================
+       11. UI EVENT LISTENERS
+       ========================================================================= */
+    dom.langEnBtn.addEventListener('click', () => {
+      if (state.lang === 'en') return;
+      state.lang = 'en';
+      renderAllUI();
+      loadModule();
+    });
+
+    dom.langFrBtn.addEventListener('click', () => {
+      if (state.lang === 'fr') return;
+      state.lang = 'fr';
+      renderAllUI();
+      loadModule();
+    });
+
+    dom.tierBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const nextTier = btn.dataset.tier;
+        if (state.tier === nextTier) return;
+        state.tier = nextTier;
+        renderAllUI();
+        loadModule();
+      });
+    });
+
+    dom.restartBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      loadModule();
+    });
+
+    // Keyboard Settings Popover
+    function setSettingsOpen(open) {
+      dom.settingsPopover.classList.toggle('open', open);
+      dom.kbSettingsBtn.setAttribute('aria-expanded', String(open));
+    }
+
+    dom.kbSettingsBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      setSettingsOpen(!dom.settingsPopover.classList.contains('open'));
+    });
+
+    dom.closeSettingsBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      setSettingsOpen(false);
+      focusTypingInput();
+    });
+
+    document.addEventListener('click', e => {
+      if (!dom.settingsPopover.contains(e.target) && e.target !== dom.kbSettingsBtn) {
+        setSettingsOpen(false);
+      }
+    });
+
+    dom.frLayoutRadios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        state.frVariant = radio.value;
+        // If user selects a French layout while in English, automatically switch to French so they see it immediately
+        if (state.lang !== 'fr') {
+          state.lang = 'fr';
+          renderAllUI();
+          loadModule();
+        } else {
+          renderAllUI();
+        }
+      });
+    });
+
+    dom.toggleHandsBtn.addEventListener('click', () => {
+      state.showHands = !state.showHands;
+      renderAllUI();
+    });
+
+    dom.toggleSoundBtn.addEventListener('click', () => {
+      state.soundEnabled = !state.soundEnabled;
+      renderAllUI();
+      if (state.soundEnabled) playSound('click');
+    });
+
+    // Modals
+    dom.openModulesBtn.addEventListener('click', () => openModal(dom.modulesModal));
+    dom.closeModulesBtn.addEventListener('click', () => closeModal(dom.modulesModal));
+    dom.modulesModal.addEventListener('click', e => { if (e.target === dom.modulesModal) closeModal(dom.modulesModal); });
+
+    dom.openSheetBtn.addEventListener('click', () => {
+      renderTrackingSheet();
+      openModal(dom.sheetModal);
+    });
+    dom.closeSheetBtn.addEventListener('click', () => closeModal(dom.sheetModal));
+    dom.sheetCancelBtn.addEventListener('click', () => closeModal(dom.sheetModal));
+    dom.sheetModal.addEventListener('click', e => { if (e.target === dom.sheetModal) closeModal(dom.sheetModal); });
+    dom.sheetPrintBtn.addEventListener('click', () => window.print());
+
+    dom.sumRetryBtn.addEventListener('click', () => loadModule());
+    dom.sumNextBtn.addEventListener('click', () => {
+      if (state.moduleId < MODULES.length) {
+        state.moduleId++;
+        renderAllUI();
+        loadModule();
+      }
+    });
+
+    // Recalculate SVG finger alignment on window resize
+    window.addEventListener('resize', () => {
+      measureKeyboardAnchors();
+      updateGuidesAndHands();
+    });
+
+    /* =========================================================================
+       12. INITIALIZE APPLICATION
+       ========================================================================= */
+    window.addEventListener('load', () => {
+      renderAllUI();
+      loadModule();
+    });
+  </script>
+</body>
+</html>
