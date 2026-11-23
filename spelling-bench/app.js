@@ -17,6 +17,22 @@
         { id: 'list-family', name: 'Family & Home', words: ['mom', 'dad', 'home', 'book', 'lamp', 'desk'] }
       ];
 
+      // Original word selections for short-vowel practice. Lesson numbers refer to the UFLI Foundations scope and sequence.
+      const VOWEL_LISTS = [
+        { id: 'short-a', name: 'Short A', vowel: 'a', lesson: '35a', words: ['cat', 'mat', 'bag', 'tap', 'hat', 'cap', 'lap', 'sad'] },
+        { id: 'short-e', name: 'Short E', vowel: 'e', lesson: '40a', words: ['red', 'pen', 'net', 'bed', 'pet', 'hen', 'leg', 'web'] },
+        { id: 'short-i', name: 'Short I', vowel: 'i', lesson: '36a', words: ['pig', 'sit', 'fin', 'lip', 'kit', 'dip', 'rib', 'win'] },
+        { id: 'short-o', name: 'Short O', vowel: 'o', lesson: '37a', words: ['dog', 'pot', 'hop', 'log', 'cot', 'mop', 'nod', 'top'] },
+        { id: 'short-u', name: 'Short U', vowel: 'u', lesson: '15 / 39a', words: ['sun', 'cup', 'mud', 'nut', 'pup', 'cut', 'fun', 'sum'] },
+        { id: 'first-words', name: 'First VC and CVC words', lesson: '5', words: ['at', 'sat', 'am', 'mat'] },
+        { id: 'vc-starter', name: 'Two-sound VC words', lesson: '19', words: ['at', 'in', 'on', 'up', 'it', 'am', 'us'] },
+        { id: 'mix-a-i', name: 'Mix A and I', lesson: '10', words: ['mat', 'sit', 'tap', 'fin', 'sat', 'pin', 'map', 'fit'] },
+        { id: 'am-an', name: 'Words with am and an', lesson: '11', words: ['am', 'an', 'man', 'pan', 'fan', 'tan'] },
+        { id: 'mix-a-i-o', name: 'Mix A, I and O', lesson: '38a', words: ['hat', 'hit', 'hot', 'pat', 'pit', 'pot', 'tap', 'tip', 'top'] },
+        { id: 'mixed-vowels', name: 'Mix all five vowels', lesson: '41a', words: ['cat', 'pin', 'hop', 'cup', 'net', 'log', 'sun', 'lip', 'pet', 'map'] }
+      ];
+      const PRESET_LISTS = [...BUILTIN_LISTS, ...VOWEL_LISTS];
+
       // Rack layouts (2 rows x 14 = 28 slots, last slot is 123- toggle)
       const RACK_ALPHABETICAL = [
         'a','b','c','d','e','f','g','h','i','j','k','l','m','n',
@@ -64,7 +80,7 @@
       let returnFocus;
       let modalState = {
         type: null, // 'lists' | 'reports' | 'settings'
-        listsTab: 'builtin',
+        listsTab: 'vowels',
         editingListId: null,
         selectedReportId: null,
         confirmDeleteId: null
@@ -92,7 +108,7 @@
           if(!users.length)users.push(...def.users);
           return {
             settings: {...def.settings, ...(parsed.settings || {})},
-            activeListId:[...BUILTIN_LISTS,...lists].some(l=>l.id===parsed.activeListId)?parsed.activeListId:def.activeListId,
+            activeListId:[...PRESET_LISTS,...lists].some(l=>l.id===parsed.activeListId)?parsed.activeListId:def.activeListId,
             activeUserId:users.some(u=>u.id===parsed.activeUserId)?parsed.activeUserId:users[0].id,
             customLists:lists, users
           };
@@ -109,7 +125,7 @@
       }
 
       function getAllLists() {
-        return [...BUILTIN_LISTS, ...state.customLists];
+        return [...PRESET_LISTS, ...state.customLists];
       }
 
       function getActiveList() {
@@ -242,7 +258,7 @@
       function playClip(key, token){
         const clip=SPEECH_CLIPS[key];
         if(!clip || token!==speechId)return false;
-        const player=narration ||= new Audio(window.BENCH_AUDIO || 'assets/spelling-audio.mp3');
+        const player=narration ||= new Audio(window.BENCH_AUDIO || 'assets/spelling-audio.mp3?v=2');
         function begin(){
           if(token!==speechId)return;
           player.currentTime=clip[0];
@@ -514,7 +530,23 @@
       /* ========================================================================
          TOP BAR SYNC
          ======================================================================== */
+      function updateListAddress(showPicker = false) {
+        // The address bar can be shared without including learner names or custom lists.
+        const address = new URL(location.href);
+        if (!showPicker && VOWEL_LISTS.some(list => list.id === state.activeListId)) {
+          address.searchParams.set('list', state.activeListId);
+        } else {
+          address.searchParams.delete('list');
+        }
+        if (showPicker) address.searchParams.set('lists', 'vowels');
+        else address.searchParams.delete('lists');
+        if (address.href !== location.href && /^https?:$/.test(location.protocol)) {
+          try { history.replaceState(history.state, '', address); } catch { /* Embedded games can restrict URL changes. */ }
+        }
+      }
+
       function updateTopbar() {
+        updateListAddress(modalState.type === 'lists' && modalState.listsTab === 'vowels');
         document.getElementById('topModeTitle').textContent = 'Spelling Bench';
         document.getElementById('topListLabel').textContent = getActiveList().name;
         document.getElementById('topUserName').textContent = getActiveUser().name;
@@ -1413,6 +1445,7 @@
       function closeModal() {
         document.getElementById('modalBackdrop').classList.remove('open');
         modalState.type = null;
+        updateListAddress();
         document.querySelector('.app-shell').inert=false;
         (returnFocus?.isConnected?returnFocus:document.getElementById('btnHome')).focus();
       }
@@ -1432,12 +1465,38 @@
         }
       }
 
+      function renderVowelPicker(activeId) {
+        const link = list => {
+          const active = list.id === activeId ? ' aria-current="true"' : '';
+          const sample = list.words.slice(0, 3).join(', ');
+          return `<a class="vowel-choice" href="?list=${list.id}" data-pick-list="${list.id}"${active}>
+            ${list.vowel ? `<span class="vowel-tile" aria-hidden="true">${list.vowel}</span>` : ''}
+            <span class="vowel-description"><strong>${list.name}</strong>
+              <span>${sample}</span><small>Lesson ${list.lesson}</small></span>
+          </a>`;
+        };
+        return `<section class="vowel-section" aria-labelledby="vowelSingleTitle">
+            <h3 id="vowelSingleTitle">Choose one short vowel</h3>
+            <div class="vowel-grid">${VOWEL_LISTS.filter(list => list.vowel).map(link).join('')}</div>
+          </section>
+          <section class="vowel-section" aria-labelledby="vowelReviewTitle">
+            <h3 id="vowelReviewTitle">Starters and mixed practice</h3>
+            <div class="vowel-reviews">${VOWEL_LISTS.filter(list => !list.vowel).map(link).join('')}</div>
+          </section>
+          <p class="vowel-source">Spelling Bench word lists follow the
+            <a href="https://ufli.education.ufl.edu/wp-content/uploads/2022/06/UFLI-Scope2.pdf" target="_blank" rel="noopener noreferrer">UFLI Foundations lesson sequence</a>.
+          </p>`;
+      }
+
       function renderListsModal(container) {
         const tab = modalState.listsTab;
         const activeId = state.activeListId;
+        updateListAddress(tab === 'vowels');
 
         let content = '';
-        if (tab === 'builtin') {
+        if (tab === 'vowels') {
+          content = renderVowelPicker(activeId);
+        } else if (tab === 'builtin') {
           content = BUILTIN_LISTS.map(l => {
             const isSel = l.id === activeId;
             return `
@@ -1501,23 +1560,36 @@
 
         container.innerHTML = `
           <div class="modal-tabs">
-            <button class="m-tab ${tab === 'builtin' ? 'active' : ''}" id="tabBuiltin">Built-in Lists (${BUILTIN_LISTS.length})</button>
-            <button class="m-tab ${tab === 'custom' ? 'active' : ''}" id="tabCustom">My Lists (${state.customLists.length})</button>
+            <button class="m-tab ${tab === 'vowels' ? 'active' : ''}" data-list-tab="vowels" aria-pressed="${tab === 'vowels'}">Short vowels</button>
+            <button class="m-tab ${tab === 'builtin' ? 'active' : ''}" data-list-tab="builtin" aria-pressed="${tab === 'builtin'}">Other lists</button>
+            <button class="m-tab ${tab === 'custom' ? 'active' : ''}" data-list-tab="custom" aria-pressed="${tab === 'custom'}">My lists (${state.customLists.length})</button>
           </div>
           ${content}
         `;
 
-        document.getElementById('tabBuiltin').addEventListener('click', () => { modalState.listsTab = 'builtin'; renderModal(); });
-        document.getElementById('tabCustom').addEventListener('click', () => { modalState.listsTab = 'custom'; renderModal(); });
+        container.querySelectorAll('[data-list-tab]').forEach(tabButton => {
+          tabButton.addEventListener('click', () => {
+            modalState.listsTab = tabButton.dataset.listTab;
+            renderModal();
+            container.scrollTop = 0;
+            container.querySelector('[aria-pressed="true"]').focus({preventScroll:true});
+          });
+        });
 
         container.querySelectorAll('[data-pick-list]').forEach(btn => {
-          btn.addEventListener('click', () => {
-            if(state.activeListId===btn.dataset.pickList){closeModal();return}
+          btn.addEventListener('click', event => {
+            const vowelLink = btn.tagName === 'A';
+            if (vowelLink && (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey)) return;
+            event.preventDefault();
+            const launchPractice = vowelLink && (currentScreen === 'home' || currentScreen === 'movable');
+            if (state.activeListId === btn.dataset.pickList && !launchPractice) { closeModal(); return; }
             state.activeListId = btn.dataset.pickList;
             saveState();
             updateTopbar();
             showToast(`Loaded "${getActiveList().name}"`);
-            if (currentScreen === 'practice' || currentScreen === 'scrambled' || currentScreen === 'quiz') {
+            if (launchPractice) {
+              startActivity('practice', false);
+            } else if (currentScreen === 'practice' || currentScreen === 'scrambled' || currentScreen === 'quiz') {
               startActivity(currentScreen, false);
             } else if (currentScreen === 'home') {
               renderHome();
@@ -1821,7 +1893,7 @@
         if (modalState.type !== null) {
           if (e.key === 'Escape') closeModal();
           if(e.key==='Tab'){
-            const nodes=[...document.querySelectorAll('#modalBackdrop button:not(:disabled),#modalBackdrop input,#modalBackdrop textarea')];
+            const nodes=[...document.querySelectorAll('#modalBackdrop button:not(:disabled),#modalBackdrop a[href],#modalBackdrop input,#modalBackdrop textarea')];
             if(e.shiftKey && (document.activeElement===nodes[0] || !nodes.includes(document.activeElement))){e.preventDefault();nodes.at(-1)?.focus()}
             if(!e.shiftKey && document.activeElement===nodes.at(-1)){e.preventDefault();nodes[0]?.focus()}
           }
@@ -1894,6 +1966,12 @@
         if (e.target.id === 'modalBackdrop') closeModal();
       });
 
-      // Launch directly into Activity 1: Word Practice on "Three-letter words" ("bag")
+      const query = new URLSearchParams(location.search);
+      const linkedList = VOWEL_LISTS.find(list => list.id === query.get('list'));
+      if (linkedList) {
+        state.activeListId = linkedList.id;
+        saveState();
+      }
       startActivity('practice', false);
+      if (query.get('lists') === 'vowels') openModal('lists');
     })();
