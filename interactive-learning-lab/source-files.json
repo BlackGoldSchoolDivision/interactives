@@ -666,14 +666,14 @@
     "soundstructurespell": {
       "kind": "html",
       "title": "Sound, Structure, Spell",
-      "credit": "",
+      "credit": "Adapted from the student workbook by Dr. Shelley Blackwell.",
       "category": "Reading & writing",
       "versions": [
         {
           "label": "Sound, Structure, Spell",
           "repo": "Maltais239/interactives",
-          "path": "soundstructurespell/index.html",
-          "url": "https://maltais239.github.io/interactives/soundstructurespell/"
+          "path": "sound-structure-spell/index.html",
+          "url": "https://maltais239.github.io/interactives/sound-structure-spell/"
         }
       ]
     },
@@ -11487,6 +11487,112 @@
       {
         "path": "fretwork-classroom/index.html",
         "bytes": 217263
+      }
+    ],
+    "Maltais239/interactives/sound-structure-spell": [
+      {
+        "path": "sound-structure-spell/README.md",
+        "bytes": 1645
+      },
+      {
+        "path": "sound-structure-spell/app.js",
+        "bytes": 22539
+      },
+      {
+        "path": "sound-structure-spell/assets/OFL.txt",
+        "bytes": 4404
+      },
+      {
+        "path": "sound-structure-spell/assets/audio/ed.mp3",
+        "bytes": 145676
+      },
+      {
+        "path": "sound-structure-spell/assets/audio/final-ch.mp3",
+        "bytes": 174724
+      },
+      {
+        "path": "sound-structure-spell/assets/audio/final-j.mp3",
+        "bytes": 181725
+      },
+      {
+        "path": "sound-structure-spell/assets/audio/final-k.mp3",
+        "bytes": 185173
+      },
+      {
+        "path": "sound-structure-spell/assets/audio/ing.mp3",
+        "bytes": 123002
+      },
+      {
+        "path": "sound-structure-spell/assets/audio/ly.mp3",
+        "bytes": 168559
+      },
+      {
+        "path": "sound-structure-spell/assets/audio/plurals.mp3",
+        "bytes": 122584
+      },
+      {
+        "path": "sound-structure-spell/assets/audio/sound-c.mp3",
+        "bytes": 191129
+      },
+      {
+        "path": "sound-structure-spell/assets/audio/sound-g.mp3",
+        "bytes": 181934
+      },
+      {
+        "path": "sound-structure-spell/assets/audio/vce.mp3",
+        "bytes": 189457
+      },
+      {
+        "path": "sound-structure-spell/assets/audio/vowel-teams.mp3",
+        "bytes": 127913
+      },
+      {
+        "path": "sound-structure-spell/assets/blocks.webp",
+        "bytes": 10726
+      },
+      {
+        "path": "sound-structure-spell/assets/book.webp",
+        "bytes": 19814
+      },
+      {
+        "path": "sound-structure-spell/assets/bricolage.woff",
+        "bytes": 177508
+      },
+      {
+        "path": "sound-structure-spell/assets/pencil.webp",
+        "bytes": 4340
+      },
+      {
+        "path": "sound-structure-spell/audio-index.js",
+        "bytes": 7368
+      },
+      {
+        "path": "sound-structure-spell/data.js",
+        "bytes": 30611
+      },
+      {
+        "path": "sound-structure-spell/dev-server.cjs",
+        "bytes": 930
+      },
+      {
+        "path": "sound-structure-spell/index.html",
+        "bytes": 1689
+      },
+      {
+        "path": "sound-structure-spell/package.json",
+        "bytes": 235
+      },
+      {
+        "path": "sound-structure-spell/style.css",
+        "bytes": 14315
+      },
+      {
+        "path": "sound-structure-spell/tests/content.test.cjs",
+        "bytes": 4737
+      },
+      {
+        "path": "sound-structure-spell/workbook.js",
+        "bytes": 8252
       }
     ]
   },

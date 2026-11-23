@@ -1624,11 +1624,11 @@
   },
   {
     "id": "soundstructurespell",
-    "path": "soundstructurespell",
+    "path": "sound-structure-spell",
     "repo": "personal",
     "title": "Sound, Structure, Spell",
     "category": "Reading & writing",
-    "description": "Explore a spelling pattern through word sorts, listening, analogies, and sentence writing.",
+    "description": "Hear words, sort spelling patterns, and build words with suffixes in a student workbook with 11 topics and 29 practice days.",
     "types": [
       "Word work",
       "Sorting",
@@ -1638,19 +1638,19 @@
       "Spelling patterns",
       "Listen & write"
     ],
-    "url": "https://maltais239.github.io/interactives/soundstructurespell/",
+    "url": "https://maltais239.github.io/interactives/sound-structure-spell/",
     "links": [],
     "favourite": false,
-    "credit": "",
+    "credit": "Adapted from the student workbook by Dr. Shelley Blackwell.",
     "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/soundstructurespell.jpg",
-    "captured": "2026-10-04",
+    "image": "https://maltais239.github.io/interactives/learning-lab-images/sound-structure-spell.jpg",
+    "captured": "2026-11-23",
     "grades": [
       1,
       2
     ],
     "grade_basis": "curriculum",
-    "grade_note": "The fixed vowel-consonant-e lessons directly match early vowel and spelling-pattern content."
+    "grade_note": "The opening vowel–consonant–e activities practise long-vowel spelling patterns in Grades 1–2. The workbook also includes word building with suffixes."
   },
   {
     "id": "sentencebuilding",
