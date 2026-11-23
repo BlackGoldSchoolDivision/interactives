@@ -596,10 +596,12 @@
       flex-shrink: 0;
     }
 
-    .paper-tile:hover {
-      transform: translateY(-4px) scale(1.04);
-      filter: drop-shadow(0 7px 3px rgba(10, 10, 30, 0.5));
-      z-index: 4;
+    @media (hover:hover) {
+      .paper-tile:hover {
+        transform: translateY(-4px) scale(1.04);
+        filter: drop-shadow(0 7px 3px rgba(10, 10, 30, 0.5));
+        z-index: 4;
+      }
     }
 
     .paper-tile:active {
@@ -1468,7 +1470,7 @@ button,input,textarea{font:inherit}button{min-height:44px;touch-action:manipulat
 .clue-art{width:100%;height:clamp(7.4rem,23vh,15rem);display:grid;place-items:center}.clue-art>svg{width:auto;height:87%;max-width:95%}.picture-print{display:block;height:100%;aspect-ratio:1;max-width:100%;background:url(assets/picture-words.webp) no-repeat;background-size:500% 200%;mix-blend-mode:multiply;mask-image:linear-gradient(0deg,transparent,#000 3% 97%,transparent),linear-gradient(90deg,transparent,#000 3% 97%,transparent);mask-composite:intersect}
 .tray-row{margin:0 auto clamp(.8rem,2vh,1.35rem);gap:clamp(.4rem,1.2vw,1rem)}.magnetic-tray{max-width:none;min-width:0;gap:clamp(.25rem,.8vw,.7rem);min-height:clamp(5.1rem,13vh,8.5rem);padding:clamp(.35rem,1vh,.8rem) .6rem;background:#172e3659;border:1px solid #c0d2c86b;border-radius:1.15rem;box-shadow:inset 0 3px 0 #162a354a}.tray-slot,.paper-tile.tray-size{width:clamp(2.8rem,min(7.2vw,9.5vh),5.7rem);height:clamp(3.3rem,min(8.2vw,11vh),6.8rem)}.tray-ghost-letter{color:#dedcc091}.tray-actions{gap:.4rem}.tactile-sq-btn{box-shadow:0 3px 0 #142934;min-width:44px}.fixed-mark{font-size:1.8rem;font-weight:700}.wooden-rack-outer{margin:0 auto .6rem;border-radius:14px;padding:clamp(.45rem,.9vw,.85rem);background:#bd8656;border:2px solid #1c2e32;box-shadow:0 5px 0 #172e35}.wooden-rack-well{padding:clamp(.35rem,.75vw,.7rem);background:#845c42}.rack-grid{grid-template-columns:repeat(13,minmax(0,1fr));gap:clamp(.12rem,.48vw,.55rem)}#movableRack{grid-template-columns:repeat(14,minmax(0,1fr))}.paper-tile.rack-size{height:clamp(44px,7.5vh,4.3rem)}.paper-tile.rack-size .paper-tile-char{font-size:clamp(1.4rem,2.5vw,2.2rem)}.progress-dots{flex-wrap:wrap;justify-content:center;max-width:72%}.progress-count{white-space:nowrap}.progress-bar-footer{padding:.5rem;flex-wrap:wrap}.result-label{font-weight:700;color:#34594e}
 .choose-heading{text-align:center;margin:1.3rem auto 1rem}.choose-heading h1{font-size:clamp(1.8rem,5vw,3.2rem);letter-spacing:-.045em}.storybook-mode-card{min-height:112px;padding:1.2rem;border-radius:10px}.list-row-card,.setting-item,.session-row-btn,.summary-word-row{flex-wrap:wrap}.modal-card{width:min(94vw,660px);max-height:89svh}.modal-body{min-width:0}.list-row-card>div{min-width:0!important;overflow-wrap:anywhere}.seg-group,.student-chips{flex-wrap:wrap}.movable-row-tiles{min-width:0;flex-wrap:wrap}.movable-row{min-width:0}.summary-badge{height:auto;min-height:112px}.modal-head h2{overflow-wrap:anywhere}.bench-feedback{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.toast-pill{width:max-content;max-width:92vw;white-space:normal;text-align:center}
-@media(max-width:840px){.topbar{gap:.45rem}.topbar-left,.topbar-right{gap:.4rem}.bench-mark{font-size:1.65rem}.topbar-mode-title{font-size:1.5rem}.rack-grid,#movableRack{grid-template-columns:repeat(9,minmax(0,1fr))}.clue-print{padding-inline:clamp(1.2rem,6vw,3rem)}.movable-row .paper-tile.board-size{width:43px;height:51px}}
+@media(max-width:840px){.topbar{gap:.45rem}.topbar-left,.topbar-right{gap:.4rem}.bench-mark{font-size:1.65rem}.topbar-mode-title{font-size:1.5rem}.rack-grid,#movableRack{grid-template-columns:repeat(9,minmax(0,1fr))}.clue-print{padding-inline:clamp(1.2rem,6vw,3rem)}.movable-row .paper-tile.board-size{width:44px;height:51px}}
 @media(max-width:650px){.app-shell{padding:0 .65rem .8rem}.topbar{display:grid;grid-template-columns:minmax(0,1fr) auto}.topbar-left{display:contents}.bench-mark{display:none}.topbar-mode-title{grid-column:1;grid-row:1}.topbar-right{grid-column:2;grid-row:1;gap:.25rem}.user-medallion-name{display:none}.topbar-right .user-medallion-btn svg{width:25px}.home-pill-btn{grid-row:2;grid-column:1;justify-self:start}.list-dropdown-btn{grid-row:2;grid-column:2;justify-self:end}.audio-switch-wrap>svg{display:none}.topbar-right .user-medallion-btn{border:none;background:transparent}.clue-word{font-size:clamp(2.1rem,9vw,3.5rem)}.clue-print{padding:.65rem 1.2rem;min-height:9rem;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr)}.clue-art{height:clamp(4.8rem,22vw,8rem)}.rack-grid,#movableRack{grid-template-columns:repeat(7,minmax(0,1fr))}.tray-row{flex-direction:column}.magnetic-tray{flex:none;width:100%;min-height:4rem;padding:.42rem}.tray-actions .tactile-sq-btn{height:44px;width:52px;border-radius:.55rem}.tray-actions svg{width:24px;height:24px}.tray-actions .hint-btn{font-size:1.4rem}.clue-instruction{margin:.2rem 0 .4rem}.deckled-banner.no-bubble{gap:.4rem;padding:.7rem!important}.deckled-banner.no-bubble .woodcut-medallion{display:none}.movable-row{flex-wrap:wrap}.report-word-grid{grid-template-columns:1fr}.report-word-grid .hist-col{grid-column:auto}}
 @media(max-width:366px){.user-medallion-btn svg{display:none}.user-medallion-btn .user-medallion-name{display:block;font-size:.9rem;max-width:3.2em}.topbar-mode-title{font-size:1.25rem}.topbar-right{flex-wrap:wrap}.clue-print{padding-inline:.8rem}.clue-art{height:4.5rem}}
 @media(min-width:651px) and (max-height:600px){.topbar{padding:.3rem 0;margin-bottom:.6rem}.clue-print{min-height:7.7rem;padding-block:.35rem;margin-bottom:.5rem}.clue-art{height:7rem}.clue-word{font-size:2.65rem}.clue-copy{padding:.2rem 0}.clue-instruction{margin:.1rem 0 .2rem}.tray-row{margin-bottom:.5rem}.wooden-rack-well{padding:.3rem}.progress-bar-footer{padding:.25rem}}
@@ -1491,7 +1493,12 @@ button,input,textarea{font:inherit}button{min-height:44px;touch-action:manipulat
   .tray-row { flex-direction:row; margin-bottom:.35rem; }
   .magnetic-tray { flex:1; padding:.1rem; min-height:3.2rem; }
   .tray-slot { width:44px; height:48px; }
-  .rack-grid { grid-template-columns:repeat(13,minmax(0,1fr)); gap:2px; }
+  .rack-grid { grid-template-columns:repeat(auto-fit,minmax(44px,1fr)); gap:2px; }
   .wooden-rack-outer,.wooden-rack-well { padding:.22rem; }
   .progress-bar-footer { padding:.1rem; }
+}
+
+/* Reflow the alphabet before narrow phones squeeze its tap targets. */
+@media (max-width:400px) {
+  .rack-grid, #movableRack { grid-template-columns:repeat(auto-fit,minmax(44px,1fr)); }
 }
