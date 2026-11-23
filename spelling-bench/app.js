@@ -254,11 +254,13 @@
         if(player.readyState>=1)begin();else player.onloadedmetadata=begin;
         return true;
       }
-      function speakText(text, rate=0.9) {
+      function speakText(text, rate=0.9, recordedCue = null) {
         if(!state.settings.audioEnabled || !text)return;
         stopReading();
-        const token=speechId, key=text.toLowerCase().trim();
-        if(Object.hasOwn(SPEECH_CLIPS,key) && playClip(key,token))return;
+        const token = speechId;
+        const key = recordedCue || text.toLowerCase().trim();
+        const reserved = key === 'feedback' || key.startsWith('name-') || key.startsWith('sound-');
+        if((recordedCue || !reserved) && Object.hasOwn(SPEECH_CLIPS,key) && playClip(key,token))return;
         const fail=()=>{if(token===speechId)showToast('This device could not read that text aloud. Ask a partner to read it.')};
         if(!window.speechSynthesis || !window.SpeechSynthesisUtterance){fail();return}
         try {
@@ -1228,7 +1230,7 @@
           renderActivity();
           shakeTray();
           document.getElementById('benchFeedback').textContent = 'Check your letters and try again.';
-          speakText('feedback');
+          speakText('Try again.', 0.94, 'feedback');
         }
       }
 
@@ -1592,14 +1594,24 @@
         if(id===state.activeUserId)return;
         const prev=state.activeUserId,mode=activity?.mode;
         studentBoards.set(prev,movableBoard);
-        if(activity)studentSessions.set(prev,activity);
+        if (activity) {
+          activity.pausedAt = Date.now();
+          studentSessions.set(prev, activity);
+        }
         state.activeUserId=id;
         movableBoard=studentBoards.get(id)||{rows:[[],[],[]],activeRow:0};
         stopReading();
         if(mode){
           const other=studentSessions.get(id),list=other && getAllLists().find(l=>l.id===other.listId);
           if(other && list && list.words.join('|')===other.words.join('|')) {
-            activity=other;state.activeListId=list.id;currentScreen=other.mode;renderActivity();
+            activity = other;
+            if (activity.pausedAt) {
+              activity.wordStartTime += Date.now() - activity.pausedAt;
+              delete activity.pausedAt;
+            }
+            state.activeListId = list.id;
+            currentScreen = other.mode;
+            renderActivity();
           }else startActivity(mode,false);
         }else if(currentScreen==='movable')renderMovableRows();
       }
