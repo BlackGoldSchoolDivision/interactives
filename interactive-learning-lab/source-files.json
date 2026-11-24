@@ -649,20 +649,6 @@
         }
       ]
     },
-    "heartwords": {
-      "kind": "html",
-      "title": "Heart Word Mapper",
-      "credit": "",
-      "category": "Reading & writing",
-      "versions": [
-        {
-          "label": "Heart Word Mapper",
-          "repo": "Maltais239/interactives",
-          "path": "heartwords/index.html",
-          "url": "https://maltais239.github.io/interactives/heartwords/"
-        }
-      ]
-    },
     "soundstructurespell": {
       "kind": "html",
       "title": "Sound, Structure, Spell",
@@ -674,82 +660,6 @@
           "repo": "Maltais239/interactives",
           "path": "sound-structure-spell/index.html",
           "url": "https://maltais239.github.io/interactives/sound-structure-spell/"
-        }
-      ]
-    },
-    "sentencebuilding": {
-      "kind": "html",
-      "title": "Sentence Building",
-      "credit": "",
-      "category": "Reading & writing",
-      "versions": [
-        {
-          "label": "Sentence Building",
-          "repo": "Maltais239/interactives",
-          "path": "flyleaf2.0/index.html",
-          "url": "https://maltais239.github.io/interactives/flyleaf2.0/"
-        }
-      ]
-    },
-    "readingmaze": {
-      "kind": "html",
-      "title": "Reading Maze Printables",
-      "credit": "CORE Reading Maze · Michael Milone",
-      "category": "Reading & writing",
-      "versions": [
-        {
-          "label": "Reading Maze Printables",
-          "repo": "Maltais239/interactives",
-          "path": "MAZE/index.html",
-          "url": "https://maltais239.github.io/interactives/MAZE/"
-        }
-      ]
-    },
-    "borealforestreading": {
-      "kind": "html",
-      "title": "Boreal Forest Comprehension",
-      "credit": "",
-      "category": "Reading & writing",
-      "versions": [
-        {
-          "label": "Boreal Forest Comprehension",
-          "repo": "Maltais239/interactives",
-          "path": "readinginteractiveborealforest/index.html",
-          "url": "https://maltais239.github.io/interactives/readinginteractiveborealforest/"
-        }
-      ]
-    },
-    "ecosystemannotation": {
-      "kind": "html",
-      "title": "Ecosystems Annotation",
-      "credit": "",
-      "category": "Reading & writing",
-      "versions": [
-        {
-          "label": "Ecosystems Annotation",
-          "repo": "Maltais239/interactives",
-          "path": "livingsystemsreadingpassage/index.html",
-          "url": "https://maltais239.github.io/interactives/livingsystemsreadingpassage/"
-        },
-        {
-          "label": "En français",
-          "repo": "Maltais239/interactives",
-          "path": "livingsystemsreadingpassageFR/index.html",
-          "url": "https://maltais239.github.io/interactives/livingsystemsreadingpassageFR/"
-        }
-      ]
-    },
-    "definitiondraw": {
-      "kind": "html",
-      "title": "Definition Draw",
-      "credit": "",
-      "category": "Reading & writing",
-      "versions": [
-        {
-          "label": "Definition Draw",
-          "repo": "Maltais239/interactives",
-          "path": "definitiondraw/index.html",
-          "url": "https://maltais239.github.io/interactives/definitiondraw/"
         }
       ]
     },
@@ -784,20 +694,6 @@
           "repo": "Maltais239/interactives",
           "path": "vocabmatchbuilder/index.html",
           "url": "https://maltais239.github.io/interactives/vocabmatchbuilder/"
-        }
-      ]
-    },
-    "vocaborganizer": {
-      "kind": "html",
-      "title": "Vocabulary Graphic Organiser",
-      "credit": "",
-      "category": "Reading & writing",
-      "versions": [
-        {
-          "label": "Vocabulary Graphic Organiser",
-          "repo": "Maltais239/interactives",
-          "path": "vocabgraphicorganizer/index.html",
-          "url": "https://maltais239.github.io/interactives/vocabgraphicorganizer/"
         }
       ]
     },
@@ -2325,26 +2221,6 @@
         }
       ]
     },
-    "walker-plurals": {
-      "kind": "html",
-      "title": "Plural Pattern Lab",
-      "credit": "Original idea: Tyler Walker · Improved classroom edition: Engaging Students",
-      "category": "Reading & writing",
-      "versions": [
-        {
-          "label": "Plural Pattern Lab",
-          "repo": "Maltais239/interactives",
-          "path": "walker-corner/plurals/index.html",
-          "url": "https://maltais239.github.io/interactives/walker-corner/plurals/"
-        },
-        {
-          "label": "Mr. Walker’s Corner",
-          "repo": "Maltais239/interactives",
-          "path": "walker-corner/index.html",
-          "url": "https://maltais239.github.io/interactives/walker-corner/"
-        }
-      ]
-    },
     "canada-through-time-expanded": {
       "kind": "html",
       "title": "Canada Through Time: Homelands, Colonies & Confederation",
@@ -2488,20 +2364,6 @@
           "repo": "BlackGoldSchoolDivision/interactives",
           "path": "literal-chaos/index.html",
           "url": "https://interactives.blackgold.ca/literal-chaos/"
-        }
-      ]
-    },
-    "word-worlds": {
-      "kind": "html",
-      "title": "Word Worlds",
-      "credit": "Engaging Students · Black Gold School Division",
-      "category": "Reading & writing",
-      "versions": [
-        {
-          "label": "Word Worlds",
-          "repo": "BlackGoldSchoolDivision/interactives",
-          "path": "word-worlds/index.html",
-          "url": "https://interactives.blackgold.ca/word-worlds/"
         }
       ]
     },
@@ -2730,21 +2592,6 @@
         }
       ]
     },
-    "revamp-vocab": {
-      "kind": "html",
-      "title": "Vocabulary Graphic Organiser",
-      "credit": "Darren Maltais · Engaging Students",
-      "category": "Reading & writing",
-      "versions": [
-        {
-          "label": "Vocabulary Graphic Organiser",
-          "repo": "BlackGoldSchoolDivision/interactives",
-          "path": "learning-lab-revamps/vocab.html",
-          "url": "https://interactives.blackgold.ca/learning-lab-revamps/vocab.html",
-          "project_key": "learning-lab-revamps/vocab"
-        }
-      ]
-    },
     "revamp-wordwork": {
       "kind": "html",
       "title": "Word Work",
@@ -2919,12 +2766,6 @@
       {
         "path": "Englishlearninggame/index.html",
         "bytes": 37757
-      }
-    ],
-    "Maltais239/interactives/MAZE": [
-      {
-        "path": "MAZE/index.html",
-        "bytes": 127321
       }
     ],
     "Maltais239/interactives/MMGovernment": [
@@ -3235,16 +3076,6 @@
         "bytes": 14415
       }
     ],
-    "Maltais239/interactives/definitiondraw": [
-      {
-        "path": "definitiondraw/app.js",
-        "bytes": 14779
-      },
-      {
-        "path": "definitiondraw/index.html",
-        "bytes": 3935
-      }
-    ],
     "Maltais239/interactives/dinodig": [
       {
         "path": "dinodig/dig-layout.js",
@@ -3427,12 +3258,6 @@
         "bytes": 26705
       }
     ],
-    "Maltais239/interactives/flyleaf2.0": [
-      {
-        "path": "flyleaf2.0/index.html",
-        "bytes": 12207
-      }
-    ],
     "Maltais239/interactives/flyleafsheet": [
       {
         "path": "flyleafsheet/index.html",
@@ -3557,24 +3382,6 @@
       {
         "path": "hazardsymbolmatch/index.html",
         "bytes": 20106
-      }
-    ],
-    "Maltais239/interactives/heartwords": [
-      {
-        "path": "heartwords/app-source.jsx",
-        "bytes": 35792
-      },
-      {
-        "path": "heartwords/app.css",
-        "bytes": 14836
-      },
-      {
-        "path": "heartwords/app.js",
-        "bytes": 27958
-      },
-      {
-        "path": "heartwords/index.html",
-        "bytes": 2790
       }
     ],
     "Maltais239/interactives/humanimpact": [
@@ -4401,18 +4208,6 @@
         "bytes": 15355
       }
     ],
-    "Maltais239/interactives/livingsystemsreadingpassage": [
-      {
-        "path": "livingsystemsreadingpassage/index.html",
-        "bytes": 34938
-      }
-    ],
-    "Maltais239/interactives/livingsystemsreadingpassageFR": [
-      {
-        "path": "livingsystemsreadingpassageFR/index.html",
-        "bytes": 33863
-      }
-    ],
     "Maltais239/interactives/magneticornot": [
       {
         "path": "magneticornot/index.html",
@@ -4915,16 +4710,6 @@
       {
         "path": "preassess/index.html",
         "bytes": 7629
-      }
-    ],
-    "Maltais239/interactives/readinginteractiveborealforest": [
-      {
-        "path": "readinginteractiveborealforest/data.js",
-        "bytes": 4061
-      },
-      {
-        "path": "readinginteractiveborealforest/index.html",
-        "bytes": 2289
       }
     ],
     "Maltais239/interactives/renewablenonrenewable": [
@@ -8747,12 +8532,6 @@
         "bytes": 13656305
       }
     ],
-    "Maltais239/interactives/vocabgraphicorganizer": [
-      {
-        "path": "vocabgraphicorganizer/index.html",
-        "bytes": 16255
-      }
-    ],
     "Maltais239/interactives/vocabinvaders": [
       {
         "path": "vocabinvaders/index.html",
@@ -10623,112 +10402,6 @@
         "bytes": 69022
       }
     ],
-    "BlackGoldSchoolDivision/interactives/word-worlds": [
-      {
-        "path": "word-worlds/README.md",
-        "bytes": 1598
-      },
-      {
-        "path": "word-worlds/THIRD-PARTY.md",
-        "bytes": 892
-      },
-      {
-        "path": "word-worlds/app.js",
-        "bytes": 11223
-      },
-      {
-        "path": "word-worlds/assets/Nunito-License.txt",
-        "bytes": 4393
-      },
-      {
-        "path": "word-worlds/assets/boat.webp",
-        "bytes": 22020
-      },
-      {
-        "path": "word-worlds/assets/body-bold.ttf",
-        "bytes": 106804
-      },
-      {
-        "path": "word-worlds/assets/body.ttf",
-        "bytes": 106700
-      },
-      {
-        "path": "word-worlds/assets/bridge.webp",
-        "bytes": 26568
-      },
-      {
-        "path": "word-worlds/assets/cottage.webp",
-        "bytes": 42908
-      },
-      {
-        "path": "word-worlds/assets/cypress.webp",
-        "bytes": 44344
-      },
-      {
-        "path": "word-worlds/assets/shop.webp",
-        "bytes": 37472
-      },
-      {
-        "path": "word-worlds/assets/shrub.webp",
-        "bytes": 32254
-      },
-      {
-        "path": "word-worlds/assets/townhouse.webp",
-        "bytes": 25672
-      },
-      {
-        "path": "word-worlds/assets/tree.webp",
-        "bytes": 65308
-      },
-      {
-        "path": "word-worlds/index.html",
-        "bytes": 5534
-      },
-      {
-        "path": "word-worlds/kit.js",
-        "bytes": 3781
-      },
-      {
-        "path": "word-worlds/model.js",
-        "bytes": 4610
-      },
-      {
-        "path": "word-worlds/stage.js",
-        "bytes": 4767
-      },
-      {
-        "path": "word-worlds/style.css",
-        "bytes": 7464
-      },
-      {
-        "path": "word-worlds/tools/check-browser.cjs",
-        "bytes": 12306
-      },
-      {
-        "path": "word-worlds/tools/check-model.cjs",
-        "bytes": 2013
-      },
-      {
-        "path": "word-worlds/tools/check-pdfs.py",
-        "bytes": 1172
-      },
-      {
-        "path": "word-worlds/vendor/JSPDF-LICENSE.txt",
-        "bytes": 1142
-      },
-      {
-        "path": "word-worlds/vendor/PRINT-FONT-LICENSE.txt",
-        "bytes": 3859
-      },
-      {
-        "path": "word-worlds/vendor/jspdf.umd.min.js",
-        "bytes": 420165
-      },
-      {
-        "path": "word-worlds/vendor/print-fonts.js",
-        "bytes": 69022
-      }
-    ],
     "BlackGoldSchoolDivision/interactives/float-lab": [
       {
         "path": "float-lab/index.html",
@@ -11429,28 +11102,6 @@
       {
         "path": "learning-lab-revamps/water.html",
         "bytes": 1096
-      }
-    ],
-    "BlackGoldSchoolDivision/interactives/learning-lab-revamps/vocab": [
-      {
-        "path": "learning-lab-revamps/classroom.js",
-        "bytes": 31072
-      },
-      {
-        "path": "learning-lab-revamps/play.js",
-        "bytes": 381
-      },
-      {
-        "path": "learning-lab-revamps/shared.js",
-        "bytes": 3057
-      },
-      {
-        "path": "learning-lab-revamps/studio.css",
-        "bytes": 19346
-      },
-      {
-        "path": "learning-lab-revamps/vocab.html",
-        "bytes": 1145
       }
     ],
     "BlackGoldSchoolDivision/interactives/learning-lab-revamps/wordwork": [

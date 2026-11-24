@@ -594,46 +594,6 @@
     "grade_note": "Flexible figurative-language practice and original comic creation. Difficulty bands are suggestions; teachers can choose expressions and provide reading support. The open comic task invites explanations and several defensible interpretations."
   },
   {
-    "id": "word-worlds",
-    "path": "word-worlds",
-    "repo": "division",
-    "title": "Word Worlds",
-    "category": "Reading & writing",
-    "description": "Change the words and direct a living paper world. Compare two interpretations across three settings, explore 12 open challenges, and explain how language shapes mood. Responsive animation and sound, a student gallery, comparison PDFs and an offline copy.",
-    "types": [
-      "Builders",
-      "Word work",
-      "Writing",
-      "Printables"
-    ],
-    "tags": [
-      "Word choice",
-      "Mood",
-      "Setting",
-      "Personification",
-      "Creative writing",
-      "Inference",
-      "Sound",
-      "Open-ended"
-    ],
-    "url": "https://interactives.blackgold.ca/word-worlds/",
-    "links": [],
-    "favourite": false,
-    "credit": "Engaging Students · Black Gold School Division",
-    "group": "",
-    "image": "images/word-worlds-20261024.webp?v=1",
-    "captured": "2026-10-24",
-    "original_urls": [],
-    "grades": [
-      3,
-      4,
-      5,
-      6
-    ],
-    "grade_basis": "flexible",
-    "grade_note": "Flexible creative-language tool for exploring word choice, setting, mood, personification and viewpoint. The scene offers one authored interpretation; students can challenge it and support different readings. The 12 prompts are open experiments, not graded outcomes."
-  },
-  {
     "id": "alphabetcards",
     "title": "Print & Play Cards",
     "category": "Reading & writing",
@@ -1593,36 +1553,6 @@
     "grade_note": "Locating Canada’s provinces, territories and major cities supports the mapping portion of Grade 2 physical-region study. Capital memorization and route challenges are extensions, not the whole region outcome."
   },
   {
-    "id": "heartwords",
-    "path": "heartwords",
-    "repo": "personal",
-    "title": "Heart Word Mapper",
-    "category": "Reading & writing",
-    "description": "Map sounds and mark the parts learned by heart. Practise a checked starter set or review and edit mappings from the full teacher library.",
-    "types": [
-      "Word work",
-      "Flashcards"
-    ],
-    "tags": [
-      "Sound mapping",
-      "Teacher-reviewed words"
-    ],
-    "url": "https://maltais239.github.io/interactives/heartwords/",
-    "links": [],
-    "favourite": false,
-    "credit": "",
-    "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/heartwords.jpg",
-    "captured": "2026-10-04",
-    "grades": [
-      1,
-      2,
-      3
-    ],
-    "grade_basis": "curriculum",
-    "grade_note": "Maps sounds and the unexpected spellings in high-frequency words; also useful for intervention at other ages."
-  },
-  {
     "id": "soundstructurespell",
     "path": "sound-structure-spell",
     "repo": "personal",
@@ -1705,167 +1635,6 @@
     "grade_note": "Grade 1 learners can match sounds to letters and spell short-vowel words. Teachers can use the same lists for extra practice with older learners."
   },
   {
-    "id": "sentencebuilding",
-    "path": "flyleaf2.0",
-    "repo": "personal",
-    "title": "Sentence Building",
-    "category": "Reading & writing",
-    "description": "Print cut-and-paste word cards to build sentences, then check capitals, punctuation and meaning.",
-    "types": [
-      "Writing",
-      "Builders",
-      "Printables"
-    ],
-    "tags": [
-      "Custom sentences",
-      "Print & save"
-    ],
-    "type": "printable",
-    "url": "https://maltais239.github.io/interactives/flyleaf2.0/",
-    "links": [],
-    "favourite": false,
-    "credit": "",
-    "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/sentencebuilding.jpg",
-    "captured": "2026-10-04",
-    "grades": [
-      1,
-      2,
-      3
-    ],
-    "grade_basis": "curriculum",
-    "grade_note": "The default simple sentence strips support sentence structure, capitals and punctuation. Entered sentences can be adjusted by the teacher."
-  },
-  {
-    "id": "readingmaze",
-    "path": "MAZE",
-    "repo": "personal",
-    "title": "Reading Maze Printables",
-    "category": "Reading & writing",
-    "description": "Print reading passages for a timed word-choice assessment in context, with directions for administering and scoring.",
-    "types": [
-      "Printables",
-      "Reading & annotation",
-      "Practice questions"
-    ],
-    "tags": [
-      "Comprehension",
-      "Word choice"
-    ],
-    "type": "printable",
-    "credit": "CORE Reading Maze · Michael Milone",
-    "url": "https://maltais239.github.io/interactives/MAZE/",
-    "links": [],
-    "favourite": false,
-    "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/readingmaze.jpg",
-    "captured": "2026-10-04",
-    "grades": [
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10
-    ],
-    "grade_basis": "resource-level",
-    "grade_note": "The supplied printable explicitly contains Grade 2–10 passage sets. Only Grades 2–6 have been cross-checked against the requested ELAL workbook; Grades 7–10 are the resource author’s labels."
-  },
-  {
-    "id": "borealforestreading",
-    "path": "readinginteractiveborealforest",
-    "repo": "personal",
-    "title": "Boreal Forest Comprehension",
-    "category": "Reading & writing",
-    "description": "Investigate energy and nutrients in Alberta’s boreal forest. Select five key ideas, explain their importance, and check your understanding.",
-    "types": [
-      "Reading & annotation"
-    ],
-    "tags": [
-      "Highlight key ideas",
-      "Alberta forests"
-    ],
-    "url": "https://maltais239.github.io/interactives/readinginteractiveborealforest/",
-    "links": [],
-    "favourite": false,
-    "credit": "",
-    "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/borealforestreading.jpg",
-    "captured": "2026-10-04",
-    "grades": [
-      6
-    ],
-    "grade_basis": "curriculum",
-    "grade_note": "The supplied reading explores ecosystem components, energy and nutrients. Its science topic fit is Grade 6; comprehension use can be adapted separately."
-  },
-  {
-    "id": "ecosystemannotation",
-    "path": "livingsystemsreadingpassage",
-    "repo": "personal",
-    "title": "Ecosystems Annotation",
-    "category": "Reading & writing",
-    "description": "Read an ecosystems passage and mark evidence using the annotation tools.",
-    "types": [
-      "Reading & annotation"
-    ],
-    "tags": [
-      "Read & highlight",
-      "Science connection"
-    ],
-    "variants": [
-      {
-        "label": "En français",
-        "path": "livingsystemsreadingpassageFR",
-        "repo": "personal"
-      }
-    ],
-    "url": "https://maltais239.github.io/interactives/livingsystemsreadingpassage/",
-    "links": [
-      {
-        "label": "En français",
-        "url": "https://maltais239.github.io/interactives/livingsystemsreadingpassageFR/"
-      }
-    ],
-    "favourite": false,
-    "credit": "",
-    "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/ecosystemannotation.jpg",
-    "captured": "2026-10-04",
-    "grades": [
-      6
-    ],
-    "grade_basis": "curriculum",
-    "grade_note": "The supplied reading explores ecosystem components, energy and nutrients. Its science topic fit is Grade 6; comprehension use can be adapted separately."
-  },
-  {
-    "id": "definitiondraw",
-    "path": "definitiondraw",
-    "repo": "personal",
-    "title": "Definition Draw",
-    "category": "Reading & writing",
-    "description": "Draw a word’s meaning, compare it with the definition, and explain your thinking. Use undo and redo, import a set, or save your drawing.",
-    "types": [
-      "Drawing",
-      "Word work"
-    ],
-    "tags": [
-      "Visual vocabulary"
-    ],
-    "url": "https://maltais239.github.io/interactives/definitiondraw/",
-    "links": [],
-    "favourite": false,
-    "credit": "",
-    "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/definitiondraw.jpg",
-    "captured": "2026-10-04",
-    "grades": [],
-    "grade_basis": "flexible",
-    "grade_note": "The teacher selects the vocabulary or word families. Adaptable across grades; no fixed outcome coverage is claimed by the tool itself."
-  },
-  {
     "id": "customflashcards",
     "path": "generateyourownflashcards",
     "repo": "personal",
@@ -1924,31 +1693,6 @@
     "credit": "",
     "group": "",
     "image": "https://maltais239.github.io/interactives/learning-lab-images/vocabmatchbuilder.jpg",
-    "captured": "2026-10-04",
-    "grades": [],
-    "grade_basis": "flexible",
-    "grade_note": "The teacher selects the vocabulary or word families. Adaptable across grades; no fixed outcome coverage is claimed by the tool itself."
-  },
-  {
-    "id": "vocaborganizer",
-    "path": "vocabgraphicorganizer",
-    "repo": "personal",
-    "title": "Vocabulary Graphic Organiser",
-    "category": "Reading & writing",
-    "description": "Explore a word through definitions, synonyms, antonyms and an example sentence.",
-    "types": [
-      "Graphic organisers",
-      "Word work"
-    ],
-    "tags": [
-      "Vocabulary connections"
-    ],
-    "url": "https://maltais239.github.io/interactives/vocabgraphicorganizer/",
-    "links": [],
-    "favourite": false,
-    "credit": "",
-    "group": "",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/vocaborganizer.jpg",
     "captured": "2026-10-04",
     "grades": [],
     "grade_basis": "flexible",
@@ -4866,53 +4610,6 @@
     "grade_note": "Grade 1 Science: compare how surfaces and ramp height affect rolling movement and speed. This is a partial connection to movement investigations; it does not cover every pathway, animal movement or influence on motion."
   },
   {
-    "id": "walker-plurals",
-    "path": "walker-corner/plurals",
-    "repo": "personal",
-    "title": "Plural Pattern Lab",
-    "category": "Reading & writing",
-    "group": "",
-    "collection": "walker-corner",
-    "description": "Build plurals, sort words by spelling pattern, and revisit words that need practice. Includes irregular contrasts and printable word pairs.",
-    "types": [
-      "Word work",
-      "Sorting",
-      "Practice questions",
-      "Printables"
-    ],
-    "tags": [
-      "Spelling",
-      "Plural patterns",
-      "Mr. Walker’s Corner"
-    ],
-    "url": "https://maltais239.github.io/interactives/walker-corner/plurals/",
-    "links": [
-      {
-        "label": "Mr. Walker’s Corner",
-        "url": "https://maltais239.github.io/interactives/walker-corner/"
-      },
-      {
-        "label": "Tyler’s original",
-        "url": "https://sites.google.com/gshare.blackgold.ca/plural-practice/home"
-      }
-    ],
-    "favourite": false,
-    "credit": "Original idea: Tyler Walker · Improved classroom edition: Engaging Students",
-    "image": "https://maltais239.github.io/interactives/learning-lab-images/walker-plurals.jpg?v=20261005",
-    "captured": "2026-10-05",
-    "original_urls": [
-      "https://sites.google.com/gshare.blackgold.ca/plural-practice/home"
-    ],
-    "grades": [
-      1,
-      2,
-      3,
-      4
-    ],
-    "grade_basis": "curriculum",
-    "grade_note": "Regular s/es patterns fit Grades 1–2; irregular forms and complex plurals connect to Grades 3–4. Select the relevant pattern group."
-  },
-  {
     "id": "bend-stretch-change",
     "path": "bend-stretch-change",
     "repo": "division",
@@ -5397,12 +5094,7 @@
       "Highlight evidence",
       "Alberta forests"
     ],
-    "links": [
-      {
-        "label": "Original activity",
-        "url": "https://maltais239.github.io/interactives/readinginteractiveborealforest/"
-      }
-    ],
+    "links": [],
     "favourite": false,
     "credit": "Darren Maltais · Engaging Students",
     "status": "Revamped",
@@ -5443,35 +5135,6 @@
     ],
     "grade_basis": "curriculum",
     "grade_note": "Labelling the cycle supports Grade 3 changes of state and provides a model for the Grade 7 water-cycle connection to life."
-  },
-  {
-    "id": "revamp-vocab",
-    "title": "Vocabulary Graphic Organiser",
-    "category": "Reading & writing",
-    "group": "",
-    "description": "Look up a word, compare meanings and write your own example.",
-    "url": "https://interactives.blackgold.ca/learning-lab-revamps/vocab.html",
-    "image": "https://interactives.blackgold.ca/learning-lab-revamps/covers/vocab.webp",
-    "types": [
-      "Graphic organisers",
-      "Word work"
-    ],
-    "tags": [
-      "Vocabulary connections",
-      "Dictionary"
-    ],
-    "links": [
-      {
-        "label": "Original activity",
-        "url": "https://maltais239.github.io/interactives/vocabgraphicorganizer/"
-      }
-    ],
-    "favourite": false,
-    "credit": "Darren Maltais · Engaging Students",
-    "status": "Revamped",
-    "grades": [],
-    "grade_basis": "flexible",
-    "grade_note": "The words and examples are chosen by the teacher or student. The tool is adaptable across grades."
   },
   {
     "id": "revamp-wordwork",

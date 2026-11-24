@@ -19,7 +19,7 @@ const descriptions = {
   'Favourites': 'Games, creative tools and hands-on learning.',
   'All activities': 'Browse the full collection, or choose a subject and activity type.',
   [codingCategory]: 'Play a classroom example, change one thing in Gemini Canvas, and test it.',
-  'Mr. Walker’s Corner': 'Three classroom editions inspired by Tyler Walker: investigate functions, test a bridge, and explore plural patterns.',
+  'Mr. Walker’s Corner': 'Investigate functions and test a bridge in two activities inspired by Tyler Walker.',
   'Words & writing': 'Play with words, investigate word parts, and bring your ideas to life.',
   'Reading & writing': 'Build words, develop ideas, and make meaning.',
   'Morphology': 'Build words, investigate families and compare how affixes change meaning. Explore games and printable activities.',
@@ -45,7 +45,7 @@ const subjects = [
   {label:codingCategory,category:codingCategory,id:'natural-resources-depot',colour:'#193b64',ink:'#fff'}
 ];
 const featuredOrder = ['vocabularyarcade','mackwoodmapping','numberbuilding','moonphases','writerspark','thinking-dialogue'];
-const writingOrder = ['writerspark','infospark','vocabularyarcade','rootwords','wordworks','word-orbit','word-ladders','double-take','literal-chaos','word-worlds'];
+const writingOrder = ['writerspark','infospark','vocabularyarcade','rootwords','wordworks','word-orbit','word-ladders','double-take','literal-chaos'];
 const thinkingOrder = ['thinking-dialogue','thinkingroutines','imagespark','venndiagram','hexthinker','asctriangle','frayermodel'];
 const scienceOrder = ['science-practice-lab','moonphases','dinodig','walker-bridge','bend-stretch-change','magnet-workshop','float-lab','vibration-station'];
 let chosen = location.hash === codingHash ? codingCategory : 'Favourites';

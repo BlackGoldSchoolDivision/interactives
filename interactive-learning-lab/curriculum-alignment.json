@@ -205,74 +205,6 @@
         }
       ]
     },
-    "borealforestreading": {
-      "grades": [
-        6
-      ],
-      "basis": "curriculum",
-      "rationale": "The supplied reading explores ecosystem components, energy and nutrients. Its science topic fit is Grade 6; comprehension use can be adapted separately.",
-      "alignments": [
-        {
-          "source": "science16",
-          "grade": 6,
-          "sheet": "Grade 6",
-          "rows": [
-            158,
-            160,
-            172,
-            179,
-            193,
-            202
-          ],
-          "topic": "Ecosystem components and energy flow",
-          "coverage": "partial"
-        },
-        {
-          "source": "elal16",
-          "grade": 6,
-          "sheet": "Grade 6",
-          "rows": [
-            165
-          ],
-          "topic": "Comprehension strategies",
-          "coverage": "partial"
-        }
-      ]
-    },
-    "ecosystemannotation": {
-      "grades": [
-        6
-      ],
-      "basis": "curriculum",
-      "rationale": "The supplied reading explores ecosystem components, energy and nutrients. Its science topic fit is Grade 6; comprehension use can be adapted separately.",
-      "alignments": [
-        {
-          "source": "science16",
-          "grade": 6,
-          "sheet": "Grade 6",
-          "rows": [
-            158,
-            160,
-            172,
-            179,
-            193,
-            202
-          ],
-          "topic": "Ecosystem components and energy flow",
-          "coverage": "partial"
-        },
-        {
-          "source": "elal16",
-          "grade": 6,
-          "sheet": "Grade 6",
-          "rows": [
-            165
-          ],
-          "topic": "Comprehension strategies",
-          "coverage": "partial"
-        }
-      ]
-    },
     "bioticsorting": {
       "grades": [
         6,
@@ -1656,12 +1588,6 @@
       "rationale": "The teacher selects the vocabulary or word families. Adaptable across grades; no fixed outcome coverage is claimed by the tool itself.",
       "alignments": []
     },
-    "definitiondraw": {
-      "grades": [],
-      "basis": "flexible",
-      "rationale": "The teacher selects the vocabulary or word families. Adaptable across grades; no fixed outcome coverage is claimed by the tool itself.",
-      "alignments": []
-    },
     "customflashcards": {
       "grades": [],
       "basis": "flexible",
@@ -1669,12 +1595,6 @@
       "alignments": []
     },
     "vocabmatchbuilder": {
-      "grades": [],
-      "basis": "flexible",
-      "rationale": "The teacher selects the vocabulary or word families. Adaptable across grades; no fixed outcome coverage is claimed by the tool itself.",
-      "alignments": []
-    },
-    "vocaborganizer": {
       "grades": [],
       "basis": "flexible",
       "rationale": "The teacher selects the vocabulary or word families. Adaptable across grades; no fixed outcome coverage is claimed by the tool itself.",
@@ -1932,52 +1852,6 @@
         }
       ]
     },
-    "heartwords": {
-      "grades": [
-        1,
-        2,
-        3
-      ],
-      "basis": "curriculum",
-      "rationale": "Maps sounds and the unexpected spellings in high-frequency words; also useful for intervention at other ages.",
-      "alignments": [
-        {
-          "source": "elal16",
-          "grade": 1,
-          "sheet": "Grade 1",
-          "rows": [
-            187,
-            228,
-            233
-          ],
-          "topic": "Sounds and high-frequency words",
-          "coverage": "partial"
-        },
-        {
-          "source": "elal16",
-          "grade": 2,
-          "sheet": "Grade 2",
-          "rows": [
-            165,
-            200,
-            201
-          ],
-          "topic": "Letter combinations and automatic word recognition",
-          "coverage": "partial"
-        },
-        {
-          "source": "elal16",
-          "grade": 3,
-          "sheet": "Grade 3",
-          "rows": [
-            194,
-            196
-          ],
-          "topic": "Previously learned high-frequency words",
-          "coverage": "partial"
-        }
-      ]
-    },
     "soundstructurespell": {
       "grades": [
         1,
@@ -2007,124 +1881,6 @@
             366
           ],
           "topic": "Long-vowel combinations and CVCe",
-          "coverage": "partial"
-        }
-      ]
-    },
-    "sentencebuilding": {
-      "grades": [
-        1,
-        2,
-        3
-      ],
-      "basis": "curriculum",
-      "rationale": "The default simple sentence strips support sentence structure, capitals and punctuation. Entered sentences can be adjusted by the teacher.",
-      "alignments": [
-        {
-          "source": "elal16",
-          "grade": 1,
-          "sheet": "Grade 1",
-          "rows": [
-            23,
-            329,
-            330,
-            382,
-            385
-          ],
-          "topic": "Sentence construction and conventions",
-          "coverage": "partial"
-        },
-        {
-          "source": "elal16",
-          "grade": 2,
-          "sheet": "Grade 2",
-          "rows": [
-            294,
-            358
-          ],
-          "topic": "Logical sentence order and complete thoughts",
-          "coverage": "partial"
-        },
-        {
-          "source": "elal16",
-          "grade": 3,
-          "sheet": "Grade 3",
-          "rows": [
-            339,
-            349,
-            350
-          ],
-          "topic": "Subjects, predicates and sentence types",
-          "coverage": "partial"
-        }
-      ]
-    },
-    "readingmaze": {
-      "grades": [
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10
-      ],
-      "basis": "resource-level",
-      "rationale": "The supplied printable explicitly contains Grade 2–10 passage sets. Only Grades 2–6 have been cross-checked against the requested ELAL workbook; Grades 7–10 are the resource author’s labels.",
-      "alignments": [
-        {
-          "source": "elal16",
-          "grade": 2,
-          "sheet": "Grade 2",
-          "rows": [
-            218,
-            233
-          ],
-          "topic": "Comprehension in text",
-          "coverage": "partial"
-        },
-        {
-          "source": "elal16",
-          "grade": 3,
-          "sheet": "Grade 3",
-          "rows": [
-            181,
-            199
-          ],
-          "topic": "Fluency and meaning",
-          "coverage": "partial"
-        },
-        {
-          "source": "elal16",
-          "grade": 4,
-          "sheet": "Grade 4",
-          "rows": [
-            151,
-            161
-          ],
-          "topic": "Fluency and comprehension",
-          "coverage": "partial"
-        },
-        {
-          "source": "elal16",
-          "grade": 5,
-          "sheet": "Grade 5",
-          "rows": [
-            172
-          ],
-          "topic": "Comprehension strategies",
-          "coverage": "partial"
-        },
-        {
-          "source": "elal16",
-          "grade": 6,
-          "sheet": "Grade 6",
-          "rows": [
-            165
-          ],
-          "topic": "Comprehension strategies",
           "coverage": "partial"
         }
       ]
@@ -2311,62 +2067,6 @@
             322
           ],
           "topic": "Origins and derivation",
-          "coverage": "partial"
-        }
-      ]
-    },
-    "walker-plurals": {
-      "grades": [
-        1,
-        2,
-        3,
-        4
-      ],
-      "basis": "curriculum",
-      "rationale": "Regular s/es patterns fit Grades 1–2; irregular forms and complex plurals connect to Grades 3–4. Select the relevant pattern group.",
-      "alignments": [
-        {
-          "source": "elal16",
-          "grade": 1,
-          "sheet": "Grade 1",
-          "rows": [
-            123,
-            132,
-            400
-          ],
-          "topic": "Regular plurals",
-          "coverage": "partial"
-        },
-        {
-          "source": "elal16",
-          "grade": 2,
-          "sheet": "Grade 2",
-          "rows": [
-            130
-          ],
-          "topic": "Singular/plural suffixes",
-          "coverage": "partial"
-        },
-        {
-          "source": "elal16",
-          "grade": 3,
-          "sheet": "Grade 3",
-          "rows": [
-            357,
-            366,
-            387
-          ],
-          "topic": "Irregular and complex plurals",
-          "coverage": "partial"
-        },
-        {
-          "source": "elal16",
-          "grade": 4,
-          "sheet": "Grade 4",
-          "rows": [
-            340
-          ],
-          "topic": "Complex plurals",
           "coverage": "partial"
         }
       ]
@@ -4443,18 +4143,6 @@
       "rationale": "Flexible figurative-language practice and original comic creation. Difficulty bands are suggestions; teachers can choose expressions and provide reading support. The open comic task invites explanations and several defensible interpretations.",
       "alignments": []
     },
-    "word-worlds": {
-      "grades": [
-        3,
-        4,
-        5,
-        6
-      ],
-      "basis": "flexible",
-      "reviewed": "2026-10-24",
-      "rationale": "Flexible creative-language tool for exploring word choice, setting, mood, personification and viewpoint. The scene offers one authored interpretation; students can challenge it and support different readings. The 12 prompts are open experiments, not graded outcomes.",
-      "alignments": []
-    },
     "float-lab": {
       "grades": [
         5
@@ -4551,11 +4239,6 @@
       ],
       "basis": "curriculum",
       "rationale": "Labelling the cycle supports Grade 3 changes of state and provides a model for the Grade 7 water-cycle connection to life."
-    },
-    "revamp-vocab": {
-      "grades": [],
-      "basis": "flexible",
-      "rationale": "The words and examples are chosen by the teacher or student. The tool is adaptable across grades."
     },
     "revamp-wordwork": {
       "grades": [],
