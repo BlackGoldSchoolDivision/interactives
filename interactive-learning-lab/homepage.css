@@ -57,3 +57,8 @@ main{position:relative;padding:4px 0 58px}.browse{scroll-margin-top:20px}.search
   font-size: .875rem;
 }
 .coding-idea strong { display: block; color: #193b64; }
+
+.screenshot-choices{display:flex;flex-wrap:wrap;gap:.4rem;padding:.35rem .75rem;border-bottom:1px solid #e5e9e8}
+.screenshot-choices button{min-height:44px;padding:.25rem .6rem;background:transparent;border:0;border-radius:6px;color:#36545b;font:inherit;font-size:.8125rem;font-weight:750;cursor:pointer}
+.screenshot-choices button[aria-pressed=true]{background:#e7f3ef;color:#154e43}
+.screenshot-choices button:focus-visible{outline:2px solid #196961;outline-offset:1px}

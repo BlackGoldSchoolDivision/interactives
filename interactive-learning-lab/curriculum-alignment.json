@@ -4571,6 +4571,25 @@
       "grades": [],
       "basis": "flexible",
       "rationale": "Use with beginning through advancing guitar students. Start with notes in first position and choose practice stations as skills develop."
+    },
+    "spelling-bench": {
+      "grades": [
+        1
+      ],
+      "basis": "curriculum",
+      "rationale": "Grade 1 learners can match sounds to letters and spell short-vowel words. Teachers can use the same lists for extra practice with older learners.",
+      "alignments": [
+        {
+          "source": "elal16",
+          "grade": 1,
+          "sheet": "Grade 1",
+          "rows": [
+            187
+          ],
+          "topic": "Matching letters and sounds in simple words",
+          "coverage": "partial"
+        }
+      ]
     }
   }
 }

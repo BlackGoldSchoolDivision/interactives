@@ -1653,6 +1653,58 @@
     "grade_note": "The opening vowel–consonant–e activities practise long-vowel spelling patterns in Grades 1–2. The workbook also includes word building with suffixes."
   },
   {
+    "id": "spelling-bench",
+    "path": "spelling-bench",
+    "repo": "division",
+    "title": "Black Gold Spelling Bench",
+    "category": "Reading & writing",
+    "description": "Hear a word and tap letter tiles to spell it. Choose one short vowel for focused CVC practice, or mix vowels across 11 UFLI-aligned word lists.",
+    "types": [
+      "Word work",
+      "Practice questions"
+    ],
+    "tags": [
+      "Phonics",
+      "Short vowels",
+      "CVC spelling"
+    ],
+    "url": "https://interactives.blackgold.ca/spelling-bench/",
+    "links": [
+      {
+        "label": "Choose a vowel list",
+        "url": "https://interactives.blackgold.ca/spelling-bench/?lists=vowels"
+      },
+      {
+        "label": "Start Short U",
+        "url": "https://interactives.blackgold.ca/spelling-bench/?list=short-u"
+      }
+    ],
+    "favourite": false,
+    "credit": "Black Gold School Division",
+    "group": "",
+    "image": "images/spelling-bench-word.webp",
+    "previews": [
+      {
+        "label": "Word practice",
+        "url": "https://interactives.blackgold.ca/spelling-bench/?list=short-u",
+        "image": "images/spelling-bench-word.webp",
+        "alt": "Short U word practice with s and u in the spelling tray for sun."
+      },
+      {
+        "label": "Vowel lists",
+        "url": "https://interactives.blackgold.ca/spelling-bench/?lists=vowels",
+        "image": "images/spelling-bench-lists.webp",
+        "alt": "Five short-vowel choices and six starter and mixed practice lists."
+      }
+    ],
+    "captured": "2026-11-24",
+    "grades": [
+      1
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "Grade 1 learners can match sounds to letters and spell short-vowel words. Teachers can use the same lists for extra practice with older learners."
+  },
+  {
     "id": "sentencebuilding",
     "path": "flyleaf2.0",
     "repo": "personal",

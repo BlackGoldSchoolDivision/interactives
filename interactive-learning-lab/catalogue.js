@@ -115,6 +115,33 @@ function renderFilters() {
   document.querySelectorAll('.quick-type').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.type === chosenType)));
 }
 function launchLabel(a) { return a.launch_label || (a.type === 'template' ? 'Open template' : a.type === 'printable' ? 'Open printable' : a.id === 'thinkingroutines' ? 'Open Grade 8' : a.id === 'thinking-dialogue' ? 'Open teacher guide' : 'Try it'); }
+function addScreenshotChoices(card, activity) {
+  if (!activity.previews?.length) return;
+  const shot = card.querySelector('.shot');
+  const image = shot.querySelector('img');
+  const choices = document.createElement('div');
+  choices.className = 'screenshot-choices';
+  choices.setAttribute('role', 'group');
+  choices.setAttribute('aria-label', 'Screenshots of ' + activity.title);
+  function select(preview, button) {
+    image.src = preview.image;
+    image.alt = preview.alt;
+    shot.href = preview.url;
+    shot.setAttribute('aria-label', activity.title + ': ' + preview.label + ' (opens in a new tab)');
+    for (const choice of choices.children) choice.setAttribute('aria-pressed', String(choice === button));
+  }
+  for (const preview of activity.previews) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = preview.label;
+    button.setAttribute('aria-pressed', 'false');
+    button.addEventListener('click', () => select(preview, button));
+    choices.append(button);
+  }
+  shot.after(choices);
+  select(activity.previews[0], choices.firstElementChild);
+}
+
 function render() {
   renderFilters();
   const featured = chosen === 'Favourites' && chosenType === 'All types' && chosenGrade === 'all' && !query.trim();
@@ -156,6 +183,7 @@ function render() {
   }).join('');
   cardsNode.querySelectorAll('article[data-id]').forEach(card => {
     const activity = catalogue.find(a => a.id === card.dataset.id);
+    addScreenshotChoices(card, activity);
     if (activity.disable_make_own) return;
     if (activity.own_html_url) {
       const link = document.createElement('a');
@@ -227,6 +255,15 @@ window.addEventListener('hashchange', () => {
 });
 // A failed screenshot stays clearly labelled; never substitute invented game imagery.
 document.addEventListener('error', e => { if (e.target instanceof HTMLImageElement) { e.target.hidden = true; const parent = e.target.parentElement; if (!parent.querySelector('.preview-unavailable')) { const label = document.createElement('span'); label.className = 'preview-unavailable'; label.textContent = 'Preview unavailable'; parent.appendChild(label); } } }, true);
+const linkedId = new URLSearchParams(location.search).get('activity');
+const linkedActivity = catalogue.find(a => a.id === linkedId);
+if (linkedActivity && chosen !== codingCategory) {
+  chosen = linkedActivity.category;
+  query = search.value = linkedActivity.title;
+}
 render();
+if (linkedActivity && chosen === linkedActivity.category) {
+  requestAnimationFrame(() => cardsNode.scrollIntoView({block:'start', behavior:'instant'}));
+}
 if (chosen === codingCategory) requestAnimationFrame(() => collection.scrollIntoView({block:'start',behavior:'instant'}));
 

@@ -2788,6 +2788,20 @@
           "url": "https://interactives.blackgold.ca/fretwork-classroom/"
         }
       ]
+    },
+    "spelling-bench": {
+      "kind": "html",
+      "title": "Black Gold Spelling Bench",
+      "credit": "Black Gold School Division",
+      "category": "Reading & writing",
+      "versions": [
+        {
+          "label": "Black Gold Spelling Bench",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "spelling-bench/index.html",
+          "url": "https://interactives.blackgold.ca/spelling-bench/"
+        }
+      ]
     }
   },
   "files": {
@@ -11593,6 +11607,44 @@
       {
         "path": "sound-structure-spell/workbook.js",
         "bytes": 8252
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/spelling-bench": [
+      {
+        "path": "spelling-bench/app.js",
+        "bytes": 96158
+      },
+      {
+        "path": "spelling-bench/assets/OFL.txt",
+        "bytes": 4404
+      },
+      {
+        "path": "spelling-bench/assets/bricolage.woff",
+        "bytes": 177508
+      },
+      {
+        "path": "spelling-bench/assets/indigo.webp",
+        "bytes": 2744
+      },
+      {
+        "path": "spelling-bench/assets/picture-words.webp",
+        "bytes": 186736
+      },
+      {
+        "path": "spelling-bench/assets/spelling-audio.mp3",
+        "bytes": 1235138
+      },
+      {
+        "path": "spelling-bench/audio-index.js",
+        "bytes": 4157
+      },
+      {
+        "path": "spelling-bench/index.html",
+        "bytes": 5052
+      },
+      {
+        "path": "spelling-bench/styles.css",
+        "bytes": 49507
       }
     ]
   },
