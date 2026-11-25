@@ -1535,3 +1535,60 @@ button,input,textarea{font:inherit}button{min-height:44px;touch-action:manipulat
   .modal-tabs { gap: .3rem; }
   .modal-tabs .m-tab { padding: .35rem .65rem; }
 }
+
+/* The order switch sits on the wooden lip, within reach of the tiles. */
+.rack-layout-control {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .2rem .65rem;
+  color: #251e18;
+  font: 750 .95rem/1.2 var(--font-ui);
+}
+.wooden-rack-outer > .rack-layout-control {
+  margin: 0 .2rem .35rem;
+}
+.rack-layout-options {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid #66513d;
+  border-radius: .65rem;
+  background: #f2ddba;
+}
+.rack-layout-options button {
+  min-height: 44px;
+  min-width: 44px;
+  padding: .3rem .7rem;
+  border-radius: .46rem;
+  color: #322a24;
+  font: 750 .9rem/1.1 var(--font-ui);
+  touch-action: manipulation;
+}
+.rack-layout-options button[aria-pressed="true"] { background: #263d43; color: #fff6e3; }
+.rack-layout-options button:focus-visible { outline: 3px solid #174f78; outline-offset: 1px; z-index: 1; }
+.rack-grid.qwerty-rack {
+  --key-gap: clamp(1px, .45vw, 6px);
+  display: flex;
+  flex-direction: column;
+  gap: max(4px, var(--key-gap));
+  max-width: 49rem;
+  margin-inline: auto;
+}
+.qwerty-row { display: flex; justify-content: center; gap: var(--key-gap); }
+.qwerty-row .paper-tile {
+  flex: 0 0 calc((100% - 9 * var(--key-gap)) / 10);
+  min-width: 0;
+}
+.qwerty-row [data-rack-key="SPACE"] { flex-basis: 30%; }
+@media (max-width: 520px) {
+  .rack-layout-control { gap: .15rem .4rem; font-size: .875rem; }
+  .rack-layout-options button { padding-inline: .45rem; }
+  .qwerty-row .paper-tile-char { font-size: clamp(1.15rem, 5vw, 1.5rem); }
+}
+@media (max-width: 400px) {
+  .wooden-rack-outer:has(.qwerty-rack) { padding-inline: .25rem; }
+  .wooden-rack-well:has(.qwerty-rack) { padding-inline: .125rem; }
+  .rack-grid.qwerty-rack { --key-gap: 1px; }
+}

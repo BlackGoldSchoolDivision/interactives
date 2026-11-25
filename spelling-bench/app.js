@@ -33,14 +33,10 @@
       ];
       const PRESET_LISTS = [...BUILTIN_LISTS, ...VOWEL_LISTS];
 
-      // Rack layouts (2 rows x 14 = 28 slots, last slot is 123- toggle)
-      const RACK_ALPHABETICAL = [
-        'a','b','c','d','e','f','g','h','i','j','k','l','m','n',
-        'o','p','q','r','s','t','u','v','w','x','y','z','SPACE','123'
-      ];
-      const RACK_VOWELS_FIRST = [
-        'a','e','i','o','u','b','c','d','f','g','h','j','k','l',
-        'm','n','p','q','r','s','t','v','w','x','y','z','SPACE','123'
+      const RACK_LAYOUTS = [
+        { id: 'alphabetical', label: 'A–Z', name: 'Alphabetical (A–Z)', rows: ['abcdefghijklmnopqrstuvwxyz'] },
+        { id: 'qwerty', label: 'QWERTY', name: 'QWERTY', rows: ['qwertyuiop', 'asdfghjkl', 'zxcvbnm'] },
+        { id: 'vowels-first', label: 'Vowels first', name: 'Vowels first', rows: ['aeioubcdfghjklmnpqrstvwxyz'] }
       ];
       const RACK_NUMBERS = [
         '1','2','3','4','5','6','7','8','9','0','-','\'','!','?',
@@ -52,7 +48,7 @@
           settings: {
             audioEnabled: true,
             speechMode: 'phonics', // 'phonics' | 'names'
-            rackLayout: 'alphabetical', // 'alphabetical' | 'vowels-first'
+            rackLayout: 'alphabetical',
             showPracticeGuides: true
           },
           activeListId: 'list-3letter',
@@ -106,8 +102,10 @@
           const lists = (Array.isArray(parsed.customLists)?parsed.customLists:[]).filter(l=>isRecord(l)&&typeof l.name==='string'&&Array.isArray(l.words)).map(l=>({...l,words:l.words.filter(w=>typeof w==='string').map(normaliseWord).filter(w=>wordPattern.test(w))})).filter(l=>l.words.length);
           const users = (Array.isArray(parsed.users)?parsed.users:[]).filter(u=>isRecord(u)&&typeof u.name==='string').map(u=>({...u,reports:(Array.isArray(u.reports)?u.reports:[]).filter(r=>isRecord(r)&&!/^rep-seed-/.test(r.id)&&Array.isArray(r.words)&&r.words.every(w=>w&&typeof w.word==='string'&&Number.isFinite(w.duration))&&Number.isFinite(r.score))}));
           if(!users.length)users.push(...def.users);
+          const settings = {...def.settings, ...(parsed.settings || {})};
+          if (!RACK_LAYOUTS.some(layout => layout.id === settings.rackLayout)) settings.rackLayout = def.settings.rackLayout;
           return {
-            settings: {...def.settings, ...(parsed.settings || {})},
+            settings,
             activeListId:[...PRESET_LISTS,...lists].some(l=>l.id===parsed.activeListId)?parsed.activeListId:def.activeListId,
             activeUserId:users.some(u=>u.id===parsed.activeUserId)?parsed.activeUserId:users[0].id,
             customLists:lists, users
@@ -560,15 +558,39 @@
       /* ========================================================================
          WOODEN LETTER RACK RENDERER (SHARED BY PRACTICE, QUIZ, MOVABLE)
          ======================================================================== */
-      function renderWoodenRack(containerId, onKeyPick) {
-        const container = document.getElementById(containerId);
+      function rackLayoutControl() {
+        const choices = RACK_LAYOUTS.map(layout =>
+          `<button type="button" data-rack-layout="${layout.id}" aria-label="${layout.name}"
+            aria-pressed="${state.settings.rackLayout === layout.id}">${layout.label}</button>`
+        ).join('');
+        return `<div class="rack-layout-control">
+          <span aria-hidden="true">Letter order</span>
+          <div class="rack-layout-options" role="group" aria-label="Letter order">${choices}</div>
+        </div>`;
+      }
+
+      function woodenRack(id) {
+        return `<section class="wooden-rack-outer" aria-label="Letter rack">
+          ${rackLayoutControl()}
+          <div class="wooden-rack-well"><div class="rack-grid" id="${id}"></div></div>
+        </section>`;
+      }
+
+      function renderWoodenRack() {
+        const movable = currentScreen === 'movable';
+        const container = document.getElementById(movable ? 'movableRack' : 'activityRack');
         if (!container) return;
+        const layout = RACK_LAYOUTS.find(option => option.id === state.settings.rackLayout);
+        const numbers = movable && rackNumberMode;
+        const qwerty = !numbers && layout.id === 'qwerty';
+        const rows = numbers ? [RACK_NUMBERS] : layout.rows.map(row => [...row]);
+        if (movable && !numbers) {
+          if (qwerty) rows.push(['SPACE', '123']);
+          else rows[0].push('SPACE', '123');
+        }
+        container.classList.toggle('qwerty-rack', qwerty);
 
-        const keys = rackNumberMode && currentScreen === 'movable'
-          ? RACK_NUMBERS
-          : (state.settings.rackLayout === 'vowels-first' ? RACK_VOWELS_FIRST : RACK_ALPHABETICAL);
-
-        container.innerHTML = keys.filter(k => currentScreen === 'movable' || /^[a-z]$/.test(k)).map(k => {
+        function tile(k) {
           const isSpecial = (k === '123' || k === 'ABC' || k === 'SPACE' || /^[0-9\-'!?]$/.test(k));
           const variant = isSpecial ? 'num' : 'default';
           const dragAttr = (k === '123' || k === 'ABC' || k === 'SPACE') ? '' : 'draggable="true"';
@@ -578,6 +600,10 @@
             variant,
             attrs: `${dragAttr} data-rack-key="${escapeHtml(k)}" aria-label="${k === 'SPACE' ? 'Space' : k}"`
           });
+        }
+        container.innerHTML = rows.map(row => {
+          const tiles = row.map(tile).join('');
+          return qwerty ? `<div class="qwerty-row">${tiles}</div>` : tiles;
         }).join('');
 
         container.querySelectorAll('[data-rack-key]').forEach(btn => {
@@ -586,10 +612,12 @@
             if (key === '123' || key === 'ABC') {
               rackNumberMode = !rackNumberMode;
               playWoodClick();
-              renderWoodenRack(containerId, onKeyPick);
+              renderWoodenRack();
+              container.querySelector(`[data-rack-key="${rackNumberMode ? 'ABC' : '123'}"]`).focus({preventScroll:true});
               return;
             }
-            onKeyPick(key === 'SPACE' ? ' ' : key);
+            if (movable) addMovableChar(key === 'SPACE' ? ' ' : key);
+            else placeLetterInput(key);
           });
 
           if (btn.getAttribute('draggable') === 'true') {
@@ -719,15 +747,11 @@
 
           <section class="movable-slate" id="movableSlate"></section>
 
-          <section class="wooden-rack-outer">
-            <div class="wooden-rack-well">
-              <div class="rack-grid" id="movableRack"></div>
-            </div>
-          </section>
+          ${woodenRack('movableRack')}
         `;
 
         renderMovableRows();
-        renderWoodenRack('movableRack', (ch) => addMovableChar(ch));
+        renderWoodenRack();
 
         document.getElementById('btnMovReadAll').addEventListener('click', () => {
           const text = movableBoard.rows.map(r => r.join('').trim()).filter(Boolean).join('. ');
@@ -1011,11 +1035,7 @@
                 })
               ).join('')}
             </section>`
-          : `<section class="wooden-rack-outer">
-              <div class="wooden-rack-well">
-                <div class="rack-grid" id="activityRack"></div>
-              </div>
-            </section>`;
+          : woodenRack('activityRack');
 
         // Progress dots
         const dotsHtml = activity.words.map((_, i) => {
@@ -1145,9 +1165,7 @@
             tile.addEventListener('dragend', () => tile.classList.remove('dragging'));
           });
         } else {
-          renderWoodenRack('activityRack', (ch) => {
-            if (/^[a-z]$/.test(ch)) placeLetterInput(ch);
-          });
+          renderWoodenRack();
         }
         if (focused && !activity.completed) {
           const replacement = rackKey ? main.querySelector('[data-rack-key="' + CSS.escape(rackKey) + '"]')
@@ -1838,16 +1856,7 @@
             </div>
           </div>
 
-          <div class="setting-item">
-            <div>
-              <div style="font-weight:800; font-size:1rem;">Wooden Rack Layout</div>
-              <div style="font-size:0.84rem; font-weight:700; color:var(--ink-soft);">Alphabetical (A–Z) or Vowels grouped first</div>
-            </div>
-            <div class="seg-group">
-              <button class="${s.rackLayout === 'alphabetical' ? 'active' : ''}" id="optAlpha">Alphabetical</button>
-              <button class="${s.rackLayout === 'vowels-first' ? 'active' : ''}" id="optVowels">Vowels First</button>
-            </div>
-          </div>
+          <div class="setting-item layout-setting">${rackLayoutControl()}</div>
 
           <div class="setting-item">
             <div>
@@ -1862,7 +1871,7 @@
         `;
 
         const refreshRackIfVisible = () => {
-          if (currentScreen === 'movable') renderWoodenRack('movableRack', (ch) => addMovableChar(ch));
+          if (currentScreen === 'movable') renderWoodenRack();
           if (activity && !activity.sessionFinished) renderActivity();
         };
 
@@ -1871,12 +1880,6 @@
         });
         document.getElementById('optNames').addEventListener('click', () => {
           state.settings.speechMode = 'names'; saveState(); renderModal(); speakLetter('b');
-        });
-        document.getElementById('optAlpha').addEventListener('click', () => {
-          state.settings.rackLayout = 'alphabetical'; saveState(); renderModal(); refreshRackIfVisible();
-        });
-        document.getElementById('optVowels').addEventListener('click', () => {
-          state.settings.rackLayout = 'vowels-first'; saveState(); renderModal(); refreshRackIfVisible();
         });
         document.getElementById('optGuidesOn').addEventListener('click', () => {
           state.settings.showPracticeGuides = true; saveState(); renderModal(); refreshRackIfVisible();
@@ -1947,6 +1950,18 @@
       /* ========================================================================
          TOP BAR & MODAL WIRING + INITIAL LAUNCH INTO ACTIVITY 1 ("bag")
          ======================================================================== */
+      document.addEventListener('click', event => {
+        const choice = event.target.closest('button[data-rack-layout]');
+        if (!choice) return;
+        const id = choice.dataset.rackLayout;
+        state.settings.rackLayout = id;
+        rackNumberMode = false;
+        saveState();
+        document.querySelectorAll('button[data-rack-layout]').forEach(button => {
+          button.setAttribute('aria-pressed', String(button.dataset.rackLayout === id));
+        });
+        renderWoodenRack();
+      });
       document.getElementById('btnHome').addEventListener('click', () => {
         playWoodClick();
         renderHome();
