@@ -4297,6 +4297,12 @@
           "coverage": "partial"
         }
       ]
+    },
+    "typing-trail": {
+      "grades": [],
+      "basis": "flexible",
+      "rationale": "Use with learners building touch-typing fluency. Typing practice needs a physical keyboard.",
+      "alignments": []
     }
   }
 }

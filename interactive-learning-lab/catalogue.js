@@ -13,7 +13,7 @@ const codingStarters = new Map([
   ['mapmastersubregions', 'Set the Study view to the region your class is learning.']
 ]);
 const categories = ['Favourites', 'All activities', codingCategory, 'Mr. Walker’s Corner', 'Reading & writing', 'Morphology', 'Maths', 'Science', 'Music', 'Geography', 'Social studies', 'Question practice', 'Thinking tools', 'Languages', 'Accessibility', 'Robotics', 'Teacher tools'];
-const typeNames = ['All types', 'Sorting', 'Flashcards', 'Practice questions', 'Sequencing', 'Matching', 'Word work', 'Writing', 'Reading & annotation', 'Simulations & models', 'Maps & geography', 'Graphic organisers', 'Decision games', 'Builders', 'Printables', 'Drawing', 'Communication', 'Coding & robotics'];
+const typeNames = ['All types', 'Sorting', 'Flashcards', 'Practice questions', 'Sequencing', 'Matching', 'Word work', 'Writing', 'Typing practice', 'Reading & annotation', 'Simulations & models', 'Maps & geography', 'Graphic organisers', 'Decision games', 'Builders', 'Printables', 'Drawing', 'Communication', 'Coding & robotics'];
 const groupNames = ['All geography', 'Alberta', 'Canada', 'World', 'Map skills'];
 const descriptions = {
   'Favourites': 'Games, creative tools and hands-on learning.',
@@ -45,7 +45,7 @@ const subjects = [
   {label:codingCategory,category:codingCategory,id:'natural-resources-depot',colour:'#193b64',ink:'#fff'}
 ];
 const featuredOrder = ['vocabularyarcade','mackwoodmapping','numberbuilding','moonphases','writerspark','thinking-dialogue'];
-const writingOrder = ['writerspark','infospark','vocabularyarcade','rootwords','wordworks','word-orbit','word-ladders','double-take','literal-chaos'];
+const writingOrder = ['writerspark','infospark','vocabularyarcade','rootwords','wordworks','word-orbit','word-ladders','typing-trail','double-take','literal-chaos'];
 const thinkingOrder = ['thinking-dialogue','thinkingroutines','imagespark','venndiagram','hexthinker','asctriangle','frayermodel'];
 const scienceOrder = ['science-practice-lab','moonphases','dinodig','walker-bridge','bend-stretch-change','magnet-workshop','float-lab','vibration-station'];
 let chosen = location.hash === codingHash ? codingCategory : 'Favourites';

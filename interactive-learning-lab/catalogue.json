@@ -1635,6 +1635,38 @@
     "grade_note": "Grade 1 learners can match sounds to letters and spell short-vowel words. Teachers can use the same lists for extra practice with older learners."
   },
   {
+    "id": "typing-trail",
+    "path": "typing-trail",
+    "repo": "BlackGoldSchoolDivision/interactives",
+    "title": "Typing Trail",
+    "category": "Reading & writing",
+    "group": "",
+    "description": "Build touch-typing skills with moving hand guides, step-by-step lessons, stories and games in English or French. Try the teacher view with a sample class.",
+    "favourite": false,
+    "tags": [
+      "Touch typing",
+      "English & French"
+    ],
+    "url": "https://interactives.blackgold.ca/typing-trail/",
+    "links": [
+      {
+        "label": "Français",
+        "url": "https://interactives.blackgold.ca/typing-trail/?lang=fr"
+      }
+    ],
+    "credit": "",
+    "captured": "2026-11-27",
+    "types": [
+      "Typing practice"
+    ],
+    "image": "images/typing-trail-20261127.jpg?v=4b4d94c3e0d8",
+    "status": "Preview",
+    "launch_label": "Open preview",
+    "grades": [],
+    "grade_basis": "flexible",
+    "grade_note": "Use with learners building touch-typing fluency. Typing practice needs a physical keyboard."
+  },
+  {
     "id": "customflashcards",
     "path": "generateyourownflashcards",
     "repo": "personal",

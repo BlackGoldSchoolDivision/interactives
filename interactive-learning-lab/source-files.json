@@ -2663,6 +2663,20 @@
           "url": "https://interactives.blackgold.ca/tracktoprogress2/"
         }
       ]
+    },
+    "typing-trail": {
+      "kind": "html",
+      "title": "Typing Trail",
+      "credit": "",
+      "category": "Reading & writing",
+      "versions": [
+        {
+          "label": "Typing Trail",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "typing-trail/index.html",
+          "url": "https://interactives.blackgold.ca/typing-trail/"
+        }
+      ]
     }
   },
   "files": {
@@ -11316,6 +11330,12 @@
       {
         "path": "tracktoprogress2/index.html",
         "bytes": 105707
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/typing-trail": [
+      {
+        "path": "typing-trail/index.html",
+        "bytes": 952881
       }
     ]
   },
