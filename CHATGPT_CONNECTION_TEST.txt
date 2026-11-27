@@ -1,0 +1,5 @@
+GitHub connection test
+
+This file was created by ChatGPT at the user's request to verify write access to the BlackGoldSchoolDivision/interactives repository.
+
+Date: 2026-11-27
