@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated": "2026-10-25",
+  "generated": "2026-11-27",
   "activities": {
     "vocabularyarcade": {
       "kind": "html",
@@ -2647,6 +2647,20 @@
           "repo": "BlackGoldSchoolDivision/interactives",
           "path": "spelling-bench/index.html",
           "url": "https://interactives.blackgold.ca/spelling-bench/"
+        }
+      ]
+    },
+    "tracktoprogress2": {
+      "kind": "html",
+      "title": "Track to Progress 2",
+      "credit": "",
+      "category": "Social studies",
+      "versions": [
+        {
+          "label": "Track to Progress 2",
+          "repo": "BlackGoldSchoolDivision/interactives",
+          "path": "tracktoprogress2/index.html",
+          "url": "https://interactives.blackgold.ca/tracktoprogress2/"
         }
       ]
     }
@@ -11296,6 +11310,12 @@
       {
         "path": "spelling-bench/styles.css",
         "bytes": 49507
+      }
+    ],
+    "BlackGoldSchoolDivision/interactives/tracktoprogress2": [
+      {
+        "path": "tracktoprogress2/index.html",
+        "bytes": 105707
       }
     ]
   },

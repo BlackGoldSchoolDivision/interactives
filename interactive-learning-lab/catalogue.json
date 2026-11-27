@@ -2464,6 +2464,35 @@
     "grade_note": "The games model parts of fur-trade exchange and travel. Historical relationships and impacts need classroom discussion beyond the game mechanics."
   },
   {
+    "id": "tracktoprogress2",
+    "path": "tracktoprogress2",
+    "repo": "org",
+    "title": "Track to Progress 2",
+    "category": "Social studies",
+    "group": "Canada",
+    "description": "Build a railway from Montreal to Vancouver. Collect resources, choose detours and weigh 1880s railway dilemmas while tracking debt, human rights and environmental harm. Play solo or pass and play with 2–4 companies.",
+    "types": [
+      "Decision games",
+      "Simulations & models"
+    ],
+    "tags": [
+      "Canadian railways",
+      "1880s",
+      "Solo or 2–4 players"
+    ],
+    "url": "https://interactives.blackgold.ca/tracktoprogress2/",
+    "links": [],
+    "favourite": false,
+    "credit": "",
+    "image": "images/tracktoprogress2-20261127.jpg?v=ed5e1d13a1cb",
+    "captured": "2026-11-27",
+    "grades": [
+      7
+    ],
+    "grade_basis": "curriculum",
+    "grade_note": "The 1880s railway simulation supports Grade 7 discussion of post-Confederation railway expansion, economic decisions, labour and Indigenous rights. Its simplified routes, costs and harm scores need historical context; this is a partial connection, not complete outcome coverage."
+  },
+  {
     "id": "governmentsort",
     "path": "governmentsorting",
     "repo": "bg",

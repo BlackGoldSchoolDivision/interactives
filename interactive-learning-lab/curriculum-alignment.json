@@ -4273,6 +4273,30 @@
           "coverage": "partial"
         }
       ]
+    },
+    "tracktoprogress2": {
+      "grades": [
+        7
+      ],
+      "basis": "curriculum",
+      "rationale": "The 1880s railway simulation supports Grade 7 discussion of post-Confederation railway expansion, economic decisions, labour and Indigenous rights. Its simplified routes, costs and harm scores need historical context; this is a partial connection, not complete outcome coverage.",
+      "alignments": [
+        {
+          "source": "social79",
+          "grade": 7,
+          "sheet": "Grade 7",
+          "rows": [
+            4,
+            17,
+            23,
+            24,
+            66,
+            122
+          ],
+          "topic": "State building, railway economy and immigration",
+          "coverage": "partial"
+        }
+      ]
     }
   }
 }

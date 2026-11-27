@@ -183,3 +183,10 @@ Updated this catalogue entry, its actual-app screenshot, activity types, descrip
 ## Separate Renaissance maps — 8 October 2026
 
 Renaissance Atlas retains its original hub card, screenshot and 37-step activity. A separate Renaissance Atlas: Illustrated Map card now opens the approved illustrated atlas with a fully labeled Explore mode and three map questions without place names. Both are available in Social studies, Geography → World and Accessibility. The illustrated card uses its actual labeled Explore screenshot at renaissance-map/scene-explore-preview.jpg. Catalogue source, embedded data, activity links and teacher-copy entries include both versions.
+
+
+## Track to Progress 2 — 27 November 2026
+
+Added the existing railway decision game to Social studies immediately after River Routes: Fur Trade Adventure and Trading Post: The Fur Trade Fair, keeping the three games together. Its actual live game-board screenshot is `images/tracktoprogress2-20261127.jpg` (900 × 620, 128,727 bytes), proportionally scaled with no cropping or stretching and a content-based cache version. The card opens the second game directly and includes solo/pass-and-play details, resource decisions, debt, human rights and environmental harm. The Grade 7 tag uses the existing reviewed railway-expansion connection; simplified game routes and scores are not a historical reconstruction. Catalogue data, the teacher-copy source manifest, curriculum metadata and generated links/page are synchronized.
+
+Verification: the new card and real screenshot loaded at 1024 × 540, 1366 × 650, 768 × 900, 390 × 667, 320 × 568 and 640 × 360 with no horizontal overflow. Its launch link targets `tracktoprogress2/`, and Make it my own prepared the published HTML successfully. Existing catalogue entries and their order are preserved. This addition does not modify the game.
